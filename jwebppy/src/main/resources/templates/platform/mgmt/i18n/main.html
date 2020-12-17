@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{platform/layout/common/index}">
+
+<th:block layout:fragment="content">
+<div class="ui dividing header">
+  Translation
+  <div class="sub header">Contents are translated into some languages as follows. If there is not a word matches language, system will show it in English.</div>
+</div>
+<div class="ui segment">
+	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
+	<input type="hidden" name="lSeq" value=""/>
+	<input type="hidden" name="pageNumber" value="1"/>
+	<input type="hidden" name="rowPerPage" value="20"/>
+	<div class="fields">
+		<div class="four wide field">
+			<select name="basename" class="ui dropdown"></select>
+		</div>
+		<div class="four wide field">
+			<select name="type" class="ui clearable search dropdown">
+				<option value="">Type</option>
+				<option value="LB">LABEL</option>
+				<option value="BTN">BUTTON</option>
+				<option value="TXT">TEXT</option>
+				<option value="MSG">MESSAGE</option>
+			</select>				
+		</div>
+	</div>
+	<div class="fields">
+		<div class="twelve wide field">
+			<div class="ui icon input">
+				<input type="text" id="query" name="query" placeholder="Search"> <i class="search icon"></i>
+			</div>
+		</div>
+		<div class="four wide field">
+			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>
+			<div class="ui button" onclick="document.location.reload()"><i class="undo icon"></i> Reset</div>
+		</div>
+	</div>		
+	<div class="ui divider"></div>
+	<div class="ui one column grid">
+		<div class="column">
+			<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
+			<div id="BTN_delete" class="ui negative button"><i class="minus icon"></i> Delete</div>				
+		</div>
+	</div>
+	<div id="TBL_list"></div>
+	</form>
+</div>
+
+<!-- Start add language -->
+<th:block th:replace="/platform/common/lang :: addLang"></th:block>
+<!-- End add language -->
+<script type="application/javascript">
+	$(document).ready(function() {
+		JpUtilsAjax.get({
+			url: JpUiGlobal.url("/platform/mgmt/i18n/basenames"),
+			success: function(data, textStatus, jqXHR)
+			{
+				let basename = $("#FORM_search select[name=basename]");
+				
+				data.RESULT.forEach(function(element, index) {
+					basename.append("<option value='" + element + "'>" + element + "</option>");
+				});
+				
+				basename.find("option:first").attr("selected", "true");
+
+				doSearch();
+			}
+		}); 		
+	});
+	
+	let langTable = new JpUiTable($("#TBL_list"));
+	langTable.settings = {
+			ajax: {
+				url: JpUiGlobal.url("/platform/mgmt/i18n/langs"),
+				form: $("#FORM_search")
+			},
+			onClickDataKey: function(element, key, row)
+			{
+				viewLang("TRANSLATION", key, $(element).html());
+			},
+			onClickPageNumber: function(pageNumber)
+			{
+				doSearch(pageNumber);
+			}
+	};
+	
+	$("#BTN_create").on("click", function() {
+		writeLang("TRANSLATION", $("#FORM_search select[name='basename']").val());
+	});
+	
+	$("#BTN_delete").on("click", function() {
+		if (langTable.getCheckedCount() == 0)
+		{
+			alert("Please choose targets to delete.");
+			return;
+		};
+	 	
+		if (confirm("Do you want to delete them?"))
+		{
+			JpUtilsAjax.post({
+				url: JpUiGlobal.url("/platform/mgmt/i18n/delete"),
+				data: $("#FORM_search").serialize(),
+				success: function(data, textStatus, jqXHR)
+				{
+					doSearch();
+				}
+			});         		
+		}
+	});
+	
+	$("#BTN_search").on("click", function() {
+		doSearch();
+	});
+	
+	$("#query").on("keydown", function(event) {
+		if (event.keyCode==13)
+		{
+			doSearch();
+		}
+	});
+	
+	function doSearch(pageNumber)
+	{
+		$("#FORM_search input[name=pageNumber]:hidden").val(JpUtilsString.defaultString(pageNumber, "1"));
+		langTable.load();
+	};	
+	
+	function doAfterSavingLang()
+	{
+		doSearch();
+	};	
+	
+	function doAfterDeletingLang()
+	{
+		doSearch();
+	};
+
+</script>
+
+</th:block>
+</html>

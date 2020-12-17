@@ -1,0 +1,145 @@
+@charset "utf-8";
+/************************************************* base *********************************************************/
+img { border:0 none; vertical-align:top; }
+ul,ol,li,dl,dt,dd { list-style:none; margin:0; padding:0; }
+strong { font-weight:bold; }
+a { text-decoration:none; color:#0088ce; }
+a:hover { text-decoration:underline; }
+p{margin:0; padding:0;}
+
+h1 { padding:0; margin:0; }
+h2 { padding:0; margin:10px 0 18px 0; font-size:28px; line-height:1.25em; color:#1e1e1e; }
+h3 { padding:0; margin:-1px 0 16px 0; font-size:1.7em; line-height:1.25em; color:#1e1e1e; } /* 22px */
+h4 { padding:0; margin:0 0 15px 0; font-size:1.2em; line-height:1.25em; color:#1e1e1e; } /* 16px */
+h5 { padding:0; margin:0 0 4px 0; font-size:1em; line-height:1.25em; color:#4f5964; } /* 13px */
+h1 em, h2 em, h3 em, h4 em, h5 em { color:#868686; }
+
+ul:after,
+ol:after,
+dl:after { clear:both; display:block; content:''; }
+
+
+address{font-style:normal!important;}
+fieldset { border:0 none; margin:0; }
+legend { display:none; }
+label {}
+select { color:#4f5964; border: 1px solid #d3d3d3; width:90px; height:33px; .height:auto; padding:5px; vertical-align:middle; font-family: Arial, Microsoft YaHei, '맑은 고딕';}
+select option{}
+input { vertical-align:middle; }
+input[placeholder], [placeholder], *[placeholder] {color:#4f5964 !important;}
+::-webkit-input-placeholder {color:#4f5964 !important;}
+:-moz-placeholder {color:#4f5964 !important;}
+::-moz-placeholder {color:#4f5964 !important;}
+:-ms-input-placeholder {color:#4f5964 !important;}
+/************************************************* common *********************************************************/
+.bg_gray{background-color:#7F7F82 !important;}
+.bg_blue{background-color:#0088CE !important;}
+
+.blue{color:#0088ce !important;}
+.orange{color:#e37225 !important;}
+
+.bold{font-weight:bold !important;}
+.normal{font-weight:normal !important;}
+
+.f12{font-size:12px !important;}
+.f13{font-size:13px !important;}
+.f14{font-size:14px !important;}
+.f15{font-size:15px !important;}
+.f16{font-size:16px !important;}
+
+.fLeft{float:left !important;}
+.fRight{float:right !important;}
+.clear{clear:both !important;}
+.tLeft{text-align:left !important;}
+.tRight{text-align:right !important;}
+.tCenter{text-align:center!important;}
+.tUnder{text-decoration:underline !important;}
+.cursor {cursor: pointer !important;}
+.mt10{margin-top:10px !important;}
+.mt20{margin-top:20px !important;}
+.mt25{margin-top:25px !important;}
+.mt30{margin-top:30px !important;}
+.mt35{margin-top:35px !important;}
+
+.ml10{margin-left:10px !important;}
+.ml20{margin-left:20px !important;}
+.ml25{margin-left:25px !important;}
+.ml30{margin-left:30px !important;}
+.ml35{margin-left:35px !important;}
+
+.pr10{padding-right:10px !important;}
+
+
+/************************************************* loginPage *********************************************************/
+
+body {margin:0; text-align:center;  font-size:13px; line-height:1.6em; color:#4f5964; font-family: Arial, Microsoft YaHei, '맑은 고딕'}
+
+/* Atype */
+body.Atype .wrap{width:460px; margin:0 auto;}
+body.Atype .header{padding-bottom:16px; height:40px;}
+body.Atype .container{background: url('../img/bg_lineA.gif') center 0px no-repeat; margin:0 auto; padding:40px 0 20px 0;}
+body.Atype .footer{border-top:1px solid #b0b0b0; padding:10px 0; text-align:left; font-size:13px;}
+
+
+/* Btype */
+body.Btype .wrap{text-align:center}
+body.Btype .header{width:460px; margin:0 auto; height:165px; position:relative}
+body.Btype .header .logo{position:absolute; bottom:15px;  left:0px; width: 100%; text-align: center;}
+body.Btype .header ul {position:absolute; bottom:15px;  left:0px; width: 100%; }
+body.Btype .container{
+	position:relative;
+	border-top:1px solid #dbdbdb; 
+	background: -webkit-linear-gradient(#f9f9f9, #fff);
+    background:    -moz-linear-gradient(#f9f9f9, #fff);
+    background:     -ms-linear-gradient(#f9f9f9, #fff);
+    background:      -o-linear-gradient(#f9f9f9, #fff);
+    background:         linear-gradient(#f9f9f9, #fff);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#f9f9f9, endColorstr=#ffffff)";    
+    background-color: #f9f9f9;
+}
+body.Btype .line_gradation{position:absolute; top:-2px; width:100%; height:4px;  left:0px; background: url('../img/bg_lineB.gif') center no-repeat;}
+body.Btype .line_gradation{_top/**/:-7px; _top:/**/-7px;  _left/**/:-50%; _left:/**/-50%;}/*ie5 hack*/
+body.Btype .conArea{margin:0 auto; width:460px; padding:40px 0 20px 0; position:relative; _padding-top/**/:60px;  _padding-top:/**/60px;}
+body.Btype .footer{width:460px; margin:0 auto; border-top:1px solid #b0b0b0; padding:10px 0; text-align:left; font-size:13px;}
+
+
+
+.loginField{position:relative; padding:0 15px; text-align:left}
+.loginField dl{display:inline-block; zoom:1; *display:inline; width:325px; vertical-align:middle}
+.loginField dl dt{display:inline-block; zoom:1; *display:inline; width:60px; line-height:35px }
+.loginField dl dd{display:inline-block; zoom:1; *display:inline; margin-bottom:10px; margin-left:10px;}
+.loginField #loginField_id, .loginField #loginField_pw{ -webkit-appearance: none; border-radius: 0; padding:0; margin:0; text-indent:5px; line-height:30px; font-size:14px; width:243px; height:33px; border:1px solid #d3d3d3;}
+.loginField a.login_btn{position:absolute; top:0; right:15px; padding-top:50px; width:100px; height:32px; background:#0088ce url("../img/ico_login.gif") no-repeat center 20px; text-align:center; vertical-align:bottom; color:#fff; font-size:14px; font-weight:bold;}
+.loginField a.login_btn{_height/**/:82px; _height:/**/82px; }/*ie5 hack*/
+.loginField div{padding-left:70px; position:relative}
+.loginField div > input, .loginField div > label{float:left;}
+.loginField div a{position:absolute; right:0px; top:0px; _right/**/:15px; _right:/**/15px;}
+.gray_box{position:relative; padding:7px 5px; border:1px solid #dcdcdc; background-color:#f1f2f5; }
+
+ul.txtLink{margin-top:20px}
+ul.txtLink li{display:inline-block; zoom:1; *display:inline; padding:0 0 0 10px;}
+ul.txtLink li span.bar{color:#4f5964; display:inline-block; zoom:1; *display:inline; padding-left:10px;}
+
+.telList{height:21px;}
+.telList li{display:inline-block; zoom:1; *display:inline; width:49%; font-weight:bold;}
+.telList li .bar{ float:left; color:#b1b1b1;}
+.telList_en li {display:inline-block; zoom:1; *display:inline; font-weight:bold}
+.telList_en li .bar{ float:left; color:#b1b1b1; margin:0 20px}
+.ico_tel{display:inline-block; zoom:1; *display:inline; width:17px; height:14px; background: url('../img/ico_tel.gif') center no-repeat;}
+
+.layerPop{display:none; position:absolute; top:35px; left:-1px; width:212px !important; text-align:left; background-color:#f1f2f5; border:1px solid #dcdcdc; color:#4f5964; font-weight:bold; padding:10px; font-size:13px;}
+.layerPop{_width/**/:232px !important; _width:/**/232px !important; _top/**/:36px; _left/**/:-6px; } /*ie5 hack*/
+.layerPop ul li{display:block !important; width:100% !important; background:url("../img/ico_dot.png") no-repeat 0px 10px; text-indent:10px;}
+.layerPop ul li ul{padding-left:10px;}
+.layerPop ul li ul li{background:none !important;}
+.layerClose{margin-top:10px; text-align:center; display:block; color:#4f5964}
+
+/* errorpage */
+.errorMsg{font-size:14px; text-align:left; line-height:22px;}
+.btnset{margin-top:24px; height:37px;}
+.type_btn{display: inline-block; padding: 8px 15px 7px; line-height: 1.6em; cursor: pointer; vertical-align: middle; font-size: 14px; font-weight:bold; background: #4f5964; color: #fff;}
+.type_btn:hover{background:#06c;text-decoration:none}
+
+.errorNoti{margin-top:25px; text-align:left}
+.errorNoti dt{font-size:14px; color:#e37225; margin-bottom:10px;}
+.errorNoti dd{font-size:13px; line-height:20px}

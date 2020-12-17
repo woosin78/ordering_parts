@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{platform/layout/common/index}">
+
+<th:block layout:fragment="content">
+<div class="ui dividing header">
+  Login History
+  <div class="sub header"></div>
+</div>
+<div class="ui segment">
+	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
+	<input type="hidden" name="pageNumber" value="1"/>
+	<input type="hidden" name="rowPerPage" value="20"/>
+	<div class="fields">
+		<div class="six wide field">
+			<div class="ui calendar">
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromDate" name="fromDate" placeholder="From Reg. Date"/></div>
+			</div>				
+		</div>
+		<div class="six wide field">
+			<div class="ui calendar">
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toDate" name="toDate" placeholder="To Reg. Date"/></div>
+			</div>				
+		</div>
+	</div>	
+	<div class="fields">	
+		<div class="twelve wide field">
+			<div class="ui icon input">
+				<input type="text" id="query" name="query" placeholder="Search"> <i class="search icon"></i>
+			</div>
+		</div>
+		<div class="four wide field">
+			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>
+			<div class="ui button" onclick="document.location.reload()"><i class="undo icon"></i> Reset</div>
+		</div>
+	</div>		
+	<div class="ui divider"></div>
+	<div id="TBL_list"></div>
+	</form>
+</div>
+
+<!-- Start add language -->
+<th:block th:replace="/platform/common/lang :: addLang"></th:block>
+<!-- End add language -->
+<script type="application/javascript">
+	$(document).ready(function() {
+		JpUiCalendar.rangeCalendar($("#fromDate"), $("#toDate"), JpUiCalendar.defaultCalendarSettings(false));
+		
+		var table = new JpUiTable($("#TBL_list"));
+		table.settings = {
+				ajax: {
+					url: JpUiGlobal.url("/platform/mgmt/user/login/history/histories"),
+					form: $("#FORM_search")
+				},
+				onClickPageNumber: function(pageNumber)
+				{
+					doSearch(pageNumber);
+				}
+		};
+
+		$("#BTN_search").on("click", function() {
+			doSearch();
+		});
+		
+		$("#query").on("keydown", function(event) {
+			if (event.keyCode==13)
+			{
+				doSearch();
+			}
+		});
+		
+		function doSearch(pageNumber)
+		{
+			$("#FORM_search input[name=pageNumber]:hidden").val(JpUtilsString.defaultString(pageNumber, "1"));
+			table.load();
+		};	
+		
+		doSearch();
+	});
+</script>
+
+</th:block>
+</html>

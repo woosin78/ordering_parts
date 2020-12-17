@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.doosan.iv.platform.security.authentication.mapper.LogoutHistoryMapper">
+
+	<insert id="insertLogoutHistory" parameterType="LogoutHistoryEntity">
+		insert into pltf_logout_history (u_seq, session_id, referer, reg_date) values
+		(
+			#{uSeq}, #{sessionId}, #{referer}, #{regDate}
+		)
+	</insert>
+</mapper>

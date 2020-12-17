@@ -1,0 +1,112 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title th:text="#{PLTF_TXT_0006}"></title>
+		<!-- Meta -->
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<!-- CSS -->
+		<link rel="stylesheet" type="text/css" href="/portal/css/basic.css">
+		<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<!-- JavaScript -->
+		<script type="application/javascript" src="/portal/js/jquery/jquery.min.js"></script>
+		<script type="application/javascript" src="/portal/js/datatables/jqueryDefault.js"></script>
+		<script type="application/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		
+		<style>
+			.gomain-button {
+				padding: 5px 15px;
+				background-color: #003081;
+				color: #fff;
+				border: none;
+				border-radius: 20px;
+				width: 250px;
+				height: 40px;
+				cursor: pointer;
+				outline: none;
+				font-size: 18px;
+				vertical-align: middle;
+			}
+			
+			.gomain-button span {
+				color: #fff;
+				font-size: 18px;
+				vertical-align: middle;
+			} 
+		</style>		
+	</head>
+<body>
+<!-- Start Top -->
+<!-- header.jsp begin -->
+<div class="header">
+	<div class="logo-area">
+		<img class="logo" th:src="@{/portal/img/logo.png}" alt="DOOSAN"><img id="IMG_doobizPlus" class="doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus">
+	</div>	
+	<div class="info-area">
+		<ul class="info-list">
+			<li> </li>
+			<li> </li>
+			<li> </li>			
+			<li> </li>
+			<li> </li>
+		</ul>
+		<div class="split"></div>
+		<button class="logout-button" th:text="#{DIVEU_BTN_0040}"></button>
+	</div>
+</div>
+<div style="width:100%;height:5px;opacity:0;"></div>
+<div class="mainmenu-area" id="DIV_mainmenuArea">
+	<ul id="UL_mainmenuList" class="mainmenu-list">
+		<li> </li>
+		<li> </li>
+		<li> </li>
+		<li> </li>
+		<li> </li>
+		<li> </li>
+	</ul>
+</div>
+<div class="split-row"></div>
+<div style="width: 100%; margin:0 auto; text-align: center;">
+	<div style="margin-top:138px;">
+		<img src="/portal/img/popup/alert.png">
+	</div>
+	<div style="margin-top: 20px;" th:if="${status == 401 || status == 403}" th:text="#{DIVEU_MSG_0048}"></div>
+	<div style="margin-top: 20px;" th:unless="${status == 401 || status == 403}" th:text="#{DIVEU_MSG_0026}"></div>
+	<div style="width:auto; height:220px; background-color: #f9f9f9; margin: 40px 40px 0 40px;">
+		<div style="height: 30px;"></div>
+		<button id="BTN_goMain" class="gomain-button"><span th:text="#{DIVEU_BTN_0030}"></span> <img src="/portal/img/common/arrow_right.png"></button>
+	</div>
+</div>
+
+<!-- End Content -->
+
+<!-- bottom.html begin -->
+<div class="footer-area">	
+	<div class="footer">
+		<div class="split-row-compact"></div>
+		<div class="logo-area">
+			<img class="footer-logo" th:src="@{/portal/img/logo-s.png}">
+			<div class="split"></div>
+			<div class="copylight" th:text="#{DIVEU_TXT_0067}"></div>
+		</div>
+		<div>
+			<button>Language</button>
+		</div>
+		<div class="split-row-compact"></div>
+	</div>
+</div>
+<!-- bottom.html end -->
+<form id="FORM_logout" method="post" th:action="@{/platform/security/authentication/logout}"></form>
+<!-- Start common javascript -->
+<script>
+$("#BTN_goMain, #IMG_doobizPlus").on("click", function() {
+	document.location.href = "/forward/entry_point";
+});
+
+$(".logout-button").on("click", function() {
+	$("#FORM_logout").submit();
+});
+</script>
+<!-- End common javascript -->
+</body>
+</html>

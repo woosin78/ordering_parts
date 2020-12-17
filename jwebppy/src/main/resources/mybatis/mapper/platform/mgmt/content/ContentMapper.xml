@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.doosan.iv.platform.mgmt.content.mapper.ContentMapper">
+	<insert id="insert" parameterType="CItemEntity">
+		<selectKey resultType="Integer" keyProperty="cSeq" order="BEFORE">
+			select pltf_c_seq.nextval from dual 
+		</selectKey>
+
+		insert into pltf_citem (c_seq, p_seq, type, name, description, component, entry_point, parameter, sort, fg_visible, fg_delete, from_valid, to_valid, reg_username, reg_date) values (
+			#{cSeq}, #{pSeq}, #{type}, #{name}, #{description}, #{component}, #{entryPoint}, #{parameter}, #{sort}, #{fgVisible}, #{fgDelete}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
+		)
+	</insert>
+
+	<insert id="insertCItemUserRl" parameterType="CItemUserRlEntity">
+		<selectKey resultType="Integer" keyProperty="curSeq" order="BEFORE">
+			select pltf_cur_seq.nextval from dual 
+		</selectKey>		
+		
+		insert into pltf_citem_user_rl (cur_seq, c_seq, u_seq, fg_delete, reg_username, reg_date) values (
+			#{curSeq}, #{cSeq}, #{uSeq}, #{fgDelete}, #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+	<insert id="insertCItemLangRl" parameterType="CItemLangRlEntity">
+		<selectKey resultType="Integer" keyProperty="clrSeq" order="BEFORE">
+			select pltf_clr_seq.nextval from dual 
+		</selectKey>	
+	
+		insert into pltf_citem_lang_rl (clr_seq, c_seq, l_seq, reg_username, reg_date) values (
+			#{clrSeq}, #{cSeq}, #{lSeq}, #{regUsername}, #{regDate}
+		)
+	</insert>	
+	
+	<update id="update" parameterType="CItemEntity">
+		update pltf_citem set
+			p_seq=#{pSeq},
+			type=#{type},
+			name=#{name},
+			description=#{description},
+			component=#{component},
+			entry_point=#{entryPoint},
+			parameter=#{parameter},
+			sort=#{sort},
+			fg_visible=#{fgVisible},
+			fg_delete=#{fgDelete},
+			from_valid=#{fromValid},
+			to_valid=#{toValid},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			c_seq=#{cSeq}
+	</update>
+	
+	<update id="updateFgDelete" parameterType="CItemEntity">
+		update pltf_citem set
+			fg_delete=#{fgDelete},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			c_seq=#{cSeq}
+	</update>
+	
+	<update id="updateFgDeleteOfCItemUserRl" parameterType="CItemUserRlEntity">
+		update pltf_citem_user_rl set fg_delete=#{fgDelete}, mod_username=#{modUsername}, mod_date=#{modDate}
+		where
+		u_seq=#{uSeq}
+	</update>
+
+	<select id="findItem" parameterType="Integer" resultType="CItemEntity">
+		select
+		*
+		from
+		pltf_citem
+
+		<where>
+			<choose>
+				<when test="cSeq == null">
+					p_seq is null
+				</when>
+				<otherwise>
+					c_seq=#{cSeq}				
+				</otherwise>
+			</choose>		
+		</where>		
+	</select>
+
+	<select id="findMyItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		a.*
+		from
+		pltf_citem a,
+		pltf_citem_user_rl b
+		where
+		a.c_seq=b.c_seq
+		and a.fg_delete='N'		
+		and a.from_valid <![CDATA[<]]> sysdate and a.to_valid <![CDATA[>=]]> sysdate
+		and b.fg_delete='N'
+		
+		<!-- OGNL(Object Graph Navigation Language) 의 문제로 toString() 추가 -->
+		<if test="fgVisible != 'A'.toString()">
+			and a.fg_visible='Y'
+		</if>		
+		
+		<if test="uSeq != null and uSeq > 0">
+			and b.u_seq=#{uSeq}
+		</if>
+		
+		<if test="username != null and username != ''">
+			and b.u_seq=(select u_seq from pltf_user_account where username=#{username})
+		</if>
+
+		<if test="name != null and name != ''">
+			and a.name=#{name}
+		</if>
+		
+		<if test="type != null and type != ''">
+			and a.type=#{type}
+		</if>
+		
+		order by a.sort
+	</select>
+	
+	<select id="findAllItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		x.*
+		from
+		(
+		    select
+		    a.*
+		    from
+		    pltf_citem a
+		    where
+		    a.fg_delete='N'
+		    and a.from_valid <![CDATA[<]]> sysdate and a.to_valid <![CDATA[>=]]> sysdate
+		    
+		    <if test="type != null and type != ''">
+		    	and type=#{type}
+		    </if>
+		    
+			<if test="types != null">
+				<trim prefix="and">
+					<foreach collection="types" item="type" open="(" close=")" separator="or">
+						<if test="type != null and type != ''">
+							a.type=#{type}
+						</if>				
+					</foreach>				
+				</trim>
+			</if>
+
+			<if test="cSeqs != null">
+				<trim prefix="and">
+					<foreach collection="cSeqs" item="cSeq" open="(" close=")" separator="or">
+						<if test="cSeq != null">
+							a.c_seq=#{cSeq}
+						</if>				
+					</foreach>				
+				</trim>
+			</if>
+			
+			<if test="name != null and name != ''">
+				and a.name=#{name}
+			</if>			
+		) x
+		where
+		not exists (
+		    select
+		    1
+		    from
+		    pltf_citem
+		    where
+		    fg_delete='Y'
+		    start with c_seq=x.c_seq
+		    connect by prior p_seq=c_seq
+		)
+		order by x.name
+		
+	</select>
+	
+	<select id="findCItemsHierarchy" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		a.*,
+		(
+		    select
+		    count(c_seq)
+		    from
+		    pltf_citem
+		    where
+		    fg_delete='N'
+		    
+		    <if test='fgVisible == "Y"'>
+		    	and fg_visible='Y'
+		    	and from_valid <![CDATA[<]]> sysdate and to_valid <![CDATA[>=]]> sysdate
+		    </if>
+		    
+		    start with c_seq=a.c_seq
+		    connect by prior c_seq=p_seq
+		) sub_item_count
+		from
+		(
+		    select
+		    a.*,
+		    level depth
+		    from
+		    pltf_citem a
+		    where
+		    a.fg_delete='N'
+		    
+		    <if test='fgVisible == "Y"'>
+		    	and a.fg_visible='Y'
+		    	and a.from_valid <![CDATA[<]]> sysdate and a.to_valid <![CDATA[>=]]> sysdate
+		    </if>		    
+		    
+		    <choose>
+			    <when test="pSeq == null">		    
+			    	start with a.p_seq is null
+			    </when>
+			    <when test="pSeq > 0">
+			    	start with a.p_seq=#{pSeq}
+			    </when>
+		    </choose>		    
+		    
+		    connect by prior c_seq=p_seq
+		    order siblings by a.sort
+		) a
+	</select>
+	
+	<select id="findHigherLevelCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		a.*
+		from
+		pltf_citem a
+
+		<where>		
+			<if test="types != null">
+				<foreach collection="types" item="type" open="(" close=")" separator="or">
+					<if test="type != null and type != ''">
+						a.type=#{type}
+					</if>				
+				</foreach>				
+			</if>		
+		</where>
+		
+		start with c_seq=(select c_seq from pltf_citem where entry_point=#{entryPoint})
+		connect by prior p_seq=c_seq	
+	</select>
+	
+	<select id="findLang" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
+		select
+		*
+		from
+		pltf_citem_lang_rl
+		where
+		c_seq=#{cSeq}
+		and l_seq=#{lSeq}
+	</select>
+	
+	<select id="findLangs" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
+		select
+		b.*
+		from
+		pltf_citem a,
+		pltf_citem_lang_rl b,
+		pltf_lang_detail c,
+		pltf_lang_kind d
+		where
+		a.c_seq=#{cSeq}
+		
+		<if test="lSeq != null and lSeq > 0">
+			and b.l_seq=#{lSeq}
+		</if>
+		
+		and a.fg_delete='N'
+		and a.c_seq=b.c_seq
+		and b.l_seq=c.l_seq
+		and c.fg_delete='N'
+		and c.lk_seq=d.lk_seq
+		
+		<if test="basename != null and basename != ''">
+			and d.basename=#{basename}
+		</if>
+		
+		and d.fg_delete='N'
+		order by d.fg_default desc
+	</select>
+
+</mapper>
