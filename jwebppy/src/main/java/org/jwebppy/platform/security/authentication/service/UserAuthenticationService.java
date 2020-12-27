@@ -32,7 +32,7 @@ public class UserAuthenticationService extends PlatformGeneralService
 
         CItemSearchDto userSearch = new CItemSearchDto();
         userSearch.setUSeq(user.getUSeq());
-        List<CItemDto> cItems = contentAuthorityService.getMyItems(userSearch);
+        List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(userSearch);
 
         PlatformUserDetails platformUserDetails = new PlatformUserDetails();
         platformUserDetails.setUSeq(user.getUSeq());

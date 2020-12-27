@@ -17,7 +17,7 @@ import lombok.ToString;
 @ToString
 public class DataAccessLogSearchDto extends GeneralDto implements IPagination
 {
-	private Integer dalSeq;
+	private Integer dlSeq;
 	private String type;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime fromDate;

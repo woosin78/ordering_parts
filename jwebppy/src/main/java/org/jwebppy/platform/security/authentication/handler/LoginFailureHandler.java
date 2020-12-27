@@ -37,7 +37,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException
 	{
-		String fgAccountLocked = checkAccountLockedByWrongPassword(request.getParameter(PlatformConfigVo.FORM_LOGON_USERNAME), exception);
+		String fgAccountLocked = checkAccountLockedByWrongPassword(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME), exception);
 
 		loginHistoryService.createLoginHistory(request, PlatformCommonVo.NO, fgAccountLocked);
 
@@ -50,7 +50,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		}
 
-		request.getRequestDispatcher(PlatformConfigVo.FORM_LOGON_PAGE_URL).forward(request, response);
+		request.getRequestDispatcher(PlatformConfigVo.FORM_LOGIN_PAGE_URL).forward(request, response);
 	}
 
 	//Super Admin 의 경우 로그인 실패 횟수 체크
@@ -70,7 +70,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 				LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
 				loginHistorySearch.setUsername(username);
 
-				if (loginHistoryService.getLoginFailureCount(loginHistorySearch) >= PlatformConfigVo.FORM_LOGON_PASSWORD_FAIL_LIMIT_COUNT - 1)
+				if (loginHistoryService.getLoginFailureCount(loginHistorySearch) >= PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_LIMIT_COUNT - 1)
 				{
 					userService.LockUserAccount(userService.getUserByUsername(username).getUSeq(), PlatformCommonVo.YES);
 

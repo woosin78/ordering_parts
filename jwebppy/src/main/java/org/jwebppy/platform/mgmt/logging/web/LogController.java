@@ -46,10 +46,10 @@ public class LogController extends LoggingGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/detail/{dalSeq}")
+	@GetMapping("/detail/{dlSeq}")
 	@ResponseBody
-	public Object log(@PathVariable("dalSeq") Long dalSeq)
+	public Object log(@PathVariable("dlSeq") Long dlSeq)
 	{
-		return LogLayoutBuilder.getLog(dataAccessLogService.getLog(dalSeq));
+		return LogLayoutBuilder.getLog(dataAccessLogService.getLog(dlSeq));
 	}
 }

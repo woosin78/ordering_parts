@@ -3,6 +3,7 @@ package org.jwebppy.platform.mgmt.content.web;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -155,7 +156,7 @@ public class ContentController extends ContentGeneralController
 		UserAuthenticationUtils.getUserDetails().getLanguage();
 
 		List<Map<String, Object>> items = new ArrayList<>();
-		items.add(contentService.getItemsForTree(cItemSearch));
+		items.add(contentService.makeHierarchy(cItemSearch));
 
 		return items;
 	}
@@ -173,29 +174,22 @@ public class ContentController extends ContentGeneralController
 	{
 		List<Map<String, Object>> cItemsHierarchy = new LinkedList<>();
 
-		cItemSearch.setUSeq(getUSeq());
-		List<CItemDto> cItems = contentAuthorityService.getMyItems(cItemSearch);
-
 		String lang = UserAuthenticationUtils.getUserDetails().getLanguage();
+
+		cItemSearch.setUSeq(getUSeq());
+		cItemSearch.setLang(lang);
+
+		List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
 
 		for (CItemDto cItem : cItems)
 		{
-			CItemSearchDto cItemSearch2 = new CItemSearchDto();
-			cItemSearch2.setPSeq(cItem.getCSeq());
-			cItemSearch2.setFgVisible(PlatformCommonVo.YES);
-
-			List<CItemDto> subCItems = contentService.getCItemsHierarchy(cItemSearch2);
-
 			Map<String, Object> itemMap = new LinkedHashMap<>();
 			itemMap.put("KEY", cItem.getCSeq());
-			itemMap.put("NAME", langService.getCItemText("PLTF", cItem.getCSeq(), lang));
+			itemMap.put("NAME", CmStringUtils.defaultIfEmpty(cItem.getName2(), cItem.getName()));
 			itemMap.put("TYPE", cItem.getType().toString());
 			itemMap.put("URL", CmStringUtils.trimToEmpty(cItem.getUrl()));
 
-			if (CollectionUtils.isNotEmpty(subCItems))
-			{
-				itemMap.put("SUB_ITEMS", makeTree(subCItems, cItem.getCSeq()));
-			}
+			itemMap.put("SUB_ITEMS", getSubItems(cItem.getSubCItems(), lang));
 
 			cItemsHierarchy.add(itemMap);
 		}
@@ -203,42 +197,86 @@ public class ContentController extends ContentGeneralController
 		return cItemsHierarchy;
 	}
 
+	protected List<Map<String, Object>> getSubItems(List<CItemDto> subCItems, String lang)
+	{
+		List<Map<String, Object>> cItems = new LinkedList<>();
+
+		if (CollectionUtils.isNotEmpty(subCItems))
+		{
+			for (CItemDto subCItem: subCItems)
+			{
+				Map<String, Object> itemMap = new LinkedHashMap<>();
+				itemMap.put("KEY", subCItem.getCSeq());
+				itemMap.put("NAME", langService.getCItemText("PLTF", subCItem.getCSeq(), lang));
+				itemMap.put("TYPE", subCItem.getType().toString());
+				itemMap.put("URL", subCItem.getUrl());
+				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getSubCItems(), lang));
+
+				cItems.add(itemMap);
+			}
+		}
+
+		return cItems;
+	}
+
 	@GetMapping("/breadcrumb")
 	@ResponseBody
 	public Object breadcrumb(CItemSearchDto cItemSearch)
 	{
-		cItemSearch.setTypes(new String[] {"P", "M"});
+		cItemSearch.setUSeq(getUSeq());
+		cItemSearch.setLang(UserAuthenticationUtils.getUserDetails().getLanguage());
 
-		return contentService.getHigherLevelCItems(cItemSearch);
-	}
-
-	private List<Map<String, Object>> makeTree(List<CItemDto> cItems, Integer cSeq)
-	{
-		List<Map<String, Object>> subItems = new LinkedList<>();
+		List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
-			for (CItemDto cItem : cItems)
+			for (CItemDto cItem: cItems)
 			{
-				if (cSeq.equals(cItem.getPSeq()))
+				List<CItemDto> breadcrumb = new ArrayList<>();
+
+				if (isFindEntryPoint(breadcrumb, cItem, cItemSearch.getEntryPoint()))
 				{
-					Map<String, Object> itemMap = new LinkedHashMap<>();
-					itemMap.put("KEY", cItem.getCSeq());
-					itemMap.put("NAME", cItem.getName());
-					itemMap.put("TYPE", cItem.getType().toString());
-					itemMap.put("URL", cItem.getUrl());
+					Collections.reverse(breadcrumb);
 
-					if (cItem.getSubItemCount() > 0)
-					{
-						itemMap.put("SUB_ITEMS", makeTree(cItems, cItem.getCSeq()));
-					}
-
-					subItems.add(itemMap);
+					return breadcrumb;
 				}
 			}
 		}
 
-		return subItems;
+		return null;
+	}
+
+	private boolean isFindEntryPoint(List<CItemDto> breadcrumb, CItemDto cItem, String url)
+	{
+		if (CollectionUtils.isNotEmpty(cItem.getSubCItems()))
+		{
+			for (CItemDto subCItem: cItem.getSubCItems())
+			{
+				if (!CmStringUtils.equals(PlatformCommonVo.PAGE, subCItem.getType()) && !CmStringUtils.equals(PlatformCommonVo.MEMU, subCItem.getType()))
+				{
+					continue;
+				}
+
+				if (CmStringUtils.equals(PlatformCommonVo.PAGE, subCItem.getType()) && CmStringUtils.notEquals(url, subCItem.getUrl()))
+				{
+					continue;
+				}
+
+				breadcrumb.add(subCItem);
+
+				if (CmStringUtils.equals(url, subCItem.getUrl()))
+				{
+					return true;
+				}
+
+				if (isFindEntryPoint(breadcrumb, subCItem, url))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	private List<CItemComponentDto> getComponents()
@@ -323,7 +361,7 @@ public class ContentController extends ContentGeneralController
 		return null;
 	}
 
-	private String getReturnUrl(Class<?> clazz, Method method)
+	protected String getReturnUrl(Class<?> clazz, Method method)
 	{
 		if (CmAnnotationUtils.isAnnotationDeclaredLocally(RequestMapping.class, clazz))
 		{

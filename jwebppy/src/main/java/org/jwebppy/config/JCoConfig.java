@@ -3,6 +3,7 @@ package org.jwebppy.config;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dao.sap.JCoConnectionInfo;
 import org.jwebppy.platform.core.dao.sap.JCoConnectionResource;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
@@ -20,19 +21,27 @@ public class JCoConfig
 {
 	private Logger logger = LoggerFactory.getLogger(JCoConfig.class);
 
-    @Value("${sap.sid}")
+    @Value("sap.jco.is-active")
+    private String isActive;
+
+    @Value("${sap.jco.sid}")
     private String SID;
 
-    @Value("${sap.landscape}")
+    @Value("${sap.jco.landscape}")
     private String LANDSCAPE;
 
-    @Value("${sap.landscape.default}")
+    @Value("${sap.jco.landscape.default}")
     private String DEFAULT_LANDSCAPE;
 
 	@Bean
 	public SimpleRfcTemplate rfcTemplate()
 	{
-		return new SimpleRfcTemplate(jCoConnectionResource());
+		if (PlatformCommonVo.TRUE.equals(isActive))
+		{
+			return new SimpleRfcTemplate(jCoConnectionResource());
+		}
+
+		return null;
 	}
 
 	private JCoConnectionResource jCoConnectionResource()

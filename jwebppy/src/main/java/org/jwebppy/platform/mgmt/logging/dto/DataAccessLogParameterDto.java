@@ -11,8 +11,8 @@ import lombok.ToString;
 @ToString
 public class DataAccessLogParameterDto
 {
-	private Long dalpSeq;
-	private Long dalSeq;
+	private Long dlpSeq;
+	private Long dlSeq;
 	private String type;//(S)Scalar, (R)Structure, (T)Table
 	private String name;
 	private List<DataAccessLogParameterDetailDto> dataAccessLogParameterDetails;

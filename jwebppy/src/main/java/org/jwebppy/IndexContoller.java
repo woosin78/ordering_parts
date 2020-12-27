@@ -39,7 +39,7 @@ public class IndexContoller extends PlatformGeneralController
 			return new RedirectView("/forward/entry_point");
 		}
 
-		return new RedirectView(PlatformConfigVo.FORM_LOGON_PAGE_URL);
+		return new RedirectView(PlatformConfigVo.FORM_LOGIN_PAGE_URL);
 	}
 
 	@RequestMapping("/forward/entry_point")

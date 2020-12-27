@@ -17,5 +17,5 @@ public interface DataAccessLogMapper
 	public void insertDataAccessLogParameter(DataAccessLogParameterEntity dataAccessLogParameter);
 	public void insertDataAccessLogParameterDetail(DataAccessLogParameterDetailEntity dataAccessLogParameterDetail);
 	public List<DataAccessLogEntity> findLogs(DataAccessLogSearchDto dataAccessLogSearcg);
-	public DataAccessLogEntity findLog(Long dalSeq);
+	public DataAccessLogEntity findLog(Long dlSeq);
 }

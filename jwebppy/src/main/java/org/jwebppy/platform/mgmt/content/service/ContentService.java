@@ -1,5 +1,6 @@
 package org.jwebppy.platform.mgmt.content.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -78,14 +79,37 @@ public class ContentService extends GeneralService
 		return CmModelMapperUtils.mapAll(contentMapper.findAllItems(cItemSearch), CItemDto.class);
 	}
 
-	public List<CItemDto> getCItemsHierarchy(CItemSearchDto cItemSearch)
+	public List<CItemDto> getCItemHierarchy(CItemSearchDto cItemSearch)
 	{
-		return CmModelMapperUtils.mapAll(contentMapper.findCItemsHierarchy(cItemSearch), CItemDto.class);
+		List<CItemEntity> cItems = new ArrayList<>();
+
+		makeHierarchy(cItems, cItemSearch);
+
+		return CmModelMapperUtils.mapAll(cItems, CItemDto.class);
 	}
 
-	public Map<String, Object> getItemsForTree(CItemSearchDto cItemSearch)
+	private void makeHierarchy(List<CItemEntity> cItems, CItemSearchDto cItemSearch)
 	{
-		List<CItemDto> cItems = getCItemsHierarchy(cItemSearch);
+		List<CItemEntity> subCItems = contentMapper.findAllCItems(cItemSearch);
+
+		if (CollectionUtils.isNotEmpty(subCItems))
+		{
+			for (CItemEntity subCItem: subCItems)
+			{
+				cItems.add(subCItem);
+
+				CItemSearchDto subCItemSearch = new CItemSearchDto();
+				subCItemSearch.setPSeq(subCItem.getCSeq());
+				subCItemSearch.setFgVisible(PlatformCommonVo.YES);
+
+				makeHierarchy(cItems, subCItemSearch);
+			}
+		}
+	}
+
+	public Map<String, Object> makeHierarchy(CItemSearchDto cItemSearch)
+	{
+		List<CItemDto> cItems = getCItemHierarchy(cItemSearch);
 
 		Map<String, Object> itemMap = new LinkedHashMap<>();
 
@@ -97,13 +121,13 @@ public class ContentService extends GeneralService
 			itemMap.put("P_KEY", cItem.getPSeq());
 			itemMap.put("NAME", langService.getCItemText("PLTF", cItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 			itemMap.put("TYPE", getTypeName(cItem.getType().toString()));
-			itemMap.put("SUB_ITEMS", makeTree(cItems, cItem.getCSeq()));
+			itemMap.put("SUB_ITEMS", getSubItems(cItems, cItem.getCSeq()));
 		}
 
 		return itemMap;
 	}
 
-	private List<Map<String, Object>> makeTree(List<CItemDto> cItems, Integer cSeq)
+	private List<Map<String, Object>> getSubItems(List<CItemDto> cItems, Integer cSeq)
 	{
 		List<Map<String, Object>> subItems = new LinkedList<>();
 
@@ -121,7 +145,7 @@ public class ContentService extends GeneralService
 
 				if (cItem.getSubItemCount() > 0)
 				{
-					itemMap.put("SUB_ITEMS", makeTree(cItems, cItem.getCSeq()));
+					itemMap.put("SUB_ITEMS", getSubItems(cItems, cItem.getCSeq()));
 				}
 
 				subItems.add(itemMap);
@@ -129,11 +153,6 @@ public class ContentService extends GeneralService
 		}
 
 		return subItems;
-	}
-
-	public List<CItemDto> getHigherLevelCItems(CItemSearchDto cItemSearch)
-	{
-		return CmModelMapperUtils.mapAll(contentMapper.findHigherLevelCItems(cItemSearch), CItemDto.class);
 	}
 
 	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)

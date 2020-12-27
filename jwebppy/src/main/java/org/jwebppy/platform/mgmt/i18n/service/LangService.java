@@ -173,7 +173,7 @@ public class LangService extends MgmtGeneralService
 		cItemSearch.setBasename(basename);
 		cItemSearch.setLang(lang);
 
-		List<LangDetailDto> langDetails = CmModelMapperUtils.mapAll(langMapper.findLangDetailsCitems(cItemSearch), LangDetailDto.class);
+		List<LangDetailDto> langDetails = CmModelMapperUtils.mapAll(langMapper.findLangDetailsCItems(cItemSearch), LangDetailDto.class);
 
 		if (CollectionUtils.isNotEmpty(langDetails))
 		{

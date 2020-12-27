@@ -261,7 +261,7 @@ public class UserService extends GeneralService
 		cItemSearch.setUSeq(sourceUSeq);
 		cItemSearch.setFgVisible(PlatformCommonVo.ALL);
 
-		List<CItemDto> cItems = contentAuthorityService.getMyItems(cItemSearch);
+		List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{

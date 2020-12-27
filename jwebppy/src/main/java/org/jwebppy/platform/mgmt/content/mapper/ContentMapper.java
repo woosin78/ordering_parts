@@ -3,6 +3,7 @@ package org.jwebppy.platform.mgmt.content.mapper;
 import java.util.List;
 
 import org.jwebppy.config.RedisConfig;
+import org.jwebppy.platform.core.interceptor.NoLogging;
 import org.jwebppy.platform.mgmt.content.dto.CItemLangRlDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
@@ -35,16 +36,25 @@ public interface ContentMapper
 	public int updateFgDeleteOfCItemUserRl(CItemUserRlEntity cItemUserRl);
 
 	@CacheEvict(value = RedisConfig.CITEM, allEntries = true)
+	@NoLogging
 	public CItemEntity findItem(Integer cSeq);
 
+	@NoLogging
 	public List<CItemEntity> findMyItems(CItemSearchDto cItemSearch);
 
+	@NoLogging
 	public List<CItemEntity> findAllItems(CItemSearchDto cItemSearch);
 
+	@NoLogging
+	public List<CItemEntity> findAllCItems(CItemSearchDto cItemSearch);
+
 	@Cacheable(value = RedisConfig.CITEM, key = "#cItemSearch", unless="#result == null")
+	@NoLogging
 	public List<CItemEntity> findCItemsHierarchy(CItemSearchDto cItemSearch);
 
+	@NoLogging
 	public List<CItemEntity> findHigherLevelCItems(CItemSearchDto cItemSearch);
 
+	@NoLogging
 	public List<CItemLangRlEntity> findLangs(CItemLangRlDto cItemLangRl);
 }

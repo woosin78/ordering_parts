@@ -41,6 +41,7 @@ public class CItemDto extends GeneralDto implements Serializable
 	private int depth;
 	private int subItemCount;
 	private List<CItemDto> subCItems;
+	private String name2;
 
 	public int getSort()
 	{

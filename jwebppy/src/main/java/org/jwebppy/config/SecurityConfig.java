@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 			.and()
 			.addFilterBefore(platformAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
 			.formLogin()
-				.loginPage(PlatformConfigVo.FORM_LOGON_PAGE_URL)
+				.loginPage(PlatformConfigVo.FORM_LOGIN_PAGE_URL)
 				.permitAll()
 			.and()
 			.requestCache()
@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 
 		web
 			.ignoring()
-				.antMatchers("/static/**", "/platform/css/**", "/platform/js/**", "/platform/img/**", "/portal/css/**", "/portal/js/**", "/portal/img/**", "/portal/manual/**", "/favicon.ico");
+				.antMatchers("/static/**", "/platform/css/**", "/platform/js/**", "/platform/img/**", "/favicon.ico");
 	}
 
 	@Bean
@@ -88,7 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	@Bean
 	public LoginUrlAuthenticationEntryPoint loginUrlAuthenticationEntryPoint()
 	{
-		return new AjaxAwareAuthenticationEntryPoint(PlatformConfigVo.FORM_LOGON_PAGE_URL);
+		return new AjaxAwareAuthenticationEntryPoint(PlatformConfigVo.FORM_LOGIN_PAGE_URL);
 	}
 
     @Bean
@@ -119,9 +119,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     public PlatformAuthenticationFilter platformAuthenticationFilter() throws Exception
     {
     	PlatformAuthenticationFilter platformAuthenticationFilter = new PlatformAuthenticationFilter(platformAuthenticationManager());
-    	platformAuthenticationFilter.setFilterProcessesUrl(PlatformConfigVo.FORM_LOGON_PROCESSING_URL);
-    	platformAuthenticationFilter.setUsernameParameter(PlatformConfigVo.FORM_LOGON_USERNAME);
-    	platformAuthenticationFilter.setPasswordParameter(PlatformConfigVo.FORM_LOGON_PASSWORD);
+    	platformAuthenticationFilter.setFilterProcessesUrl(PlatformConfigVo.FORM_LOGIN_PROCESSING_URL);
+    	platformAuthenticationFilter.setUsernameParameter(PlatformConfigVo.FORM_LOGIN_USERNAME);
+    	platformAuthenticationFilter.setPasswordParameter(PlatformConfigVo.FORM_LOGIN_PASSWORD);
     	platformAuthenticationFilter.setPostOnly(true);
 
     	platformAuthenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler());

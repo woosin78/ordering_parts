@@ -39,7 +39,7 @@ public class DataAccessLogService extends GeneralService
 			{
 				DataAccessLogParameterEntity dataAccessLogParameterEntity = CmModelMapperUtils.map(dataAccessLogParameterDto, DataAccessLogParameterEntity.class);
 
-				dataAccessLogParameterEntity.setDalSeq(dataAccessLogEntity.getDlSeq());
+				dataAccessLogParameterEntity.setDlSeq(dataAccessLogEntity.getDlSeq());
 				dataAccessLogMapper.insertDataAccessLogParameter(dataAccessLogParameterEntity);
 
 				if (CollectionUtils.isNotEmpty(dataAccessLogParameterDto.getDataAccessLogParameterDetails()))
@@ -61,8 +61,8 @@ public class DataAccessLogService extends GeneralService
 		return CmModelMapperUtils.mapAll(dataAccessLogMapper.findLogs(dataAccessLogSearch), DataAccessLogDto.class);
 	}
 
-	public DataAccessLogDto getLog(Long dalSeq)
+	public DataAccessLogDto getLog(Long dlSeq)
 	{
-		return CmModelMapperUtils.map(dataAccessLogMapper.findLog(dalSeq), DataAccessLogDto.class);
+		return CmModelMapperUtils.map(dataAccessLogMapper.findLog(dlSeq), DataAccessLogDto.class);
 	}
 }

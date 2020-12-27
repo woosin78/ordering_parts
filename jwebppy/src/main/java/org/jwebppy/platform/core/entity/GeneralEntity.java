@@ -22,7 +22,6 @@ public class GeneralEntity implements Serializable
 	protected LocalDateTime modDate;
 
 	protected int rnum = 0;
-	protected int rowNo = 0;
 	protected int pageNumber = 1;
 	protected int rowPerPage = 20;
 	protected int totalCount = 0;

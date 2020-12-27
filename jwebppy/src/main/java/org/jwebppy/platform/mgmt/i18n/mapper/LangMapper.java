@@ -38,5 +38,5 @@ public interface LangMapper
 	@NoLogging
 	public List<LangKindEntity> findLangKinds(LangKindDto langKind);
 	@NoLogging
-	public List<LangDetailEntity> findLangDetailsCitems(CItemSearchDto cItemSearch);
+	public List<LangDetailEntity> findLangDetailsCItems(CItemSearchDto cItemSearch);
 }

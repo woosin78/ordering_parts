@@ -23,10 +23,10 @@ public class GeneralDto
 	protected LocalDateTime modDate;
 
 	protected int rnum = 0;
-	protected int rowNo = 0;
 	protected int pageNumber = 1;
 	protected int rowPerPage = 20;
 	protected int totalCount = 0;
+	protected int startRow = 0;
 
 	public String getDisplayRegDate()
 	{
@@ -36,5 +36,10 @@ public class GeneralDto
 	public String getDisplayModDate()
 	{
 		return CmDateFormatUtils.format(modDate);
+	}
+
+	public int getStartRow()
+	{
+		return (pageNumber - 1) * rowPerPage;
 	}
 }

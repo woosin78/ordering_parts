@@ -1,5 +1,6 @@
 package org.jwebppy.platform.mgmt.content.service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -14,6 +15,7 @@ import org.jwebppy.platform.mgmt.content.dto.CItemUserRlDto;
 import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
 import org.jwebppy.platform.mgmt.content.entity.CItemUserRlEntity;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
+import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class ContentAuthorityService extends GeneralService
 {
 	@Autowired
+	private ContentService contentService;
+
+	@Autowired
 	private ContentMapper contentMapper;
+
+	@Autowired
+	private LangService langService;
 
 	//현재 가지고 있는 권한을 모두 삭제 한 후 부여
 	@Transactional
@@ -90,14 +98,65 @@ public class ContentAuthorityService extends GeneralService
 	}
 
 	@Cacheable(value = RedisConfig.CITEM, key = "#cItemSearch", unless="#result == null")
+	public List<CItemDto> getMyItemHierarchy(CItemSearchDto cItemSearch)
+	{
+		List<CItemDto> hierarchy = new LinkedList<>();
+
+		List<CItemDto> cItems = CmModelMapperUtils.mapAll(contentMapper.findMyItems(cItemSearch), CItemDto.class);
+
+		String lang = cItemSearch.getLang();
+
+		for (CItemDto cItem : cItems)
+		{
+			cItem.setName2(langService.getCItemText("PLTF", cItem.getCSeq(), lang));
+			cItem.setSubCItems(getSubItems(cItem.getCSeq(), lang));
+
+			hierarchy.add(cItem);
+		}
+
+		return hierarchy;
+	}
+
+	private List<CItemDto> getSubItems(Integer cSeq, String lang)
+	{
+		List<CItemDto> cItems = new LinkedList<>();
+
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setPSeq(cSeq);
+		cItemSearch.setFgVisible(PlatformCommonVo.YES);
+
+		List<CItemDto> subCItems = contentService.getCItemHierarchy(cItemSearch);
+
+		if (CollectionUtils.isNotEmpty(subCItems))
+		{
+			for (CItemDto subCItem: subCItems)
+			{
+				Integer subCSeq = subCItem.getCSeq();
+
+				if (cSeq.equals(subCItem.getPSeq()))
+				{
+					subCItem.setName2(langService.getCItemText("PLTF", subCSeq, lang));
+					subCItem.setSubCItems(getSubItems(subCSeq, lang));
+
+					cItems.add(subCItem);
+				}
+			}
+		}
+
+		return cItems;
+	}
+
+	/*
+	@Cacheable(value = RedisConfig.CITEM, key = "#cItemSearch", unless="#result == null")
 	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)
 	{
 		return CmModelMapperUtils.mapAll(contentMapper.findMyItems(cItemSearch), CItemDto.class);
 	}
+	*/
 
 	public CItemDto getMyEntryPoint(CItemSearchDto cItemSearch)
 	{
-		List<CItemDto> cItems = getMyItems(cItemSearch);
+		List<CItemDto> cItems = getMyItemHierarchy(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
@@ -123,6 +182,17 @@ public class ContentAuthorityService extends GeneralService
 
 	protected CItemDto getEntryPoint(CItemSearchDto cItemSearch)
 	{
+		List<CItemDto> cItems = contentService.getCItemHierarchy(cItemSearch);
+
+		for (CItemDto cItem: cItems)
+		{
+			if (CmStringUtils.isNotEmpty(cItem.getEntryPoint()))
+			{
+				return cItem;
+			}
+		}
+
+		/*
 		List<CItemEntity> cItems = contentMapper.findCItemsHierarchy(cItemSearch);
 
 		for (CItemEntity cItem : cItems)
@@ -138,6 +208,7 @@ public class ContentAuthorityService extends GeneralService
 				getEntryPoint(cItemSearch);
 			}
 		}
+		*/
 
 		return null;
 	}

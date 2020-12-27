@@ -15,7 +15,7 @@ public class DataAccessLogParameterEntity extends GeneralEntity
 {
 	private static final long serialVersionUID = 298110073047414051L;
 	private Long dlpSeq;
-	private Long dalSeq;
+	private Long dlSeq;
 	private String type;//(S)Scalar, (R)Structure, (T)Table
 	private String name;
 	private List<DataAccessLogParameterDetailEntity> dataAccessLogParameterDetails;

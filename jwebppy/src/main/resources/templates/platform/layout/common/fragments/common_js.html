@@ -17,23 +17,26 @@ $(document).ready(function() {
 		{
 			let result = response.RESULT;
 			
-			let breadcrumb = [];
-			breadcrumb.push("<div class='section'>Home</div>");
-			
-			for (let i=result.length-1; i>=0; i--)
+			if (JpUtilsObject.isNotNull(result))
 			{
-				breadcrumb.push("<div class='divider'>/</div>");
-				breadcrumb.push("<div class='section");
+				let breadcrumb = [];
+				breadcrumb.push("<div class='section'>Home</div>");
 				
-				if (i == 0)
+				for (let i=result.length-1; i>=0; i--)
 				{
-					breadcrumb.push(" active ");
+					breadcrumb.push("<div class='divider'>/</div>");
+					breadcrumb.push("<div class='section");
+					
+					if (i == 0)
+					{
+						breadcrumb.push(" active ");
+					};
+					
+					breadcrumb.push("'>" + result[i].name + "</div>");
 				};
 				
-				breadcrumb.push("'>" + result[i].name + "</div>");
+				$("#AREA_breadcrumb").html(breadcrumb.join(""));				
 			};
-			
-			$("#AREA_breadcrumb").html(breadcrumb.join(""));
 		}
 	});
 
@@ -58,7 +61,7 @@ $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
 	else
 	{
 		alert("[[#{PLTF_MSG_0003}]]");
-		//document.location.href = "[[${T(com.doosan.iv.platform.core.PlatformConfigVo).ERROR_PAGE_URL}]]";
+		//document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).ERROR_PAGE_URL}]]";
 	};
 });
 </script>

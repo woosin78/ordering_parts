@@ -34,8 +34,8 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException
 	{
-		String username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGON_USERNAME));
-		String password = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGON_PASSWORD));
+		String username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
+		String password = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_PASSWORD));
 
 		if ("".equals(username))
 		{

@@ -9,9 +9,11 @@ import org.jwebppy.platform.mgmt.content.dto.CItemType;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class CItemEntity extends GeneralEntity
 {
 	private static final long serialVersionUID = -7996090456386384649L;

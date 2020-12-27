@@ -7,7 +7,7 @@
 <th:block layout:fragment="content">
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" id="dalSeq" name="dalSeq" th:value="${dataAccessLogSearch.dalSeq}" />
+	<input type="hidden" id="dlSeq" name="dlSeq" th:value="${dataAccessLogSearch.dlSeq}" />
 	<div id="AREA_log"></div>
 	</form>
 </div>
@@ -15,7 +15,7 @@
 <script type="application/javascript">
 $(document).ready(function() {
 	JpUtilsAjax.get({
-		url: JpUiGlobal.url("/platform/mgmt/log/detail/" + $("#dalSeq").val()),
+		url: JpUiGlobal.url("/platform/mgmt/log/detail/" + $("#dlSeq").val()),
 		success: function(response, textStatus, jqXHR)
 		{
 			$("#AREA_log").html(new JpUiRender().render(response));

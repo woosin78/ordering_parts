@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class DataAccessLogParameterDetailDto
 {
-	private long dalpSeq;
+	private long dlpSeq;
 	private int lineNo;
 	private String name;
 	private String value;

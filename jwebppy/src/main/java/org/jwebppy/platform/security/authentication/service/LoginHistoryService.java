@@ -33,31 +33,31 @@ public class LoginHistoryService extends GeneralService
 	@Transactional
 	public int createLoginHistory(HttpServletRequest request, String fgLoginResult, String fgAccountLocked)
 	{
-		LoginHistoryEntity loginHistoryEntity = new LoginHistoryEntity();
-		loginHistoryEntity.setUsername(request.getParameter(PlatformConfigVo.FORM_LOGON_USERNAME));
-		loginHistoryEntity.setUserAgent(CmStringUtils.trimToEmpty(request.getHeader("user-agent")));
-		loginHistoryEntity.setIp(getIp(request));
-		loginHistoryEntity.setSessionId(request.getSession().getId());
-		loginHistoryEntity.setReferer(CmStringUtils.trimToEmpty(request.getHeader("referer")));
-		loginHistoryEntity.setFgResult(fgLoginResult);
-		loginHistoryEntity.setFgAccountLocked(fgAccountLocked);
+		LoginHistoryEntity loginHistory = new LoginHistoryEntity();
+		loginHistory.setUsername(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
+		loginHistory.setUserAgent(CmStringUtils.trimToEmpty(request.getHeader("user-agent")));
+		loginHistory.setIp(getIp(request));
+		loginHistory.setSessionId(request.getSession().getId());
+		loginHistory.setReferer(CmStringUtils.trimToEmpty(request.getHeader("referer")));
+		loginHistory.setFgResult(fgLoginResult);
+		loginHistory.setFgAccountLocked(fgAccountLocked);
 
 		if (CmStringUtils.equals(fgAccountLocked, PlatformCommonVo.YES))
 		{
-			loginHistoryEntity.setAccountLockedDate(LocalDateTime.now());
+			loginHistory.setAccountLockedDate(LocalDateTime.now());
 		}
 
 		if (UserAuthenticationUtils.getUserDetails() != null)
 		{
-			loginHistoryEntity.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
+			loginHistory.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		}
 
-		return loginHistoryMapper.insertLoginHistory(loginHistoryEntity);
+		return loginHistoryMapper.insertLoginHistory(loginHistory);
 	}
 
 	public List<LoginHistoryDto> getPageableLoginHistories(LoginHistorySearchDto loginHistorySearch)
 	{
-		return CmModelMapperUtils.mapAll(loginHistoryMapper.findLoginHistories(loginHistorySearch), LoginHistoryDto.class);
+		return CmModelMapperUtils.mapAll(loginHistoryMapper.findPageableLoginHistories(loginHistorySearch), LoginHistoryDto.class);
 	}
 
 	public int getLoginFailureCount(LoginHistorySearchDto loginHistorySearch)

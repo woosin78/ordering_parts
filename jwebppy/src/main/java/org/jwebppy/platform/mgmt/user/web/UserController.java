@@ -78,7 +78,7 @@ public class UserController extends UserGeneralController
 	@ResponseBody
 	public Object authority(@ModelAttribute CItemSearchDto cItemSearch)
 	{
-		return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyItems(cItemSearch));
+		return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyItemHierarchy(cItemSearch));
 	}
 
 	@GetMapping("/my_authority")
@@ -94,7 +94,7 @@ public class UserController extends UserGeneralController
 		}
 		else
 		{
-			cItems = contentAuthorityService.getMyItems(cItemSearch);
+			cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
 		}
 
 		return UserLayoutBuilder.getAuthorityForm(cItems);
@@ -110,7 +110,7 @@ public class UserController extends UserGeneralController
 			cItemSearch.setUSeq(userSearch.getUSeq());
 			cItemSearch.setFgVisible(PlatformCommonVo.ALL);
 
-			return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyItems(cItemSearch));
+			return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyItemHierarchy(cItemSearch));
 		}
 		else
 		{
@@ -157,7 +157,7 @@ public class UserController extends UserGeneralController
 				CItemSearchDto cItemSearch = new CItemSearchDto();
 				cItemSearch.setUSeq(userSearch.getUSeq());
 
-				cItems = contentAuthorityService.getMyItems(cItemSearch);
+				cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
 			}
 
 			return UserLayoutBuilder.getAuthorityForm(cItems);
@@ -227,7 +227,7 @@ public class UserController extends UserGeneralController
 		}
 		else if ("unlock".equals(command))
 		{
-			return userService.lockUserAccount(uSeqs, PlatformCommonVo.YES);
+			return userService.lockUserAccount(uSeqs, PlatformCommonVo.NO);
 		}
 
 		return EMPTY_RETURN_VALUE;

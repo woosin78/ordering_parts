@@ -14,6 +14,10 @@ public class PlatformCommonVo
 
 	public static final String UNLIMITED_DATE_TIME = "9999-12-31 23:59:59";
 
+	//true or false
+	public static final String TRUE = "true";
+	public static final String FALSE = "false";
+
 	//Yes or No flag
 	public static final String ALL = "A";
 	public static final String YES = "Y";
