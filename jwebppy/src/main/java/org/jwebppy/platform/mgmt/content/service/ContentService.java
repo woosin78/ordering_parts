@@ -2,7 +2,6 @@ package org.jwebppy.platform.mgmt.content.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -74,9 +73,9 @@ public class ContentService extends GeneralService
 		return CmModelMapperUtils.map(contentMapper.findItem(cSeq), CItemDto.class);
 	}
 
-	public List<CItemDto> getAllItems(CItemSearchDto cItemSearch)
+	public List<CItemDto> getAllCItems(CItemSearchDto cItemSearch)
 	{
-		return CmModelMapperUtils.mapAll(contentMapper.findAllItems(cItemSearch), CItemDto.class);
+		return CmModelMapperUtils.mapAll(contentMapper.findAllCItems(cItemSearch), CItemDto.class);
 	}
 
 	public List<CItemDto> getCItemHierarchy(CItemSearchDto cItemSearch)
@@ -107,67 +106,62 @@ public class ContentService extends GeneralService
 		}
 	}
 
-	public Map<String, Object> makeHierarchy(CItemSearchDto cItemSearch)
+	public List<Map<String, Object>> getCItemHierarchy2(CItemSearchDto cItemSearch)
 	{
-		List<CItemDto> cItems = getCItemHierarchy(cItemSearch);
+		List<Map<String, Object>> hierarchy = new LinkedList<>();
 
-		Map<String, Object> itemMap = new LinkedHashMap<>();
+		List<CItemDto> cItems =  getAllCItems(cItemSearch);
 
-		if (!CollectionUtils.isEmpty(cItems))
+		if (CollectionUtils.isNotEmpty(cItems))
 		{
 			CItemDto cItem = cItems.get(0);
+
+			Map<String, Object> itemMap = new HashMap<>();
 
 			itemMap.put("KEY", cItem.getCSeq());
 			itemMap.put("P_KEY", cItem.getPSeq());
 			itemMap.put("NAME", langService.getCItemText("PLTF", cItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
-			itemMap.put("TYPE", getTypeName(cItem.getType().toString()));
-			itemMap.put("SUB_ITEMS", getSubItems(cItems, cItem.getCSeq()));
+			itemMap.put("TYPE", cItem.getType().getType());
+			itemMap.put("SUB_ITEMS", getSubItems(cItem.getCSeq()));
+
+			hierarchy.add(itemMap);
 		}
 
-		return itemMap;
+		return hierarchy;
 	}
 
-	private List<Map<String, Object>> getSubItems(List<CItemDto> cItems, Integer cSeq)
+	private List<Map<String, Object>> getSubItems(Integer pSeq)
 	{
-		List<Map<String, Object>> subItems = new LinkedList<>();
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setPSeq(pSeq);
 
-		String lang = UserAuthenticationUtils.getUserDetails().getLanguage();
+		List<CItemDto> subCItems = getAllCItems(cItemSearch);
 
-		for (CItemDto cItem : cItems)
+		if (CollectionUtils.isNotEmpty(subCItems))
 		{
-			if (cSeq.equals(cItem.getPSeq()))
+			List<Map<String, Object>> hierarchy = new LinkedList<>();
+
+			for (CItemDto subCItem: subCItems)
 			{
-				Map<String, Object> itemMap = new LinkedHashMap<>();
-				itemMap.put("KEY", cItem.getCSeq());
-				itemMap.put("P_KEY", cItem.getPSeq());
-				itemMap.put("NAME", langService.getCItemText("PLTF", cItem.getCSeq(), lang));
-				itemMap.put("TYPE", getTypeName(cItem.getType().toString()));
+				Map<String, Object> itemMap = new HashMap<>();
 
-				if (cItem.getSubItemCount() > 0)
-				{
-					itemMap.put("SUB_ITEMS", getSubItems(cItems, cItem.getCSeq()));
-				}
+				itemMap.put("KEY", subCItem.getCSeq());
+				itemMap.put("P_KEY", subCItem.getPSeq());
+				itemMap.put("NAME", langService.getCItemText("PLTF", subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+				itemMap.put("TYPE", subCItem.getType().getType());
+				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getCSeq()));
 
-				subItems.add(itemMap);
+				hierarchy.add(itemMap);
 			}
+
+			return hierarchy;
 		}
 
-		return subItems;
+		return null;
 	}
 
 	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)
 	{
 		return CmModelMapperUtils.mapAll(contentMapper.findMyItems(cItemSearch), CItemDto.class);
-	}
-
-	public String getTypeName(String type)
-	{
-		Map<String, String> typeNameMap = new HashMap<>();
-		typeNameMap.put("F", "FOLDER");
-		typeNameMap.put("R", "ROLE");
-		typeNameMap.put("M", "MENU");
-		typeNameMap.put("P", "PAGE");
-
-		return typeNameMap.get(type);
 	}
 }

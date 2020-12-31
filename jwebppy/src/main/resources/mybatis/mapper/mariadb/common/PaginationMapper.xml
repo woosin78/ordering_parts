@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.jwebppy.platform.core.mapper.PaginationMapper">
+<mapper namespace="PaginationMapper">
 	<sql id="header">
 ### General Pagination ### 
 select
-sql_calc_found_rows yyy.*
+sql_calc_found_rows yyy.*,
+found_rows() total_count
 from
 (
 	select
-	found_rows() total_count,
 	row_number() over(${orderBy}) rnum,
 	#{pageNumber} page_number,
 	#{rowPerPage} row_per_page,
@@ -23,8 +23,4 @@ from
 ) yyy
 limit #{startRow}, #{rowPerPage}
 	</sql>
-	
-	<select id="getTotalCount" resultType="int">
-		select found_rows() total_count
-	</select>
 </mapper>

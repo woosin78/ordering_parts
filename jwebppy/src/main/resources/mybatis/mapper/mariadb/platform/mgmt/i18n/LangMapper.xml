@@ -16,26 +16,15 @@
 		<collection property="langDetails" foreignColumn="l_seq" column="l_seq" javaType="java.util.ArrayList" ofType="LangDetailEntity" select="findLangDetailsByLseq" />
 	</resultMap>
 
-	<insert id="insertLang" parameterType="LangEntity">
-		<selectKey keyProperty="lSeq" resultType="Integer" order="BEFORE">
-			select pltf_l_seq.nextval from dual
-		</selectKey>
-		
-		insert into pltf_lang(l_seq, basename, type, seq, fg_delete, reg_username, reg_date) values (
-			#{lSeq}, #{basename}, #{type},
-			<!-- decode(#{seq}, null, (select lpad(nvl(max(to_number(seq)), 0)+1, 4, '0') from pltf_lang where basename=#{basename} and type=#{type} and fg_delete='N'), #{seq}),  -->
-			nvl(#{seq}, #{lSeq}),
-			#{fgDelete}, #{regUsername}, #{regDate}
+	<insert id="insertLang" parameterType="LangEntity" useGeneratedKeys="true" keyProperty="lSeq">
+		insert into pltf_lang(basename, type, seq, fg_delete, reg_username, reg_date) values (
+			#{basename}, #{type}, #{seq}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
-	<insert id="insertLangDetail" parameterType="LangDetailEntity">
-		<selectKey keyProperty="ldSeq" resultType="Integer" order="BEFORE">
-			select pltf_ld_seq.nextval from dual
-		</selectKey>
-		
-		insert into pltf_lang_detail(ld_seq, l_seq, lk_seq, text, fg_delete, reg_username, reg_date) values (
-			#{ldSeq}, #{lSeq}, #{lkSeq}, #{text}, #{fgDelete}, #{regUsername}, #{regDate}
+	<insert id="insertLangDetail" parameterType="LangDetailEntity" useGeneratedKeys="true" keyProperty="ldSeq">
+		insert into pltf_lang_detail(l_seq, lk_seq, text, fg_delete, reg_username, reg_date) values (
+			#{lSeq}, #{lkSeq}, #{text}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -121,7 +110,7 @@
 	</select>
 	
 	<select id="findLangs" parameterType="LangSearchDto" resultMap="langEntityMap">
-		<include refid="org.jwebppy.platform.core.mapper.PaginationMapper.header">
+		<include refid="PaginationMapper.header">
 			<property name="orderBy" value="order by l_seq desc"/>
 		</include>
 
@@ -162,7 +151,7 @@
 
 		order by a.l_seq desc
 
-		<include refid="org.jwebppy.platform.core.mapper.PaginationMapper.footer"/>
+		<include refid="PaginationMapper.footer"/>
 	</select>	
 
 	<select id="findLangKind" parameterType="Integer" resultType="LangKindEntity">

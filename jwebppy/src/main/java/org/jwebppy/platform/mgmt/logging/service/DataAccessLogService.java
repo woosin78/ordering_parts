@@ -58,7 +58,7 @@ public class DataAccessLogService extends GeneralService
 
 	public List<DataAccessLogDto> getPageableLogs(DataAccessLogSearchDto dataAccessLogSearch)
 	{
-		return CmModelMapperUtils.mapAll(dataAccessLogMapper.findLogs(dataAccessLogSearch), DataAccessLogDto.class);
+		return CmModelMapperUtils.mapAll(dataAccessLogMapper.findPageableLogs(dataAccessLogSearch), DataAccessLogDto.class);
 	}
 
 	public DataAccessLogDto getLog(Long dlSeq)

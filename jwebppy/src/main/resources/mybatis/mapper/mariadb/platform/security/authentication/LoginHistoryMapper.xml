@@ -11,7 +11,7 @@
 	</insert>
 	
 	<select id="findPageableLoginHistories" parameterType="LoginHistorySearchDto" resultType="LoginHistoryEntity">
-		<include refid="org.jwebppy.platform.core.mapper.PaginationMapper.header">
+		<include refid="PaginationMapper.header">
 			<property name="orderBy" value="order by reg_date desc"/>
 		</include>
 		
@@ -53,7 +53,7 @@
 		</where>
 		order by a.reg_date desc
 		
-		<include refid="org.jwebppy.platform.core.mapper.PaginationMapper.footer"/>
+		<include refid="PaginationMapper.footer"/>
 	</select>
 	
 	<select id="findLoginFailureCount" parameterType="LoginHistorySearchDto" resultType="int">

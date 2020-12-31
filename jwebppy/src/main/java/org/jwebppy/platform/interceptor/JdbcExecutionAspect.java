@@ -1,18 +1,11 @@
 package org.jwebppy.platform.interceptor;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.jwebppy.platform.core.PlatformConfigVo;
-import org.jwebppy.platform.core.entity.GeneralEntity;
-import org.jwebppy.platform.core.mapper.PaginationMapper;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.JdbcStatementContextUtils;
 import org.jwebppy.platform.core.util.SessionContextUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
@@ -33,9 +26,6 @@ public class JdbcExecutionAspect extends DataAccessAspect
 	@Autowired
 	private DataAccessLogService dataAccessLogService;
 
-	@Autowired
-	private PaginationMapper paginationMapper;
-
 	@Around("execution(* org.jwebppy..mapper.*Mapper.*(..))")
 	public Object onAround(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable
 	{
@@ -47,8 +37,6 @@ public class JdbcExecutionAspect extends DataAccessAspect
 		try
 		{
 			result = proceedingJoinPoint.proceed();
-
-			setPaginationInfo(result, proceedingJoinPoint);
 		}
 		catch (Exception e)
 		{
@@ -78,28 +66,5 @@ public class JdbcExecutionAspect extends DataAccessAspect
 		}
 
 		return result;
-	}
-
-	private void setPaginationInfo(Object result, final ProceedingJoinPoint proceedingJoinPoint)
-	{
-		if (CmStringUtils.equals(db, PlatformConfigVo.MariaDB))
-		{
-			String functionName = proceedingJoinPoint.getSignature().getName();
-
-			if (functionName.startsWith("findPageable"))
-			{
-				List<?> list = (ArrayList<?>)result;
-
-				if (CollectionUtils.isNotEmpty(list))
-				{
-					Object object = list.get(0);
-
-					if (object instanceof GeneralEntity)
-					{
-						((GeneralEntity)object).setTotalCount(paginationMapper.getTotalCount());
-					}
-				}
-			}
-		}
 	}
 }

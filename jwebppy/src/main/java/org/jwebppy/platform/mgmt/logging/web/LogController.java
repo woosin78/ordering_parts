@@ -34,8 +34,7 @@ public class LogController extends LoggingGeneralController
 	@ResponseBody
 	public Object logs(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
 	{
-		PageableList<DataAccessLogDto> pageableList = new PageableList<>();
-		pageableList.setList(dataAccessLogService.getPageableLogs(dataAccessLogSearch));
+		PageableList<DataAccessLogDto> pageableList = new PageableList<>(dataAccessLogService.getPageableLogs(dataAccessLogSearch));
 
 		return LogLayoutBuilder.getList(pageableList);
 	}

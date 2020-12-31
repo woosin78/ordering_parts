@@ -33,5 +33,4 @@ public class CItemEntity extends GeneralEntity
 	private Integer lSeq;
 	private List<Integer> seqs;
 	private String depth;
-	private int subItemCount;
 }

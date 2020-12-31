@@ -9,6 +9,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemUserRlDto;
@@ -77,7 +78,7 @@ public class ContentAuthorityService extends GeneralService
 			cItemSearch.setName(cItemUserRl.getName());
 			cItemSearch.setType(PlatformCommonVo.ROLE);
 
-			List<CItemEntity> cItems = contentMapper.findAllItems(cItemSearch);
+			List<CItemEntity> cItems = contentMapper.findAllCItems(cItemSearch);
 
 			if (CollectionUtils.isNotEmpty(cItems))
 			{
@@ -104,20 +105,21 @@ public class ContentAuthorityService extends GeneralService
 
 		List<CItemDto> cItems = CmModelMapperUtils.mapAll(contentMapper.findMyItems(cItemSearch), CItemDto.class);
 
-		String lang = cItemSearch.getLang();
-
-		for (CItemDto cItem : cItems)
+		if (CollectionUtils.isNotEmpty(cItems))
 		{
-			cItem.setName2(langService.getCItemText("PLTF", cItem.getCSeq(), lang));
-			cItem.setSubCItems(getSubItems(cItem.getCSeq(), lang));
+			for (CItemDto cItem : cItems)
+			{
+				cItem.setName2(langService.getCItemText("PLTF", cItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+				cItem.setSubCItems(getSubItems(cItem.getCSeq()));
 
-			hierarchy.add(cItem);
+				hierarchy.add(cItem);
+			}
 		}
 
 		return hierarchy;
 	}
 
-	private List<CItemDto> getSubItems(Integer cSeq, String lang)
+	private List<CItemDto> getSubItems(Integer cSeq)
 	{
 		List<CItemDto> cItems = new LinkedList<>();
 
@@ -135,8 +137,8 @@ public class ContentAuthorityService extends GeneralService
 
 				if (cSeq.equals(subCItem.getPSeq()))
 				{
-					subCItem.setName2(langService.getCItemText("PLTF", subCSeq, lang));
-					subCItem.setSubCItems(getSubItems(subCSeq, lang));
+					subCItem.setName2(langService.getCItemText("PLTF", subCSeq, UserAuthenticationUtils.getUserDetails().getLanguage()));
+					subCItem.setSubCItems(getSubItems(subCSeq));
 
 					cItems.add(subCItem);
 				}
@@ -145,14 +147,6 @@ public class ContentAuthorityService extends GeneralService
 
 		return cItems;
 	}
-
-	/*
-	@Cacheable(value = RedisConfig.CITEM, key = "#cItemSearch", unless="#result == null")
-	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)
-	{
-		return CmModelMapperUtils.mapAll(contentMapper.findMyItems(cItemSearch), CItemDto.class);
-	}
-	*/
 
 	public CItemDto getMyEntryPoint(CItemSearchDto cItemSearch)
 	{
@@ -191,24 +185,6 @@ public class ContentAuthorityService extends GeneralService
 				return cItem;
 			}
 		}
-
-		/*
-		List<CItemEntity> cItems = contentMapper.findCItemsHierarchy(cItemSearch);
-
-		for (CItemEntity cItem : cItems)
-		{
-			if (CmStringUtils.isNotEmpty(cItem.getEntryPoint()))
-			{
-				return CmModelMapperUtils.map(cItem, CItemDto.class);
-			}
-
-			if (cItem.getSubItemCount() > 0)
-			{
-				cItemSearch.setPSeq(cItem.getCSeq());
-				getEntryPoint(cItemSearch);
-			}
-		}
-		*/
 
 		return null;
 	}

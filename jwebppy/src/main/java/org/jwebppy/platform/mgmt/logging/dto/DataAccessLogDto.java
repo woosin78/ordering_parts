@@ -43,10 +43,6 @@ public class DataAccessLogDto extends GeneralDto implements IPagination
 		{
 			return "JDBC";
 		}
-		else if ("E".equals(type))
-		{
-			return "EAI";
-		}
 		else if ("R".equals(type))
 		{
 			return "RFC";

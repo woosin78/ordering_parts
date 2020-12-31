@@ -90,7 +90,9 @@ public class UserController extends UserGeneralController
 		if (CollectionUtils.isNotEmpty(cSeqs))
 		{
 			cItemSearch.setCSeqs(cSeqs);
-			cItems = contentService.getAllItems(cItemSearch);
+			cItemSearch.setFgVisible(PlatformCommonVo.YES);
+
+			cItems = contentService.getAllCItems(cItemSearch);
 		}
 		else
 		{

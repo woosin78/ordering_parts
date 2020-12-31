@@ -52,8 +52,8 @@
 		a.dl_seq=#{dlSeq}
 	</select>
 
-	<select id="findLogs" parameterType="DataAccessLogSearchDto" resultMap="dataAccessLogMap">
-		<include refid="org.jwebppy.platform.core.mapper.PaginationMapper.header">
+	<select id="findPageableLogs" parameterType="DataAccessLogSearchDto" resultMap="dataAccessLogMap">
+		<include refid="PaginationMapper.header">
 			<property name="orderBy" value="order by dl_seq desc"/>
 		</include>		
 
@@ -97,7 +97,7 @@
 			
 			order by a.dl_seq desc
 
-		<include refid="org.jwebppy.platform.core.mapper.PaginationMapper.footer"/>
+		<include refid="PaginationMapper.footer"/>
 	</select>
 
 	<select id="findDataAccessLogParameters" parameterType="Long" resultMap="dataAccessLogParameterMap">

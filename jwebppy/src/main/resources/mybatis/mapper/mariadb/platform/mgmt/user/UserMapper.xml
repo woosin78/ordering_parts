@@ -56,7 +56,7 @@
 	</select>		
 	
 	<select id="findUsers" parameterType="UserSearchDto" resultMap="userEntityMap">
-		<include refid="org.jwebppy.platform.core.mapper.PaginationMapper.header">
+		<include refid="PaginationMapper.header">
 			<property name="orderBy" value="order by u_seq desc"/>
 		</include>
 
@@ -107,17 +107,13 @@
 		
 		order by a.u_seq desc
 
-		<include refid="org.jwebppy.platform.core.mapper.PaginationMapper.footer"/>
+		<include refid="PaginationMapper.footer"/>
 	</select>
 	
-	<insert id="insertUser" parameterType="UserEntity">
-		<selectKey keyProperty="uSeq" resultType="Integer" order="BEFORE">
-			select pltf_u_seq.nextval from dual
-		</selectKey>
-			
-		insert into pltf_user (u_seq, first_name, last_name, en_first_name, en_last_name, company, organization, department, position, language, fg_delete, reg_username, reg_date) values
+	<insert id="insertUser" parameterType="UserEntity" useGeneratedKeys="true" keyProperty="uSeq">
+		insert into pltf_user (first_name, last_name, en_first_name, en_last_name, company, organization, department, position, language, fg_delete, reg_username, reg_date) values
 		(
-			#{uSeq}, #{firstName}, #{lastName}, #{enFirstName}, #{enLastName}, #{company}, #{organization}, #{department}, #{position}, #{language}, #{fgDelete}, #{regUsername}, #{regDate}
+			#{firstName}, #{lastName}, #{enFirstName}, #{enLastName}, #{company}, #{organization}, #{department}, #{position}, #{language}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 

@@ -67,7 +67,7 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object contents(@ModelAttribute CItemSearchDto cItemSearch)
 	{
-		return contentService.getAllItems(cItemSearch);
+		return contentService.getAllCItems(cItemSearch);
 	}
 
 	@GetMapping("/{tabPath}")
@@ -153,12 +153,11 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object itemsHierarchy(@ModelAttribute CItemSearchDto cItemSearch)
 	{
-		UserAuthenticationUtils.getUserDetails().getLanguage();
+		//List<Map<String, Object>> items = new ArrayList<>();
 
-		List<Map<String, Object>> items = new ArrayList<>();
-		items.add(contentService.makeHierarchy(cItemSearch));
+		List<Map<String, Object>> hierarchy = contentService.getCItemHierarchy2(cItemSearch);
 
-		return items;
+		return hierarchy;
 	}
 
 	@GetMapping("/component/entry_points")
@@ -174,10 +173,7 @@ public class ContentController extends ContentGeneralController
 	{
 		List<Map<String, Object>> cItemsHierarchy = new LinkedList<>();
 
-		String lang = UserAuthenticationUtils.getUserDetails().getLanguage();
-
 		cItemSearch.setUSeq(getUSeq());
-		cItemSearch.setLang(lang);
 
 		List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
 
@@ -189,7 +185,7 @@ public class ContentController extends ContentGeneralController
 			itemMap.put("TYPE", cItem.getType().toString());
 			itemMap.put("URL", CmStringUtils.trimToEmpty(cItem.getUrl()));
 
-			itemMap.put("SUB_ITEMS", getSubItems(cItem.getSubCItems(), lang));
+			itemMap.put("SUB_ITEMS", getSubItems(cItem.getSubCItems()));
 
 			cItemsHierarchy.add(itemMap);
 		}
@@ -197,7 +193,7 @@ public class ContentController extends ContentGeneralController
 		return cItemsHierarchy;
 	}
 
-	protected List<Map<String, Object>> getSubItems(List<CItemDto> subCItems, String lang)
+	protected List<Map<String, Object>> getSubItems(List<CItemDto> subCItems)
 	{
 		List<Map<String, Object>> cItems = new LinkedList<>();
 
@@ -207,10 +203,10 @@ public class ContentController extends ContentGeneralController
 			{
 				Map<String, Object> itemMap = new LinkedHashMap<>();
 				itemMap.put("KEY", subCItem.getCSeq());
-				itemMap.put("NAME", langService.getCItemText("PLTF", subCItem.getCSeq(), lang));
+				itemMap.put("NAME", langService.getCItemText("PLTF", subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 				itemMap.put("TYPE", subCItem.getType().toString());
 				itemMap.put("URL", subCItem.getUrl());
-				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getSubCItems(), lang));
+				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getSubCItems()));
 
 				cItems.add(itemMap);
 			}
@@ -224,7 +220,6 @@ public class ContentController extends ContentGeneralController
 	public Object breadcrumb(CItemSearchDto cItemSearch)
 	{
 		cItemSearch.setUSeq(getUSeq());
-		cItemSearch.setLang(UserAuthenticationUtils.getUserDetails().getLanguage());
 
 		List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
 
