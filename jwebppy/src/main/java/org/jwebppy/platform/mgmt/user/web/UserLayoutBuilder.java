@@ -157,6 +157,7 @@ public class UserLayoutBuilder
 	{
 		InputPassword loPassword = new InputPassword("password");
 		loPassword.setLabel("Password");
+		loPassword.addAttribute("autofocus");
 
 		InputPassword loConfirmPassword = new InputPassword("confirmPassword");
 		loConfirmPassword.setLabel("Confirm Password");
@@ -187,6 +188,8 @@ public class UserLayoutBuilder
 
 			Input loUsername = new Input("username");
 			loUsername.setLabel("Username");
+			loUsername.addAttribute("autofocus");
+			loUsername.addAttribute("style", "text-transform:uppercase");
 			loUsername.setRequired(true);
 
 			document.addElement(loUsername);

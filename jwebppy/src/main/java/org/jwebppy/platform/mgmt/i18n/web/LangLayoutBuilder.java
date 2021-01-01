@@ -132,6 +132,8 @@ public class LangLayoutBuilder
 
 			Element loSeq = new Input("seq", lang.getSeq());
 			loSeq.setLabel("Suffix");
+			loSeq.addAttribute("autofocus");
+			loSeq.addAttribute("style", "text-transform:uppercase");
 			loSeq.setRequired(true);
 
 			document.addElement(loSeq);

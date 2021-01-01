@@ -14,7 +14,6 @@ import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogParameterDetailEnti
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogParameterEntity;
 import org.jwebppy.platform.mgmt.logging.mapper.DataAccessLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +24,7 @@ public class DataAccessLogService extends GeneralService
 	private DataAccessLogMapper dataAccessLogMapper;
 
 	@Transactional
-	@Async("threadPoolTaskExecutor")
+	//@Async("threadPoolTaskExecutor")
 	public void writeLog(DataAccessLogDto dataAccessLog)
 	{
 		DataAccessLogEntity dataAccessLogEntity = CmModelMapperUtils.map(dataAccessLog, DataAccessLogEntity.class);

@@ -18,7 +18,7 @@
 
 	<insert id="insertLang" parameterType="LangEntity" useGeneratedKeys="true" keyProperty="lSeq">
 		insert into pltf_lang(basename, type, seq, fg_delete, reg_username, reg_date) values (
-			#{basename}, #{type}, #{seq}, #{fgDelete}, #{regUsername}, #{regDate}
+			#{basename}, #{type}, upper(#{seq}), #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -118,36 +118,35 @@
 		a.*
 		from
 		pltf_lang a
+		where
+		not exists (
+			select 1 from pltf_citem_lang_rl where l_seq=a.l_seq
+		)
+		and a.fg_delete='N' 
 		
-		<where>
-			<trim prefixOverrides="and">
-				<if test="basename != null and basename != ''">
-					a.basename=#{basename}
-				</if>			
-			
-				<if test="type != null and type != ''">
-					and a.type=#{type}
-				</if>
-				
-				<if test="query != null and query != ''">
-					and (
-						exists (
-						    select
-						    1
-						    from pltf_lang_detail
-						    where
-						    l_seq=a.l_seq
-						    and fg_delete='N'
-						    and upper(text) like '%'||upper(#{query})||'%'
-						)												
-						or a.type||'_'||upper(a.seq) like '%'||upper(#{query})||'%'
-						or upper(a.seq) like '%'||upper(#{query})||'%'
-					)			
-				</if>
-				
-				and a.fg_delete='N'
-			</trim>
-		</where>
+		<if test="basename != null and basename != ''">
+			and a.basename=#{basename}
+		</if>			
+	
+		<if test="type != null and type != ''">
+			and a.type=#{type}
+		</if>
+		
+		<if test="query != null and query != ''">
+			and (
+				exists (
+				    select
+				    1
+				    from pltf_lang_detail
+				    where
+				    l_seq=a.l_seq
+				    and fg_delete='N'
+				    and upper(text) like '%'||upper(#{query})||'%'
+				)												
+				or a.type||'_'||upper(a.seq) like '%'||upper(#{query})||'%'
+				or upper(a.seq) like '%'||upper(#{query})||'%'
+			)			
+		</if>
 
 		order by a.l_seq desc
 

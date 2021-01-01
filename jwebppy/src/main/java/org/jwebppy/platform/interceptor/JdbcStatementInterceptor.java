@@ -18,7 +18,6 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
-import org.apache.ibatis.session.ResultHandler;
 import org.jwebppy.platform.core.util.CmBeanUtils;
 import org.jwebppy.platform.core.util.CmFieldUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -28,9 +27,9 @@ import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
 
 @Intercepts({
-    @Signature(type=StatementHandler.class, method="update", args={Statement.class}),
-    @Signature(type=StatementHandler.class, method="query", args={Statement.class, ResultHandler.class}),
-    @Signature(type=StatementHandler.class, method="batch", args={Statement.class})
+    @Signature(type=StatementHandler.class, method="update", args={Statement.class})
+    //,@Signature(type=StatementHandler.class, method="query", args={Statement.class, ResultHandler.class})
+    //,@Signature(type=StatementHandler.class, method="batch", args={Statement.class})
 })
 public class JdbcStatementInterceptor implements Interceptor
 {

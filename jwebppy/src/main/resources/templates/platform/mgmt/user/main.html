@@ -6,8 +6,8 @@
 
 <th:block layout:fragment="content">
 	<div class="ui dividing header">
-	  User Management
-	  <div class="sub header">User management allows you to update users information and give them the authorities.</div>
+	  Account
+	  <div class="sub header">You can create new accounts and modify users' information and give them the authorities.</div>
 	</div>
 	<div class="ui segment">
 		<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
@@ -18,7 +18,7 @@
 			<div class="twelve wide field">
 				<div class="ui icon input">
 					<input type="text" id="query" name="query" placeholder="Search"> <i class="search icon"></i>
-				</div>				
+				</div>
 			</div>
 			<div class="four wide field">
 				<div id="BTN_searchUser" class="ui teal button"><i class="search icon"></i> Search</div>
@@ -32,7 +32,7 @@
 				<div id="BTN_copyToCreateUser" class="ui teal button"><i class="copy outline icon"></i> Copy To Create</div>
 				<div id="BTN_deleteUser" class="ui negative button"><i class="minus icon"></i> Delete</div>
 				<div id="BTN_lockUser" class="ui button"><i class="lock icon"></i> Lock</div>
-				<div id="BTN_unlockUser" class="ui button"><i class="lock open icon"></i> Unlock</div>								
+				<div id="BTN_unlockUser" class="ui button"><i class="lock open icon"></i> Unlock</div>
 			</div>
 		</div>
 		<div id="TBL_users"></div>
@@ -67,15 +67,15 @@
 		</form>
 		<div class="AREA_moveToModifyUser">
 			<div class="ui clearing divider"></div>
-			<div class="ui teal button BTN_modifyUser"><i class="edit outline icon"></i> Modify</div>				
-		</div>			
+			<div class="ui teal button BTN_modifyUser"><i class="edit outline icon"></i> Modify</div>
+		</div>
 		<div class="AREA_modifyUser" style="display:none;">
 			<div class="ui clearing divider"></div>
 			<div class="ui teal button modify BTN_saveUser"><i class="check icon"></i> Save</div>
-			<div class="ui button modify BTN_cancelUser"> Cancel</div>				
-		</div>			
+			<div class="ui button modify BTN_cancelUser"> Cancel</div>
+		</div>
 	</div>
-	
+
 	<div id="MDL_coptyToCreate" class="ui tiny modal">
 	    <h3 class="ui header">Create User</h3>
 	    <div class="content">
@@ -108,7 +108,7 @@
 			<div class="ui one column grid">
 			    <div class="column right aligned">
 			    	<div id="BTN_saveUserByCopy" class="ui teal button"><i class="check icon"></i> Save</div>
-			        <div id="BTN_cancelUserByCopy" class="ui normal button"><i class="times icon"></i> Cancel</div>			        
+			        <div id="BTN_cancelUserByCopy" class="ui normal button"><i class="times icon"></i> Cancel</div>
 			    </div>
 			</div>
 	    </div>
@@ -124,6 +124,7 @@ $(document).ready(function() {
 			ajax: {
 				url: JpUiGlobal.url("/platform/mgmt/user/users"),
 				form: $("#FORM_search"),
+				async: false,
 		  		beforeSend: function(jqXHR, settings)
 		  		{
 		  			hideUserDetailsArea();
@@ -132,10 +133,10 @@ $(document).ready(function() {
 				{
 		  			if (textStatus == "success")
 	  				{
-		  				if ($("#FORM_search input:hidden[name=nUseq]").val() != "")
+		  				if ($("#FORM_search input:hidden[name=uSeq]").val() != "")
 		  				{
 			  				usersTable.getBodyCell(0, 3).find("a").trigger("click");
-			  				$("#FORM_search input:hidden[name=nUseq]").val("");		  					
+			  				$("#FORM_search input:hidden[name=nUseq]").val("");
 		  				};
 	  				};
 				}
@@ -143,11 +144,11 @@ $(document).ready(function() {
 			onClickDataKey: function(element, key, row)
 			{
 				viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user"));
-				
+
 				if ($(row).hasClass("active"))
 				{
 					$("#AREA_viewUserDetail .ui.header").html("Details of User, " + $(element).html());
-					
+
 					setSeq(key);
 					showUserDetailsArea();
 				}
@@ -176,14 +177,14 @@ $(document).ready(function() {
 				doSearch(pageNumber);
 			}
 	};
-	
-	//Add custom rules in the form validation 
+
+	//Add custom rules in the form validation
 	$.fn.form.settings.rules.checkDuplicatedUsername = function(value)
 	{
 		if (JpUtilsString.isNotEmpty(value))
 		{
-			let isValid = true; 
-			
+			let isValid = true;
+
 			JpUtilsAjax.get({
 				url: JpUiGlobal.url("/platform/mgmt/user/username/valid_check"),
 				data: { username: value },
@@ -197,13 +198,13 @@ $(document).ready(function() {
 					};
 				}
 			});
-			
+
 			return isValid;
 		};
-		
+
 		return false;
 	};
-	
+
 	let formValidCheck = {
 		inline: true,
 		fields: {
@@ -231,7 +232,7 @@ $(document).ready(function() {
 					{
 						type: "empty",
 						prompt: "Please enter {name}."
-					},					
+					},
 					{
 						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)).{6,12}$/]",
 						prompt: "Please enter a valid username. A username should be between 6 and 12 digits, which can contain number, lower and upper case characters."
@@ -241,7 +242,7 @@ $(document).ready(function() {
 						prompt: "The {name} is not available. Please enter another username."
 					}
 				]
-			},			
+			},
 			Password: {
 				identifier: "password",
 				optional: true,
@@ -249,7 +250,7 @@ $(document).ready(function() {
 					{
 						type: "empty",
 						prompt: "Please enter {name}."
-					},					
+					},
 					{
 						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)|(?=.*\W)).{8,12}$/]",
 						prompt: "Please enter a valid password. A password should be between 8 and 12 digits and contain number, special, lower and upper case characters."
@@ -388,8 +389,8 @@ $(document).ready(function() {
 			}
 		},
 		keyboardShortcuts: false
-	};	
-	
+	};
+
 	let viewUserTab = new JpUiTab($("#TAB_viewUserDetail"));
 	viewUserTab.settings = {
 			ajax: {
@@ -402,9 +403,9 @@ $(document).ready(function() {
 
 						return false;
 					};
-					
+
 					settings.data = $("#FORM_userInfo").serialize();
-					
+
 					return settings;
 				}
 			},
@@ -423,7 +424,7 @@ $(document).ready(function() {
 						{
 							formValidCheck.fields.Password.optional = true;
 						};
-						
+
 						$("#FORM_modifyUser").form(formValidCheck);
 
 						if (tabPath == "account")
@@ -478,19 +479,19 @@ $(document).ready(function() {
 									    });
 
 									    $("#availableAutority").html(options.join(""));
-									    
+
 										$("#availableAutority").dropdown({
 											minCharacters: 2,
 											placeholder: "Search",
 											fullTextSearch: true
 										});
-										
+
 										$(".ui.tab[data-tab=authority] .ui.dropdown input.search").on("keydown", function(event) {
 											if (event.keyCode == 13)
 											{
 												if ($(".ui.tab[data-tab=authority] .ui.dropdown a.ui.label.transition.visible").length > 0)
 												{
-													$(".BTN_grant").trigger("click");	
+													$(".BTN_grant").trigger("click");
 												};
 											};
 										});
@@ -510,12 +511,12 @@ $(document).ready(function() {
 
 							$(".BTN_grant").on("click", function() {
 								let values = $("#availableAutority").dropdown("get value");
-								
+
 								if (values == null)
 								{
 									values = [];
 								};
-								
+
 								$.each($("#TBL_myAuthorityList").find("input:checkbox[name=cSeq]"), function(i, item) {
 									values.push($(this).val());
 								});
@@ -548,32 +549,32 @@ $(document).ready(function() {
 	viewUserTab.render();
 
 	$("#BTN_createUser").on("click", function() {
-		showCreateUserArea();		
+		showCreateUserArea();
 	});
-	
+
 	$("#BTN_copyToCreateUser").on("click", function() {
-		
+
 		let checkedCount = getCheckedUserCount();
-		
+
 		if (checkedCount == 0)
 		{
 			alert("Please select the target to copy.");
 			return;
 		};
-		
+
 		if (checkedCount > 1)
 		{
 			alert("Please select one.");
-			return;	
+			return;
 		};
-		
+
 		$("#FORM_copyToCreate").form("reset");
-		
+
 		$("#MDL_coptyToCreate")
 		.modal("setting", "closable", false)
-		.modal("show");		
+		.modal("show");
 	});
-	
+
 	$("#FORM_copyToCreate").form({
 		inline: true,
 		fields: {
@@ -583,7 +584,7 @@ $(document).ready(function() {
 					{
 						type: "empty",
 						prompt: "Please enter {name}."
-					},					
+					},
 					{
 						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)).{6,12}$/]",
 						prompt: "Please enter a valid password. It should be between 6 and 12 digits and contain number, lower and upper case characters."
@@ -601,7 +602,7 @@ $(document).ready(function() {
 					{
 						type: "empty",
 						prompt: "Please enter {name}."
-					},					
+					},
 					{
 						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)|(?=.*\W)).{8,12}$/]",
 						prompt: "Please enter a valid password. It should be between 8 and 12 digits and contain number, special, lower and upper case characters."
@@ -616,33 +617,33 @@ $(document).ready(function() {
 						prompt: "Please enter {name}."
 					}
 				]
-			},			
+			},
 		}
 	});
-	
+
 	$("#BTN_saveUserByCopy").on("click", function() {
 		if ($("#FORM_copyToCreate").form("validate form"))
 		{
 			$("#FORM_copyToCreate input[name=uSeq]").val(usersTable.getCheckedValues().join(""));
-			
+
 			JpUtilsAjax.post({
 				url: JpUiGlobal.url("/platform/mgmt/user/copy"),
 				data: $("#FORM_copyToCreate").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
 					let uSeq = data.RESULT;
-					
+
 					if (JpUtilsObject.isNotNull(uSeq))
 					{
 						//신규 생성한 계정이 조회되도록 함
 						$("#FORM_search")[0].reset();
 						$("#FORM_search input:hidden[name=nUseq]").val(uSeq);
-						
+
 						doSearch();
 					};
-					
+
 					changeTab();
-					
+
 					$("#FORM_copyToCreate").form("reset");
 				},
 				complete: function(jqXHR, textStatus)
@@ -652,16 +653,16 @@ $(document).ready(function() {
 			});
 		};
 	});
-	
+
 	$("#BTN_cancelUserByCopy").on("click", function() {
 		$("#MDL_coptyToCreate").modal("hide");
 	});
-	
+
 	$(".BTN_modifyUser").on("click", function() {
 		viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user/modify"));
 
 		changeTab();
-	});	
+	});
 
 	$("#BTN_lockUser").on("click", function() {
 		if (getCheckedUserCount() == 0)
@@ -682,7 +683,7 @@ $(document).ready(function() {
 			});
 		};
 	});
-	
+
 	$("#BTN_unlockUser").on("click", function() {
 		if (getCheckedUserCount() == 0)
 		{
@@ -701,7 +702,7 @@ $(document).ready(function() {
 				}
 			});
 		};
-	});		
+	});
 
 	$("#BTN_deleteUser").on("click", function() {
 		if (getCheckedUserCount() == 0)
@@ -722,7 +723,7 @@ $(document).ready(function() {
 			});
 		};
 	});
-	
+
 	function setSeq(seq)
 	{
 		$("#FORM_userInfo input[name=uSeq], #FORM_modifyUser input[name=uSeq]").val(seq);
@@ -730,14 +731,14 @@ $(document).ready(function() {
 
 	function getSeq()
 	{
-		return $("#FORM_modifyUser input[name=uSeq]").val(); 
-	};		
-	
+		return $("#FORM_modifyUser input[name=uSeq]").val();
+	};
+
 	function initSeq()
 	{
 		$("#FORM_userInfo input[name=uSeq], #FORM_modifyUser input[name=uSeq]").val("");
 	};
-	
+
 	function getCheckedUserCount()
 	{
 		return usersTable.getCheckedCount();
@@ -762,7 +763,7 @@ $(document).ready(function() {
 
 		$("#AREA_viewUserDetail").show();
 	};
-	
+
 	function showCreateUserArea()
 	{
 		$("#AREA_viewUserDetail .ui.header").html("Create User");
@@ -773,7 +774,7 @@ $(document).ready(function() {
 		changeTab("general");
 
 		$("#AREA_viewUserDetail").show();
-	};	
+	};
 
 	$("#query").on("keydown", function(event) {
 		if (event.keyCode==13)
@@ -795,32 +796,32 @@ $(document).ready(function() {
 			{
 				$("#TBL_myAuthorityList").find(".ui.checkbox").checkbox("check");
 			};
-			
+
 			JpUtilsAjax.post({
 				url: JpUiGlobal.url("/platform/mgmt/user/save/" + viewUserTab.tabPath),
 				data: $("#FORM_modifyUser").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
-					let tabPath = viewUserTab.tabPath;
-					
 					if (JpUtilsString.isEmpty(getSeq()))
 					{
 						let uSeq = data.RESULT;
-						
+
 						if (JpUtilsObject.isNotNull(uSeq))
 						{
 							setSeq(uSeq);
-							
+
 							$("#FORM_search input:hidden[name=nUseq]").val(uSeq);
 						};
-						
-						doSearch();
-						changeTab();
 					}
 					else
 					{
-						changeTab(tabPath);
+						$("#FORM_search input:hidden[name=nUseq]").val(getSeq());
 					};
+					
+					let tabPath = viewUserTab.tabPath;
+					
+					doSearch();
+					changeTab(tabPath);
 				}
 			});
 		}
@@ -833,14 +834,14 @@ $(document).ready(function() {
 		}
 		else
 		{
-			changeTab();	
+			changeTab();
 		};
 	});
 
 	function changeButtonStatus()
 	{
 		$(".AREA_moveToModifyUser, .AREA_modifyUser").css("display", "none");
-		
+
 		if (isOnForm())
 		{
 			$(".AREA_modifyUser").css("display", "block");
@@ -860,7 +861,7 @@ $(document).ready(function() {
 
 		viewUserTab.changeTab(tabPath);
 	};
-	
+
 	function isCreating()
 	{
 		if (isOnForm() && getSeq() == "")
@@ -870,7 +871,7 @@ $(document).ready(function() {
 
 		return false;
 	};
-	
+
 	function isOnForm()
 	{
 		return (viewUserTab.getPath().indexOf("modify") > -1) ? true : false;

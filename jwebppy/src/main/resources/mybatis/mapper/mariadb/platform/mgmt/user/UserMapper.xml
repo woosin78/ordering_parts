@@ -32,7 +32,7 @@
 				and a.u_seq=#{uSeq}
 			</if>
 			<if test="username != null and username != ''">
-				and upper(a.username)=upper(#{username})
+				and a.username=upper(#{username})
 			</if>
 		</where>
 	</select>
@@ -119,7 +119,7 @@
 
 	<insert id="insertUserAccount" parameterType="UserAccountEntity">
 		insert into pltf_user_account (u_seq, username, password, fg_account_locked, fg_password_locked, fg_no_use_password, from_valid, to_valid, reg_username, reg_date) values (
-			#{uSeq}, #{username}, #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
+			#{uSeq}, upper(#{username}), #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
