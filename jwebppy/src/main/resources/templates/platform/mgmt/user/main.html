@@ -483,7 +483,17 @@ $(document).ready(function() {
 											minCharacters: 2,
 											placeholder: "Search",
 											fullTextSearch: true
-										});									    
+										});
+										
+										$(".ui.tab[data-tab=authority] .ui.dropdown input.search").on("keydown", function(event) {
+											if (event.keyCode == 13)
+											{
+												if ($(".ui.tab[data-tab=authority] .ui.dropdown a.ui.label.transition.visible").length > 0)
+												{
+													$(".BTN_grant").trigger("click");	
+												};
+											};
+										});
 									};
 								}
 							});
@@ -791,6 +801,8 @@ $(document).ready(function() {
 				data: $("#FORM_modifyUser").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
+					let tabPath = viewUserTab.tabPath;
+					
 					if (JpUtilsString.isEmpty(getSeq()))
 					{
 						let uSeq = data.RESULT;
@@ -801,11 +813,14 @@ $(document).ready(function() {
 							
 							$("#FORM_search input:hidden[name=nUseq]").val(uSeq);
 						};
+						
+						doSearch();
+						changeTab();
+					}
+					else
+					{
+						changeTab(tabPath);
 					};
-					
-					doSearch();
-					
-					changeTab();
 				}
 			});
 		}

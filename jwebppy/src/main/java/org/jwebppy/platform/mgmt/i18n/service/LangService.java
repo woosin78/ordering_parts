@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.config.RedisConfig;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
@@ -16,6 +18,7 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangKindDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangSearchDto;
 import org.jwebppy.platform.mgmt.i18n.entity.LangDetailEntity;
 import org.jwebppy.platform.mgmt.i18n.entity.LangEntity;
+import org.jwebppy.platform.mgmt.i18n.entity.LangKindEntity;
 import org.jwebppy.platform.mgmt.i18n.mapper.LangMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -45,6 +48,11 @@ public class LangService extends MgmtGeneralService
 		if (langEntity == null)
 		{
 			langEntity = CmModelMapperUtils.map(lang, LangEntity.class);
+
+			if (CmStringUtils.isEmpty(langEntity.getSeq()))
+			{
+				langEntity.setSeq(Long.toString(System.currentTimeMillis()));
+			}
 
 			langMapper.insertLang(langEntity);
 
@@ -185,9 +193,35 @@ public class LangService extends MgmtGeneralService
 
 	public List<String> getBasenames()
 	{
-		List<String> basenames = new ArrayList<>();
-		basenames.add("PLTF");
+		List<LangKindEntity> langKinds = langMapper.findLangKinds(null);
 
-		return basenames;
+		if (CollectionUtils.isNotEmpty(langKinds))
+		{
+			List<String> basenames = new ArrayList<>();
+
+			for (LangKindEntity langKind: langKinds)
+			{
+				basenames.add(langKind.getBasename());
+			}
+
+			return basenames;
+		}
+
+		return null;
+	}
+
+	public String getDefaultLang(String basename)
+	{
+		LangKindDto pLangKind = new LangKindDto();
+		pLangKind.setBasename(PlatformCommonVo.DEFAULT_BASENAME);
+
+		List<LangKindEntity> langKinds = langMapper.findLangKinds(pLangKind);
+
+		if (CollectionUtils.isNotEmpty(langKinds))
+		{
+			return langKinds.get(0).getCode();
+		}
+
+		return null;
 	}
 }

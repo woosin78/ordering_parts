@@ -78,7 +78,7 @@ public class ContentAuthorityService extends GeneralService
 			cItemSearch.setName(cItemUserRl.getName());
 			cItemSearch.setType(PlatformCommonVo.ROLE);
 
-			List<CItemEntity> cItems = contentMapper.findAllCItems(cItemSearch);
+			List<CItemEntity> cItems = contentMapper.findCItems(cItemSearch);
 
 			if (CollectionUtils.isNotEmpty(cItems))
 			{
@@ -107,10 +107,24 @@ public class ContentAuthorityService extends GeneralService
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
+			String lang = cItemSearch.getLang();
+
+			if (CmStringUtils.isEmpty(lang))
+			{
+				if (UserAuthenticationUtils.isLogin())
+				{
+					lang = UserAuthenticationUtils.getUserDetails().getLanguage();
+				}
+				else
+				{
+					lang = langService.getDefaultLang(PlatformCommonVo.DEFAULT_BASENAME);
+				}
+			}
+
 			for (CItemDto cItem : cItems)
 			{
-				cItem.setName2(langService.getCItemText("PLTF", cItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
-				cItem.setSubCItems(getSubItems(cItem.getCSeq()));
+				cItem.setName2(langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, cItem.getCSeq(), lang));
+				cItem.setSubCItems(getSubItems(cItem.getCSeq(), lang));
 
 				hierarchy.add(cItem);
 			}
@@ -119,7 +133,7 @@ public class ContentAuthorityService extends GeneralService
 		return hierarchy;
 	}
 
-	private List<CItemDto> getSubItems(Integer cSeq)
+	private List<CItemDto> getSubItems(Integer cSeq, String lang)
 	{
 		List<CItemDto> cItems = new LinkedList<>();
 
@@ -137,8 +151,8 @@ public class ContentAuthorityService extends GeneralService
 
 				if (cSeq.equals(subCItem.getPSeq()))
 				{
-					subCItem.setName2(langService.getCItemText("PLTF", subCSeq, UserAuthenticationUtils.getUserDetails().getLanguage()));
-					subCItem.setSubCItems(getSubItems(subCSeq));
+					subCItem.setName2(langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, subCSeq, lang));
+					subCItem.setSubCItems(getSubItems(subCSeq, lang));
 
 					cItems.add(subCItem);
 				}

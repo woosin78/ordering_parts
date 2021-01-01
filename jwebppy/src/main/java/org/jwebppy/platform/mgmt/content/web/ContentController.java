@@ -153,11 +153,7 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object itemsHierarchy(@ModelAttribute CItemSearchDto cItemSearch)
 	{
-		//List<Map<String, Object>> items = new ArrayList<>();
-
-		List<Map<String, Object>> hierarchy = contentService.getCItemHierarchy2(cItemSearch);
-
-		return hierarchy;
+		return contentService.getCItemHierarchy2(cItemSearch);
 	}
 
 	@GetMapping("/component/entry_points")
@@ -203,7 +199,7 @@ public class ContentController extends ContentGeneralController
 			{
 				Map<String, Object> itemMap = new LinkedHashMap<>();
 				itemMap.put("KEY", subCItem.getCSeq());
-				itemMap.put("NAME", langService.getCItemText("PLTF", subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+				itemMap.put("NAME", langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 				itemMap.put("TYPE", subCItem.getType().toString());
 				itemMap.put("URL", subCItem.getUrl());
 				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getSubCItems()));
@@ -233,7 +229,25 @@ public class ContentController extends ContentGeneralController
 				{
 					Collections.reverse(breadcrumb);
 
-					return breadcrumb;
+					List<CItemDto> breadcrumb2 = new ArrayList<>();
+					breadcrumb2.add(breadcrumb.get(0));
+
+					for (int i=0, size=breadcrumb.size(); i<size; i++)
+					{
+						CItemDto cItem2 = breadcrumb.get(i);
+
+						for (int j=i; j<size; j++)
+						{
+							CItemDto cItems3 = breadcrumb.get(j);
+
+							if (cItem2.getPSeq().equals(cItems3.getCSeq()))
+							{
+								breadcrumb2.add(cItems3);
+							}
+						}
+					}
+
+					return breadcrumb2;
 				}
 			}
 		}
@@ -247,7 +261,7 @@ public class ContentController extends ContentGeneralController
 		{
 			for (CItemDto subCItem: cItem.getSubCItems())
 			{
-				if (!CmStringUtils.equals(PlatformCommonVo.PAGE, subCItem.getType()) && !CmStringUtils.equals(PlatformCommonVo.MEMU, subCItem.getType()))
+				if (CmStringUtils.notEquals(PlatformCommonVo.PAGE, subCItem.getType()) && CmStringUtils.notEquals(PlatformCommonVo.MEMU, subCItem.getType()))
 				{
 					continue;
 				}

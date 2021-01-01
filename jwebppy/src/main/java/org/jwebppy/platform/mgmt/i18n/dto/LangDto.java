@@ -27,7 +27,7 @@ public class LangDto extends GeneralDto implements IPagination
 
 	public String getMessageCode()
 	{
-		return CmStringUtils.trimToEmpty(type) + "_" + CmStringUtils.leftPad(seq, 4, "0");
+		return CmStringUtils.trimToEmpty(basename) + "_" + CmStringUtils.trimToEmpty(type) + "_" + CmStringUtils.leftPad(seq, 4, "0");
 	}
 
 	public String getDisplayType()

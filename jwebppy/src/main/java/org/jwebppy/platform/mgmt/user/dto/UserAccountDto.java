@@ -23,6 +23,7 @@ public class UserAccountDto extends GeneralDto implements Serializable
 	private Integer uSeq;
 	private String username;
 	private String password;
+	private String fgNoUsePassword = PlatformCommonVo.NO;
 	private String fgAccountLocked = PlatformCommonVo.NO;
 	private String fgPasswordLocked = PlatformCommonVo.NO;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
@@ -38,6 +39,11 @@ public class UserAccountDto extends GeneralDto implements Serializable
 	public String getDisplayToValid()
 	{
 		return CmDateFormatUtils.format(toValid);
+	}
+
+	public String getFgNoUsePassword()
+	{
+		return CmStringUtils.defaultString(fgNoUsePassword, PlatformCommonVo.NO);
 	}
 
 	public String getFgAccountLocked()

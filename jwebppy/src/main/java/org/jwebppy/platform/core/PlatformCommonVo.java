@@ -23,13 +23,20 @@ public class PlatformCommonVo
 	public static final String YES = "Y";
 	public static final String NO = "N";
 
+	//Delimiter to split
+	public static final String DELIMITER = "^";
+
 	//Content Type
 	public static final String PAGE = "P";
 	public static final String MEMU = "M";
 	public static final String ROLE = "R";
 	public static final String FOLDER = "F";
 
-	//Language Type
+	/** Language **/
+	//Default basename
+	public static final String DEFAULT_BASENAME = "PLTF";
+
+	//Type
 	public static final String LABEL = "LB";
 	public static final String BUTTON = "BTN";
 	public static final String TEXT = "TXT";

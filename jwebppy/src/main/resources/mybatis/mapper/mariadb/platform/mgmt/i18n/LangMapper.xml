@@ -168,10 +168,14 @@
 		select
 		*
 		from
-		pltf_lang_kind
+		pltf_lang_kind		
 		where
-		basename=#{basename}
-		and fg_delete='N'
+		fg_delete='N'
+		
+		<if test="basename != null">
+			and basename=#{basename}
+		</if>
+
 		order by fg_default desc, sort
 	</select>	
 

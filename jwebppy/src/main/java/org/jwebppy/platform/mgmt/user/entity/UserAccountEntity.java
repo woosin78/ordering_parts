@@ -17,6 +17,7 @@ public class UserAccountEntity extends GeneralEntity
 	private Integer uSeq;
 	private String username;
 	private String password;
+	private String fgNoUsePassword;
 	private String fgAccountLocked;
 	private String fgPasswordLocked;
 	private LocalDateTime fromValid;

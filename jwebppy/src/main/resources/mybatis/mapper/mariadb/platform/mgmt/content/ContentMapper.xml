@@ -109,7 +109,7 @@
 		order by a.sort
 	</select>
 	
-	<select id="findAllCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+	<select id="findCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
 		select
 		a.*
 		from
@@ -157,134 +157,6 @@
 	    order by a.sort, a.c_seq
 
 	</select>
-	
-	<!--
-	<select id="findAllItems" parameterType="CItemSearchDto" resultType="CItemEntity">
-		select
-		x.*
-		from
-		(
-		    select
-		    a.*
-		    from
-		    pltf_citem a
-		    where
-		    a.fg_delete='N'
-		    and a.from_valid <![CDATA[<]]> now() and a.to_valid <![CDATA[>=]]> now()
-		    
-		    <if test="type != null and type != ''">
-		    	and type=#{type}
-		    </if>
-		    
-			<if test="types != null">
-				<trim prefix="and">
-					<foreach collection="types" item="type" open="(" close=")" separator="or">
-						<if test="type != null and type != ''">
-							a.type=#{type}
-						</if>				
-					</foreach>				
-				</trim>
-			</if>
-
-			<if test="cSeqs != null">
-				<trim prefix="and">
-					<foreach collection="cSeqs" item="cSeq" open="(" close=")" separator="or">
-						<if test="cSeq != null">
-							a.c_seq=#{cSeq}
-						</if>				
-					</foreach>				
-				</trim>
-			</if>
-			
-			<if test="name != null and name != ''">
-				and a.name=#{name}
-			</if>			
-		) x
-		where
-		not exists (
-		    select
-		    1
-		    from
-		    pltf_citem
-		    where
-		    fg_delete='Y'
-		    start with c_seq=x.c_seq
-		    connect by prior p_seq=c_seq
-		)
-		order by x.name
-		
-	</select>
-	-->
-	
-	<!--
-	<select id="findCItemsHierarchy" parameterType="CItemSearchDto" resultType="CItemEntity">
-		select
-		a.*,
-		(
-		    select
-		    count(c_seq)
-		    from
-		    pltf_citem
-		    where
-		    fg_delete='N'
-		    
-		    <if test='fgVisible == "Y"'>
-		    	and fg_visible='Y'
-		    	and from_valid <![CDATA[<]]> now() and to_valid <![CDATA[>=]]> now()
-		    </if>
-		    
-		    start with c_seq=a.c_seq
-		    connect by prior c_seq=p_seq
-		) sub_item_count
-		from
-		(
-		    select
-		    a.*,
-		    level depth
-		    from
-		    pltf_citem a
-		    where
-		    a.fg_delete='N'
-		    
-		    <if test='fgVisible == "Y"'>
-		    	and a.fg_visible='Y'
-		    	and a.from_valid <![CDATA[<]]> now() and a.to_valid <![CDATA[>=]]> now()
-		    </if>		    
-		    
-		    <choose>
-			    <when test="pSeq == null">		    
-			    	start with a.p_seq is null
-			    </when>
-			    <when test="pSeq > 0">
-			    	start with a.p_seq=#{pSeq}
-			    </when>
-		    </choose>		    
-		    
-		    connect by prior c_seq=p_seq
-		    order siblings by a.sort
-		) a
-	</select>
-	
-	<select id="findHigherLevelCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
-		select
-		a.*
-		from
-		pltf_citem a
-
-		<where>		
-			<if test="types != null">
-				<foreach collection="types" item="type" open="(" close=")" separator="or">
-					<if test="type != null and type != ''">
-						a.type=#{type}
-					</if>				
-				</foreach>				
-			</if>		
-		</where>
-		
-		start with c_seq=(select c_seq from pltf_citem where entry_point=#{entryPoint})
-		connect by prior p_seq=c_seq	
-	</select>
-	-->
 	
 	<select id="findLang" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
 		select

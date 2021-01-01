@@ -17,6 +17,7 @@ public class LangEntity extends GeneralEntity implements IPagination
 {
 	private static final long serialVersionUID = -4634138279238831478L;
 	private Integer lSeq;
+	private String basename;
 	private String type;
 	private String seq;
 	private String fgDelete = PlatformCommonVo.NO;

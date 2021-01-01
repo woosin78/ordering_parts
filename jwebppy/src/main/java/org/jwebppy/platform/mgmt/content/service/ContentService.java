@@ -75,25 +75,25 @@ public class ContentService extends GeneralService
 
 	public List<CItemDto> getAllCItems(CItemSearchDto cItemSearch)
 	{
-		return CmModelMapperUtils.mapAll(contentMapper.findAllCItems(cItemSearch), CItemDto.class);
+		return CmModelMapperUtils.mapAll(contentMapper.findCItems(cItemSearch), CItemDto.class);
 	}
 
 	public List<CItemDto> getCItemHierarchy(CItemSearchDto cItemSearch)
 	{
-		List<CItemEntity> cItems = new ArrayList<>();
+		List<CItemDto> cItems = new ArrayList<>();
 
 		makeHierarchy(cItems, cItemSearch);
 
-		return CmModelMapperUtils.mapAll(cItems, CItemDto.class);
+		return cItems;
 	}
 
-	private void makeHierarchy(List<CItemEntity> cItems, CItemSearchDto cItemSearch)
+	private void makeHierarchy(List<CItemDto> cItems, CItemSearchDto cItemSearch)
 	{
-		List<CItemEntity> subCItems = contentMapper.findAllCItems(cItemSearch);
+		List<CItemDto> subCItems = getAllCItems(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(subCItems))
 		{
-			for (CItemEntity subCItem: subCItems)
+			for (CItemDto subCItem: subCItems)
 			{
 				cItems.add(subCItem);
 
@@ -120,7 +120,7 @@ public class ContentService extends GeneralService
 
 			itemMap.put("KEY", cItem.getCSeq());
 			itemMap.put("P_KEY", cItem.getPSeq());
-			itemMap.put("NAME", langService.getCItemText("PLTF", cItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+			itemMap.put("NAME", langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, cItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 			itemMap.put("TYPE", cItem.getType().getType());
 			itemMap.put("SUB_ITEMS", getSubItems(cItem.getCSeq()));
 
@@ -134,6 +134,7 @@ public class ContentService extends GeneralService
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setPSeq(pSeq);
+		cItemSearch.setFgVisible(PlatformCommonVo.YES);
 
 		List<CItemDto> subCItems = getAllCItems(cItemSearch);
 
@@ -147,7 +148,7 @@ public class ContentService extends GeneralService
 
 				itemMap.put("KEY", subCItem.getCSeq());
 				itemMap.put("P_KEY", subCItem.getPSeq());
-				itemMap.put("NAME", langService.getCItemText("PLTF", subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+				itemMap.put("NAME", langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 				itemMap.put("TYPE", subCItem.getType().getType());
 				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getCSeq()));
 

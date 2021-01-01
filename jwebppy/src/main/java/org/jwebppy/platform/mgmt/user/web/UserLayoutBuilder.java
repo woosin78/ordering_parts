@@ -143,6 +143,7 @@ public class UserLayoutBuilder
 		elementMap.put("Username", CmStringUtils.trimToEmpty(userAccount.getUsername()));
 		elementMap.put("Account Locked", CmStringUtils.trimToEmpty(userAccount.getFgAccountLocked()));
 		elementMap.put("Password Locked", CmStringUtils.trimToEmpty(userAccount.getFgPasswordLocked()));
+		elementMap.put("No Use Password", CmStringUtils.trimToEmpty(userAccount.getFgNoUsePassword()));
 		elementMap.put("Valid From", CmStringUtils.trimToEmpty(userAccount.getDisplayFromValid()));
 		elementMap.put("Valid To", CmStringUtils.trimToEmpty(userAccount.getDisplayToValid()));
 
@@ -165,6 +166,9 @@ public class UserLayoutBuilder
 
 		Element loFgPasswordLocked = new Checkbox("fgPasswordLocked", PlatformCommonVo.YES, userAccount.getFgPasswordLocked());
 		loFgPasswordLocked.setLabel("Password Locked");
+
+		Element loFgNoUsePassword = new Checkbox("fgNoUsePassword", PlatformCommonVo.YES, userAccount.getFgNoUsePassword());
+		loFgNoUsePassword.setLabel("No Use Password");
 
 		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(userAccount.getDisplayFromValid(), CmDateFormatUtils.now()));
 		loFromValid.setId("fromValid");
@@ -192,6 +196,7 @@ public class UserLayoutBuilder
 		document.addElement(loConfirmPassword);
 		document.addElement(loFgAccountLocked);
 		document.addElement(loFgPasswordLocked);
+		document.addElement(loFgNoUsePassword);
 		document.addElement(loFromValid);
 		document.addElement(loToValid);
 

@@ -41,20 +41,8 @@ public interface ContentMapper
 	@NoLogging
 	public List<CItemEntity> findMyItems(CItemSearchDto cItemSearch);
 
-	//@NoLogging
-	//public List<CItemEntity> findAllItems(CItemSearchDto cItemSearch);
-
 	@NoLogging
-	public List<CItemEntity> findAllCItems(CItemSearchDto cItemSearch);
-
-	/*
-	@Cacheable(value = RedisConfig.CITEM, key = "#cItemSearch", unless="#result == null")
-	@NoLogging
-	public List<CItemEntity> findCItemsHierarchy(CItemSearchDto cItemSearch);
-
-	@NoLogging
-	public List<CItemEntity> findHigherLevelCItems(CItemSearchDto cItemSearch);
-	*/
+	public List<CItemEntity> findCItems(CItemSearchDto cItemSearch);
 
 	@NoLogging
 	public List<CItemLangRlEntity> findLangs(CItemLangRlDto cItemLangRl);
