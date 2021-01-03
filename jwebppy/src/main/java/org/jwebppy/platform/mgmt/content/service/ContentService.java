@@ -73,7 +73,7 @@ public class ContentService extends GeneralService
 		return CmModelMapperUtils.map(contentMapper.findItem(cSeq), CItemDto.class);
 	}
 
-	public List<CItemDto> getAllCItems(CItemSearchDto cItemSearch)
+	public List<CItemDto> getCItems(CItemSearchDto cItemSearch)
 	{
 		return CmModelMapperUtils.mapAll(contentMapper.findCItems(cItemSearch), CItemDto.class);
 	}
@@ -89,7 +89,7 @@ public class ContentService extends GeneralService
 
 	private void makeHierarchy(List<CItemDto> cItems, CItemSearchDto cItemSearch)
 	{
-		List<CItemDto> subCItems = getAllCItems(cItemSearch);
+		List<CItemDto> subCItems = getCItems(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(subCItems))
 		{
@@ -110,7 +110,7 @@ public class ContentService extends GeneralService
 	{
 		List<Map<String, Object>> hierarchy = new LinkedList<>();
 
-		List<CItemDto> cItems =  getAllCItems(cItemSearch);
+		List<CItemDto> cItems =  getCItems(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
@@ -136,7 +136,7 @@ public class ContentService extends GeneralService
 		cItemSearch.setPSeq(pSeq);
 		cItemSearch.setFgVisible(PlatformCommonVo.YES);
 
-		List<CItemDto> subCItems = getAllCItems(cItemSearch);
+		List<CItemDto> subCItems = getCItems(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(subCItems))
 		{

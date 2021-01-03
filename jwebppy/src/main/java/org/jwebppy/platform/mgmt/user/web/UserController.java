@@ -92,7 +92,7 @@ public class UserController extends UserGeneralController
 			cItemSearch.setCSeqs(cSeqs);
 			cItemSearch.setFgVisible(PlatformCommonVo.YES);
 
-			cItems = contentService.getAllCItems(cItemSearch);
+			cItems = contentService.getCItems(cItemSearch);
 		}
 		else
 		{

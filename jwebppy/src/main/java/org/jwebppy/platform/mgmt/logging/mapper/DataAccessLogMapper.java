@@ -10,13 +10,11 @@ import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogParameterEntity;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@NoLogging
 public interface DataAccessLogMapper
 {
-	@NoLogging
 	public void insertDataAccessLog(DataAccessLogEntity dataAccessLog);
-	@NoLogging
 	public void insertDataAccessLogParameter(DataAccessLogParameterEntity dataAccessLogParameter);
-	@NoLogging
 	public void insertDataAccessLogParameterDetail(DataAccessLogParameterDetailEntity dataAccessLogParameterDetail);
 	public List<DataAccessLogEntity> findPageableLogs(DataAccessLogSearchDto dataAccessLogSearcg);
 	public DataAccessLogEntity findLog(Long dlSeq);

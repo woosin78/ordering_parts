@@ -67,7 +67,7 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object contents(@ModelAttribute CItemSearchDto cItemSearch)
 	{
-		return contentService.getAllCItems(cItemSearch);
+		return contentService.getCItems(cItemSearch);
 	}
 
 	@GetMapping("/{tabPath}")
