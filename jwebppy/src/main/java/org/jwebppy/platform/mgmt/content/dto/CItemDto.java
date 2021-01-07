@@ -1,6 +1,5 @@
 package org.jwebppy.platform.mgmt.content.dto;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,9 +16,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CItemDto extends GeneralDto implements Serializable
+public class CItemDto extends GeneralDto
 {
-	private static final long serialVersionUID = -901129428634147884L;
+	private static final long serialVersionUID = -7199501796641936242L;
 
 	private Integer cSeq;
 	private Integer pSeq;

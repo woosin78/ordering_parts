@@ -1,5 +1,6 @@
 package org.jwebppy.platform.core.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
@@ -13,8 +14,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class GeneralDto
+public class GeneralDto implements Serializable
 {
+	private static final long serialVersionUID = -2141681838401701675L;
+
 	protected String regUsername;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	protected LocalDateTime regDate;

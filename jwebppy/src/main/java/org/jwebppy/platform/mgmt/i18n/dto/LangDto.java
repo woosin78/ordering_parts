@@ -17,6 +17,8 @@ import lombok.ToString;
 @ToString
 public class LangDto extends GeneralDto implements IPagination
 {
+	private static final long serialVersionUID = 7599951691132553964L;
+
 	private Integer lSeq;
 	private String basename;
 	private String type;

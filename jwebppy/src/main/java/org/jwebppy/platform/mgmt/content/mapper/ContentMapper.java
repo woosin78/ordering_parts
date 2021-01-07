@@ -2,7 +2,7 @@ package org.jwebppy.platform.mgmt.content.mapper;
 
 import java.util.List;
 
-import org.jwebppy.config.RedisConfig;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.interceptor.NoLogging;
 import org.jwebppy.platform.mgmt.content.dto.CItemLangRlDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
@@ -13,28 +13,28 @@ import org.springframework.cache.annotation.CacheEvict;
 
 public interface ContentMapper
 {
-	@CacheEvict(value = RedisConfig.CITEM, allEntries = true)
+	@CacheEvict(value = PlatformConfigVo.CITEM, allEntries = true)
 	public int insert(CItemEntity cItem);
 
-	@CacheEvict(value = RedisConfig.CITEM, allEntries = true)
+	@CacheEvict(value = PlatformConfigVo.CITEM, allEntries = true)
 	public int insertCItemUserRl(CItemUserRlEntity cItemUserRl);
 
-	@CacheEvict(value = RedisConfig.CITEM, allEntries = true)
+	@CacheEvict(value = PlatformConfigVo.CITEM, allEntries = true)
 	public int insertCItemLangRl(CItemLangRlEntity cItemLangRl);
 
-	@CacheEvict(value = RedisConfig.CITEM, allEntries = true)
+	@CacheEvict(value = PlatformConfigVo.CITEM, allEntries = true)
 	public int update(CItemEntity cItem);
 
-	@CacheEvict(value = RedisConfig.CITEM, allEntries = true)
+	@CacheEvict(value = PlatformConfigVo.CITEM, allEntries = true)
 	public int updateFgDelete(CItemEntity cItem);
 
-	@CacheEvict(value = RedisConfig.CITEM, allEntries = true)
+	@CacheEvict(value = PlatformConfigVo.CITEM, allEntries = true)
 	public int updateCItemLangRl(CItemLangRlEntity cItemLangRl);
 
-	@CacheEvict(value = RedisConfig.CITEM, allEntries = true)
+	@CacheEvict(value = PlatformConfigVo.CITEM, allEntries = true)
 	public int updateFgDeleteOfCItemUserRl(CItemUserRlEntity cItemUserRl);
 
-	@CacheEvict(value = RedisConfig.CITEM, allEntries = true)
+	@CacheEvict(value = PlatformConfigVo.CITEM, allEntries = true)
 	@NoLogging
 	public CItemEntity findItem(Integer cSeq);
 

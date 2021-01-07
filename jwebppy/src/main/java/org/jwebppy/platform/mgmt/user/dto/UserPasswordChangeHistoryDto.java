@@ -11,6 +11,8 @@ import lombok.ToString;
 @ToString
 public class UserPasswordChangeHistoryDto extends GeneralDto
 {
+	private static final long serialVersionUID = 4033181503111344831L;
+
 	private Integer uSeq;
 	private String oldPassword;
 	private String reason;

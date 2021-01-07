@@ -1,6 +1,5 @@
 package org.jwebppy.platform.mgmt.user.dto;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 import org.jwebppy.platform.core.dto.GeneralDto;
@@ -15,9 +14,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class UserContactInfoDto extends GeneralDto implements Serializable
+public class UserContactInfoDto extends GeneralDto
 {
-	private static final long serialVersionUID = -809245644363657970L;
+	private static final long serialVersionUID = -294539770292481386L;
 
 	private Integer uSeq;
 	private String email;

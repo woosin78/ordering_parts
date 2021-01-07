@@ -14,7 +14,7 @@ import lombok.ToString;
 @ToString
 public class GeneralEntity implements Serializable
 {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 8736258968068994440L;
 
 	protected String regUsername;
 	protected LocalDateTime regDate;

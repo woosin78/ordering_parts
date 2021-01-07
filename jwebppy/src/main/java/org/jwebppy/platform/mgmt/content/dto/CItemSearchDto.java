@@ -13,6 +13,8 @@ import lombok.ToString;
 @ToString
 public class CItemSearchDto extends GeneralDto
 {
+	private static final long serialVersionUID = 8595296313056450072L;
+
 	private Integer cSeq;
 	private Integer pSeq;
 	private Integer uSeq;

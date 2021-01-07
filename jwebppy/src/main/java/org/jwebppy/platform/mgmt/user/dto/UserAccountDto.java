@@ -1,6 +1,5 @@
 package org.jwebppy.platform.mgmt.user.dto;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
@@ -16,9 +15,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class UserAccountDto extends GeneralDto implements Serializable
+public class UserAccountDto extends GeneralDto
 {
-	private static final long serialVersionUID = 7248657835333051815L;
+	private static final long serialVersionUID = 3024758174943861755L;
 
 	private Integer uSeq;
 	private String username;

@@ -12,6 +12,8 @@ import lombok.ToString;
 @ToString
 public class LangKindDto extends GeneralDto
 {
+	private static final long serialVersionUID = -8395137382255893L;
+
 	private Integer lkSeq;
 	private String basename;
 	private String name;

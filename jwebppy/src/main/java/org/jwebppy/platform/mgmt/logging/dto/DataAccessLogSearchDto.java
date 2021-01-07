@@ -17,6 +17,8 @@ import lombok.ToString;
 @ToString
 public class DataAccessLogSearchDto extends GeneralDto implements IPagination
 {
+	private static final long serialVersionUID = -725671527598308026L;
+
 	private Integer dlSeq;
 	private String type;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)

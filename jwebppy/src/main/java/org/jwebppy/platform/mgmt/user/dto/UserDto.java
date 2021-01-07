@@ -1,6 +1,5 @@
 package org.jwebppy.platform.mgmt.user.dto;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,9 +15,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserDto extends GeneralDto implements IPagination, Serializable
+public class UserDto extends GeneralDto implements IPagination
 {
-	private static final long serialVersionUID = 7432904918300441795L;
+	private static final long serialVersionUID = -3480128973325366274L;
 
 	private Integer uSeq;
 	private String firstName;
