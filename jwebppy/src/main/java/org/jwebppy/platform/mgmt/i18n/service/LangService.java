@@ -188,7 +188,7 @@ public class LangService extends MgmtGeneralService
 			return langDetails.get(0).getText();
 		}
 
-		return contentService.getItem(cSeq).getName();
+		return contentService.getCItem(cSeq).getName();
 	}
 
 	public List<String> getBasenames()

@@ -29,6 +29,7 @@ public class CItemDto extends GeneralDto
 	private String entryPoint;
 	private String parameter;
 	private int sort = -1;
+	private String fgPopup = PlatformCommonVo.NO;
 	private String fgVisible = PlatformCommonVo.NO;
 	private String fgDelete = PlatformCommonVo.NO;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
@@ -62,15 +63,20 @@ public class CItemDto extends GeneralDto
 		return CmDateFormatUtils.format(toValid);
 	}
 
-	public String getFgVisible()
-	{
-		return CmStringUtils.defaultString(fgVisible, PlatformCommonVo.NO);
-	}
-
-	public String getFgDelete()
-	{
-		return CmStringUtils.defaultString(fgDelete, PlatformCommonVo.NO);
-	}
+//	public String getFgPopup()
+//	{
+//		return CmStringUtils.defaultString(fgPopup, PlatformCommonVo.NO);
+//	}
+//
+//	public String getFgVisible()
+//	{
+//		return CmStringUtils.defaultString(fgVisible, PlatformCommonVo.NO);
+//	}
+//
+//	public String getFgDelete()
+//	{
+//		return CmStringUtils.defaultString(fgDelete, PlatformCommonVo.NO);
+//	}
 
 	public String getUrl()
 	{

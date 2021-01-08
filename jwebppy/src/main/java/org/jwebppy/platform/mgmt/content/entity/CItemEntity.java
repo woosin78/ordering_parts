@@ -3,7 +3,6 @@ package org.jwebppy.platform.mgmt.content.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.entity.GeneralEntity;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
 
@@ -26,8 +25,9 @@ public class CItemEntity extends GeneralEntity
 	private String entryPoint;
 	private String parameter;
 	private int sort;
+	private String fgPopup;
 	private String fgVisible;
-	private String fgDelete = PlatformCommonVo.NO;
+	private String fgDelete;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
 	private Integer lSeq;

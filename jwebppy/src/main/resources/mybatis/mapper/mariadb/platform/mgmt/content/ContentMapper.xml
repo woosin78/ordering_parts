@@ -3,8 +3,8 @@
 
 <mapper namespace="org.jwebppy.platform.mgmt.content.mapper.ContentMapper">
 	<insert id="insert" parameterType="CItemEntity" useGeneratedKeys="true" keyProperty="cSeq">
-		insert into pltf_citem (p_seq, type, name, description, component, entry_point, parameter, sort, fg_visible, fg_delete, from_valid, to_valid, reg_username, reg_date) values (
-			#{pSeq}, #{type}, #{name}, #{description}, #{component}, #{entryPoint}, #{parameter}, #{sort}, #{fgVisible}, #{fgDelete}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
+		insert into pltf_citem (p_seq, type, name, description, component, entry_point, parameter, sort, fg_popup, fg_visible, fg_delete, from_valid, to_valid, reg_username, reg_date) values (
+			#{pSeq}, #{type}, #{name}, #{description}, #{component}, #{entryPoint}, #{parameter}, #{sort}, #{fgPopup}, #{fgVisible}, #{fgDelete}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -55,7 +55,7 @@
 		u_seq=#{uSeq}
 	</update>
 
-	<select id="findItem" parameterType="Integer" resultType="CItemEntity">
+	<select id="findCItem" parameterType="Integer" resultType="CItemEntity">
 		select
 		*
 		from
@@ -73,7 +73,7 @@
 		</where>		
 	</select>
 
-	<select id="findMyItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+	<select id="findMyCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
 		select
 		a.*
 		from
@@ -157,6 +157,21 @@
 	    order by a.sort, a.c_seq
 
 	</select>
+	
+	<select id="findPageCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+		<include refid="PaginationMapper.header">
+			<property name="orderBy" value="order by c_seq desc"/>
+		</include>	
+	
+		select
+		a.*
+		from
+		pltf_citem a
+		where
+		a.fg_delete='N'
+		
+		<include refid="PaginationMapper.footer"/>
+	</select>	
 	
 	<select id="findLang" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
 		select

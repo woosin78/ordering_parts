@@ -17,24 +17,36 @@ public interface UserMapper
 {
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int insertUser(UserEntity userEntity);
+
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int insertUserAccount(UserAccountEntity userAccount);
+
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int insertUserContactInfo(UserContactInfoEntity userContactInfo);
+
 	public int insertUserPasswordChangeHistory(UserPasswordChangeHistoryEntity userPasswordChangeHistory);
+
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int updateUser(UserEntity user);
+
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int updateUserAccount(UserAccountEntity userAccount);
+
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int updateUserContactInfo(UserContactInfoEntity userContactInfo);
+
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int updateFgAccountLocked(UserAccountEntity userAccount);
+
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int updateFgDelete(UserEntity userEntity);
+
 	@Cacheable(value = CacheConfig.USER, key = "#userSearch", unless="#result == null")
 	public UserEntity findUser(UserSearchDto userSearch);
+
 	public UserAccountEntity findUserAccount(int seq);
+
 	public UserContactInfoEntity findUserContactInfo(int seq);
-	public List<UserEntity> findUsers(UserSearchDto userSearch);
+
+	public List<UserEntity> findPageUsers(UserSearchDto userSearch);
 }

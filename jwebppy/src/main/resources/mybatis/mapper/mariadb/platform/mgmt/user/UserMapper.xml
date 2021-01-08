@@ -55,7 +55,7 @@
 		u_seq=#{uSeq}
 	</select>		
 	
-	<select id="findUsers" parameterType="UserSearchDto" resultMap="userEntityMap">
+	<select id="findPageUsers" parameterType="UserSearchDto" resultMap="userEntityMap">
 		<include refid="PaginationMapper.header">
 			<property name="orderBy" value="order by u_seq desc"/>
 		</include>
@@ -105,8 +105,6 @@
 
 		</where>
 		
-		order by a.u_seq desc
-
 		<include refid="PaginationMapper.footer"/>
 	</select>
 	

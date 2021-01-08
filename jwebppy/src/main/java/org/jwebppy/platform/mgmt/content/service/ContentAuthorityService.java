@@ -103,7 +103,7 @@ public class ContentAuthorityService extends GeneralService
 	{
 		List<CItemDto> hierarchy = new LinkedList<>();
 
-		List<CItemDto> cItems = CmModelMapperUtils.mapAll(contentMapper.findMyItems(cItemSearch), CItemDto.class);
+		List<CItemDto> cItems = CmModelMapperUtils.mapAll(contentMapper.findMyCItems(cItemSearch), CItemDto.class);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{

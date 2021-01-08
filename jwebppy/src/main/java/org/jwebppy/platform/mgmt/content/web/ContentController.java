@@ -76,7 +76,7 @@ public class ContentController extends ContentGeneralController
 	{
 		if ("general".equals(tabPath))
 		{
-			return ContentLayoutBuilder.getGeneralInfo(contentService.getItem(cItemSearch.getCSeq()));
+			return ContentLayoutBuilder.getGeneralInfo(contentService.getCItem(cItemSearch.getCSeq()));
 		}
 		else
 		{
@@ -100,6 +100,13 @@ public class ContentController extends ContentGeneralController
 		return Document.EMPTY;
 	}
 
+	@PostMapping("/save/{tabPath}")
+	@ResponseBody
+	public Object save(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemDto cItem)
+	{
+		return contentService.save(cItem);
+	}
+
 	@GetMapping("/modify/{tabPath}")
 	@ResponseBody
 	public Object modify(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto cItemSearch)
@@ -108,17 +115,17 @@ public class ContentController extends ContentGeneralController
 
 		if (cItemSearch.getCSeq() != null)
 		{
-			cItem = contentService.getItem(cItemSearch.getCSeq());
+			cItem = contentService.getCItem(cItemSearch.getCSeq());
 		}
 
 		return ContentLayoutBuilder.getGeneralInfoForm(cItem, getComponents(), getEntryPoints(cItem.getComponent()));
 	}
 
-	@PostMapping("/save/{tabPath}")
+	@PostMapping("/delete")
 	@ResponseBody
-	public Object save(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemDto cItem)
+	public Object delete(@RequestParam("cSeq") Integer cSeq)
 	{
-		return contentService.save(cItem);
+		return contentService.delete(cSeq);
 	}
 
 	@PostMapping("/lang/save")
@@ -140,13 +147,6 @@ public class ContentController extends ContentGeneralController
 		}
 
 		return null;
-	}
-
-	@PostMapping("/delete")
-	@ResponseBody
-	public Object delete(@RequestParam("cSeq") Integer cSeq)
-	{
-		return contentService.delete(cSeq);
 	}
 
 	@GetMapping("/tree")

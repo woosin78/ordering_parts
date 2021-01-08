@@ -68,14 +68,19 @@ public class ContentService extends GeneralService
 		return contentMapper.updateFgDelete(cItem);
 	}
 
-	public CItemDto getItem(Integer cSeq)
+	public CItemDto getCItem(Integer cSeq)
 	{
-		return CmModelMapperUtils.map(contentMapper.findItem(cSeq), CItemDto.class);
+		return CmModelMapperUtils.map(contentMapper.findCItem(cSeq), CItemDto.class);
 	}
 
 	public List<CItemDto> getCItems(CItemSearchDto cItemSearch)
 	{
 		return CmModelMapperUtils.mapAll(contentMapper.findCItems(cItemSearch), CItemDto.class);
+	}
+
+	public List<CItemDto> getPageableCItems(CItemSearchDto cItemSearch)
+	{
+		return CmModelMapperUtils.mapAll(contentMapper.findPageCItems(cItemSearch), CItemDto.class);
 	}
 
 	public List<CItemDto> getCItemHierarchy(CItemSearchDto cItemSearch)
@@ -110,7 +115,7 @@ public class ContentService extends GeneralService
 	{
 		List<Map<String, Object>> hierarchy = new LinkedList<>();
 
-		List<CItemDto> cItems =  getCItems(cItemSearch);
+		List<CItemDto> cItems = getCItems(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
@@ -134,7 +139,7 @@ public class ContentService extends GeneralService
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setPSeq(pSeq);
-		cItemSearch.setFgVisible(PlatformCommonVo.YES);
+		//cItemSearch.setFgVisible(PlatformCommonVo.YES);
 
 		List<CItemDto> subCItems = getCItems(cItemSearch);
 
@@ -163,6 +168,6 @@ public class ContentService extends GeneralService
 
 	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)
 	{
-		return CmModelMapperUtils.mapAll(contentMapper.findMyItems(cItemSearch), CItemDto.class);
+		return CmModelMapperUtils.mapAll(contentMapper.findMyCItems(cItemSearch), CItemDto.class);
 	}
 }

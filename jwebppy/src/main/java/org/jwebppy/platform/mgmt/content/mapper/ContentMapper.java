@@ -36,13 +36,16 @@ public interface ContentMapper
 
 	@CacheEvict(value = CacheConfig.CITEM, allEntries = true)
 	@NoLogging
-	public CItemEntity findItem(Integer cSeq);
+	public CItemEntity findCItem(Integer cSeq);
 
 	@NoLogging
-	public List<CItemEntity> findMyItems(CItemSearchDto cItemSearch);
+	public List<CItemEntity> findMyCItems(CItemSearchDto cItemSearch);
 
 	@NoLogging
 	public List<CItemEntity> findCItems(CItemSearchDto cItemSearch);
+
+	@NoLogging
+	public List<CItemEntity> findPageCItems(CItemSearchDto cItemSearch);
 
 	@NoLogging
 	public List<CItemLangRlEntity> findLangs(CItemLangRlDto cItemLangRl);

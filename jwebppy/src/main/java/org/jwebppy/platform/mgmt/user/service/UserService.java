@@ -219,7 +219,7 @@ public class UserService extends GeneralService
 
 	public List<UserDto> getPageableUsers(UserSearchDto userSearch)
 	{
-		return CmModelMapperUtils.mapAll(userMapper.findUsers(userSearch), UserDto.class);
+		return CmModelMapperUtils.mapAll(userMapper.findPageUsers(userSearch), UserDto.class);
 	}
 
 	@Transactional
