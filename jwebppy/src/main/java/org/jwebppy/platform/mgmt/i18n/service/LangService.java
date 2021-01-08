@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
@@ -114,7 +114,7 @@ public class LangService extends MgmtGeneralService
 		return getLangDetailByCode(key, UserAuthenticationUtils.getUserDetails().getLanguage()).getText();
 	}
 
-	@Cacheable(value = PlatformConfigVo.LANG, key = "{#key, #locale}", unless="#result == null")
+	@Cacheable(value = CacheConfig.LANG, key = "{#key, #locale}", unless="#result == null")
 	public LangDetailDto getLangDetailByCode(String key, String locale)
 	{
 		String[] codes = key.split("_");
@@ -168,7 +168,7 @@ public class LangService extends MgmtGeneralService
 		return CmModelMapperUtils.mapAll(langMapper.findLangKinds(langKind), LangKindDto.class);
 	}
 
-	@Cacheable(value = PlatformConfigVo.LANG, key = "{#basename, #cSeq, #lang}", unless="#result == null")
+	@Cacheable(value = CacheConfig.LANG, key = "{#basename, #cSeq, #lang}", unless="#result == null")
 	public String getCItemText(String basename, Integer cSeq, String lang)
 	{
 		if (basename == null || cSeq == null)

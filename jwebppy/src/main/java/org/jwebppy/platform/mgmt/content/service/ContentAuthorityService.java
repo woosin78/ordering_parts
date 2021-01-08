@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -98,7 +98,7 @@ public class ContentAuthorityService extends GeneralService
 		return 0;
 	}
 
-	@Cacheable(value = PlatformConfigVo.CITEM, key = "#cItemSearch", unless="#result == null")
+	@Cacheable(value = CacheConfig.CITEM, key = "#cItemSearch", unless="#result == null")
 	public List<CItemDto> getMyItemHierarchy(CItemSearchDto cItemSearch)
 	{
 		List<CItemDto> hierarchy = new LinkedList<>();

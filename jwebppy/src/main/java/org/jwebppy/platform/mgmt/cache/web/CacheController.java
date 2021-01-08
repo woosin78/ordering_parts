@@ -1,6 +1,6 @@
 package org.jwebppy.platform.mgmt.cache.web;
 
-import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.mgmt.MgmtGeneralController;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;
@@ -16,9 +16,9 @@ public class CacheController extends MgmtGeneralController
 	@ResponseBody
 	@Caching(
 			evict = {
-					@CacheEvict (value = PlatformConfigVo.LANG, allEntries = true),
-					@CacheEvict (value = PlatformConfigVo.CITEM, allEntries = true),
-					@CacheEvict (value = PlatformConfigVo.USER, allEntries = true)
+					@CacheEvict (value = CacheConfig.LANG, allEntries = true),
+					@CacheEvict (value = CacheConfig.CITEM, allEntries = true),
+					@CacheEvict (value = CacheConfig.USER, allEntries = true)
 			})
 	public Object resetAll()
 	{
