@@ -49,4 +49,6 @@ public interface UserMapper
 	public UserContactInfoEntity findUserContactInfo(int seq);
 
 	public List<UserEntity> findPageUsers(UserSearchDto userSearch);
+
+	public List<UserEntity> findUsersInCItem(UserSearchDto userSearch);
 }

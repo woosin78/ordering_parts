@@ -48,5 +48,8 @@ public interface ContentMapper
 	public List<CItemEntity> findPageCItems(CItemSearchDto cItemSearch);
 
 	@NoLogging
+	public List<CItemEntity> findCItemAuthorities(CItemSearchDto cItemSearch);
+
+	@NoLogging
 	public List<CItemLangRlEntity> findLangs(CItemLangRlDto cItemLangRl);
 }

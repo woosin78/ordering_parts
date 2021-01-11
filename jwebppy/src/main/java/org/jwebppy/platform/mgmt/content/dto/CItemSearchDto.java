@@ -29,4 +29,5 @@ public class CItemSearchDto extends GeneralDto
 	private List<Integer> cSeqs;
 	private String entryPoint;
 	private String lang;
+	private String query;
 }

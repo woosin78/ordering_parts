@@ -22,92 +22,6 @@
 		<association property="userContactInfo" foreignColumn="u_seq" column="u_seq" javaType="UserContactInfoEntity" select="findUserContactInfo" />
 	</resultMap>
 	
-	<select id="findUser" parameterType="UserSearchDto" resultMap="userEntityMap">
-		select
-		a.*
-		from
-		vw_pltf_user a
-		<where>
-			<if test="uSeq != null">
-				and a.u_seq=#{uSeq}
-			</if>
-			<if test="username != null and username != ''">
-				and a.username=upper(#{username})
-			</if>
-		</where>
-	</select>
-	
-	<select id="findUserAccount" resultType="UserAccountEntity" parameterType="Integer">
-		select
-		*
-		from
-		pltf_user_account
-		where
-		u_seq=#{uSeq}
-	</select>
-	
-	<select id="findUserContactInfo" resultType="UserContactInfoEntity" parameterType="Integer">
-		select 
-		*
-		from
-		pltf_user_contact_info
-		where
-		u_seq=#{uSeq}
-	</select>		
-	
-	<select id="findPageUsers" parameterType="UserSearchDto" resultMap="userEntityMap">
-		<include refid="PaginationMapper.header">
-			<property name="orderBy" value="order by u_seq desc"/>
-		</include>
-
-		select
-		a.*,
-		b.email,
-		b.tel1,
-		b.tel2,
-		b.tel3,
-		b.mobile1,
-		b.mobile2,
-		b.mobile3,
-		b.fax1,
-		b.fax2,
-		b.fax3,
-		b.zipcode,
-		b.city,
-		b.state,
-		b.country,
-		b.timezone
-		from
-		vw_pltf_user a
-		left outer
-		join pltf_user_contact_info b
-		on a.u_seq=b.u_seq
-		
-		<where>
-			<trim prefix="(" suffix=")" prefixOverrides="or">
-				<if test="query != null and query != ''">
-					a.username like concat('%', upper(trim(#{query})), '%')
-					or upper(a.last_name) like concat('%', upper(trim(#{query})), '%')
-					or upper(a.first_name) like concat('%', upper(trim(#{query})), '%')
-					or upper(b.email) like concat('%', upper(trim(#{query})), '%')
-				</if>
-				
-				<if test="nUseq != null and nUseq != ''">
-					or a.u_seq=#{nUseq}
-				</if>			
-			</trim>
-			
-			<trim prefixOverrides="and">
-				<if test="username != null and username != ''">			
-					and a.username like concat('%', upper(trim(#{username})), '%')
-				</if>			
-			</trim>
-
-		</where>
-		
-		<include refid="PaginationMapper.footer"/>
-	</select>
-	
 	<insert id="insertUser" parameterType="UserEntity" useGeneratedKeys="true" keyProperty="uSeq">
 		insert into pltf_user (first_name, last_name, en_first_name, en_last_name, company, organization, department, position, language, fg_delete, reg_username, reg_date) values
 		(
@@ -214,4 +128,107 @@
 		where
 			u_seq=#{uSeq}
 	</update>
+
+	<select id="findUser" parameterType="UserSearchDto" resultMap="userEntityMap">
+		select
+		a.*
+		from
+		vw_pltf_user a
+		<where>
+			<if test="uSeq != null">
+				and a.u_seq=#{uSeq}
+			</if>
+			<if test="username != null and username != ''">
+				and a.username=upper(#{username})
+			</if>
+		</where>
+	</select>
+	
+	<select id="findUserAccount" resultType="UserAccountEntity" parameterType="Integer">
+		select
+		*
+		from
+		pltf_user_account
+		where
+		u_seq=#{uSeq}
+	</select>
+	
+	<select id="findUserContactInfo" resultType="UserContactInfoEntity" parameterType="Integer">
+		select 
+		*
+		from
+		pltf_user_contact_info
+		where
+		u_seq=#{uSeq}
+	</select>		
+	
+	<select id="findPageUsers" parameterType="UserSearchDto" resultMap="userEntityMap">
+		<include refid="PaginationMapper.header">
+			<property name="orderBy" value="order by u_seq desc"/>
+		</include>
+
+		select
+		a.*,
+		b.email,
+		b.tel1,
+		b.tel2,
+		b.tel3,
+		b.mobile1,
+		b.mobile2,
+		b.mobile3,
+		b.fax1,
+		b.fax2,
+		b.fax3,
+		b.zipcode,
+		b.city,
+		b.state,
+		b.country,
+		b.timezone
+		from
+		vw_pltf_user a
+		left outer
+		join pltf_user_contact_info b
+		on a.u_seq=b.u_seq
+		
+		<where>
+			<trim prefix="(" suffix=")" prefixOverrides="or">
+				<if test="query != null and query != ''">
+					a.username like concat('%', upper(trim(#{query})), '%')
+					or upper(a.last_name) like concat('%', upper(trim(#{query})), '%')
+					or upper(a.first_name) like concat('%', upper(trim(#{query})), '%')
+					or upper(b.email) like concat('%', upper(trim(#{query})), '%')
+				</if>
+				
+				<if test="nUseq != null and nUseq != ''">
+					or a.u_seq=#{nUseq}
+				</if>			
+			</trim>
+			
+			<trim prefixOverrides="and">
+				<if test="username != null and username != ''">			
+					and a.username like concat('%', upper(trim(#{username})), '%')
+				</if>			
+			</trim>
+
+		</where>
+		
+		<include refid="PaginationMapper.footer"/>
+	</select>
+
+	<select id="findUsersInCItem" parameterType="UserSearchDto" resultMap="userEntityMap">
+		select
+		c.*
+		from
+		pltf_citem a,
+		pltf_citem_user_rl b,
+		pltf_user c
+		where
+		a.c_seq=#{cSeq}
+		and a.fg_delete='N'
+		and a.c_seq=b.c_seq
+		and b.fg_delete='N'
+		and b.u_seq=c.u_seq
+		and c.fg_delete='N'
+	</select>
+	
 </mapper>

@@ -48,8 +48,8 @@
 	$(document).ready(function() {
 		JpUiCalendar.rangeCalendar($("#fromDate"), $("#toDate"), JpUiCalendar.defaultCalendarSettings(false));
 		
-		var table = new JpUiTable($("#TBL_list"));
-		table.settings = {
+		let listTable = new JpUiTable($("#TBL_list"));
+		listTable.settings = {
 				ajax: {
 					url: JpUiGlobal.url("/platform/mgmt/user/login/history/histories"),
 					form: $("#FORM_search")
@@ -74,7 +74,7 @@
 		function doSearch(pageNumber)
 		{
 			$("#FORM_search input[name=pageNumber]:hidden").val(JpUtilsString.defaultString(pageNumber, "1"));
-			table.load();
+			listTable.load();
 		};	
 		
 		doSearch();

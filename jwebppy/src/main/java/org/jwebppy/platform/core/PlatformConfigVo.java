@@ -17,7 +17,7 @@ public class PlatformConfigVo
 	public final static int FORM_LOGIN_PASSWORD_FAIL_LIMIT_COUNT = 5;
 
 	//Authorization
-	public final static String ROLE_SUPER_ADMIN = "PLTF_SUPER_ADMIN";
+	public final static String ROLE_PLTF_ADMIN = "PLTF_ADMIN";
 
 	//Key
 	public final static String REQUEST_MDC_UUID_TOKEN_KEY = "RUID";

@@ -7,6 +7,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
@@ -16,7 +17,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CItemDto extends GeneralDto
+public class CItemDto extends GeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -7199501796641936242L;
 

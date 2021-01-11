@@ -115,6 +115,8 @@ public class ContentService extends GeneralService
 	{
 		List<Map<String, Object>> hierarchy = new LinkedList<>();
 
+		cItemSearch.setTypes(new String[] {PlatformCommonVo.FOLDER, PlatformCommonVo.ROLE, PlatformCommonVo.MEMU, PlatformCommonVo.PAGE});
+
 		List<CItemDto> cItems = getCItems(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
@@ -139,7 +141,7 @@ public class ContentService extends GeneralService
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setPSeq(pSeq);
-		//cItemSearch.setFgVisible(PlatformCommonVo.YES);
+		cItemSearch.setTypes(new String[] {PlatformCommonVo.FOLDER, PlatformCommonVo.ROLE, PlatformCommonVo.MEMU, PlatformCommonVo.PAGE});
 
 		List<CItemDto> subCItems = getCItems(cItemSearch);
 
@@ -169,5 +171,10 @@ public class ContentService extends GeneralService
 	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)
 	{
 		return CmModelMapperUtils.mapAll(contentMapper.findMyCItems(cItemSearch), CItemDto.class);
+	}
+
+	public List<CItemDto> findCItemAuthorities(CItemSearchDto cItemSearch)
+	{
+		return CmModelMapperUtils.mapAll(contentMapper.findCItemAuthorities(cItemSearch), CItemDto.class);
 	}
 }

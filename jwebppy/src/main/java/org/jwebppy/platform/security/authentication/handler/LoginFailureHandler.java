@@ -61,7 +61,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 			CItemSearchDto cItemSearch = new CItemSearchDto();
 			cItemSearch.setUsername(username);
 			cItemSearch.setType(PlatformCommonVo.ROLE);
-			cItemSearch.setName(PlatformConfigVo.ROLE_SUPER_ADMIN);
+			cItemSearch.setName(PlatformConfigVo.ROLE_PLTF_ADMIN);
 
 			List<CItemDto> cItems = contentService.getMyItems(cItemSearch);
 

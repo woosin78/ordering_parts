@@ -71,6 +71,71 @@ public class UserService extends GeneralService
 		return userMapper.insertUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
 	}
 
+	@Transactional
+	public int createUserByCopy(Map<String, String> paramMap)
+	{
+		Integer sourceUSeq = new Integer(paramMap.get("uSeq"));
+
+		UserSearchDto userSearch = new UserSearchDto();
+		userSearch.setUSeq(sourceUSeq);
+
+		UserDto user = getUser(userSearch);
+		user.setFirstName(CmStringUtils.trimToEmpty(paramMap.get("firstName")));
+		user.setLastName(CmStringUtils.trimToEmpty(paramMap.get("lastName")));
+		user.setUSeq(null);
+		user.setModDate(null);
+		user.setModUsername(null);
+
+		Integer uSeq = saveUser(user);
+
+		UserAccountDto userAccount = user.getUserAccount();
+		userAccount.setUSeq(uSeq);
+		userAccount.setUsername(CmStringUtils.trimToEmpty(paramMap.get("username")));
+		userAccount.setPassword(CmStringUtils.trimToEmpty(paramMap.get("password")));
+		userAccount.setFgAccountLocked(PlatformCommonVo.NO);
+		userAccount.setFgPasswordLocked(PlatformCommonVo.YES);
+		userAccount.setModDate(null);
+		userAccount.setModUsername(null);
+
+		saveUserAccount(userAccount);
+
+		UserContactInfoDto userContactInfo = user.getUserContactInfo();
+		userContactInfo.setUSeq(uSeq);
+		userContactInfo.setModDate(null);
+		userContactInfo.setModUsername(null);
+
+		saveUserContactInfo(userContactInfo);
+
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setUSeq(sourceUSeq);
+		cItemSearch.setFgVisible(PlatformCommonVo.ALL);
+
+		List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
+
+		if (CollectionUtils.isNotEmpty(cItems))
+		{
+			List<Integer> cSeqs = new ArrayList<>();
+
+			for (CItemDto cItem : cItems)
+			{
+				if (CmStringUtils.equals(cItem.getFgDelete(), PlatformCommonVo.YES))
+				{
+					continue;
+				}
+
+				cSeqs.add(cItem.getCSeq());
+			}
+
+			CItemUserRlDto cItemUserRl = new CItemUserRlDto();
+			cItemUserRl.setUSeq(uSeq);
+			cItemUserRl.setCSeqs(cSeqs);
+
+			contentAuthorityService.save(cItemUserRl);
+		}
+
+		return uSeq;
+	}
+
 	public int modifyUser(UserDto user)
 	{
 		return userMapper.updateUser(CmModelMapperUtils.map(user, UserEntity.class));
@@ -222,68 +287,8 @@ public class UserService extends GeneralService
 		return CmModelMapperUtils.mapAll(userMapper.findPageUsers(userSearch), UserDto.class);
 	}
 
-	@Transactional
-	public int createUserByCopy(Map<String, String> paramMap)
+	public List<UserDto> getUsersInCItem(UserSearchDto userSearch)
 	{
-		Integer sourceUSeq = new Integer(paramMap.get("uSeq"));
-
-		UserSearchDto userSearch = new UserSearchDto();
-		userSearch.setUSeq(sourceUSeq);
-
-		UserDto user = getUser(userSearch);
-		user.setFirstName(CmStringUtils.trimToEmpty(paramMap.get("firstName")));
-		user.setLastName(CmStringUtils.trimToEmpty(paramMap.get("lastName")));
-		user.setUSeq(null);
-		user.setModDate(null);
-		user.setModUsername(null);
-
-		Integer uSeq = saveUser(user);
-
-		UserAccountDto userAccount = user.getUserAccount();
-		userAccount.setUSeq(uSeq);
-		userAccount.setUsername(CmStringUtils.trimToEmpty(paramMap.get("username")));
-		userAccount.setPassword(CmStringUtils.trimToEmpty(paramMap.get("password")));
-		userAccount.setFgAccountLocked(PlatformCommonVo.NO);
-		userAccount.setFgPasswordLocked(PlatformCommonVo.YES);
-		userAccount.setModDate(null);
-		userAccount.setModUsername(null);
-
-		saveUserAccount(userAccount);
-
-		UserContactInfoDto userContactInfo = user.getUserContactInfo();
-		userContactInfo.setUSeq(uSeq);
-		userContactInfo.setModDate(null);
-		userContactInfo.setModUsername(null);
-
-		saveUserContactInfo(userContactInfo);
-
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setUSeq(sourceUSeq);
-		cItemSearch.setFgVisible(PlatformCommonVo.ALL);
-
-		List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
-
-		if (CollectionUtils.isNotEmpty(cItems))
-		{
-			List<Integer> cSeqs = new ArrayList<>();
-
-			for (CItemDto cItem : cItems)
-			{
-				if (CmStringUtils.equals(cItem.getFgDelete(), PlatformCommonVo.YES))
-				{
-					continue;
-				}
-
-				cSeqs.add(cItem.getCSeq());
-			}
-
-			CItemUserRlDto cItemUserRl = new CItemUserRlDto();
-			cItemUserRl.setUSeq(uSeq);
-			cItemUserRl.setCSeqs(cSeqs);
-
-			contentAuthorityService.save(cItemUserRl);
-		}
-
-		return uSeq;
+		return CmModelMapperUtils.mapAll(userMapper.findUsersInCItem(userSearch), UserDto.class);
 	}
 }

@@ -27,9 +27,10 @@ public class PlatformCommonVo
 	public static final String DELIMITER = "^";
 
 	//Content Type
-	public static final String PAGE = "P";
-	public static final String MEMU = "M";
+	public static final String GROUP = "G";
 	public static final String ROLE = "R";
+	public static final String MEMU = "M";
+	public static final String PAGE = "P";
 	public static final String FOLDER = "F";
 
 	/** Language **/

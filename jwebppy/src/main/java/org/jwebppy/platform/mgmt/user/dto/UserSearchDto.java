@@ -23,6 +23,7 @@ public class UserSearchDto extends GeneralDto implements IPagination
 	private String timezone;
 	private String query;
 	private Integer nUseq;
+	private Integer cSeq;
 
 	public UserSearchDto() {}
 

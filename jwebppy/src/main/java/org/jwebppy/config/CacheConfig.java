@@ -1,8 +1,6 @@
 package org.jwebppy.config;
 
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
+//@Configuration
 public class CacheConfig
 {
 	public static final String LANG = "Language";

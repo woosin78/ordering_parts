@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 						"/platform/security/authentication/check_password_expired",
 						"/platform/security/authentication/last_login_info",
 						"/platform/security/session/refresh").authenticated()
-				.antMatchers("/platform/**").hasRole(PlatformConfigVo.ROLE_SUPER_ADMIN)
+				.antMatchers("/platform/**").hasRole(PlatformConfigVo.ROLE_PLTF_ADMIN)
 				.anyRequest().authenticated()
 			.and()
 			.headers()

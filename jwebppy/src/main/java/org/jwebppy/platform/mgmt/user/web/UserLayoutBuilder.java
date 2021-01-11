@@ -410,12 +410,12 @@ public class UserLayoutBuilder
 		Element loDivider = new Element("div");
 		loDivider.addAttribute("class", "ui clearing divider");
 
-		Element loDescription = new Element("div");
-		loDescription.setText("This is the part of login histories. If you want to check more data, please see them on the page, Login History");
-		loDescription.addElement(loDivider);
+//		Element loDescription = new Element("div");
+//		loDescription.setText("This is a part of login history. If you want to check more data, please see them in Login History.");
+//		loDescription.addElement(loDivider);
 
 		Document document = new Document();
-		document.addElement(loDescription);
+//		document.addElement(loDescription);
 		document.addElement(table);
 
 		return document;

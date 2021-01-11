@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.logging.LoggingGeneralController;
-import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogSearchDto;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +33,7 @@ public class LogController extends LoggingGeneralController
 	@ResponseBody
 	public Object logs(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
 	{
-		PageableList<DataAccessLogDto> pageableList = new PageableList<>(dataAccessLogService.getPageableLogs(dataAccessLogSearch));
-
-		return LogLayoutBuilder.getList(pageableList);
+		return LogLayoutBuilder.getList(new PageableList<>(dataAccessLogService.getPageableLogs(dataAccessLogSearch)));
 	}
 
 	@GetMapping("/detail")

@@ -137,7 +137,7 @@
 		
 		<if test="type != null and type != ''">
 			and type=#{type}
-		</if>		
+		</if>
 		
 		<if test="types != null">
 			<trim prefix="and">
@@ -170,8 +170,35 @@
 		where
 		a.fg_delete='N'
 		
+		<if test="type != null and type != ''">
+			and type=#{type}
+		</if>
+		
+		<if test="types != null">
+			<trim prefix="and">
+				<foreach collection="types" item="type" open="(" close=")" separator="or">
+					<if test="type != null and type != ''">
+						a.type=#{type}
+					</if>				
+				</foreach>				
+			</trim>
+		</if>		
+		
 		<include refid="PaginationMapper.footer"/>
 	</select>	
+	
+	<select id="findCItemAuthorities" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		b.*
+		from
+		pltf_citem_auth_rl a,
+		pltf_citem b
+		where
+		a.p_seq=#{cSeq}
+		and a.fg_delete='N'
+		and a.c_seq=b.c_seq
+		and b.fg_delete='N'
+	</select>
 	
 	<select id="findLang" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
 		select
