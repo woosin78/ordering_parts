@@ -361,23 +361,11 @@ public class UserLayoutBuilder
 
 	public static Document getSimpleLoginHistories(List<LoginHistoryDto> loginHistories)
 	{
-		Th thLoginDate = new Th("Login Date");
-		thLoginDate.addAttribute("CLASS", "two wide");
-
-		Th thIp = new Th("IP");
-		thIp.addAttribute("CLASS", "two wide");
-
-		Th thReferer = new Th("Referer");
-		thReferer.addAttribute("CLASS", "five wide");
-
-		Th thUserAgent = new Th("User Agent");
-		thUserAgent.addAttribute("CLASS", "six wide");
-
 		Tr thTr = new Tr();
-		thTr.addTh(thLoginDate);
-		thTr.addTh(thIp);
-		thTr.addTh(thReferer);
-		thTr.addTh(thUserAgent);
+		thTr.addTextTh("Login Date", "two wide");
+		thTr.addTextTh("IP", "two wide");
+		thTr.addTextTh("Referer", "five wide");
+		thTr.addTextTh("User Agent", "six wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);

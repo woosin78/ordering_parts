@@ -141,10 +141,10 @@
 				    where
 				    l_seq=a.l_seq
 				    and fg_delete='N'
-				    and upper(text) like '%'||upper(#{query})||'%'
+				    and upper(text) like concat('%', upper(#{query}), '%')
 				)												
-				or a.type||'_'||upper(a.seq) like '%'||upper(#{query})||'%'
-				or upper(a.seq) like '%'||upper(#{query})||'%'
+				or concat(a.basename, '_', a.type, '_', a.seq) like concat('%', upper(#{query}), '%')
+				or a.seq like concat('%', upper(#{query}), '%')
 			)			
 		</if>
 

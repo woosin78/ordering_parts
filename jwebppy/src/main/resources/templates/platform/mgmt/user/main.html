@@ -11,7 +11,7 @@
 	</div>
 	<div class="ui segment">
 		<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-		<input type="hidden" name="nUseq" />
+		<input type="checkbox" name="uSeq" style="display:none" value="" checked />
 		<input type="hidden" name="pageNumber" value="1"/>
 		<input type="hidden" name="rowPerPage" value="10"/>
 		<div class="fields">
@@ -30,9 +30,9 @@
 			<div class="column">
 				<div id="BTN_createUser" class="ui teal button"><i class="plus icon"></i> Create</div>
 				<div id="BTN_copyToCreateUser" class="ui teal button"><i class="copy outline icon"></i> Copy To Create</div>
-				<div id="BTN_deleteUser" class="ui negative button"><i class="minus icon"></i> Delete</div>
-				<div id="BTN_lockUser" class="ui button"><i class="lock icon"></i> Lock</div>
-				<div id="BTN_unlockUser" class="ui button"><i class="lock open icon"></i> Unlock</div>
+				<div id="BTN_deleteUser" class="ui teal button"><i class="minus icon"></i> Delete</div>
+				<div id="BTN_lockUser" class="ui teal button"><i class="lock icon"></i> Lock</div>
+				<div id="BTN_unlockUser" class="ui teal button"><i class="lock open icon"></i> Unlock</div>
 			</div>
 		</div>
 		<div id="TBL_users"></div>
@@ -85,7 +85,7 @@
 	    		<div class="column">
 	    			<div class="field required">
 	    				<label>Username</label>
-	    				<input type="text" name="username"/>
+	    				<input type="text" name="username" style="text-transform: uppercase;"/>
 	    			</div>
 	    			<div class="field required">
 	    				<label>Password</label>
@@ -114,9 +114,6 @@
 	    </div>
 	    <div class="ui hidden divider"></div>
 	</div>
-<form id="FORM_userInfo">
-	<input type="hidden" name="uSeq"/>
-</form>
 <script type="application/javascript">
 $(document).ready(function() {
 	let usersTable = new JpUiTable($("#TBL_users"));
@@ -133,10 +130,9 @@ $(document).ready(function() {
 				{
 		  			if (textStatus == "success")
 	  				{
-		  				if ($("#FORM_search input:hidden[name=uSeq]").val() != "")
+		  				if (JpUtilsString.isNotEmpty(getSeq()))
 		  				{
 			  				usersTable.getBodyCell(0, 3).find("a").trigger("click");
-			  				$("#FORM_search input:hidden[name=nUseq]").val("");
 		  				};
 	  				};
 				}
@@ -234,8 +230,8 @@ $(document).ready(function() {
 						prompt: "Please enter {name}."
 					},
 					{
-						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)).{6,12}$/]",
-						prompt: "Please enter a valid username. A username should be between 6 and 12 digits, which can contain number, lower and upper case characters."
+						type: "regExp[/^((?=.*[A-Z])|(?=.*\d)).{6,12}$/]",
+						prompt: "Please enter a valid username. A username should be between 6 and 12 digits, which can contain number and upper case characters."
 					},
 					{
 						type: "checkDuplicatedUsername",
@@ -396,7 +392,7 @@ $(document).ready(function() {
 			ajax: {
 				beforeSend: function(settings)
 				{
-					if (viewUserTab.tabPath != "general" && getSeq() == "")
+					if (viewUserTab.tabPath != "general" && JpUtilsString.isEmpty(getSeq()))
 					{
 						alert("Please register the general information in advance.");
 						showCreateUserArea();
@@ -404,7 +400,7 @@ $(document).ready(function() {
 						return false;
 					};
 
-					settings.data = $("#FORM_userInfo").serialize();
+					settings.data = $("#FORM_search").serialize();
 
 					return settings;
 				}
@@ -586,8 +582,8 @@ $(document).ready(function() {
 						prompt: "Please enter {name}."
 					},
 					{
-						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)).{6,12}$/]",
-						prompt: "Please enter a valid password. It should be between 6 and 12 digits and contain number, lower and upper case characters."
+						type: "regExp[/^((?=.*[A-Z])|(?=.*\d)).{6,12}$/]",
+						prompt: "Please enter a valid password. It should be between 6 and 12 digits and contain number and upper case characters."
 					},
 					{
 						type: "checkDuplicatedUsername",
@@ -632,12 +628,12 @@ $(document).ready(function() {
 				success: function(data, textStatus, jqXHR)
 				{
 					let uSeq = data.RESULT;
-
+					
 					if (JpUtilsObject.isNotNull(uSeq))
 					{
 						//신규 생성한 계정이 조회되도록 함
 						$("#FORM_search")[0].reset();
-						$("#FORM_search input:hidden[name=nUseq]").val(uSeq);
+						setSeq(uSeq);
 
 						doSearch();
 					};
@@ -726,17 +722,17 @@ $(document).ready(function() {
 
 	function setSeq(seq)
 	{
-		$("#FORM_userInfo input[name=uSeq], #FORM_modifyUser input[name=uSeq]").val(seq);
+		$("#FORM_search input:checkbox[name=uSeq]:first, #FORM_modifyUser input[name=uSeq]").val(seq);
 	};
 
 	function getSeq()
 	{
-		return $("#FORM_modifyUser input[name=uSeq]").val();
+		return JpUtilsString.trimToEmpty($("#FORM_modifyUser input[name=uSeq]").val());
 	};
 
 	function initSeq()
 	{
-		$("#FORM_userInfo input[name=uSeq], #FORM_modifyUser input[name=uSeq]").val("");
+		$("#FORM_search input:checkbox[name=uSeq]:first, #FORM_modifyUser input[name=uSeq]").val("");
 	};
 
 	function getCheckedUserCount()
@@ -809,13 +805,7 @@ $(document).ready(function() {
 						if (JpUtilsObject.isNotNull(uSeq))
 						{
 							setSeq(uSeq);
-
-							$("#FORM_search input:hidden[name=nUseq]").val(uSeq);
 						};
-					}
-					else
-					{
-						$("#FORM_search input:hidden[name=nUseq]").val(getSeq());
 					};
 					
 					let tabPath = viewUserTab.tabPath;
@@ -828,7 +818,7 @@ $(document).ready(function() {
 	});
 
 	$(".BTN_cancelUser").on("click", function() {
-		if (getSeq() == "")
+		if (JpUtilsString.isEmpty(getSeq()))
 		{
 			hideUserDetailsArea();
 		}
@@ -864,7 +854,7 @@ $(document).ready(function() {
 
 	function isCreating()
 	{
-		if (isOnForm() && getSeq() == "")
+		if (isOnForm() && JpUtilsString.isEmpty(getSeq()))
 		{
 			return true;
 		}

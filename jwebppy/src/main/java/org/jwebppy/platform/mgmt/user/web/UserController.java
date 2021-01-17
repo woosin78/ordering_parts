@@ -62,7 +62,7 @@ public class UserController extends UserGeneralController
 	{
 		PageableList<UserDto> pageableList = null;
 
-		if (CmStringUtils.isEmpty(userSearch.getQuery()) && CmStringUtils.isEmpty(userSearch.getNUseq()))
+		if (CmStringUtils.isEmpty(userSearch.getQuery()) && userSearch.getUSeq() == null)
 		{
 			pageableList = new PageableList<>();
 		}
@@ -268,7 +268,7 @@ public class UserController extends UserGeneralController
 	@ResponseBody
 	public Object validCheck(@RequestParam("username") String username)
 	{
-		UserDto user = userService.getUserByUsername(username);
+		UserDto user = userService.getUserByUsername(username.toUpperCase());
 
 		if (user != null)
 		{

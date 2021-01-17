@@ -32,6 +32,22 @@ JpUtilsString.equals = function(str1, str2)
 	return false;
 };
 
+JpUtilsString.notEquals = function(str1, str2)
+{
+	
+	if (JpUtilsObject.isNull(str1) || JpUtilsObject.isNull(str2))
+	{
+		return false;
+	};
+	
+	if ($.trim(str1) != $.trim(str2))
+	{
+		return true;
+	};
+	
+	return false;
+};
+
 JpUtilsString.trimToEmpty = function(str)
 {
 	if (JpUtilsObject.isNull(str))

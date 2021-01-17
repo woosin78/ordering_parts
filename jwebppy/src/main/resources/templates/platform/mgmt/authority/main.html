@@ -11,7 +11,7 @@
 </div>
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" name="nCseq" />
+	<input type="checkbox" name="cSeq" style="display:none" value="" checked />
 	<input type="hidden" name="pageNumber" value="1"/>
 	<input type="hidden" name="rowPerPage" value="10"/>
 	<div class="fields">
@@ -71,9 +71,6 @@
 		<div class="ui button modify BTN_cancelAuthority"> Cancel</div>				
 	</div>			
 </div>
-<form id="FORM_authority">
-	<input type="hidden" name="cSeq"/>
-</form>
 <script type="application/javascript">
 $(document).ready(function() {
 	let authorityTable = new JpUiTable($("#TBL_authority"));
@@ -90,10 +87,9 @@ $(document).ready(function() {
 				{
 		  			if (textStatus == "success")
 	  				{
-		  				if ($("#FORM_search input:hidden[name=nCseq]").val() != "")
+		  				if ($("#FORM_search input:hidden[name=cSeq]").val() != "")
 		  				{
 			  				authorityTable.getBodyCell(0, 3).find("a").trigger("click");
-			  				//$("#FORM_search input:hidden[name=nCseq]").val("");
 		  				};
 	  				};
 				}
@@ -104,7 +100,7 @@ $(document).ready(function() {
 				
 				if ($(row).hasClass("active"))
 				{
-					$("#AREA_viewAuthorityDetail .ui.header").html("Details of User, " + $(element).html());
+					$("#AREA_viewAuthorityDetail .ui.header").html("Details of Authority, " + $(element).html());
 					
 					setSeq(key);
 					showUserDetailsArea();
@@ -177,7 +173,7 @@ $(document).ready(function() {
 						return false;
 					};
 					
-					settings.data = $("#FORM_authority").serialize();
+					settings.data = $("#FORM_search").serialize();
 					
 					return settings;
 				}
@@ -189,27 +185,23 @@ $(document).ready(function() {
 				{
 					if (isOnForm())
 					{
-						if (isCreating())
-						{
-							formValidCheck.fields.Password.optional = false;
-						}
-						else
-						{
-							formValidCheck.fields.Password.optional = true;
-						};
-						
 						$("#FORM_modifyAuthority").form(formValidCheck);
-
-						if (tabPath == "authority")
+						
+						if (tabPath == "general")
+						{
+							JpUiCalendar.calendar($("#fromValid"), JpUiCalendar.defaultCalendarSettings(false));
+							JpUiCalendar.calendar($("#toValid"), JpUiCalendar.defaultCalendarSettings(false));
+						}						
+						else if (tabPath == "authority")
 						{
 							let html = [];
 							html.push("<div class='field'>");
-							html.push("<label>Available Authority</label>");
+							html.push("<label>Available Role</label>");
 							html.push("<select id='availableAutority' name='availableAutority' class='ui fluid search dropdown' multiple=''></select>");
 							html.push("</div>");
 							html.push("<div>");
-							html.push("<div class='ui teal button BTN_grant'> Grant</div>");
-							html.push("<div class='ui button BTN_revoke'> Revoke</div>");
+							html.push("<div class='ui teal button BTN_add'> Add</div>");
+							html.push("<div class='ui button BTN_remove'> Remove</div>");
 							html.push("</div>");
 							html.push("<p/>");
 							html.push("<div id='TBL_myAuthorityList'></div>");
@@ -244,14 +236,14 @@ $(document).ready(function() {
 							let myAuthorityTable = new JpUiTable($("#TBL_myAuthorityList"));
 							myAuthorityTable.settings = {
 									ajax: {
-										url: JpUiGlobal.url("/platform/mgmt/authority/my_authority"),
+										url: JpUiGlobal.url("/platform/mgmt/authority/sub_roles"),
 										global: false,
 										form: $("#FORM_modifyAuthority")
 									}
 							};
 							myAuthorityTable.render();
 
-							$(".BTN_grant").on("click", function() {
+							$(".BTN_add").on("click", function() {
 								let values = $("#availableAutority").dropdown("get value");
 								
 								if (values == null)
@@ -270,7 +262,7 @@ $(document).ready(function() {
 								resetCheckAll();
 							});
 
-							$(".BTN_revoke").on("click", function() {
+							$(".BTN_remove").on("click", function() {
 								myAuthorityTable.remove();
 								resetCheckAll();
 							});
@@ -280,26 +272,6 @@ $(document).ready(function() {
 								$("#TBL_myAuthorityList").find("thead .ui.checkbox").checkbox("uncheck");
 							};
 						};
-					}
-					else
-					{
-						if (tabPath == "user")
-						{
-							$("div[data-tab=user] table tbody tr").each(function(index) {								
-								
-								let status = $(this).find(":first-child");
-								
-								if (JpUtilsString.equals(status.html(), "N"))
-								{
-									status.html("<i class='lock icon'></i>");
-								}
-								else
-								{
-									status.html("<i class='lock open icon'></i>");
-								};
-							});
-							
-						}						
 					};
 
 					changeButtonStatus();
@@ -381,7 +353,7 @@ $(document).ready(function() {
 	
 	function setSeq(seq)
 	{
-		$("#FORM_authority input[name=cSeq], #FORM_modifyAuthority input[name=cSeq]").val(seq);
+		$("#FORM_search input:checkbox[name=cSeq]:first, #FORM_modifyAuthority input[name=cSeq]").val(seq);
 	};
 
 	function getSeq()
@@ -391,7 +363,7 @@ $(document).ready(function() {
 	
 	function initSeq()
 	{
-		$("#FORM_authority input[name=cSeq], #FORM_modifyAuthority input[name=cSeq]").val("");
+		$("#FORM_search input:checkbox[name=cSeq]:first, #FORM_modifyAuthority input[name=cSeq]").val("");
 	};
 	
 	function getCheckedUserCount()
@@ -508,9 +480,14 @@ $(document).ready(function() {
 		}
 		else
 		{
-			if (viewAuthorityTab.tabPath != "user")
+			let type = $(authorityTable.getActiveRow()).find(":eq(0)").html();
+			
+			if (type == "GROUP")
 			{
-				$(".AREA_moveToModifyAuthority").css("display", "block");
+				if (JpUtilsString.notEquals(viewAuthorityTab.tabPath, "user"))
+				{
+					$(".AREA_moveToModifyAuthority").css("display", "block");
+				}				
 			}
 		};
 	};

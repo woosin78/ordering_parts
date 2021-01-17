@@ -225,6 +225,11 @@ let JpUiTable = function(table)
 		return this.table.find("tbody tr:eq(" + rowIndex + ") td:eq(" + columnIndex + ")");
 	};
 	
+	this.getActiveRow = function()
+	{
+		return this.table.find("tbody tr.active");
+	};
+	
 	this.addPagination = function()
 	{
 		let table = this.table.find("table");

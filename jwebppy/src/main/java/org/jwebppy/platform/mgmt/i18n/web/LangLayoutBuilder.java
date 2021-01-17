@@ -27,7 +27,7 @@ public class LangLayoutBuilder
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
-		thTr.addTextTh("Code", "two wide");
+		thTr.addTextTh("Code", "three wide");
 
 		if (CollectionUtils.isNotEmpty(langKinds))
 		{

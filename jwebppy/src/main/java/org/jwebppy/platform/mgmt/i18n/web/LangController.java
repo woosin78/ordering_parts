@@ -97,7 +97,7 @@ public class LangController extends MgmtGeneralController
 		{
 			LangDetailDto langDetail = new LangDetailDto();
 			langDetail.setLkSeq(lkSeq);
-			langDetail.setText(texts.get(index++));
+			langDetail.setText(texts.get(index++).replaceAll("'", "′"));
 
 			langDetails.add(langDetail);
 		}

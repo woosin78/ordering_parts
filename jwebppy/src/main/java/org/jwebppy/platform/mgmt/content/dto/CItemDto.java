@@ -46,7 +46,7 @@ public class CItemDto extends GeneralDto implements IPagination
 
 	public int getSort()
 	{
-		if (sort == -1)
+		if (sort < -1)
 		{
 			return 100;
 		}
@@ -63,21 +63,6 @@ public class CItemDto extends GeneralDto implements IPagination
 	{
 		return CmDateFormatUtils.format(toValid);
 	}
-
-//	public String getFgPopup()
-//	{
-//		return CmStringUtils.defaultString(fgPopup, PlatformCommonVo.NO);
-//	}
-//
-//	public String getFgVisible()
-//	{
-//		return CmStringUtils.defaultString(fgVisible, PlatformCommonVo.NO);
-//	}
-//
-//	public String getFgDelete()
-//	{
-//		return CmStringUtils.defaultString(fgDelete, PlatformCommonVo.NO);
-//	}
 
 	public String getUrl()
 	{

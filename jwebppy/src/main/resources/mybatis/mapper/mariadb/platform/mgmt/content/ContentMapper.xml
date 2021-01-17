@@ -187,19 +187,6 @@
 		<include refid="PaginationMapper.footer"/>
 	</select>	
 	
-	<select id="findCItemAuthorities" parameterType="CItemSearchDto" resultType="CItemEntity">
-		select
-		b.*
-		from
-		pltf_citem_auth_rl a,
-		pltf_citem b
-		where
-		a.p_seq=#{cSeq}
-		and a.fg_delete='N'
-		and a.c_seq=b.c_seq
-		and b.fg_delete='N'
-	</select>
-	
 	<select id="findLang" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
 		select
 		*
@@ -237,6 +224,6 @@
 		
 		and d.fg_delete='N'
 		order by d.fg_default desc
-	</select>
+	</select>	
 
 </mapper>

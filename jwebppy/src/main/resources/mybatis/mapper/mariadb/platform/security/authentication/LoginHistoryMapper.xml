@@ -64,15 +64,15 @@
 		where
 		username=#{username}
 		and fg_result='N'
-		and reg_date>nvl((
+		and reg_date>if((
 		    select
 		    max(reg_date)
 		    from
 		    pltf_login_history
 		    where
-		    username=#{username}
+		    username='ADMIN'
 		    and fg_result='N'
 		    and account_locked_date is not null
-		), to_date('20000101', 'yyyymmdd'))	
+		) is null, str_to_date('20000101', '%Y%m%d'), now());		
 	</select>
 </mapper>

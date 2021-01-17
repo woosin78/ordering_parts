@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
@@ -24,6 +25,8 @@ import org.jwebppy.platform.mgmt.user.entity.UserEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserPasswordChangeHistoryEntity;
 import org.jwebppy.platform.mgmt.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +43,7 @@ public class UserService extends GeneralService
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int createUser(UserDto user)
 	{
 		UserEntity userEntity = CmModelMapperUtils.map(user, UserEntity.class);
@@ -49,6 +53,7 @@ public class UserService extends GeneralService
 		return userEntity.getUSeq();
 	}
 
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int createUserAccount(UserAccountDto userAccount)
 	{
 		userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
@@ -66,12 +71,14 @@ public class UserService extends GeneralService
 		return userMapper.insertUserAccount(CmModelMapperUtils.map(userAccount, UserAccountEntity.class));
 	}
 
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int createUserContactInfo(UserContactInfoDto userContactInfo)
 	{
 		return userMapper.insertUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
 	}
 
 	@Transactional
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int createUserByCopy(Map<String, String> paramMap)
 	{
 		Integer sourceUSeq = new Integer(paramMap.get("uSeq"));
@@ -136,11 +143,13 @@ public class UserService extends GeneralService
 		return uSeq;
 	}
 
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int modifyUser(UserDto user)
 	{
 		return userMapper.updateUser(CmModelMapperUtils.map(user, UserEntity.class));
 	}
 
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int modifyUserAccount(UserAccountDto userAccount)
 	{
 		//비밀번호 변경 이력 남기기
@@ -167,11 +176,13 @@ public class UserService extends GeneralService
 		return userMapper.updateUserAccount(CmModelMapperUtils.map(userAccount, UserAccountEntity.class));
 	}
 
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int modifyUserContactInfo(UserContactInfoDto userContactInfo)
 	{
 		return userMapper.updateUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
 	}
 
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int LockUserAccount(Integer uSeq, String fgAccountLocked)
 	{
 		if (uSeq != null && CmStringUtils.isNotEmpty(fgAccountLocked))
@@ -186,14 +197,20 @@ public class UserService extends GeneralService
 	}
 
 	@Transactional
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int lockUserAccount(List<Integer> uSeqs, String fgAccountLocked)
 	{
 		if (CollectionUtils.isNotEmpty(uSeqs))
 		{
 			int result = 0;
 
-			for (int uSeq : uSeqs)
+			for (Integer uSeq : uSeqs)
 			{
+				if (uSeq == null)
+				{
+					continue;
+				}
+
 				UserAccountEntity userAccount = new UserAccountEntity();
 				userAccount.setUSeq(uSeq);
 				userAccount.setFgAccountLocked(CmStringUtils.defaultString(fgAccountLocked, PlatformCommonVo.NO));
@@ -208,19 +225,28 @@ public class UserService extends GeneralService
 	}
 
 	@Transactional
+	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int deleteUser(List<Integer> uSeqs)
 	{
 		if (CollectionUtils.isNotEmpty(uSeqs))
 		{
 			int result = 0;
 
-			for (int uSeq : uSeqs)
+			for (Integer uSeq : uSeqs)
 			{
+				if (uSeq == null)
+				{
+					continue;
+				}
+
 				UserEntity user = new UserEntity();
 				user.setUSeq(uSeq);
 				user.setFgDelete(PlatformCommonVo.YES);
 
-				result += userMapper.updateFgDelete(user);
+				if (userMapper.updateFgDelete(user) > 0)
+				{
+					result += userMapper.updateUsernameToDelete(user);
+				}
 			}
 
 			return result;
@@ -277,6 +303,7 @@ public class UserService extends GeneralService
 		return getUser(new UserSearchDto(username));
 	}
 
+	@Cacheable(value = CacheConfig.USER, key = "#userSearch", unless="#result == null")
 	public UserDto getUser(UserSearchDto userSearch)
 	{
 		return CmModelMapperUtils.map(userMapper.findUser(userSearch), UserDto.class);

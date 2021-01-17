@@ -172,9 +172,4 @@ public class ContentService extends GeneralService
 	{
 		return CmModelMapperUtils.mapAll(contentMapper.findMyCItems(cItemSearch), CItemDto.class);
 	}
-
-	public List<CItemDto> findCItemAuthorities(CItemSearchDto cItemSearch)
-	{
-		return CmModelMapperUtils.mapAll(contentMapper.findCItemAuthorities(cItemSearch), CItemDto.class);
-	}
 }

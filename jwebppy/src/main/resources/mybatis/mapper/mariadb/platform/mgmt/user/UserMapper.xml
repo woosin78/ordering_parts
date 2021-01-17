@@ -118,7 +118,16 @@
 			mod_date=#{modDate}
 		where
 			u_seq=#{uSeq}
-	</update>	
+	</update>
+
+	<update id="updateUsernameToDelete" parameterType="UserEntity">
+		update pltf_user_account set
+			username=concat(u_seq, '_', username),
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			u_seq=#{uSeq}
+	</update>
 	
 	<update id="updateFgPasswordLocked" parameterType="UserAccountEntity">
 		update pltf_user_account set
@@ -199,9 +208,9 @@
 					or upper(b.email) like concat('%', upper(trim(#{query})), '%')
 				</if>
 				
-				<if test="nUseq != null and nUseq != ''">
-					or a.u_seq=#{nUseq}
-				</if>			
+				<if test="uSeq != null and uSeq != ''">
+					or a.u_seq=#{uSeq}
+				</if>
 			</trim>
 			
 			<trim prefixOverrides="and">

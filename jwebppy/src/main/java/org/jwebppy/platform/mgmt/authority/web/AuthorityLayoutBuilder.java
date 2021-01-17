@@ -5,10 +5,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
+import org.jwebppy.platform.core.web.ui.dom.Element;
+import org.jwebppy.platform.core.web.ui.dom.form.Input;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
+import org.jwebppy.platform.core.web.ui.dom.table.Th;
 import org.jwebppy.platform.core.web.ui.dom.table.Thead;
 import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
@@ -75,8 +79,40 @@ public class AuthorityLayoutBuilder
 		elementMap.put("Reg.Date", cItem.getDisplayRegDate());
 		elementMap.put("Reg.Username", CmStringUtils.trimToEmpty(cItem.getRegUsername()));
 
+		if (cItem.getCSeq() != null)
+		{
+			elementMap.put("Mod.Date", cItem.getDisplayModDate());
+			elementMap.put("Mod.Username", cItem.getModUsername());
+		}
+
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
+
+		return document;
+	}
+
+	public static Document getGeneralInfoForm(CItemDto cItem)
+	{
+		Element loName = new Input("name", cItem.getName());
+		loName.setLabel("Name");
+		loName.addAttribute("REQUIRED");
+
+		Element loDescription = new Input("description", cItem.getDescription());
+		loDescription.setLabel("Description");
+
+		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(cItem.getDisplayFromValid(), CmDateFormatUtils.now()));
+		loFromValid.setId("fromValid");
+		loFromValid.setLabel("Valid From");
+
+		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(cItem.getDisplayToValid(), CmDateFormatUtils.unlimitDate()));
+		loToValid.setId("toValid");
+		loToValid.setLabel("Valid To");
+
+		Document document = new Document();
+		document.addElement(loName);
+		document.addElement(loDescription);
+		document.addElement(loFromValid);
+		document.addElement(loToValid);
 
 		return document;
 	}
@@ -84,10 +120,9 @@ public class AuthorityLayoutBuilder
 	public static Document getUsers(List<UserDto> users)
 	{
 		Tr thTr = new Tr();
-		thTr.addTextTh("Status", "one wide");
 		thTr.addTextTh("Username", "two wide");
 		thTr.addTextTh("Name", "three wide");
-		thTr.addTextTh("E-mail", "three wide");
+		thTr.addTextTh("E-mail", "four wide");
 		thTr.addTextTh("Company", "three wide");
 		thTr.addTextTh("Department", "three wide");
 
@@ -104,7 +139,6 @@ public class AuthorityLayoutBuilder
 				UserContactInfoDto userContactInfo = user.getUserContactInfo();
 
 				Tr tbTr = new Tr();
-				tbTr.addTextTd(userAccount.getFgAccountLocked());
 				tbTr.addTextTd(userAccount.getUsername());
 				tbTr.addTextTd(user.getName());
 				tbTr.addTextTd(userContactInfo.getEmail());
@@ -136,6 +170,41 @@ public class AuthorityLayoutBuilder
 				document.addElement(PlatformLayoutBuildUtils.defaultLabelText(cItemDto.getName(), cItemDto.getDescription()));
 			}
 		}
+
+		return document;
+	}
+
+	public static Document getAuthorityForm(List<CItemDto> cItems)
+	{
+		Tr thTr = new Tr();
+		thTr.addCheckAllTh();
+		thTr.addTh(new Th("Name"));
+		thTr.addTh(new Th("Description"));
+
+		Thead thead = new Thead();
+		thead.addTr(thTr);
+
+		Tbody tbody = new Tbody();
+
+		if (CollectionUtils.isNotEmpty(cItems))
+		{
+			for (CItemDto cItemDto : cItems)
+			{
+				Tr tbTr = new Tr();
+				tbTr.addDataKeyCheckboxTd("cSeq", cItemDto.getCSeq());
+				tbTr.addTextTd(cItemDto.getName());
+				tbTr.addTextTd(cItemDto.getDescription());
+
+				tbody.addTr(tbTr);
+			}
+		}
+
+		Table table = new Table();
+		table.addThead(thead);
+		table.addTbody(tbody);
+
+		Document document = new Document();
+		document.addElement(table);
 
 		return document;
 	}

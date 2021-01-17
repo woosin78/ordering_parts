@@ -35,8 +35,37 @@
 	</div>
 </div>
 <script>
+$(window).load(function() {
+	JpUiGlobal.changeSizeOfElement();
+	
+	//$(".main.pusher").css("margin-left", $(".ui.main.sidebar").width() + 5);
+});
+
 $(document).ready(function() {
-	$(".ui.bottom_blank").height($(".ui.bottom").height());	
+	$(".ui.bottom_blank").height($(".ui.bottom").height());
+	$(".ui.dropdown").dropdown();
+});
+
+$(document).ajaxStart(function(event, jqXHR, ajaxOptions) {
+	JpUiDimmer.showDimmer();
+});
+
+$(document).ajaxStop(function() {
+	JpUiGlobal.changeSizeOfElement();
+	JpUiDimmer.hideDimmer();
+});
+
+$(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+	if (jqXHR.status == "401" || jqXHR.status == "403")
+	{
+		alert("[[#{PLTF_MSG_SESSION_EXPIRED}]]");
+		document.location.href = "/";
+	}
+	else
+	{
+		alert("[[#{PLTF_MSG_ERROR_MESSAGE}]]");
+		//document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).ERROR_PAGE_URL}]]";
+	};
 });
 </script>
 <!-- bottom end -->
