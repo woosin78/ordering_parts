@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.service.GeneralService;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
@@ -17,6 +21,7 @@ import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +45,7 @@ public class ContentService extends GeneralService
 	}
 
 	@Transactional
+	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int modify(CItemDto cItem)
 	{
 		return contentMapper.update(CmModelMapperUtils.map(cItem, CItemEntity.class));
@@ -59,13 +65,111 @@ public class ContentService extends GeneralService
 	}
 
 	@Transactional
+	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int delete(Integer cSeq)
 	{
+//		CItemEntity cItem = new CItemEntity();
+//		cItem.setCSeq(cSeq);
+//		cItem.setFgDelete(PlatformCommonVo.YES);
+//
+//		contentMapper.updateFgDelete(cItem);
+
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setCSeq(cSeq);
+
+		List<Map<String, Object>> cItems = getCItemHierarchy2(cItemSearch);
+
+		if (CollectionUtils.isNotEmpty(cItems))
+		{
+			Map<String, Object> cItemMap = cItems.get(0);
+
+			if (MapUtils.isNotEmpty(cItemMap))
+			{
+				delete(cItemMap);
+			}
+		}
+
+		return 1;
+	}
+
+	private void delete(Map<String, Object> cItemMap)
+	{
 		CItemEntity cItem = new CItemEntity();
-		cItem.setCSeq(cSeq);
+		cItem.setCSeq((Integer)cItemMap.get("KEY"));
 		cItem.setFgDelete(PlatformCommonVo.YES);
 
-		return contentMapper.updateFgDelete(cItem);
+		contentMapper.updateFgDelete(cItem);
+
+		List<Map<String, Object>> subItems = (List<Map<String, Object>>)cItemMap.get("SUB_ITEMS");
+
+		if (CollectionUtils.isNotEmpty(subItems))
+		{
+			for (Map<String, Object> subItemMap: subItems)
+			{
+				delete(subItemMap);
+			}
+		}
+	}
+
+	@Transactional
+	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
+	public int copy(Integer cSeq, Integer pSeq, String fgCopyAll)
+	{
+		if (cSeq == null || pSeq == null)
+		{
+			return -1;
+		}
+
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setCSeq(cSeq);
+
+		List<Map<String, Object>> cItems = getCItemHierarchy2(cItemSearch);
+
+		if (CollectionUtils.isNotEmpty(cItems))
+		{
+			if (CmStringUtils.equals(fgCopyAll, PlatformCommonVo.YES))
+			{
+				copyCItem(cSeq, pSeq);
+			}
+			else
+			{
+				copy(cSeq, pSeq, cItems.get(0));
+			}
+		}
+
+		return 1;
+	}
+
+	private void copy(Integer cSeq, Integer pSeq, Map<String, Object> cItemMap)
+	{
+		pSeq = copyCItem(cSeq, pSeq);
+
+		List<Map<String, Object>> subItems = (List<Map<String, Object>>)cItemMap.get("SUB_ITEMS");
+
+		if (CollectionUtils.isNotEmpty(subItems))
+		{
+			for (Map<String, Object> subItemMap: subItems)
+			{
+				copy((Integer)subItemMap.get("KEY"), pSeq, subItemMap);
+			}
+		}
+	}
+
+	private Integer copyCItem(Integer cSeq, Integer pSeq)
+	{
+		CItemDto cItem = getCItem(cSeq);
+
+		cItem.setCSeq(null);
+		cItem.setPSeq(pSeq);
+		cItem.setModDate(null);
+		cItem.setModUsername(null);
+
+		if (PlatformCommonVo.ROLE.equals(cItem.getType().toString()))
+		{
+			cItem.setName(cItem.getName() + "_" + CmDateFormatUtils.now());
+		}
+
+		return create(cItem);
 	}
 
 	public CItemDto getCItem(Integer cSeq)

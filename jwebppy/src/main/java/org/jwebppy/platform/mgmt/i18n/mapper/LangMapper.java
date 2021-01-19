@@ -2,7 +2,6 @@ package org.jwebppy.platform.mgmt.i18n.mapper;
 
 import java.util.List;
 
-import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.interceptor.NoLogging;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDetailDto;
@@ -12,23 +11,16 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangSearchDto;
 import org.jwebppy.platform.mgmt.i18n.entity.LangDetailEntity;
 import org.jwebppy.platform.mgmt.i18n.entity.LangEntity;
 import org.jwebppy.platform.mgmt.i18n.entity.LangKindEntity;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LangMapper
 {
-	@CacheEvict(value = CacheConfig.LANG, allEntries = true)
 	public int insertLang(LangEntity lang);
-	@CacheEvict(value = CacheConfig.LANG, allEntries = true)
 	public int insertLangDetail(LangDetailEntity langDetail);
-	@CacheEvict(value = CacheConfig.LANG, allEntries = true)
 	public int updateLang(LangEntity lang);
-	@CacheEvict(value = CacheConfig.LANG, allEntries = true)
 	public int updateLangDetail(LangDetailEntity langDetail);
-	@CacheEvict(value = CacheConfig.LANG, allEntries = true)
 	public int updateLangFgDelete(LangDto lang);
-	@CacheEvict(value = CacheConfig.LANG, allEntries = true)
 	public int updateLangDetailFgDelete(LangDto lang);
 	public LangEntity findLang(LangDto lang);
 	public List<LangEntity> findLangs(LangSearchDto langSearch);

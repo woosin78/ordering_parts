@@ -6,6 +6,11 @@
 
 <th:block layout:fragment="content">
 <!-- body start -->
+<form method="post" action="/platform/mgmt/content/copy">
+<input type"text" name="cSeq"/>
+<input type"text" name="pSeq"/>
+<input type="submit" value="Copy"/>
+</form>
 <div class="ui dividing header">
   Content
   <div class="sub header">You can create Page or consist of Menu and Role. The content is translated into other languages.</div>
@@ -247,19 +252,18 @@
 				success: function(data, textStatus, jqXHR)
 				{
 					initSeq();
-	
-					changeTab();
+					
 					tree.refresh();
+					changeTab();
 				}
 			});			
 		};
 	};
-	/*
-	tree.onClickMenu = function()
+	tree.onPopupMenu = function()
 	{
-		$("#AREA_createItem").show();
+		//$("#AREA_createItem").show();
+		alert(1);
 	};
-	*/
 	tree.setUrl("/platform/mgmt/content/tree");
 	tree.render();
 	
@@ -312,7 +316,7 @@
 	
 	function initSeq()
 	{
-		$("#FORM_modifyItem input[name=cSeq], #FORM_modifyItem input[name=pSeq]").val("");
+		$("#FORM_modifyItem input[name=cSeq], [name=pSeq]").val("");
 	};	
 	
 	$(".BTN_cancelItem").on("click", function() {

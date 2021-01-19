@@ -64,13 +64,13 @@
 		<where>
 			<choose>
 				<when test="cSeq == null">
-					p_seq is null
+					p_seq is null and name='ROOT'
 				</when>
 				<otherwise>
 					c_seq=#{cSeq}				
 				</otherwise>
 			</choose>		
-		</where>		
+		</where>
 	</select>
 
 	<select id="findMyCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
@@ -126,6 +126,10 @@
 				</foreach>				
 			</trim>
 		</if>
+
+		<if test="cSeq != null">
+			and a.c_seq=#{cSeq}
+		</if>			
 		
 		<if test="pSeq != null">
 			and a.p_seq=#{pSeq}

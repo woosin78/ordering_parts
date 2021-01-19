@@ -182,7 +182,14 @@ let JpUiTree = function(object)
 		this.context.find(".header > span.name").on("mousedown", function(event) {
 			try
 			{
-				_this.viewDetail(_this.getDataKey(this), _this.getParentDataKey(this));
+				if (event.which == 1)
+				{
+					_this.viewDetail(_this.getDataKey(this), _this.getParentDataKey(this));	
+				}
+				else if (event.which == 3)
+				{
+					_this.onPopupMenu();
+				};
 			}
 			catch (e)
 			{

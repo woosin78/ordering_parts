@@ -128,6 +128,13 @@ public class ContentController extends ContentGeneralController
 		return contentService.delete(cSeq);
 	}
 
+	@PostMapping("/copy")
+	@ResponseBody
+	public Object copy(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq, @RequestParam("fgCopyAll") String fgCopyAll)
+	{
+		return contentService.copy(cSeq, pSeq, fgCopyAll);
+	}
+
 	@PostMapping("/lang/save")
 	@ResponseBody
 	public Object saveLang(@ModelAttribute CItemLangRlDto cItemLangRl)

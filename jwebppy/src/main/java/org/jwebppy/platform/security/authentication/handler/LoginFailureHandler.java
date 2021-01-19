@@ -72,7 +72,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 
 				if (loginHistoryService.getLoginFailureCount(loginHistorySearch) >= PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_LIMIT_COUNT - 1)
 				{
-					userService.LockUserAccount(userService.getUserByUsername(username).getUSeq(), PlatformCommonVo.YES);
+					userService.lockUserAccount(userService.getUserByUsername(username).getUSeq(), PlatformCommonVo.YES);
 
 					return PlatformCommonVo.YES;
 				}

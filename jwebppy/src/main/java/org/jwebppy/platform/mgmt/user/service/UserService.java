@@ -43,7 +43,6 @@ public class UserService extends GeneralService
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int createUser(UserDto user)
 	{
 		UserEntity userEntity = CmModelMapperUtils.map(user, UserEntity.class);
@@ -53,7 +52,7 @@ public class UserService extends GeneralService
 		return userEntity.getUSeq();
 	}
 
-	@CacheEvict(value = CacheConfig.USER, allEntries = true)
+	@CacheEvict(value = CacheConfig.USER, key = "#userAccount.uSeq")
 	public int createUserAccount(UserAccountDto userAccount)
 	{
 		userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
@@ -71,14 +70,13 @@ public class UserService extends GeneralService
 		return userMapper.insertUserAccount(CmModelMapperUtils.map(userAccount, UserAccountEntity.class));
 	}
 
-	@CacheEvict(value = CacheConfig.USER, allEntries = true)
+	@CacheEvict(value = CacheConfig.USER, key = "#userContactInfo.uSeq")
 	public int createUserContactInfo(UserContactInfoDto userContactInfo)
 	{
 		return userMapper.insertUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
 	}
 
 	@Transactional
-	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int createUserByCopy(Map<String, String> paramMap)
 	{
 		Integer sourceUSeq = new Integer(paramMap.get("uSeq"));
@@ -143,13 +141,13 @@ public class UserService extends GeneralService
 		return uSeq;
 	}
 
-	@CacheEvict(value = CacheConfig.USER, allEntries = true)
+	@CacheEvict(value = CacheConfig.USER, key = "#user.uSeq")
 	public int modifyUser(UserDto user)
 	{
 		return userMapper.updateUser(CmModelMapperUtils.map(user, UserEntity.class));
 	}
 
-	@CacheEvict(value = CacheConfig.USER, allEntries = true)
+	@CacheEvict(value = CacheConfig.USER, key = "#userAccount.uSeq")
 	public int modifyUserAccount(UserAccountDto userAccount)
 	{
 		//비밀번호 변경 이력 남기기
@@ -176,14 +174,13 @@ public class UserService extends GeneralService
 		return userMapper.updateUserAccount(CmModelMapperUtils.map(userAccount, UserAccountEntity.class));
 	}
 
-	@CacheEvict(value = CacheConfig.USER, allEntries = true)
+	@CacheEvict(value = CacheConfig.USER, key = "#userContactInfo.uSeq")
 	public int modifyUserContactInfo(UserContactInfoDto userContactInfo)
 	{
 		return userMapper.updateUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
 	}
 
-	@CacheEvict(value = CacheConfig.USER, allEntries = true)
-	public int LockUserAccount(Integer uSeq, String fgAccountLocked)
+	public int lockUserAccount(Integer uSeq, String fgAccountLocked)
 	{
 		if (uSeq != null && CmStringUtils.isNotEmpty(fgAccountLocked))
 		{
@@ -298,12 +295,13 @@ public class UserService extends GeneralService
 		}
 	}
 
+	@Cacheable(value = CacheConfig.USER, key = "#username.toUpperCase()", unless="#result == null")
 	public UserDto getUserByUsername(String username)
 	{
 		return getUser(new UserSearchDto(username));
 	}
 
-	@Cacheable(value = CacheConfig.USER, key = "#userSearch", unless="#result == null")
+	@Cacheable(value = CacheConfig.USER, key = "#userSearch.uSeq", unless="#result == null")
 	public UserDto getUser(UserSearchDto userSearch)
 	{
 		return CmModelMapperUtils.map(userMapper.findUser(userSearch), UserDto.class);
