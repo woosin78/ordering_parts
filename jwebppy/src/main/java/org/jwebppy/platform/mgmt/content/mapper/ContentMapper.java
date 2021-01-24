@@ -19,7 +19,7 @@ public interface ContentMapper
 	public int updateCItemLangRl(CItemLangRlEntity cItemLangRl);
 	public int updateFgDeleteOfCItemUserRl(CItemUserRlEntity cItemUserRl);
 	@NoLogging
-	public CItemEntity findCItem(Integer cSeq);
+	public CItemEntity findCItem(CItemSearchDto cItemSearch);
 	@NoLogging
 	public List<CItemEntity> findMyCItems(CItemSearchDto cItemSearch);
 	@NoLogging

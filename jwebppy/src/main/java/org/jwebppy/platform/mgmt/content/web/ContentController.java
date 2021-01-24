@@ -76,7 +76,9 @@ public class ContentController extends ContentGeneralController
 	{
 		if ("general".equals(tabPath))
 		{
-			return ContentLayoutBuilder.getGeneralInfo(contentService.getCItem(cItemSearch.getCSeq()));
+			CItemDto cItem = (cItemSearch.getCSeq() == null) ? contentService.getRoot() : contentService.getCItem(cItemSearch.getCSeq());
+
+			return ContentLayoutBuilder.getGeneralInfo(cItem);
 		}
 		else
 		{
@@ -130,9 +132,23 @@ public class ContentController extends ContentGeneralController
 
 	@PostMapping("/copy")
 	@ResponseBody
-	public Object copy(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq, @RequestParam("fgCopyAll") String fgCopyAll)
+	public Object copy(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
 	{
-		return contentService.copy(cSeq, pSeq, fgCopyAll);
+		return contentService.copy(cSeq, pSeq, PlatformCommonVo.NO);
+	}
+
+	@PostMapping("/copy_with_sub_items")
+	@ResponseBody
+	public Object copyWithSubItems(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
+	{
+		return contentService.copy(cSeq, pSeq, PlatformCommonVo.YES);
+	}
+
+	@PostMapping("/move")
+	@ResponseBody
+	public Object move(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
+	{
+		return contentService.move(cSeq, pSeq);
 	}
 
 	@PostMapping("/lang/save")
@@ -160,6 +176,11 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object itemsHierarchy(@ModelAttribute CItemSearchDto cItemSearch)
 	{
+		if (cItemSearch.getCSeq() == null)
+		{
+			cItemSearch.setCSeq(contentService.getRoot().getCSeq());
+		}
+
 		return contentService.getCItemHierarchy2(cItemSearch);
 	}
 

@@ -29,7 +29,7 @@ public class CItemDto extends GeneralDto implements IPagination
 	private String component;
 	private String entryPoint;
 	private String parameter;
-	private int sort = -1;
+	private int sort = 100;
 	private String fgPopup = PlatformCommonVo.NO;
 	private String fgVisible = PlatformCommonVo.NO;
 	private String fgDelete = PlatformCommonVo.NO;
@@ -43,16 +43,6 @@ public class CItemDto extends GeneralDto implements IPagination
 	private int subItemCount;
 	private List<CItemDto> subCItems;
 	private String name2;
-
-	public int getSort()
-	{
-		if (sort < -1)
-		{
-			return 100;
-		}
-
-		return sort;
-	}
 
 	public String getDisplayFromValid()
 	{

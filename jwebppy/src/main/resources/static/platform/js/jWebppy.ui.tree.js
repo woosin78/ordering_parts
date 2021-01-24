@@ -6,18 +6,18 @@ let JpUiTree = function(object)
 	this.icons = {};
 	this.menu = "";
 	this.viewDetail;
-	this.addItem;
+	this.createItem;
 	this.deleteItem;
+	this.copyItem;
+	this.cutItem;
+	this.pasteItem;
 	this.onClickMenu;
 	this.url;
 	this.onLoad;
+	this.selectedItem;
+	this.commands = new Array();
 
 	let _this = this;
-	
-	this.setContext = function(object)
-	{
-		this.context = JpUtilsObject.toJquery(object);
-	};
 	
 	this.setUrl = function(url)
 	{
@@ -50,7 +50,7 @@ let JpUiTree = function(object)
 			_this.buildTree();
 		};
 	};
-
+	
 	this.buildTree = function()
 	{
 		this.content.push("<div class='ui list'>");
@@ -61,11 +61,14 @@ let JpUiTree = function(object)
 		
 		this.context.find(".header span,.caret").css("cursor", "pointer");
 
-		this.context.on("contextmenu", function() { return false; });
+		this.context.on("contextmenu", function() { return false; });		
 		this.context.find(".caret").on("click", function(event) {
 			_this.collapse($(this));
 		});
-
+		
+		$("#MENU_command").remove();
+		$("body").append(this.menu());
+		
 		this.attachEventClickItem();
 	};
 
@@ -135,19 +138,6 @@ let JpUiTree = function(object)
 
 			this.content.push("<div class='content'>");
 			this.content.push("<div class='header' data-key='" + items[i].KEY + "' parent-data-key='" + items[i].P_KEY + "' data-title='" + items[i].NAME + "'><span class='name'>" + items[i].NAME + "</span>");
-
-			//Page can not have a leaf.
-			if (items[i].TYPE != "PAGE")
-			{
-				this.content.push("<i class='plus square outline icon' style='cursor:pointer;'></i>");
-			};
-			
-			//Can not delete root
-			if (JpUtilsObject.isNotNull(items[i].P_KEY))
-			{
-				this.content.push("<i class='minus square outline icon' style='cursor:pointer;'></i>");	
-			};
-						
 			this.content.push("</div>");
 
 			if (subItemsLength > 0)
@@ -176,43 +166,237 @@ let JpUiTree = function(object)
 	{
 		return this.items[0];
 	};
-
+	
+	this.getSelectedItem = function()
+	{
+		return this.selectedItem; 
+	};
+	
+	this.showPopupMenu = function()
+	{
+		if (this.isRoot())
+		{
+			$("#MC_deleteItem, #MC_copyItem, #MC_cutItem, #MC_pasteItem").hide();
+		}
+		else
+		{
+			$("#MC_createItem, #MC_deleteItem, #MC_copyItem, #MC_cutItem").show();
+			
+			let command = this.getCommand();
+			
+			if (JpUtilsObject.isNull(command))
+			{
+				$("#MC_pasteItem").hide();
+			}
+			else
+			{
+				if (command.COMMAND == "COPY" || command.COMMAND == "CUT")
+				{
+					$("#MC_pasteItem").show();	
+				}
+				else
+				{
+					$("#MC_pasteItem").hide();
+				};				
+			};
+		};
+		
+		$("#MENU_command").show();
+	};
+	
+	this.hidePopupMenu = function()
+	{
+		$("#MENU_command").hide();
+	};
+	
 	this.attachEventClickItem = function()
 	{
 		this.context.find(".header > span.name").on("mousedown", function(event) {
 			try
 			{
+				_this.selectedItem = $(this).closest("div");
+				
 				if (event.which == 1)
 				{
-					_this.viewDetail(_this.getDataKey(this), _this.getParentDataKey(this));	
+					_this.viewDetail(_this.getDataKey(this), _this.getParentDataKey(this), this);
 				}
 				else if (event.which == 3)
 				{
-					_this.onPopupMenu();
+					if (JpUtilsObject.isNull(_this.onPopupMenu))
+					{
+						_this.onPopupMenu = function(key, pkey, e, target)
+						{
+							let left = $(target).offset().left + $(target).width() + 5;
+							
+							$("#MENU_command").css("left", left).css("top", $(target).offset().top);
+							
+							_this.showPopupMenu();
+						}
+					};
+					
+					_this.onPopupMenu(_this.getDataKey(this), _this.getParentDataKey(this), event, this);
 				};
 			}
 			catch (e)
 			{
-				console.log("There is no click event to show details.");
+				console.log(e);
 			};			
 		});
-
-		this.context.find(".header > i.plus").on("click", function(event) {
+		
+		this.context.find(".header > span.name").on("mouseover", function() {
+			$(this).css("color", "#00b5ad");
+		});
+		
+		this.context.find(".header > span.name").on("mouseout", function() {
+			$(this).css("color", "#000");
+		});		
+		
+		$("#MC_createItem").on("click", function(event) {
 			try
 			{
-				_this.addItem(_this.getDataKey(this), _this.getParentDataKey(this));
+				_this.doCommand("CREATE", this, event);
 			}
 			catch (e) {};
 		});
 		
-		this.context.find(".header > i.minus").on("click", function(event) {
+		$("#MC_deleteItem").on("click", function(event) {
 			try
 			{
-				_this.deleteItem(_this.getDataKey(this), _this.getParentDataKey(this));
+				_this.doCommand("DELETE", this, event);
 			}
 			catch (e) {};
-		});		
+		});
+		
+		$("#MC_copyItem").on("click", function(event) {
+			try
+			{
+				_this.doCommand("COPY", this, event);
+			}
+			catch (e) {};
+		});
+		
+		$("#MC_cutItem").on("click", function(event) {
+			try
+			{
+				_this.doCommand("CUT", this, event);
+			}
+			catch (e) {};
+		});
+		
+		$("#MC_pasteItem").on("click", function(event) {
+			try
+			{
+				_this.doCommand("PASTE", this, event);
+			}
+			catch (e) {};
+		});
+		
+		$("body").on("scroll", function() {
+			_this.hidePopupMenu();
+		});
+		
+		$(document).on("click", function(e) {
+			_this.hidePopupMenu();
+		});
 	};
+	
+	this.addCommandHistory = function(command, key, pKey)
+	{
+		let object = new Object();
+		object.KEY = key;
+		object.P_KEY = pKey;
+		object.COMMAND = command;
+		
+		this.commands.push(object);		
+	};
+	
+	this.getCommand = function()
+	{
+		try
+		{
+			return this.commands[this.commands.length-1];	
+		}
+		catch (e)
+		{
+			console.log(e);
+			return null;
+		};
+	};
+	
+	this.getPreviousCommand = function()
+	{
+		try
+		{
+			return this.commands[this.commands.length-2];	
+		}
+		catch (e)
+		{
+			console.log(e);
+			return null;
+		};
+	};	
+	
+	this.doCommand = function(command, target, event)
+	{
+		let key = this.getDataKey(this.getSelectedItem());
+		let pKey = this.getParentDataKey(this.getSelectedItem());
+		
+		this.addCommandHistory(command, key, pKey);
+		
+		if (command == "CREATE")
+		{
+			this.createItem(key, pKey, this, event);
+		}
+		else if (command == "DELETE")
+		{
+			this.deleteItem(key, pKey, this, event);
+		}
+		else if (command == "COPY")
+		{
+			this.copyItem(key, pKey, this, event);
+		}
+		else if (command == "CUT")
+		{
+			this.cutItem(key, pKey, this, event);
+		}		
+		else if (command == "PASTE")
+		{
+			this.pasteItem(key, pKey, this, event);
+		}
+		
+		this.hidePopupMenu();
+	};
+	
+	this.isRoot = function()
+	{
+		if (JpUtilsObject.isNull(this.getParentDataKey(this.getSelectedItem())))
+		{
+			return true;
+		};
+		
+		return false;
+	};
+	
+	this.isSubItems = function()
+	{
+		let count = $(this.getSelectedItem()).parent().find(".item").length;
+		
+		return (count > 0) ? true : false;
+	};
+	
+	this.menu = function()
+	{
+		let menu = "";
+		menu += "<div id='MENU_command' class='ui vertical menu' style='display:none; position: absolute;'>";
+		menu += "	<a id='MC_createItem' class='item'>Create</a>";
+		menu += "	<a id='MC_deleteItem' class='item'>Delete</a>";
+		menu += "	<a id='MC_copyItem' class='item'>Copy</a>";
+		menu += "	<a id='MC_cutItem' class='item'>Cut</a>";				
+		menu += "	<a id='MC_pasteItem' class='item'>Paste</a>";		
+		menu += "</div>";
+		
+		return menu;
+	};	
 	
 	this.refresh = function()
 	{

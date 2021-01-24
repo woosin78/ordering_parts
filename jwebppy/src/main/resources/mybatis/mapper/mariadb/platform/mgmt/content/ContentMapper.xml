@@ -55,21 +55,19 @@
 		u_seq=#{uSeq}
 	</update>
 
-	<select id="findCItem" parameterType="Integer" resultType="CItemEntity">
+	<select id="findCItem" parameterType="CItemSearchDto" resultType="CItemEntity">
 		select
 		*
 		from
 		pltf_citem
 
 		<where>
-			<choose>
-				<when test="cSeq == null">
-					p_seq is null and name='ROOT'
-				</when>
-				<otherwise>
-					c_seq=#{cSeq}				
-				</otherwise>
-			</choose>		
+			<if test="cSeq != null">
+				c_seq=#{cSeq}
+			</if>
+			<if test="name != null">
+				name=#{name}
+			</if>			
 		</where>
 	</select>
 

@@ -68,12 +68,6 @@ public class ContentService extends GeneralService
 	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int delete(Integer cSeq)
 	{
-//		CItemEntity cItem = new CItemEntity();
-//		cItem.setCSeq(cSeq);
-//		cItem.setFgDelete(PlatformCommonVo.YES);
-//
-//		contentMapper.updateFgDelete(cItem);
-
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setCSeq(cSeq);
 
@@ -100,11 +94,11 @@ public class ContentService extends GeneralService
 
 		contentMapper.updateFgDelete(cItem);
 
-		List<Map<String, Object>> subItems = (List<Map<String, Object>>)cItemMap.get("SUB_ITEMS");
+		List<Map<String, Object>> subCItems = (List<Map<String, Object>>)cItemMap.get("SUB_ITEMS");
 
-		if (CollectionUtils.isNotEmpty(subItems))
+		if (CollectionUtils.isNotEmpty(subCItems))
 		{
-			for (Map<String, Object> subItemMap: subItems)
+			for (Map<String, Object> subItemMap: subCItems)
 			{
 				delete(subItemMap);
 			}
@@ -113,7 +107,7 @@ public class ContentService extends GeneralService
 
 	@Transactional
 	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
-	public int copy(Integer cSeq, Integer pSeq, String fgCopyAll)
+	public int copy(Integer cSeq, Integer pSeq, String fgCopyWithSubItems)
 	{
 		if (cSeq == null || pSeq == null)
 		{
@@ -127,13 +121,13 @@ public class ContentService extends GeneralService
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
-			if (CmStringUtils.equals(fgCopyAll, PlatformCommonVo.YES))
+			if (CmStringUtils.equals(fgCopyWithSubItems, PlatformCommonVo.YES))
 			{
-				copyCItem(cSeq, pSeq);
+				copy(cSeq, pSeq, cItems.get(0));
 			}
 			else
 			{
-				copy(cSeq, pSeq, cItems.get(0));
+				copyCItem(cSeq, pSeq);
 			}
 		}
 
@@ -144,11 +138,11 @@ public class ContentService extends GeneralService
 	{
 		pSeq = copyCItem(cSeq, pSeq);
 
-		List<Map<String, Object>> subItems = (List<Map<String, Object>>)cItemMap.get("SUB_ITEMS");
+		List<Map<String, Object>> subCItems = (List<Map<String, Object>>)cItemMap.get("SUB_ITEMS");
 
-		if (CollectionUtils.isNotEmpty(subItems))
+		if (CollectionUtils.isNotEmpty(subCItems))
 		{
-			for (Map<String, Object> subItemMap: subItems)
+			for (Map<String, Object> subItemMap: subCItems)
 			{
 				copy((Integer)subItemMap.get("KEY"), pSeq, subItemMap);
 			}
@@ -172,9 +166,35 @@ public class ContentService extends GeneralService
 		return create(cItem);
 	}
 
+	@Transactional
+	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
+	public int move(Integer cSeq, Integer pSeq)
+	{
+		CItemDto cItem = getCItem(cSeq);
+		cItem.setPSeq(pSeq);
+
+		return contentMapper.update(CmModelMapperUtils.map(cItem, CItemEntity.class));
+	}
+
+	public CItemDto getRoot()
+	{
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setName(PlatformCommonVo.ROOT);
+
+		return getCItem(cItemSearch);
+	}
+
 	public CItemDto getCItem(Integer cSeq)
 	{
-		return CmModelMapperUtils.map(contentMapper.findCItem(cSeq), CItemDto.class);
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setCSeq(cSeq);
+
+		return getCItem(cItemSearch);
+	}
+
+	public CItemDto getCItem(CItemSearchDto cItemSearch)
+	{
+		return CmModelMapperUtils.map(contentMapper.findCItem(cItemSearch), CItemDto.class);
 	}
 
 	public List<CItemDto> getCItems(CItemSearchDto cItemSearch)
