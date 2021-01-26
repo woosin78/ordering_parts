@@ -99,7 +99,7 @@
 			and a.basename=#{basename}
 		</if>
 		
-		<if test="type != null and type != ''">
+		<if test="type != null and type.toString() != ''">
 			and a.type=#{type}
 		</if>
 		
@@ -128,7 +128,7 @@
 			and a.basename=#{basename}
 		</if>			
 	
-		<if test="type != null and type != ''">
+		<if test="type != null and type.toString() != ''">
 			and a.type=#{type}
 		</if>
 		

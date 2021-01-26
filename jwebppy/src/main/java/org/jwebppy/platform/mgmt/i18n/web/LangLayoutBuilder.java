@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
@@ -97,7 +96,7 @@ public class LangLayoutBuilder
 		if (CmStringUtils.equals(from, "CONTENT"))
 		{
 			document.addElement(new InputHidden("basename", lang.getBasename()));
-			document.addElement(new InputHidden("type", PlatformCommonVo.LABEL));
+			document.addElement(new InputHidden("type", LangType.L));
 		}
 		else
 		{

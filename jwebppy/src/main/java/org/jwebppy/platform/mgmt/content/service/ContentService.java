@@ -1,6 +1,7 @@
 package org.jwebppy.platform.mgmt.content.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -268,15 +269,14 @@ public class ContentService extends GeneralService
 
 	public List<Map<String, Object>> getCItemHierarchy2(CItemSearchDto cItemSearch)
 	{
-		List<Map<String, Object>> hierarchy = new LinkedList<>();
-
-		//cItemSearch.setTypes(new String[] {PlatformCommonVo.FOLDER, PlatformCommonVo.ROLE, PlatformCommonVo.MEMU, PlatformCommonVo.PAGE});
-		cItemSearch.setTypes(new String[] {CItemType.F.name(), CItemType.R.name(), CItemType.M.name(), CItemType.P.name()});
+		cItemSearch.setTypes(new CItemType[] {CItemType.F, CItemType.R, CItemType.M, CItemType.P});
 
 		List<CItemDto> cItems = getCItems(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
+			List<Map<String, Object>> hierarchy = new LinkedList<>();
+
 			CItemDto cItem = cItems.get(0);
 
 			Map<String, Object> itemMap = new HashMap<>();
@@ -288,17 +288,18 @@ public class ContentService extends GeneralService
 			itemMap.put("SUB_ITEMS", getSubItems(cItem.getCSeq()));
 
 			hierarchy.add(itemMap);
+
+			return hierarchy;
 		}
 
-		return hierarchy;
+		return Collections.emptyList();
 	}
 
 	private List<Map<String, Object>> getSubItems(Integer pSeq)
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setPSeq(pSeq);
-		//cItemSearch.setTypes(new String[] {PlatformCommonVo.FOLDER, PlatformCommonVo.ROLE, PlatformCommonVo.MEMU, PlatformCommonVo.PAGE});
-		cItemSearch.setTypes(new String[] {CItemType.F.name(), CItemType.R.name(), CItemType.M.name(), CItemType.P.name()});
+		cItemSearch.setTypes(new CItemType[] {CItemType.F, CItemType.R, CItemType.M, CItemType.P});
 
 		List<CItemDto> subCItems = getCItems(cItemSearch);
 
@@ -322,7 +323,7 @@ public class ContentService extends GeneralService
 			return hierarchy;
 		}
 
-		return null;
+		return Collections.emptyList();
 	}
 
 	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)

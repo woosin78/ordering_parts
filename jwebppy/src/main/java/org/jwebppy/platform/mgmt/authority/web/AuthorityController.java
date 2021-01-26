@@ -51,14 +51,14 @@ public class AuthorityController extends UserGeneralController
 	{
 		PageableList<CItemDto> pageableList = null;
 
-		if (CmStringUtils.isEmpty(cItemSearch.getQuery()))
+		if (cItemSearch.getType() == null && CmStringUtils.isEmpty(cItemSearch.getQuery()))
 		{
 			pageableList = new PageableList<>();
 		}
 		else
 		{
-			//cItemSearch.setTypes(new String[] {PlatformCommonVo.GROUP, PlatformCommonVo.ROLE});
-			cItemSearch.setTypes(new String[] {CItemType.R.name(), CItemType.G.name()});
+			//cItemSearch.setTypes(new String[] {CItemType.R.name(), CItemType.G.name()});
+			cItemSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
 
 			pageableList = new PageableList<>(contentService.getPageableCItems(cItemSearch));
 		}

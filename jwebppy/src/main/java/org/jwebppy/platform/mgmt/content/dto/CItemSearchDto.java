@@ -24,8 +24,8 @@ public class CItemSearchDto extends GeneralDto
 	private String fgVisible;
 	private String username;
 	private String name;
-	private String type;
-	private String[] types;
+	private CItemType type;
+	private CItemType[] types;
 	private List<Integer> cSeqs;
 	private String entryPoint;
 	private String lang;

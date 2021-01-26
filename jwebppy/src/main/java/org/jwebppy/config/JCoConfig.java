@@ -36,7 +36,7 @@ public class JCoConfig
 	@Bean
 	public SimpleRfcTemplate rfcTemplate()
 	{
-		if (PlatformCommonVo.TRUE.equals(isActive))
+		if (Boolean.valueOf(isActive))
 		{
 			return new SimpleRfcTemplate(jCoConnectionResource());
 		}
@@ -48,7 +48,7 @@ public class JCoConfig
 	{
 		JCoConnectionResource jCoConnectionResource = new JCoConnectionResource();
 
-		String[] landscapes = LANDSCAPE.split(";");
+		String[] landscapes = LANDSCAPE.split(PlatformCommonVo.DELIMITER);
 		for (String landscape : landscapes)
 		{
 			jCoConnectionResource.addConnectionInfo(getConnectionInfo(landscape));

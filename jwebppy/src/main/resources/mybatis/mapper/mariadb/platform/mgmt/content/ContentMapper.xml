@@ -100,7 +100,7 @@
 			and a.name=#{name}
 		</if>
 		
-		<if test="type != null and type != ''">
+		<if test="type != null and type.toString() != ''">
 			and a.type=#{type}
 		</if>
 		
@@ -137,14 +137,14 @@
 			and a.name=#{name}
 		</if>
 		
-		<if test="type != null and type != ''">
+		<if test="type != null and type.toString() != ''">
 			and type=#{type}
 		</if>
 		
 		<if test="types != null">
 			<trim prefix="and">
 				<foreach collection="types" item="type" open="(" close=")" separator="or">
-					<if test="type != null and type != ''">
+					<if test="type != null and type.toString() != ''">
 						a.type=#{type}
 					</if>				
 				</foreach>				
@@ -183,14 +183,14 @@
 			</if>
 		</trim>
 		
-		<if test="type != null and type != ''">
+		<if test="type != null and type.toString() != ''">
 			and type=#{type}
 		</if>
 		
 		<if test="types != null">
 			<trim prefix="and">
 				<foreach collection="types" item="type" open="(" close=")" separator="or">
-					<if test="type != null and type != ''">
+					<if test="type != null and type.toString() != ''">
 						a.type=#{type}
 					</if>				
 				</foreach>				
