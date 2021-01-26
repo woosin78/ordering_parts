@@ -21,7 +21,7 @@ public class LangDto extends GeneralDto implements IPagination
 
 	private Integer lSeq;
 	private String basename;
-	private String type;
+	private LangType type;
 	private String seq;
 	private String fgDelete = PlatformCommonVo.NO;
 	private List<LangDetailDto> langDetails;
@@ -29,29 +29,14 @@ public class LangDto extends GeneralDto implements IPagination
 
 	public String getMessageCode()
 	{
-		return CmStringUtils.trimToEmpty(basename) + "_" + CmStringUtils.trimToEmpty(type) + "_" + CmStringUtils.leftPad(seq, 4, "0");
+		return CmStringUtils.trimToEmpty(basename) + "_" + type.name() + "_" + CmStringUtils.leftPad(seq, 4, "0");
 	}
 
 	public String getDisplayType()
 	{
 		if (type != null)
 		{
-			if ("LB".equals(type))
-			{
-				return "LABEL";
-			}
-			else if ("BTN".equals(type))
-			{
-				return "BUTTON";
-			}
-			else if ("TXT".equals(type))
-			{
-				return "TEXT";
-			}
-			else if ("MSG".equals(type))
-			{
-				return "MESSAAE";
-			}
+			return type.getType();
 		}
 
 		return null;

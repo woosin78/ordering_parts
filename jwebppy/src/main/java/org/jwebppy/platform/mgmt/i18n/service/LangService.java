@@ -16,6 +16,7 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangDetailDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangKindDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangSearchDto;
+import org.jwebppy.platform.mgmt.i18n.dto.LangType;
 import org.jwebppy.platform.mgmt.i18n.entity.LangDetailEntity;
 import org.jwebppy.platform.mgmt.i18n.entity.LangEntity;
 import org.jwebppy.platform.mgmt.i18n.entity.LangKindEntity;
@@ -146,7 +147,7 @@ public class LangService extends MgmtGeneralService
 
 			LangSearchDto langSearch = new LangSearchDto();
 			langSearch.setBasename(codes[0]);
-			langSearch.setType(codes[1]);
+			langSearch.setType(LangType.valueOf(codes[1]));
 			langSearch.setSeq(suffix.toString());
 			langSearch.setCode(locale);
 

@@ -20,4 +20,22 @@ public enum CItemType
 	{
 		this.type = type;
 	}
+
+	public static CItemType[] values2()
+	{
+		CItemType[] cItemTypes = new CItemType[CItemType.values().length-1];
+		int index = 0;
+
+		for (CItemType cItemType: CItemType.values())
+		{
+			if (cItemType.equals(CItemType.G))
+			{
+				continue;
+			}
+
+			cItemTypes[index++] = cItemType;
+		}
+
+		return cItemTypes;
+	}
 }

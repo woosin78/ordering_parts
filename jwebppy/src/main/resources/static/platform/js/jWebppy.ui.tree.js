@@ -226,9 +226,11 @@ let JpUiTree = function(object)
 					{
 						_this.onPopupMenu = function(key, pkey, e, target)
 						{
-							let left = $(target).offset().left + $(target).width() + 5;
+							//let left = $(target).offset().left + $(target).width() + 5;
+							let left = $(target).offset().left;
+							let top = $(target).offset().top + $(target).height();
 							
-							$("#MENU_command").css("left", left).css("top", $(target).offset().top);
+							$("#MENU_command").css("left", left).css("top", top);
 							
 							_this.showPopupMenu();
 						}
@@ -387,12 +389,12 @@ let JpUiTree = function(object)
 	this.menu = function()
 	{
 		let menu = "";
-		menu += "<div id='MENU_command' class='ui vertical menu' style='display:none; position: absolute;'>";
-		menu += "	<a id='MC_createItem' class='item'>Create</a>";
-		menu += "	<a id='MC_deleteItem' class='item'>Delete</a>";
-		menu += "	<a id='MC_copyItem' class='item'>Copy</a>";
-		menu += "	<a id='MC_cutItem' class='item'>Cut</a>";				
-		menu += "	<a id='MC_pasteItem' class='item'>Paste</a>";		
+		menu += "<div id='MENU_command' class='ui compact menu' style='display:none; position: absolute;'>";
+		menu += "	<a id='MC_createItem' class='item'><i class='plus icon'></i> Create</a>";
+		menu += "	<a id='MC_deleteItem' class='item'><i class='minus icon'></i> Delete</a>";
+		menu += "	<a id='MC_copyItem' class='item'><i class='copy icon'></i> Copy</a>";
+		menu += "	<a id='MC_cutItem' class='item'><i class='cut icon'></i> Cut</a>";				
+		menu += "	<a id='MC_pasteItem' class='item'><i class='paste icon'></i> Paste</a>";		
 		menu += "</div>";
 		
 		return menu;

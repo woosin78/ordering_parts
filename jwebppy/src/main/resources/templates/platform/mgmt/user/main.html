@@ -5,39 +5,38 @@
 	layout:decorate="~{platform/layout/common/index}">
 
 <th:block layout:fragment="content">
-	<div class="ui dividing header">
-	  Account
-	  <div class="sub header">You can create new accounts and modify users' information and give them the authorities.</div>
-	</div>
-	<div class="ui segment">
-		<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-		<input type="checkbox" name="uSeq" style="display:none" value="" checked />
-		<input type="hidden" name="pageNumber" value="1"/>
-		<input type="hidden" name="rowPerPage" value="10"/>
-		<div class="fields">
-			<div class="twelve wide field">
-				<div class="ui icon input">
-					<input type="text" id="query" name="query" placeholder="Search"> <i class="search icon"></i>
-				</div>
-			</div>
-			<div class="four wide field">
-				<div id="BTN_searchUser" class="ui teal button"><i class="search icon"></i> Search</div>
-				<div class="ui button" onclick="document.location.reload()"><i class="redo icon"></i> Reset</div>
+<div class="ui dividing header">
+  Account
+  <div class="sub header">You can create new accounts and modify users' information and give them the authorities.</div>
+</div>
+<div class="ui segment">
+	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
+	<input type="checkbox" name="uSeq" style="display:none" value="" checked />
+	<input type="hidden" name="pageNumber" value="1"/>
+	<input type="hidden" name="rowPerPage" value="10"/>
+	<div class="fields">
+		<div class="twelve wide field">
+			<div class="ui icon input">
+				<input type="text" id="query" name="query" placeholder="Search"> <i class="search icon"></i>
 			</div>
 		</div>
-		<div class="ui divider"></div>
-		<div class="ui one column grid">
-			<div class="column">
-				<div id="BTN_createUser" class="ui teal button"><i class="plus icon"></i> Create</div>
-				<div id="BTN_copyToCreateUser" class="ui teal button"><i class="copy outline icon"></i> Copy To Create</div>
-				<div id="BTN_deleteUser" class="ui teal button"><i class="minus icon"></i> Delete</div>
-				<div id="BTN_lockUser" class="ui teal button"><i class="lock icon"></i> Lock</div>
-				<div id="BTN_unlockUser" class="ui teal button"><i class="lock open icon"></i> Unlock</div>
-			</div>
+		<div class="four wide field">
+			<div id="BTN_searchUser" class="ui teal button"><i class="search icon"></i> Search</div>
+			<div class="ui button" onclick="document.location.reload()"><i class="redo icon"></i> Reset</div>
 		</div>
-		<div id="TBL_users"></div>
-		</form>
 	</div>
+	<div class="ui divider"></div>
+	<div class="ui one column grid">
+		<div class="column">
+			<div id="BTN_createUser" class="ui teal button"><i class="plus icon"></i> Create</div>
+			<div id="BTN_copyToCreateUser" class="ui teal button"><i class="copy outline icon"></i> Copy To Create</div>
+			<div id="BTN_deleteUser" class="ui teal button"><i class="minus icon"></i> Delete</div>
+			<div id="BTN_lockUser" class="ui teal button"><i class="lock icon"></i> Lock</div>
+			<div id="BTN_unlockUser" class="ui teal button"><i class="lock open icon"></i> Unlock</div>
+		</div>
+	</div>
+	<div id="TBL_users"></div>
+	</form>
 	<div class="ui segment" id="AREA_viewUserDetail">
 		<div class="ui header"></div>
 		<div class="ui clearing divider"></div>
@@ -75,7 +74,7 @@
 			<div class="ui button modify BTN_cancelUser"> Cancel</div>
 		</div>
 	</div>
-
+	
 	<div id="MDL_coptyToCreate" class="ui tiny modal">
 	    <h3 class="ui header">Create User</h3>
 	    <div class="content">
@@ -114,6 +113,7 @@
 	    </div>
 	    <div class="ui hidden divider"></div>
 	</div>
+</div>
 <script type="application/javascript">
 $(document).ready(function() {
 	let usersTable = new JpUiTable($("#TBL_users"));

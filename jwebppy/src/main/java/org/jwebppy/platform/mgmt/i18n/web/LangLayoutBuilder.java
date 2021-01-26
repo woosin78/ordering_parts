@@ -20,6 +20,7 @@ import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDetailDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangKindDto;
+import org.jwebppy.platform.mgmt.i18n.dto.LangType;
 
 public class LangLayoutBuilder
 {
@@ -122,10 +123,11 @@ public class LangLayoutBuilder
 				loType.setLabel("Type");
 				loType.setRequired(true);
 				loType.setValue(lang.getType());
-				loType.addOption(PlatformCommonVo.LABEL, "LABEL");
-				loType.addOption(PlatformCommonVo.BUTTON, "BUTTON");
-				loType.addOption(PlatformCommonVo.TEXT, "TEXT");
-				loType.addOption(PlatformCommonVo.MESSAGE, "MESSAGE");
+
+				for (LangType langType: LangType.values())
+				{
+					loType.addOption(langType.name(), langType.getType());
+				}
 
 				document.addElement(loType);
 			}

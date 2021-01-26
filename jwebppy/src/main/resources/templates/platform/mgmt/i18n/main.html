@@ -21,10 +21,7 @@
 		<div class="four wide field">
 			<select name="type" class="ui clearable search dropdown">
 				<option value="">Type</option>
-				<option value="LB">LABEL</option>
-				<option value="BTN">BUTTON</option>
-				<option value="TXT">TEXT</option>
-				<option value="MSG">MESSAGE</option>
+				<option th:each="langType : ${T(org.jwebppy.platform.mgmt.i18n.dto.LangType).values()}" th:value="${langType}" th:text="${langType.type}"></option>
 			</select>				
 		</div>
 	</div>
@@ -43,13 +40,12 @@
 	<div class="ui one column grid">
 		<div class="column">
 			<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
-			<div id="BTN_delete" class="ui negative button"><i class="minus icon"></i> Delete</div>				
+			<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>				
 		</div>
 	</div>
 	<div id="TBL_list"></div>
 	</form>
 </div>
-
 <!-- Start add language -->
 <th:block th:replace="/platform/common/lang :: addLang"></th:block>
 <!-- End add language -->

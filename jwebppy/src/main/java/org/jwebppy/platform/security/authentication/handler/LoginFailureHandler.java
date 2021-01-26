@@ -12,6 +12,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.service.ContentService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.jwebppy.platform.security.authentication.dto.LoginHistorySearchDto;
@@ -60,7 +61,8 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 		{
 			CItemSearchDto cItemSearch = new CItemSearchDto();
 			cItemSearch.setUsername(username);
-			cItemSearch.setType(PlatformCommonVo.ROLE);
+			//cItemSearch.setType(PlatformCommonVo.ROLE);
+			cItemSearch.setType(CItemType.R.name());
 			cItemSearch.setName(PlatformConfigVo.ROLE_PLTF_ADMIN);
 
 			List<CItemDto> cItems = contentService.getMyItems(cItemSearch);

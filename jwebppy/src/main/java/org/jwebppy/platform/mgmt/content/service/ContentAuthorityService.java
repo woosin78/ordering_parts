@@ -12,6 +12,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.dto.CItemUserRlDto;
 import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
 import org.jwebppy.platform.mgmt.content.entity.CItemUserRlEntity;
@@ -78,7 +79,8 @@ public class ContentAuthorityService extends GeneralService
 		{
 			CItemSearchDto cItemSearch = new CItemSearchDto();
 			cItemSearch.setName(cItemUserRl.getName());
-			cItemSearch.setType(PlatformCommonVo.ROLE);
+			//cItemSearch.setType(PlatformCommonVo.ROLE);
+			cItemSearch.setType(CItemType.R.name());
 
 			List<CItemEntity> cItems = contentMapper.findCItems(cItemSearch);
 

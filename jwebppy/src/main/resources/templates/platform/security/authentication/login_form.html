@@ -5,7 +5,7 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="-1" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<title th:text="#{PLTF_TXT_0006}"></title>
+<title th:text="#{PLTF_T_0006}"></title>
 
 <link rel="stylesheet" type="text/css" th:href="@{/platform/css/login/login.css}" />
 
@@ -44,13 +44,13 @@ function loginFormCheck()
 {
 	if ($.trim($("#username").val()) == "")
 	{
-		alert("[[#{PLTF_MSG_LOGIN_EMPTY_USERNAME}]]");
+		alert("[[#{PLTF_M_LOGIN_EMPTY_USERNAME}]]");
 		$("#username").focus();
 		return false;
 	}
 	else if ($.trim($("#password").val()) == "")
 	{
-		alert("[[#{PLTF_MSG_LOGIN_EMPTY_PWD}]]");
+		alert("[[#{PLTF_M_LOGIN_EMPTY_PWD}]]");
 		$("#password").focus();			
 		return false;				
 	};
@@ -117,15 +117,15 @@ function loginStep2()
 
 			if (status == "401")
 			{
-				alert("[[#{PLTF_MSG_LOGIN_AUTHENTICATION_FAILED}]]");
+				alert("[[#{PLTF_M_LOGIN_AUTHENTICATION_FAILED}]]");
 			}
 			else if (status == "403")
 			{
-				alert("[[#{PLTF_MSG_LOGIN_HAVE_NO_AUTHORITY}]]");
+				alert("[[#{PLTF_M_LOGIN_HAVE_NO_AUTHORITY}]]");
 			}
 			else if (status == "423")
 			{
-				alert("[[#{PLTF_MSG_LOGIN_ACCOUNT_LOCKED}]]");
+				alert("[[#{PLTF_M_LOGIN_ACCOUNT_LOCKED}]]");
 			};
 		},
 		complete: function(jqXHR, textStatus)
@@ -199,17 +199,17 @@ $(document).ready(function() {
 <input type="hidden" id="saveUsername" name="saveUsername" />
 <div id="wrap" class="wrap"> 
 	<div id="header" class="header">
-		<div id="openNewWindow" class="button">[[#{	PLTF_LB_NEW-WINDOW}]]</div>
+		<div id="openNewWindow" class="button">[[#{	PLTF_L_NEW-WINDOW}]]</div>
 	</div>
 	<div id="body" class="body">
 		<div><img id="mainImg" th:src="@{/platform/img/login/main.png}" alt="Main Image" /></div>
 		<div class="login-box">
-			<div class="title" th:text="#{PLTF_TXT_0007}"></div>
-			<div class="username"><img th:src="@{/platform/img/login/username.png}" class="login-input" alt="Username" /><input type="text" id="username" name="username" th:placeholder="#{PLTF_LB_USERNAME}" autofocus /></div>
-			<div class="password"><img th:src="@{/platform/img/login/password.png}" class="login-input" alt="Password" /><input type="password" id="password" name="password" th:placeholder="#{PLTF_LB_PASSWORD}" /></div>
-			<button class="btn-login" type="button" th:text="#{PLTF_BTN_LOGIN}"></button>
+			<div class="title" th:text="#{PLTF_T_0007}"></div>
+			<div class="username"><img th:src="@{/platform/img/login/username.png}" class="login-input" alt="Username" /><input type="text" id="username" name="username" th:placeholder="#{PLTF_L_USERNAME}" autofocus /></div>
+			<div class="password"><img th:src="@{/platform/img/login/password.png}" class="login-input" alt="Password" /><input type="password" id="password" name="password" th:placeholder="#{PLTF_L_PASSWORD}" /></div>
+			<button class="btn-login" type="button" th:text="#{PLTF_B_LOGIN}"></button>
 			<div class="bottom"> 
-				<div class="save-username"><img th:src="@{/platform/img/login/check.png}" class="save-username-chk" alt="Save Username" /><span>[[#{PLTF_LB_SAVE-USERNAME}]]</span></div>
+				<div class="save-username"><img th:src="@{/platform/img/login/check.png}" class="save-username-chk" alt="Save Username" /><span>[[#{PLTF_L_SAVE-USERNAME}]]</span></div>
 				<!-- div class="manual">
 					<select class="select-box">
 						<option>Manual Download</option>
@@ -229,7 +229,7 @@ Any unauthorized use will be considered a breach of Doosan Group Information Sec
 		<div style="height:52px;"></div>
 		<div class="line"></div>
 		<div class="copy-right">
-			<span class=".text">[[#{PLTF_TXT_0008}]]</span>
+			<span class=".text">[[#{PLTF_T_0008}]]</span>
 		</div>
 	</div>
 </div>

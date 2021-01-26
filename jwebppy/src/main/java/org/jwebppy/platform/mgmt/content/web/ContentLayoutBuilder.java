@@ -18,6 +18,7 @@ import org.jwebppy.platform.core.web.ui.dom.form.Textarea;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemComponentDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDetailDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangKindDto;
@@ -27,7 +28,7 @@ public class ContentLayoutBuilder
 	public static Document getGeneralInfo(CItemDto cItem)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Item Type", CmStringUtils.trimToEmpty(cItem.getType()));
+		elementMap.put("Item Type", cItem.getType().getType());
 		elementMap.put("Name", CmStringUtils.trimToEmpty(cItem.getName()));
 		elementMap.put("Description", CmStringUtils.trimToEmpty(cItem.getDescription()));
 		elementMap.put("Component", CmStringUtils.trimToEmpty(cItem.getComponent()));
@@ -54,10 +55,11 @@ public class ContentLayoutBuilder
 		loType.setLabel("Item Type");
 		loType.addAttribute("required");
 		loType.setValue(cItem.getType());
-		loType.addOption(PlatformCommonVo.PAGE, "PAGE");
-		loType.addOption(PlatformCommonVo.MEMU, "MEMU");
-		loType.addOption(PlatformCommonVo.ROLE, "ROLE");
-		loType.addOption(PlatformCommonVo.FOLDER, "FOLDER");
+
+		for (CItemType cItemType: CItemType.values2())
+		{
+			loType.addOption(cItemType.name(), cItemType.getType());
+		}
 
 		Element loId = new Input("name", cItem.getName());
 		loId.setLabel("Name");

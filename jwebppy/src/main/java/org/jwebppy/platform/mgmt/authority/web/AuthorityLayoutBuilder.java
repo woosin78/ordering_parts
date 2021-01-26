@@ -18,6 +18,7 @@ import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
@@ -27,6 +28,7 @@ public class AuthorityLayoutBuilder
 	public static Document getList(PageableList<CItemDto> pageableList)
 	{
 		Tr thTr = new Tr();
+		thTr.addCheckAllTh();
 		thTr.addTextTh("Type", "one wide");
 		thTr.addTextTh("Name", "two wide");
 		thTr.addTextTh("Description", "three wide");
@@ -46,6 +48,16 @@ public class AuthorityLayoutBuilder
 			for (CItemDto cItem : cItems)
 			{
 				Tr tbTr = new Tr();
+
+				if (cItem.getType().equals(CItemType.G))
+				{
+					tbTr.addDataKeyCheckboxTd("cSeq", cItem.getCSeq());
+				}
+				else
+				{
+					tbTr.addTextTd("");
+				}
+
 				tbTr.addTextTd(cItem.getType().getType());
 				tbTr.addDataKeyLinkTd(cItem.getName(), cItem.getCSeq());
 				tbTr.addTextTd(cItem.getDescription());

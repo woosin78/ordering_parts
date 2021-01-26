@@ -17,6 +17,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
@@ -65,9 +66,38 @@ public class ContentService extends GeneralService
 	}
 
 	@Transactional
-	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
+	public int delete(List<Integer> cSeqs)
+	{
+		if (CollectionUtils.isNotEmpty(cSeqs))
+		{
+			for (Integer cSeq: cSeqs)
+			{
+				if (cSeq == null)
+				{
+					continue;
+				}
+
+				delete(cSeq);
+			}
+		}
+
+		return 1;
+	}
+
+	@Transactional
 	public int delete(Integer cSeq)
 	{
+		CItemDto cItem = getCItem(cSeq);
+
+		if (cItem.getType().equals(CItemType.G))
+		{
+			CItemEntity cItemEntity = new CItemEntity();
+			cItemEntity.setCSeq(cSeq);
+			cItemEntity.setFgDelete(PlatformCommonVo.YES);
+
+			return contentMapper.updateFgDelete(cItemEntity);
+		}
+
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setCSeq(cSeq);
 
@@ -86,6 +116,7 @@ public class ContentService extends GeneralService
 		return 1;
 	}
 
+	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	private void delete(Map<String, Object> cItemMap)
 	{
 		CItemEntity cItem = new CItemEntity();
@@ -158,7 +189,7 @@ public class ContentService extends GeneralService
 		cItem.setModDate(null);
 		cItem.setModUsername(null);
 
-		if (PlatformCommonVo.ROLE.equals(cItem.getType().toString()))
+		if (cItem.getType().equals(CItemType.R))
 		{
 			cItem.setName(cItem.getName() + "_" + CmDateFormatUtils.now());
 		}
@@ -239,7 +270,8 @@ public class ContentService extends GeneralService
 	{
 		List<Map<String, Object>> hierarchy = new LinkedList<>();
 
-		cItemSearch.setTypes(new String[] {PlatformCommonVo.FOLDER, PlatformCommonVo.ROLE, PlatformCommonVo.MEMU, PlatformCommonVo.PAGE});
+		//cItemSearch.setTypes(new String[] {PlatformCommonVo.FOLDER, PlatformCommonVo.ROLE, PlatformCommonVo.MEMU, PlatformCommonVo.PAGE});
+		cItemSearch.setTypes(new String[] {CItemType.F.name(), CItemType.R.name(), CItemType.M.name(), CItemType.P.name()});
 
 		List<CItemDto> cItems = getCItems(cItemSearch);
 
@@ -265,7 +297,8 @@ public class ContentService extends GeneralService
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setPSeq(pSeq);
-		cItemSearch.setTypes(new String[] {PlatformCommonVo.FOLDER, PlatformCommonVo.ROLE, PlatformCommonVo.MEMU, PlatformCommonVo.PAGE});
+		//cItemSearch.setTypes(new String[] {PlatformCommonVo.FOLDER, PlatformCommonVo.ROLE, PlatformCommonVo.MEMU, PlatformCommonVo.PAGE});
+		cItemSearch.setTypes(new String[] {CItemType.F.name(), CItemType.R.name(), CItemType.M.name(), CItemType.P.name()});
 
 		List<CItemDto> subCItems = getCItems(cItemSearch);
 

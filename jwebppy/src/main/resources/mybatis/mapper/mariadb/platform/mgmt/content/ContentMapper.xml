@@ -171,6 +171,17 @@
 		pltf_citem a
 		where
 		a.fg_delete='N'
+
+		<trim prefix="and (" suffix=")" prefixOverrides="or">
+			<if test="query != null and query != ''">
+				a.name like concat('%', upper(trim(#{query})), '%')
+				or upper(a.description) like concat('%', upper(trim(#{query})), '%')
+			</if>
+			
+			<if test="cSeq != null and cSeq != ''">
+				or a.c_seq=#{cSeq}
+			</if>
+		</trim>
 		
 		<if test="type != null and type != ''">
 			and type=#{type}
@@ -184,7 +195,7 @@
 					</if>				
 				</foreach>				
 			</trim>
-		</if>		
+		</if>
 		
 		<include refid="PaginationMapper.footer"/>
 	</select>	

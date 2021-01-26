@@ -28,11 +28,11 @@ public class PlatformCommonVo
 
 	//Content Type
 	public static final String ROOT = "ROOT";
-	public static final String GROUP = "G";
-	public static final String ROLE = "R";
-	public static final String MEMU = "M";
-	public static final String PAGE = "P";
-	public static final String FOLDER = "F";
+//	public static final String GROUP = "G";
+//	public static final String ROLE = "R";
+//	public static final String MEMU = "M";
+//	public static final String PAGE = "P";
+//	public static final String FOLDER = "F";
 
 	/** Language **/
 	//Default basename

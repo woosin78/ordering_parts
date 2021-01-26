@@ -22,6 +22,7 @@ import org.jwebppy.platform.mgmt.content.dto.CItemComponentDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemLangRlDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.content.service.ContentLangService;
 import org.jwebppy.platform.mgmt.content.service.ContentService;
@@ -289,12 +290,14 @@ public class ContentController extends ContentGeneralController
 		{
 			for (CItemDto subCItem: cItem.getSubCItems())
 			{
-				if (CmStringUtils.notEquals(PlatformCommonVo.PAGE, subCItem.getType()) && CmStringUtils.notEquals(PlatformCommonVo.MEMU, subCItem.getType()))
+				//if (CmStringUtils.notEquals(PlatformCommonVo.PAGE, subCItem.getType()) && CmStringUtils.notEquals(PlatformCommonVo.MEMU, subCItem.getType()))
+				if (!subCItem.getType().equals(CItemType.M) && !subCItem.getType().equals(CItemType.P))
 				{
 					continue;
 				}
 
-				if (CmStringUtils.equals(PlatformCommonVo.PAGE, subCItem.getType()) && CmStringUtils.notEquals(url, subCItem.getUrl()))
+				//if (CmStringUtils.equals(PlatformCommonVo.PAGE, subCItem.getType()) && CmStringUtils.notEquals(url, subCItem.getUrl()))
+				if (subCItem.getType().equals(CItemType.P) && CmStringUtils.notEquals(url, subCItem.getUrl()))
 				{
 					continue;
 				}

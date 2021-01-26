@@ -35,41 +35,47 @@
 		</div>
 	</div>
 	<div class="ui divider"></div>
+	<div class="ui one column grid">
+		<div class="column">
+			<div id="BTN_createAuthority" class="ui teal button"><i class="plus icon"></i> Create</div>
+			<div id="BTN_deleteAuthority" class="ui teal button"><i class="minus icon"></i> Delete</div>
+		</div>
+	</div>
 	<div id="TBL_authority"></div>
 	</form>
-</div>
-<div class="ui segment" id="AREA_viewAuthorityDetail">
-	<div class="ui header"></div>
-	<div class="ui clearing divider"></div>
-	<div id="TAB_viewAuthorityDetail" class="ui secondary pointing menu">
-		<a class="item active wrap" data-tab="general">General</a>
-		<a class="item wrap" data-tab="user">User</a>
-		<a class="item wrap" data-tab="authority">Authority</a>
+	<div class="ui segment" id="AREA_viewAuthorityDetail">
+		<div class="ui header"></div>
+		<div class="ui clearing divider"></div>
+		<div id="TAB_viewAuthorityDetail" class="ui secondary pointing menu">
+			<a class="item active wrap" data-tab="general">General</a>
+			<a class="item wrap" data-tab="user">User</a>
+			<a class="item wrap" data-tab="authority">Authority</a>
+		</div>
+		<div class="AREA_moveToModifyAuthority">
+			<div class="ui teal button BTN_modifyAuthority"><i class="edit outline icon"></i> Modify</div>
+			<div class="ui clearing divider"></div>
+		</div>
+		<div class="AREA_modifyAuthority" style="display:none;">
+			<div class="ui teal button modify BTN_saveAuthority"><i class="check icon"></i> Save</div>
+			<div class="ui button modify BTN_cancelAuthority"><i class="times icon"></i> Cancel</div>
+			<div class="ui clearing divider"></div>
+		</div>
+		<form id="FORM_modifyAuthority" class="ui form" autocomplete="off" onsubmit="return false;">
+			<input type="hidden" name="cSeq" />
+			<div class="ui tab active attached segment teal" data-tab="general"></div>
+			<div class="ui tab attached" data-tab="user"></div>
+			<div class="ui tab attached segment teal" data-tab="authority"></div>
+		</form>
+		<div class="AREA_moveToModifyAuthority">
+			<div class="ui clearing divider"></div>
+			<div class="ui teal button BTN_modifyAuthority"><i class="edit outline icon"></i> Modify</div>				
+		</div>			
+		<div class="AREA_modifyAuthority" style="display:none;">
+			<div class="ui clearing divider"></div>
+			<div class="ui teal button modify BTN_saveAuthority"><i class="check icon"></i> Save</div>
+			<div class="ui button modify BTN_cancelAuthority"> Cancel</div>				
+		</div>			
 	</div>
-	<div class="AREA_moveToModifyAuthority">
-		<div class="ui teal button BTN_modifyAuthority"><i class="edit outline icon"></i> Modify</div>
-		<div class="ui clearing divider"></div>
-	</div>
-	<div class="AREA_modifyAuthority" style="display:none;">
-		<div class="ui teal button modify BTN_saveAuthority"><i class="check icon"></i> Save</div>
-		<div class="ui button modify BTN_cancelAuthority"><i class="times icon"></i> Cancel</div>
-		<div class="ui clearing divider"></div>
-	</div>
-	<form id="FORM_modifyAuthority" class="ui form" autocomplete="off" onsubmit="return false;">
-		<input type="hidden" name="cSeq" />
-		<div class="ui tab active attached segment teal" data-tab="general"></div>
-		<div class="ui tab attached" data-tab="user"></div>
-		<div class="ui tab attached segment teal" data-tab="authority"></div>
-	</form>
-	<div class="AREA_moveToModifyAuthority">
-		<div class="ui clearing divider"></div>
-		<div class="ui teal button BTN_modifyAuthority"><i class="edit outline icon"></i> Modify</div>				
-	</div>			
-	<div class="AREA_modifyAuthority" style="display:none;">
-		<div class="ui clearing divider"></div>
-		<div class="ui teal button modify BTN_saveAuthority"><i class="check icon"></i> Save</div>
-		<div class="ui button modify BTN_cancelAuthority"> Cancel</div>				
-	</div>			
 </div>
 <script type="application/javascript">
 $(document).ready(function() {
@@ -282,47 +288,8 @@ $(document).ready(function() {
 
 	viewAuthorityTab.render();
 
-	$("#BTN_createUser").on("click", function() {
+	$("#BTN_createAuthority").on("click", function() {
 		showCreateAuthorityArea();		
-	});
-	
-	$("#BTN_copyToCreateUser").on("click", function() {
-		
-		let checkedCount = getCheckedUserCount();
-		
-		if (checkedCount == 0)
-		{
-			alert("Please select the target to copy.");
-			return;
-		};
-		
-		if (checkedCount > 1)
-		{
-			alert("Please select one.");
-			return;	
-		};
-		
-		$("#FORM_copyToCreate").form("reset");
-		
-	});
-	
-	$("#FORM_copyToCreate").form({
-		inline: true,
-		fields: {
-			Name: {
-				identifier: "name",
-				rules: [
-					{
-						type: "empty",
-						prompt: "Please enter {name}."
-					},					
-					{
-						type: "checkDuplicatedName",
-						prompt: "The {name} is not available. Please enter another name."
-					}
-				]
-			}		
-		}
 	});
 	
 	$(".BTN_modifyAuthority").on("click", function() {
@@ -332,13 +299,13 @@ $(document).ready(function() {
 	});
 
 	$("#BTN_deleteAuthority").on("click", function() {
-		if (getCheckedUserCount() == 0)
+		if (getCheckedAuthorityCount() == 0)
 		{
-			alert("Please choose the users to delete.");
+			alert("Please choose the authorities to delete.");
 			return;
 		};
 
-		if (confirm("Do you want to delete the users?"))
+		if (confirm("Do you want to delete the authorities?"))
 		{
 			JpUtilsAjax.post({
 				url: JpUiGlobal.url("/platform/mgmt/authority/delete"),
@@ -366,7 +333,7 @@ $(document).ready(function() {
 		$("#FORM_search input:checkbox[name=cSeq]:first, #FORM_modifyAuthority input[name=cSeq]").val("");
 	};
 	
-	function getCheckedUserCount()
+	function getCheckedAuthorityCount()
 	{
 		return authorityTable.getCheckedCount();
 	};
@@ -400,7 +367,7 @@ $(document).ready(function() {
 	
 	function showCreateAuthorityArea()
 	{
-		$("#AREA_viewAuthorityDetail .ui.header").html("Create User");
+		$("#AREA_viewAuthorityDetail .ui.header").html("Create Authority");
 
 		initSeq();
 
@@ -480,7 +447,7 @@ $(document).ready(function() {
 		}
 		else
 		{
-			let type = $(authorityTable.getActiveRow()).find(":eq(0)").html();
+			let type = $(authorityTable.getActiveRow()).find("td:eq(1)").html();
 			
 			if (type == "GROUP")
 			{

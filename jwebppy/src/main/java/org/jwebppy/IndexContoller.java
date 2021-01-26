@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.PlatformGeneralController;
 import org.jwebppy.platform.core.PlatformConfigVo;
-import org.jwebppy.platform.core.exception.security.NoAuthorityException;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
@@ -16,6 +15,8 @@ import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +53,7 @@ public class IndexContoller extends PlatformGeneralController
 
 		if (cItem == null)
 		{
-			throw new NoAuthorityException("There is no authority in your account.");
+			return new ResponseEntity<>("<script>alert('You don′t have an authority.'); document.location.href = '" + PlatformConfigVo.FORM_LOGOUT_PROCESSING_URL + "';</script>", HttpStatus.UNAUTHORIZED);
 		}
 
 		UserDto user = userService.getUserByUsername(getUsername());

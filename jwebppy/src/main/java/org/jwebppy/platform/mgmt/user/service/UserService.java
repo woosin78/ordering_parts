@@ -223,7 +223,7 @@ public class UserService extends GeneralService
 
 	@Transactional
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
-	public int deleteUser(List<Integer> uSeqs)
+	public int delete(List<Integer> uSeqs)
 	{
 		if (CollectionUtils.isNotEmpty(uSeqs))
 		{

@@ -239,7 +239,7 @@ public class UserController extends UserGeneralController
 	@ResponseBody
 	public Object delete(@RequestParam("uSeq") List<Integer> uSeqs)
 	{
-		return userService.deleteUser(uSeqs);
+		return userService.delete(uSeqs);
 	}
 
 	@GetMapping("/timezone")

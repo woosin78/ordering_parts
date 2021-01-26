@@ -11,6 +11,7 @@ import org.jwebppy.platform.mgmt.authority.dto.CItemAuthRlDto;
 import org.jwebppy.platform.mgmt.authority.service.AuthorityService;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.service.ContentService;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
 import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
@@ -56,7 +57,8 @@ public class AuthorityController extends UserGeneralController
 		}
 		else
 		{
-			cItemSearch.setTypes(new String[] {PlatformCommonVo.GROUP, PlatformCommonVo.ROLE});
+			//cItemSearch.setTypes(new String[] {PlatformCommonVo.GROUP, PlatformCommonVo.ROLE});
+			cItemSearch.setTypes(new String[] {CItemType.R.name(), CItemType.G.name()});
 
 			pageableList = new PageableList<>(contentService.getPageableCItems(cItemSearch));
 		}
@@ -72,7 +74,7 @@ public class AuthorityController extends UserGeneralController
 		{
 			CItemDto cItem = contentService.getCItem(cItemSearch.getCSeq());
 
-			if (CmStringUtils.equals(PlatformCommonVo.GROUP, cItem.getType()))
+			if (cItem.getType().equals(CItemType.G))
 			{
 				 return AuthorityLayoutBuilder.getAuthority(authorityService.getCItemAuthorities(cItemSearch));
 			}
@@ -144,9 +146,18 @@ public class AuthorityController extends UserGeneralController
 			}
 			else
 			{
+				cItem.setType(CItemType.G);
+
 				return contentService.create(cItem);
 			}
 		}
+	}
+
+	@PostMapping("/delete")
+	@ResponseBody
+	public Object delete(@RequestParam("cSeq") List<Integer> cSeqs)
+	{
+		return contentService.delete(cSeqs);
 	}
 
 	@GetMapping("/sub_roles")
