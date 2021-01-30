@@ -52,7 +52,6 @@ public class UserService extends GeneralService
 		return userEntity.getUSeq();
 	}
 
-	@CacheEvict(value = CacheConfig.USER, key = "#userAccount.uSeq")
 	public int createUserAccount(UserAccountDto userAccount)
 	{
 		userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
@@ -70,7 +69,6 @@ public class UserService extends GeneralService
 		return userMapper.insertUserAccount(CmModelMapperUtils.map(userAccount, UserAccountEntity.class));
 	}
 
-	@CacheEvict(value = CacheConfig.USER, key = "#userContactInfo.uSeq")
 	public int createUserContactInfo(UserContactInfoDto userContactInfo)
 	{
 		return userMapper.insertUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
@@ -174,7 +172,6 @@ public class UserService extends GeneralService
 		return userMapper.updateUserAccount(CmModelMapperUtils.map(userAccount, UserAccountEntity.class));
 	}
 
-	@CacheEvict(value = CacheConfig.USER, key = "#userContactInfo.uSeq")
 	public int modifyUserContactInfo(UserContactInfoDto userContactInfo)
 	{
 		return userMapper.updateUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
@@ -266,6 +263,7 @@ public class UserService extends GeneralService
 	}
 
 	@Transactional
+	@CacheEvict(value = CacheConfig.USER, key = "#userAccount.uSeq")
 	public int saveUserAccount(UserAccountDto userAccount)
 	{
 		UserAccountEntity userAccountEntity = userMapper.findUserAccount(userAccount.getUSeq());
@@ -281,6 +279,7 @@ public class UserService extends GeneralService
 	}
 
 	@Transactional
+	@CacheEvict(value = CacheConfig.USER, key = "#userContactInfo.uSeq")
 	public int saveUserContactInfo(UserContactInfoDto userContactInfo)
 	{
 		UserContactInfoEntity userContactInfoEntity = userMapper.findUserContactInfo(userContactInfo.getUSeq());

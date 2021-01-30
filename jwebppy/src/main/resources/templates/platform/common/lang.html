@@ -8,7 +8,7 @@
 			<div id="MDL_writeLang" class="ui longer modal">
 			    <h3 class="ui header">Translation</h3>
 			    <div class="content">
-			    	<form id="FORM_lang" method="POST" class="ui form" autocomplete="off">
+			    	<form id="FORM_lang" method="POST" class="ui form" autocomplete="off" onsubmit="return false;">
 			    	<input type="hidden" name="lSeq"/>
 			    	<input type="hidden" name="messageCode"/>
 			    	<input type="hidden" name="from"/>
@@ -47,6 +47,15 @@
 			$("#FORM_lang input[name=lSeq]").val("");
 			langModal.reload();
 		});
+		
+		/*
+		$("#FORM_lang input[type=text]").on("keydown", function(event) {
+			if (event.keyCode == 13)
+			{
+				$("#BTN_saveLang").trigger("click");
+			};			
+		});
+		*/
 	};
 	
 	let formValidCheck = {
@@ -65,7 +74,6 @@
 			},	
 			keyboardShortcuts: false
 	};
-	
    	
 	$("#BTN_saveLang").on("click", function() {
 		if (JpUtilsString.equals(JpUtilsString.trimToEmpty($("#FORM_lang input[name=from]").val()), "TRANSLATION"))

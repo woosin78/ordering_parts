@@ -1,6 +1,7 @@
 package org.jwebppy.platform.core.web.ui.dom.form;
 
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.web.ui.dom.Attribute;
 
 public class Select extends Form
 {
@@ -21,9 +22,14 @@ public class Select extends Form
 	{
 		Option option = new Option(value, text);
 
-		if (CmStringUtils.equals(findAttribute("value").getValue(), value))
+		Attribute selectedValue = findAttribute("value");
+
+		if (selectedValue != null)
 		{
-			option.addAttribute("selected");
+			if (CmStringUtils.equals(selectedValue.getValue(), value))
+			{
+				option.addAttribute("selected");
+			}
 		}
 
 		addElement(option);

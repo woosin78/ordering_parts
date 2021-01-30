@@ -54,11 +54,18 @@ public class ContentLayoutBuilder
 		Select loType = new Select("type");
 		loType.setLabel("Item Type");
 		loType.addAttribute("required");
-		loType.setValue(cItem.getType());
 
-		for (CItemType cItemType: CItemType.values2())
+		if (cItem.getCSeq() != null && cItem.getType().equals(CItemType.R))
 		{
-			loType.addOption(cItemType.name(), cItemType.getType());
+			loType.setValue(cItem.getType());
+			loType.addOption(CItemType.R.name(), CItemType.R.getType());
+		}
+		else
+		{
+			for (CItemType cItemType: CItemType.values2())
+			{
+				loType.addOption(cItemType.name(), cItemType.getType());
+			}
 		}
 
 		Element loId = new Input("name", cItem.getName());

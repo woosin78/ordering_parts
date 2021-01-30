@@ -76,7 +76,7 @@ public class CmDateFormatUtils
 
 	public static String plusYears(long years)
 	{
-		return format(LocalDateTime.now().plusMonths(years), null);
+		return format(LocalDateTime.now().plusYears(years), null);
 	}
 
 	public static String plusYears(long years, String format)

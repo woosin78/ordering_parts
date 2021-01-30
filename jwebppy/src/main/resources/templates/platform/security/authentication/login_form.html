@@ -16,15 +16,19 @@
 <script type="application/javascript" th:src="@{/platform/js/jquery/jquery.cookie.js}"></script>
 <script type="application/javascript">
 $(window).resize(function() {
-	resizeView();
+	resizeView();	
 });
 
 $(window).load(function() {
 	resizeView();
+	showLoginBox();
 });
 
-let RESIZING_MIN_WIDTH = 1500;
-let VIEW_MARGIN_WIDTH = 80;
+/*
+ * HD: 1280X720
+ * FDH: 1920X1080
+ */
+let RESIZING_MIN_WIDTH = 1700;
 
 function resizeView()
 {
@@ -32,15 +36,15 @@ function resizeView()
 	
 	if (width > RESIZING_MIN_WIDTH)
 	{
-		$("#mainImg, #header, #bottom").width(width - VIEW_MARGIN_WIDTH);
+		$("#IMG_main").width(width*0.97);
 	}
 	else
 	{
-		$("#mainImg, #header, #bottom").width(RESIZING_MIN_WIDTH - VIEW_MARGIN_WIDTH);
+		$("#IMG_main").width(RESIZING_MIN_WIDTH*0.97);
 	}
 };
 
-function loginFormCheck()
+function loginCheck()
 {
 	if ($.trim($("#username").val()) == "")
 	{
@@ -105,7 +109,7 @@ function loginStep2()
 	$.ajax({
 		type: "POST", //GET, POST
 		url: "/platform/security/authentication/check",
-		data: $("#loginForm").serialize(),
+		data: $("#FORM_login").serialize(),
 		success: function(data, textStatus, jqXHR)
 		{
 			$.cookie("username", $("#username").val(), { expires : 365 });
@@ -143,7 +147,7 @@ $(document).ready(function() {
 	};	
 	
 	$(".btn-login").on("click", function() {
-		if (loginFormCheck())
+		if (loginCheck())
 		{
 			loginStep1();
 		};	
@@ -156,7 +160,7 @@ $(document).ready(function() {
 	$("#username, #password").on("keydown", function(event) {
 		if (event.keyCode == 13)
 		{
-			if (loginFormCheck())
+			if (loginCheck())
 			{
 				loginStep1();
 			}
@@ -191,45 +195,39 @@ $(document).ready(function() {
 		document.location.href = "/forward/entry_point";
 	});	
 });
+
+function showLoginBox()
+{
+	$(".login-box").toggle("drop", 300);
+};
 </script>
 </head>
 <body>
-<form id="loginForm" method="post" onsubmit="return loginFormCheck();">
+<div style="position: fixed; cursor: pointer;" onclick="showLoginBox()">
+	<img th:src="@{/platform/img/login/idea_100.jpg}" alt="Login Button" />
+</div>
+<div style="position: fixed; top: 5px; right: 5px; cursor: pointer; font-weight: bold;" onclick="window.open('/')">New Window</div>
+<form id="FORM_login" method="post" onsubmit="return loginCheck();">
 <input type="hidden" id="token" name="token" />
 <input type="hidden" id="saveUsername" name="saveUsername" />
-<div id="wrap" class="wrap"> 
-	<div id="header" class="header">
-		<div id="openNewWindow" class="button">[[#{	PLTF_L_NEW-WINDOW}]]</div>
-	</div>
-	<div id="body" class="body">
-		<div><img id="mainImg" th:src="@{/platform/img/login/main.png}" alt="Main Image" /></div>
-		<div class="login-box">
-			<div class="title" th:text="#{PLTF_T_0007}"></div>
+<div id="wrap" class="wrap">
+	<div style="text-align: center">
+	<img id="IMG_main" th:src="@{/platform/img/login/main.jpg}" alt="Main Image" />
+	</div> 
+	<div class="body">
+		<div class="login-box" style="display:none;">
+			<div class="title" th:text="#{PLTF_T_LOGIN_BOX_HEADER}"></div>
 			<div class="username"><img th:src="@{/platform/img/login/username.png}" class="login-input" alt="Username" /><input type="text" id="username" name="username" th:placeholder="#{PLTF_L_USERNAME}" autofocus /></div>
 			<div class="password"><img th:src="@{/platform/img/login/password.png}" class="login-input" alt="Password" /><input type="password" id="password" name="password" th:placeholder="#{PLTF_L_PASSWORD}" /></div>
 			<button class="btn-login" type="button" th:text="#{PLTF_B_LOGIN}"></button>
 			<div class="bottom"> 
 				<div class="save-username"><img th:src="@{/platform/img/login/check.png}" class="save-username-chk" alt="Save Username" /><span>[[#{PLTF_L_SAVE-USERNAME}]]</span></div>
-				<!-- div class="manual">
-					<select class="select-box">
-						<option>Manual Download</option>
-						<option>Korean</option>
-						<option>English</option>
-					</select>				
-				</div -->
 			</div>
 		</div>
 	</div>
-	<div id="bottom" class="bottom">
-		<div class="personal-policy" style="float: left;">
-This Site is for the use of authorized Doosan Group Personnel only and by accessing this site you hereby consent to the site being monitored.<br/>
-Any unauthorized use will be considered a breach of Doosan Group Information Security Policies and may also be in violation of laws.<br/>
-본 사이트는 두산 임직원 및 인가된 사용자만 사용할 수 있으며, 사용자 접속 모니터링 및 로그를 기록하고 있습니다. 불법 사용시에는 법령에 의해 민∙형사상 책임을 질 수 있습니다.
-		</div>
-		<div style="height:52px;"></div>
-		<div class="line"></div>
+	<div class="bottom" style="height: 100px;">
 		<div class="copy-right">
-			<span class=".text">[[#{PLTF_T_0008}]]</span>
+			<div class="text"th:text="#{PLTF_T_COPYLEFT}"></div>
 		</div>
 	</div>
 </div>

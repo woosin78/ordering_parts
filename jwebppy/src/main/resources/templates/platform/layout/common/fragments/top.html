@@ -63,7 +63,7 @@ function makeGmb()
 				
 				if (JpUtilsString.isEmpty(url))
 				{
-					let subElements = $(this).closest("div").find("span.text[url]");
+					let subElements = $(this).parent().find("span.text[url]");
 					
 					for (let i=0, length=subElements.length; i<length; i++)
 					{

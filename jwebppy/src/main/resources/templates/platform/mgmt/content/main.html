@@ -96,7 +96,7 @@
 					{
 						if (isOnForm())
 						{
-							JpUiCalendar.rangeCalendar($("#fromValid"), $("#toValid"), JpUiCalendar.defaultCalendarSettings(false));
+							JpUiCalendar.datetimeCalendar($("#fromValid"), $("#toValid"));
 							
 							$("#FORM_modifyItem select[name=component]").on("change", function() {
 								JpUtilsAjax.get({
@@ -116,6 +116,37 @@
 								});								
 							});
 							
+							//Add custom rules in the form validation
+							$.fn.form.settings.rules.checkDuplicatedName = function(value)
+							{
+								if (JpUtilsString.isNotEmpty(value))
+								{
+									let isValid = false;
+									
+									JpUtilsAjax.get({
+										url: JpUiGlobal.url("/platform/mgmt/content/name/valid_check"),
+										data: { name: value, cSeq: getSeq(), type: $("#FORM_modifyItem select[name=type]").val() },
+										global: false,
+										async: false,
+										success: function(data, textStatus, jqXHR)
+										{
+											if (data.RESULT == "duplicated")
+											{
+												isValid = false;
+											}
+											else
+											{
+												isValid = true;
+											};
+										}
+									});
+
+									return isValid;
+								};
+
+								return false;
+							};
+							
 							let formValidCheck = {
 									inline: true,
 									fields: {
@@ -134,7 +165,11 @@
 												{
 													type: "empty",
 													prompt: "Please enter {name}."
-												}
+												},
+												{
+													type: "checkDuplicatedName",
+													prompt: "The {name} is not available. Please enter another name."
+												}												
 											]
 										},
 										"Valid From": {
@@ -170,7 +205,7 @@
 										}
 									},
 									keyboardShortcuts: false
-								};	
+								};
 							
 							$("#FORM_modifyItem").form(formValidCheck);					
 						};

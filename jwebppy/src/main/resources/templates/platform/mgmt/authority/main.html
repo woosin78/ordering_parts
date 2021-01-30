@@ -195,8 +195,7 @@ $(document).ready(function() {
 						
 						if (tabPath == "general")
 						{
-							JpUiCalendar.calendar($("#fromValid"), JpUiCalendar.defaultCalendarSettings(false));
-							JpUiCalendar.calendar($("#toValid"), JpUiCalendar.defaultCalendarSettings(false));
+							JpUiCalendar.datetimeCalendar($("#fromValid"), $("#toValid"));
 						}						
 						else if (tabPath == "authority")
 						{

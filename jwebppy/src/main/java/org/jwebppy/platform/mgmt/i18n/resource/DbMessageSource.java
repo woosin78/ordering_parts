@@ -4,6 +4,7 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
@@ -46,12 +47,15 @@ public class DbMessageSource extends AbstractMessageSource
 				List<LangKindDto> langKinds = langService.getLangKinds(new LangKindDto(codes[0]));
 				String defaultLocale = null;
 
-				for (LangKindDto langKind : langKinds)
+				if (CollectionUtils.isNotEmpty(langKinds))
 				{
-					if (CmStringUtils.equals(langKind.getFgDefault(), PlatformCommonVo.YES))
+					for (LangKindDto langKind : langKinds)
 					{
-						defaultLocale = langKind.getCode();
-						break;
+						if (CmStringUtils.equals(langKind.getFgDefault(), PlatformCommonVo.YES))
+						{
+							defaultLocale = langKind.getCode();
+							break;
+						}
 					}
 				}
 

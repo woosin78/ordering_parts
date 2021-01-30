@@ -47,13 +47,13 @@ public class ContentService extends GeneralService
 	}
 
 	@Transactional
-	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int modify(CItemDto cItem)
 	{
 		return contentMapper.update(CmModelMapperUtils.map(cItem, CItemEntity.class));
 	}
 
 	@Transactional
+	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int save(CItemDto cItem)
 	{
 		if (cItem.getCSeq() == null)

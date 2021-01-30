@@ -28,11 +28,25 @@ let JpUiCalendar = {
 		{
 			if (settings == null)
 			{
-				settings = JpUiCalendar.defaultCalendarSettings(true);
+				return JpUiCalendar.dateCalendar(obj);
 			};
 			
 			$(obj).closest(".ui.calendar").calendar(settings);
 		},
+		dateCalendar: function()
+		{
+			for (let i=0, length=arguments.length; i<length; i++)
+			{
+				$(arguments[i]).closest(".ui.calendar").calendar(JpUiCalendar.defaultCalendarSettings(true));	
+			};
+		},
+		datetimeCalendar: function()
+		{
+			for (let i=0, length=arguments.length; i<length; i++)
+			{
+				$(arguments[i]).closest(".ui.calendar").calendar(JpUiCalendar.defaultCalendarSettings(false));	
+			};			
+		},		
 		rangeCalendar: function(from, to, settings)
 		{
 			let settingsFrom = settings;

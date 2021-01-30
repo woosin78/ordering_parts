@@ -230,8 +230,8 @@ $(document).ready(function() {
 						prompt: "Please enter {name}."
 					},
 					{
-						type: "regExp[/^((?=.*[A-Z])|(?=.*\d)).{6,12}$/]",
-						prompt: "Please enter a valid username. A username should be between 6 and 12 digits, which can contain number and upper case characters."
+						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)).{6,12}$/]",
+						prompt: "Please enter a valid username. A username should be between 6 and 12 digits."
 					},
 					{
 						type: "checkDuplicatedUsername",
@@ -425,7 +425,7 @@ $(document).ready(function() {
 
 						if (tabPath == "account")
 						{
-							JpUiCalendar.rangeCalendar($("#fromValid"), $("#toValid"), JpUiCalendar.defaultCalendarSettings(false));
+							JpUiCalendar.datetimeCalendar($("#fromValid"), $("#toValid"));
 						}
 						else if (tabPath == "contact")
 						{
@@ -582,8 +582,8 @@ $(document).ready(function() {
 						prompt: "Please enter {name}."
 					},
 					{
-						type: "regExp[/^((?=.*[A-Z])|(?=.*\d)).{6,12}$/]",
-						prompt: "Please enter a valid password. It should be between 6 and 12 digits and contain number and upper case characters."
+						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)).{6,12}$/]",
+						prompt: "Please enter a valid username. A username should be between 6 and 12 digits."
 					},
 					{
 						type: "checkDuplicatedUsername",

@@ -65,9 +65,21 @@
 			<if test="cSeq != null">
 				c_seq=#{cSeq}
 			</if>
-			<if test="name != null">
-				name=#{name}
-			</if>			
+			<trim prefix="and">
+				<if test="name != null">
+					name=#{name}
+				</if>
+			</trim>
+			<trim prefix="and">
+				<if test="type != null">
+					type=#{type}
+				</if>
+			</trim>			
+			<trim prefix="and">
+				<if test="fgDelete != null">
+					fg_delete=#{fgDelete}
+				</if>
+			</trim>			
 		</where>
 	</select>
 
@@ -137,7 +149,7 @@
 			and a.name=#{name}
 		</if>
 		
-		<if test="type != null and type.toString() != ''">
+		<if test="type != null">
 			and type=#{type}
 		</if>
 		

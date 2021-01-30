@@ -59,8 +59,7 @@
 
 <script type="application/javascript">
 $(document).ready(function() {
-	JpUiCalendar.calendar($("#fromDate"), JpUiCalendar.defaultCalendarSettings(false));
-	JpUiCalendar.calendar($("#toDate"), JpUiCalendar.defaultCalendarSettings(false));
+	JpUiCalendar.datetimeCalendar($("#fromDate"), $("#toDate"));
 	
 	let logTable = new JpUiTable($("#TBL_logs"));
 	logTable.settings = {

@@ -175,7 +175,7 @@ public class UserLayoutBuilder
 		loFromValid.setId("fromValid");
 		loFromValid.setLabel("Valid From");
 
-		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(userAccount.getDisplayToValid(), CmDateFormatUtils.unlimitDate()));
+		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(userAccount.getDisplayToValid(), CmDateFormatUtils.plusYears(10)));
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
 

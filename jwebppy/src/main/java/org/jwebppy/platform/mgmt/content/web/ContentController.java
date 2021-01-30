@@ -192,6 +192,38 @@ public class ContentController extends ContentGeneralController
 		return getEntryPoints(cItemSearch.getComponent());
 	}
 
+	@GetMapping("/name/valid_check")
+	@ResponseBody
+	public Object validCheck(@ModelAttribute CItemSearchDto cItemSearch)
+	{
+		if (cItemSearch.getType().equals(CItemType.R))
+		{
+			CItemSearchDto cItemSearch2 = new CItemSearchDto();
+			cItemSearch2.setName(cItemSearch.getName());
+			cItemSearch2.setType(CItemType.R);
+			cItemSearch2.setFgDelete(PlatformCommonVo.NO);
+
+			CItemDto cItem = contentService.getCItem(cItemSearch2);
+
+			if (cItem == null)
+			{
+				return EMPTY_RETURN_VALUE;
+			}
+
+			if (cItemSearch.getCSeq() != null)
+			{
+				if (cItemSearch.getCSeq().equals(cItem.getCSeq()))
+				{
+					return EMPTY_RETURN_VALUE;
+				}
+			}
+
+			return "duplicated";
+		}
+
+		return EMPTY_RETURN_VALUE;
+	}
+
 	@GetMapping("/my_menu")
 	@ResponseBody
 	public Object myMenu(@ModelAttribute CItemSearchDto cItemSearch)
