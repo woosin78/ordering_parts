@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{platform/layout/common/index}">
+
+<th:block layout:fragment="content">
+
+<!-- body start -->
+<div class="ui dividing header">
+  Board
+  <div class="sub header">Here is a free board.</div>
+</div>
+<div class="ui segment">
+	<form id="FORM_write" class="ui form">
+	<input type="text" name="title" placeholder="Title"/>
+	<input type="file" name="file" multiple style="display:none;" />
+	<div class="ui divider"></div>
+	<textarea style="height:300em;"></textarea>
+	<div class="ui segment">
+		<div class="ui one column grid">
+			<div class="column">
+				<div id="BTN_searchFile" class="ui button teal"><i class="search icon"></i> File</div>
+				<div id="BTN_deleteFile" class="ui button teal"><i class="minus icon"></i> Delete</div>
+			</div>
+		</div>	
+		<div class="ui divider"></div>
+		<div class="ui one column stackable grid">
+			<div class="column">
+				<div id="attachedFiles" class="ui relaxed divided list"></div>			
+			</div>
+		</div>
+	</div>
+	</form>
+</div>
+<script src="https://cdn.tiny.cloud/1/5e40ny5z6wo5fmuiihjtt5jha491leumkaax5ufvyaxt55a0/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script type="application/javascript">
+$(document).ready(function() {
+	tinymce.init({
+		selector: "textarea",
+		//plugins: "a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed powerpaste table advtable tinymcespellchecker",
+		//plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+		//toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+		//toolbar_mode: 'floating',
+		//tinycomments_mode: 'embedded',
+		//tinycomments_author: 'Author name'
+	});
+	
+	$("#BTN_searchFile").on("click", function() {
+		$("#FORM_write input[name=file]").trigger("click");
+	});
+	
+	$("#FORM_write input[name=file]").on("change", function() {
+		for (let i=0, length=this.files.length; i<length; i++)
+		{
+			addFile(this.files[i].name, this.files[i].size);
+		};
+		
+		$("#FORM_write .ui.checkbox").checkbox();
+	});
+
+	$("#BTN_deleteFile").on("click", function(event) {
+		let files = Array.from($("#FORM_write input[name=file]")[0].files);
+		
+		$.each($("#FORM_write input[name=fSeq]"), function(i, item) {
+			if ($(this).is(":checked"))
+			{
+				files.splice(i, 1);
+				
+				$(this).closest("div.item").remove();
+			};
+		});
+	});	
+
+	function addFile(name, size, fSeq)
+	{
+		let html = [];
+		
+		html.push("<div class='item'>");
+		html.push("	<div class='left floated content'>");
+		html.push("		<div class='field'>");
+		html.push("			<div class='ui checkbox'>");
+		html.push("				<input name='fSeq' type='checkbox' tabindex='0' class='hidden' value='" + JpUtilsString.trimToEmpty(fSeq) + "'><label/>");
+		html.push("			</div>");
+		html.push("		</div>");
+		html.push("	</div>");
+		html.push(getFileIcon(name));
+		html.push("	<div class='content'>");
+		html.push("		<a class='header'>" + name + "</a>");
+		html.push("		<div class='description'>" + size + "</div>");
+		html.push("	</div>");
+		html.push("</div>");			
+		
+		$("#attachedFiles").append(html.join(""));
+	};
+	
+	function getSize(size)
+	{
+		let KB = 1024;
+		let MB = Math.pow(1024, 2);
+		let GB = Math.pow(1024, 3);
+		
+		let result = "";
+		
+		if (size / GB > 0)
+		{
+			result += size / GB;
+			result += (size % GB) / MB;
+		};
+	};
+	
+	function getFileIcon(name)
+	{
+		let extension = name.split(".").pop().toUpperCase();
+		let icon = "file";
+		
+		if ("JPG^JPEG^GIF^PNG^BMP".indexOf(extension) > -1)
+		{
+			icon = "file image";
+		}
+		else if ("XLS^XLSX".indexOf(extension) > -1)
+		{
+			icon = "file excel";
+		}
+		else if ("DOC^DOCX".indexOf(extension) > -1)
+		{
+			icon = "file word";
+		}
+		else if ("PPT^PPTX".indexOf(extension) > -1)
+		{
+			icon = "file powerpoint";
+		}
+		else if ("PDF".indexOf(extension) > -1)
+		{
+			icon = "file pdf";
+		}
+		else if ("HWP".indexOf(extension) > -1)
+		{
+			icon = "file alternate";
+		}		
+		else if ("ZIP^JAR".indexOf(extension) > -1)
+		{
+			icon = "file archive";
+		}
+		else if ("MP3^FLAC^WAV^OGG^APE^M4A".indexOf(extension) > -1)
+		{
+			icon = "file audio";
+		}		
+		else if ("ASF^AVI^FLV^MKV^MOV^MPEG^WMV".indexOf(extension) > -1)
+		{
+			icon = "file video";
+		}
+		
+		return "<i class='large " + icon + " middle aligned icon'></i>";
+	};
+});
+
+</script>
+</th:block>
+</html>
