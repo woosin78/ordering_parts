@@ -31,6 +31,7 @@ let RESIZING_MIN_WIDTH = 1700;
 
 function resizeView()
 {
+	/*
 	let width = $(window).width();
 	
 	if (width > RESIZING_MIN_WIDTH)
@@ -41,6 +42,9 @@ function resizeView()
 	{
 		$("#IMG_main").width(RESIZING_MIN_WIDTH*0.97);
 	}
+	*/
+	
+	$("#IMG_main").width($(window).width());
 };
 
 function loginCheck()

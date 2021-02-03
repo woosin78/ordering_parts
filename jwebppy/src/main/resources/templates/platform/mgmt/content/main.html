@@ -8,7 +8,7 @@
 <!-- body start -->
 <div class="ui dividing header">
   Content
-  <div class="sub header">You can create Page or consist of Menu and Role. The content is translated into other languages.</div>
+  <div class="sub header">You can create Page, Menu and Role here. The items are translated into other languages.</div>
 </div>
 <div class="ui segment">
 	<div class="ui stackable grid">
@@ -124,8 +124,8 @@
 									let isValid = false;
 									
 									JpUtilsAjax.get({
-										url: JpUiGlobal.url("/platform/mgmt/content/name/valid_check"),
-										data: { name: value, cSeq: getSeq(), type: $("#FORM_modifyItem select[name=type]").val() },
+										url: JpUiGlobal.url("/platform/mgmt/content/valid_check/name/" + value),
+										data: { cSeq: getSeq() },
 										global: false,
 										async: false,
 										success: function(data, textStatus, jqXHR)

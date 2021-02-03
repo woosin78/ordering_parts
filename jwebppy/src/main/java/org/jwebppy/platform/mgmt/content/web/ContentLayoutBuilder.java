@@ -71,6 +71,7 @@ public class ContentLayoutBuilder
 		Element loId = new Input("name", cItem.getName());
 		loId.setLabel("Name");
 		loId.addAttribute("required");
+		loId.addAttribute("style", "text-transform: uppercase");
 
 		Textarea loDescription = new Textarea("description");
 		loDescription.setText(cItem.getDescription());

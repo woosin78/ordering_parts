@@ -28,15 +28,15 @@ public class LangController extends MgmtGeneralController
 	@Autowired
 	private LangService langService;
 
-	@RequestMapping("/main")
-	public String main()
+	@RequestMapping("/list")
+	public String list()
 	{
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/langs")
+	@GetMapping("/list/data")
 	@ResponseBody
-	public Object langs(@ModelAttribute LangSearchDto langSearch)
+	public Object listData(@ModelAttribute LangSearchDto langSearch)
 	{
 		LangKindDto langKind = new LangKindDto();
 		langKind.setBasename(langSearch.getBasename());
@@ -44,9 +44,9 @@ public class LangController extends MgmtGeneralController
 		return LangLayoutBuilder.getList(new PageableList<>(langService.getPageableLangs(langSearch)), langService.getLangKinds(langKind));
 	}
 
-	@GetMapping("/detail")
+	@GetMapping("/write")
 	@ResponseBody
-	public Object lang(@ModelAttribute LangSearchDto langSearch)
+	public Object write(@ModelAttribute LangSearchDto langSearch)
 	{
 		List<String> basenames = langService.getBasenames();
 

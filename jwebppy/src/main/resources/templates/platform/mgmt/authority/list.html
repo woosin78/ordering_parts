@@ -7,7 +7,7 @@
 <th:block layout:fragment="content">
 <div class="ui dividing header">
   Authority
-  <div class="sub header">You can create a new group or modify ones.</div>
+  <div class="sub header">A group consists of roles. You can manage the groups here and check members that belong to the groups or the roles.</div>
 </div>
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
@@ -18,8 +18,8 @@
 		<div class="six wide field">
 			<select name="type" class="ui search dropdown">
 				<option value="">Type</option>
-				<option value="G">GROUP</option>
-				<option value="R">ROLE</option>
+				<option th:value="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).R}" th:text="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).R.type}"></option>
+				<option th:value="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).G}" th:text="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).G.type}"></option>
 			</select>
 		</div>
 	</div>		
@@ -82,7 +82,7 @@ $(document).ready(function() {
 	let authorityTable = new JpUiTable($("#TBL_authority"));
 	authorityTable.settings = {
 			ajax: {
-				url: JpUiGlobal.url("/platform/mgmt/authority/authorities"),
+				url: JpUiGlobal.url("/platform/mgmt/authority/list/data"),
 				async: false,
 				form: $("#FORM_search"),
 		  		beforeSend: function(jqXHR, settings)
@@ -102,7 +102,7 @@ $(document).ready(function() {
 			},
 			onClickDataKey: function(element, key, row)
 			{
-				viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority"));
+				viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/detail"));
 				
 				if ($(row).hasClass("active"))
 				{
@@ -123,49 +123,6 @@ $(document).ready(function() {
 			}
 	};
 	
-	//Add custom rules in the form validation 
-	$.fn.form.settings.rules.checkDuplicatedName = function(value)
-	{
-		if (JpUtilsString.isNotEmpty(value))
-		{
-			let isValid = true; 
-			
-			JpUtilsAjax.get({
-				url: JpUiGlobal.url("/platform/mgmt/authority/name/valid_check"),
-				data: { username: value },
-				global: false,
-				async: false,
-				success: function(data, textStatus, jqXHR)
-				{
-					if (data.RESULT == "duplicated")
-					{
-						isValid = false;
-					};
-				}
-			});
-			
-			return isValid;
-		};
-		
-		return false;
-	};
-	
-	let formValidCheck = {
-		inline: true,
-		fields: {
-			Name: {
-				identifier: "name",
-				rules: [
-					{
-						type: "empty",
-						prompt: "Please enter {name}."
-					}
-				]
-			}
-		},
-		keyboardShortcuts: false
-	};	
-	
 	let viewAuthorityTab = new JpUiTab($("#TAB_viewAuthorityDetail"));
 	viewAuthorityTab.settings = {
 			ajax: {
@@ -185,12 +142,59 @@ $(document).ready(function() {
 				}
 			},
 			tab: {
-				path: JpUiGlobal.url("/platform/mgmt/authority"),
+				path: JpUiGlobal.url("/platform/mgmt/authority/detail"),
 				alwaysRefresh: true,
 				onLoaded: function(tabPath, parameterArray, historyEvent)
 				{
 					if (isOnForm())
 					{
+						//Add custom rules in the form validation 
+						$.fn.form.settings.rules.checkDuplicatedName = function(value)
+						{
+							if (JpUtilsString.isNotEmpty(value))
+							{
+								let isValid = true; 
+								
+								JpUtilsAjax.get({
+									url: JpUiGlobal.url("/platform/mgmt/content/valid_check/name/" + value),
+									data: { cSeq: getSeq() },
+									global: false,
+									async: false,
+									success: function(data, textStatus, jqXHR)
+									{
+										if (data.RESULT == "duplicated")
+										{
+											isValid = false;
+										};
+									}
+								});
+								
+								return isValid;
+							};
+							
+							return false;
+						};
+						
+						let formValidCheck = {
+							inline: true,
+							fields: {
+								Name: {
+									identifier: "name",
+									rules: [
+										{
+											type: "empty",
+											prompt: "Please enter {name}."
+										},
+										{
+											type: "checkDuplicatedName",
+											prompt: "The {name} is not available. Please enter another name."
+										}
+									]
+								}
+							},
+							keyboardShortcuts: false
+						};
+						
 						$("#FORM_modifyAuthority").form(formValidCheck);
 						
 						if (tabPath == "general")
@@ -280,7 +284,7 @@ $(document).ready(function() {
 					};
 
 					changeButtonStatus();
-					viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority"));
+					viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/detail"));
 				}
 			}
 	};
@@ -292,7 +296,7 @@ $(document).ready(function() {
 	});
 	
 	$(".BTN_modifyAuthority").on("click", function() {
-		viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/modify"));
+		viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/write"));
 
 		changeTab();
 	});
@@ -370,7 +374,7 @@ $(document).ready(function() {
 
 		initSeq();
 
-		viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/modify"));
+		viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/write"));
 		changeTab("general");
 
 		$("#AREA_viewAuthorityDetail").show();
@@ -477,7 +481,7 @@ $(document).ready(function() {
 	
 	function isOnForm()
 	{
-		return (viewAuthorityTab.getPath().indexOf("modify") > -1) ? true : false;
+		return (viewAuthorityTab.getPath().indexOf("write") > -1) ? true : false;
 	};
 
 	doSearch();

@@ -15,7 +15,7 @@
 <script type="application/javascript">
 $(document).ready(function() {
 	JpUtilsAjax.get({
-		url: JpUiGlobal.url("/platform/mgmt/log/detail/" + $("#dlSeq").val()),
+		url: JpUiGlobal.url("/platform/mgmt/log/detail_popup/data?dlSeq=" + $("#dlSeq").val()),
 		success: function(response, textStatus, jqXHR)
 		{
 			$("#AREA_log").html(new JpUiRender().render(response));
@@ -24,6 +24,5 @@ $(document).ready(function() {
 });
 
 </script>
-
 </th:block>
 </html>

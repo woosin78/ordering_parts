@@ -18,15 +18,15 @@ public class UserLoginHistoryController extends UserGeneralController
 	@Autowired
 	private LoginHistoryService loginHistoryService;
 
-	@RequestMapping("/main")
-	public String main()
+	@RequestMapping("/list")
+	public String list()
 	{
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/histories")
+	@GetMapping("/list/data")
 	@ResponseBody
-	public Object histories(@ModelAttribute("loginHistorySearchDto") LoginHistorySearchDto loginHistorySearch)
+	public Object listData(@ModelAttribute("loginHistorySearchDto") LoginHistorySearchDto loginHistorySearch)
 	{
 		return UserLayoutBuilder.getLoginHistories(new PageableList<>(loginHistoryService.getPageableLoginHistories(loginHistorySearch)));
 	}

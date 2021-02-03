@@ -119,7 +119,7 @@ $(document).ready(function() {
 	let usersTable = new JpUiTable($("#TBL_users"));
 	usersTable.settings = {
 			ajax: {
-				url: JpUiGlobal.url("/platform/mgmt/user/users"),
+				url: JpUiGlobal.url("/platform/mgmt/user/list/data"),
 				form: $("#FORM_search"),
 				async: false,
 		  		beforeSend: function(jqXHR, settings)
@@ -139,7 +139,7 @@ $(document).ready(function() {
 			},
 			onClickDataKey: function(element, key, row)
 			{
-				viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user"));
+				viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user/detail"));
 
 				if ($(row).hasClass("active"))
 				{
@@ -182,8 +182,8 @@ $(document).ready(function() {
 			let isValid = true;
 
 			JpUtilsAjax.get({
-				url: JpUiGlobal.url("/platform/mgmt/user/username/valid_check"),
-				data: { username: value },
+				url: JpUiGlobal.url("/platform/mgmt/user/valid_check/username/" + value),
+				//data: { username: value },
 				global: false,
 				async: false,
 				success: function(data, textStatus, jqXHR)
@@ -406,7 +406,7 @@ $(document).ready(function() {
 				}
 			},
 			tab: {
-				path: JpUiGlobal.url("/platform/mgmt/user"),
+				path: JpUiGlobal.url("/platform/mgmt/user/detail"),
 				alwaysRefresh: true,
 				onLoaded: function(tabPath, parameterArray, historyEvent)
 				{
@@ -537,7 +537,7 @@ $(document).ready(function() {
 					}
 
 					changeButtonStatus();
-					viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user"));
+					viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user/detail"));
 				}
 			}
 	};
@@ -655,7 +655,7 @@ $(document).ready(function() {
 	});
 
 	$(".BTN_modifyUser").on("click", function() {
-		viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user/modify"));
+		viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user/write"));
 
 		changeTab();
 	});
@@ -766,7 +766,7 @@ $(document).ready(function() {
 
 		initSeq();
 
-		viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user/modify"));
+		viewUserTab.changePath(JpUiGlobal.url("/platform/mgmt/user/write"));
 		changeTab("general");
 
 		$("#AREA_viewUserDetail").show();
@@ -864,7 +864,7 @@ $(document).ready(function() {
 
 	function isOnForm()
 	{
-		return (viewUserTab.getPath().indexOf("modify") > -1) ? true : false;
+		return (viewUserTab.getPath().indexOf("write") > -1) ? true : false;
 	};
 
 	doSearch();

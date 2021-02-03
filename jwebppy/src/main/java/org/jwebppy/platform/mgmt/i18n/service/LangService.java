@@ -10,6 +10,7 @@ import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.MgmtGeneralService;
+import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.service.ContentService;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDetailDto;
@@ -192,7 +193,14 @@ public class LangService extends MgmtGeneralService
 			return langDetails.get(0).getText();
 		}
 
-		return contentService.getCItem(cSeq).getName();
+		CItemDto cItem = contentService.getCItem(cSeq);
+
+		if (cItem != null)
+		{
+			return cItem.getName();
+		}
+
+		return null;
 	}
 
 	public List<String> getBasenames()

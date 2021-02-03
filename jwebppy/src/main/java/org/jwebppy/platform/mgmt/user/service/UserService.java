@@ -139,7 +139,6 @@ public class UserService extends GeneralService
 		return uSeq;
 	}
 
-	@CacheEvict(value = CacheConfig.USER, key = "#user.uSeq")
 	public int modifyUser(UserDto user)
 	{
 		return userMapper.updateUser(CmModelMapperUtils.map(user, UserEntity.class));
@@ -250,6 +249,7 @@ public class UserService extends GeneralService
 	}
 
 	@Transactional
+	@CacheEvict(value = CacheConfig.USER, key = "#user.uSeq")
 	public int saveUser(UserDto user)
 	{
 		if (user.getUSeq() != null)

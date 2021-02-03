@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -21,30 +21,30 @@ public class LogController extends LoggingGeneralController
 	@Autowired
 	private DataAccessLogService dataAccessLogService;
 
-	@RequestMapping("/main")
-	public String main(@ModelAttribute(value = "dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch)
+	@RequestMapping("/list")
+	public String list(@ModelAttribute(value = "dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch)
 	{
 		dataAccessLogSearch.setFromDate(LocalDateTime.now().withDayOfMonth(1));
 
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/logs")
+	@GetMapping("/list/data")
 	@ResponseBody
-	public Object logs(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
+	public Object listData(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
 	{
 		return LogLayoutBuilder.getList(new PageableList<>(dataAccessLogService.getPageableLogs(dataAccessLogSearch)));
 	}
 
-	@GetMapping("/detail")
-	public Object detail(@ModelAttribute("dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch)
+	@GetMapping("/detail_popup")
+	public Object detailPopup(@ModelAttribute("dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch)
 	{
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/detail/{dlSeq}")
+	@GetMapping("/detail_popup/data")
 	@ResponseBody
-	public Object log(@PathVariable("dlSeq") Long dlSeq)
+	public Object log(@RequestParam("dlSeq") Long dlSeq)
 	{
 		return LogLayoutBuilder.getLog(dataAccessLogService.getLog(dlSeq));
 	}

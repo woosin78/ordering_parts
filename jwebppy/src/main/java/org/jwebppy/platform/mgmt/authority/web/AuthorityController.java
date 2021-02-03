@@ -39,13 +39,13 @@ public class AuthorityController extends UserGeneralController
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping("/main")
+	@RequestMapping("/list")
 	public String main()
 	{
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/authorities")
+	@GetMapping("/list/data")
 	@ResponseBody
 	public Object authorities(@ModelAttribute CItemSearchDto cItemSearch)
 	{
@@ -57,7 +57,6 @@ public class AuthorityController extends UserGeneralController
 		}
 		else
 		{
-			//cItemSearch.setTypes(new String[] {CItemType.R.name(), CItemType.G.name()});
 			cItemSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
 
 			pageableList = new PageableList<>(contentService.getPageableCItems(cItemSearch));
@@ -66,9 +65,9 @@ public class AuthorityController extends UserGeneralController
 		return AuthorityLayoutBuilder.getList(pageableList);
 	}
 
-	@GetMapping("/{tabPath}")
+	@GetMapping("/detail/{tabPath}")
 	@ResponseBody
-	public Object view(@PathVariable("tabPath") String tabPath, @ModelAttribute("cItemSearch") CItemSearchDto cItemSearch, @ModelAttribute("userSearch") UserSearchDto userSearch)
+	public Object detail(@PathVariable("tabPath") String tabPath, @ModelAttribute("cItemSearch") CItemSearchDto cItemSearch, @ModelAttribute("userSearch") UserSearchDto userSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
@@ -89,7 +88,7 @@ public class AuthorityController extends UserGeneralController
 		return AuthorityLayoutBuilder.getGeneralInfo(contentService.getCItem(cItemSearch.getCSeq()));
 	}
 
-	@GetMapping({"/modify/{tabPath}", "/create/{tabPath}"})
+	@GetMapping("/write/{tabPath}")
 	@ResponseBody
 	public Object modify(@PathVariable("tabPath") String tabPath, @ModelAttribute("cItemSearch") CItemSearchDto cItemSearch)
 	{
@@ -137,7 +136,7 @@ public class AuthorityController extends UserGeneralController
 			if (cItem.getCSeq() != null)
 			{
 				CItemDto cItem2 = contentService.getCItem(cItem.getCSeq());
-				cItem2.setName(cItem.getName());
+				cItem2.setName(cItem.getName().toUpperCase());
 				cItem2.setDescription(cItem.getDescription());
 				cItem2.setFromValid(cItem.getFromValid());
 				cItem2.setToValid(cItem.getToValid());

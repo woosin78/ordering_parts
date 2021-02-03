@@ -108,6 +108,7 @@ public class AuthorityLayoutBuilder
 		Element loName = new Input("name", cItem.getName());
 		loName.setLabel("Name");
 		loName.addAttribute("REQUIRED");
+		loName.addAttribute("style", "text-transform: uppercase");
 
 		Element loDescription = new Input("description", cItem.getDescription());
 		loDescription.setLabel("Description");

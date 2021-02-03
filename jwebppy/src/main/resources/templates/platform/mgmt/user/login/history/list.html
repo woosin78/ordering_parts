@@ -7,7 +7,7 @@
 <th:block layout:fragment="content">
 <div class="ui dividing header">
   Login History
-  <div class="sub header"></div>
+  <div class="sub header">There are users' login histories. You can check when users login and from where users access this system.</div>
 </div>
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
@@ -40,18 +40,14 @@
 	<div id="TBL_list"></div>
 	</form>
 </div>
-
-<!-- Start add language -->
-<th:block th:replace="/platform/common/lang :: addLang"></th:block>
-<!-- End add language -->
 <script type="application/javascript">
 	$(document).ready(function() {
-		JpUiCalendar.rangeCalendar($("#fromDate"), $("#toDate"), JpUiCalendar.defaultCalendarSettings(false));
+		JpUiCalendar.datetimeCalendar($("#fromDate"), $("#toDate"));
 		
 		let listTable = new JpUiTable($("#TBL_list"));
 		listTable.settings = {
 				ajax: {
-					url: JpUiGlobal.url("/platform/mgmt/user/login/history/histories"),
+					url: JpUiGlobal.url("/platform/mgmt/user/login/history/list/data"),
 					form: $("#FORM_search")
 				},
 				onClickPageNumber: function(pageNumber)

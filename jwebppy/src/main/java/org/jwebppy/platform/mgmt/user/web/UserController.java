@@ -50,15 +50,15 @@ public class UserController extends UserGeneralController
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping("/main")
-	public String main()
+	@RequestMapping("/list")
+	public String list()
 	{
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/users")
+	@GetMapping("/list/data")
 	@ResponseBody
-	public Object users(@ModelAttribute UserSearchDto userSearch)
+	public Object listData(@ModelAttribute UserSearchDto userSearch)
 	{
 		PageableList<UserDto> pageableList = null;
 
@@ -74,37 +74,9 @@ public class UserController extends UserGeneralController
 		return UserLayoutBuilder.getList(pageableList);
 	}
 
-	@GetMapping("/authority")
+	@GetMapping("/detail/{tabPath}")
 	@ResponseBody
-	public Object authority(@ModelAttribute CItemSearchDto cItemSearch)
-	{
-		return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyItemHierarchy(cItemSearch));
-	}
-
-	@GetMapping("/my_authority")
-	@ResponseBody
-	public Object myAuthority(@ModelAttribute CItemSearchDto cItemSearch, @RequestParam(value = "cSeqs", required = false) List<Integer> cSeqs)
-	{
-		List<CItemDto> cItems = null;
-
-		if (CollectionUtils.isNotEmpty(cSeqs))
-		{
-			cItemSearch.setCSeqs(cSeqs);
-			cItemSearch.setFgVisible(PlatformCommonVo.YES);
-
-			cItems = contentService.getCItems(cItemSearch);
-		}
-		else
-		{
-			cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
-		}
-
-		return UserLayoutBuilder.getAuthorityForm(cItems);
-	}
-
-	@GetMapping("/{tabPath}")
-	@ResponseBody
-	public Object view(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
+	public Object detail(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
@@ -146,9 +118,9 @@ public class UserController extends UserGeneralController
 		return EMPTY_RETURN_VALUE;
 	}
 
-	@GetMapping({"/modify/{tabPath}", "/create/{tabPath}"})
+	@GetMapping("/write/{tabPath}")
 	@ResponseBody
-	public Object modify(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
+	public Object write(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
@@ -219,6 +191,13 @@ public class UserController extends UserGeneralController
 		}
 	}
 
+	@PostMapping("/delete")
+	@ResponseBody
+	public Object delete(@RequestParam("uSeq") List<Integer> uSeqs)
+	{
+		return userService.delete(uSeqs);
+	}
+
 	@PostMapping("/{command}")
 	@ResponseBody
 	public Object lock(@PathVariable("command") String command, @RequestParam("uSeq") List<Integer> uSeqs)
@@ -235,11 +214,32 @@ public class UserController extends UserGeneralController
 		return EMPTY_RETURN_VALUE;
 	}
 
-	@PostMapping("/delete")
+	@GetMapping("/authority")
 	@ResponseBody
-	public Object delete(@RequestParam("uSeq") List<Integer> uSeqs)
+	public Object authority(@ModelAttribute CItemSearchDto cItemSearch)
 	{
-		return userService.delete(uSeqs);
+		return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyItemHierarchy(cItemSearch));
+	}
+
+	@GetMapping("/my_authority")
+	@ResponseBody
+	public Object myAuthority(@ModelAttribute CItemSearchDto cItemSearch, @RequestParam(value = "cSeqs", required = false) List<Integer> cSeqs)
+	{
+		List<CItemDto> cItems = null;
+
+		if (CollectionUtils.isNotEmpty(cSeqs))
+		{
+			cItemSearch.setCSeqs(cSeqs);
+			cItemSearch.setFgVisible(PlatformCommonVo.YES);
+
+			cItems = contentService.getCItems(cItemSearch);
+		}
+		else
+		{
+			cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
+		}
+
+		return UserLayoutBuilder.getAuthorityForm(cItems);
 	}
 
 	@GetMapping("/timezone")
@@ -264,11 +264,11 @@ public class UserController extends UserGeneralController
 		return timezones;
 	}
 
-	@GetMapping("/username/valid_check")
+	@GetMapping("/valid_check/{field}/{value}")
 	@ResponseBody
-	public Object validCheck(@RequestParam("username") String username)
+	public Object validCheck(@PathVariable("field") String field, @PathVariable("value") String value)
 	{
-		UserDto user = userService.getUserByUsername(username.toUpperCase());
+		UserDto user = userService.getUserByUsername(value.toUpperCase());
 
 		if (user != null)
 		{

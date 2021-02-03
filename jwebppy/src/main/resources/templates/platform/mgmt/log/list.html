@@ -64,13 +64,13 @@ $(document).ready(function() {
 	let logTable = new JpUiTable($("#TBL_logs"));
 	logTable.settings = {
 			ajax: {
-				url: JpUiGlobal.url("/platform/mgmt/log/logs"),
+				url: JpUiGlobal.url("/platform/mgmt/log/list/data"),
 				form: $("#FORM_search")
 			},
 			onClickDataKey: function(element, key, row)
 			{
 				JpUiPopup.open({
-					url: JpUiGlobal.url("/platform/mgmt/log/detail?dlSeq=" + key),
+					url: JpUiGlobal.url("/platform/mgmt/log/detail_popup?dlSeq=" + key),
 					width: screen.availWidth * 0.8,
 					height: screen.availHeight * 0.8,
 					fgCenter: "Y"

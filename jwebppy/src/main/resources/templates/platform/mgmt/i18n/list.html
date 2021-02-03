@@ -7,7 +7,7 @@
 <th:block layout:fragment="content">
 <div class="ui dividing header">
   Translation
-  <div class="sub header">Contents are translated into some languages on this menu.</div>
+  <div class="sub header">The content is translated into other languages here.</div>
 </div>
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
@@ -71,7 +71,7 @@
 	let langTable = new JpUiTable($("#TBL_list"));
 	langTable.settings = {
 			ajax: {
-				url: JpUiGlobal.url("/platform/mgmt/i18n/langs"),
+				url: JpUiGlobal.url("/platform/mgmt/i18n/list/data"),
 				form: $("#FORM_search")
 			},
 			onClickDataKey: function(element, key, row)
