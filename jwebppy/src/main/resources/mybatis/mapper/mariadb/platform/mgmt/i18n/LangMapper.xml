@@ -91,19 +91,19 @@
 		where
 		fg_delete='N'
 
-		<if test="lSeq != null and lSeq > 0">
+		<if test="lSeq != null">
 			and a.l_seq=#{lSeq}
 		</if>
 		
-		<if test="basename != null and basename != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(basename)">
 			and a.basename=#{basename}
 		</if>
 		
-		<if test="type != null and type.toString() != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 			and a.type=#{type}
 		</if>
 		
-		<if test="seq != null and seq != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(seq)">
 			and a.seq=#{seq}
 		</if>
 
@@ -124,15 +124,15 @@
 		)
 		and a.fg_delete='N' 
 		
-		<if test="basename != null and basename != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(basename)">
 			and a.basename=#{basename}
 		</if>			
 	
-		<if test="type != null and type.toString() != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 			and a.type=#{type}
 		</if>
 		
-		<if test="query != null and query != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
 			and (
 				exists (
 				    select
@@ -171,7 +171,7 @@
 		where
 		fg_delete='N'
 		
-		<if test="basename != null">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(basename)">
 			and basename=#{basename}
 		</if>
 
@@ -186,10 +186,10 @@
 		
 		<where>
 			<trim prefixOverrides="and">
-				<if test="lSeq != null and lSeq > 0">
+				<if test="lSeq != null">
 					l_seq=#{lSeq}
 				</if>
-				<if test="lkSeq != null and lkSeq > 0">
+				<if test="lkSeq != null">
 					and lk_seq=#{lkSeq}
 				</if>				
 			</trim>
@@ -242,7 +242,7 @@
 		and b.lk_seq=c.lk_seq
 		and c.basename=#{basename}
 		
-		<if test="code != null and code != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(code)">
 			and c.code=#{code}
 		</if>
 	</select>

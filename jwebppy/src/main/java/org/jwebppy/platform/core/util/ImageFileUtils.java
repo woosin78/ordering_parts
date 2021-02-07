@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
-public class FileUtils
+public class ImageFileUtils
 {
 	public static BufferedImage readImage(File file) throws IOException
 	{

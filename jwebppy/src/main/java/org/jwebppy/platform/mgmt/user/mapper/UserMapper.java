@@ -23,8 +23,8 @@ public interface UserMapper
 	public int updateFgDelete(UserEntity user);
 	public int updateUsernameToDelete(UserEntity user);
 	public UserEntity findUser(UserSearchDto userSearch);
-	public UserAccountEntity findUserAccount(int seq);
-	public UserContactInfoEntity findUserContactInfo(int seq);
+	public UserAccountEntity findUserAccount(int uSeq);
+	public UserContactInfoEntity findUserContactInfo(int uSeq);
 	public List<UserEntity> findPageUsers(UserSearchDto userSearch);
 	public List<UserEntity> findUsersInCItem(UserSearchDto userSearch);
 }

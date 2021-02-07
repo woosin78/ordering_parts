@@ -75,19 +75,19 @@
 					</when>			
 				</choose>			
 			
-				<if test="type != null and type != ''">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 					and a.type=#{type}
 				</if>
 				
-				<if test="command != null and command != ''">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(command)">
 					and upper(a.command) like '%' || upper(#{command}) || '%'
 				</if>				
 				
-				<if test="regUsername != null and regUsername != ''">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(regUsername)">
 					and upper(a.reg_username) like '%' || upper(#{regUsername}) || '%'
 				</if>				
 				
-				<if test="query != null and query != ''">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
 					and (
 						upper(a.class_name) like '%' || upper(#{query}) || '%' or
 						upper(a.method_name) like '%' || upper(#{query}) || '%'

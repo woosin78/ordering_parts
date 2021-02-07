@@ -249,7 +249,7 @@ public class UserService extends GeneralService
 	}
 
 	@Transactional
-	@CacheEvict(value = CacheConfig.USER, key = "#user.uSeq")
+	@CacheEvict(value = CacheConfig.USER, key = "#user.uSeq", condition="#user.uSeq != null")
 	public int saveUser(UserDto user)
 	{
 		if (user.getUSeq() != null)

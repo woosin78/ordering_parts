@@ -66,17 +66,17 @@
 				c_seq=#{cSeq}
 			</if>
 			<trim prefix="and">
-				<if test="name != null">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
 					name=#{name}
 				</if>
 			</trim>
 			<trim prefix="and">
-				<if test="type != null">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 					type=#{type}
 				</if>
 			</trim>			
 			<trim prefix="and">
-				<if test="fgDelete != null">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fgDelete)">
 					fg_delete=#{fgDelete}
 				</if>
 			</trim>			
@@ -96,23 +96,23 @@
 		and b.fg_delete='N'
 		
 		<!-- OGNL(Object Graph Navigation Language) 의 문제로 toString() 추가 -->
-		<if test="fgVisible != 'A'.toString()">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@notEquals(fgVisible, 'A')">
 			and a.fg_visible='Y'
 		</if>		
 		
-		<if test="uSeq != null and uSeq > 0">
+		<if test="uSeq != null">
 			and b.u_seq=#{uSeq}
 		</if>
 		
-		<if test="username != null and username != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
 			and b.u_seq=(select u_seq from pltf_user_account where username=#{username})
 		</if>
 
-		<if test="name != null and name != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
 			and a.name=#{name}
 		</if>
 		
-		<if test="type != null and type.toString() != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 			and a.type=#{type}
 		</if>
 		
@@ -145,21 +145,21 @@
 			and a.p_seq=#{pSeq}
 		</if>	
 
-		<if test="name != null and name != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
 			and a.name=#{name}
 		</if>
 		
-		<if test="type != null">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 			and type=#{type}
 		</if>
 		
 		<if test="types != null">
 			<trim prefix="and">
 				<foreach collection="types" item="type" open="(" close=")" separator="or">
-					<if test="type != null and type.toString() != ''">
+					<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 						a.type=#{type}
 					</if>				
-				</foreach>				
+				</foreach>
 			</trim>
 		</if>
 		
@@ -185,24 +185,24 @@
 		a.fg_delete='N'
 
 		<trim prefix="and (" suffix=")" prefixOverrides="or">
-			<if test="query != null and query != ''">
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
 				a.name like concat('%', upper(trim(#{query})), '%')
 				or upper(a.description) like concat('%', upper(trim(#{query})), '%')
 			</if>
 			
-			<if test="cSeq != null and cSeq != ''">
+			<if test="cSeq != null">
 				or a.c_seq=#{cSeq}
 			</if>
 		</trim>
 		
-		<if test="type != null and type.toString() != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 			and type=#{type}
 		</if>
 		
 		<if test="types != null">
 			<trim prefix="and">
 				<foreach collection="types" item="type" open="(" close=")" separator="or">
-					<if test="type != null and type.toString() != ''">
+					<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 						a.type=#{type}
 					</if>				
 				</foreach>				
@@ -233,7 +233,7 @@
 		where
 		a.c_seq=#{cSeq}
 		
-		<if test="lSeq != null and lSeq > 0">
+		<if test="lSeq != null">
 			and b.l_seq=#{lSeq}
 		</if>
 		
@@ -243,7 +243,7 @@
 		and c.fg_delete='N'
 		and c.lk_seq=d.lk_seq
 		
-		<if test="basename != null and basename != ''">
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(basename)">
 			and d.basename=#{basename}
 		</if>
 		

@@ -194,9 +194,9 @@ public class ContentController extends ContentGeneralController
 		return getEntryPoints(cItemSearch.getComponent());
 	}
 
-	@GetMapping("/valid_check/{field}/{value}")
+	@GetMapping("/valid_check/{field}")
 	@ResponseBody
-	public Object validCheck(@PathVariable("field") String field, @PathVariable("value") String value, @RequestParam(required = false, value = "cSeq") Integer cSeq)
+	public Object validCheck(@PathVariable("field") String field, @RequestParam("value") String value, @RequestParam(required = false, value = "cSeq") Integer cSeq)
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setName(value.toUpperCase());

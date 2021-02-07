@@ -124,8 +124,8 @@
 									let isValid = false;
 									
 									JpUtilsAjax.get({
-										url: JpUiGlobal.url("/platform/mgmt/content/valid_check/name/" + value),
-										data: { cSeq: getSeq() },
+										url: JpUiGlobal.url("/platform/mgmt/content/valid_check/name"),
+										data: { cSeq: getSeq(), value: value },
 										global: false,
 										async: false,
 										success: function(data, textStatus, jqXHR)

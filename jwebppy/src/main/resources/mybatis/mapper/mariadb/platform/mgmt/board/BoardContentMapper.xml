@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.mgmt.board.mapper.BoardContentMapper">
+
+	<insert id="insert" parameterType="BoardContentDto" useGeneratedKeys="true" keyProperty="bcSeq">
+		insert into pltf_board_content (b_seq, u_seq, title, html_content, text_content, fg_view_from, fg_view_to, fg_delete, reg_username, reg_date) values (
+			#{bSeq}, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fgViewFrom}, #{fgViewTo}, #{fgDelete}, #{regUsername}, #{regDate}
+		)
+	</insert>
+
+	<select id="findBoardContent" parameterType="BoardContentDto" resultType="BoardContentEntity">
+		select
+		a.*
+		from
+		pltf_board_content a
+		where
+		a.bc_seq=#{bcSeq}
+	</select>
+</mapper>

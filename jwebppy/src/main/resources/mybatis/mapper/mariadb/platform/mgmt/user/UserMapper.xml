@@ -147,7 +147,7 @@
 			<if test="uSeq != null">
 				and a.u_seq=#{uSeq}
 			</if>
-			<if test="username != null and username != ''">
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
 				and a.username=upper(#{username})
 			</if>
 		</where>
@@ -201,7 +201,7 @@
 		
 		<where>
 			<trim prefix="(" suffix=")" prefixOverrides="or">
-				<if test="query != null and query != ''">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
 					a.username like concat('%', upper(trim(#{query})), '%')
 					or upper(a.last_name) like concat('%', upper(trim(#{query})), '%')
 					or upper(a.first_name) like concat('%', upper(trim(#{query})), '%')
@@ -214,11 +214,10 @@
 			</trim>
 			
 			<trim prefixOverrides="and">
-				<if test="username != null and username != ''">			
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
 					and a.username like concat('%', upper(trim(#{username})), '%')
 				</if>			
 			</trim>
-
 		</where>
 		
 		<include refid="PaginationMapper.footer"/>

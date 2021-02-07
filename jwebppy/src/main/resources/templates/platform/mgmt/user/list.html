@@ -162,7 +162,7 @@ $(document).ready(function() {
 					{
 						return "<i class='lock icon'></i>";
 					}
-					else
+					else 
 					{
 						return "<i class='lock open icon'></i>";
 					};
@@ -781,7 +781,8 @@ $(document).ready(function() {
 		this.select();
 	});
 
-	$("#BTN_searchUser").on("click", function() {
+	$("#BTN_searchUser").on("click", function() {		
+		setSeq("");
 		doSearch();
 	});
 

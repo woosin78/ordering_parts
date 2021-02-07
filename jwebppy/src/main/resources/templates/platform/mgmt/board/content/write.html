@@ -11,12 +11,23 @@
   Board
   <div class="sub header">Here is a free board.</div>
 </div>
+<div class="fields">
+	<div class="field">
+		<div class="ui teal button BTN_save"><i class="search icon"></i> Save</div>
+		<div id="BTN_back" class="ui button" onclick=""><i class="redo icon"></i> Back</div>
+	</div>
+</div>
 <div class="ui segment">
-	<form id="FORM_write" class="ui form">
-	<input type="text" name="title" placeholder="Title"/>
-	<input type="file" name="file" multiple style="display:none;" />
-	<div class="ui divider"></div>
-	<textarea style="height:300em;"></textarea>
+	<form id="FORM_write" class="ui form" method="post" enctype="multipart/form-data">
+	<input type="hidden" id="bSeq" name="bSeq" value="1"/>
+	<input type="file" id="files" name="files" multiple style="display:none;"/>
+	<textarea id="htmlContent" name="htmlContent" style="display:none;"></textarea>
+	<textarea id="textCcontent" name="textCcontent" style="display:none;"></textarea>
+	<div class="field">
+		<input type="text" id="title" name="title" placeholder="Title"/>
+	</div>	
+	<div class="ui divider"></div>	
+	<textarea id="editor"></textarea>
 	<div class="ui segment">
 		<div class="ui one column grid">
 			<div class="column">
@@ -33,24 +44,84 @@
 	</div>
 	</form>
 </div>
+<div class="fields">
+	<div class="field">
+		<div class="ui teal button BTN_save"><i class="search icon"></i> Save</div>
+		<div class="ui button" onclick=""><i class="redo icon"></i> Back</div>
+	</div>
+</div>
+<form name="">
+</form>
 <script src="https://cdn.tiny.cloud/1/5e40ny5z6wo5fmuiihjtt5jha491leumkaax5ufvyaxt55a0/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script type="application/javascript">
 $(document).ready(function() {
 	tinymce.init({
-		selector: "textarea",
+		selector: "#editor",
 		//plugins: "a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed powerpaste table advtable tinymcespellchecker",
 		//plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
 		//toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
-		//toolbar_mode: 'floating',
+		toolbar_mode: 'floating',
 		//tinycomments_mode: 'embedded',
 		//tinycomments_author: 'Author name'
+		
+		//images_upload_url: "/dashboard/create/upload-cdimg",
+		//images_reuse_filename: true,
+		//language: "ko_KR",
+		height: 300
 	});
+
+	$("#FORM_write").form({
+		inline: true,
+		fields: {
+			Title: {
+				identifier: "title",
+				rules: [
+					{
+						type: "empty",
+						prompt: "Please enter {name}."
+					}
+				]
+			}
+		}
+	});		
+	
+	$(".BTN_save").on("click", function() {
+		if ($("#FORM_write").form("validate form"))
+		{
+			$("#htmlContent").val(tinymce.get("editor").getContent());
+			$("#textContent").val(tinymce.get("editor").getContent({format: "text"}));
+			
+			let options = {
+					enctype: "multipart/form-data",				
+					url: "/platform/mgmt/board/content/save",
+					data: new FormData($("#FORM_write")[0]),
+					global: false,
+					processData: false,
+					contentType: false,
+					cache: false,				
+					success: function(data, textStatus, jqXHR) {
+						alert("saved");
+					},
+					error: function(jqXHR, textStatus, errorThrown) {
+						let result = JSON.parse(jqXHR.responseText);
+						
+						alert(result.MESSAGE);
+					}
+			};
+			
+			JpUtilsAjax.post(options);			
+		};
+	});	
+
+	$("#BTN_back").on("click", function() {
+		
+	});	
 	
 	$("#BTN_searchFile").on("click", function() {
-		$("#FORM_write input[name=file]").trigger("click");
-	});
+		$("#files").trigger("click");
+	});	
 	
-	$("#FORM_write input[name=file]").on("change", function() {
+	$("#files").on("change", function() {
 		for (let i=0, length=this.files.length; i<length; i++)
 		{
 			addFile(this.files[i].name, this.files[i].size);
@@ -60,9 +131,9 @@ $(document).ready(function() {
 	});
 
 	$("#BTN_deleteFile").on("click", function(event) {
-		let files = Array.from($("#FORM_write input[name=file]")[0].files);
+		let files = Array.from($("#files")[0].files);
 		
-		$.each($("#FORM_write input[name=fSeq]"), function(i, item) {
+		$.each($("#fSeq"), function(i, item) {
 			if ($(this).is(":checked"))
 			{
 				files.splice(i, 1);
@@ -87,7 +158,7 @@ $(document).ready(function() {
 		html.push(getFileIcon(name));
 		html.push("	<div class='content'>");
 		html.push("		<a class='header'>" + name + "</a>");
-		html.push("		<div class='description'>" + size + "</div>");
+		html.push("		<div class='description'>" + getSize(size) + "</div>");
 		html.push("	</div>");
 		html.push("</div>");			
 		
@@ -100,13 +171,29 @@ $(document).ready(function() {
 		let MB = Math.pow(1024, 2);
 		let GB = Math.pow(1024, 3);
 		
-		let result = "";
-		
-		if (size / GB > 0)
+		let result = [];
+
+		if (size > GB)
 		{
-			result += size / GB;
-			result += (size % GB) / MB;
+			result.push((size / GB).toFixed(2));
+			result.push("GB");
+		}
+		else if (size > MB)
+		{
+			result.push((size / MB).toFixed(2));
+			result.push("MB");
+		}
+		else if (size > KB)
+		{
+			result.push((size / KB).toFixed(2));
+			result.push("KB");
+		}
+		else
+		{
+			result.push(size);
 		};
+		
+		return result.join("");
 	};
 	
 	function getFileIcon(name)
