@@ -7,4 +7,24 @@
 			#{ufSeq}, #{tSeq}, #{originName}, #{savedName}, #{extension}, #{size}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
+	
+	<update id="delete" parameterType="UploadFileListEntity">
+		update pltf_upload_file_list set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			ufl_seq=#{uflSeq}
+	</update>	
+	
+	<select id="findUploadFileLists" parameterType="UploadFileListDto" resultType="UploadFileListEntity">
+		select
+		a.*
+		from
+		pltf_upload_file_list a
+		where
+		a.uf_seq=#{ufSeq}
+		and a.t_seq=#{tSeq}
+		and a.fg_delete='N'
+	</select>	
 </mapper>

@@ -15,6 +15,22 @@ public class BoardService extends PlatformGeneralService
 
 	public BoardDto findBoard(Integer bSeq)
 	{
-		return CmModelMapperUtils.map(boardMapper.findBoard(bSeq), BoardDto.class);
+		BoardDto board = new BoardDto();
+		board.setBSeq(bSeq);
+
+		return findBoard(board);
+	}
+
+	public BoardDto findBoard(String bId)
+	{
+		BoardDto board = new BoardDto();
+		board.setBId(bId);
+
+		return findBoard(board);
+	}
+
+	public BoardDto findBoard(BoardDto board)
+	{
+		return CmModelMapperUtils.map(boardMapper.findBoard(board), BoardDto.class);
 	}
 }

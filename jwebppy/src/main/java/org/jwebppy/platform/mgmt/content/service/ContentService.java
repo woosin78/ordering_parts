@@ -96,7 +96,7 @@ public class ContentService extends GeneralService
 			cItemEntity.setCSeq(cSeq);
 			cItemEntity.setFgDelete(PlatformCommonVo.YES);
 
-			return contentMapper.updateFgDelete(cItemEntity);
+			return contentMapper.delete(cItemEntity);
 		}
 
 		CItemSearchDto cItemSearch = new CItemSearchDto();
@@ -124,7 +124,7 @@ public class ContentService extends GeneralService
 		cItem.setCSeq((Integer)cItemMap.get("KEY"));
 		cItem.setFgDelete(PlatformCommonVo.YES);
 
-		contentMapper.updateFgDelete(cItem);
+		contentMapper.delete(cItem);
 
 		List<Map<String, Object>> subCItems = (List<Map<String, Object>>)cItemMap.get("SUB_ITEMS");
 

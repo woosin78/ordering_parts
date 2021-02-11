@@ -14,6 +14,8 @@ import lombok.ToString;
 @ToString
 public class LoginHistoryDto extends GeneralDto implements IPagination
 {
+	private static final long serialVersionUID = 1329218112737899890L;
+
 	private String username;
 	private String sessionId;
 	private String ip;

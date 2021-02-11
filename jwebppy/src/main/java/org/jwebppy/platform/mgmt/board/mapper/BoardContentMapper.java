@@ -1,10 +1,15 @@
 package org.jwebppy.platform.mgmt.board.mapper;
 
-import org.jwebppy.platform.mgmt.board.dto.BoardContentDto;
+import java.util.List;
+
+import org.jwebppy.platform.mgmt.board.dto.BoardContentSearchDto;
 import org.jwebppy.platform.mgmt.board.entity.BoardContentEntity;
 
 public interface BoardContentMapper
 {
 	public int insert(BoardContentEntity boardContent);
-	public BoardContentEntity findBoardContent(BoardContentDto boardContent);
+	public int update(BoardContentEntity boardContent);
+	public int delete(BoardContentEntity boardContent);
+	public BoardContentEntity findBoardContent(int bcSeq);
+	public List<BoardContentEntity> findPageableBoardContents(BoardContentSearchDto boardContentSearch);
 }

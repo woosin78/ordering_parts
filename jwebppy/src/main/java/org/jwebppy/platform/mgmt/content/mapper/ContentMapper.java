@@ -14,9 +14,9 @@ public interface ContentMapper
 	public int insertCItemUserRl(CItemUserRlEntity cItemUserRl);
 	public int insertCItemLangRl(CItemLangRlEntity cItemLangRl);
 	public int update(CItemEntity cItem);
-	public int updateFgDelete(CItemEntity cItem);
 	public int updateCItemLangRl(CItemLangRlEntity cItemLangRl);
-	public int updateFgDeleteOfCItemUserRl(CItemUserRlEntity cItemUserRl);
+	public int delete(CItemEntity cItem);
+	public int deleteCItemUserRl(CItemUserRlEntity cItemUserRl);
 	public CItemEntity findCItem(CItemSearchDto cItemSearch);
 	public List<CItemEntity> findMyCItems(CItemSearchDto cItemSearch);
 	public List<CItemEntity> findCItems(CItemSearchDto cItemSearch);

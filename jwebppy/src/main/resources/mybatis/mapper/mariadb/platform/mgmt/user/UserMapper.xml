@@ -111,9 +111,9 @@
 			u_seq=#{uSeq}
 	</update>
 	
-	<update id="updateFgDelete" parameterType="UserEntity">
+	<update id="delete" parameterType="UserEntity">
 		update pltf_user set
-			fg_delete=#{fgDelete},
+			fg_delete='N',
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where

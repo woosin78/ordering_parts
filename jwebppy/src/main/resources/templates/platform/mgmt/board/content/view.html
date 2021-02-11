@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{platform/layout/common/index}">
+
+<th:block layout:fragment="content">
+
+<!-- body start -->
+<div class="ui dividing header">
+  Notice
+  <div class="sub header"></div>
+</div>
+<div class="fields">
+	<div class="field">
+		<div class="ui teal button BTN_save"><i class="edit outline icon"></i> Modify</div>
+		<div class="ui teal button BTN_save"><i class="minus icon"></i> Delete</div>
+		<div id="BTN_list" class="ui button" onclick=""><i class="list icon"></i> List</div>
+	</div>
+</div>
+<div class="ui segment">
+	<form id="FORM_view" class="ui form" action="/platform/mgmt/board/content/list">
+	<input type="hidden" id="bcSeq" name="bcSeq" th:value="${bcSeq}"/>	
+	<div id="title"></div>	
+	<div class="ui divider"></div>
+	<div id="content"></div>
+	<div class="ui divider"></div>
+	<div class="ui one column stackable grid">
+		<div class="column">
+			<div id="attachedFiles" class="ui relaxed divided list"></div>			
+		</div>
+	</div>
+	</form>
+</div>
+<script type="application/javascript">
+$(document).ready(function() {
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/board/content/detail/data",
+		data: { bcSeq: $("#bcSeq").val() },
+		success: function(data, textStatus, jqXHR) {
+			let result = data.RESULT;
+			
+			$("#title").html(result.title);
+			$("#content").html(result.htmlContent);
+		}
+	});
+	
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/upload_file/list/data",
+		data: { ufSeq: [[${board.ufSeq}]], tSeq: $("#bcSeq").val() },
+		success: function(data, textStatus, jqXHR) {
+			let result = data.RESULT;
+			
+			if (JpUtilsObject.isNotNull(result))
+			{
+				$.each(result, function(i, item) {
+					addFile(item.originName, item.size, item.uflSeq)	
+				});
+
+				$("#FORM_write .ui.checkbox").checkbox();
+			};
+		}	
+	});	
+	
+	$("#BTN_modify").on("click", function() {
+
+	});	
+
+	$("#BTN_delete").on("click", function() {
+		if (confirm("Do you want delete it?"))
+		{
+			JpUtilsAjax.post({
+				url: "/platform/mgmt/board/content/delete",
+				data: { bcSeq: $("#bcSeq").val() },
+				success: function(data, textStatus, jqXHR) {
+					$("#BTN_back").trigger();
+				}	
+			});
+		};
+	});
+
+	$("#BTN_list").on("click", function() {
+		$("#FORM_view")[0].submit();
+	});	
+	
+	function addFile(name, size, uflSeq)
+	{
+		let html = [];
+		html.push("<div class='item'>");
+		html.push(getFileIcon(name));
+		html.push("	<div class='content'>");
+		html.push("		<a class='header'>" + name + "</a>");
+		html.push("		<div class='description'>" + getSize(size) + "</div>");
+		html.push("	</div>");
+		html.push("</div>");			
+		
+		$("#attachedFiles").append(html.join(""));
+	};
+	
+	function getSize(size)
+	{
+		let KB = 1024;
+		let MB = Math.pow(1024, 2);
+		let GB = Math.pow(1024, 3);
+		
+		let result = [];
+
+		if (size > GB)
+		{
+			result.push((size / GB).toFixed(2));
+			result.push("GB");
+		}
+		else if (size > MB)
+		{
+			result.push((size / MB).toFixed(2));
+			result.push("MB");
+		}
+		else if (size > KB)
+		{
+			result.push((size / KB).toFixed(2));
+			result.push("KB");
+		}
+		else
+		{
+			result.push(size);
+		};
+		
+		return result.join("");
+	};
+	
+	function getFileIcon(name)
+	{
+		let extension = name.split(".").pop().toUpperCase();
+		let icon = "file";
+		
+		if ("JPG^JPEG^GIF^PNG^BMP".indexOf(extension) > -1)
+		{
+			icon = "file image";
+		}
+		else if ("XLS^XLSX".indexOf(extension) > -1)
+		{
+			icon = "file excel";
+		}
+		else if ("DOC^DOCX".indexOf(extension) > -1)
+		{
+			icon = "file word";
+		}
+		else if ("PPT^PPTX".indexOf(extension) > -1)
+		{
+			icon = "file powerpoint";
+		}
+		else if ("PDF".indexOf(extension) > -1)
+		{
+			icon = "file pdf";
+		}
+		else if ("HWP".indexOf(extension) > -1)
+		{
+			icon = "file alternate";
+		}		
+		else if ("ZIP^JAR".indexOf(extension) > -1)
+		{
+			icon = "file archive";
+		}
+		else if ("MP3^FLAC^WAV^OGG^APE^M4A".indexOf(extension) > -1)
+		{
+			icon = "file audio";
+		}		
+		else if ("ASF^AVI^FLV^MKV^MOV^MPEG^WMV".indexOf(extension) > -1)
+		{
+			icon = "file video";
+		}
+		
+		return "<i class='large " + icon + " middle aligned icon'></i>";
+	};
+});
+
+</script>
+</th:block>
+</html>

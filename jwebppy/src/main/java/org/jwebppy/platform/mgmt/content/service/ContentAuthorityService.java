@@ -49,7 +49,7 @@ public class ContentAuthorityService extends GeneralService
 			cItemUserRlEntity.setUSeq(uSeq);
 			cItemUserRlEntity.setFgDelete(PlatformCommonVo.YES);
 
-			contentMapper.updateFgDeleteOfCItemUserRl(cItemUserRlEntity);
+			contentMapper.deleteCItemUserRl(cItemUserRlEntity);
 
 			List<Integer> cSeqs = cItemUserRl.getCSeqs();
 

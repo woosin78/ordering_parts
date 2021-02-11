@@ -20,7 +20,9 @@
 <div class="ui segment">
 	<form id="FORM_write" class="ui form" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="bSeq" name="bSeq" value="1"/>
-	<input type="file" id="files" name="files" multiple style="display:none;"/>
+	<input type="hidden" id="bcSeq" name="bcSeq"/>
+	<!-- input type="text" id="rUflSeq" name="rUflSeq"/ -->
+	<input type="file" id="files" name="files" multiple style="display:none;" />
 	<textarea id="htmlContent" name="htmlContent" style="display:none;"></textarea>
 	<textarea id="textCcontent" name="textCcontent" style="display:none;"></textarea>
 	<div class="field">
@@ -50,8 +52,6 @@
 		<div class="ui button" onclick=""><i class="redo icon"></i> Back</div>
 	</div>
 </div>
-<form name="">
-</form>
 <script src="https://cdn.tiny.cloud/1/5e40ny5z6wo5fmuiihjtt5jha491leumkaax5ufvyaxt55a0/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 <script type="application/javascript">
 $(document).ready(function() {
@@ -60,7 +60,7 @@ $(document).ready(function() {
 		//plugins: "a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed powerpaste table advtable tinymcespellchecker",
 		//plugins: 'a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
 		//toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
-		toolbar_mode: 'floating',
+		toolbar_mode: "floating",
 		//tinycomments_mode: 'embedded',
 		//tinycomments_author: 'Author name'
 		
@@ -68,6 +68,38 @@ $(document).ready(function() {
 		//images_reuse_filename: true,
 		//language: "ko_KR",
 		height: 300
+	}).then(function(){
+		JpUtilsAjax.get({
+			url: "/platform/mgmt/board/content/detail/data",
+			data: { bcSeq: 90 },
+			success: function(data, textStatus, jqXHR) {
+				let result = data.RESULT;
+				
+				$("#bcSeq").val(result.bcSeq);
+				$("#title").val(result.title);
+				$("#htmlContent").val(result.htmlContent);
+				$("#textContent").val(result.textContent);
+				
+				tinymce.get("editor").setContent(result.htmlContent);
+			}
+		});
+		
+		JpUtilsAjax.get({
+			url: "/platform/mgmt/upload_file/list/data",
+			data: { ufSeq: 2, tSeq: 90 },
+			success: function(data, textStatus, jqXHR) {
+				let result = data.RESULT;
+				
+				if (JpUtilsObject.isNotNull(result))
+				{
+					$.each(result, function(i, item) {
+						addFile(item.originName, item.size, item.uflSeq)	
+					});
+
+					$("#FORM_write .ui.checkbox").checkbox();
+				};
+			}	
+		});
 	});
 
 	$("#FORM_write").form({
@@ -109,7 +141,7 @@ $(document).ready(function() {
 					}
 			};
 			
-			JpUtilsAjax.post(options);			
+			JpUtilsAjax.post(options);
 		};
 	});	
 
@@ -133,25 +165,37 @@ $(document).ready(function() {
 	$("#BTN_deleteFile").on("click", function(event) {
 		let files = Array.from($("#files")[0].files);
 		
-		$.each($("#fSeq"), function(i, item) {
+		$.each($("#FORM_write input[name=uflSeq]"), function(i, item) {
 			if ($(this).is(":checked"))
 			{
-				files.splice(i, 1);
+				let fileName = $(this).attr("fileName");
+				
+				for (let j=0, length=files.length; j<length; j++)
+				{
+					if (JpUtilsString.equals(files[j].name, fileName))
+					{
+						files.splice(j, 1);
+					};
+				};
+				
+				if (JpUtilsString.isNotEmpty($(this).val()))
+				{
+					$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
+				};
 				
 				$(this).closest("div.item").remove();
 			};
 		});
 	});	
 
-	function addFile(name, size, fSeq)
+	function addFile(name, size, uflSeq)
 	{
 		let html = [];
-		
 		html.push("<div class='item'>");
 		html.push("	<div class='left floated content'>");
 		html.push("		<div class='field'>");
 		html.push("			<div class='ui checkbox'>");
-		html.push("				<input name='fSeq' type='checkbox' tabindex='0' class='hidden' value='" + JpUtilsString.trimToEmpty(fSeq) + "'><label/>");
+		html.push("				<input name='uflSeq' type='checkbox' tabindex='0' class='hidden' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' fileName='" + JpUtilsString.trimToEmpty(name) + "'><label/>");
 		html.push("			</div>");
 		html.push("		</div>");
 		html.push("	</div>");

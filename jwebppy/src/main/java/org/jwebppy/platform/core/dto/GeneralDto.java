@@ -25,11 +25,17 @@ public class GeneralDto implements Serializable
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	protected LocalDateTime modDate;
 
+	protected int no = 0;
 	protected int rnum = 0;
 	protected int pageNumber = 1;
 	protected int rowPerPage = 20;
 	protected int totalCount = 0;
 	protected int startRow = 0;
+
+	public int getNo()
+	{
+		return totalCount - rnum + 1;
+	}
 
 	public String getDisplayRegDate()
 	{

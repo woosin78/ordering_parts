@@ -40,19 +40,22 @@
 			c_seq=#{cSeq}
 	</update>
 	
-	<update id="updateFgDelete" parameterType="CItemEntity">
+	<update id="delete" parameterType="CItemEntity">
 		update pltf_citem set
-			fg_delete=#{fgDelete},
+			fg_delete='N',
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
 			c_seq=#{cSeq}
 	</update>
 	
-	<update id="updateFgDeleteOfCItemUserRl" parameterType="CItemUserRlEntity">
-		update pltf_citem_user_rl set fg_delete=#{fgDelete}, mod_username=#{modUsername}, mod_date=#{modDate}
+	<update id="deleteCItemUserRl" parameterType="CItemUserRlEntity">
+		update pltf_citem_user_rl set
+			fg_delete='N',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
 		where
-		u_seq=#{uSeq}
+			u_seq=#{uSeq}
 	</update>
 
 	<select id="findCItem" parameterType="CItemSearchDto" resultType="CItemEntity">

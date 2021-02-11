@@ -2,19 +2,107 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.platform.mgmt.board.mapper.BoardContentMapper">
+	<resultMap type="BoardContentEntity" id="boardContentEntityMap">
+		<id property="bcSeq" column="bc_seq" />
+		<result property="bSeq" column="b_seq" />
+		<result property="uSeq" column="u_seq" />
+		<result property="title" column="title" />
+		<result property="htmlContent" column="html_content" />
+		<result property="textContent" column="text_content" />
+		<result property="viewFrom" column="view_from" />
+		<result property="viewFrom" column="view_to" />
+		<result property="fgDelete" column="fg_delete" />
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+		<result property="modUsername" column="mod_username" />
+		<result property="modDate" column="mod_date" />
+	</resultMap>
 
 	<insert id="insert" parameterType="BoardContentDto" useGeneratedKeys="true" keyProperty="bcSeq">
 		insert into pltf_board_content (b_seq, u_seq, title, html_content, text_content, fg_view_from, fg_view_to, fg_delete, reg_username, reg_date) values (
 			#{bSeq}, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fgViewFrom}, #{fgViewTo}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
+	
+	<update id="update" parameterType="BoardContentDto">
+		update pltf_board_content set
+			title=#{title},
+			html_content=#{htmlContent},
+			text_content=#{textContent},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}				
+		where
+			bc_seq=#{bcSeq}
+	</update>
+	
+	<update id="delete" parameterType="BoardContentEntity">
+		update pltf_board_content set
+			fg_delete='N'
+			mod_username=#{modUsername},
+			mod_date=#{modDate}		
+		where
+			bc_seq=#{bcSeq}		
+	</update>
 
-	<select id="findBoardContent" parameterType="BoardContentDto" resultType="BoardContentEntity">
+	<select id="findBoardContent" parameterType="BoardContentSearchDto" resultType="BoardContentEntity">
 		select
 		a.*
 		from
 		pltf_board_content a
 		where
 		a.bc_seq=#{bcSeq}
+	</select>
+
+	<select id="findPageableBoardContents" parameterType="BoardContentSearchDto" resultMap="boardContentEntityMap">
+		<include refid="PaginationMapper.header">
+			<property name="orderBy" value="order by reg_date desc"/>
+		</include>
+			
+		select
+		a.*
+		from
+		pltf_board_content a
+		where
+		a.b_seq=#{bSeq}
+		and a.fg_delete='N'
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
+			<choose>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@equals(type, 'WT')">
+					and exists (
+						select
+						1
+						from
+						pltf_user
+						where
+						u_seq=a.u_seq
+						and (
+							replace(upper(concat(a.first_name, a.last_name)), ' ', '') like replace(concat('%', upper(#{query}), '%'), ' ', '') or
+							replace(upper(concat(a.last_name, a.first_name)), ' ', '') like replace(concat('%', upper(#{query}), '%'), ' ', '')
+						)
+					)
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@equals(type, 'TC')">
+					and (
+						upper(a.title) like concat('%', upper(#{query}), '%') or
+						upper(a.text_content) like concat('%', upper(#{query}), '%')
+					)
+				</when>
+			</choose>
+		</if>
+		
+		<choose>
+			<when test="fromDate != null and toDate != null">
+				and a.reg_date <![CDATA[>]]> #{fromDate} and a.reg_date <![CDATA[<=]]> #{toDate}
+			</when>
+			<when test="fromDate != null">
+				and a.reg_date <![CDATA[>]]> #{fromDate}
+			</when>
+			<when test="toDate != null">
+				and a.reg_date <![CDATA[<=]]> #{toDate}
+			</when>
+		</choose>		
+		
+		<include refid="PaginationMapper.footer"/>
 	</select>
 </mapper>

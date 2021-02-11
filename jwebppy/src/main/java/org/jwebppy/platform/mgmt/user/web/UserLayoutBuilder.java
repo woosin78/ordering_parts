@@ -465,7 +465,6 @@ public class UserLayoutBuilder
 		Document document = new Document();
 		document.addElement(table);
 
-
 		return document;
 	}
 }

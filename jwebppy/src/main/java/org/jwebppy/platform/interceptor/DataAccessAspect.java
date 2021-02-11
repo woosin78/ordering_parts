@@ -20,6 +20,7 @@ public class DataAccessAspect
 		String methodName = joinPoint.getSignature().getName();
 		boolean isInsertMethod = CmStringUtils.startsWithIgnoreCase(methodName, "insert");
 		boolean isUpdateMethod = CmStringUtils.startsWithIgnoreCase(methodName, "update");
+		boolean isDeleteMethod = CmStringUtils.startsWithIgnoreCase(methodName, "delete");
 
 		Object[] arguments = joinPoint.getArgs();
 
@@ -33,7 +34,7 @@ public class DataAccessAspect
 					setValue(argument, "regDate", LocalDateTime.now());
 				}
 
-				if (isUpdateMethod)
+				if (isUpdateMethod || isDeleteMethod)
 				{
 					setValue(argument, "modUsername", UserAuthenticationUtils.getUsername());
 					setValue(argument, "modDate", LocalDateTime.now());

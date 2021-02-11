@@ -18,6 +18,7 @@ import org.jwebppy.platform.mgmt.upload_file.mapper.UploadFileListMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,8 +65,8 @@ public class UploadFileListService extends GeneralService
 				UploadFileListDto uploadFileList = new UploadFileListDto();
 				uploadFileList.setUfSeq(ufSeq);
 				uploadFileList.setTSeq(tSeq);
-				uploadFileList.setOriginName(originFilename);
-				uploadFileList.setSavedName(savedName);
+				uploadFileList.setOriginName(FilenameUtils.getBaseName(originFilename));
+				uploadFileList.setSavedName(FilenameUtils.getBaseName(savedName));
 				uploadFileList.setExtension(FilenameUtils.getExtension(originFilename).toLowerCase());
 				uploadFileList.setSize(file.getSize());
 				uploadFileList.setFgDelete(PlatformCommonVo.NO);
@@ -97,5 +98,37 @@ public class UploadFileListService extends GeneralService
 		}
 
 		return false;
+	}
+
+	public List<UploadFileListDto> findUploadFileLists(int ufSeq, int tSeq)
+	{
+		UploadFileListDto uploadFileList = new UploadFileListDto();
+		uploadFileList.setUfSeq(ufSeq);
+		uploadFileList.setTSeq(tSeq);
+
+		return CmModelMapperUtils.mapAll(uploadFileListMapper.findUploadFileLists(uploadFileList), UploadFileListDto.class);
+	}
+
+	@Transactional
+	public int delete(int uflSeq)
+	{
+		UploadFileListEntity uploadfileList = new UploadFileListEntity();
+		uploadfileList.setUflSeq(uflSeq);
+
+		return uploadFileListMapper.delete(uploadfileList);
+	}
+
+	@Transactional
+	public int delete(List<Integer> uflSeqs)
+	{
+		if (CollectionUtils.isNotEmpty(uflSeqs))
+		{
+			for (int uflSeq: uflSeqs)
+			{
+				delete(uflSeq);
+			}
+		}
+
+		return 1;
 	}
 }

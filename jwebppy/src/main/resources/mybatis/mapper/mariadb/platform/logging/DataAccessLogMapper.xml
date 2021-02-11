@@ -80,17 +80,17 @@
 				</if>
 				
 				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(command)">
-					and upper(a.command) like '%' || upper(#{command}) || '%'
+					and upper(a.command) like concat('%', upper(#{command}), '%')
 				</if>				
 				
 				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(regUsername)">
-					and upper(a.reg_username) like '%' || upper(#{regUsername}) || '%'
+					and upper(a.reg_username) like concat('%', upper(#{regUsername}), '%')
 				</if>				
 				
 				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
 					and (
-						upper(a.class_name) like '%' || upper(#{query}) || '%' or
-						upper(a.method_name) like '%' || upper(#{query}) || '%'
+						upper(a.class_name) like concat('%', upper(#{query}), '%') or
+						upper(a.method_name) like concat('%', upper(#{query}), '%')
 					)
 				</if>			
 			</where>

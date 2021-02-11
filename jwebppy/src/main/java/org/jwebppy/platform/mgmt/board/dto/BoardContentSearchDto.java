@@ -24,5 +24,6 @@ public class BoardContentSearchDto extends GeneralDto
 	private LocalDateTime fromDate;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime toDate;
+	private String type;
 	private String query;
 }

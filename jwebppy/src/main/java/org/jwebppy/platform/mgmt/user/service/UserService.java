@@ -236,7 +236,7 @@ public class UserService extends GeneralService
 				user.setUSeq(uSeq);
 				user.setFgDelete(PlatformCommonVo.YES);
 
-				if (userMapper.updateFgDelete(user) > 0)
+				if (userMapper.delete(user) > 0)
 				{
 					result += userMapper.updateUsernameToDelete(user);
 				}

@@ -3,13 +3,20 @@
 
 <mapper namespace="org.jwebppy.platform.mgmt.board.mapper.BoardMapper">
 
-	<select id="findBoard" parameterType="Integer" resultType="BoardEntity">
+	<select id="findBoard" parameterType="BoardDto" resultType="BoardEntity">
 		select
 		a.*
 		from
 		pltf_board a
 		where
-		a.b_seq=#{bSeq}		
+		a.fg_delete='N'
+
+		<if test="bSeq != null">
+			and a.b_seq=#{bSeq}		
+		</if>
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(bId)">
+			and a.b_id=#{bId}
+		</if>
 	</select>
 
 </mapper>
