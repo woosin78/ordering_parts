@@ -11,42 +11,45 @@
   Notice
   <div class="sub header"></div>
 </div>
-<div class="fields">
-	<div class="field">
-		<div class="ui teal button BTN_save"><i class="edit outline icon"></i> Modify</div>
-		<div class="ui teal button BTN_save"><i class="minus icon"></i> Delete</div>
-		<div id="BTN_list" class="ui button" onclick=""><i class="list icon"></i> List</div>
-	</div>
+<div class="field">
+	<div class="ui teal button BTN_modify"><i class="edit outline icon"></i> Modify</div>
+	<div class="ui teal button BTN_delete"><i class="minus icon"></i> Delete</div>
+	<div th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}" class="ui teal button BTN_reply"><i class="reply icon"></i> Reply</div>
+	<div class="ui button BTN_list"><i class="list icon"></i> List</div>
 </div>
 <div class="ui segment">
 	<form id="FORM_view" class="ui form" action="/platform/mgmt/board/content/list">
 	<input type="hidden" id="bcSeq" name="bcSeq" th:value="${bcSeq}"/>	
-	<div id="title"></div>	
+	<input type="hidden" name="type" th:value="${type}"/>
+	<input type="hidden" name="query" th:value="${query}"/>
+	<input type="hidden" name="fromDate" th:value="${fromDate}"/>
+	<input type="hidden" name="toDate" th:value="${toDate}"/>
+	<input type="hidden" name="pageNumber" th:value="${pageNumber}"/>
+	<input type="hidden" name="rowPerPage" th:value="${rowPerPage}"/>
+	<div th:text="${boardContent.title}"></div>	
 	<div class="ui divider"></div>
-	<div id="content"></div>
-	<div class="ui divider"></div>
-	<div class="ui one column stackable grid">
-		<div class="column">
-			<div id="attachedFiles" class="ui relaxed divided list"></div>			
-		</div>
-	</div>
+	<iframe id="content" th:src="@{/platform/mgmt/board/content/viewer?bcSeq=} + ${bcSeq}" style="width:100%; height:0px; border: none;"></iframe>
+	<th:block th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}">
+		<div class="ui divider"></div>
+		<div class="ui one column stackable grid">
+			<div class="column">
+				<div id="attachedFiles" class="ui relaxed divided list"></div>			
+			</div>
+		</div>	
+	</th:block>
 	</form>
 </div>
+<div class="field">
+	<div class="ui teal button BTN_modify"><i class="edit icon"></i> Modify</div>
+	<div class="ui teal button BTN_delete"><i class="minus icon"></i> Delete</div>
+	<div th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}" class="ui teal button BTN_reply"><i class="reply icon"></i> Reply</div>
+	<div class="ui button BTN_list"><i class="list icon"></i> List</div>
+</div>
+<script th:src="@{/platform/js/jquery/jquery.fileDownload.js}"></script>
 <script type="application/javascript">
-$(document).ready(function() {
+$(document).ready(function() {	
 	JpUtilsAjax.get({
-		url: "/platform/mgmt/board/content/detail/data",
-		data: { bcSeq: $("#bcSeq").val() },
-		success: function(data, textStatus, jqXHR) {
-			let result = data.RESULT;
-			
-			$("#title").html(result.title);
-			$("#content").html(result.htmlContent);
-		}
-	});
-	
-	JpUtilsAjax.get({
-		url: "/platform/mgmt/upload_file/list/data",
+		url: "/platform/mgmt/upload/list/data",
 		data: { ufSeq: [[${board.ufSeq}]], tSeq: $("#bcSeq").val() },
 		success: function(data, textStatus, jqXHR) {
 			let result = data.RESULT;
@@ -54,42 +57,59 @@ $(document).ready(function() {
 			if (JpUtilsObject.isNotNull(result))
 			{
 				$.each(result, function(i, item) {
-					addFile(item.originName, item.size, item.uflSeq)	
+					addFile(item.fullOriginName, item.size, item.uflSeq, item.downloadKey)	
 				});
-
-				$("#FORM_write .ui.checkbox").checkbox();
+				
+				$("a[downloadKey]").on("click", function() {
+					
+					let downloadKey = $(this).attr("downloadKey");
+					
+					$.fileDownload("/platform/mgmt/download", {
+						httpMethod: "post",
+						data: { key: downloadKey },
+						successCallback: function()
+						{
+						},
+						failCallback: function(responseHtml, url)
+						{
+							return false;
+						}	
+					});					
+					
+				});
 			};
 		}	
 	});	
 	
-	$("#BTN_modify").on("click", function() {
-
+	$(".BTN_modify").on("click", function() {
+		$("#FORM_view").attr("action", "/platform/mgmt/board/content/write");
+		$("#FORM_view")[0].submit();
 	});	
 
-	$("#BTN_delete").on("click", function() {
+	$(".BTN_delete").on("click", function() {
 		if (confirm("Do you want delete it?"))
 		{
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/board/content/delete",
 				data: { bcSeq: $("#bcSeq").val() },
 				success: function(data, textStatus, jqXHR) {
-					$("#BTN_back").trigger();
+					$(".BTN_list").trigger("click");
 				}	
 			});
 		};
 	});
 
-	$("#BTN_list").on("click", function() {
+	$(".BTN_list").on("click", function() {
 		$("#FORM_view")[0].submit();
-	});	
+	});
 	
-	function addFile(name, size, uflSeq)
+	function addFile(name, size, uflSeq, downloadKey)
 	{
 		let html = [];
 		html.push("<div class='item'>");
 		html.push(getFileIcon(name));
-		html.push("	<div class='content'>");
-		html.push("		<a class='header'>" + name + "</a>");
+		html.push("	<div class='content')>");
+		html.push("		<a class='header' downloadKey='" + downloadKey + "'>" + name + "</a>");
 		html.push("		<div class='description'>" + getSize(size) + "</div>");
 		html.push("	</div>");
 		html.push("</div>");			
@@ -173,6 +193,11 @@ $(document).ready(function() {
 		return "<i class='large " + icon + " middle aligned icon'></i>";
 	};
 });
+
+function resizeViewer(height)
+{
+	$("#content").height(height + 40);
+};
 
 </script>
 </th:block>

@@ -11,14 +11,18 @@ import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.board.dto.BoardContentDto;
 
+import com.nhncorp.lucy.security.xss.XssPreventer;
+
 public class BoardContentLayoutBuilder
 {
 	public static Document getList(PageableList<BoardContentDto> pageableList)
 	{
 		Tr thTr = new Tr();
+		thTr.addCheckAllTh();
 		thTr.addTextTh("No.", "one wide");
 		thTr.addTextTh("Title");
-		thTr.addTextTh("Reg.User", "two wide");
+		thTr.addTextTh("Views", "one wide");
+		thTr.addTextTh("Writer", "two wide");
 		thTr.addTextTh("Reg.Date", "two wide");
 
 		Thead thead = new Thead();
@@ -31,9 +35,11 @@ public class BoardContentLayoutBuilder
 		for (BoardContentDto boardContent : boardContents)
 		{
 			Tr tbTr = new Tr();
+			tbTr.addDataKeyCheckboxTd("bcSeq", boardContent.getBcSeq());
 			tbTr.addTextTd(boardContent.getNo());
-			tbTr.addDataKeyLinkTd(boardContent.getTitle(), boardContent.getBcSeq());
-			tbTr.addTextTd(boardContent.getRegName());
+			tbTr.addDataKeyLinkTd(XssPreventer.escape(boardContent.getTitle()), boardContent.getBcSeq());
+			tbTr.addTextTd(boardContent.getViews());
+			tbTr.addTextTd(boardContent.getWriter());
 			tbTr.addTextTd(boardContent.getDisplayRegDate());
 
 			tbody.addTr(tbTr);

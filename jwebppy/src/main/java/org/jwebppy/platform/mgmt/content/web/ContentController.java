@@ -318,21 +318,19 @@ public class ContentController extends ContentGeneralController
 		{
 			for (CItemDto subCItem: cItem.getSubCItems())
 			{
-				//if (CmStringUtils.notEquals(PlatformCommonVo.PAGE, subCItem.getType()) && CmStringUtils.notEquals(PlatformCommonVo.MEMU, subCItem.getType()))
 				if (!subCItem.getType().equals(CItemType.M) && !subCItem.getType().equals(CItemType.P))
 				{
 					continue;
 				}
 
-				//if (CmStringUtils.equals(PlatformCommonVo.PAGE, subCItem.getType()) && CmStringUtils.notEquals(url, subCItem.getUrl()))
-				if (subCItem.getType().equals(CItemType.P) && CmStringUtils.notEquals(url, subCItem.getUrl()))
+				if (subCItem.getType().equals(CItemType.P) && CmStringUtils.notEquals(url, subCItem.getEntryPoint()))
 				{
 					continue;
 				}
 
 				breadcrumb.add(subCItem);
 
-				if (CmStringUtils.equals(url, subCItem.getUrl()))
+				if (CmStringUtils.equals(url, subCItem.getEntryPoint()))
 				{
 					return true;
 				}

@@ -10,7 +10,9 @@
 		<result property="htmlContent" column="html_content" />
 		<result property="textContent" column="text_content" />
 		<result property="viewFrom" column="view_from" />
-		<result property="viewFrom" column="view_to" />
+		<result property="viewTo" column="view_to" />		
+		<result property="views" column="views" />
+		<result property="writer" column="writer" />
 		<result property="fgDelete" column="fg_delete" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
@@ -19,8 +21,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="BoardContentDto" useGeneratedKeys="true" keyProperty="bcSeq">
-		insert into pltf_board_content (b_seq, u_seq, title, html_content, text_content, fg_view_from, fg_view_to, fg_delete, reg_username, reg_date) values (
-			#{bSeq}, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fgViewFrom}, #{fgViewTo}, #{fgDelete}, #{regUsername}, #{regDate}
+		insert into pltf_board_content (b_seq, u_seq, title, html_content, text_content, view_from, view_to, views, writer, fg_delete, reg_username, reg_date) values (
+			#{bSeq}, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{viewFrom}, #{viewTo}, 0, #{writer}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 	
@@ -35,13 +37,20 @@
 			bc_seq=#{bcSeq}
 	</update>
 	
+	<update id="updatePlusViews">
+		update pltf_board_content set
+			views=views+1
+		where
+			bc_seq=#{bcSeq}
+	</update>	
+	
 	<update id="delete" parameterType="BoardContentEntity">
 		update pltf_board_content set
-			fg_delete='N'
+			fg_delete='Y',
 			mod_username=#{modUsername},
 			mod_date=#{modDate}		
 		where
-			bc_seq=#{bcSeq}		
+			bc_seq=#{bcSeq}
 	</update>
 
 	<select id="findBoardContent" parameterType="BoardContentSearchDto" resultType="BoardContentEntity">

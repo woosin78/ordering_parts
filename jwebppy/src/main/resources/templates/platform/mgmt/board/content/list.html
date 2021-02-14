@@ -12,45 +12,52 @@
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
 	<input type="hidden" name="bSeq" th:value="${board.bSeq}"/>
-	<input type="hidden" id="bcSeq" name="bcSeq" />
-	<input type="hidden" name="pageNumber"/>
-	<input type="hidden" name="rowPerPage" value="20"/>
+	<input type="checkbox" id="bcSeq" name="bcSeq" value="" style="display:none"/>
+	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
+	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
 	<div class="fields">
 		<div class="three wide field">
 			<div class="ui calendar">
-				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromDate" name="fromDate" placeholder="From Reg. Date"/></div>
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromDate" name="fromDate" th:value="${fromDate}" placeholder="From Reg. Date"/></div>
 			</div>				
 		</div>
 		<div class="three wide field">
 			<div class="ui calendar">
-				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toDate" name="toDate" placeholder="To Reg. Date"/></div>
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toDate" name="toDate" th:value="${toDate}" placeholder="To Reg. Date"/></div>
 			</div>				
 		</div>
 	</div>	
 	<div class="fields">
 		<div class="two wide field">
-			<select name="type" class="ui search dropdown">				
+			<select id="type" name="type" class="ui search dropdown">				
 				<option value="TC">Title + Content</option>
 				<option value="WT">Writer</option>
 			</select>
 		</div>
 		<div class="eleven wide field">
 			<div class="ui icon input">
-				<input type="text" id="query" name="query" placeholder="Search"> <i class="search icon"></i>
+				<input type="text" id="query" name="query" placeholder="Search" th:value="${query}" /> <i class="search icon"></i>
 			</div>
 		</div>
 		<div class="three wide field">
 			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>
-			<div class="ui button" onclick="document.location.reload()"><i class="undo icon"></i> Reset</div>
+			<div id="BTN_reset" class="ui button"><i class="undo icon"></i> Reset</div>
 		</div>
-	</div>		
+	</div>
 	<div class="ui divider"></div>
+	<div class="ui one column grid">
+		<div class="column">
+			<div id="BTN_new" class="ui teal button"><i class="plus icon"></i> New</div>
+			<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
+		</div>
+	</div>	
 	<div id="TBL_list"></div>
 	</form>
 </div>
 <script type="application/javascript">
 	$(document).ready(function() {
 		JpUiCalendar.datetimeCalendar($("#fromDate"), $("#toDate"));
+		$("#type").val("[[${type}]]");
 		
 		let listTable = new JpUiTable($("#TBL_list"));
 		listTable.settings = {
@@ -60,18 +67,24 @@
 				},
 				onClickDataKey: function(element, key, row)
 				{
+					$("#bcSeq").prop("checked", true);
 					$("#bcSeq").val(key);
-					$("#FORM_search").attr("action", "/platform/mgmt/board/content/view");
+					$("#FORM_search").attr("action", "/platform/mgmt/board/content/detail");
 					$("#FORM_search")[0].submit();
 				},				
 				onClickPageNumber: function(pageNumber)
 				{
-					doSearch(pageNumber);
+					$("#pageNumber").val(pageNumber);
+					doSearch();
 				}
 		};
 
 		$("#BTN_search").on("click", function() {
 			doSearch();
+		});
+
+		$("#BTN_reset").on("click", function() {
+			document.location.href = "/platform/mgmt/board/content/list?bId=[[${board.bId}]]";
 		});
 		
 		$("#query").on("keydown", function(event) {
@@ -81,9 +94,32 @@
 			}
 		});
 		
-		function doSearch(pageNumber)
-		{
-			$("#FORM_search input[name=pageNumber]:hidden").val(JpUtilsString.defaultString(pageNumber, "1"));
+		$("#BTN_new").on("click", function() {
+			document.location.href = "/platform/mgmt/board/content/write";
+		});
+		
+		$("#BTN_delete").on("click", function() {
+			if (listTable.getCheckedCount() == 0)
+			{
+				alert("Please choose the articles to delete.");
+				return;
+			};
+
+			if (confirm("Do you want to delete the articles?"))
+			{
+				JpUtilsAjax.post({
+					url: JpUiGlobal.url("/platform/mgmt/board/content/delete"),
+					data: $("#FORM_search").serialize(),
+					success: function(data, textStatus, jqXHR)
+					{
+						doSearch();
+					}
+				});
+			};
+		});		
+		
+		function doSearch()
+		{			
 			listTable.load();
 		};	
 		

@@ -1,6 +1,9 @@
-package org.jwebppy.platform.mgmt.upload_file.dto;
+package org.jwebppy.platform.mgmt.upload.dto;
 
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
+import org.jwebppy.platform.core.security.AES256Cipher;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,5 +28,19 @@ public class UploadFileListDto extends GeneralDto
 	public String getFullOriginName()
 	{
 		return originName + "." + extension;
+	}
+
+	public String getDownloadKey()
+	{
+		try
+		{
+			return AES256Cipher.getInstance().encode(CmDateFormatUtils.now() + PlatformCommonVo.DELIMITER + uflSeq);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

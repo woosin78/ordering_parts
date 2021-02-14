@@ -29,8 +29,9 @@ public class BoardContentDto extends GeneralDto implements IPagination
 	private String viewFrom;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private String viewTo;
+	private int views;
+	private String writer;
 	private String fgDelete = PlatformCommonVo.NO;
-	private String regName;
 
 	//variables for file upload
 	private List<MultipartFile> files;

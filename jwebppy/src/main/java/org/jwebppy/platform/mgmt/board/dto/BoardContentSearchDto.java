@@ -17,13 +17,15 @@ public class BoardContentSearchDto extends GeneralDto
 {
 	private static final long serialVersionUID = -6795655439701455791L;
 
+	private String bId;
 	private Integer bSeq;
-	private Integer blSeq;
+	private Integer bcSeq;
+	private Integer ufSeq;
 	private String title;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime fromDate;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime toDate;
-	private String type;
+	private String type = "TC";
 	private String query;
 }

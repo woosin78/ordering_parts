@@ -28,9 +28,8 @@ public class GeneralDto implements Serializable
 	protected int no = 0;
 	protected int rnum = 0;
 	protected int pageNumber = 1;
-	protected int rowPerPage = 20;
+	protected int rowPerPage = PlatformCommonVo.DEFAULT_ROW_PER_PAGE;
 	protected int totalCount = 0;
-	protected int startRow = 0;
 
 	public int getNo()
 	{

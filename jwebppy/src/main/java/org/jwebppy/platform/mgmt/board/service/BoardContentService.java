@@ -3,6 +3,7 @@ package org.jwebppy.platform.mgmt.board.service;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.MgmtGeneralService;
@@ -11,7 +12,7 @@ import org.jwebppy.platform.mgmt.board.dto.BoardContentSearchDto;
 import org.jwebppy.platform.mgmt.board.dto.BoardDto;
 import org.jwebppy.platform.mgmt.board.entity.BoardContentEntity;
 import org.jwebppy.platform.mgmt.board.mapper.BoardContentMapper;
-import org.jwebppy.platform.mgmt.upload_file.service.UploadFileListService;
+import org.jwebppy.platform.mgmt.upload.service.UploadFileListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,7 +44,7 @@ public class BoardContentService extends MgmtGeneralService
 
 	public int create(BoardContentDto boardContent) throws IOException
 	{
-		BoardDto board = boardService.findBoard(boardContent.getBSeq());
+		BoardDto board = boardService.getBoard(boardContent.getBSeq());
 
 		if (board == null)
 		{
@@ -51,7 +52,7 @@ public class BoardContentService extends MgmtGeneralService
 		}
 
 		boardContent.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
-		boardContent.setRegName(UserAuthenticationUtils.getUserDetails().getName());
+		boardContent.setWriter(UserAuthenticationUtils.getUserDetails().getName());
 
 		BoardContentEntity boardContentEntity = CmModelMapperUtils.map(boardContent, BoardContentEntity.class);
 
@@ -68,7 +69,7 @@ public class BoardContentService extends MgmtGeneralService
 	{
 		if (boardContentMapper.update(CmModelMapperUtils.map(boardContent, BoardContentEntity.class)) > 0)
 		{
-			BoardDto board = boardService.findBoard(boardContent.getBSeq());
+			BoardDto board = boardService.getBoard(boardContent.getBSeq());
 
 			uploadFileListService.save(board.getUfSeq(), boardContent.getBcSeq(), boardContent.getFiles());
 
@@ -90,15 +91,37 @@ public class BoardContentService extends MgmtGeneralService
 			uploadFileListService.delete(boardContent.getUflSeqs());
 		}
 
+
 		return 1;
 	}
 
-	public int delete(int bcSeq)
+	public void plusViews(int bcSeq)
 	{
-		BoardContentEntity boardContent = new BoardContentEntity();
-		boardContent.setBcSeq(bcSeq);
+		boardContentMapper.updatePlusViews(bcSeq);
+	}
 
-		return boardContentMapper.delete(boardContent);
+	@Transactional
+	public int delete(List<Integer> bcSeqs)
+	{
+		if (CollectionUtils.isNotEmpty(bcSeqs))
+		{
+			for (Integer bcSeq: bcSeqs)
+			{
+				System.err.println(bcSeq);
+
+				if (bcSeq != null)
+				{
+					BoardContentEntity boardContent = new BoardContentEntity();
+					boardContent.setBcSeq(bcSeq);
+
+					boardContentMapper.delete(boardContent);
+				}
+			}
+
+			return 1;
+		}
+
+		return 0;
 	}
 
 	public BoardContentDto getBoardContent(int bcSeq)

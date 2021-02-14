@@ -1,6 +1,6 @@
-package org.jwebppy.platform.mgmt.upload_file.mapper;
+package org.jwebppy.platform.mgmt.upload.mapper;
 
-import org.jwebppy.platform.mgmt.upload_file.entity.UploadFileEntity;
+import org.jwebppy.platform.mgmt.upload.entity.UploadFileEntity;
 
 public interface UploadFileMapper
 {

@@ -1,4 +1,4 @@
-package org.jwebppy.platform.mgmt.upload_file.service;
+package org.jwebppy.platform.mgmt.upload.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,10 +11,10 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.mgmt.upload_file.dto.UploadFileDto;
-import org.jwebppy.platform.mgmt.upload_file.dto.UploadFileListDto;
-import org.jwebppy.platform.mgmt.upload_file.entity.UploadFileListEntity;
-import org.jwebppy.platform.mgmt.upload_file.mapper.UploadFileListMapper;
+import org.jwebppy.platform.mgmt.upload.dto.UploadFileDto;
+import org.jwebppy.platform.mgmt.upload.dto.UploadFileListDto;
+import org.jwebppy.platform.mgmt.upload.entity.UploadFileListEntity;
+import org.jwebppy.platform.mgmt.upload.mapper.UploadFileListMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class UploadFileListService extends GeneralService
 
 	public int save(Integer ufSeq, Integer tSeq, List<MultipartFile> files) throws IOException
 	{
-		UploadFileDto uploadFile = uploadFileService.findUploadFile(ufSeq);
+		UploadFileDto uploadFile = uploadFileService.getUploadFile(ufSeq);
 
 		if (uploadFile != null)
 		{
@@ -100,15 +100,6 @@ public class UploadFileListService extends GeneralService
 		return false;
 	}
 
-	public List<UploadFileListDto> findUploadFileLists(int ufSeq, int tSeq)
-	{
-		UploadFileListDto uploadFileList = new UploadFileListDto();
-		uploadFileList.setUfSeq(ufSeq);
-		uploadFileList.setTSeq(tSeq);
-
-		return CmModelMapperUtils.mapAll(uploadFileListMapper.findUploadFileLists(uploadFileList), UploadFileListDto.class);
-	}
-
 	@Transactional
 	public int delete(int uflSeq)
 	{
@@ -130,5 +121,19 @@ public class UploadFileListService extends GeneralService
 		}
 
 		return 1;
+	}
+
+	public UploadFileListDto getUploadFileList(int uflSeq)
+	{
+		return CmModelMapperUtils.map(uploadFileListMapper.findUploadFileList(uflSeq), UploadFileListDto.class);
+	}
+
+	public List<UploadFileListDto> getUploadFileLists(int ufSeq, int tSeq)
+	{
+		UploadFileListDto uploadFileList = new UploadFileListDto();
+		uploadFileList.setUfSeq(ufSeq);
+		uploadFileList.setTSeq(tSeq);
+
+		return CmModelMapperUtils.mapAll(uploadFileListMapper.findUploadFileLists(uploadFileList), UploadFileListDto.class);
 	}
 }

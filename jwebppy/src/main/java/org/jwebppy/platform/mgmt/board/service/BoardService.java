@@ -13,23 +13,23 @@ public class BoardService extends PlatformGeneralService
 	@Autowired
 	private BoardMapper boardMapper;
 
-	public BoardDto findBoard(Integer bSeq)
+	public BoardDto getBoard(Integer bSeq)
 	{
 		BoardDto board = new BoardDto();
 		board.setBSeq(bSeq);
 
-		return findBoard(board);
+		return getBoard(board);
 	}
 
-	public BoardDto findBoard(String bId)
+	public BoardDto getBoard(String bId)
 	{
 		BoardDto board = new BoardDto();
 		board.setBId(bId);
 
-		return findBoard(board);
+		return getBoard(board);
 	}
 
-	public BoardDto findBoard(BoardDto board)
+	public BoardDto getBoard(BoardDto board)
 	{
 		return CmModelMapperUtils.map(boardMapper.findBoard(board), BoardDto.class);
 	}

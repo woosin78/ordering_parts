@@ -1,4 +1,4 @@
-package org.jwebppy.platform.mgmt.upload_file.dto;
+package org.jwebppy.platform.mgmt.upload.dto;
 
 import org.jwebppy.platform.core.dto.GeneralDto;
 

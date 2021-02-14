@@ -21,7 +21,7 @@ public class JCoConfig
 {
 	private Logger logger = LoggerFactory.getLogger(JCoConfig.class);
 
-    @Value("sap.jco.is-active")
+    @Value("${sap.jco.is-active}")
     private String isActive;
 
     @Value("${sap.jco.sid}")

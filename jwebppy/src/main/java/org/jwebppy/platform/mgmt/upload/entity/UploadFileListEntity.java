@@ -1,4 +1,4 @@
-package org.jwebppy.platform.mgmt.upload_file.entity;
+package org.jwebppy.platform.mgmt.upload.entity;
 
 import java.util.List;
 

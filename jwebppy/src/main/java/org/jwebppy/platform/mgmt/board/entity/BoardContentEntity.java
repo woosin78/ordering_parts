@@ -21,6 +21,7 @@ public class BoardContentEntity extends GeneralEntity
 	private String textContent;
 	private String viewFrom;
 	private String viewTo;
+	private int views;
+	private String writer;
 	private String fgDelete;
-	private String regName;
 }

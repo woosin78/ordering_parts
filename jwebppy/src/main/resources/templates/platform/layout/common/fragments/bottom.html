@@ -43,38 +43,6 @@ $(window).load(function() {
 
 $(document).ready(function() {
 	$(".ui.bottom_blank").height($(".ui.bottom").height());
-
-	JpUtilsAjax.get({
-		url: JpUiGlobal.url("/platform/mgmt/content/breadcrumb"),
-		data: {"entryPoint" : location.pathname},
-		success: function(response, textStatus, jqXHR)
-		{
-			let result = response.RESULT;
-			
-			if (JpUtilsObject.isNotNull(result))
-			{
-				let breadcrumb = [];
-				breadcrumb.push("<div class='section'>Home</div>");
-				
-				for (let i=result.length-1; i>=0; i--)
-				{
-					breadcrumb.push("<div class='divider'>/</div>");
-					breadcrumb.push("<div class='section");
-					
-					if (i == 0)
-					{
-						breadcrumb.push(" active ");
-					};
-					
-					breadcrumb.push("'>" + result[i].name + "</div>");
-				};
-				
-				$("#AREA_breadcrumb").html(breadcrumb.join(""));				
-			};
-		}
-	});
-
-	$(".ui.dropdown").dropdown();
 });
 
 $(document).ajaxStart(function(event, jqXHR, ajaxOptions) {
