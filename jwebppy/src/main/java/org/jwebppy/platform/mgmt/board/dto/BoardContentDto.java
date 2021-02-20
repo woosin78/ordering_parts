@@ -21,14 +21,17 @@ public class BoardContentDto extends GeneralDto implements IPagination
 
 	private Integer bcSeq;
 	private Integer bSeq;
+	private Integer pSeq;
+	private int sort;
+	private int depth;
 	private Integer uSeq;
 	private String title;
 	private String htmlContent;
 	private String textContent;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
-	private String viewFrom;
+	private String fromView;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
-	private String viewTo;
+	private String toView;
 	private int views;
 	private String writer;
 	private String fgDelete = PlatformCommonVo.NO;

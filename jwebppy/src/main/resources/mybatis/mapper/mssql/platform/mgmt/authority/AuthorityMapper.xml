@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.mgmt.authority.mapper.AuthorityMapper">
+
+	<insert id="insertCItemAuthRl" parameterType="CItemAuthRlEntity" useGeneratedKeys="true" keyProperty="carSeq">
+		insert into pltf_citem_auth_rl (p_seq, c_seq, sort, fg_delete, reg_username, reg_date) values (
+			#{pSeq}, #{cSeq}, #{sort}, #{fgDelete}, #{regUsername}, #{regDate}
+		)
+	</insert>
+
+	<update id="updateFgDeleteOfCItemAuthRl" parameterType="CItemAuthRlEntity">
+		update pltf_citem_auth_rl set fg_delete=#{fgDelete}, mod_username=#{modUsername}, mod_date=#{modDate}
+		where
+		p_seq=#{pSeq}
+	</update>
+
+	<select id="findCItemAuthorities" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		b.*
+		from
+		pltf_citem_auth_rl a,
+		pltf_citem b
+		where
+		a.p_seq=#{cSeq}
+		and a.fg_delete='N'
+		and a.c_seq=b.c_seq
+		and b.fg_delete='N'
+	</select>
+	
+	<select id="findSubRoles" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		b.*
+		from
+		pltf_citem_auth_rl a,
+		pltf_citem b
+		where
+		a.fg_delete='N'
+		and b.fg_visible='Y'
+		and b.fg_delete='N'
+		and a.p_seq=#{pSeq}
+		and a.c_seq=b.c_seq
+		order by b.sort, a.car_seq
+	</select>
+</mapper>

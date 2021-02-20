@@ -34,10 +34,17 @@ public class BoardContentLayoutBuilder
 
 		for (BoardContentDto boardContent : boardContents)
 		{
+			String depth = "";
+
+			if (boardContent.getDepth() > 0)
+			{
+				depth = "<span style='margin-left: " + boardContent.getDepth() + "em'><i class='arrow right icon'></i></span>";
+			}
+
 			Tr tbTr = new Tr();
 			tbTr.addDataKeyCheckboxTd("bcSeq", boardContent.getBcSeq());
 			tbTr.addTextTd(boardContent.getNo());
-			tbTr.addDataKeyLinkTd(XssPreventer.escape(boardContent.getTitle()), boardContent.getBcSeq());
+			tbTr.addDataKeyLinkTd(depth + XssPreventer.escape(boardContent.getTitle()), boardContent.getBcSeq());
 			tbTr.addTextTd(boardContent.getViews());
 			tbTr.addTextTd(boardContent.getWriter());
 			tbTr.addTextTd(boardContent.getDisplayRegDate());

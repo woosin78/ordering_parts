@@ -19,7 +19,7 @@ public class PlatformLayoutBuildUtils
 		textElement.addAttribute("class", "sub header");
 
 		Element labelElement = new Element("div", label);
-		labelElement.addAttribute("class", "ui dividing header render");
+		labelElement.addAttribute("class", "ui dividing header small");
 		labelElement.addElement(textElement);
 
 		return labelElement;

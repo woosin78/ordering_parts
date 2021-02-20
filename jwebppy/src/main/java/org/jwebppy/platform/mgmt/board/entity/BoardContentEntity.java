@@ -15,12 +15,15 @@ public class BoardContentEntity extends GeneralEntity
 
 	private Integer bcSeq;
 	private Integer bSeq;
+	private Integer pSeq;
+	private int sort;
+	private int depth;
 	private Integer uSeq;
 	private String title;
 	private String htmlContent;
 	private String textContent;
-	private String viewFrom;
-	private String viewTo;
+	private String fromView;
+	private String toView;
 	private int views;
 	private String writer;
 	private String fgDelete;

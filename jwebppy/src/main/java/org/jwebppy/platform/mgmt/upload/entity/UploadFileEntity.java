@@ -14,9 +14,10 @@ public class UploadFileEntity extends GeneralEntity
 	private static final long serialVersionUID = -770355399257314505L;
 
 	private Integer ufSeq;
-	private Integer tSeq;
 	private String description;
 	private long maxFileSize;
 	private String path;
+	private String exExtension;
+	private String inExtension;
 	private String fgDelete;
 }

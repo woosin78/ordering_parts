@@ -14,9 +14,10 @@ public class UploadFileDto extends GeneralDto
 	private static final long serialVersionUID = 2354731635588102842L;
 
 	private Integer ufSeq;
-	private Integer tSeq;
 	private String description;
-	private long maxFileSize;
+	private long maxFileSize = 0l;
 	private String path;
+	private String exExtension;
+	private String inExtension;
 	private String fgDelete;
 }

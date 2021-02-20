@@ -3,7 +3,7 @@ let DOCUMENT_ELEMENTS_SIZE = "small";
 let JpUiGlobal = {
 	changeSizeOfElement: function()
 	{
-		$(".render, .ui.breadcrumb, .ui.button, .ui.form, .ui.input, .ui.table, .ui.segment, .ui.tab, .ui.menu, .ui.dropdown").not(".pagination, .right_shortcut_menu").addClass(DOCUMENT_ELEMENTS_SIZE);
+		//$(".render, .ui.breadcrumb, .ui.button, .ui.form, .ui.input, .ui.table, .ui.segment, .ui.tab, .ui.menu, .ui.dropdown").not(".pagination, .right_shortcut_menu").addClass(DOCUMENT_ELEMENTS_SIZE);		
 	},
 	showEmptyMessage: function()
 	{

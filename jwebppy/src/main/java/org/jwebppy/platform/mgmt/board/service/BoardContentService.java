@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.board.dto.BoardContentDto;
@@ -29,7 +31,6 @@ public class BoardContentService extends MgmtGeneralService
 	@Autowired
 	private UploadFileListService uploadFileListService;
 
-	@Transactional
 	public int save(BoardContentDto boardContent) throws IOException
 	{
 		if (boardContent.getBcSeq() == null)
@@ -42,6 +43,7 @@ public class BoardContentService extends MgmtGeneralService
 		}
 	}
 
+	@Transactional
 	public int create(BoardContentDto boardContent) throws IOException
 	{
 		BoardDto board = boardService.getBoard(boardContent.getBSeq());
@@ -58,6 +60,14 @@ public class BoardContentService extends MgmtGeneralService
 
 		boardContentMapper.insert(boardContentEntity);
 
+		if (CmStringUtils.equals(board.getFgUseReply(), PlatformCommonVo.YES))
+		{
+			if (boardContent.getPSeq() != null)
+			{
+				boardContentMapper.updateForReply(boardContent.getPSeq());
+			}
+		}
+
 		int bcSeq = boardContentEntity.getBcSeq();
 
 		uploadFileListService.save(board.getUfSeq(), bcSeq, boardContent.getFiles());
@@ -65,6 +75,7 @@ public class BoardContentService extends MgmtGeneralService
 		return bcSeq;
 	}
 
+	@Transactional
 	public int modify(BoardContentDto boardContent) throws IOException
 	{
 		if (boardContentMapper.update(CmModelMapperUtils.map(boardContent, BoardContentEntity.class)) > 0)

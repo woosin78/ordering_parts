@@ -2,6 +2,14 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<style>
+		body {
+		    margin: 0;
+		    padding: 0;
+		}		
+		</style>
+	</head>
 <body>
 <div th:utext="${boardContent.htmlContent}"></div>
 </body>
@@ -9,8 +17,6 @@
 function resize()
 {
 	parent.resizeViewer(document.body.scrollHeight);
-	
-	console.log("offsetHeight:" + document.body.offsetHeight + ", scrollHeight:" + document.body.scrollHeight);
 };
 
 setInterval("resize()", 1000);

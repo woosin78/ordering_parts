@@ -2,8 +2,6 @@ package org.jwebppy.platform.mgmt.content.web;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +20,6 @@ import org.jwebppy.platform.mgmt.content.dto.CItemComponentDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemLangRlDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
-import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.content.service.ContentLangService;
 import org.jwebppy.platform.mgmt.content.service.ContentService;
@@ -200,20 +197,22 @@ public class ContentController extends ContentGeneralController
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setName(value.toUpperCase());
-		cItemSearch.setFgDelete(PlatformCommonVo.NO);
 
-		CItemDto cItem = contentService.getCItem(cItemSearch);
+		List<CItemDto> cItems = contentService.getCItems(cItemSearch);
 
-		if (cItem == null)
+		if (CollectionUtils.isEmpty(cItems))
 		{
 			return EMPTY_RETURN_VALUE;
 		}
 
 		if (cSeq != null)
 		{
-			if (cSeq.equals(cItem.getCSeq()))
+			for (CItemDto cItem: cItems)
 			{
-				return EMPTY_RETURN_VALUE;
+				if (cSeq.equals(cItem.getCSeq()))
+				{
+					return EMPTY_RETURN_VALUE;
+				}
 			}
 		}
 
@@ -268,6 +267,7 @@ public class ContentController extends ContentGeneralController
 		return cItems;
 	}
 
+	/*
 	@GetMapping("/breadcrumb")
 	@ResponseBody
 	public Object breadcrumb(CItemSearchDto cItemSearch)
@@ -344,6 +344,7 @@ public class ContentController extends ContentGeneralController
 
 		return false;
 	}
+	*/
 
 	private List<CItemComponentDto> getComponents()
 	{

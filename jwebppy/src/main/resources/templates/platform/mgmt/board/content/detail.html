@@ -19,24 +19,43 @@
 </div>
 <div class="ui segment">
 	<form id="FORM_view" class="ui form" action="/platform/mgmt/board/content/list">
-	<input type="hidden" id="bcSeq" name="bcSeq" th:value="${bcSeq}"/>	
+	<div class="ui header" th:text="${boardContent.title}"></div>
+	<p><span th:text="${boardContent.writer}"></span> <strong>|</strong> <span th:text="${boardContent.displayRegDate}"></span> <strong>|</strong> Views: <span th:text="${boardContent.views}"></span></p>	
+	<div class="ui divider"></div>
+	<iframe id="content" th:src="@{/platform/mgmt/board/content/viewer?bcSeq=} + ${bcSeq}" style="width:100%; height:0px; border: none; margin: 0; padding: 0;"></iframe>
+	
+	<th:block th:if="${board.fgSetPeriod == T(org.jwebppy.platform.core.PlatformCommonVo).YES}">	
+	<div class="ui divider"></div>
+	<div class="ui two column grid">
+		<div class="column">
+			<div class="ui header render">View From
+				<div class="sub header" th:text="${boardContent.fromView}"></div>
+			</div>
+		</div>
+		<div class="column">
+			<div class="ui header render">View To
+				<div class="sub header" th:text="${boardContent.toView}"></div>
+			</div>		
+		</div>
+	</div>
+	</th:block>	
+	
+	<div id="AREA_attachment" th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}">
+		<div class="ui divider"></div>
+		<div class="ui one column grid">
+			<div class="column">
+				<div id="attachedFiles" class="ui relaxed divided list"></div>			
+			</div>
+		</div>	
+	</div>
+	<input type="hidden" id="bcSeq" name="bcSeq" th:value="${bcSeq}"/>
+	<input type="hidden" id="pSeq" name="pSeq" th:value="${pSeq}"/>	
 	<input type="hidden" name="type" th:value="${type}"/>
 	<input type="hidden" name="query" th:value="${query}"/>
 	<input type="hidden" name="fromDate" th:value="${fromDate}"/>
 	<input type="hidden" name="toDate" th:value="${toDate}"/>
 	<input type="hidden" name="pageNumber" th:value="${pageNumber}"/>
-	<input type="hidden" name="rowPerPage" th:value="${rowPerPage}"/>
-	<div th:text="${boardContent.title}"></div>	
-	<div class="ui divider"></div>
-	<iframe id="content" th:src="@{/platform/mgmt/board/content/viewer?bcSeq=} + ${bcSeq}" style="width:100%; height:0px; border: none;"></iframe>
-	<th:block th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}">
-		<div class="ui divider"></div>
-		<div class="ui one column stackable grid">
-			<div class="column">
-				<div id="attachedFiles" class="ui relaxed divided list"></div>			
-			</div>
-		</div>	
-	</th:block>
+	<input type="hidden" name="rowPerPage" th:value="${rowPerPage}"/>	
 	</form>
 </div>
 <div class="field">
@@ -60,8 +79,7 @@ $(document).ready(function() {
 					addFile(item.fullOriginName, item.size, item.uflSeq, item.downloadKey)	
 				});
 				
-				$("a[downloadKey]").on("click", function() {
-					
+				$("a[downloadKey]").on("click", function() {					
 					let downloadKey = $(this).attr("downloadKey");
 					
 					$.fileDownload("/platform/mgmt/download", {
@@ -74,17 +92,27 @@ $(document).ready(function() {
 						{
 							return false;
 						}	
-					});					
-					
+					});
 				});
+			}
+			else
+			{
+				$("#AREA_attachment").hide();
 			};
 		}	
+	});	
+
+	$(".BTN_reply").on("click", function() {
+		$("#pSeq").val($("#bcSeq").val());
+		$("#bcSeq").val("");
+		$("#FORM_view").attr("action", "/platform/mgmt/board/content/write");
+		$("#FORM_view")[0].submit();
 	});	
 	
 	$(".BTN_modify").on("click", function() {
 		$("#FORM_view").attr("action", "/platform/mgmt/board/content/write");
 		$("#FORM_view")[0].submit();
-	});	
+	});
 
 	$(".BTN_delete").on("click", function() {
 		if (confirm("Do you want delete it?"))

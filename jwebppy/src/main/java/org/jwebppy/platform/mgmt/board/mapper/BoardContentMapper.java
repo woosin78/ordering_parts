@@ -9,8 +9,9 @@ public interface BoardContentMapper
 {
 	public int insert(BoardContentEntity boardContent);
 	public int update(BoardContentEntity boardContent);
-	public int updatePlusViews(int bcSeq);
+	public int updatePlusViews(Integer bcSeq);
+	public int updateForReply(Integer pSeq);
 	public int delete(BoardContentEntity boardContent);
-	public BoardContentEntity findBoardContent(int bcSeq);
+	public BoardContentEntity findBoardContent(Integer bcSeq);
 	public List<BoardContentEntity> findPageableBoardContents(BoardContentSearchDto boardContentSearch);
 }

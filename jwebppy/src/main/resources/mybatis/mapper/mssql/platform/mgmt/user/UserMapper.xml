@@ -65,8 +65,13 @@
 	</update>
 	
 	<update id="updateUserAccount" parameterType="UserAccountEntity">
-		update pltf_user_account set
-			password=if(#{password} is null or #{password} = '', password, #{password}),
+		update pltf_user_account set			
+			password=(
+				case
+				when isnull(#{password}, '') = '' then password
+				else #{password}
+				end			
+			),
 			fg_account_locked=#{fgAccountLocked},
 			fg_password_locked=#{fgPasswordLocked},
 			fg_no_use_password=#{fgNoUsePassword},

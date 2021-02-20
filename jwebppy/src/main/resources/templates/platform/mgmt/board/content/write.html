@@ -19,6 +19,7 @@
 	<form id="FORM_write" class="ui form" method="post" enctype="multipart/form-data">
 	<input type="hidden" id="bSeq" name="bSeq" th:value="${board.bSeq}"/>
 	<input type="hidden" id="bcSeq" name="bcSeq" th:value="${bcSeq}"/>
+	<input type="hidden" id="pSeq" name="pSeq" th:value="${pSeq}"/>
 	<input type="hidden" name="type" th:value="${type}"/>
 	<input type="hidden" name="query" th:value="${query}"/>
 	<input type="hidden" name="fromDate" th:value="${fromDate}"/>
@@ -33,22 +34,42 @@
 	</div>	
 	<div class="ui divider"></div>	
 	<textarea id="editor"></textarea>
+
+	<th:block th:if="${board.fgSetPeriod == T(org.jwebppy.platform.core.PlatformCommonVo).YES}">	
+	<div class="ui divider"></div>
+	<div class="fields">		
+		<div class="six wide field">
+			<label>Visible From</label>
+			<div class="ui calendar">
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromView" name="fromView" placeholder="From Date"/></div>
+			</div>				
+		</div>
+		<div class="six wide field">
+			<label>Visible To</label>
+			<div class="ui calendar">
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toView" name="toView" placeholder="To Date"/></div>
+			</div>				
+		</div>
+	</div>
+	</th:block>
+	
+	<th:block th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}">
+	<div class="ui divider"></div>
+	<div class="ui one column grid">
+		<div class="column">
+			<div id="BTN_searchFile" class="ui button teal"><i class="paperclip icon"></i> File</div>
+			<div id="BTN_deleteFile" class="ui button teal"><i class="minus icon"></i> Delete</div>
+		</div>
+	</div>
+	<div class="ui divider"></div>
 	<div class="ui segment">
 		<div class="ui one column grid">
 			<div class="column">
-				<div id="BTN_searchFile" class="ui button teal"><i class="paperclip icon"></i> File</div>
-				<div id="BTN_deleteFile" class="ui button teal"><i class="minus icon"></i> Delete</div>
+				<div id="attachedFiles" class="ui relaxed divided list"></div>			
 			</div>
 		</div>
-		<th:block th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}">
-			<div class="ui divider"></div>
-			<div class="ui one column stackable grid">
-				<div class="column">
-					<div id="attachedFiles" class="ui relaxed divided list"></div>			
-				</div>
-			</div>
-		</th:block>
 	</div>
+	</th:block>
 	</form>
 </div>
 <div class="field">
@@ -85,6 +106,8 @@ $(document).ready(function() {
 					$("#title").val(result.title);
 					$("#htmlContent").val(result.htmlContent);
 					$("#textContent").val(result.textContent);
+					$("#fromView").val(result.fromView);
+					$("#toView").val(result.toView);
 					
 					tinymce.get("editor").setContent(result.htmlContent);
 				}
@@ -112,6 +135,8 @@ $(document).ready(function() {
 				});				
 			};
 		};
+		
+		JpUiCalendar.datetimeCalendar($("#fromView"), $("#toView"));
 	});
 
 	$("#FORM_write").form({
@@ -167,7 +192,7 @@ $(document).ready(function() {
 			url = "/platform/mgmt/board/content/detail";
 		};
 		
-		$("#FORM_write").attr("action", url);
+		$("#FORM_write").attr("action", url).attr("method", "get");
 		$("#FORM_write")[0].submit(); 
 	});	
 	

@@ -4,22 +4,23 @@
 <mapper namespace="PaginationMapper">
 	<sql id="header">
 select
-sql_calc_found_rows yyy.*,
-found_rows() total_count
+zzz.*
 from
 (
 	select
-	row_number() over(order by ${orderBy}) rnum,
+	yyy.*,
+	count(*) over () as total_count,
+	row_number() over (order by ${orderBy}) rnum,
 	#{pageNumber} page_number,
-	#{rowPerPage} row_per_page,
-	xxx.*
+	#{rowPerPage} row_per_page
 	from
 	(
 	</sql>
 
 	<sql id="footer">
-    ) xxx
-) yyy
-limit #{startRow}, #{rowPerPage}
+	) yyy
+) zzz
+where
+rnum <![CDATA[>]]> (#{pageNumber} - #{rowPerPage}) * 10 and rnum <![CDATA[<=]]> (#{pageNumber} * #{rowPerPage})
 	</sql>
 </mapper>

@@ -234,7 +234,6 @@ public class UserService extends GeneralService
 
 				UserEntity user = new UserEntity();
 				user.setUSeq(uSeq);
-				user.setFgDelete(PlatformCommonVo.YES);
 
 				if (userMapper.delete(user) > 0)
 				{

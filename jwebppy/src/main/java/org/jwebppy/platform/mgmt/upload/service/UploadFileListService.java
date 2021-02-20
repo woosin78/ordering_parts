@@ -100,6 +100,16 @@ public class UploadFileListService extends GeneralService
 		return false;
 	}
 
+	public boolean isValidExtension(List<MultipartFile> files, UploadFileDto uploadFile)
+	{
+		if (CollectionUtils.isNotEmpty(files) && files.size() > 0)
+		{
+			String exExtension = uploadFile.getExExtension();
+		}
+
+		return false;
+	}
+
 	@Transactional
 	public int delete(int uflSeq)
 	{

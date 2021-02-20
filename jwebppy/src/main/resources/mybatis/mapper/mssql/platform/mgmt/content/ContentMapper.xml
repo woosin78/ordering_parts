@@ -95,7 +95,7 @@
 		where
 		a.c_seq=b.c_seq
 		and a.fg_delete='N'		
-		and a.from_valid <![CDATA[<]]> now() and a.to_valid <![CDATA[>=]]> now()
+		and a.from_valid <![CDATA[<]]> getdate() and a.to_valid <![CDATA[>=]]> getdate()
 		and b.fg_delete='N'
 		
 		<!-- OGNL(Object Graph Navigation Language) 의 문제로 toString() 추가 -->
@@ -168,7 +168,7 @@
 		
 	    <if test='fgVisible == "Y"'>
 	    	and a.fg_visible='Y'
-	    	and a.from_valid <![CDATA[<]]> now() and a.to_valid <![CDATA[>=]]> now()
+	    	and a.from_valid <![CDATA[<]]> getdate() and a.to_valid <![CDATA[>=]]> getdate()
 	    </if>
 	    
 	    order by a.sort, a.c_seq
