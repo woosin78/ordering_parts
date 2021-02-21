@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 @Service
+@Transactional
 public class ContentLangService extends GeneralService
 {
 	@Autowired
 	private ContentMapper contentMapper;
 
-	@Transactional
 	public int save(CItemLangRlDto cItemLangRl)
 	{
 		if (CollectionUtils.isEmpty(getLangs(cItemLangRl)))

@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserService extends GeneralService
 {
 	@Autowired
@@ -74,7 +75,6 @@ public class UserService extends GeneralService
 		return userMapper.insertUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
 	}
 
-	@Transactional
 	public int createUserByCopy(Map<String, String> paramMap)
 	{
 		Integer sourceUSeq = new Integer(paramMap.get("uSeq"));
@@ -189,7 +189,6 @@ public class UserService extends GeneralService
 		return 0;
 	}
 
-	@Transactional
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int lockUserAccount(List<Integer> uSeqs, String fgAccountLocked)
 	{
@@ -217,7 +216,6 @@ public class UserService extends GeneralService
 		return 0;
 	}
 
-	@Transactional
 	@CacheEvict(value = CacheConfig.USER, allEntries = true)
 	public int delete(List<Integer> uSeqs)
 	{
@@ -247,7 +245,6 @@ public class UserService extends GeneralService
 		return 0;
 	}
 
-	@Transactional
 	@CacheEvict(value = CacheConfig.USER, key = "#user.uSeq", condition="#user.uSeq != null")
 	public int saveUser(UserDto user)
 	{
@@ -261,7 +258,6 @@ public class UserService extends GeneralService
 		}
 	}
 
-	@Transactional
 	@CacheEvict(value = CacheConfig.USER, key = "#userAccount.uSeq")
 	public int saveUserAccount(UserAccountDto userAccount)
 	{
@@ -277,7 +273,6 @@ public class UserService extends GeneralService
 		}
 	}
 
-	@Transactional
 	@CacheEvict(value = CacheConfig.USER, key = "#userContactInfo.uSeq")
 	public int saveUserContactInfo(UserContactInfoDto userContactInfo)
 	{

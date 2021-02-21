@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class LogoutHistoryService extends PlatformGeneralService
 {
 	@Autowired
 	private LogoutHistoryMapper logoutHistoryMapper;
 
-	@Transactional
 	public int createLogoutHistory(LogoutHistoryDto logoutHistory)
 	{
 		LogoutHistoryEntity logoutHistoryEntity = CmModelMapperUtils.map(logoutHistory, LogoutHistoryEntity.class);

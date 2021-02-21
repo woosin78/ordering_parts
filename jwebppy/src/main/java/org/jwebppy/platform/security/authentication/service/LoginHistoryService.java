@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class LoginHistoryService extends GeneralService
 {
 	@Autowired
@@ -30,7 +31,6 @@ public class LoginHistoryService extends GeneralService
 		return createLoginHistory(request, fgLoginResult, null);
 	}
 
-	@Transactional
 	public int createLoginHistory(HttpServletRequest request, String fgLoginResult, String fgAccountLocked)
 	{
 		LoginHistoryEntity loginHistory = new LoginHistoryEntity();

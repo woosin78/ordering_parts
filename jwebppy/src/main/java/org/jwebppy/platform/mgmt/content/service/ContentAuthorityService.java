@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ContentAuthorityService extends GeneralService
 {
 	@Autowired
@@ -37,7 +38,6 @@ public class ContentAuthorityService extends GeneralService
 	private LangService langService;
 
 	//현재 가지고 있는 권한을 모두 삭제 한 후 부여
-	@Transactional
 	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int save(CItemUserRlDto cItemUserRl)
 	{
@@ -70,7 +70,6 @@ public class ContentAuthorityService extends GeneralService
 		return 0;
 	}
 
-	@Transactional
 	public int saveByCItemName(CItemUserRlDto cItemUserRl)
 	{
 		Integer uSeq = cItemUserRl.getUSeq();

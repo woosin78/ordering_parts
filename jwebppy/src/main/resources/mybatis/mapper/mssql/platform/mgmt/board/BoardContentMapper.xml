@@ -24,10 +24,6 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="BoardContentEntity" useGeneratedKeys="true" keyProperty="bcSeq">
-		<selectKey keyProperty="bcSeq" resultType="Integer" order="BEFORE">
-			select auto_increment from information_schema.tables where table_name='pltf_board_content' and table_schema=DATABASE()
-		</selectKey>
-			
 		insert into pltf_board_content (b_seq, p_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, fg_delete, reg_username, reg_date) values (
 			#{bSeq}, isnull(#{pSeq}, #{bcSeq}), 0, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, 'N', #{regUsername}, #{regDate}
 		)
@@ -44,6 +40,10 @@
 			mod_date=#{modDate}				
 		where
 			bc_seq=#{bcSeq}
+	</update>
+
+	<update id="updatePSeq" parameterType="BoardContentEntity">
+		update pltf_board_content set p_seq=#{pSeq} where bc_seq=#{bcSeq}
 	</update>
 	
 	<update id="updatePlusViews">

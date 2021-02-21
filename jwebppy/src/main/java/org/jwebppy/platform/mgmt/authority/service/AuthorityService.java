@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class AuthorityService
 {
 	@Autowired
@@ -31,7 +32,6 @@ public class AuthorityService
 	}
 
 	//현재 가지고 있는 권한을 모두 삭제 한 후 부여
-	@Transactional
 	public int save(CItemAuthRlDto cItemAuthRl)
 	{
 		Integer pSeq = cItemAuthRl.getPSeq();

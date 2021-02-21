@@ -104,14 +104,22 @@
 			<version>3.11.0</version>
 		</dependency>
 
-		<!-- Mariadb -->
+		<!-- JDBC Driver-Mariadb -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 		</dependency>
-		<!-- Mariadb -->
+		<!-- JDBC Driver-Mariadb -->
 		
-		<!-- Redis's connection pool -->
+		<!-- JDBC Driver-MSSQL -->
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- JDBC Driver-MSSQL -->		
+		
+		<!-- Redis's Connection Pool -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-pool2</artifactId>
@@ -161,11 +169,6 @@
 			<version>2.0.0</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>mssql-jdbc</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 	</dependencies>
 
 	<build>

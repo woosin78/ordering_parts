@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class ContentService extends GeneralService
 {
 	@Autowired
@@ -36,7 +37,6 @@ public class ContentService extends GeneralService
 	@Autowired
 	private LangService langService;
 
-	@Transactional
 	public int create(CItemDto cItem)
 	{
 		CItemEntity cItemEntity = CmModelMapperUtils.map(cItem, CItemEntity.class);
@@ -46,13 +46,11 @@ public class ContentService extends GeneralService
 		return cItemEntity.getCSeq();
 	}
 
-	@Transactional
 	public int modify(CItemDto cItem)
 	{
 		return contentMapper.update(CmModelMapperUtils.map(cItem, CItemEntity.class));
 	}
 
-	@Transactional
 	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int save(CItemDto cItem)
 	{
@@ -66,7 +64,6 @@ public class ContentService extends GeneralService
 		}
 	}
 
-	@Transactional
 	public int delete(List<Integer> cSeqs)
 	{
 		if (CollectionUtils.isNotEmpty(cSeqs))
@@ -85,7 +82,6 @@ public class ContentService extends GeneralService
 		return 1;
 	}
 
-	@Transactional
 	public int delete(Integer cSeq)
 	{
 		CItemDto cItem = getCItem(cSeq);
@@ -137,7 +133,6 @@ public class ContentService extends GeneralService
 		}
 	}
 
-	@Transactional
 	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int copy(Integer cSeq, Integer pSeq, String fgCopyWithSubItems)
 	{
@@ -198,7 +193,6 @@ public class ContentService extends GeneralService
 		return create(cItem);
 	}
 
-	@Transactional
 	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int move(Integer cSeq, Integer pSeq)
 	{

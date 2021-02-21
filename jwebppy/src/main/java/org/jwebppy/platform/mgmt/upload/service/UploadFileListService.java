@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.tomcat.util.http.fileupload.InvalidFileNameException;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
@@ -23,10 +24,14 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Transactional
 public class UploadFileListService extends GeneralService
 {
     @Value("${file.upload.rootPath}")
     private String rootPath;
+
+    @Value("${file.upload.invalidExtension}")
+    private String invalidExtension;
 
     @Autowired
     private UploadFileService uploadFileService;
@@ -34,24 +39,31 @@ public class UploadFileListService extends GeneralService
     @Autowired
     private UploadFileListMapper uploadFileListMapper;
 
-	public int save(Integer ufSeq, Integer tSeq, List<MultipartFile> files) throws IOException
+	public int save(Integer ufSeq, Integer tSeq, List<MultipartFile> multipartFiles) throws IOException
 	{
 		UploadFileDto uploadFile = uploadFileService.getUploadFile(ufSeq);
 
 		if (uploadFile != null)
 		{
-			if (isExceedMaxUploadSize(files, uploadFile.getMaxFileSize()))
+			if (isExceedMaxUploadSize(multipartFiles, uploadFile.getMaxFileSize()))
 			{
 				throw new MaxUploadSizeExceededException(uploadFile.getMaxFileSize());
+			}
+
+			String validCheckResult = checkValidExtension(multipartFiles, uploadFile);
+
+			if (validCheckResult != null)
+			{
+				throw new InvalidFileNameException(validCheckResult, "Invalid File Extension[" + validCheckResult + "]");
 			}
 
 			String path = uploadFile.getPath();
 
 			FileUtils.forceMkdir(new File(rootPath + File.separator + path));
 
-			for (MultipartFile file: files)
+			for (MultipartFile multipartFile: multipartFiles)
 			{
-				String originFilename = file.getOriginalFilename();
+				String originFilename = multipartFile.getOriginalFilename();
 
 				if (CmStringUtils.isEmpty(originFilename))
 				{
@@ -60,7 +72,7 @@ public class UploadFileListService extends GeneralService
 
 				String savedName = uploadFile.getUfSeq().toString() + "_" + System.nanoTime();
 
-				file.transferTo(new File(rootPath + File.separator + path + File.separator + savedName));
+				multipartFile.transferTo(new File(rootPath + File.separator + path + File.separator + savedName));
 
 				UploadFileListDto uploadFileList = new UploadFileListDto();
 				uploadFileList.setUfSeq(ufSeq);
@@ -68,7 +80,7 @@ public class UploadFileListService extends GeneralService
 				uploadFileList.setOriginName(FilenameUtils.getBaseName(originFilename));
 				uploadFileList.setSavedName(FilenameUtils.getBaseName(savedName));
 				uploadFileList.setExtension(FilenameUtils.getExtension(originFilename).toLowerCase());
-				uploadFileList.setSize(file.getSize());
+				uploadFileList.setSize(multipartFile.getSize());
 				uploadFileList.setFgDelete(PlatformCommonVo.NO);
 
 				uploadFileListMapper.insert(CmModelMapperUtils.map(uploadFileList, UploadFileListEntity.class));
@@ -80,15 +92,15 @@ public class UploadFileListService extends GeneralService
 		return 0;
 	}
 
-	public boolean isExceedMaxUploadSize(List<MultipartFile> files, long limit)
+	public boolean isExceedMaxUploadSize(List<MultipartFile> multipartFiles, long limit)
 	{
-		if (CollectionUtils.isNotEmpty(files) && files.size() > 0)
+		if (CollectionUtils.isNotEmpty(multipartFiles) && multipartFiles.size() > 0)
 		{
 			long amount = 0;
 
-			for (MultipartFile file: files)
+			for (MultipartFile multipartFile: multipartFiles)
 			{
-				amount += file.getSize();
+				amount += multipartFile.getSize();
 			}
 
 			if (amount > limit)
@@ -100,17 +112,58 @@ public class UploadFileListService extends GeneralService
 		return false;
 	}
 
-	public boolean isValidExtension(List<MultipartFile> files, UploadFileDto uploadFile)
+	public String checkValidExtension(List<MultipartFile> multipartFiles, UploadFileDto uploadFile)
 	{
-		if (CollectionUtils.isNotEmpty(files) && files.size() > 0)
+		if (CollectionUtils.isNotEmpty(multipartFiles))
 		{
-			String exExtension = uploadFile.getExExtension();
+			String exExtension = CmStringUtils.defaultIfEmpty(invalidExtension, uploadFile.getExExtension());
+
+			if (CmStringUtils.isNotEmpty(exExtension))
+			{
+				for (MultipartFile multipartFile: multipartFiles)
+				{
+					String originName = multipartFile.getOriginalFilename();
+
+					if (CmStringUtils.isEmpty(originName))
+					{
+						continue;
+					}
+
+					String extension = FilenameUtils.getExtension(originName);
+
+					if (CmStringUtils.containsIgnoreCase(exExtension, extension))
+					{
+						return originName;
+					}
+				}
+			}
+
+			String inExtension = uploadFile.getInExtension();
+
+			if (CmStringUtils.isNotEmpty(inExtension))
+			{
+				for (MultipartFile multipartFile: multipartFiles)
+				{
+					String originName = multipartFile.getOriginalFilename();
+
+					if (CmStringUtils.isEmpty(originName))
+					{
+						continue;
+					}
+
+					String extension = FilenameUtils.getExtension(originName);
+
+					if (!CmStringUtils.containsIgnoreCase(inExtension, extension))
+					{
+						return originName;
+					}
+				}
+			}
 		}
 
-		return false;
+		return null;
 	}
 
-	@Transactional
 	public int delete(int uflSeq)
 	{
 		UploadFileListEntity uploadfileList = new UploadFileListEntity();
@@ -119,7 +172,6 @@ public class UploadFileListService extends GeneralService
 		return uploadFileListMapper.delete(uploadfileList);
 	}
 
-	@Transactional
 	public int delete(List<Integer> uflSeqs)
 	{
 		if (CollectionUtils.isNotEmpty(uflSeqs))

@@ -16,7 +16,7 @@
 	<div class="ui button BTN_back"><i class="arrow left icon"></i> Back</div>
 </div>
 <div class="ui segment">
-	<form id="FORM_write" class="ui form" method="post" enctype="multipart/form-data">
+	<form id="FORM_write" class="ui form" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
 	<input type="hidden" id="bSeq" name="bSeq" th:value="${board.bSeq}"/>
 	<input type="hidden" id="bcSeq" name="bcSeq" th:value="${bcSeq}"/>
 	<input type="hidden" id="pSeq" name="pSeq" th:value="${pSeq}"/>

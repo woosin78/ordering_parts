@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class BoardContentService extends MgmtGeneralService
 {
 	@Autowired
@@ -43,7 +44,6 @@ public class BoardContentService extends MgmtGeneralService
 		}
 	}
 
-	@Transactional
 	public int create(BoardContentDto boardContent) throws IOException
 	{
 		BoardDto board = boardService.getBoard(boardContent.getBSeq());
@@ -60,22 +60,25 @@ public class BoardContentService extends MgmtGeneralService
 
 		boardContentMapper.insert(boardContentEntity);
 
+		Integer bcSeq = boardContentEntity.getBcSeq();
+		Integer pSeq = boardContent.getPSeq();
+
+		boardContentEntity.setPSeq( (pSeq == null) ? bcSeq : pSeq );
+		boardContentMapper.updatePSeq(boardContentEntity);
+
 		if (CmStringUtils.equals(board.getFgUseReply(), PlatformCommonVo.YES))
 		{
-			if (boardContent.getPSeq() != null)
+			if (pSeq != null)
 			{
-				boardContentMapper.updateForReply(boardContent.getPSeq());
+				boardContentMapper.updateForReply(pSeq);
 			}
 		}
-
-		int bcSeq = boardContentEntity.getBcSeq();
 
 		uploadFileListService.save(board.getUfSeq(), bcSeq, boardContent.getFiles());
 
 		return bcSeq;
 	}
 
-	@Transactional
 	public int modify(BoardContentDto boardContent) throws IOException
 	{
 		if (boardContentMapper.update(CmModelMapperUtils.map(boardContent, BoardContentEntity.class)) > 0)
@@ -111,15 +114,12 @@ public class BoardContentService extends MgmtGeneralService
 		boardContentMapper.updatePlusViews(bcSeq);
 	}
 
-	@Transactional
 	public int delete(List<Integer> bcSeqs)
 	{
 		if (CollectionUtils.isNotEmpty(bcSeqs))
 		{
 			for (Integer bcSeq: bcSeqs)
 			{
-				System.err.println(bcSeq);
-
 				if (bcSeq != null)
 				{
 					BoardContentEntity boardContent = new BoardContentEntity();

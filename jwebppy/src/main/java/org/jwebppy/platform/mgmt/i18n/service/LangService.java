@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class LangService extends MgmtGeneralService
 {
 	@Autowired
@@ -38,7 +39,6 @@ public class LangService extends MgmtGeneralService
 	@Autowired
 	private LangMapper langMapper;
 
-	@Transactional
 	@Caching(
 			evict = {
 					@CacheEvict (value = CacheConfig.LANG, allEntries = true),
@@ -92,7 +92,6 @@ public class LangService extends MgmtGeneralService
 		return lSeq;
 	}
 
-	@Transactional
 	@CacheEvict (value = CacheConfig.LANG, allEntries = true)
 	public int delete(LangDto lang)
 	{

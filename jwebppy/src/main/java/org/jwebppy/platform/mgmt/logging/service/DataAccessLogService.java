@@ -19,12 +19,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class DataAccessLogService extends GeneralService
 {
 	@Autowired
 	private DataAccessLogMapper dataAccessLogMapper;
 
-	@Transactional
 	@Async("threadPoolTaskExecutor")
 	public void writeLog(DataAccessLogDto dataAccessLog)
 	{
