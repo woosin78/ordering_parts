@@ -1,5 +1,6 @@
 package org.jwebppy;
 
+import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
@@ -19,6 +20,7 @@ import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHtt
 @EnableJdbcHttpSession
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true) //스프링 시큐리티의 메소드 어노테이션 기반 시큐리티를 활성화 하기 위해서 필요
+@EnableBatchProcessing
 public class JwebppyApplication
 {
 	public static void main(String[] args)

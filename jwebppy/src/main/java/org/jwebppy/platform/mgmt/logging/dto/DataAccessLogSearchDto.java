@@ -19,7 +19,7 @@ public class DataAccessLogSearchDto extends GeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -725671527598308026L;
 
-	private Integer dlSeq;
+	private Long dlSeq;
 	private String type;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime fromDate;

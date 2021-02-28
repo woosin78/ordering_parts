@@ -69,7 +69,7 @@ public class JdbcStatementInterceptor implements Interceptor
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 
 		DataAccessLogDto dataAccessLog = new DataAccessLogDto();
-		dataAccessLog.setCommand(boundSql.getSql());
+		dataAccessLog.setCommand(CmStringUtils.trim(boundSql.getSql()));
 		dataAccessLog.setType("J");
 		dataAccessLog.setStartTime(stopWatch.getStartTime());
 		dataAccessLog.setElapsed(stopWatch.getNanoTime());

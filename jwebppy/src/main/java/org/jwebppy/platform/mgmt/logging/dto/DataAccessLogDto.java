@@ -21,7 +21,7 @@ public class DataAccessLogDto extends GeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -3252178705437302180L;
 
-	private long dlSeq;
+	private Long dlSeq;
 	private String type;
 	private String command;
 	private String className;
