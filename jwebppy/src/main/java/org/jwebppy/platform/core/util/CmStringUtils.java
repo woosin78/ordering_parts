@@ -84,11 +84,6 @@ public class CmStringUtils extends StringUtils
 		return leftPad(defaultString(obj), size, padStr);
 	}
 
-	public static String toHtml(String str)
-	{
-		return trimToEmpty(str).replaceAll(" ", "&nbsp;").replaceAll("\\n", "<br/>");
-	}
-
 	public static int indexOfIgnoreCaseAndEmpty(final CharSequence str1, final CharSequence str2)
 	{
 		if (isEmpty(str1) || isEmpty(str2))

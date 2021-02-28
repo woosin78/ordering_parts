@@ -10,6 +10,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
 import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
@@ -83,13 +84,13 @@ public class UserLayoutBuilder
 	public static Document getGeneralInfo(UserDto user)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Last Name", CmStringUtils.trimToEmpty(user.getLastName()));
-		elementMap.put("First Name", CmStringUtils.trimToEmpty(user.getFirstName()));
-		elementMap.put("Company", CmStringUtils.trimToEmpty(user.getCompany()));
-		elementMap.put("Organization", CmStringUtils.trimToEmpty(user.getOrganization()));
-		elementMap.put("Position", CmStringUtils.trimToEmpty(user.getPosition()));
-		elementMap.put("Department", CmStringUtils.trimToEmpty(user.getDepartment()));
-		elementMap.put("Language", CmStringUtils.trimToEmpty(user.getDisplayLanguage()));
+		elementMap.put("Last Name", user.getLastName());
+		elementMap.put("First Name", user.getFirstName());
+		elementMap.put("Company", user.getCompany());
+		elementMap.put("Organization", user.getOrganization());
+		elementMap.put("Position", user.getPosition());
+		elementMap.put("Department", user.getDepartment());
+		elementMap.put("Language", user.getDisplayLanguage());
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
@@ -121,7 +122,7 @@ public class UserLayoutBuilder
 		Select loLanguage = new Select("language");
 		loLanguage.setLabel("Language");
 		loLanguage.setRequired(true);
-		loLanguage.addAttribute("VALUE", user.getLanguage());
+		loLanguage.setValue(user.getLanguage());
 		loLanguage.addOption("en", new Locale("en").getDisplayLanguage());
 		loLanguage.addOption("ko", new Locale("ko").getDisplayLanguage());
 
@@ -140,12 +141,12 @@ public class UserLayoutBuilder
 	public static Document getAccountInfo(UserAccountDto userAccount)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Username", CmStringUtils.trimToEmpty(userAccount.getUsername()));
-		elementMap.put("Account Locked", CmStringUtils.trimToEmpty(userAccount.getFgAccountLocked()));
-		elementMap.put("Password Locked", CmStringUtils.trimToEmpty(userAccount.getFgPasswordLocked()));
-		elementMap.put("No Use Password", CmStringUtils.trimToEmpty(userAccount.getFgNoUsePassword()));
-		elementMap.put("Valid From", CmStringUtils.trimToEmpty(userAccount.getDisplayFromValid()));
-		elementMap.put("Valid To", CmStringUtils.trimToEmpty(userAccount.getDisplayToValid()));
+		elementMap.put("Username", userAccount.getUsername());
+		elementMap.put("Account Locked", userAccount.getFgAccountLocked());
+		elementMap.put("Password Locked", userAccount.getFgPasswordLocked());
+		elementMap.put("No Use Password", userAccount.getFgNoUsePassword());
+		elementMap.put("Valid From", userAccount.getDisplayFromValid());
+		elementMap.put("Valid To", userAccount.getDisplayToValid());
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
@@ -175,7 +176,7 @@ public class UserLayoutBuilder
 		loFromValid.setId("fromValid");
 		loFromValid.setLabel("Valid From");
 
-		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(userAccount.getDisplayToValid(), CmDateFormatUtils.plusYears(10)));
+		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(userAccount.getDisplayToValid(), PlatformCommonVo.UNLIMITED_DATE_TIME));
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
 
@@ -188,9 +189,9 @@ public class UserLayoutBuilder
 
 			Input loUsername = new Input("username");
 			loUsername.setLabel("Username");
-			loUsername.addAttribute("autofocus");
-			loUsername.addAttribute("style", "text-transform:uppercase");
+			loUsername.setStyle("text-transform:uppercase");
 			loUsername.setRequired(true);
+			loUsername.addAttribute("autofocus");
 
 			document.addElement(loUsername);
 		}
@@ -209,16 +210,16 @@ public class UserLayoutBuilder
 	public static Document getContactInfo(UserContactInfoDto userContactInfo)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Email", CmStringUtils.trimToEmpty(userContactInfo.getEmail()));
-		elementMap.put("Telephone", CmStringUtils.trimToEmpty(userContactInfo.getTel()));
-		elementMap.put("Mobile", CmStringUtils.trimToEmpty(userContactInfo.getMobile()));
-		elementMap.put("Fax", CmStringUtils.trimToEmpty(userContactInfo.getFax()));
-		elementMap.put("Zipcode", CmStringUtils.trimToEmpty(userContactInfo.getZipcode()));
-		elementMap.put("Street", CmStringUtils.trimToEmpty(userContactInfo.getStreet()));
-		elementMap.put("City", CmStringUtils.trimToEmpty(userContactInfo.getCity()));
-		elementMap.put("State", CmStringUtils.trimToEmpty(userContactInfo.getState()));
-		elementMap.put("Country", CmStringUtils.trimToEmpty(userContactInfo.getDisplayCountry()));
-		elementMap.put("Timezone", CmStringUtils.trimToEmpty(userContactInfo.getDisplayTimezone()));
+		elementMap.put("Email", userContactInfo.getEmail());
+		elementMap.put("Telephone", userContactInfo.getTel());
+		elementMap.put("Mobile", userContactInfo.getMobile());
+		elementMap.put("Fax", userContactInfo.getFax());
+		elementMap.put("Zipcode", userContactInfo.getZipcode());
+		elementMap.put("Street", userContactInfo.getStreet());
+		elementMap.put("City", userContactInfo.getCity());
+		elementMap.put("State", userContactInfo.getState());
+		elementMap.put("Country", userContactInfo.getDisplayCountry());
+		elementMap.put("Timezone", userContactInfo.getDisplayTimezone());
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
@@ -228,47 +229,47 @@ public class UserLayoutBuilder
 
 	public static Document getContactInfoForm(UserContactInfoDto userContactInfo)
 	{
-		Input loEmail = new Input("email", CmStringUtils.trimToEmpty(userContactInfo.getEmail()));
+		Input loEmail = new Input("email", userContactInfo.getEmail());
 		loEmail.setLabel("Email");
 		loEmail.setRequired(true);
 
 		Element loTelephone = new Element("group");
 		loTelephone.addAttribute("type", "form");
 		loTelephone.setLabel("Telephone");
-		loTelephone.addElement(new Input("tel1", CmStringUtils.trimToEmpty(userContactInfo.getTel1())));
-		loTelephone.addElement(new Input("tel2", CmStringUtils.trimToEmpty(userContactInfo.getTel2())));
-		loTelephone.addElement(new Input("tel3", CmStringUtils.trimToEmpty(userContactInfo.getTel3())));
+		loTelephone.addElement(new Input("tel1", userContactInfo.getTel1()));
+		loTelephone.addElement(new Input("tel2", userContactInfo.getTel2()));
+		loTelephone.addElement(new Input("tel3", userContactInfo.getTel3()));
 
 		Element loMobile = new Element("group");
 		loMobile.addAttribute("type", "form");
 		loMobile.setLabel("Mobile");
-		loMobile.addElement(new Input("mobile1", CmStringUtils.trimToEmpty(userContactInfo.getMobile1())));
-		loMobile.addElement(new Input("mobile2", CmStringUtils.trimToEmpty(userContactInfo.getMobile2())));
-		loMobile.addElement(new Input("mobile3", CmStringUtils.trimToEmpty(userContactInfo.getMobile3())));
+		loMobile.addElement(new Input("mobile1", userContactInfo.getMobile1()));
+		loMobile.addElement(new Input("mobile2", userContactInfo.getMobile2()));
+		loMobile.addElement(new Input("mobile3", userContactInfo.getMobile3()));
 
 		Element loFax = new Element("group");
 		loFax.addAttribute("type", "form");
 		loFax.setLabel("Fax");
-		loFax.addElement(new Input("fax1", CmStringUtils.trimToEmpty(userContactInfo.getFax1())));
-		loFax.addElement(new Input("fax2", CmStringUtils.trimToEmpty(userContactInfo.getFax2())));
-		loFax.addElement(new Input("fax3", CmStringUtils.trimToEmpty(userContactInfo.getFax3())));
+		loFax.addElement(new Input("fax1", userContactInfo.getFax1()));
+		loFax.addElement(new Input("fax2", userContactInfo.getFax2()));
+		loFax.addElement(new Input("fax3", userContactInfo.getFax3()));
 
-		Input loZipcode = new Input("zipcode", CmStringUtils.trimToEmpty(userContactInfo.getZipcode()));
+		Input loZipcode = new Input("zipcode", userContactInfo.getZipcode());
 		loZipcode.setLabel("Zipcode");
 
-		Input loStreet = new Input("street", CmStringUtils.trimToEmpty(userContactInfo.getStreet()));
+		Input loStreet = new Input("street", userContactInfo.getStreet());
 		loStreet.setLabel("Street");
 
-		Input loCity = new Input("city", CmStringUtils.trimToEmpty(userContactInfo.getCity()));
+		Input loCity = new Input("city", userContactInfo.getCity());
 		loCity.setLabel("City");
 
-		Input loState = new Input("state", CmStringUtils.trimToEmpty(userContactInfo.getState()));
+		Input loState = new Input("state", userContactInfo.getState());
 		loState.setLabel("State");
 
 		Select loCountry = new Select("country");
 		loCountry.setLabel("Country");
 		loCountry.setRequired(true);
-		loCountry.setValue(CmStringUtils.trimToEmpty(userContactInfo.getCountry()));
+		loCountry.setValue(userContactInfo.getCountry());
 
 		String[] locales = Locale.getISOCountries();
 
@@ -282,8 +283,7 @@ public class UserLayoutBuilder
 		Select loTimezone = new Select("timezone");
 		loTimezone.setLabel("Timezone");
 		loTimezone.setRequired(true);
-		loTimezone.setValue(CmStringUtils.trimToEmpty(userContactInfo.getTimezone()));
-		loTimezone.addAttribute("VALUE", CmStringUtils.trimToEmpty(userContactInfo.getTimezone()));
+		loTimezone.setValue(userContactInfo.getTimezone());
 
 		String[] ids = TimeZone.getAvailableIDs(userContactInfo.getCountry());
 
@@ -395,8 +395,8 @@ public class UserLayoutBuilder
 		table.addThead(thead);
 		table.addTbody(tbody);
 
-		Element loDivider = new Element("div");
-		loDivider.addAttribute("class", "ui clearing divider");
+		Element loDivider = new Div();
+		loDivider.setClass("ui clearing divider");
 
 //		Element loDescription = new Element("div");
 //		loDescription.setText("This is a part of login history. If you want to check more data, please see them in Login History.");
@@ -412,16 +412,16 @@ public class UserLayoutBuilder
 	public static Document getLoginHistories(PageableList<LoginHistoryDto> pageableList)
 	{
 		Th thLoginDate = new Th("Login Date");
-		thLoginDate.addAttribute("CLASS", "two wide");
+		thLoginDate.setClass("two wide");
 
 		Th thUsername = new Th("Username");
-		thUsername.addAttribute("CLASS", "two wide");
+		thUsername.setClass("two wide");
 
 		Th thIp = new Th("IP");
-		thIp.addAttribute("CLASS", "two wide");
+		thIp.setClass("two wide");
 
 		Th thReferer = new Th("Referer");
-		thReferer.addAttribute("CLASS", "five wide");
+		thReferer.setClass("five wide");
 
 		Th thUserAgent = new Th("User Agent");
 		thUserAgent.addAttribute("CLASS", "six wide");

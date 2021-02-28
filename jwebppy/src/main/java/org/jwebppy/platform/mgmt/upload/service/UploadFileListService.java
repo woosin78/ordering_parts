@@ -54,7 +54,7 @@ public class UploadFileListService extends GeneralService
 
 			if (validCheckResult != null)
 			{
-				throw new InvalidFileNameException(validCheckResult, "Invalid File Extension[" + validCheckResult + "]");
+				throw new InvalidFileNameException(validCheckResult, "[" + validCheckResult + "] Invalid File Extension");
 			}
 
 			String path = uploadFile.getPath();

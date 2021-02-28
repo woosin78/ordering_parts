@@ -74,21 +74,4 @@ public class IndexContoller extends PlatformGeneralController
 
 		return new RedirectView(url);
 	}
-
-	public static void main(String[] args)
-	{
-		try
-		{
-			//MariaDB
-			System.err.println(AES256Cipher.getInstance().encode("root"));
-			System.err.println(AES256Cipher.getInstance().encode("1111"));
-			System.err.println("========================================");
-			System.err.println(AES256Cipher.getInstance().encode("jwebppy"));
-			System.err.println(AES256Cipher.getInstance().encode("1111"));
-		}
-		catch (Exception e)
-		{
-
-		}
-	}
 }

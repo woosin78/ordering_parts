@@ -7,9 +7,7 @@ import org.jwebppy.platform.mgmt.user.entity.UserAccountEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserContactInfoEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserPasswordChangeHistoryEntity;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface UserMapper
 {
 	public int insertUser(UserEntity user);

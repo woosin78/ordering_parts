@@ -7,9 +7,7 @@ import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogSearchDto;
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogEntity;
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogParameterDetailEntity;
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogParameterEntity;
-import org.springframework.stereotype.Repository;
 
-@Repository
 @NoLogging
 public interface DataAccessLogMapper
 {

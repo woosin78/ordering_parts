@@ -84,12 +84,12 @@ public class AuthorityLayoutBuilder
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 
-		elementMap.put("Name", CmStringUtils.trimToEmpty(cItem.getName()));
-		elementMap.put("Description", CmStringUtils.trimToEmpty(cItem.getDescription()));
+		elementMap.put("Name", cItem.getName());
+		elementMap.put("Description", cItem.getDescription());
 		elementMap.put("Valid From", cItem.getDisplayFromValid());
 		elementMap.put("Valid To", cItem.getDisplayToValid());
 		elementMap.put("Reg.Date", cItem.getDisplayRegDate());
-		elementMap.put("Reg.Username", CmStringUtils.trimToEmpty(cItem.getRegUsername()));
+		elementMap.put("Reg.Username", cItem.getRegUsername());
 
 		if (cItem.getCSeq() != null)
 		{
@@ -107,8 +107,8 @@ public class AuthorityLayoutBuilder
 	{
 		Element loName = new Input("name", cItem.getName());
 		loName.setLabel("Name");
+		loName.setStyle("text-transform: uppercase");
 		loName.addAttribute("REQUIRED");
-		loName.addAttribute("style", "text-transform: uppercase");
 
 		Element loDescription = new Input("description", cItem.getDescription());
 		loDescription.setLabel("Description");

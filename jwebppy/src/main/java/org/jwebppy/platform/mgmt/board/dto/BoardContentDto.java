@@ -1,5 +1,6 @@
 package org.jwebppy.platform.mgmt.board.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
@@ -29,9 +30,9 @@ public class BoardContentDto extends GeneralDto implements IPagination
 	private String htmlContent;
 	private String textContent;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
-	private String fromView;
+	private LocalDateTime fromView;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
-	private String toView;
+	private LocalDateTime toView;
 	private int views;
 	private String writer;
 	private String fgDelete = PlatformCommonVo.NO;

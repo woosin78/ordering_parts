@@ -21,6 +21,7 @@ public class Element
 	private String tagName;
 	private String text;
 	private Label label;
+	private String style;
 	private final List<Attribute> attributes =  new LinkedList<>();
 	private final List<Element> children =  new LinkedList<>();
 
@@ -75,6 +76,11 @@ public class Element
 	public void setClass(String clazz)
 	{
 		addAttribute("class", clazz);
+	}
+
+	public void setStyle(String style)
+	{
+		addAttribute("style", style);
 	}
 
 	public void addAttribute(Attribute attribute)

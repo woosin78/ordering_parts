@@ -15,12 +15,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-
 public class PlatformAuthenticationFilter extends UsernamePasswordAuthenticationFilter
 {
 	@Autowired
@@ -39,20 +33,22 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
 		if ("".equals(username))
 		{
-			throw new UsernameNotFoundException("The username is empty");
+			throw new UsernameNotFoundException("The username or password you entered is incorrect.");
 		}
 
 		if ("".equals(password))
 		{
-			throw new BadCredentialsException("The password is empty");
+			throw new BadCredentialsException("The username or password you entered is incorrect.");
 		}
 
+		/*
 		String token = CmStringUtils.trimToEmpty(request.getParameter("token"));
 
 		if (!"".equals(token) && isAdUser(token))
 		{
 			password = "AD-USER";
 		}
+		*/
 
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 
@@ -61,6 +57,7 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 		return this.getAuthenticationManager().authenticate(usernamePasswordAuthenticationToken);
 	}
 
+	/*
     private boolean isAdUser(String token)
     {
     	String secret = environment.getProperty("sso.ad.domainSecret");
@@ -84,4 +81,5 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
         return false;
     }
+    */
 }

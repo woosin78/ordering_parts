@@ -8,7 +8,7 @@
 	flex: 0 0 auto;
 }
 
-body {margin: 0; height: 100%; overflow: auto;}
+body {margin: 0; height: 100%; overflow: hidden;}
 body .wrap { width:100%; margin:0 auto;}
 body .header {
 	margin-left: 40px;
@@ -103,7 +103,7 @@ body .body {margin:0 auto;}
 		width: 520px;
 		height: 70px;
 		border-radius: 4px;
-		background-color: #1EA7D9;
+		background-color: #003081;
 		position: relative;
 		left: 40px;
 		top: 85px;	
@@ -224,7 +224,7 @@ body .body {margin:0 auto;}
 		width: 431px;
 		height: 58px;
 		border-radius: 4px;
-		background-color: #1EA7D9;
+		background-color: #003081;
 		position: relative;
 		left: 33px;
 		top: 71px;

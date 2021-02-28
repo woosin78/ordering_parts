@@ -13,10 +13,13 @@ public class EncryptionEnvironmentPostProcessor implements EnvironmentPostProces
 	public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application)
 	{
 		Properties props = new Properties();
+
 		try
 		{
 			props.put("spring.datasource.password", AES256Cipher.getInstance().decode(environment.getProperty("spring.datasource.password")));
 			props.put("spring.datasource.username", AES256Cipher.getInstance().decode(environment.getProperty("spring.datasource.username")));
+			props.put("spring.mail.username", AES256Cipher.getInstance().decode(environment.getProperty("spring.mail.username")));
+			props.put("spring.mail.password", AES256Cipher.getInstance().decode(environment.getProperty("spring.mail.password")));
 		}
 		catch (Exception e)
 		{

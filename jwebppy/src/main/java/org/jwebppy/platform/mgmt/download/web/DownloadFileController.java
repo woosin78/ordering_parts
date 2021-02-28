@@ -1,4 +1,4 @@
-package org.jwebppy.platform.mgmt.upload.web;
+package org.jwebppy.platform.mgmt.download.web;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -10,13 +10,17 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.MgmtGeneralController;
+import org.jwebppy.platform.mgmt.download.dto.DownloadFileHistoryDto;
+import org.jwebppy.platform.mgmt.download.service.DownloadFileHistoryService;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileDto;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileListDto;
 import org.jwebppy.platform.mgmt.upload.service.UploadFileListService;
@@ -34,6 +38,9 @@ public class DownloadFileController extends MgmtGeneralController
 {
 	@Value("${file.upload.rootPath}")
 	private String ROOT_PATH;
+
+	@Autowired
+	private DownloadFileHistoryService downloadFileHistoryService;
 
 	@Autowired
 	private UploadFileService uploadFileService;
@@ -60,11 +67,31 @@ public class DownloadFileController extends MgmtGeneralController
 		UploadFileListDto uploadFileList = uploadFileListService.getUploadFileList(CmNumberUtils.toInt(decodedKey[1]));
 		UploadFileDto uploadFile = uploadFileService.getUploadFile(uploadFileList.getUfSeq());
 
+		DownloadFileHistoryDto downloadFileHistory = new DownloadFileHistoryDto();
+		downloadFileHistory.setUfSeq(uploadFile.getUfSeq());
+		downloadFileHistory.setUflSeq(uploadFileList.getUflSeq());
+		downloadFileHistory.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
+		downloadFileHistory.setOriginName(uploadFileList.getOriginName() + "." + uploadFileList.getExtension());
+		downloadFileHistory.setSavedName(uploadFileList.getSavedName() + "." + uploadFileList.getExtension());
+
+		downloadFileHistoryService.create(downloadFileHistory);
+
 		File file = Paths.get(ROOT_PATH, uploadFile.getPath(), uploadFileList.getSavedName()).toFile();
 
 		if (!file.exists())
 		{
 			throw new Exception("There is no file.");
+		}
+
+		httpServletResponse.reset();
+
+		if (CmStringUtils.equals(uploadFileList.getExtension(), "xlsx"))
+		{
+			httpServletResponse.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8");
+		}
+		else
+		{
+			httpServletResponse.setContentType(new MimetypesFileTypeMap().getContentType(file));
 		}
 
 		BufferedInputStream bufferedInputStream = null;
@@ -73,16 +100,17 @@ public class DownloadFileController extends MgmtGeneralController
 		try
 		{
 			httpServletResponse.reset();
-			httpServletResponse.setContentType("application/octet-stream; charset=UTF-8");
 			httpServletResponse.setHeader("Content-Disposition","attachment; filename=\"" +  new String (uploadFileList.getFullOriginName().getBytes("UTF-8"), "ISO-8859-1") + "\";");
 			httpServletResponse.setHeader("Content-Length", "" + file.length());
-			httpServletResponse.setHeader("Set-Cookie", "fileDownload=true; path=/");
+			httpServletResponse.setHeader("Content-Transfer-Encoding", "binary");
+			httpServletResponse.setHeader("Cache-Control", "no-cache");
+			httpServletResponse.setHeader("Expires", "-1");
 
 			bufferOutputStream = new BufferedOutputStream (httpServletResponse.getOutputStream());
 
 			bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
 
-			byte buffer[] = new byte[1024];
+			byte buffer[] = new byte[4096];
 			int len = 0;
 
 			while ((len = bufferedInputStream.read(buffer)) > 0)

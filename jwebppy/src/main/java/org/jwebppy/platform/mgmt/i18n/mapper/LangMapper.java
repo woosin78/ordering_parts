@@ -11,9 +11,7 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangSearchDto;
 import org.jwebppy.platform.mgmt.i18n.entity.LangDetailEntity;
 import org.jwebppy.platform.mgmt.i18n.entity.LangEntity;
 import org.jwebppy.platform.mgmt.i18n.entity.LangKindEntity;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface LangMapper
 {
 	public int insertLang(LangEntity lang);
@@ -22,8 +20,11 @@ public interface LangMapper
 	public int updateLangDetail(LangDetailEntity langDetail);
 	public int updateLangFgDelete(LangDto lang);
 	public int updateLangDetailFgDelete(LangDto lang);
+	@NoLogging
 	public LangEntity findLang(LangDto lang);
+	@NoLogging
 	public List<LangEntity> findLangs(LangSearchDto langSearch);
+	@NoLogging
 	public LangDetailEntity findLangDetail(LangDetailDto langDetail);
 	@NoLogging
 	public List<LangDetailEntity> findLangDetails(LangSearchDto langSearch);

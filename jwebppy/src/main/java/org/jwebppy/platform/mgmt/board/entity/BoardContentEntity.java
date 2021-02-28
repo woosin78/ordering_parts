@@ -1,5 +1,7 @@
 package org.jwebppy.platform.mgmt.board.entity;
 
+import java.time.LocalDateTime;
+
 import org.jwebppy.platform.core.entity.GeneralEntity;
 
 import lombok.Getter;
@@ -22,8 +24,8 @@ public class BoardContentEntity extends GeneralEntity
 	private String title;
 	private String htmlContent;
 	private String textContent;
-	private String fromView;
-	private String toView;
+	private LocalDateTime fromView;
+	private LocalDateTime toView;
 	private int views;
 	private String writer;
 	private String fgDelete;

@@ -29,19 +29,19 @@ public class ContentLayoutBuilder
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Item Type", cItem.getType().getType());
-		elementMap.put("Name", CmStringUtils.trimToEmpty(cItem.getName()));
-		elementMap.put("Description", CmStringUtils.trimToEmpty(cItem.getDescription()));
-		elementMap.put("Component", CmStringUtils.trimToEmpty(cItem.getComponent()));
-		elementMap.put("Entry Point", CmStringUtils.trimToEmpty(cItem.getEntryPoint()));
-		elementMap.put("Parameter", CmStringUtils.trimToEmpty(cItem.getParameter()));
-		elementMap.put("Valid From", CmStringUtils.trimToEmpty(cItem.getDisplayFromValid()));
-		elementMap.put("Valid To", CmStringUtils.trimToEmpty(cItem.getDisplayToValid()));
-		elementMap.put("Sort", CmStringUtils.trimToEmpty(cItem.getSort()));
-		elementMap.put("Visible", CmStringUtils.trimToEmpty(cItem.getFgVisible()));
-		elementMap.put("Reg. Date", CmStringUtils.trimToEmpty(cItem.getDisplayRegDate()));
-		elementMap.put("Reg. Username", CmStringUtils.trimToEmpty(cItem.getRegUsername()));
-		elementMap.put("Mod. Date", CmStringUtils.trimToEmpty(cItem.getDisplayModDate()));
-		elementMap.put("Mod. Username", CmStringUtils.trimToEmpty(cItem.getModUsername()));
+		elementMap.put("Name", cItem.getName());
+		elementMap.put("Description", cItem.getDescription());
+		elementMap.put("Component", cItem.getComponent());
+		elementMap.put("Entry Point", cItem.getEntryPoint());
+		elementMap.put("Parameter", cItem.getParameter());
+		elementMap.put("Valid From", cItem.getDisplayFromValid());
+		elementMap.put("Valid To", cItem.getDisplayToValid());
+		elementMap.put("Sort", cItem.getSort());
+		elementMap.put("Visible", cItem.getFgVisible());
+		elementMap.put("Reg. Date", cItem.getDisplayRegDate());
+		elementMap.put("Reg. Username", cItem.getRegUsername());
+		elementMap.put("Mod. Date", cItem.getDisplayModDate());
+		elementMap.put("Mod. Username", cItem.getModUsername());
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
@@ -70,13 +70,13 @@ public class ContentLayoutBuilder
 
 		Element loId = new Input("name", cItem.getName());
 		loId.setLabel("Name");
+		loId.setStyle("text-transform: uppercase");
 		loId.addAttribute("required");
-		loId.addAttribute("style", "text-transform: uppercase");
 
 		Textarea loDescription = new Textarea("description");
 		loDescription.setText(cItem.getDescription());
 		loDescription.setLabel("Description");
-		loDescription.addAttribute("rows", "3");
+		loDescription.setStyle("height: 3em");
 
 		Select loComponent = new Select("component");
 		loComponent.setLabel("Component");

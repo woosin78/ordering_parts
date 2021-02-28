@@ -45,8 +45,8 @@ function resizeView()
 	}
 	*/
 	
-	$("#IMG_main").width($(window).width() * 0.9);
-	$("#IMG_main").height($(window).height() * 0.9);
+	$("#IMG_main").width($(window).width());
+	$("#IMG_main").height($(window).height());
 };
 
 function loginCheck()
@@ -201,16 +201,16 @@ function showLoginBox()
 </script>
 </head>
 <body>
-<div style="position: fixed; cursor: pointer;" onclick="showLoginBox()">
+<!-- div style="position: fixed; cursor: pointer;" onclick="showLoginBox()">
 	<img th:src="@{/platform/img/login/idea_100.jpg}" alt="Login Button" />
-</div>
+</div -->
 <div id="openNewWindow" style="position: fixed; top: 5px; right: 5px; cursor: pointer; font-weight: bold;">New Window</div>
 <form id="FORM_login" method="post" onsubmit="return loginCheck();">
 <input type="hidden" id="token" name="token" />
 <input type="hidden" id="saveUsername" name="saveUsername" />
 <div id="wrap" class="wrap">
 	<div style="text-align: center">
-	<img id="IMG_main" th:src="@{/platform/img/login/main.jpg}" alt="Main Image" />
+		<img id="IMG_main" th:src="@{/platform/img/login/main2.jpg}" alt="Main Image" />
 	</div> 
 	<div class="body">
 		<div class="login-box" style="display:none;">
@@ -223,7 +223,7 @@ function showLoginBox()
 			</div>
 		</div>
 	</div>
-	<div class="bottom" style="height: 80px;">
+	<div class="bottom" style="height: 60px; opacity: 0.75;">
 		<div class="copy-right">
 			<div class="text"th:text="#{PLTF_T_COPYLEFT}"></div>
 		</div>

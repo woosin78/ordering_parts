@@ -19,7 +19,7 @@
 </div>
 <div class="ui segment">
 	<form id="FORM_view" class="ui form" action="/platform/mgmt/board/content/list">
-	<div class="ui header" th:text="${boardContent.title}"></div>
+	<div class="ui header small" th:text="${boardContent.title}"></div>
 	<p><span th:text="${boardContent.writer}"></span> <strong>|</strong> <span th:text="${boardContent.displayRegDate}"></span> <strong>|</strong> Views: <span th:text="${boardContent.views}"></span></p>	
 	<div class="ui divider"></div>
 	<iframe id="content" th:src="@{/platform/mgmt/board/content/viewer?bcSeq=} + ${bcSeq}" style="width:100%; height:0px; border: none; margin: 0; padding: 0;"></iframe>
@@ -28,12 +28,12 @@
 	<div class="ui divider"></div>
 	<div class="ui two column grid">
 		<div class="column">
-			<div class="ui header render">View From
+			<div class="ui header render small">View From
 				<div class="sub header" th:text="${boardContent.fromView}"></div>
 			</div>
 		</div>
 		<div class="column">
-			<div class="ui header render">View To
+			<div class="ui header render small">View To
 				<div class="sub header" th:text="${boardContent.toView}"></div>
 			</div>		
 		</div>

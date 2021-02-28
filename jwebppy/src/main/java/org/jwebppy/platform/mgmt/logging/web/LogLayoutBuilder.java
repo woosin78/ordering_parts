@@ -13,6 +13,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
@@ -114,13 +115,13 @@ public class LogLayoutBuilder
 		}
 
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Type", CmStringUtils.trimToEmpty(dataAccessLog.getDisplayType()));
+		elementMap.put("Type", dataAccessLog.getDisplayType());
 		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
-		elementMap.put("Reg. Username", CmStringUtils.trimToEmpty(dataAccessLog.getRegUsername()));
+		elementMap.put("Reg. Username", dataAccessLog.getRegUsername());
 		elementMap.put("Elapsed", CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
-		elementMap.put("Command", makeCode(dataAccessLog.getCommand()));
-		elementMap.put("Parameters", CmStringUtils.trimToEmpty(parameter));
-		elementMap.put("Error", CmStringUtils.toHtml(dataAccessLog.getError()));
+		elementMap.put("Command", new Element("xmp", dataAccessLog.getCommand()));
+		elementMap.put("Parameters", parameter);
+		elementMap.put("Error", new Element("xmp", dataAccessLog.getError()));
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
@@ -128,35 +129,17 @@ public class LogLayoutBuilder
 		return document;
 	}
 
-	private static String makeCode(String query)
-	{
-		StringBuffer code = new StringBuffer();
-
-		for (String str : query.replaceAll("\r", "").split("\n"))
-		{
-			if (!CmStringUtils.isEmpty(str))
-			{
-				if (!CmStringUtils.isEmpty(str.trim()))
-				{
-					code.append(str.replaceAll("\t", "&nbsp;&nbsp;").replaceAll(" ", "&nbsp;")).append("<br/>");
-				}
-			}
-		}
-
-		return code.toString();
-	}
-
 	public static Document getRfcLog(DataAccessLogDto dataAccessLog)
 	{
 		Document document = new Document();
 
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Type", CmStringUtils.trimToEmpty(dataAccessLog.getDisplayType()));
-		elementMap.put("Command", CmStringUtils.trimToEmpty(dataAccessLog.getCommand()));
+		elementMap.put("Type", dataAccessLog.getDisplayType());
+		elementMap.put("Command", dataAccessLog.getCommand());
 		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
-		elementMap.put("Reg. Username", CmStringUtils.trimToEmpty(dataAccessLog.getRegUsername()));
+		elementMap.put("Reg. Username", dataAccessLog.getRegUsername());
 		elementMap.put("Elapsed(sec)", CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
-		elementMap.put("Error", CmStringUtils.toHtml(dataAccessLog.getError()));
+		elementMap.put("Error", new Element("xmp", dataAccessLog.getError()));
 
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
 		document.addElement(divider());
@@ -180,7 +163,7 @@ public class LogLayoutBuilder
 
 		if (CollectionUtils.isNotEmpty(dataAccessLog.getDataAccessLogParameters()))
 		{
-			Element segment = new Element("div");
+			Element segment = new Div();
 			segment.setClass("ui teal segment");
 
 			for (DataAccessLogParameterDto dataAccessLogParameter : ListUtils.emptyIfNull(dataAccessLog.getDataAccessLogParameters()))
@@ -242,7 +225,7 @@ public class LogLayoutBuilder
 
 					document.addElement(header(dataAccessLogParameter.getName()));
 
-					Element segment = new Element("div");
+					Element segment = new Div();
 					segment.setClass("ui teal segment");
 
 					for (DataAccessLogParameterDetailDto logParameterDetail : ListUtils.emptyIfNull(dataAccessLogParameter.getDataAccessLogParameterDetails()))
@@ -352,7 +335,7 @@ public class LogLayoutBuilder
 
 	private static Element header(String title)
 	{
-		Element element = new Element("div", title);
+		Element element = new Div(title);
 		element.setClass("ui dividing small header");
 
 		return element;
@@ -360,7 +343,7 @@ public class LogLayoutBuilder
 
 	private static Element divider()
 	{
-		Element element = new Element("div");
+		Element element = new Div();
 		element.setClass("ui hidden fitted divider");
 
 		return element;
