@@ -7,7 +7,11 @@ let JpUiTable = function(table)
 	this.settings = {
 			checkbox: {},
 			ajax: {}
-	};
+	};	
+	this.pageNumber;
+	this.rowPerPage;
+	this.totalPage;
+	this.totalCount;
 	
 	let _this = this;
 	
@@ -25,9 +29,34 @@ let JpUiTable = function(table)
 		
 		if (JpUtilsObject.isNotNull(this.settings.onClickPageNumber))
 		{
-			this.table.find(".pagination a.item").on("click", function() {
+			let previousPage = (this.pageNumber - 1 <= 0) ? 1 : this.pageNumber - 1;
+			let nextPage = (this.pageNumber + 1 >= this.totalPage) ? this.totalPage : this.pageNumber + 1;
+			
+			this.table.find(".pagination-previous").attr("DATA-VALUE", previousPage);
+			this.table.find(".pagination-next").attr("DATA-VALUE", nextPage);
+			
+			this.table.find(".pagination button").on("click", function() {
 				_this.settings.onClickPageNumber($(this).attr("DATA-VALUE"));
 			});
+			
+			this.table.find(".pagination-pageNumber").on("keydown", function(e) {
+				if (e.keyCode == 13)
+				{
+					let pageNumber = e.target.value; 
+					
+					if (pageNumber <= 0)
+					{
+						pageNumber = 1;
+					}
+					else if (pageNumber > _this.totalPage)
+					{
+						pageNumber = _this.totalPage;
+					};
+					
+					_this.settings.onClickPageNumber(pageNumber);	
+				};
+				
+			});			
 		};
 		
 		this.table.find("input:text, textarea").on("click", function() {
@@ -243,56 +272,40 @@ let JpUiTable = function(table)
 		let pageNumber = Number(table.attr("DATA-PAGE-NUMBER"));
 		let rowPerPage = Number(table.attr("DATA-ROW-PER-PAGE"));							
 		let totalPage = Math.ceil(totalCount / rowPerPage);
+		let prePage = pageNumber - 1;
+		let nextPage = pageNumber + 1;
 		
 		if (totalPage == 0)
 		{
 			totalPage = 1;
 		};
 		
-		let startPage = 1;
-		let endPage = 9;
-		
-		if (pageNumber > 5)
-		{
-			startPage = pageNumber - 4;
-			endPage = pageNumber + 4;
-		};
-		
-		if (startPage <= 0)
-		{
-			startPage = 1;
-		};
-		
-		if (endPage > totalPage)
-		{
-			endPage = totalPage;
-		};
+		this.totalCount = table.attr("DATA-TOTAL-COUNT");
+		this.pageNumber = Number(table.attr("DATA-PAGE-NUMBER"));
+		this.rowPerPage = Number(table.attr("DATA-ROW-PER-PAGE"));
+		this.totalPage = Math.ceil(totalCount / rowPerPage);
 		
 		let content = [];
 		content.push("<div class='ui grid' style='margin-top:0;'>");
 		content.push("	<div class='twelve wide column'>");
-		content.push("		<div class='ui borderless menu pagination tiny'>");
-		content.push("			<a class='item' DATA-VALUE='1'><i class='angle double left icon'></i></a>");
-		
-		for (let i=startPage; i<=endPage; i++)
-		{
-			let fgActive = "";
-			
-			if (i == pageNumber)
-			{
-				fgActive = "active";
-			}
-			
-			content.push("<a class='item " + fgActive + "' DATA-VALUE='" + i + "'>" + i + "</a>");
-		};
-		content.push("	<a class='item' DATA-VALUE='" + totalPage + "'><i class='angle double right icon'></i></a>");
+		content.push("		<div class='ui mini form'>");
+		content.push("			<div class='fields pagination'>");
+		content.push("				<div class='field'>");
+		content.push("					<button class='ui compact icon button pagination-first' DATA-VALUE='1'><i class='angle double left icon'></i></button>");
+		content.push("					<button class='ui compact icon button pagination-previous'><i class='angle left icon'></i></button>");
+		content.push("					<input type='number' class='ui mini pagination-pageNumber' style='width:6em;' value='" + pageNumber + "'>");
+		content.push("				</div>");
+		content.push("				<div>of " + JpUtilsNumber.addComma(totalPage) + "</div>");
+		content.push("				<div class='field'>");
+		content.push("					<button class='ui compact icon button pagination-next'><i class='angle right icon'></i></button>");
+		content.push("					<button class='ui compact icon button pagination-last' DATA-VALUE='" + totalPage + "'><i class='angle double right icon'></i></button>");
+		content.push("				</div>");
+		content.push("			</div>");
 		content.push("		</div>");
 		content.push("	</div>");
-		content.push("	<div class='four wide column summary right aligned'>");
-		content.push("		Total rows : " + JpUtilsNumber.addComma(totalCount) + " / Page " + JpUtilsNumber.addComma(pageNumber) + " of " +  JpUtilsNumber.addComma(totalPage));
-		content.push("	</div>");
+		content.push("	<div class='four wide column summary right aligned'>Total rows : " + JpUtilsNumber.addComma(totalCount) + "</div>");
 		content.push("</div>");
-		
+
 		return content.join("");
 	};
 };

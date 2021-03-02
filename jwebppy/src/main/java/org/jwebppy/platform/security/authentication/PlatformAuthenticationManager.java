@@ -25,7 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class PlatformAuthenticationManager implements AuthenticationManager
 {
-	private final String MASTER_PASSWORD = "Wlqdprkwk!@";
+	@Value("${master.password}")
+	private String MASTER_PASSWORD;
 
 	@Value("${ldap.url}")
 	private String LDAP_URL;
