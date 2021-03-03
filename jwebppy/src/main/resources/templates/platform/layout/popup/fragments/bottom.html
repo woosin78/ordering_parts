@@ -34,6 +34,9 @@
 		</div>
 	</div>
 </div>
+<div id="BTN_moveToTop" style="position:fixed; right:50px; bottom: 140px; display:none;">
+	<button class="ui icon button big"><i class="arrow up icon"></i></button>
+</div>
 <script>
 $(window).load(function() {
 	JpUiGlobal.changeSizeOfElement();
@@ -66,6 +69,22 @@ $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
 		alert("[[#{PLTF_M_ERROR_MESSAGE}]]");
 		//document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).ERROR_PAGE_URL}]]";
 	};
+});
+
+$("body").scroll(function() {
+	if ($(this).scrollTop() > 200)
+	{
+		$("#BTN_moveToTop").fadeIn();
+	}
+	else
+	{
+		$("#BTN_moveToTop").fadeOut();
+	};
+});
+
+$("#BTN_moveToTop").click(function() {
+	$("html, body").animate({ scrollTop : 0 }, 400);
+	return false;
 });
 </script>
 <!-- bottom end -->

@@ -287,7 +287,7 @@ let JpUiTable = function(table)
 		
 		let content = [];
 		content.push("<div class='ui grid' style='margin-top:0;'>");
-		content.push("	<div class='twelve wide column'>");
+		content.push("	<div class='eleven wide column'>");
 		content.push("		<div class='ui mini form'>");
 		content.push("			<div class='fields pagination'>");
 		content.push("				<div class='field'>");
@@ -303,7 +303,7 @@ let JpUiTable = function(table)
 		content.push("			</div>");
 		content.push("		</div>");
 		content.push("	</div>");
-		content.push("	<div class='four wide column summary right aligned'>Total rows : " + JpUtilsNumber.addComma(totalCount) + "</div>");
+		content.push("	<div class='five wide column summary right aligned'>Total rows : " + JpUtilsNumber.addComma(totalCount) + "</div>");
 		content.push("</div>");
 
 		return content.join("");
