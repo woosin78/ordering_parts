@@ -1,0 +1,9 @@
+package org.jwebppy.portal.scm.export.order.service;
+
+import org.jwebppy.portal.PortalGeneralService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderDisplayService extends PortalGeneralService
+{
+}

@@ -38,4 +38,5 @@
 	</cache>
 	<cache alias="User" uses-template="platform"/>
 	<cache alias="Content" uses-template="platform"/>
+	<cache alias="Customer" uses-template="platform"/>
 </config>
