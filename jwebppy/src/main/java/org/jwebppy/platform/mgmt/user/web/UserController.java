@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
+import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
@@ -20,8 +22,6 @@ import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
-import org.jwebppy.platform.security.authentication.dto.LoginHistorySearchDto;
-import org.jwebppy.platform.security.authentication.service.LoginHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

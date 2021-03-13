@@ -1,6 +1,6 @@
 package org.jwebppy.config;
 
-import org.jwebppy.platform.filter.PlatformRequestFilter;
+import org.jwebppy.platform.core.filter.PlatformRequestFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

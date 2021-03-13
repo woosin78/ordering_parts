@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Div;
@@ -28,7 +29,6 @@ import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
-import org.jwebppy.platform.security.authentication.dto.LoginHistoryDto;
 
 import com.ibm.icu.util.TimeZone;
 

@@ -1,6 +1,6 @@
 package org.jwebppy.platform.core.util;
 
-import org.jwebppy.platform.security.authentication.dto.PlatformUserDetails;
+import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,11 +1,11 @@
 package org.jwebppy.platform.mgmt.user.web;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
+import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
-import org.jwebppy.platform.security.authentication.dto.LoginHistorySearchDto;
-import org.jwebppy.platform.security.authentication.service.LoginHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,13 +1,13 @@
 package org.jwebppy.config;
 
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.filter.PlatformAuthenticationFilter;
+import org.jwebppy.platform.core.security.authentication.AjaxAwareAuthenticationEntryPoint;
+import org.jwebppy.platform.core.security.authentication.PlatformAuthenticationManager;
+import org.jwebppy.platform.core.security.authentication.handler.LoginFailureHandler;
+import org.jwebppy.platform.core.security.authentication.handler.LoginSuccessHandler;
+import org.jwebppy.platform.core.security.authentication.handler.LogoutSuccessHandler;
 import org.jwebppy.platform.core.web.CmHttpSessionRequestCache;
-import org.jwebppy.platform.security.authentication.AjaxAwareAuthenticationEntryPoint;
-import org.jwebppy.platform.security.authentication.PlatformAuthenticationFilter;
-import org.jwebppy.platform.security.authentication.PlatformAuthenticationManager;
-import org.jwebppy.platform.security.authentication.handler.LoginFailureHandler;
-import org.jwebppy.platform.security.authentication.handler.LoginSuccessHandler;
-import org.jwebppy.platform.security.authentication.handler.LogoutSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,11 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	{
 		http
 			.authorizeRequests()
-				.antMatchers("/", "/error", "/sso/inbound/**").permitAll()
-				.antMatchers(
-						"/platform/security/authentication/check_password_expired",
-						"/platform/security/authentication/last_login_info",
-						"/platform/security/session/refresh").authenticated()
+				.antMatchers("/", "/error", "/mail/tracking").permitAll()
+				.antMatchers("/platform/common/**").authenticated()
 				.antMatchers("/platform/**").hasRole(PlatformConfigVo.ROLE_PLTF_ADMIN)
 				.anyRequest().authenticated()
 			.and()

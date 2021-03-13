@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.core.security.authentication.mapper.LoginHistoryMapper">
+
+	<insert id="insertLoginHistory" parameterType="LoginHistoryEntity">
+		insert into pltf_login_history (username, session_id, ip, referer, user_agent, fg_result, reg_date, u_seq, account_locked_date) values
+		(
+			#{username}, #{sessionId}, #{ip}, #{referer}, #{userAgent}, #{fgResult}, #{regDate}, #{uSeq}, #{accountLockedDate}
+		)
+	</insert>
+	
+	<select id="findPageableLoginHistories" parameterType="LoginHistorySearchDto" resultType="LoginHistoryEntity">
+		<include refid="PaginationMapper.header">
+			<property name="orderBy" value="reg_date desc"/>
+		</include>
+		
+		select
+		a.*
+		from
+		pltf_login_history a
+
+		<where>
+			<trim prefixOverrides="and">
+				<if test="uSeq != null">					
+					and a.u_seq=#{uSeq}
+				</if>
+						
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
+					and a.username=#{username}
+				</if>
+			
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fgResult)">
+					and a.fg_result=#{fgResult}
+				</if>
+				
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
+					and (upper(a.username) like '%' || upper(#{query}) || '%' or upper(a.ip) like '%' || upper(#{query}) || '%' or upper(a.user_agent) like '%' || upper(#{query}) || '%')
+				</if>
+				
+				<choose>
+					<when test="fromDate != null and toDate != null">
+						and a.reg_date <![CDATA[>]]> #{fromDate} and a.reg_date <![CDATA[<=]]> #{toDate}
+					</when>
+					<when test="fromDate != null">
+						and a.reg_date <![CDATA[>]]> #{fromDate}
+					</when>
+					<when test="toDate != null">
+						and a.reg_date <![CDATA[<=]]> #{toDate}
+					</when>
+				</choose>				
+			</trim>
+		</where>
+		
+		<include refid="PaginationMapper.footer"/>
+	</select>
+	
+	<select id="findLoginFailureCount" parameterType="LoginHistorySearchDto" resultType="int">
+		select
+		count(reg_date)
+		from
+		pltf_login_history
+		where
+		username=#{username}
+		and fg_result='N'
+		and reg_date>(
+			case
+			when (
+			    select
+			    max(reg_date)
+			    from
+			    pltf_login_history
+			    where
+			    username=#{username}
+			    and fg_result='N'
+			    and account_locked_date is not null			
+			) is null then case('20000101' as datetime)
+			else getdate()
+			end
+		)		
+	</select>
+</mapper>

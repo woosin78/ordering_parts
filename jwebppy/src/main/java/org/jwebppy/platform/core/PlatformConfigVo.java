@@ -8,9 +8,9 @@ public class PlatformConfigVo
 	//Authentication
 	public final static String FORM_LOGIN_USERNAME = "username";
 	public final static String FORM_LOGIN_PASSWORD = "password";
-	public final static String FORM_LOGIN_PAGE_URL = "/platform/security/authentication/login_form";
-	public final static String FORM_LOGIN_PROCESSING_URL = "/platform/security/authentication/check";
-	public final static String FORM_LOGOUT_PROCESSING_URL = "/platform/security/authentication/logout";
+	public final static String FORM_LOGIN_PAGE_URL = "/platform/common/authentication/login_form";
+	public final static String FORM_LOGIN_PROCESSING_URL = "/platform/common/authentication/check";
+	public final static String FORM_LOGOUT_PROCESSING_URL = "/platform/common/authentication/logout";
 	public final static String FORM_LOGOUT_SUCCESS_URL = "/";
 	public final static String FORM_LOGIN_USERNAME_RULE_PATTERN = "^((?=.*[a-zA-Z])|(?=.*\\d)).{6,12}$";
 	public final static String FORM_LOGIN_PASSWORD_RULE_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=\\S+$).{8,20}$";

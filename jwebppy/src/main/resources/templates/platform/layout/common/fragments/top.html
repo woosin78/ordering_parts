@@ -1,7 +1,7 @@
 <div class="ui fixed inverted menu topMenu">
 <!-- Top menu area. This comment is mandatory to make a space between top and body.-->
 </div>
-<form id="FORM_logout" method="post" th:action="@{/platform/security/authentication/logout}"></form>
+<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
 <script type="application/javascript">
 function makeGmb()
 {
@@ -80,7 +80,7 @@ function makeGmb()
 			
 			//Get last login information
 			$.ajax({
-				url: "/platform/security/authentication/last_login_info",		
+				url: "/platform/common/authentication/last_login_info",		
 			    success: function(response, textStatus, jqXHR) 
 			    {
 			    	let data = response.RESULT;
@@ -130,40 +130,6 @@ function makeGmb()
 	};
 };
 
-/*
-function breadcrumb()
-{
-	JpUtilsAjax.get({
-		url: JpUiGlobal.url("/platform/mgmt/content/breadcrumb"),
-		data: {"entryPoint" : location.pathname},
-		success: function(response, textStatus, jqXHR)
-		{
-			let result = response.RESULT;
-			
-			if (JpUtilsObject.isNotNull(result))
-			{
-				let breadcrumb = [];
-				breadcrumb.push("<div class='section'>Home</div>");
-				
-				for (let i=result.length-1; i>=0; i--)
-				{
-					breadcrumb.push("<div class='divider'>/</div>");
-					breadcrumb.push("<div class='section");
-					
-					if (i == 0)
-					{
-						breadcrumb.push(" active ");
-					};
-					
-					breadcrumb.push("'>" + result[i].name2 + "</div>");
-				};
-				
-				$("#AREA_breadcrumb").html(breadcrumb.join(""));
-			};
-		}
-	});	
-};
-*/
 $(document).ready(function() {
 	makeGmb();
 	//breadcrumb();

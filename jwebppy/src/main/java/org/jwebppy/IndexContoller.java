@@ -1,5 +1,6 @@
 package org.jwebppy;
 
+import java.net.UnknownHostException;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class IndexContoller extends PlatformGeneralController
 	private UserService userService;
 
 	@RequestMapping("/")
-	public Object index(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+	public Object index(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws UnknownHostException
 	{
 		if (UserAuthenticationUtils.isLogin())
 		{

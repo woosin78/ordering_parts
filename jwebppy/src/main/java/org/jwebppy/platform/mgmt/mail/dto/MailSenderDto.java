@@ -1,6 +1,5 @@
 package org.jwebppy.platform.mgmt.mail.dto;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class MailSenderDto extends GeneralDto implements IPagination
 	private List<String> to;
 	private List<String> cc;
 	private List<String> bcc;
-	private List<File> attachments;
+	private List<Attachment> attachments;
 	private String error;
 
 	public void setTo(List<String> to)
@@ -36,7 +35,7 @@ public class MailSenderDto extends GeneralDto implements IPagination
 		this.to = to;
 	}
 
-	public void setTo(String to)
+	public void addTo(String to)
 	{
 		if (CollectionUtils.isEmpty(this.to))
 		{
@@ -76,12 +75,12 @@ public class MailSenderDto extends GeneralDto implements IPagination
 		this.bcc.add(bcc);
 	}
 
-	public void setAttachments(List<File> attachments)
+	public void setAttachments(List<Attachment> attachments)
 	{
 		this.attachments = attachments;
 	}
 
-	public void setAttachments(File attachment)
+	public void addAttachment(Attachment attachment)
 	{
 		if (CollectionUtils.isEmpty(this.attachments))
 		{

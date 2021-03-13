@@ -3,8 +3,8 @@
 
 <mapper namespace="org.jwebppy.platform.mgmt.mail.mapper.MailSendHistoryMapper">
 	<insert id="insert" parameterType="MailSendHistoryEntity" useGeneratedKeys="true" keyProperty="mshSeq">
-		insert into pltf_mail_send_history (subject, text, `from`, `to`, cc, bcc, attachment, reg_username, reg_date) values (
-			#{subject}, #{text}, #{from}, #{to}, #{cc}, #{bcc}, #{attachment}, #{regUsername}, #{regDate}
+		insert into pltf_mail_send_history (subject, text, `from`, attachment, reg_username, reg_date) values (
+			#{subject}, #{text}, #{from}, #{attachment}, #{regUsername}, #{regDate}
 		)
 	</insert>
 	

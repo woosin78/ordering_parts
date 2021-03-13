@@ -11,7 +11,5 @@ public class CmBeanNameGenerator implements BeanNameGenerator
 	public String generateBeanName(BeanDefinition definition, BeanDefinitionRegistry registry)
 	{
 		return ((AnnotatedBeanDefinition)definition).getMetadata().getClassName();
-
-		//return definition.getBeanClassName();
 	}
 }

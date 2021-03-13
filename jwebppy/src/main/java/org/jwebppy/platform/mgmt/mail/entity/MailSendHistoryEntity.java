@@ -19,10 +19,8 @@ public class MailSendHistoryEntity extends GeneralEntity
 	private String subject;
 	private String text;
 	private String from;
-	private String to;
-	private String cc;
-	private String bcc;
 	private String attachment;
-	private LocalDateTime completeDate;
+	private LocalDateTime reserveDate;
 	private String error;
+	private LocalDateTime completeDate;
 }
