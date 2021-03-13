@@ -91,16 +91,6 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         	throw new LockedException("The account has been locked");
         }
 
-        /*
-        if (!"AD-USER".equals(password))
-        {
-            if (!passwordEncoder.matches(password, userAccount.getPassword()))
-            {
-            	throw new BadCredentialsException ("Password does not match");
-            }
-        }
-        */
-
         return userAuthenticationService.getAuthentication(user);
 	}
 

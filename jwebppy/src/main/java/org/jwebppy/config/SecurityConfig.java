@@ -1,8 +1,8 @@
 package org.jwebppy.config;
 
 import org.jwebppy.platform.core.PlatformConfigVo;
-import org.jwebppy.platform.core.filter.PlatformAuthenticationFilter;
 import org.jwebppy.platform.core.security.authentication.AjaxAwareAuthenticationEntryPoint;
+import org.jwebppy.platform.core.security.authentication.PlatformAuthenticationFilter;
 import org.jwebppy.platform.core.security.authentication.PlatformAuthenticationManager;
 import org.jwebppy.platform.core.security.authentication.handler.LoginFailureHandler;
 import org.jwebppy.platform.core.security.authentication.handler.LoginSuccessHandler;

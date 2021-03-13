@@ -1,4 +1,4 @@
-package org.jwebppy.platform.core.filter;
+package org.jwebppy.platform.core.security.authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
