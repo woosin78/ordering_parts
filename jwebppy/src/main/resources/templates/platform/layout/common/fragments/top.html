@@ -59,11 +59,20 @@ function makeGmb()
 			});
 			
 			$(".ui.menu.topMenu span.text").on("click", function() {
-				let url = $(this).attr("url");
+				moveToLink(this);
+			});
+			
+			$(".ui.menu.topMenu span.text[url]").parent("div.item").on("click", function() {
+				moveToLink($(this).find("span.text[url]"));
+			});
+			
+			function moveToLink(menu)
+			{
+				let url = $(menu).attr("url");
 				
 				if (JpUtilsString.isEmpty(url))
 				{
-					let subElements = $(this).parent().find("span.text[url]");
+					let subElements = $(menu).parent().find("span.text[url]");
 					
 					for (let i=0, length=subElements.length; i<length; i++)
 					{
@@ -76,7 +85,7 @@ function makeGmb()
 				};
 				
 				document.location.href = JpUiGlobal.url(url);
-			});
+			};			
 			
 			//Get last login information
 			$.ajax({
@@ -132,7 +141,6 @@ function makeGmb()
 
 $(document).ready(function() {
 	makeGmb();
-	//breadcrumb();
 });
 
 function logout()
