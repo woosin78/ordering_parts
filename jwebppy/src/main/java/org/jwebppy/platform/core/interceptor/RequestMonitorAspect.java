@@ -107,7 +107,7 @@ public class RequestMonitorAspect
 		}
 	}
 
-	@Around("execution(* org.jwebppy..web..*Controller.*(..))")
+	@Around("execution(* org.jwebppy..*Controller.*(..))")
 	public Object onAround(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable
 	{
 		//사용자 정보 업데이트

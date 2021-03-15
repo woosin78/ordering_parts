@@ -8,14 +8,16 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.PortalGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ScmGeneralService extends PortalGeneralService
 {
 	@Autowired
 	private SimpleRfcTemplate simpleRfcTemplate;
 
 	@Cacheable(value = CacheConfig.CUSTOMER, key = "#username", unless="#result == null")
-	public RfcResponse getUserInfo(String username)
+	public RfcResponse getErpUserInfo(String username)
 	{
 		if (CmStringUtils.isNotEmpty(username))
 		{

@@ -2,10 +2,11 @@ package org.jwebppy.portal;
 
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.core.web.GeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
-public class PortalGeneralController
+public class PortalGeneralController extends GeneralController
 {
 	@Autowired
 	private Environment environment;

@@ -7,6 +7,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dao.sap.JCoConnectionInfo;
 import org.jwebppy.platform.core.dao.sap.JCoConnectionResource;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,8 +34,8 @@ public class JCoConfig
     @Value("${sap.jco.landscape.default}")
     private String DEFAULT_LANDSCAPE;
 
-	@Bean
-	public SimpleRfcTemplate rfcTemplate()
+    @Bean
+    public SimpleRfcTemplate rfcTemplate()
 	{
 		if (Boolean.valueOf(isActive))
 		{
@@ -48,7 +49,7 @@ public class JCoConfig
 	{
 		JCoConnectionResource jCoConnectionResource = new JCoConnectionResource();
 
-		String[] landscapes = LANDSCAPE.split(PlatformCommonVo.DELIMITER);
+		String[] landscapes = CmStringUtils.split(LANDSCAPE, PlatformCommonVo.DELIMITER);
 		for (String landscape : landscapes)
 		{
 			jCoConnectionResource.addConnectionInfo(getConnectionInfo(landscape));
@@ -100,7 +101,7 @@ public class JCoConfig
 		}
 		else
 		{
-			logger.warn("The SAP Landscape does not exist [" + landscape + "]");
+			logger.warn("[" + SID + "] The SAP Landscape does not exist [" + landscape + "]");
 		}
 
 		return null;

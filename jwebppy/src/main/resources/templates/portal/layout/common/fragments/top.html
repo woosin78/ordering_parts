@@ -1,0 +1,150 @@
+<div class="ui fixed inverted menu topMenu">
+<!-- Top menu area. This comment is mandatory to make a space between top and body.-->
+</div>
+<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
+<script type="application/javascript">
+function makeGmb()
+{
+	//Make GMB
+	let menu = [];
+
+	JpUtilsAjax.get({
+		url: JpUiGlobal.url("/platform/mgmt/content/my_menu"),
+		success: function(data, textStatus, jqXHR)
+		{
+			menu.push("<div class='header item'>");
+			menu.push("<div class='ui black'>");		
+			menu.push("<i class='bars icon'></i>");
+			menu.push("</div>");
+			menu.push("</div>");			
+			
+		    data.RESULT.forEach(function(element, index) {
+		    	let length = (element.SUB_ITEMS != null) ? element.SUB_ITEMS.length : 0;
+		    	
+		    	if (length > 0)
+		    	{
+			    	menu.push("<div class='ui dropdown item'>");
+			    	makeItems(element);
+			    	menu.push("</div>");		    		
+		    	};
+		    });
+
+		    menu.push("<div class='ui dropdown item right inverted user settings'>");
+		    menu.push("<i class='cog icon'></i>");
+		    menu.push("<div class='menu'>");
+		    menu.push("<div class='item'><i class='history icon'></i> Last Login Time/IP : <span id='lastLoginTime'></span></div>");
+		    menu.push("<div class='divider'></div>");
+		    menu.push("<a class='item' href='javascript:logout();'><i class='power off icon'></i> Log Off</a>");
+		    menu.push("</div>");
+		    menu.push("</div>");		    
+		    
+		    $(".ui.menu.topMenu").html(menu.join(""));
+
+		    /* 메뉴명 길이에 따라서 width 를 자동 조절함 */
+		    let maxLength = 0;
+		    $(".ui.menu.topMenu span.text").each(function(index, element) {
+				let length = $(this).html().length;
+				
+				if (length > maxLength)
+				{
+					maxLength = length;
+				};
+		    });
+		    
+		    $(".ui.menu.topMenu span.text").css("width", maxLength * 8);
+		    /* 메뉴명 길이에 따라서 너비를 자동 조절함 */
+		    
+			$(".ui.menu.topMenu .ui.dropdown").dropdown({
+				allowCategorySelection: true
+			});
+			
+			$(".ui.menu.topMenu span.text").on("click", function() {
+				moveToLink(this);
+			});
+			
+			$(".ui.menu.topMenu span.text[url]").parent("div.item").on("click", function() {
+				moveToLink($(this).find("span.text[url]"));
+			});
+			
+			function moveToLink(menu)
+			{
+				let url = $(menu).attr("url");
+				
+				if (JpUtilsString.isEmpty(url))
+				{
+					let subElements = $(menu).parent().find("span.text[url]");
+					
+					for (let i=0, length=subElements.length; i<length; i++)
+					{
+						if (JpUtilsString.isNotEmpty($(subElements[i]).attr("url")))
+						{
+							url = $(subElements[i]).attr("url");
+							break;
+						};
+					};
+				};
+				
+				document.location.href = JpUiGlobal.url(url);
+			};			
+			
+			//Get last login information
+			$.ajax({
+				url: "/platform/common/authentication/last_login_info",		
+			    success: function(response, textStatus, jqXHR) 
+			    {
+			    	let data = response.RESULT;
+			    	
+			    	if (data != null && $.trim(data.regDate) != "")
+			    	{
+			    		$("#lastLoginTime").html(moment(data.regDate).format(JpUiGlobal.DEFAULT_DATE_TIME_FORMAT) + "/" + data.ip);
+			    	}
+			    	else
+			    	{
+			    		$("#lastLoginTime").html("-/-");
+			    	};	    	
+			    }	
+			});
+			
+			$(".ui.dropdown").dropdown();
+		}
+	});
+	
+	let makeItems = function (cItem)
+	{
+		let length = (cItem.SUB_ITEMS != null) ? cItem.SUB_ITEMS.length : 0;
+		
+		menu.push("<span class='text'");
+		
+		if (length == 0)
+		{
+			menu.push(" url='" + JpUiGlobal.url(cItem.URL) + "'");	
+		};
+		
+		menu.push(">" + cItem.NAME + "</span>");
+		
+		if (length > 0)
+		{
+			menu.push(" <i class='dropdown icon'></i>");
+			menu.push("<div class='menu'>");
+
+			for (let i=0; i<length; i++)
+			{
+				menu.push("<div class='item'>");
+				makeItems(cItem.SUB_ITEMS[i]);
+				menu.push("</div>");
+			};
+			
+			menu.push("</div>");
+		}
+	};
+};
+
+$(document).ready(function() {
+	makeGmb();
+});
+
+function logout()
+{
+	$("#FORM_logout").submit();	
+};
+</script>

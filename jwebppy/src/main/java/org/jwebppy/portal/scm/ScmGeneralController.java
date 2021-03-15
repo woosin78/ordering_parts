@@ -23,9 +23,9 @@ public class ScmGeneralController extends PortalGeneralController
 		ErpUserContext erpUserContext = UserAuthenticationUtils.getUserDetails().getErpUserContext();
 		String lang = CmStringUtils.defaultString(UserAuthenticationUtils.getUserDetails().getLanguage(), Locale.ENGLISH).toUpperCase();
 
-		if (erpUserContext == null || CmStringUtils.isEmpty(erpUserContext.getCorpName()))
+		if (erpUserContext == null || CmStringUtils.isEmpty(erpUserContext.getCorpCode()))
 		{
-	        RfcResponse response = scmGeneralService.getUserInfo(getUsername());
+	        RfcResponse response = scmGeneralService.getErpUserInfo(getUsername());
 	        DataList userList = response.getTable("T_USER");
 
 	        if (CollectionUtils.isNotEmpty(userList))
@@ -36,15 +36,15 @@ public class ScmGeneralController extends PortalGeneralController
 
 	    		userMap.put("TYPE", response.getString("O_TYPE"));
 
-	    		erpUserContext.setCorpNo(userMap.getString("BUKRS"));
+	    		erpUserContext.setCorpCode(userMap.getString("BUKRS"));
 	    		erpUserContext.setUsername(userMap.getString("BNAME").toUpperCase());
-	    		erpUserContext.setCustomerNo(userMap.getString("KUNNR"));
-	    		erpUserContext.setCustomerName(userMap.getString("NAME1"));
+	    		erpUserContext.setCustCode(userMap.getString("KUNNR"));
+	    		erpUserContext.setCustName(userMap.getString("NAME1"));
 	    		erpUserContext.setSalesOrg(userMap.getString("VKORG"));
-	    		erpUserContext.setDistChannel(userMap.getString("VTWEG"));
+	    		erpUserContext.setDistChl(userMap.getString("VTWEG"));
 	    		erpUserContext.setDivision(userMap.getString("SPART"));
-	    		erpUserContext.setCustomerGrp5(userMap.getString("KVGR5"));
-	    		erpUserContext.setCustomerType(userMap.getString("TYPE"));
+	    		erpUserContext.setCustGrp5(userMap.getString("KVGR5"));
+	    		erpUserContext.setCustType(userMap.getString("TYPE"));
 
 	    		UserAuthenticationUtils.getUserDetails().setErpUserContext(erpUserContext);
 
@@ -58,15 +58,15 @@ public class ScmGeneralController extends PortalGeneralController
 		{
 			ErpDataMap erpDataMap = new ErpDataMap();
 
-			erpDataMap.put("BUKRS", erpUserContext.getCorpNo());
+			erpDataMap.put("BUKRS", erpUserContext.getCorpCode());
 			erpDataMap.put("BNAME", erpUserContext.getUsername());
-			erpDataMap.put("KUNNR", erpUserContext.getCustomerNo());
-			erpDataMap.put("NAME1", erpUserContext.getCustomerName());
+			erpDataMap.put("KUNNR", erpUserContext.getCustCode());
+			erpDataMap.put("NAME1", erpUserContext.getCustName());
 			erpDataMap.put("VKORG", erpUserContext.getSalesOrg());
-			erpDataMap.put("VTWEG", erpUserContext.getDistChannel());
+			erpDataMap.put("VTWEG", erpUserContext.getDistChl());
 			erpDataMap.put("SPART", erpUserContext.getDivision());
-			erpDataMap.put("KVGR5", erpUserContext.getCustomerGrp5());
-			erpDataMap.put("TYPE", erpUserContext.getCustomerType());
+			erpDataMap.put("KVGR5", erpUserContext.getCustGrp5());
+			erpDataMap.put("TYPE", erpUserContext.getCustType());
 			erpDataMap.put("LANG", lang);
 
 			return erpDataMap;

@@ -1,5 +1,9 @@
 package org.jwebppy.portal;
 
-public class PortalGeneralService {
+import org.jwebppy.platform.core.service.GeneralService;
+import org.springframework.stereotype.Service;
 
+@Service
+public class PortalGeneralService extends GeneralService
+{
 }

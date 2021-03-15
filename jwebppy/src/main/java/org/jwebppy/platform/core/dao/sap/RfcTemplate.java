@@ -72,6 +72,7 @@ public class RfcTemplate extends AbstractDaoTemplate
 
     	if (erpUserContext != null)
     	{
+    		/*
         	if (CmStringUtils.equals(erpUserContext.getCorpName(), "DIVEU"))
         	{
         		return "P01";
@@ -80,6 +81,7 @@ public class RfcTemplate extends AbstractDaoTemplate
         	{
         		return "GMT";
         	}
+        	*/
     	}
 
     	return "P09";
