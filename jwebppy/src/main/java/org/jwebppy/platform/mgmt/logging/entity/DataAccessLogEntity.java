@@ -14,7 +14,7 @@ import lombok.ToString;
 public class DataAccessLogEntity extends GeneralEntity
 {
 	private static final long serialVersionUID = -1852102477184581249L;
-	private Long dlSeq;
+	private String dlSeq;
 	private String type;
 	private String command;
 	private String className;

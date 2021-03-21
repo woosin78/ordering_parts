@@ -12,6 +12,8 @@ public class MainController extends ScmGeneralController
 	@RequestMapping("/main")
 	public String main(Model model)
 	{
+		getErpUserInfo();
+
 		return DEFAULT_VIEW_URL;
 	}
 }

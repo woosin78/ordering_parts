@@ -77,7 +77,7 @@ public class JobConfig
 			@Override
 			public DataAccessLogDto process(DataAccessLogDto dataAccessLog) throws Exception
 			{
-				logger.info(Long.toString(dataAccessLog.getDlSeq()));
+				logger.info(dataAccessLog.getDlSeq());
 				return null;
 			}
 

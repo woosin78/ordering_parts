@@ -11,7 +11,6 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
 import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
@@ -395,15 +394,7 @@ public class UserLayoutBuilder
 		table.addThead(thead);
 		table.addTbody(tbody);
 
-		Element loDivider = new Div();
-		loDivider.setClass("ui clearing divider");
-
-//		Element loDescription = new Element("div");
-//		loDescription.setText("This is a part of login history. If you want to check more data, please see them in Login History.");
-//		loDescription.addElement(loDivider);
-
 		Document document = new Document();
-//		document.addElement(loDescription);
 		document.addElement(table);
 
 		return document;

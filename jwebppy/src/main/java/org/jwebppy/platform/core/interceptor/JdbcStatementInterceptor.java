@@ -23,9 +23,11 @@ import org.jwebppy.platform.core.util.CmBeanUtils;
 import org.jwebppy.platform.core.util.CmFieldUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.JdbcStatementContextUtils;
+import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
+import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
 
 @Intercepts({
     @Signature(type=StatementHandler.class, method="update", args={Statement.class})
@@ -69,6 +71,7 @@ public class JdbcStatementInterceptor implements Interceptor
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
 
 		DataAccessLogDto dataAccessLog = new DataAccessLogDto();
+		dataAccessLog.setDlSeq(UidGenerateUtils.generate());
 		dataAccessLog.setCommand(CmStringUtils.trim(boundSql.getSql()));
 		dataAccessLog.setType("J");
 		dataAccessLog.setStartTime(stopWatch.getStartTime());
@@ -172,7 +175,7 @@ public class JdbcStatementInterceptor implements Interceptor
 			}
 
 			DataAccessLogParameterDto dataAccessLogParameter = new DataAccessLogParameterDto();
-			dataAccessLogParameter.setType("S");
+			dataAccessLogParameter.setType(ParameterType.S);
 			dataAccessLogParameter.setDataAccessLogParameterDetails(dataAccessLogParameterDetails);
 
 			dataAccessLogParameters.add(dataAccessLogParameter);

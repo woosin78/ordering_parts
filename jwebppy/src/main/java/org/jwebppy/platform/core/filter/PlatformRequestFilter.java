@@ -1,7 +1,6 @@
 package org.jwebppy.platform.core.filter;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class PlatformRequestFilter implements Filter
 	{
 		isAllowableMethod(request, response);
 
-		MDC.put(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY, UUID.randomUUID().toString());
+		MDC.put(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY, UidGenerateUtils.generate());
 
 		chain.doFilter(request, response);
 

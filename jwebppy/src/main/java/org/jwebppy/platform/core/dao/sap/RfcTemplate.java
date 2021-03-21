@@ -19,11 +19,14 @@ import org.jwebppy.platform.core.dao.ParameterValue;
 import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.SessionContextUtils;
+import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
+import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
+import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -44,6 +47,9 @@ public class RfcTemplate extends AbstractDaoTemplate
 
 	@Autowired
 	private DataAccessLogService dataAccessLogService;
+
+	@Autowired
+	private DataAccessResultLogService dataAccessResultLogService;
 
     private JCoConnectionResource jCoConnectionResource;
 
@@ -97,6 +103,7 @@ public class RfcTemplate extends AbstractDaoTemplate
 
 		JCoDestination jCoDestination = null;
 		JCoFunction jCoFunction = null;
+		Map<String, Object> result = null;
 
         try
         {
@@ -120,7 +127,9 @@ public class RfcTemplate extends AbstractDaoTemplate
             startTime = stopWatch.getStartTime();
             elapsedTime = stopWatch.getNanoTime();
 
-            return extractData(jCoFunction, rfcRequest.getOutputParameterMap());
+            result = extractData(jCoFunction, rfcRequest.getOutputParameterMap());
+
+            return result;
         }
         catch (JCoException e)
         {
@@ -148,7 +157,10 @@ public class RfcTemplate extends AbstractDaoTemplate
 				break;
 			}
 
+			String dlSeq = UidGenerateUtils.generate();
+
 			DataAccessLogDto dataAccessLog = new DataAccessLogDto();
+			dataAccessLog.setDlSeq(dlSeq);
 			dataAccessLog.setCommand(rfcRequest.getFunctionName());
 			dataAccessLog.setType("R");
 			dataAccessLog.setClassName(className);
@@ -163,6 +175,8 @@ public class RfcTemplate extends AbstractDaoTemplate
 			dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
 
 			dataAccessLogService.writeLog(dataAccessLog);
+
+			dataAccessResultLogService.writeLog(dlSeq, result);
 
 			jCoFunction = null;
 			jCoDestination = null;
@@ -457,19 +471,19 @@ public class RfcTemplate extends AbstractDaoTemplate
 				{
 					MapParameterSource mapParameterSource = (MapParameterSource)parameterValue.getValue();
 
-					dataAccessLogParameter.setType("S");
+					dataAccessLogParameter.setType(ParameterType.S);
 					dataAccessLogParameter.setDataAccessLogParameterDetails(structureToParameterDetails(0, mapParameterSource.getValues()));
 				}
 				else if (type == AbapType.TABLE)
 				{
 					MapParameterSource mapParameterSource = (MapParameterSource)parameterValue.getValue();
 
-					dataAccessLogParameter.setType("T");
+					dataAccessLogParameter.setType(ParameterType.T);
 					dataAccessLogParameter.setDataAccessLogParameterDetails(tableToParameterDetails(mapParameterSource.getValues()));
 				}
 				else
 				{
-					dataAccessLogParameter.setType("F");
+					dataAccessLogParameter.setType(ParameterType.F);
 					dataAccessLogParameter.setDataAccessLogParameterDetails(fieldToParameterDetails(parameterValue));
 				}
 

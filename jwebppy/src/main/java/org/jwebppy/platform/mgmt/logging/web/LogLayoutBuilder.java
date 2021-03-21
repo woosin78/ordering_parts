@@ -25,6 +25,7 @@ import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
+import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
 
 public class LogLayoutBuilder
 {
@@ -96,35 +97,53 @@ public class LogLayoutBuilder
 
 	public static Document getJdbcLog(DataAccessLogDto dataAccessLog)
 	{
-		StringBuffer parameter = new StringBuffer();
-
-		if (CmStringUtils.equals(dataAccessLog.getType(), "J"))
-		{
-			List<DataAccessLogParameterDto> dataAccessLogParameters = dataAccessLog.getDataAccessLogParameters();
-
-			if (CollectionUtils.isNotEmpty(dataAccessLogParameters))
-			{
-				for (DataAccessLogParameterDto dataAccessLogParameter : dataAccessLogParameters)
-				{
-					for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail : dataAccessLogParameter.getDataAccessLogParameterDetails())
-					{
-						parameter.append("<p>[NAME : ").append(dataAccessLogParameterDetail.getName()).append("], [VALUE : ").append(dataAccessLogParameterDetail.getValue()).append("]</p>");
-					}
-				}
-			}
-		}
-
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Type", dataAccessLog.getDisplayType());
 		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
 		elementMap.put("Reg. Username", dataAccessLog.getRegUsername());
 		elementMap.put("Elapsed", CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
-		elementMap.put("Command", new Element("xmp", dataAccessLog.getCommand()));
-		elementMap.put("Parameters", parameter);
 		elementMap.put("Error", new Element("xmp", dataAccessLog.getError()));
+		elementMap.put("Command", new Element("xmp", dataAccessLog.getCommand()));
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
+
+		List<DataAccessLogParameterDto> dataAccessLogParameters = dataAccessLog.getDataAccessLogParameters();
+
+		if (CollectionUtils.isNotEmpty(dataAccessLogParameters))
+		{
+			Element title = new Element("h4", "Parameters");
+			title.setClass("ui header");
+
+			document.addElement(title);
+
+			Tr thTr = new Tr();
+			thTr.addTextTh("Name", "two wide");
+			thTr.addTextTh("Value", "fourteen wide");
+
+			Thead thead = new Thead();
+			thead.addTr(thTr);
+
+			Tbody tbody = new Tbody();
+
+			for (DataAccessLogParameterDto dataAccessLogParameter : dataAccessLogParameters)
+			{
+				for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail : dataAccessLogParameter.getDataAccessLogParameterDetails())
+				{
+					Tr tbTr = new Tr();
+					tbTr.addTextTd(dataAccessLogParameterDetail.getName());
+					tbTr.addTextTd(dataAccessLogParameterDetail.getValue());
+
+					tbody.addTr(tbTr);
+				}
+			}
+
+			Table table = new Table();
+			table.addThead(thead);
+			table.addTbody(tbody);
+
+			document.addElement(table);
+		}
 
 		return document;
 	}
@@ -142,15 +161,38 @@ public class LogLayoutBuilder
 		elementMap.put("Error", new Element("xmp", dataAccessLog.getError()));
 
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
-		document.addElement(divider());
+		document.addElement(Div.hiddenDivider());
 
 		addFields(document, dataAccessLog);
 
-		document.addElement(divider());
+		document.addElement(Div.hiddenDivider());
 
 		addStructures(document, dataAccessLog);
 
-		document.addElement(divider());
+		document.addElement(Div.hiddenDivider());
+
+		addTables(document, dataAccessLog);
+
+		return document;
+	}
+
+	public static Document getRfcResultLog(DataAccessLogDto dataAccessLog)
+	{
+		Document document = new Document();
+
+		Map<String, Object> elementMap = new LinkedHashMap<>();
+		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
+
+		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
+		document.addElement(Div.hiddenDivider());
+
+		addFields(document, dataAccessLog);
+
+		document.addElement(Div.hiddenDivider());
+
+		addStructures(document, dataAccessLog);
+
+		document.addElement(Div.hiddenDivider());
 
 		addTables(document, dataAccessLog);
 
@@ -168,7 +210,7 @@ public class LogLayoutBuilder
 
 			for (DataAccessLogParameterDto dataAccessLogParameter : ListUtils.emptyIfNull(dataAccessLog.getDataAccessLogParameters()))
 			{
-				if (!"F".equals(dataAccessLogParameter.getType()))
+				if (!ParameterType.F.equals(dataAccessLogParameter.getType()))
 				{
 					continue;
 				}
@@ -201,7 +243,7 @@ public class LogLayoutBuilder
 
 			for (DataAccessLogParameterDto dataAccessLogParameter : ListUtils.emptyIfNull(dataAccessLog.getDataAccessLogParameters()))
 			{
-				if (!"S".equals(dataAccessLogParameter.getType()))
+				if (!ParameterType.S.equals(dataAccessLogParameter.getType()))
 				{
 					continue;
 				}
@@ -218,7 +260,7 @@ public class LogLayoutBuilder
 
 				for (DataAccessLogParameterDto dataAccessLogParameter : ListUtils.emptyIfNull(dataAccessLog.getDataAccessLogParameters()))
 				{
-					if (!"S".equals(dataAccessLogParameter.getType()))
+					if (!ParameterType.S.equals(dataAccessLogParameter.getType()))
 					{
 						continue;
 					}
@@ -245,7 +287,7 @@ public class LogLayoutBuilder
 
 		for (DataAccessLogParameterDto dataAccessLogParameter : ListUtils.emptyIfNull(dataAccessLog.getDataAccessLogParameters()))
 		{
-			if (!"T".equals(dataAccessLogParameter.getType()))
+			if (!ParameterType.T.equals(dataAccessLogParameter.getType()))
 			{
 				continue;
 			}
@@ -324,6 +366,7 @@ public class LogLayoutBuilder
 					tbody.addTr(tbTr);
 
 					Table table = new Table();
+					table.setStyle("overflow-x: auto; display: block; white-space: nowrap;");
 					table.addThead(thead);
 					table.addTbody(tbody);
 
@@ -337,14 +380,6 @@ public class LogLayoutBuilder
 	{
 		Element element = new Div(title);
 		element.setClass("ui dividing small header");
-
-		return element;
-	}
-
-	private static Element divider()
-	{
-		Element element = new Div();
-		element.setClass("ui hidden fitted divider");
 
 		return element;
 	}

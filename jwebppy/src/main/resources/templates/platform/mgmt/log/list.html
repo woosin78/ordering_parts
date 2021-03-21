@@ -31,7 +31,7 @@
 		</div>
 		<div class="six wide field">
 			<div class="ui calendar">
-				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toDate" name="toDate" placeholder="To Start Time" th:value="${dataAccessLogSearch.toDate}"/></div>
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toDate" name="toDate" placeholder="To Start Time"/></div>
 			</div>				
 		</div>
 	</div>
@@ -71,8 +71,8 @@ $(document).ready(function() {
 			{
 				JpUiPopup.open({
 					url: JpUiGlobal.url("/platform/mgmt/log/detail_popup?dlSeq=" + key),
-					width: screen.availWidth * 0.8,
-					height: screen.availHeight * 0.8,
+					width: screen.availWidth * 0.5,
+					height: screen.availHeight * 0.9,
 					fgCenter: "Y"
 				});
 			},

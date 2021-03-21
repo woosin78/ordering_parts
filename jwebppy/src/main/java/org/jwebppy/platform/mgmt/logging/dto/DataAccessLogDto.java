@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
@@ -21,7 +22,7 @@ public class DataAccessLogDto extends GeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -3252178705437302180L;
 
-	private Long dlSeq;
+	private String dlSeq;
 	private String type;
 	private String command;
 	private String className;
@@ -33,6 +34,7 @@ public class DataAccessLogDto extends GeneralDto implements IPagination
 	private String sessionId;
 	private String error;
 	private List<DataAccessLogParameterDto> dataAccessLogParameters;
+	private Map<String, Object> executionResult;
 
 	public String getDisplayType()
 	{

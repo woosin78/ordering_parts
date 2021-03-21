@@ -35,16 +35,17 @@ public class DataAccessLogService extends GeneralService
 
 		if (CollectionUtils.isNotEmpty(dataAccessLog.getDataAccessLogParameters()))
 		{
-			for (DataAccessLogParameterDto dataAccessLogParameterDto : dataAccessLog.getDataAccessLogParameters())
+			for (DataAccessLogParameterDto dataAccessLogParameter : dataAccessLog.getDataAccessLogParameters())
 			{
-				DataAccessLogParameterEntity dataAccessLogParameterEntity = CmModelMapperUtils.map(dataAccessLogParameterDto, DataAccessLogParameterEntity.class);
+				DataAccessLogParameterEntity dataAccessLogParameterEntity = CmModelMapperUtils.map(dataAccessLogParameter, DataAccessLogParameterEntity.class);
 
-				dataAccessLogParameterEntity.setDlSeq(dataAccessLogEntity.getDlSeq());
+				dataAccessLogParameterEntity.setDlSeq(dataAccessLog.getDlSeq());
+
 				dataAccessLogMapper.insertDataAccessLogParameter(dataAccessLogParameterEntity);
 
-				if (CollectionUtils.isNotEmpty(dataAccessLogParameterDto.getDataAccessLogParameterDetails()))
+				if (CollectionUtils.isNotEmpty(dataAccessLogParameter.getDataAccessLogParameterDetails()))
 				{
-					for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail : dataAccessLogParameterDto.getDataAccessLogParameterDetails())
+					for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail : dataAccessLogParameter.getDataAccessLogParameterDetails())
 					{
 						DataAccessLogParameterDetailEntity dataAccessLogParameterDetailEntity = CmModelMapperUtils.map(dataAccessLogParameterDetail, DataAccessLogParameterDetailEntity.class);
 
@@ -61,7 +62,7 @@ public class DataAccessLogService extends GeneralService
 		return CmModelMapperUtils.mapAll(dataAccessLogMapper.findPageableLogs(dataAccessLogSearch), DataAccessLogDto.class);
 	}
 
-	public DataAccessLogDto getLog(Long dlSeq)
+	public DataAccessLogDto getLog(String dlSeq)
 	{
 		return CmModelMapperUtils.map(dataAccessLogMapper.findLog(dlSeq), DataAccessLogDto.class);
 	}

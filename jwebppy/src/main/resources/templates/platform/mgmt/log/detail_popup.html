@@ -5,21 +5,67 @@
 	layout:decorate="~{platform/layout/popup/index}">
 
 <th:block layout:fragment="content">
-<div class="ui segment">
-	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" id="dlSeq" name="dlSeq" th:value="${dataAccessLogSearch.dlSeq}" />
-	<div id="AREA_log"></div>
-	</form>
+<th:block th:if="${dataAccessLog.type == 'R'}">
+<div class="ui one column grid">
+	<div class="column">
+		<div id="BTN_execute" class="ui teal button"><i class="play icon"></i> Execute</div>
+	</div>
 </div>
+<div class="ui divider"></div>
+</th:block>
+
+<div id="TAB_viewLogDetail" class="ui secondary pointing menu">
+	<a class="item active wrap" data-tab="parameter">Parameter</a>
+	<a th:if="${dataAccessLogSearch.fgHasResultLog} == 'Y'" class="item wrap" data-tab="result">Result</a>
+</div>
+
+<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
+<input type="hidden" id="dlSeq" name="dlSeq" th:value="${dataAccessLogSearch.dlSeq}" />	
+<div class="ui tab active attached segment teal" data-tab="parameter"></div>
+<div th:if="${dataAccessLogSearch.fgHasResultLog} == 'Y'" class="ui tab attached segment teal" data-tab="result"></div>
+</form>
 
 <script type="application/javascript">
 $(document).ready(function() {
-	JpUtilsAjax.get({
-		url: JpUiGlobal.url("/platform/mgmt/log/detail_popup/data?dlSeq=" + $("#dlSeq").val()),
-		success: function(response, textStatus, jqXHR)
-		{
-			$("#AREA_log").html(new JpUiRender().render(response));
-		}
+	let viewLogTab = new JpUiTab($("#TAB_viewLogDetail"));
+	viewLogTab.settings = {
+			ajax: {
+				beforeSend: function(settings)
+				{
+					settings.data = $("#FORM_search").serialize();
+					
+					return settings;
+				}
+			},
+			tab: {
+				path: JpUiGlobal.url("/platform/mgmt/log/detail_popup"),
+				alwaysRefresh: true,
+				isLoadFirstTab: true,
+				onLoaded: function(tabPath, parameterArray, historyEvent)
+				{
+					$("table").each(function(index) {
+						if ($(this).get(0).scrollWidth > $(this).width())
+						{
+							$(this).css("display", "block");
+						}
+						else
+						{
+							$(this).css("display", "");
+						};
+					});
+				}				
+			}
+	};
+
+	viewLogTab.render();
+
+	$("#BTN_execute").on(function() {
+		JpUtilsAjax.get({
+			url: JpUiGlobal.url("/platform/mgmt/log/rfc/execute?dlSeq=" + $("#dlSeq").val()),
+			success: function(response, textStatus, jqXHR)
+			{
+			}
+		});		
 	});
 });
 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ScmGeneralService extends PortalGeneralService
 {
-	@Autowired
+	@Autowired(required = false)
 	private SimpleRfcTemplate simpleRfcTemplate;
 
 	@Cacheable(value = CacheConfig.CUSTOMER, key = "#username", unless="#result == null")
