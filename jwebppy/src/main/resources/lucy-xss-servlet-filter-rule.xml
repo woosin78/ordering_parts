@@ -52,6 +52,13 @@
 				<param name="htmlContent" useDefender="false" />
 			</params>
 		</url-rule>
+
+		<url-rule>
+			<url>/portal/dbkr/download/grid/excel</url>
+			<params>
+				<param name="data" useDefender="false" />
+			</params>
+		</url-rule>
        
        <!-- url disable이 true이면 지정한 url 내의 모든 파라메터는 필터링 되지 않는다.
        <url-rule>

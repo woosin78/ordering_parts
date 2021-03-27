@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.jwebppy.platform.core.interceptor.NoLogging;
 import org.jwebppy.platform.core.util.CmAnnotationUtils;
 import org.jwebppy.platform.core.util.CmReflectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;

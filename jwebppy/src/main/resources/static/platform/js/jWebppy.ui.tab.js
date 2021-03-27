@@ -85,7 +85,16 @@ let JpUiTab = function(context)
 						_this.settings.tab.onLoaded(tabPath, parameterArray, historyEvent);
 					};
 					
-					JpUiGlobal.changeSizeOfElement();
+					thisTab.find("table").each(function(index) {
+						if ($(this).get(0).scrollWidth > $(this).width())
+						{
+							$(this).css("display", "block");
+						}
+						else
+						{
+							$(this).css("display", "");
+						};
+					});
 				}
 		};
 		

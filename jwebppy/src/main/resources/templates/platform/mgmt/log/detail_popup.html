@@ -40,20 +40,7 @@ $(document).ready(function() {
 			tab: {
 				path: JpUiGlobal.url("/platform/mgmt/log/detail_popup"),
 				alwaysRefresh: true,
-				isLoadFirstTab: true,
-				onLoaded: function(tabPath, parameterArray, historyEvent)
-				{
-					$("table").each(function(index) {
-						if ($(this).get(0).scrollWidth > $(this).width())
-						{
-							$(this).css("display", "block");
-						}
-						else
-						{
-							$(this).css("display", "");
-						};
-					});
-				}				
+				isLoadFirstTab: true				
 			}
 	};
 

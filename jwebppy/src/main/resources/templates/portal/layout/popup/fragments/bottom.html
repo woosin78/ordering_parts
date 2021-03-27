@@ -1,90 +1,15 @@
-<!-- bottom start -->
-<div class="ui bottom_blank" style="width:100%; margin-top:40px;">&nbsp;</div>
-<div class="ui bottom inverted vertical footer segment" style="position: fixed; width:100%; bottom: 0px;">
-	<!-- div class="ui center aligned container round">	
-		<div class="ui stackable inverted divided grid">
-			<div class="two wide column"></div>
-			<div class="four wide column">
-				<h4 class="ui inverted header">User</h4>
-				<div class="ui inverted link list">
-					<a href="#" class="item">User</a>
-				</div>
-			</div>
-			<div class="four wide column">
-				<h4 class="ui inverted header">Content</h4>
-				<div class="ui inverted link list">
-					<a href="#" class="item">Menu</a>
-					<a href="#" class="item">Translation</a>
-				</div>
-			</div>
-			<div class="four wide column">
-				<h4 class="ui inverted header">System</h4>
-				<div class="ui inverted link list">
-					<a href="#" class="item">Interface Log</a>
-				</div>
-			</div>
-			<div class="two wide column"></div>
-		</div>	
-	</div>
-	<div class="ui inverted section divider"></div-->
-	<div class="ui center aligned container">
-		<!-- img class="ui centered image" th:src="@{/portal/img/head_logo.png}" alt="jWebppy"/ -->
-		<div class="ui horizontal inverted small divided link list">
-			<a class="item" href="#" th:text="#{PLTF_T_COPYLEFT}"></a>
+<!-- bottom.html begin
+<div style="height: 58px;">
+<div class="footer-area">
+	<div class="footer">
+		<div class="logo-area">
+			<img class="footer-logo" th:src="@{/portal/img/logo-s.png}" />
+			<div class="split"></div>
+			<div class="copylight" th:text="#{DIVEU_TXT_0067}"></div>
+		</div>
+		<div>
+			<button>Language</button>
 		</div>
 	</div>
 </div>
-<div id="BTN_moveToTop" style="position:fixed; right:50px; bottom: 140px; display:none;">
-	<button class="ui icon button big"><i class="arrow up icon"></i></button>
-</div>
-<script>
-$(window).load(function() {
-	JpUiGlobal.changeSizeOfElement();
-	
-	//$(".main.pusher").css("margin-left", $(".ui.main.sidebar").width() + 5);
-});
-
-$(document).ready(function() {
-	$(".ui.bottom_blank").height($(".ui.bottom").height());
-	$(".ui.dropdown").dropdown();
-});
-
-$(document).ajaxStart(function(event, jqXHR, ajaxOptions) {
-	JpUiDimmer.showDimmer();
-});
-
-$(document).ajaxStop(function() {
-	JpUiGlobal.changeSizeOfElement();
-	JpUiDimmer.hideDimmer();
-});
-
-$(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
-	if (jqXHR.status == "401" || jqXHR.status == "403")
-	{
-		alert("[[#{PLTF_M_SESSION_EXPIRED}]]");
-		document.location.href = "/";
-	}
-	else
-	{
-		alert("[[#{PLTF_M_ERROR_MESSAGE}]]");
-		//document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).ERROR_PAGE_URL}]]";
-	};
-});
-
-$("body").scroll(function() {
-	if ($(this).scrollTop() > 200)
-	{
-		$("#BTN_moveToTop").fadeIn();
-	}
-	else
-	{
-		$("#BTN_moveToTop").fadeOut();
-	};
-});
-
-$("#BTN_moveToTop").click(function() {
-	$("html, body").animate({ scrollTop : 0 }, 400);
-	return false;
-});
-</script>
-<!-- bottom end -->
+<!-- bottom.html end -->

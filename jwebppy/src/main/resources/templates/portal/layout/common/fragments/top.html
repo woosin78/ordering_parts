@@ -1,150 +1,334 @@
-<div class="ui fixed inverted menu topMenu">
-<!-- Top menu area. This comment is mandatory to make a space between top and body.-->
+<!-- header.jsp begin -->
+<style>
+/* Tooltip container */
+.tooltip {
+	position: relative;
+	display: inline-block;
+	/*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 300px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+	
+	/* Position the tooltip text - see examples below! */
+	position: absolute;
+	z-index: 1;
+	top: 100%;
+	left: 50%;
+	margin-left: -125px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+}
+</style>
+<div class="header">
+	<div class="logo-area">
+		<img class="logo" th:src="@{/portal/img/logo.png}" alt="DOOSAN" /><img id="IMG_doobizPlus" class="doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
+	</div>	
+	<div class="info-area">
+		<ul class="info-list">
+			<li class="username" sec:authentication="name"></li>
+			<li>|</li>
+			<li class="openNewWindow" th:text="#{DCP_T_NEW_WINDOW}"></li>
+			<li>|</li>
+			<li class="dealerInfo" th:text="#{DCP_T_DEALER_INFO}"></li>
+			<li>|</li>		
+			<li class="tooltip"><span th:text="#{DCP_T_LAST_LOGIN_INFO}"></span><span class="lastLoginTime tooltiptext"></span></li>
+		</ul>
+		<div class="split"></div>
+		<button class="logout-button" th:text="#{DCP_B_LOGOUT}"></button>
+	</div>
 </div>
-<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
+
+<div class="mainmenu-area" id="DIV_mainmenuArea">
+	<ul id="UL_mainmenuList" class="mainmenu-list">
+		<li> </li>
+		<li> </li>
+		<li> </li>
+		<li> </li>
+		<li> </li>
+		<li> </li>
+	</ul>
+</div>
+<div class="mainmenu-sub-area" id="DIV_submenuArea" style="display:none;"></div>
+<div id="DIV_lowerSubmenuHideArea" style="width:100%;height:10px;opacity:0;position:absolute;top:148px;" onmouseover="javascript:hideSubmenuExit();"></div>
+
+<div class="split-row"></div>
+
 <script type="application/javascript">
-function makeGmb()
+let topMenuListCls;	// 메인메뉴 리스트 객체
+let isSubFocusoutCls = 0;	// 서브메뉴 표시 여부 판별 플래그 (1:표시,0:비표시)
+let subMenuLiStrCls = '';	// 서브메뉴 문자열
+
+const MAINMENU_COUNT = 8;	// 한 화면에 표시되는 최대 메인메뉴 갯수
+let currMenuIdx = 0;	// 메인메뉴 현재 인덱스(한 화면에 구성되는 메인메뉴 갯수는 8개인데, 메인메뉴 갯수가 8개를 넘어갈 경우 몇번째 메인메뉴 구성을 보여 주고 있는지 판별하는 변수. 첫번째 화면값은 0부터 시작)
+let maxMenuIdx = 0;		// 매인메뉴 최대 인덱스(예를 들어 메인메뉴 갯수가 10개일 경우, 메인메뉴 갯수 10 / 한 화면당 최대 메인메뉴 갯수 8 의 계산결과 1.25를 올리면 2가 되므로, 최대 인덱스 값은 2가 된다)
+
+$(".header .logout-button").on("click", function() {
+	clickLogout();
+});
+
+//마우스가 메인메뉴나 서브메뉴 영역에 있을 때 서브메뉴 닫지 않도록 변수설정
+$(document).on("mouseleave", 'ul.mainmenu-sub-list li', function(e)	
+{ 
+	isSubFocusoutCls = 0;
+});
+
+$(document).on("mouseenter", 'ul.mainmenu-sub-list li', function(e)	
+{ 
+	isSubFocusoutCls = 1;
+});
+
+$(document).ready(function() 
 {
-	//Make GMB
-	let menu = [];
+	//Get last login information
+	$.ajax({
+		url: "/platform/common/authentication/last_login_info",		
+	    success: function(response, textStatus, jqXHR) 
+	    {
+	    	let data = response.RESULT;
+	    	
+	    	if (data != null && $.trim(data.regDate) != "")
+	    	{
+	    		$(".header .lastLoginTime").html(DateFormat.fullFormat(data.regDate) + "/" + data.ip);
+	    	}
+	    	else
+	    	{
+	    		$(".header .lastLoginTime").html("-/-");
+	    	};
+	    	
+	    	$(".header li.openNewWindow").on("click", function() {
+	    		goHome();
+	    	});
+	    	
+	    	$(".header li.dealerInfo").on("click", function() {
+	    		clickDealerInfo();	    		
+	    	});
+	    	
+	    	$(".header li.username").on("click", function() {
+	    		clickUserInfo();
+			});	    	
+	    }	
+	});
 
-	JpUtilsAjax.get({
-		url: JpUiGlobal.url("/platform/mgmt/content/my_menu"),
-		success: function(data, textStatus, jqXHR)
-		{
-			menu.push("<div class='header item'>");
-			menu.push("<div class='ui black'>");		
-			menu.push("<i class='bars icon'></i>");
-			menu.push("</div>");
-			menu.push("</div>");			
-			
-		    data.RESULT.forEach(function(element, index) {
-		    	let length = (element.SUB_ITEMS != null) ? element.SUB_ITEMS.length : 0;
-		    	
-		    	if (length > 0)
-		    	{
-			    	menu.push("<div class='ui dropdown item'>");
-			    	makeItems(element);
-			    	menu.push("</div>");		    		
-		    	};
-		    });
-
-		    menu.push("<div class='ui dropdown item right inverted user settings'>");
-		    menu.push("<i class='cog icon'></i>");
-		    menu.push("<div class='menu'>");
-		    menu.push("<div class='item'><i class='history icon'></i> Last Login Time/IP : <span id='lastLoginTime'></span></div>");
-		    menu.push("<div class='divider'></div>");
-		    menu.push("<a class='item' href='javascript:logout();'><i class='power off icon'></i> Log Off</a>");
-		    menu.push("</div>");
-		    menu.push("</div>");		    
-		    
-		    $(".ui.menu.topMenu").html(menu.join(""));
-
-		    /* 메뉴명 길이에 따라서 width 를 자동 조절함 */
-		    let maxLength = 0;
-		    $(".ui.menu.topMenu span.text").each(function(index, element) {
-				let length = $(this).html().length;
-				
-				if (length > maxLength)
-				{
-					maxLength = length;
-				};
-		    });
-		    
-		    $(".ui.menu.topMenu span.text").css("width", maxLength * 8);
-		    /* 메뉴명 길이에 따라서 너비를 자동 조절함 */
-		    
-			$(".ui.menu.topMenu .ui.dropdown").dropdown({
-				allowCategorySelection: true
-			});
-			
-			$(".ui.menu.topMenu span.text").on("click", function() {
-				moveToLink(this);
-			});
-			
-			$(".ui.menu.topMenu span.text[url]").parent("div.item").on("click", function() {
-				moveToLink($(this).find("span.text[url]"));
-			});
-			
-			function moveToLink(menu)
-			{
-				let url = $(menu).attr("url");
-				
-				if (JpUtilsString.isEmpty(url))
-				{
-					let subElements = $(menu).parent().find("span.text[url]");
-					
-					for (let i=0, length=subElements.length; i<length; i++)
-					{
-						if (JpUtilsString.isNotEmpty($(subElements[i]).attr("url")))
-						{
-							url = $(subElements[i]).attr("url");
-							break;
-						};
-					};
-				};
-				
-				document.location.href = JpUiGlobal.url(url);
-			};			
-			
-			//Get last login information
-			$.ajax({
-				url: "/platform/common/authentication/last_login_info",		
-			    success: function(response, textStatus, jqXHR) 
-			    {
-			    	let data = response.RESULT;
-			    	
-			    	if (data != null && $.trim(data.regDate) != "")
-			    	{
-			    		$("#lastLoginTime").html(moment(data.regDate).format(JpUiGlobal.DEFAULT_DATE_TIME_FORMAT) + "/" + data.ip);
-			    	}
-			    	else
-			    	{
-			    		$("#lastLoginTime").html("-/-");
-			    	};	    	
-			    }	
-			});
-			
-			$(".ui.dropdown").dropdown();
-		}
+	//Get top menu information
+	$.ajax({
+		url: "/platform/mgmt/content/my_menu",		
+	  	success: function(res, textStatus, jqXHR) 
+	  	{
+	  		$("#DIV_mainmenuArea").empty();
+	  		topMenuListCls = res;
+	  		makeTopmenuArea(res);
+	  	}	
 	});
 	
-	let makeItems = function (cItem)
-	{
-		let length = (cItem.SUB_ITEMS != null) ? cItem.SUB_ITEMS.length : 0;
-		
-		menu.push("<span class='text'");
-		
-		if (length == 0)
-		{
-			menu.push(" url='" + JpUiGlobal.url(cItem.URL) + "'");	
-		};
-		
-		menu.push(">" + cItem.NAME + "</span>");
-		
-		if (length > 0)
-		{
-			menu.push(" <i class='dropdown icon'></i>");
-			menu.push("<div class='menu'>");
+	$("#IMG_doobizPlus").on("click", function() {
+		document.location.href = "/forward/entry_point";
+	});	
+});
 
-			for (let i=0; i<length; i++)
+function makeTopmenuArea(resData)
+{
+	maxMenuIdx = Math.ceil(resData.length / MAINMENU_COUNT);
+	let isOverMainmenu = false;
+	let menuStr = '<ul id="UL_mainmenuList" class="mainmenu-list">';
+	for (let i = 0; i < resData.length; i++)
+	{	
+		if (i >= MAINMENU_COUNT)	// 정해진 수치 이상의 메인메뉴가 있을 경우 1화면분만 표시.
+		{	
+			if (resData.length > MAINMENU_COUNT)
 			{
-				menu.push("<div class='item'>");
-				makeItems(cItem.SUB_ITEMS[i]);
-				menu.push("</div>");
-			};
+				isOverMainmenu = true;
+			}
 			
-			menu.push("</div>");
+			break;
 		}
+		let dataObj = resData[i];
+		menuStr += '<li data-value="' + dataObj.KEY + '" value="' + dataObj.URL + '" onclick="javascript:goSubMenu(\'' + dataObj.URL + '\',\'' + dataObj.NAME + '\');" onmouseover="javascript:showSubmenu(this, \'' + dataObj.KEY + '\');">' + dataObj.NAME + '</li>';		
+	}
+	
+	if (isOverMainmenu)	// 1화면 분 이상의 메뉴 갯수가 존재할 경우 화살표 버튼을 만든다. 
+	{
+		menuStr += '<li id="LI_menuRefreshLi"><a onclick="javascript:void(0);"><img src="/portal/img/arrow_circle_prev_off.png" id="BTN_prevArrow" class="mainmenu-arrowbutton" /></a>&nbsp;&nbsp;<a onclick="javascript:changeMainmenu(1);"><img src="/portal/img/arrow_circle_next_on.png" id="BTN_nextArrow" class="mainmenu-arrowbutton"></a></li>'
+	}
+	
+	menuStr += '</ul>';
+	$("#DIV_mainmenuArea").html( menuStr );
+}
+
+function showSubmenu(obj, seq) 
+{	
+	$("#DIV_submenuArea").width( $( "body" ).width() - 80 );// IE에서 서브메뉴 띄울 때 Width 조정방식이 크롬과 다른 문제가 있어, body 사이즈 -80 마진 수치를 뺀 값으로 강제조정
+	
+	// 초기화
+	isSubFocusoutCls = 0;
+	subMenuLiStrCls = '';	
+	$("#DIV_submenuArea").empty();
+	$("#DIV_submenuArea").hide();
+	
+	subMenuLiStrCls += '<ul class="mainmenu-sub-list" id="DIV_submenuAreaList">';
+	$(topMenuListCls).each(function() 
+	{
+		if ( Number(seq) == Number(this.KEY) ) 
+		{
+			if (this.SUB_ITEMS != null && this.SUB_ITEMS != '' && this.SUB_ITEMS != 'undefined' && this.SUB_ITEMS.length > 0)
+			{
+				$(this.SUB_ITEMS).each(function() 
+				{
+					subMenuLiStrCls += '<li id="LI_subid_"' + this.KEY + '" onclick="javascript:goSubMenu(\'' + this.URL + '\',\'' + this.NAME + '\');" onmouseover="javascript:submenuMouseOver();" >' + this.NAME + '</li>';
+				});						
+
+			}
+			return false;	// gnb main each 종료
+		}
+	});	
+	subMenuLiStrCls += '</ul>';
+	
+	$("#DIV_submenuArea").html( subMenuLiStrCls );
+	if (subMenuLiStrCls != '<ul class="mainmenu-sub-list" id="DIV_submenuAreaList"></ul>')
+	{
+		$("#DIV_lowerSubmenuHideArea").css('z-index', 10);
+		document.getElementById("DIV_submenuArea").style.zIndex = 10;		
+		document.getElementById("DIV_submenuArea").style.top = '101px';
+		$("#DIV_submenuArea").show();
 	};
 };
 
-$(document).ready(function() {
-	makeGmb();
+function goSubMenu(url, name)
+{	
+	// 머천다이즈의 경우 팝업으로 열어야 함.
+	if (name != 'Merchandize')
+	{
+		if (CmStringUtils.isNotEmpty(url))
+		{
+			location.href = url;	
+		};
+	}
+	else 
+	{	
+		openMerchandizePop();
+	};
+};
+
+function openMerchandizePop() 
+{
+	$.ajax({
+	    url:'/portal/corp/eu/scm/parts/merchandize/main/adminCheck',
+	    type:'post', 
+	    success: function(data) 
+	    {		    	
+	    	let urlPop = data.RESULT;
+	    	let options = "width=1040, height=1000";
+			let win = window.open(urlPop, "PopupWin", options);
+			hideSubmenuExit();
+	    }
+	});	
+};
+
+function submenuMouseOver()
+{
+	isSubFocusoutCls = 1;
+}
+
+function hideSubmenuExit()
+{
+	$("#DIV_lowerSubmenuHideArea").css('z-index', 0);
+	$("#DIV_submenuArea").empty();
+	$("#DIV_submenuArea").hide();	
+}
+
+//menu 이외 body 영역 클릭 시 메뉴 사라지도록 개선
+$("body").on("click", function() {
+	hideSubmenuExit();
 });
 
-function logout()
-{
-	$("#FORM_logout").submit();	
-};
+//header 영역 mouse over 시 메뉴 사라지도록 개선
+$(".header").on("mouseover", function() {
+	hideSubmenuExit();
+});
+
+//refreshNum: 0이면 이전 메뉴, 1이면 다음 메뉴
+function changeMainmenu(refreshNum)
+{	
+	hideSubmenuExit();	// 열려 있는 서브메뉴 창이 있으면 닫는다.
+	
+	// 좌측, 우측 버튼 누름에 따라 현재 화면을 특정하는 변수값 변경
+	if (Number(refreshNum) == 0)
+	{
+		currMenuIdx--;
+	} else if (Number(refreshNum) == 1) 
+	{
+		currMenuIdx++;	
+	}	
+	
+	let loopStartNum =	currMenuIdx * MAINMENU_COUNT;	// 화면 메인메뉴 리스트 중, 화면에 표시될 메인메뉴가 시작될 리스트 순번
+	let loopStartCount = 0;
+	let loopEndCount = 0;	// 루프 중, 유효한 메인메뉴 갯수를 몇개 표시했는지를 세는 변수 
+	
+	if ( (currMenuIdx + 1) == maxMenuIdx )	// 마지막 화면을 표시할 경우, 화면에 표시될 잔여 메인메뉴 수치를 계산하여 해당 수치만큼 남은 메인메뉴를 표시한다.(예를 들어 총 메인메뉴 갯수가 10개라고 가정하면, 10 % 8 = 2이므로, 마지막 화면은 2개의 메인메뉴를 표시)
+	{
+		loopEndNum = loopStartNum + (topMenuListCls.length % MAINMENU_COUNT);
+	} else 
+	{
+		loopEndNum = loopStartNum + MAINMENU_COUNT;
+	}
+
+	let liStr = '';
+	$("#UL_mainmenuList").empty();	
+	$(topMenuListCls).each(function(index, item)
+	{	
+		if (index >= loopEndNum)	// loop end
+		{
+			return false;
+		}		
+		if (index >= loopStartNum && index < loopEndNum)	// 메인메뉴 작성
+		{
+			liStr += '<li data-value="' + item.KEY + '" value="' + item.URL + '" onmouseover="javascript:showSubmenu(this, \'' + item.KEY + '\');" onclick="javascript:void(0)">' + item.NAME + '</li>';
+		}
+	}); 
+	
+	if ( (currMenuIdx + 1) == maxMenuIdx )	
+	{
+		let addDummyLiCnt = MAINMENU_COUNT - (topMenuListCls.length % MAINMENU_COUNT);		
+		for (let i = 0; i < addDummyLiCnt; i++ )
+		{
+			liStr += '<li></li>';
+		}
+	}
+	
+	liStr += '<li id="LI_menuRefreshLi">';
+	if (currMenuIdx == 0)	// 첫번째 화면을 표시할 경우, [이전] 버튼은 항상 off상태
+	{
+		liStr += '<a onclick="javascript:void(0);">'
+			  + '<img src="/portal/img/arrow_circle_prev_off.png" class="mainmenu-arrowbutton" /></a>&nbsp;&nbsp;';
+	} else 		// 첫번째 화면 이외를 표시할 경우, [이전] 버튼은 항상 on상태
+	{
+		liStr += '<a onclick="javascript:changeMainmenu(0);">'
+		      + '<img src="/portal/img/arrow_circle_prev_on.png" class="mainmenu-arrowbutton" /></a>&nbsp;&nbsp;';
+	}
+	
+	if ( (currMenuIdx + 1) == maxMenuIdx )	// 마지막 화면을 표시할 경우, [다음]버튼은 항상 off상태
+	{
+		liStr += '<a onclick="javascript:void(0);">'
+			  + '<img src="/portal/img/arrow_circle_next_off.png" class="mainmenu-arrowbutton" /></a>';
+	} else 		// 마지막 화면 이외를 표시할 경우, [다음] 버튼은 항상 on상태
+	{
+		liStr += '<a onclick="javascript:changeMainmenu(1);">'
+		      + '<img src="/portal/img/arrow_circle_next_on.png" class="mainmenu-arrowbutton" /></a>';
+	}	
+	
+	liStr += '</li>';
+	$("#UL_mainmenuList").html(liStr);		
+}
+
 </script>
+<!-- header.jsp end -->

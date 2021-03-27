@@ -1,9 +1,11 @@
 package org.jwebppy.portal;
 
-import org.jwebppy.platform.core.service.GeneralService;
-import org.springframework.stereotype.Service;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 
-@Service
-public class PortalGeneralService extends GeneralService
+public abstract class PortalGeneralService
 {
+	protected String getUsername()
+	{
+		return UserAuthenticationUtils.getUsername();
+	}
 }

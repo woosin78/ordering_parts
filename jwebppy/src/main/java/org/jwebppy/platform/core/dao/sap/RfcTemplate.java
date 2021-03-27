@@ -1,36 +1,24 @@
 package org.jwebppy.platform.core.dao.sap;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.lang3.time.StopWatch;
-import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.dao.AbstractDaoTemplate;
 import org.jwebppy.platform.core.dao.IDaoRequest;
 import org.jwebppy.platform.core.dao.MapParameterSource;
 import org.jwebppy.platform.core.dao.ParameterValue;
 import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.core.util.SessionContextUtils;
-import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
-import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
-import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
-import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
-import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
-import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import com.sap.conn.jco.JCoDestination;
@@ -45,11 +33,11 @@ public class RfcTemplate extends AbstractDaoTemplate
 {
 	private Logger logger = LoggerFactory.getLogger(RfcTemplate.class);
 
-	@Autowired
-	private DataAccessLogService dataAccessLogService;
-
-	@Autowired
-	private DataAccessResultLogService dataAccessResultLogService;
+//	@Autowired
+//	private DataAccessLogService dataAccessLogService;
+//
+//	@Autowired
+//	private DataAccessResultLogService dataAccessResultLogService;
 
     private JCoConnectionResource jCoConnectionResource;
 
@@ -65,6 +53,11 @@ public class RfcTemplate extends AbstractDaoTemplate
     public void setConnectionResource(JCoConnectionResource jCoConnectionResource)
     {
         this.jCoConnectionResource = jCoConnectionResource;
+    }
+
+    public JCoConnectionResource getConnectionResource()
+    {
+    	return this.jCoConnectionResource;
     }
 
     private String getLandscape(RfcRequest rfcRequest)
@@ -96,14 +89,16 @@ public class RfcTemplate extends AbstractDaoTemplate
 	@Override
 	public Map<String, Object> execute(IDaoRequest daoRequest)
     {
+		Map<String, Object> resultMap = new HashMap<>();
+
 		RfcRequest rfcRequest = null;
-		long startTime = 0;
-		long elapsedTime = 0;
-		String errorMsg = null;
 
 		JCoDestination jCoDestination = null;
 		JCoFunction jCoFunction = null;
-		Map<String, Object> result = null;
+
+		StopWatch stopWatch = new StopWatch();
+
+		stopWatch.start();
 
         try
         {
@@ -112,75 +107,36 @@ public class RfcTemplate extends AbstractDaoTemplate
         	logger.debug("[" + getLandscape(rfcRequest) + "] " + rfcRequest.getFunctionName());
 
         	jCoDestination = jCoConnectionResource.getDestination(getLandscape(rfcRequest));
-
             jCoFunction = getJCoFunction(jCoDestination, rfcRequest.getFunctionName());
 
             setParameter(jCoFunction, rfcRequest.getParameterSource().getValues());
-
-            StopWatch stopWatch = new StopWatch();
-            stopWatch.start();
 
             jCoFunction.execute(jCoDestination);
 
             stopWatch.stop();
 
-            startTime = stopWatch.getStartTime();
-            elapsedTime = stopWatch.getNanoTime();
-
-            result = extractData(jCoFunction, rfcRequest.getOutputParameterMap());
-
-            return result;
+            resultMap.put("RESULT", extractData(jCoFunction, rfcRequest.getOutputParameterMap()));
         }
         catch (JCoException e)
         {
-        	errorMsg = ExceptionUtils.getStackTrace(e);
+        	if (!stopWatch.isStopped())
+        	{
+        		stopWatch.stop();
+        	}
 
-        	throw new RfcDataAccessException(e.getGroup(), e.getMessage(), e.getCause());
+        	resultMap.put("ERROR_MSG", ExceptionUtils.getStackTrace(e));
+
+        	e.printStackTrace();
         }
         finally
         {
-			StackTraceElement[] stackTraceElements = new Throwable().getStackTrace();
-			String className = null;
-			String methodName = null;
+        	resultMap.put("START_TIME", stopWatch.getStartTime());
+        	resultMap.put("ELAPSED", stopWatch.getNanoTime());
 
-			for (int i=0, length=stackTraceElements.length; i<length; i++)
-			{
-				className = stackTraceElements[i].getClassName();
-
-				if (className.startsWith("org.jwebppy.platform.core.dao.sap") || className.startsWith("org.springframework"))
-				{
-					continue;
-				}
-
-				methodName = stackTraceElements[i].getMethodName();
-
-				break;
-			}
-
-			String dlSeq = UidGenerateUtils.generate();
-
-			DataAccessLogDto dataAccessLog = new DataAccessLogDto();
-			dataAccessLog.setDlSeq(dlSeq);
-			dataAccessLog.setCommand(rfcRequest.getFunctionName());
-			dataAccessLog.setType("R");
-			dataAccessLog.setClassName(className);
-			dataAccessLog.setMethodName(methodName);
-			dataAccessLog.setRequestId(MDC.get(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY));
-			dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
-			dataAccessLog.setError(errorMsg);
-			dataAccessLog.setDestination(jCoDestination.getDestinationID());
-			dataAccessLog.setStartTime(startTime);
-			dataAccessLog.setElapsed(elapsedTime);
-			dataAccessLog.setDataAccessLogParameters(makeParameters(rfcRequest));
-			dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
-
-			dataAccessLogService.writeLog(dataAccessLog);
-
-			dataAccessResultLogService.writeLog(dlSeq, result);
-
-			jCoFunction = null;
-			jCoDestination = null;
+        	resultMap.put("DESTINATION", jCoDestination.getDestinationID());
         }
+
+        return resultMap;
     }
 
     private JCoFunction getJCoFunction(JCoDestination jCoDestination, String functionName) throws JCoException
@@ -442,155 +398,4 @@ public class RfcTemplate extends AbstractDaoTemplate
 
         return resultMap;
     }
-
-	private List<DataAccessLogParameterDto> makeParameters(RfcRequest rfcRequest)
-	{
-		Map<String, ParameterValue> dataMap = rfcRequest.getParameterSource().getValues();
-
-		if (MapUtils.isNotEmpty(dataMap))
-		{
-			List<DataAccessLogParameterDto> dataAccessLogParameters = new LinkedList<>();
-
-			Iterator<Entry<String, ParameterValue>> iterator = dataMap.entrySet().iterator();
-
-			ParameterValue parameterValue;
-			Entry<String, ParameterValue> entry;
-			int type = 0;
-
-			while (iterator.hasNext())
-			{
-				entry = iterator.next();
-
-				parameterValue = entry.getValue();
-				type = parameterValue.getType();
-
-				DataAccessLogParameterDto dataAccessLogParameter = new DataAccessLogParameterDto();
-				dataAccessLogParameter.setName(entry.getKey());
-
-				if (type == AbapType.STRUCTURE)
-				{
-					MapParameterSource mapParameterSource = (MapParameterSource)parameterValue.getValue();
-
-					dataAccessLogParameter.setType(ParameterType.S);
-					dataAccessLogParameter.setDataAccessLogParameterDetails(structureToParameterDetails(0, mapParameterSource.getValues()));
-				}
-				else if (type == AbapType.TABLE)
-				{
-					MapParameterSource mapParameterSource = (MapParameterSource)parameterValue.getValue();
-
-					dataAccessLogParameter.setType(ParameterType.T);
-					dataAccessLogParameter.setDataAccessLogParameterDetails(tableToParameterDetails(mapParameterSource.getValues()));
-				}
-				else
-				{
-					dataAccessLogParameter.setType(ParameterType.F);
-					dataAccessLogParameter.setDataAccessLogParameterDetails(fieldToParameterDetails(parameterValue));
-				}
-
-				dataAccessLogParameters.add(dataAccessLogParameter);
-			}
-
-			return dataAccessLogParameters;
-		}
-
-		return null;
-	}
-
-	private List<DataAccessLogParameterDetailDto> fieldToParameterDetails(ParameterValue parameterValue)
-	{
-		List<DataAccessLogParameterDetailDto> dataAccessLogParameterDetails = null;
-
-		if (parameterValue.getValue() != null)
-		{
-			dataAccessLogParameterDetails = new ArrayList<>();
-
-			DataAccessLogParameterDetailDto dataAccessLogParameterDetail = new DataAccessLogParameterDetailDto();
-			dataAccessLogParameterDetail.setLineNo(0);
-			dataAccessLogParameterDetail.setName(parameterValue.getName());
-			dataAccessLogParameterDetail.setValue(CmStringUtils.trimToEmpty(parameterValue.getValue()));
-
-			dataAccessLogParameterDetails.add(dataAccessLogParameterDetail);
-		}
-
-		return dataAccessLogParameterDetails;
-	}
-
-	private List<DataAccessLogParameterDetailDto> structureToParameterDetails(int lineNo, Map<String, ParameterValue> valueMap)
-	{
-		if (MapUtils.isNotEmpty(valueMap))
-		{
-			List<DataAccessLogParameterDetailDto> dataAccessLogParameterDetails = new LinkedList<>();
-
-			Iterator<Entry<String, ParameterValue>> iterator = valueMap.entrySet().iterator();
-
-			while (iterator.hasNext())
-			{
-				Entry<String, ParameterValue> entry = iterator.next();
-
-				ParameterValue parameterValue = entry.getValue();
-
-				if (parameterValue.getValue() == null)
-				{
-					continue;
-				}
-
-				DataAccessLogParameterDetailDto dataAccessLogParameterDetail = new DataAccessLogParameterDetailDto();
-				dataAccessLogParameterDetail.setLineNo(lineNo);
-				dataAccessLogParameterDetail.setName(entry.getKey());
-				dataAccessLogParameterDetail.setValue(CmStringUtils.trimToEmpty(parameterValue.getValue()));
-
-				dataAccessLogParameterDetails.add(dataAccessLogParameterDetail);
-			}
-
-			return dataAccessLogParameterDetails;
-		}
-
-		return null;
-	}
-
-	private List<DataAccessLogParameterDetailDto> tableToParameterDetails(Map<String, ParameterValue> valueMap)
-	{
-		if (MapUtils.isNotEmpty(valueMap))
-		{
-			List<DataAccessLogParameterDetailDto> dataAccessLogParameterDetails = new LinkedList<>();
-
-			Iterator<Entry<String, ParameterValue>> iterator = valueMap.entrySet().iterator();
-			int lineNo = 0;
-
-			while (iterator.hasNext())
-			{
-				Entry<String, ParameterValue> entry = iterator.next();
-
-				Map<String, Object> subValueMap = (Map<String, Object>)entry.getValue().getValue();
-
-				if (MapUtils.isEmpty(subValueMap))
-				{
-					continue;
-				}
-
-				Iterator<Entry<String, Object>> subIterator = subValueMap.entrySet().iterator();
-
-				while (subIterator.hasNext())
-				{
-					Entry<String, Object> subEntry = subIterator.next();
-
-					if (CmStringUtils.isNotEmpty(subEntry.getValue()))
-					{
-						DataAccessLogParameterDetailDto dataAccessLogParameterDetail = new DataAccessLogParameterDetailDto();
-						dataAccessLogParameterDetail.setLineNo(lineNo);
-						dataAccessLogParameterDetail.setName(subEntry.getKey());
-						dataAccessLogParameterDetail.setValue(subEntry.getValue().toString());
-
-						dataAccessLogParameterDetails.add(dataAccessLogParameterDetail);
-					}
-				}
-
-				lineNo++;
-			}
-
-			return dataAccessLogParameterDetails;
-		}
-
-		return null;
-	}
 }

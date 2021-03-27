@@ -22,4 +22,17 @@ public class ErpUserContext implements Serializable
 	private String distChl;
 	private String division;
 	private String custType;
+
+	public String getCorpName()
+	{
+		if (corpCode != null)
+		{
+			if ("1600".equals(corpCode))
+			{
+				return "DBKR";
+			}
+		}
+
+		return null;
+	}
 }

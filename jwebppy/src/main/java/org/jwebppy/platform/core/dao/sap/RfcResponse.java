@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.MapUtils;
 import org.jwebppy.platform.core.dao.AbstractDaoResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
@@ -15,7 +16,12 @@ public class RfcResponse extends AbstractDaoResponse implements Serializable
 {
 	private static final long serialVersionUID = -7318442099344682977L;
 
-	private final Map resultMap = new HashMap();
+	private long startTime;
+	private long elapsed;
+	private String errorMsg;
+	private String destination;
+
+	private final Map<String, Object> resultMap = new HashMap<>();
 
     public RfcResponse() {}
 
@@ -23,8 +29,33 @@ public class RfcResponse extends AbstractDaoResponse implements Serializable
     {
     	if (!CollectionUtils.isEmpty(resultMap))
     	{
-    		this.resultMap.putAll(resultMap);
+    		this.startTime = (resultMap.get("START_TIME") == null) ? 0 : (Long)resultMap.get("START_TIME");
+    		this.elapsed = (resultMap.get("ELAPSED") == null) ? 0 : (Long)resultMap.get("ELAPSED");
+    		this.errorMsg = (String)resultMap.get("ERROR_MSG");
+    		this.destination = (String)resultMap.get("DESTINATION");
+
+    		this.resultMap.putAll(MapUtils.emptyIfNull((Map)resultMap.get("RESULT")));
     	}
+    }
+
+    public long getStartTime()
+    {
+    	return startTime;
+    }
+
+    public long getElapsed()
+    {
+    	return elapsed;
+    }
+
+    public String getErrorMsg()
+    {
+    	return errorMsg;
+    }
+
+    public String getDestination()
+    {
+    	return destination;
     }
 
     public Object getObject(String name)
@@ -50,6 +81,11 @@ public class RfcResponse extends AbstractDaoResponse implements Serializable
     public DataList getTable(String name)
     {
     	return new DataList((List)resultMap.get(name));
+    }
+
+    public Map<String, Object> getResultMap()
+    {
+    	return this.resultMap;
     }
 
     @Override
