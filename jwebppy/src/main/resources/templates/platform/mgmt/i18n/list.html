@@ -11,14 +11,13 @@
 </div>
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" name="lSeq" value=""/>
 	<input type="hidden" name="pageNumber" value="1"/>
 	<input type="hidden" name="rowPerPage" value="20"/>
 	<div class="fields">
-		<div class="four wide field">
+		<div class="six wide field">
 			<select name="basename" class="ui dropdown"></select>
 		</div>
-		<div class="four wide field">
+		<div class="six wide field">
 			<select name="type" class="ui clearable search dropdown">
 				<option value="">Type</option>
 				<option th:each="langType : ${T(org.jwebppy.platform.mgmt.i18n.dto.LangType).values()}" th:value="${langType}" th:text="${langType.type}"></option>
@@ -125,8 +124,13 @@
 		langTable.load();
 	};	
 	
-	function doAfterSavingLang()
+	function doAfterSavingLang(isNew, lSeq)
 	{
+		if (isNew)
+		{
+			$("#query").val("");
+		};
+		
 		doSearch();
 	};	
 	

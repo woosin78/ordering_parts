@@ -86,9 +86,21 @@ public class LangController extends MgmtGeneralController
 		return LangLayoutBuilder.getLangForm(basenames, langService.getLangKinds(langKind), lang, langSearch.getFrom());
 	}
 
+	@GetMapping("/valid_check")
+	@ResponseBody
+	public Object validCheck(@ModelAttribute LangDto lang)
+	{
+		if (langService.isDuplicated(lang))
+		{
+			return "DUPLICATED";
+		}
+
+		return EMPTY_RETURN_VALUE;
+	}
+
 	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@ModelAttribute LangDto lang, @RequestParam(value = "lkSeq") List<Integer> lkSeqs, @RequestParam(value = "text") List<String> texts)
+	public Object save(@ModelAttribute LangDto lang, @RequestParam(value = "lkSeq") List<Integer> lkSeqs, @RequestParam(value = "text") String[] texts)
 	{
 		List<LangDetailDto> langDetails = new LinkedList<>();
 
@@ -97,7 +109,7 @@ public class LangController extends MgmtGeneralController
 		{
 			LangDetailDto langDetail = new LangDetailDto();
 			langDetail.setLkSeq(lkSeq);
-			langDetail.setText(texts.get(index++).replaceAll("'", "′"));
+			langDetail.setText(texts[index++].replaceAll("'", "′"));
 
 			langDetails.add(langDetail);
 		}

@@ -18,7 +18,7 @@
 
 	<insert id="insertLang" parameterType="LangEntity" useGeneratedKeys="true" keyProperty="lSeq">
 		insert into pltf_lang(basename, type, seq, fg_delete, reg_username, reg_date) values (
-			#{basename}, #{type}, upper(#{seq}), #{fgDelete}, #{regUsername}, #{regDate}
+			#{basename}, #{type}, upper(#{seq2}), #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -104,7 +104,7 @@
 		</if>
 		
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(seq)">
-			and a.seq=#{seq}
+			and a.seq=upper(#{seq2})
 		</if>
 
 	</select>
@@ -160,7 +160,7 @@
 		lk_seq=#{lkSeq}
 		and fg_delete='N'
 	</select>
-	
+
 	<select id="findLangKinds" parameterType="langKindDto" resultType="LangKindEntity">
 		select
 		*
@@ -192,7 +192,7 @@
 				</if>				
 			</trim>
 		</where>
-	</select>	
+	</select>
 
 	<select id="findLangDetailsByLseq" parameterType="Integer" resultType="LangDetailEntity">
 		select

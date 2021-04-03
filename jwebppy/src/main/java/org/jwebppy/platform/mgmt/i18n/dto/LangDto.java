@@ -27,9 +27,24 @@ public class LangDto extends GeneralDto implements IPagination
 	private List<LangDetailDto> langDetails;
 	private List<Integer> lSeqs;
 
-	public String getMessageCode()
+	public String getPrefix()
 	{
-		return CmStringUtils.trimToEmpty(basename) + "_" + type.name() + "_" + seq;
+		return CmStringUtils.trimToEmpty(basename) + "_" + type.name() + "_";
+	}
+
+	public String getCode()
+	{
+		return getPrefix() + seq;
+	}
+
+	public String getSeq2()
+	{
+		if (CmStringUtils.startsWithIgnoreCase(seq, getPrefix()))
+		{
+			return CmStringUtils.removeStart(seq, getPrefix());
+		}
+
+		return seq;
 	}
 
 	public String getDisplayType()

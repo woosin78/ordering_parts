@@ -2,11 +2,15 @@ package org.jwebppy.platform.core.web;
 
 import java.util.Iterator;
 
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.core.env.Environment;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.context.request.WebRequest;
 
 public abstract class GeneralController
@@ -69,4 +73,13 @@ public abstract class GeneralController
             }
         }
     }
+
+    /*
+     * RequestParam 을 Array 로 받을 때 구분자를 ',' 에서 '^' 으로 변경함
+     */
+	@InitBinder
+	public void initBinder(WebDataBinder webDataBinder)
+	{
+		webDataBinder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(PlatformCommonVo.DELIMITER));
+	}
 }

@@ -73,6 +73,11 @@ public class DataMap implements IDataMap, Serializable
 	@Override
 	public Object put(Object key, Object value)
 	{
+		if (value instanceof CharSequence)
+		{
+			value = CmStringUtils.trimToEmpty(value);
+		}
+
 		return map.put(key, value);
 	}
 

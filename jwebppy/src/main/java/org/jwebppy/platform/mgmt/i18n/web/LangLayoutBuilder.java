@@ -47,7 +47,7 @@ public class LangLayoutBuilder
 		{
 			Tr tbTr = new Tr();
 			tbTr.addDataKeyCheckboxTd("lSeq", lang.getLSeq());
-			tbTr.addDataKeyLinkTd(lang.getMessageCode(), lang.getLSeq());
+			tbTr.addDataKeyLinkTd(lang.getCode(), lang.getLSeq());
 
 			Collection<LangDetailDto> LangDetails = CollectionUtils.emptyIfNull(lang.getLangDetails());
 
@@ -100,24 +100,26 @@ public class LangLayoutBuilder
 		}
 		else
 		{
-			Select loCorp = new Select("basename");
-			loCorp.setLabel("Basename");
-			loCorp.setRequired(true);
-			loCorp.setValue(lang.getBasename());
-
-			for (String basename : basenames)
-			{
-				loCorp.addOption(basename, basename);
-			}
-
-			document.addElement(loCorp);
-
 			if (CmStringUtils.isNotEmpty(lang.getType()) && CmStringUtils.isNotEmpty(lang.getSeq()))
 			{
+				document.addElement(new InputHidden("basename", lang.getBasename()));
+				document.addElement(new InputHidden("seq", lang.getSeq()));
 				document.addElement(new InputHidden("type", lang.getType()));
 			}
 			else
 			{
+				Select loCorp = new Select("basename");
+				loCorp.setLabel("Basename");
+				loCorp.setRequired(true);
+				loCorp.setValue(lang.getBasename());
+
+				for (String basename : basenames)
+				{
+					loCorp.addOption(basename, basename);
+				}
+
+				document.addElement(loCorp);
+
 				Select loType = new Select("type");
 				loType.setLabel("Type");
 				loType.setRequired(true);
@@ -129,15 +131,15 @@ public class LangLayoutBuilder
 				}
 
 				document.addElement(loType);
+
+				Element loSeq = new Input("seq", lang.getSeq());
+				loSeq.setLabel("Suffix");
+				loSeq.setStyle("text-transform:uppercase");
+				loSeq.setRequired(true);
+				loSeq.addAttribute("autofocus");
+
+				document.addElement(loSeq);
 			}
-
-			Element loSeq = new Input("seq", lang.getSeq());
-			loSeq.setLabel("Suffix");
-			loSeq.setStyle("text-transform:uppercase");
-			loSeq.setRequired(true);
-			loSeq.addAttribute("autofocus");
-
-			document.addElement(loSeq);
 		}
 
 		if (CollectionUtils.isNotEmpty(langKinds))

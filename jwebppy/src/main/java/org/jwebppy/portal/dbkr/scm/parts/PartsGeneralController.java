@@ -36,7 +36,7 @@ public class PartsGeneralController extends ScmGeneralController
 
 	    		userMap.put("TYPE", response.getString("O_TYPE"));
 
-	    		erpUserContext.setCorpCode(userMap.getString("BUKRS"));
+	    		erpUserContext.setCorp(userMap.getString("BUKRS"));
 	    		erpUserContext.setUsername(userMap.getString("BNAME").toUpperCase());
 	    		erpUserContext.setCustCode(userMap.getString("KUNNR"));
 	    		erpUserContext.setCustName(userMap.getString("NAME1"));
@@ -58,7 +58,7 @@ public class PartsGeneralController extends ScmGeneralController
 		{
 			ErpDataMap erpDataMap = new ErpDataMap();
 
-			erpDataMap.put("BUKRS", erpUserContext.getCorpCode());
+			erpDataMap.put("BUKRS", erpUserContext.getCorp());
 			erpDataMap.put("BNAME", erpUserContext.getUsername());
 			erpDataMap.put("KUNNR", erpUserContext.getCustCode());
 			erpDataMap.put("NAME1", erpUserContext.getCustName());

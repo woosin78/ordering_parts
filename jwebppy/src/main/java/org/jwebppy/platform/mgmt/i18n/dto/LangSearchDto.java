@@ -22,4 +22,5 @@ public class LangSearchDto extends GeneralDto implements IPagination
 	private String code;//Language code. etc)ko, en
 	private String messageCode;
 	private String from;
+	private Integer lkSeq;
 }

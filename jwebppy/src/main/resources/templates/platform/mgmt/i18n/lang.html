@@ -47,16 +47,42 @@
 			$("#FORM_lang input[name=lSeq]").val("");
 			langModal.reload();
 		});
-		
-		/*
-		$("#FORM_lang input[type=text]").on("keydown", function(event) {
-			if (event.keyCode == 13)
-			{
-				$("#BTN_saveLang").trigger("click");
-			};			
-		});
-		*/
 	};
+	
+	//Add custom rules in the form validation
+	$.fn.form.settings.rules.checkDuplicatedSeq = function(value)
+	{
+		if (JpUtilsString.isNotEmpty(value))
+		{
+			let prefix = $("#FORM_lang select[name=basename]").val() + "_" + $("#FORM_lang select[name=type]").val() + "_";
+			let seq = JpUtilsString.trimToEmpty($("#FORM_lang input[name=seq]").val()).toUpperCase();
+			
+			if (seq.indexOf(prefix) == 0)
+			{
+				$("#FORM_lang input[name=seq]").val(seq.replace(prefix, ""));
+			};
+			
+			let isValid = true;
+
+			JpUtilsAjax.get({
+				url: JpUiGlobal.url("/platform/mgmt/i18n/valid_check"),
+				data: $("#FORM_lang").serialize(),
+				global: false,
+				async: false,
+				success: function(data, textStatus, jqXHR)
+				{
+					if (data.RESULT == "DUPLICATED")
+					{
+						isValid = false;
+					};
+				}
+			});
+
+			return isValid;
+		};
+
+		return false;
+	};	
 	
 	let formValidCheck = {
 			inline: true,
@@ -68,7 +94,11 @@
 						{
 							type: "empty",
 							prompt: "Please enter {name}."
-						}
+						},
+						{
+							type: "checkDuplicatedSeq",
+							prompt: "The {name} is not available. Please enter another suffix."
+						}						
 					]
 				}
 			},	
@@ -81,7 +111,7 @@
 			formValidCheck.fields.Suffix.optional = false;
 		};
 		
-		$("#FORM_lang").form(formValidCheck);
+		$("#FORM_lang").form(formValidCheck);	
 		
 		if ($("#FORM_lang").form("validate form"))
 		{
@@ -92,11 +122,13 @@
 				{
 					try
 					{
+						let isNew = (JpUtilsString.isEmpty($("#FORM_lang input[name=lSeq]").val())) ? true : false;
+						
 						//include 한 페이지에 구현되어 있음
-						doAfterSavingLang(data.RESULT);
+						doAfterSavingLang(isNew, data.RESULT);
 					}
 					catch (e) {};
-
+					
 					langModal.hide();
 				}
 			});

@@ -13,7 +13,7 @@ public class ErpUserContext implements Serializable
 {
 	private static final long serialVersionUID = 3856836169522676329L;
 
-	private String corpCode;
+	private String corp;
 	private String username;
 	private String custCode;
 	private String custName;
@@ -25,9 +25,9 @@ public class ErpUserContext implements Serializable
 
 	public String getCorpName()
 	{
-		if (corpCode != null)
+		if (corp != null)
 		{
-			if ("1600".equals(corpCode))
+			if ("1600".equals(corp))
 			{
 				return "DBKR";
 			}

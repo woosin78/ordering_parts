@@ -272,7 +272,7 @@ public class UserController extends UserGeneralController
 
 		if (user != null)
 		{
-			return "duplicated";
+			return "DUPLICATED";
 		}
 
 		return EMPTY_RETURN_VALUE;

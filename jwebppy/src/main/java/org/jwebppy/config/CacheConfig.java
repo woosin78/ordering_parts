@@ -9,6 +9,7 @@ public class CacheConfig
 	public static final String CUSTOMER = "Customer";
 	public static final String ORDER_TYPE = "OrderType";
 	public static final String ORDER_DISPLAY = "OrderDisplay";
+	public static final String ORDER_DISPLAY_DETAIL = "OrderDisplayDetail";
 	public static final String BACKORDER = "Backorder";
 	public static final String ORDER_STATUS = "OrderStatus";
 	public static final String INVOICE_STATUS = "InvoiceStatus";

@@ -240,4 +240,19 @@ public class LangService extends MgmtGeneralService
 
 		return null;
 	}
+
+	public boolean isDuplicated(LangDto lang)
+	{
+		if (langMapper.findLang(lang) == null)
+		{
+			return false;
+		}
+
+		if (lang.getLSeq() != null)
+		{
+			return false;
+		}
+
+		return true;
+	}
 }
