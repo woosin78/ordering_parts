@@ -47,7 +47,7 @@
 		let listTable = new JpUiTable($("#TBL_list"));
 		listTable.settings = {
 				ajax: {
-					url: JpUiGlobal.url("/platform/mgmt/user/login/history/list/data"),
+					url: JpUtilsPath.url("/platform/mgmt/user/login/history/list/data"),
 					form: $("#FORM_search")
 				},
 				onClickPageNumber: function(pageNumber)

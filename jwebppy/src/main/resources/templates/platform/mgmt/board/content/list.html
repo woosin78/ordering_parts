@@ -62,7 +62,7 @@
 		let listTable = new JpUiTable($("#TBL_list"));
 		listTable.settings = {
 				ajax: {
-					url: JpUiGlobal.url("/platform/mgmt/board/content/list/data"),
+					url: JpUtilsPath.url("/platform/mgmt/board/content/list/data"),
 					form: $("#FORM_search")
 				},
 				onClickDataKey: function(element, key, row)
@@ -108,7 +108,7 @@
 			if (confirm("Do you want to delete the articles?"))
 			{
 				JpUtilsAjax.post({
-					url: JpUiGlobal.url("/platform/mgmt/board/content/delete"),
+					url: JpUtilsPath.url("/platform/mgmt/board/content/delete"),
 					data: $("#FORM_search").serialize(),
 					success: function(data, textStatus, jqXHR)
 					{

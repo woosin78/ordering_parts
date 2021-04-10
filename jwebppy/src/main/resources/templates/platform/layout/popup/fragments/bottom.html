@@ -39,8 +39,6 @@
 </div>
 <script>
 $(window).load(function() {
-	JpUiGlobal.changeSizeOfElement();
-	
 	//$(".main.pusher").css("margin-left", $(".ui.main.sidebar").width() + 5);
 });
 
@@ -54,7 +52,6 @@ $(document).ajaxStart(function(event, jqXHR, ajaxOptions) {
 });
 
 $(document).ajaxStop(function() {
-	JpUiGlobal.changeSizeOfElement();
 	JpUiDimmer.hideDimmer();
 });
 

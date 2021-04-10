@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/popup/index}">
+
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{DCP_T_SHIP_TO_PARTY}"></div>
+		<div class="block-button-area">
+			<button id="BTN_search" th:text="#{DCP_B_SEARCH}"></button>
+		</div>
+	</div>
+	
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	<table class="condition">
+		<tbody>
+			<tr>
+				<th th:text="#{DCP_L_DEALER_CODE}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pCustomerNo" name="pCustomerNo" class="custom-ui">
+					</div>
+				</td>
+				<th th:text="#{DCP_L_DEALER_NAME}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pCustomerName" name="pCustomerName" class="custom-ui">
+					</div>				
+				</td>
+			</tr>		
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>	
+	
+<script type="application/javascript">
+
+//화면중 일부 area 를 채우는 그리드 예제. 상위 div #sample-grid-area 영역을 100% 채움.
+//컬럼 width 자동. scroller 자동.
+//고정된 맵 데이터 사용. 페이지 생성시 데이터 넘겨서 그리드 만드는 방식
+
+$(function(){
+	
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		columns : [
+			{
+				name: "chk", 
+				className:"center noselect",// row selection 기능 막음. 
+				width: 20,// checkbox 컬럼은 width 작게
+				orderable: false,// checkbox 는 정렬 불가
+				render: function(data, type, row)
+				{
+					return '<input type="radio" name="chk" class="custom-ui"><label></label>';
+				}
+			},		
+			{data: "KUNN2", title: "[[#{DCP_L_DEALER_CODE}]]"},//Dealer Code
+			{data: "NAME1", title: "[[#{DCP_L_DEALER_NAME}]]"},//Dealer Name
+			{data: "ORT01", title: "[[#{DCP_L_ADDRESS}]]"},//Address
+			{data: "VTEXT", title: "[[#{DCP_L_TRANSPORTATION_ZONE}]]"}//Transportation Zone
+		],
+		ajax: {
+			url: "/portal/scm/parts/domestic/order/create/ship_to_party_list/data",
+			data: function(p)
+			{
+				// ajax로 넘길 파라미터
+				p.pCustomerNo = $("#pCustomerNo").val();
+				p.pCustomerName = $("#pCustomerName").val();
+			},
+			dataSrc: function(response)
+			{
+				return response.RESULT;
+			}
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+	
+	$("#TBL_grid").on("draw.dt", function () {
+		// Datatable grid 초기 설정 셋업
+		initGridTable($tableObj);		
+	});
+	
+	$("#BTN_search").on("click", function() {
+		doSearch();
+	});
+	
+	$("#FORM_search input:text").on("keydown", function(event) {
+		if (event.keyCode == 13)
+		{
+			doSearch();
+		};
+	});	
+	
+	function doSearch()
+	{
+		$tableObj.ajax.reload();
+	};
+	
+	$("#TBL_grid tbody").on("click", "td", function() {
+		var row = $tableObj.row(this).data();
+		
+		opener.changeShipToParty(row.KUNN2, row.NAME1, row.ORT01);		
+		
+		window.close();
+	});
+});
+</script>	
+</th:block>

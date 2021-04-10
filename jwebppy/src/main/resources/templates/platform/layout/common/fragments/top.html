@@ -9,7 +9,7 @@ function makeGmb()
 	let menu = [];
 
 	JpUtilsAjax.get({
-		url: JpUiGlobal.url("/platform/mgmt/content/my_menu"),
+		url: JpUtilsPath.url("/platform/mgmt/content/my_menu"),
 		success: function(data, textStatus, jqXHR)
 		{
 			menu.push("<div class='header item'>");
@@ -84,7 +84,7 @@ function makeGmb()
 					};
 				};
 				
-				document.location.href = JpUiGlobal.url(url);
+				document.location.href = JpUtilsPath.url(url);
 			};			
 			
 			//Get last login information
@@ -96,7 +96,7 @@ function makeGmb()
 			    	
 			    	if (data != null && $.trim(data.regDate) != "")
 			    	{
-			    		$("#lastLoginTime").html(moment(data.regDate).format(JpUiGlobal.DEFAULT_DATE_TIME_FORMAT) + "/" + data.ip);
+			    		$("#lastLoginTime").html(moment(data.regDate).format(DateFormat.FULL_FORMAT) + "/" + data.ip);
 			    	}
 			    	else
 			    	{
@@ -105,7 +105,7 @@ function makeGmb()
 			    }	
 			});
 			
-			$(".ui.dropdown").dropdown();
+			//$(".ui.dropdown").dropdown();
 		}
 	});
 	
@@ -117,7 +117,7 @@ function makeGmb()
 		
 		if (length == 0)
 		{
-			menu.push(" url='" + JpUiGlobal.url(cItem.URL) + "'");	
+			menu.push(" url='" + JpUtilsPath.url(cItem.URL) + "'");	
 		};
 		
 		menu.push(">" + cItem.NAME + "</span>");

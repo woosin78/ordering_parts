@@ -51,7 +51,7 @@
 <script type="application/javascript">
 	$(document).ready(function() {
 		JpUtilsAjax.get({
-			url: JpUiGlobal.url("/platform/mgmt/i18n/basenames"),
+			url: JpUtilsPath.url("/platform/mgmt/i18n/basenames"),
 			success: function(data, textStatus, jqXHR)
 			{
 				let basename = $("#FORM_search select[name=basename]");
@@ -70,7 +70,7 @@
 	let langTable = new JpUiTable($("#TBL_list"));
 	langTable.settings = {
 			ajax: {
-				url: JpUiGlobal.url("/platform/mgmt/i18n/list/data"),
+				url: JpUtilsPath.url("/platform/mgmt/i18n/list/data"),
 				form: $("#FORM_search")
 			},
 			onClickDataKey: function(element, key, row)
@@ -97,7 +97,7 @@
 		if (confirm("Do you want to delete them?"))
 		{
 			JpUtilsAjax.post({
-				url: JpUiGlobal.url("/platform/mgmt/i18n/delete"),
+				url: JpUtilsPath.url("/platform/mgmt/i18n/delete"),
 				data: $("#FORM_search").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{

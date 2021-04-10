@@ -38,7 +38,7 @@ $(document).ready(function() {
 				}
 			},
 			tab: {
-				path: JpUiGlobal.url("/platform/mgmt/log/detail_popup"),
+				path: JpUtilsPath.url("/platform/mgmt/log/detail_popup"),
 				alwaysRefresh: true,
 				isLoadFirstTab: true				
 			}
@@ -48,7 +48,7 @@ $(document).ready(function() {
 
 	$("#BTN_execute").on(function() {
 		JpUtilsAjax.get({
-			url: JpUiGlobal.url("/platform/mgmt/log/rfc/execute?dlSeq=" + $("#dlSeq").val()),
+			url: JpUtilsPath.url("/platform/mgmt/log/rfc/execute?dlSeq=" + $("#dlSeq").val()),
 			success: function(response, textStatus, jqXHR)
 			{
 			}

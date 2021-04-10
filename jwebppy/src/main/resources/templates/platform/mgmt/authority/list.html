@@ -82,7 +82,7 @@ $(document).ready(function() {
 	let authorityTable = new JpUiTable($("#TBL_authority"));
 	authorityTable.settings = {
 			ajax: {
-				url: JpUiGlobal.url("/platform/mgmt/authority/list/data"),
+				url: JpUtilsPath.url("/platform/mgmt/authority/list/data"),
 				async: false,
 				form: $("#FORM_search"),
 		  		beforeSend: function(jqXHR, settings)
@@ -102,7 +102,7 @@ $(document).ready(function() {
 			},
 			onClickDataKey: function(element, key, row)
 			{
-				viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/detail"));
+				viewAuthorityTab.changePath(JpUtilsPath.url("/platform/mgmt/authority/detail"));
 				
 				if ($(row).hasClass("active"))
 				{
@@ -142,7 +142,7 @@ $(document).ready(function() {
 				}
 			},
 			tab: {
-				path: JpUiGlobal.url("/platform/mgmt/authority/detail"),
+				path: JpUtilsPath.url("/platform/mgmt/authority/detail"),
 				alwaysRefresh: true,
 				onLoaded: function(tabPath, parameterArray, historyEvent)
 				{
@@ -156,7 +156,7 @@ $(document).ready(function() {
 								let isValid = true; 
 								
 								JpUtilsAjax.get({
-									url: JpUiGlobal.url("/platform/mgmt/content/valid_check/name/" + value),
+									url: JpUtilsPath.url("/platform/mgmt/content/valid_check/name/" + value),
 									data: { cSeq: getSeq() },
 									global: false,
 									async: false,
@@ -218,7 +218,7 @@ $(document).ready(function() {
 							$(".ui.tab[data-tab=authority]").html(html.join(""));
 
 							JpUtilsAjax.get({
-								url: JpUiGlobal.url("/platform/mgmt/content/contents"),
+								url: JpUtilsPath.url("/platform/mgmt/content/contents"),
 								data: {"type" : "R"},
 								global: false,
 								success: function(data, textStatus, jqXHR)
@@ -245,7 +245,7 @@ $(document).ready(function() {
 							let myAuthorityTable = new JpUiTable($("#TBL_myAuthorityList"));
 							myAuthorityTable.settings = {
 									ajax: {
-										url: JpUiGlobal.url("/platform/mgmt/authority/sub_roles"),
+										url: JpUtilsPath.url("/platform/mgmt/authority/sub_roles"),
 										global: false,
 										form: $("#FORM_modifyAuthority")
 									}
@@ -284,7 +284,7 @@ $(document).ready(function() {
 					};
 
 					changeButtonStatus();
-					viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/detail"));
+					viewAuthorityTab.changePath(JpUtilsPath.url("/platform/mgmt/authority/detail"));
 				}
 			}
 	};
@@ -296,7 +296,7 @@ $(document).ready(function() {
 	});
 	
 	$(".BTN_modifyAuthority").on("click", function() {
-		viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/write"));
+		viewAuthorityTab.changePath(JpUtilsPath.url("/platform/mgmt/authority/write"));
 
 		changeTab();
 	});
@@ -311,7 +311,7 @@ $(document).ready(function() {
 		if (confirm("Do you want to delete the authorities?"))
 		{
 			JpUtilsAjax.post({
-				url: JpUiGlobal.url("/platform/mgmt/authority/delete"),
+				url: JpUtilsPath.url("/platform/mgmt/authority/delete"),
 				data: $("#FORM_search").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -374,7 +374,7 @@ $(document).ready(function() {
 
 		initSeq();
 
-		viewAuthorityTab.changePath(JpUiGlobal.url("/platform/mgmt/authority/write"));
+		viewAuthorityTab.changePath(JpUtilsPath.url("/platform/mgmt/authority/write"));
 		changeTab("general");
 
 		$("#AREA_viewAuthorityDetail").show();
@@ -403,7 +403,7 @@ $(document).ready(function() {
 			};
 			
 			JpUtilsAjax.post({
-				url: JpUiGlobal.url("/platform/mgmt/authority/save/" + viewAuthorityTab.tabPath),
+				url: JpUtilsPath.url("/platform/mgmt/authority/save/" + viewAuthorityTab.tabPath),
 				data: $("#FORM_modifyAuthority").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{

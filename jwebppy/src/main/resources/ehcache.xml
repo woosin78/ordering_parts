@@ -43,5 +43,5 @@
 	<cache alias="Customer" uses-template="platform"/>
 	<cache alias="OrderDisplay" uses-template="platform"/>
 	<cache alias="OrderDisplayDetail" uses-template="platform"/>
-	
+	<cache alias="PartsInfoAutoComplete" uses-template="platform"/>
 </config>

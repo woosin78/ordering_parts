@@ -88,7 +88,7 @@
 				}
 			},
 			tab: {
-				path: JpUiGlobal.url("/platform/mgmt/content"),
+				path: JpUtilsPath.url("/platform/mgmt/content"),
 				form: $("#FORM_modifyItem"),
 				onLoaded: function(tabPath, parameterArray, historyEvent)
 				{
@@ -100,7 +100,7 @@
 							
 							$("#FORM_modifyItem select[name=component]").on("change", function() {
 								JpUtilsAjax.get({
-									url: JpUiGlobal.url("/platform/mgmt/content/component/entry_points?component=" + $(this).val()),
+									url: JpUtilsPath.url("/platform/mgmt/content/component/entry_points?component=" + $(this).val()),
 									global: false,
 									success: function(data, textStatus, jqXHR)
 									{
@@ -124,7 +124,7 @@
 									let isValid = false;
 									
 									JpUtilsAjax.get({
-										url: JpUiGlobal.url("/platform/mgmt/content/valid_check/name"),
+										url: JpUtilsPath.url("/platform/mgmt/content/valid_check/name"),
 										data: { cSeq: getSeq(), value: value },
 										global: false,
 										async: false,
@@ -218,7 +218,7 @@
 					}
 					
 					changeButtonStatus();
-					viewItemTab.changePath(JpUiGlobal.url("/platform/mgmt/content"));
+					viewItemTab.changePath(JpUtilsPath.url("/platform/mgmt/content"));
 				}
 			}
 	};
@@ -248,7 +248,7 @@
 	
 		$("#FORM_modifyItem input[name='pSeq']").val(key);
 	
-		viewItemTab.changePath(JpUiGlobal.url("/platform/mgmt/content/modify"));
+		viewItemTab.changePath(JpUtilsPath.url("/platform/mgmt/content/modify"));
 		changeTab();
 	};
 	tree.deleteItem = function(key, pKey)
@@ -258,7 +258,7 @@
 			setSeq(key, pKey);
 			
 			JpUtilsAjax.post({
-				url: JpUiGlobal.url("/platform/mgmt/content/delete"),
+				url: JpUtilsPath.url("/platform/mgmt/content/delete"),
 				data: $("#FORM_modifyItem").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -305,7 +305,7 @@
 			setSeq(previousCommand.KEY, key);
 			
 			JpUtilsAjax.post({
-				url: JpUiGlobal.url(url),
+				url: JpUtilsPath.url(url),
 				data: $("#FORM_modifyItem").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -321,7 +321,7 @@
 	tree.render();
 	
 	$(".BTN_modifyItem").on("click", function() {
-		viewItemTab.changePath(JpUiGlobal.url("/platform/mgmt/content/modify"));
+		viewItemTab.changePath(JpUtilsPath.url("/platform/mgmt/content/modify"));
 		changeTab();
 	});
 	
@@ -329,7 +329,7 @@
 		if ($("#FORM_modifyItem").form("validate form"))
 		{
 			JpUtilsAjax.post({
-				url: JpUiGlobal.url("/platform/mgmt/content/save/" + viewItemTab.tabPath),
+				url: JpUtilsPath.url("/platform/mgmt/content/save/" + viewItemTab.tabPath),
 				data: $("#FORM_modifyItem").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -431,7 +431,7 @@
 	
 	$(".BTN_translation").on("click", function() {
 		JpUtilsAjax.get({
-			url: JpUiGlobal.url("/platform/mgmt/content/lang"),
+			url: JpUtilsPath.url("/platform/mgmt/content/lang"),
 			data: $("#FORM_modifyItem").serialize(),
 			global: false,
 			success: function(data, textStatus, jqXHR)
@@ -454,7 +454,7 @@
 		$("#FORM_updateLang input[name=lSeq]").val(lSeq);
 		
 		JpUtilsAjax.post({
-			url: JpUiGlobal.url("/platform/mgmt/content/lang/save"),
+			url: JpUtilsPath.url("/platform/mgmt/content/lang/save"),
 			data: $("#FORM_updateLang").serialize(),
 			success: function(data, textStatus, jqXHR)
 			{

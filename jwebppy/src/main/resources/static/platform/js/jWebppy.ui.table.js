@@ -237,7 +237,7 @@ let JpUiTable = function(table)
 			let content = [];
 
 			content.push("<tr class='empty'>");
-			content.push("	<td colspan='" + this.table.find("thead tr th").length + "'>" + JpUiGlobal.DEFAULT_EMPTY_TABLE_TEXT + "</td>");
+			content.push("	<td colspan='" + this.table.find("thead tr th").length + "'>There is no data.</td>");
 			content.push("</tr>");
 			
 			this.table.find("tbody").html(content.join(""));
