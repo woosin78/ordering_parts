@@ -11,6 +11,7 @@ import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.portal.scm.parts.PartsErpDataMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class PartsInfoService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	public RfcResponse getPartsStandardM(ErpDataMap paramMap)
+	public RfcResponse getPartsStandardM(PartsErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_PARTS_STANDARD");
 

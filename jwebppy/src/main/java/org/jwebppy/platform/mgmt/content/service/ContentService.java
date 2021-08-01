@@ -82,6 +82,7 @@ public class ContentService extends GeneralService
 		return 1;
 	}
 
+	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int delete(Integer cSeq)
 	{
 		CItemDto cItem = getCItem(cSeq);

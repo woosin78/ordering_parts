@@ -100,7 +100,10 @@ function makeGmb()
 			});
 			
 			$(".ui.menu.topMenu span.text").on("click", function() {
-				moveToLink(this);
+				if (!$(this).hasClass("R"))
+				{
+					moveToLink(this);	
+				};
 			});
 			
 			$(".ui.menu.topMenu span.text[url]").parent("div.item").on("click", function() {
@@ -182,11 +185,18 @@ function makeGmb()
 
 $(document).ready(function() {
 	makeGmb();
+	
+	$(".header li.openNewWindow").on("click", function() {
+		window.open("/forward/entry_point", "");
+	});
+	
+	$(".header li.dealerInfo").on("click", function() {
+		clickDealerInfo();	    		
+	});
+	
+	$(".header li.username").on("click", function() {
+		clickUserInfo();
+	});	
 });
-
-function logout()
-{
-	$("#FORM_logout").submit();	
-};
 </script>
 <!-- header.jsp end -->

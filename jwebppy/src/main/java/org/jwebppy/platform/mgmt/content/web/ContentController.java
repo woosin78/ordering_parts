@@ -227,7 +227,7 @@ public class ContentController extends ContentGeneralController
 
 		cItemSearch.setUSeq(getUSeq());
 
-		List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
+		List<CItemDto> cItems = contentAuthorityService.getMyCItemHierarchy(cItemSearch);
 
 		for (CItemDto cItem : cItems)
 		{

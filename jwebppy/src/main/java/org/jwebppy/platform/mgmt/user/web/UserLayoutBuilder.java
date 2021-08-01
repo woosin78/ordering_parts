@@ -314,9 +314,11 @@ public class UserLayoutBuilder
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
-			for (CItemDto cItemDto : cItems)
+			for (CItemDto cItem : cItems)
 			{
-				document.addElement(PlatformLayoutBuildUtils.defaultLabelText(cItemDto.getName(), cItemDto.getDescription()));
+				String prefix = "[" + cItem.getType().getType() + "] ";
+
+				document.addElement(PlatformLayoutBuildUtils.defaultLabelText(prefix + cItem.getName(), cItem.getDescription()));
 			}
 		}
 
@@ -327,6 +329,7 @@ public class UserLayoutBuilder
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
+		thTr.addTh(new Th("Type"));
 		thTr.addTh(new Th("Name"));
 		thTr.addTh(new Th("Description"));
 
@@ -341,6 +344,7 @@ public class UserLayoutBuilder
 			{
 				Tr tbTr = new Tr();
 				tbTr.addDataKeyCheckboxTd("cSeq", cItemDto.getCSeq());
+				tbTr.addTextTd(cItemDto.getType().getType());
 				tbTr.addTextTd(cItemDto.getName());
 				tbTr.addTextTd(cItemDto.getDescription());
 

@@ -8,14 +8,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.collections4.MapUtils;
+import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Element;
 
 public class PlatformLayoutBuildUtils
 {
 	public static Element defaultLabelText(String label, Object text)
 	{
-		Element textElement = new Element("div");
-		textElement.addAttribute("class", "sub header");
+		Div textElement = new Div();
+		textElement.addClass("sub header");
 
 		if (text instanceof Element)
 		{
@@ -26,11 +27,8 @@ public class PlatformLayoutBuildUtils
 			textElement.setText(text);
 		}
 
-		//Element textElement = new Element("div", text);
-		//textElement.addAttribute("class", "sub header");
-
-		Element labelElement = new Element("div", label);
-		labelElement.addAttribute("class", "ui dividing header small");
+		Div labelElement = new Div(label);
+		labelElement.addClass("ui dividing header small");
 		labelElement.addElement(textElement);
 
 		return labelElement;
@@ -47,7 +45,6 @@ public class PlatformLayoutBuildUtils
 			{
 				Entry<String, Object> entry = it.next();
 
-				//elements.add(defaultLabelText(entry.getKey(), CmStringUtils.trimToEmpty(entry.getValue())));
 				elements.add(defaultLabelText(entry.getKey(), entry.getValue()));
 			}
 

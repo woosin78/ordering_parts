@@ -35,11 +35,6 @@ public class DataMap implements IDataMap, Serializable
 		}
 	}
 
-	public DataMap(Map map)
-	{
-		this.map = map;
-	}
-
 	@Override
 	public int size()
 	{
@@ -263,7 +258,7 @@ public class DataMap implements IDataMap, Serializable
     @Override
 	public IDataMap getMap(Object key)
     {
-        return new DataMap((Map)map.get(key));
+        return new DataMap(map.get(key));
     }
 
     @Override

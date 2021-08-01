@@ -14,9 +14,7 @@ import org.jwebppy.platform.core.dao.AbstractDaoTemplate;
 import org.jwebppy.platform.core.dao.IDaoRequest;
 import org.jwebppy.platform.core.dao.MapParameterSource;
 import org.jwebppy.platform.core.dao.ParameterValue;
-import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -67,11 +65,11 @@ public class RfcTemplate extends AbstractDaoTemplate
     		return rfcRequest.getLandscape();
     	}
 
+    	/*
     	ErpUserContext erpUserContext = UserAuthenticationUtils.getUserDetails().getErpUserContext();
 
     	if (erpUserContext != null)
     	{
-    		/*
         	if (CmStringUtils.equals(erpUserContext.getCorpName(), "DIVEU"))
         	{
         		return "P01";
@@ -80,8 +78,8 @@ public class RfcTemplate extends AbstractDaoTemplate
         	{
         		return "GMT";
         	}
-        	*/
     	}
+    	*/
 
     	return "P09";
     }

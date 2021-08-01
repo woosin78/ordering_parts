@@ -24,6 +24,7 @@ import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 import com.ibm.icu.util.TimeZone;
 
@@ -51,8 +53,10 @@ public class UserController extends UserGeneralController
 	private UserService userService;
 
 	@RequestMapping("/list")
-	public String list()
+	public String list(Model model, WebRequest webRequest)
 	{
+		addAllAttributeFromRequest(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -82,9 +86,8 @@ public class UserController extends UserGeneralController
 		{
 			CItemSearchDto cItemSearch = new CItemSearchDto();
 			cItemSearch.setUSeq(userSearch.getUSeq());
-			cItemSearch.setFgVisible(PlatformCommonVo.ALL);
 
-			return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyItemHierarchy(cItemSearch));
+			return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyCItems(cItemSearch));
 		}
 		else
 		{
@@ -131,7 +134,7 @@ public class UserController extends UserGeneralController
 				CItemSearchDto cItemSearch = new CItemSearchDto();
 				cItemSearch.setUSeq(userSearch.getUSeq());
 
-				cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
+				cItems = contentAuthorityService.getMyCItemHierarchy(cItemSearch);
 			}
 
 			return UserLayoutBuilder.getAuthorityForm(cItems);
@@ -218,7 +221,9 @@ public class UserController extends UserGeneralController
 	@ResponseBody
 	public Object authority(@ModelAttribute CItemSearchDto cItemSearch)
 	{
-		return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyItemHierarchy(cItemSearch));
+		cItemSearch.setFgShowGroup(PlatformCommonVo.YES);
+
+		return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyCItemHierarchy(cItemSearch));
 	}
 
 	@GetMapping("/my_authority")
@@ -236,7 +241,7 @@ public class UserController extends UserGeneralController
 		}
 		else
 		{
-			cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
+			cItems = contentAuthorityService.getMyCItems(cItemSearch);
 		}
 
 		return UserLayoutBuilder.getAuthorityForm(cItems);

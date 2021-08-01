@@ -139,4 +139,9 @@ public class Element
 			addAttribute("required");
 		}
 	}
+
+	public void addClass(String clazz)
+	{
+		addAttribute("class", clazz);
+	}
 }

@@ -1,5 +1,6 @@
 package org.jwebppy.platform.mgmt.content.service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.mgmt.authority.service.AuthorityService;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
@@ -29,6 +31,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class ContentAuthorityService extends GeneralService
 {
 	@Autowired
+	private AuthorityService authorityService;
+
+	@Autowired
 	private ContentService contentService;
 
 	@Autowired
@@ -37,7 +42,6 @@ public class ContentAuthorityService extends GeneralService
 	@Autowired
 	private LangService langService;
 
-	//현재 가지고 있는 권한을 모두 삭제 한 후 부여
 	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int save(CItemUserRlDto cItemUserRl)
 	{
@@ -100,8 +104,13 @@ public class ContentAuthorityService extends GeneralService
 		return 0;
 	}
 
+	public List<CItemDto> getMyCItems(CItemSearchDto cItemSearch)
+	{
+		return CmModelMapperUtils.mapAll(contentMapper.findMyCItems(cItemSearch), CItemDto.class);
+	}
+
 	@Cacheable(value = CacheConfig.CITEM, key = "#cItemSearch.uSeq", unless="#result == null")
-	public List<CItemDto> getMyItemHierarchy(CItemSearchDto cItemSearch)
+	public List<CItemDto> getMyCItemHierarchy(CItemSearchDto cItemSearch)
 	{
 		List<CItemDto> hierarchy = new LinkedList<>();
 
@@ -109,6 +118,29 @@ public class ContentAuthorityService extends GeneralService
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
+			List<CItemDto> roles = new ArrayList<>();
+
+			for (CItemDto cItem : cItems)
+			{
+				if (CItemType.G.equals(cItem.getType()))
+				{
+					CItemSearchDto cItemSearch2 = new CItemSearchDto();
+					cItemSearch2.setUSeq(cItemSearch.getUSeq());
+					cItemSearch2.setPSeq(cItem.getCSeq());
+
+					List<CItemDto> subRoles = authorityService.getSubRoles(cItemSearch2);
+
+					for (CItemDto subRole : subRoles)
+					{
+						roles.add(subRole);
+					}
+				}
+				else
+				{
+					roles.add(cItem);
+				}
+			}
+
 			String lang = cItemSearch.getLang();
 
 			if (CmStringUtils.isEmpty(lang))
@@ -123,19 +155,19 @@ public class ContentAuthorityService extends GeneralService
 				}
 			}
 
-			for (CItemDto cItem : cItems)
+			for (CItemDto role : roles)
 			{
-				cItem.setName2(langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, cItem.getCSeq(), lang));
-				cItem.setSubCItems(getSubItems(cItem.getCSeq(), lang));
+				role.setName2(langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, role.getCSeq(), lang));
+				role.setSubCItems(getSubCItems(role.getCSeq(), lang));
 
-				hierarchy.add(cItem);
+				hierarchy.add(role);
 			}
 		}
 
 		return hierarchy;
 	}
 
-	private List<CItemDto> getSubItems(Integer cSeq, String lang)
+	private List<CItemDto> getSubCItems(Integer cSeq, String lang)
 	{
 		List<CItemDto> cItems = new LinkedList<>();
 
@@ -154,7 +186,7 @@ public class ContentAuthorityService extends GeneralService
 				if (cSeq.equals(subCItem.getPSeq()))
 				{
 					subCItem.setName2(langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, subCSeq, lang));
-					subCItem.setSubCItems(getSubItems(subCSeq, lang));
+					subCItem.setSubCItems(getSubCItems(subCSeq, lang));
 
 					cItems.add(subCItem);
 				}
@@ -166,7 +198,7 @@ public class ContentAuthorityService extends GeneralService
 
 	public CItemDto getMyEntryPoint(CItemSearchDto cItemSearch)
 	{
-		List<CItemDto> cItems = getMyItemHierarchy(cItemSearch);
+		List<CItemDto> cItems = getMyCItemHierarchy(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{

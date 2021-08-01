@@ -114,7 +114,7 @@
 	    <div class="ui hidden divider"></div>
 	</div>
 </div>
-<script type="application/javascript">
+<script th:inline="javascript">
 $(document).ready(function() {
 	let usersTable = new JpUiTable($("#TBL_users"));
 	usersTable.settings = {
@@ -462,7 +462,7 @@ $(document).ready(function() {
 
 							JpUtilsAjax.get({
 								url: JpUtilsPath.url("/platform/mgmt/content/contents"),
-								data: {"type" : "R"},
+								data: {"type" : "R", "type" : "G"},
 								global: false,
 								success: function(data, textStatus, jqXHR)
 								{
@@ -535,6 +535,18 @@ $(document).ready(function() {
 							};
 						};
 					}
+					else
+					{
+						if (tabPath == "authority")
+						{
+							$.each($("#FORM_modifyUser div[data-tab=authority] div.ui.header"), function(i, item) {
+								$(this).on("click", function() {
+									alert(1);
+								});
+							});
+						}
+					};
+						
 
 					changeButtonStatus();
 					viewUserTab.changePath(JpUtilsPath.url("/platform/mgmt/user/detail"));
@@ -867,6 +879,12 @@ $(document).ready(function() {
 		return (viewUserTab.getPath().indexOf("write") > -1) ? true : false;
 	};
 
+	[# th:if="${uSeq != null}"]
+
+	$("#FORM_search input[name=uSeq]").val([[${uSeq}]]);	
+
+	[/]		
+	
 	doSearch();
 });
 

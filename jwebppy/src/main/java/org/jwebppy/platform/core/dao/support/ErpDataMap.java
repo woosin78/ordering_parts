@@ -1,7 +1,6 @@
 package org.jwebppy.platform.core.dao.support;
 
 import java.io.Serializable;
-import java.util.Map;
 
 import org.jwebppy.platform.core.util.CmStringUtils;
 
@@ -17,11 +16,6 @@ public class ErpDataMap extends DataMap implements Serializable
 	public ErpDataMap(Object obj)
 	{
 		super(obj);
-	}
-
-	public ErpDataMap(Map map)
-	{
-		super(map);
 	}
 
 	public String getCorpNo()
@@ -71,16 +65,6 @@ public class ErpDataMap extends DataMap implements Serializable
 	public String getCustomerName()
 	{
 		return getString("NAME1");
-	}
-
-	public String getCustomerGrp5()
-	{
-		return getString("KVGR5");
-	}
-
-	public String getCustomerType()
-	{
-		return getString("TYPE");
 	}
 
 	public String getLang()

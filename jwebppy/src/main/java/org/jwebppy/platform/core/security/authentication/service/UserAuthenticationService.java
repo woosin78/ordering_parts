@@ -34,7 +34,7 @@ public class UserAuthenticationService extends PlatformGeneralService
         userSearch.setUSeq(user.getUSeq());
         userSearch.setLang(user.getLanguage());
 
-        List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(userSearch);
+        List<CItemDto> cItems = contentAuthorityService.getMyCItemHierarchy(userSearch);
 
         PlatformUserDetails platformUserDetails = new PlatformUserDetails();
         platformUserDetails.setUSeq(user.getUSeq());

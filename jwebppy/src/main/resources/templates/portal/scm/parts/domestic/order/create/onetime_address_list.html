@@ -8,7 +8,7 @@
 	<script type="application/javascript" th:src="@{/portal/js/portal.utils.order.js}"></script>
 	
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVEU_TXT_0058}"></div>
+		<div class="block-title" th:text="#{DCP_T_ONETIME_ADDRESS}"></div>
 		<div class="block-button-area">
 			<button id="BTN_search" type="button" th:text="#{DCP_B_SEARCH}"></button>
 			<button id="BTN_select" type="button" th:text="#{DCP_B_SELECT}"></button>
@@ -20,7 +20,7 @@
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
 	<input type="hidden" id="country" name="country" value="GB">
-	<input type="hidden" id="countryName" name="countryName" th:value="#{DIVEU_TXT_0059}">
+	<input type="hidden" id="countryName" name="countryName" value="">
 	<input type="hidden" id="transportZone" name="transportZone">
 	<table class="condition">
 		<tbody>
@@ -157,13 +157,13 @@ $(function(){
 		
 		if (selectedCount == 0)
 		{
-			alert("[[#{DIVEU_MSG_0019}]]");
+			alert("[[#{DCP_M_EMPTY_ADDRESS}]]");
 			return;
 		};
 		
 		if (selectedCount > 1)
 		{
-			alert("[[#{DIVEU_MSG_0020}]]");
+			alert("[[#{DCP_M_SELECT_ONLY_ONE}]]");
 			return;
 		};
 		
@@ -178,35 +178,35 @@ $(function(){
 	$("#BTN_add").on("click", function() {
 		if ($.trim($("#name").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0018}]]");
+			alert("[[#{DCP_M_EMPTY_CUSTOMER_NAME}]]");
 			$("#name").focus();
 			return;
 		};
 		
 		if ($.trim($("#street").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0017}]]");
+			alert("[[#{DCP_M_EMPTY_STREET}]]");
 			$("#street").focus();
 			return;
 		};
 		
 		if ($.trim($("#city").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0016}]]");
+			alert("[[#{DCP_M_EMPTY_CITY}]]");
 			$("#city").focus();
 			return;
 		};
 		
 		if ($.trim($("#postalCode").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0014}]]");
+			alert("[[#{DCP_M_EMPTY_PORTAL_CODE}]]");
 			$("#postalCode").focus();
 			return;
 		};
 		
 		if ($.trim($("#transportZone").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0012}]]");
+			alert("[[#{	DCP_M_EMPTY_TZONE}]]");
 			$("#transportZone").focus();
 			return;
 		};
@@ -240,7 +240,7 @@ $(function(){
 		    	{
 		    		doSearch();
 		    		
-		    		if (confirm("[[#{DIVEU_MSG_0013}]]"))
+		    		if (confirm("[[#{DCP_M_ORDER_WITH_EXIST_ADDRESS}]]"))
 		    		{
 		    			opener.changeShipToPartyByOnetimeAddress(result.oaSeq, $("#name").val(), address);
 		    			window.close();
@@ -255,11 +255,11 @@ $(function(){
 		
 		if (selectedTargets.length == 0)
 		{
-			alert("[[#{DIVEU_MSG_0021}]]");
+			alert("[[#{DCP_M_SELECT_TARGET_TO_DELETE}]]");
 			return;
 		};
 		
-		if (confirm("[[#{DIVEU_MSG_0022}]]"))
+		if (confirm("[[#{DCP_M_CONFIRM_DELETE}]]"))
 		{
 			$.ajax({
 				url: "/portal/corp/uk/scm/parts/order/create/onetime_address/delete",
@@ -290,7 +290,7 @@ $(function(){
 	{
 		if ($.trim($("#postalCode").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0014}]]");
+			alert("[[#{DCP_M_EMPTY_PORTAL_CODE}]]");
 			$("#postalCode").focus();
 			return;
 		};
@@ -318,14 +318,14 @@ $(function(){
 		    		    	}
 		    		    	else
 		    		    	{
-		    		    		alert("[[#{DIVEU_MSG_0015}]]");
+		    		    		alert("[[#{DCP_M_EMPTY_RESULT}]]");
 		    		    	};
 		    		    }
 		    		});			    		
 		    	}
 		    	else
 		    	{
-		    		alert("[[#{DIVEU_MSG_0015}]]");
+		    		alert("[[#{DCP_M_EMPTY_RESULT}]]");
 		    	};
 		    }
 		});		

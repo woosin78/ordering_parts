@@ -31,4 +31,5 @@ public class CItemSearchDto extends GeneralDto
 	private String entryPoint;
 	private String lang;
 	private String query;
+	private String fgShowGroup;
 }

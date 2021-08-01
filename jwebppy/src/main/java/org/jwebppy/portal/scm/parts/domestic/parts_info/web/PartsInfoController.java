@@ -8,6 +8,7 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
+import org.jwebppy.portal.scm.parts.PartsErpDataMap;
 import org.jwebppy.portal.scm.parts.PartsGeneralController;
 import org.jwebppy.portal.scm.parts.domestic.parts_info.service.PartsInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class PartsInfoController extends PartsGeneralController
 			return null;
 		}
 
-		ErpDataMap rfcParamMap = getErpUserInfo();
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.put("partsNo", pPartsNo.toUpperCase());//PartsNo
 
 		RfcResponse rfcResponse2 = partsInfoService.getPartsStandardM(rfcParamMap);

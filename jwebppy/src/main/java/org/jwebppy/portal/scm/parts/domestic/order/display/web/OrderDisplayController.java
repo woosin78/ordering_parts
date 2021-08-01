@@ -16,6 +16,7 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.scm.ScmCommonVo;
+import org.jwebppy.portal.scm.parts.PartsErpDataMap;
 import org.jwebppy.portal.scm.parts.PartsGeneralController;
 import org.jwebppy.portal.scm.parts.domestic.order.display.service.OrderDisplayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class OrderDisplayController extends PartsGeneralController
 			paramMap.put("pToDate", CmDateFormatUtils.today());
 		}
 
-		ErpDataMap rfcParamMap = getErpUserInfo();
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.put("orderType", paramMap.get("pOrderType"));//Order Type
 		rfcParamMap.put("orderNo", paramMap.get("pOrderNo"));//Order No.
 		rfcParamMap.put("poNo", paramMap.get("pPoNo"));//Purchase Order No.

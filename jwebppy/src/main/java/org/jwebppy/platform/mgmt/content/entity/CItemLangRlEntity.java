@@ -12,6 +12,7 @@ import lombok.ToString;
 public class CItemLangRlEntity extends GeneralEntity
 {
 	private static final long serialVersionUID = -8895372975976962612L;
+
 	private Integer clrSeq;
 	private Integer cSeq;
 	private Integer lSeq;

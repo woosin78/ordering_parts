@@ -200,7 +200,7 @@ $(document).ready(function() {
 						if (tabPath == "general")
 						{
 							JpUiCalendar.datetimeCalendar($("#fromValid"), $("#toValid"));
-						}						
+						}
 						else if (tabPath == "authority")
 						{
 							let html = [];
@@ -280,6 +280,21 @@ $(document).ready(function() {
 							{
 								$("#TBL_myAuthorityList").find("thead .ui.checkbox").checkbox("uncheck");
 							};
+						};
+					}
+					else
+					{
+						if (tabPath == "user")
+						{
+							$("#FORM_modifyAuthority div[data-tab=user] a").on("click", function() {
+								JpUiPopup.open({
+									url: JpUtilsPath.url("/platform/mgmt/user/list?uSeq=" + $(this).attr("data-key")),
+									width: screen.availWidth * 0.7,
+									height: screen.availHeight * 0.7,
+									fgCenter: "Y"
+								});
+								
+							});
 						};
 					};
 

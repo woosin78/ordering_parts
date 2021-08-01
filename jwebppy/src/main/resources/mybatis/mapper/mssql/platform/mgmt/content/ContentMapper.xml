@@ -119,6 +119,16 @@
 			and a.type=#{type}
 		</if>
 		
+		<if test="types != null">
+			<trim prefix="and">
+				<foreach collection="types" item="type" open="(" close=")" separator="or">
+					<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+						a.type=#{type}
+					</if>				
+				</foreach>
+			</trim>
+		</if>			
+		
 		order by a.sort
 	</select>
 	

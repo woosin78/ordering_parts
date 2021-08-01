@@ -6,8 +6,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
-import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.scm.ScmGeneralController;
@@ -18,9 +16,9 @@ public class PartsGeneralController extends ScmGeneralController
 	@Autowired
 	private PartsGeneralService partsGeneralService;
 
-	public ErpDataMap getErpUserInfo()
+	public PartsErpDataMap getErpUserInfo()
 	{
-		ErpUserContext erpUserContext = UserAuthenticationUtils.getUserDetails().getErpUserContext();
+		PartsErpUserContext erpUserContext = (PartsErpUserContext)UserAuthenticationUtils.getUserDetails().getErpUserContext();
 		String lang = CmStringUtils.defaultString(UserAuthenticationUtils.getUserDetails().getLanguage(), Locale.ENGLISH).toUpperCase();
 
 		if (erpUserContext == null || CmStringUtils.isEmpty(erpUserContext.getCorpName()))
@@ -30,7 +28,7 @@ public class PartsGeneralController extends ScmGeneralController
 
 	        if (CollectionUtils.isNotEmpty(userList))
 	        {
-	    		erpUserContext = new ErpUserContext();
+	    		erpUserContext = new PartsErpUserContext();
 
 	    		DataMap userMap = (DataMap)userList.get(0);
 
@@ -48,7 +46,7 @@ public class PartsGeneralController extends ScmGeneralController
 
 	    		UserAuthenticationUtils.getUserDetails().setErpUserContext(erpUserContext);
 
-	    		ErpDataMap erpDataMap = new ErpDataMap(userMap);
+	    		PartsErpDataMap erpDataMap = new PartsErpDataMap(userMap);
 				erpDataMap.put("LANG", lang);
 
 				return erpDataMap;
@@ -56,7 +54,7 @@ public class PartsGeneralController extends ScmGeneralController
 		}
 		else
 		{
-			ErpDataMap erpDataMap = new ErpDataMap();
+			PartsErpDataMap erpDataMap = new PartsErpDataMap();
 
 			erpDataMap.put("BUKRS", erpUserContext.getCorp());
 			erpDataMap.put("BNAME", erpUserContext.getUsername());

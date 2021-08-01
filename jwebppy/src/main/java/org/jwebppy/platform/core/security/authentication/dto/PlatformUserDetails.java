@@ -34,7 +34,7 @@ public class PlatformUserDetails implements UserDetails
 	private LocalDateTime toValid;
 	private List<CItemDto> cItems;
 	private String language;
-	private ErpUserContext erpUserContext;
+	private Object erpUserContext;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities()

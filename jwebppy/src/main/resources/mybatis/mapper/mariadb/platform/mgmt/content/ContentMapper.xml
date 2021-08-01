@@ -98,6 +98,10 @@
 		and a.from_valid <![CDATA[<]]> now() and a.to_valid <![CDATA[>=]]> now()
 		and b.fg_delete='N'
 		
+		<if test="pSeq != null">
+			and a.p_seq=#{pSeq}
+		</if>			
+		
 		<!-- OGNL(Object Graph Navigation Language) 의 문제로 toString() 추가 -->
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@notEquals(fgVisible, 'A')">
 			and a.fg_visible='Y'
@@ -119,7 +123,17 @@
 			and a.type=#{type}
 		</if>
 		
-		order by a.sort
+		<if test="types != null">
+			<trim prefix="and">
+				<foreach collection="types" item="type" open="(" close=")" separator="or">
+					<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+						a.type=#{type}
+					</if>				
+				</foreach>
+			</trim>
+		</if>	
+		
+		order by a.sort, a.c_seq
 	</select>
 	
 	<select id="findCItems" parameterType="CItemSearchDto" resultType="CItemEntity">

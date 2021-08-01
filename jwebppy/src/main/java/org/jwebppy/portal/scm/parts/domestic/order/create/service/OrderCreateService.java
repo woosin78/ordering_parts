@@ -16,12 +16,12 @@ import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.scm.parts.PartsCommonVo;
+import org.jwebppy.portal.scm.parts.PartsErpUserContext;
 import org.jwebppy.portal.scm.parts.domestic.order.create.dto.OnetimeAddressDto;
 import org.jwebppy.portal.scm.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.scm.parts.domestic.order.create.dto.OrderHistoryHeaderDto;
@@ -299,7 +299,7 @@ public class OrderCreateService
 				//Onetime Address 로 주문 했을 경우
 				if (order.getOaSeq() != null)
 				{
-					ErpUserContext erpUserContext = UserAuthenticationUtils.getUserDetails().getErpUserContext();
+					PartsErpUserContext erpUserContext = (PartsErpUserContext)UserAuthenticationUtils.getUserDetails().getErpUserContext();
 
 					OnetimeAddressDto onetimeAddress = new OnetimeAddressDto();
 					onetimeAddress.setCorp(erpUserContext.getCorpName());

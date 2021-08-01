@@ -8,11 +8,11 @@ let JpUiCalendar = {
 					formatter: {
 						date: function (date, settings)
 						{
-							return moment(date).format(JpUiGlobal.DEFAULT_DATE_FORMAT);
+							return moment(date).format(DateFormat.DATE_FORMAT);
 						},
 						time: function (time, settings)
 						{
-							return moment(time).format(JpUiGlobal.DEFAULT_TIME_FORMAT);
+							return moment(time).format(DateFormat.TIME_FORMAT);
 						}
 					}
 			};

@@ -55,10 +55,9 @@ public class ContentLayoutBuilder
 		loType.setLabel("Item Type");
 		loType.addAttribute("required");
 
-		if (cItem.getCSeq() != null && cItem.getType().equals(CItemType.R))
+		if (cItem.getCSeq() != null)
 		{
-			loType.setValue(cItem.getType());
-			loType.addOption(CItemType.R.name(), CItemType.R.getType());
+			loType.addOption(cItem.getType(), cItem.getType().getType());
 		}
 		else
 		{

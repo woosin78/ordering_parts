@@ -152,7 +152,8 @@ public class AuthorityLayoutBuilder
 				UserContactInfoDto userContactInfo = user.getUserContactInfo();
 
 				Tr tbTr = new Tr();
-				tbTr.addTextTd(userAccount.getUsername());
+
+				tbTr.addDataKeyLinkTd(userAccount.getUsername(), user.getUSeq());
 				tbTr.addTextTd(user.getName());
 				tbTr.addTextTd(userContactInfo.getEmail());
 				tbTr.addTextTd(user.getCompany());
