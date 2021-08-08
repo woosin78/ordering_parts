@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 
 import org.springframework.util.CollectionUtils;
 
@@ -113,14 +112,19 @@ public class DataList implements IDataList, Serializable
 	@Override
 	public Object get(int index)
 	{
-		Object obj = list.get(index);
-
-		if (EasyCollectionFactory.isApproximableMapType(obj))
+		if (!isEmpty())
 		{
-			return toDataMap(list.get(index));
+			Object obj = list.get(index);
+
+			if (EasyCollectionFactory.isApproximableMapType(obj))
+			{
+				return toDataMap(list.get(index));
+			}
+
+		    return obj;
 		}
 
-	    return obj;
+		return null;
 	}
 
 	@Override
@@ -179,6 +183,6 @@ public class DataList implements IDataList, Serializable
 
 	private DataMap toDataMap(Object value)
 	{
-		return new DataMap((Map)value);
+		return new DataMap(value);
 	}
 }

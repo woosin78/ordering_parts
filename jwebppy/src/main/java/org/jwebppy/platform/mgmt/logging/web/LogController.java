@@ -4,16 +4,11 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.dao.sap.RfcRequest;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.logging.LoggingGeneralController;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
-import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
-import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogSearchDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessResultLogDto;
-import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +31,6 @@ public class LogController extends LoggingGeneralController
 	@Autowired
 	private DataAccessResultLogService dataAccessResultLogService;
 
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	@RequestMapping("/list")
 	public String list(@ModelAttribute(value = "dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch)
 	{
@@ -55,12 +47,14 @@ public class LogController extends LoggingGeneralController
 	@GetMapping("/detail_popup")
 	public String detailPopup(@ModelAttribute("dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch, Model model)
 	{
-		model.addAttribute("dataAccessLog", dataAccessLogService.getLog(dataAccessLogSearch.getDlSeq()));
+		DataAccessLogDto dataAccessLog = dataAccessLogService.getLog(dataAccessLogSearch.getDlSeq());
 
-		if (CollectionUtils.isNotEmpty(dataAccessResultLogService.getResultLogs(dataAccessLogSearch.getDlSeq())))
+		if (CollectionUtils.isNotEmpty(dataAccessResultLogService.getResultLogs(dataAccessLog.getDlSeq())))
 		{
-			dataAccessLogSearch.setFgHasResultLog(PlatformCommonVo.YES);
+			model.addAttribute("fgHasResultLog", PlatformCommonVo.YES);
 		}
+
+		model.addAttribute("dataAccessLog", dataAccessLog);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -73,7 +67,7 @@ public class LogController extends LoggingGeneralController
 		{
 			return LogLayoutBuilder.getLog(dataAccessLogService.getLog(dlSeq));
 		}
-		else
+		else if ("result".equals(tabPath))
 		{
 			List<DataAccessResultLogDto> dataAccessResultLogs = dataAccessResultLogService.getResultLogs(dlSeq);
 
@@ -81,6 +75,10 @@ public class LogController extends LoggingGeneralController
 			{
 				return LogResultLayoutBuilder.getLog(dataAccessResultLogs.get(0));
 			}
+		}
+		else if ("error".equals(tabPath))
+		{
+			return LogLayoutBuilder.getError(dataAccessLogService.getLog(dlSeq));
 		}
 
 		return null;
@@ -90,44 +88,6 @@ public class LogController extends LoggingGeneralController
 	@ResponseBody
 	public Object execute(@RequestParam("dlSeq") String dlSeq)
 	{
-		DataAccessLogDto dataAccessLog = dataAccessLogService.getLog(dlSeq);
-
-		RfcRequest rfcRequest = new RfcRequest(dataAccessLog.getCommand());
-
-		List<DataAccessLogParameterDto> dataAccessLogParameters = dataAccessLog.getDataAccessLogParameters();
-
-		if (CollectionUtils.isNotEmpty(dataAccessLogParameters))
-		{
-			for (DataAccessLogParameterDto dataAccessLogParameter: dataAccessLogParameters)
-			{
-				ParameterType type = dataAccessLogParameter.getType();
-				String name = dataAccessLogParameter.getName();
-				List<DataAccessLogParameterDetailDto> dataAccessLogParameterDetails = dataAccessLogParameter.getDataAccessLogParameterDetails();
-
-				if (CollectionUtils.isNotEmpty(dataAccessLogParameterDetails))
-				{
-					if (ParameterType.T.equals(type))
-					{
-						rfcRequest.addTable(name, dataAccessLogParameterDetails);
-					}
-					else
-					{
-						for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail: dataAccessLogParameterDetails)
-						{
-							if (ParameterType.F.equals(type))
-							{
-								rfcRequest.addField(name, dataAccessLogParameterDetail.getValue());
-							}
-							else if (ParameterType.S.equals(type))
-							{
-								rfcRequest.addStructure(name, dataAccessLogParameterDetail.getName(), dataAccessLogParameterDetail.getValue());
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return simpleRfcTemplate.response(rfcRequest);
+		return dataAccessLogService.execute(dlSeq);
 	}
 }

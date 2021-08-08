@@ -53,4 +53,23 @@ public class PlatformLayoutBuildUtils
 
 		return Collections.emptyList();
 	}
+
+	public static Element defaultText(Object text)
+	{
+		Div textElement = new Div();
+
+		if (text instanceof Element)
+		{
+			textElement.addElement((Element)text);
+		}
+		else
+		{
+			textElement.setText(text);
+		}
+
+		Div labelElement = new Div();
+		labelElement.addElement(textElement);
+
+		return labelElement;
+	}
 }

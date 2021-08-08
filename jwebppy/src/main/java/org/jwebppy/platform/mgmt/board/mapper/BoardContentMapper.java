@@ -5,6 +5,7 @@ import java.util.List;
 import org.jwebppy.platform.mgmt.board.dto.BoardContentSearchDto;
 import org.jwebppy.platform.mgmt.board.entity.BoardContentEntity;
 
+//@NoLogging
 public interface BoardContentMapper
 {
 	public int insert(BoardContentEntity boardContent);

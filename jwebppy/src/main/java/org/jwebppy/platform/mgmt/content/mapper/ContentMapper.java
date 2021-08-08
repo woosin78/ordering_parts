@@ -9,6 +9,7 @@ import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
 import org.jwebppy.platform.mgmt.content.entity.CItemLangRlEntity;
 import org.jwebppy.platform.mgmt.content.entity.CItemUserRlEntity;
 
+@NoLogging
 public interface ContentMapper
 {
 	public int insert(CItemEntity cItem);
@@ -18,13 +19,9 @@ public interface ContentMapper
 	public int updateCItemLangRl(CItemLangRlEntity cItemLangRl);
 	public int delete(CItemEntity cItem);
 	public int deleteCItemUserRl(CItemUserRlEntity cItemUserRl);
-	@NoLogging
 	public CItemEntity findCItem(CItemSearchDto cItemSearch);
-	@NoLogging
 	public List<CItemEntity> findMyCItems(CItemSearchDto cItemSearch);
-	@NoLogging
 	public List<CItemEntity> findCItems(CItemSearchDto cItemSearch);
 	public List<CItemEntity> findPageCItems(CItemSearchDto cItemSearch);
-	@NoLogging
 	public List<CItemLangRlEntity> findLangs(CItemLangRlDto cItemLangRl);
 }

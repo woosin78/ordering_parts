@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
 import lombok.Getter;
@@ -23,7 +22,7 @@ public class DataAccessLogDto extends GeneralDto implements IPagination
 	private static final long serialVersionUID = -3252178705437302180L;
 
 	private String dlSeq;
-	private String type;
+	private IfType type;
 	private String command;
 	private String className;
 	private String methodName;
@@ -35,7 +34,9 @@ public class DataAccessLogDto extends GeneralDto implements IPagination
 	private String error;
 	private List<DataAccessLogParameterDto> dataAccessLogParameters;
 	private Map<String, Object> executionResult;
+	private boolean loggingTarget;
 
+	/*
 	public String getDisplayType()
 	{
 		if (CmStringUtils.isEmpty(type))
@@ -54,6 +55,7 @@ public class DataAccessLogDto extends GeneralDto implements IPagination
 
 		return type;
 	}
+	*/
 
 	public Double getElapsedTime()
 	{

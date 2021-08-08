@@ -9,6 +9,8 @@
 <div class="ui one column grid">
 	<div class="column">
 		<div id="BTN_execute" class="ui teal button"><i class="play icon"></i> Execute</div>
+		<div id="BTN_copyLink" class="ui teal button"><i class="linkify icon"></i> Copy Link</div>
+		<div id="BTN_sendMailWithLink" class="ui teal button"><i class="paper plane outline icon"></i> Send Mail With Link</div>
 	</div>
 </div>
 <div class="ui divider"></div>
@@ -16,13 +18,15 @@
 
 <div id="TAB_viewLogDetail" class="ui secondary pointing menu">
 	<a class="item active wrap" data-tab="parameter">Parameter</a>
-	<a th:if="${dataAccessLogSearch.fgHasResultLog} == 'Y'" class="item wrap" data-tab="result">Result</a>
+	<a th:if="${fgHasResultLog} == 'Y'" class="item wrap" data-tab="result">Result</a>
+	<a th:if="${not #strings.isEmpty(dataAccessLog.error)}" class="item wrap" data-tab="error">Error</a>
 </div>
 
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-<input type="hidden" id="dlSeq" name="dlSeq" th:value="${dataAccessLogSearch.dlSeq}" />	
+<input type="hidden" id="dlSeq" name="dlSeq" th:value="${dataAccessLogSearch.dlSeq}" />
 <div class="ui tab active attached segment teal" data-tab="parameter"></div>
-<div th:if="${dataAccessLogSearch.fgHasResultLog} == 'Y'" class="ui tab attached segment teal" data-tab="result"></div>
+<div th:if="${fgHasResultLog} == 'Y'" class="ui tab attached segment teal" data-tab="result"></div>
+<div th:if="${not #strings.isEmpty(dataAccessLog.error)}" class="ui tab attached segment teal" data-tab="error"></div>
 </form>
 
 <script type="application/javascript">
@@ -46,13 +50,24 @@ $(document).ready(function() {
 
 	viewLogTab.render();
 
-	$("#BTN_execute").on(function() {
+	$("#BTN_execute").on("click", function() {
 		JpUtilsAjax.get({
 			url: JpUtilsPath.url("/platform/mgmt/log/rfc/execute?dlSeq=" + $("#dlSeq").val()),
 			success: function(response, textStatus, jqXHR)
 			{
+				document.location.href = "/platform/mgmt/log/detail_popup?dlSeq=" + response.RESULT;
 			}
 		});		
+	});
+	
+	$("#BTN_copyLink").on("click", function() {
+		let url = document.location.href;
+		
+		navigator.clipboard.writeText(url);
+		alert("Copied the url: " + url);
+	});
+	
+	$("#BTN_sendMailWithLink").on("click", function() {
 	});
 });
 

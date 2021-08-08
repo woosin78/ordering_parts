@@ -20,6 +20,7 @@ public class RfcResponse extends AbstractDaoResponse implements Serializable
 	private long elapsed;
 	private String errorMsg;
 	private String destination;
+	private String dlSeq;
 
 	private final Map<String, Object> resultMap = new HashMap<>();
 
@@ -75,7 +76,7 @@ public class RfcResponse extends AbstractDaoResponse implements Serializable
 
     public DataMap getStructure(String name)
     {
-    	return new DataMap((HashMap)resultMap.get(name));
+    	return new DataMap(resultMap.get(name));
     }
 
     public DataList getTable(String name)
@@ -88,6 +89,16 @@ public class RfcResponse extends AbstractDaoResponse implements Serializable
     	return this.resultMap;
     }
 
+    public void setDlSeq(String dlSeq)
+    {
+    	this.dlSeq = dlSeq;
+    }
+
+    public String getDlSeq()
+    {
+    	return dlSeq;
+    }
+
     @Override
 	public String toString()
     {
@@ -96,7 +107,6 @@ public class RfcResponse extends AbstractDaoResponse implements Serializable
     	while (iterator.hasNext())
     	{
     		iterator.next();
-
     	}
 
     	return "";

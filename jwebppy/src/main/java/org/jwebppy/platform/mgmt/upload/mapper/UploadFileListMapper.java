@@ -2,9 +2,11 @@ package org.jwebppy.platform.mgmt.upload.mapper;
 
 import java.util.List;
 
+import org.jwebppy.platform.core.interceptor.NoLogging;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileListDto;
 import org.jwebppy.platform.mgmt.upload.entity.UploadFileListEntity;
 
+@NoLogging
 public interface UploadFileListMapper
 {
 	public int insert(UploadFileListEntity uploadFileList);

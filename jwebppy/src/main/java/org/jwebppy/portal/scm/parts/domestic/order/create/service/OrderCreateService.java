@@ -74,28 +74,6 @@ public class OrderCreateService
 
 		DataList dataList = simpleRfcTemplate.response(rfcRequest).getTable("T_ZSSV0002");
 
-		if ("C".equals(docType))
-		{
-			if (CmStringUtils.equals(paramMap.get("from"), "MERCHANDIZE"))
-			{
-				DataList tmpOrderTypes = new DataList();
-
-				for (Object orderType : dataList)
-				{
-					DataMap orderTypeMap = new DataMap(orderType);
-
-					if (orderTypeMap.isEquals("ZZAUKON", "STOCK ORDER"))
-					{
-						tmpOrderTypes.add(orderTypeMap);
-					}
-				}
-
-				return tmpOrderTypes;
-			}
-
-			return dataList;
-		}
-
 		DataList tmpOrderTypes = new DataList();
 
 		for (Object orderType : dataList)

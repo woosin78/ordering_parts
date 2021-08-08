@@ -1,6 +1,6 @@
 package org.jwebppy.platform.core.interceptor;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Statement;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -20,17 +22,17 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.jwebppy.platform.core.util.CmBeanUtils;
-import org.jwebppy.platform.core.util.CmFieldUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.JdbcStatementContextUtils;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
+import org.jwebppy.platform.mgmt.logging.dto.IfType;
 import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
 
 @Intercepts({
-    @Signature(type=StatementHandler.class, method="update", args={Statement.class})
+	@Signature(type=StatementHandler.class, method="update", args={Statement.class})
     ,@Signature(type=StatementHandler.class, method="query", args={Statement.class, ResultHandler.class})
     ,@Signature(type=StatementHandler.class, method="batch", args={Statement.class})
 })
@@ -67,18 +69,12 @@ public class JdbcStatementInterceptor implements Interceptor
 	{
 		StatementHandler statementHandler = (StatementHandler)invocation.getTarget();
 
-		BoundSql boundSql = statementHandler.getBoundSql();
 		Object parameterObject = statementHandler.getParameterHandler().getParameterObject();
-
-		DataAccessLogDto dataAccessLog = new DataAccessLogDto();
-		dataAccessLog.setDlSeq(UidGenerateUtils.generate());
-		dataAccessLog.setCommand(CmStringUtils.trim(boundSql.getSql()));
-		dataAccessLog.setType("J");
-		dataAccessLog.setStartTime(stopWatch.getStartTime());
-		dataAccessLog.setElapsed(stopWatch.getNanoTime());
 
 		if (parameterObject != null && !CmStringUtils.startsWith(parameterObject.getClass().getName(), "org.jwebppy.platform.mgmt.logging"))
 		{
+			BoundSql boundSql = statementHandler.getBoundSql();
+
 			Map<String, Object> parameterMap = new LinkedHashMap<>();
 
 			if (CmBeanUtils.isSimpleValueType(parameterObject.getClass()))
@@ -87,9 +83,7 @@ public class JdbcStatementInterceptor implements Interceptor
 			}
 			else if (parameterObject instanceof Map)
 			{
-				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
-
-				for (ParameterMapping parameterMapping : parameterMappings)
+				for (ParameterMapping parameterMapping : boundSql.getParameterMappings())
 				{
 				    String key = parameterMapping.getProperty();
 
@@ -100,56 +94,34 @@ public class JdbcStatementInterceptor implements Interceptor
 			{
 				List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
 
-				Class<? extends Object> clazz = parameterObject.getClass();
-				Field[] fields = CmFieldUtils.getAllFields(clazz);
-
 				for (ParameterMapping parameterMapping : parameterMappings)
 				{
 				    String propertyValue = parameterMapping.getProperty();
 
 				    try
 				    {
-					    Field field = clazz.getDeclaredField(propertyValue);
-					    field.setAccessible(true);
-
-					    parameterMap.put(field.getName(), field.get(parameterObject));
-				    }
-				    catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e)
+				    	if (!parameterMap.containsKey(propertyValue))
+				    	{
+				    		parameterMap.put(propertyValue, BeanUtils.getProperty(parameterObject, propertyValue));
+				    	}
+					}
+				    catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e)
 				    {
-				    	//<foreach>인 경우 propKey가 "__frch_%아이템명%_반복횟수"
-				    	if (boundSql.hasAdditionalParameter(propertyValue))
-				    	{
-				    		parameterMap.put(propertyValue, boundSql.getAdditionalParameter(propertyValue));
-				    	}
-				    	else
-				    	{
-				    		//Super class 에서 정의된 필드 검색
-					    	for (Field field : fields)
-					    	{
-					    		field.setAccessible(true);
-
-					    		if (propertyValue.equals(field.getName()))
-					    		{
-					    			try
-					    			{
-										parameterMap.put(field.getName(), field.get(parameterObject));
-										break;
-									}
-					    			catch (IllegalArgumentException | IllegalAccessException e1)
-					    			{
-										e1.printStackTrace();
-									}
-					    		}
-					    	}
-				    	}
-				    }
+						//e.printStackTrace();
+					}
 				}
 			}
 
+			DataAccessLogDto dataAccessLog = new DataAccessLogDto();
+			dataAccessLog.setDlSeq(UidGenerateUtils.generate());
+			dataAccessLog.setType(IfType.J);
+			dataAccessLog.setStartTime(stopWatch.getStartTime());
+			dataAccessLog.setElapsed(stopWatch.getNanoTime());
 			dataAccessLog.setDataAccessLogParameters(makeParameters(parameterMap));
-		}
+			dataAccessLog.setCommand(getSql(statementHandler.getBoundSql()));
 
-		JdbcStatementContextUtils.put(dataAccessLog);
+			JdbcStatementContextUtils.put(dataAccessLog);
+		}
 	}
 
 	private List<DataAccessLogParameterDto> makeParameters(Map<String, Object> parameterMap)
@@ -184,5 +156,21 @@ public class JdbcStatementInterceptor implements Interceptor
 		}
 
 		return null;
+	}
+
+	private String getSql(BoundSql boundSql)
+	{
+		String sql = CmStringUtils.trim(boundSql.getSql());
+		List<ParameterMapping> parameterMappings = boundSql.getParameterMappings();
+
+		if (CollectionUtils.isNotEmpty(parameterMappings))
+		{
+			for (ParameterMapping parameterMapping : parameterMappings)
+			{
+				sql = CmStringUtils.replace(sql, "?", ":" + parameterMapping.getProperty(), 1);
+			}
+		}
+
+		return sql;
 	}
 }

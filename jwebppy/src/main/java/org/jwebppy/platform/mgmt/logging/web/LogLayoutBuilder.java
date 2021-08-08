@@ -53,7 +53,7 @@ public class LogLayoutBuilder
 			{
 				Tr tbTr = new Tr();
 
-				tbTr.addTextTd(dataAccessLog.getDisplayType());
+				tbTr.addTextTd(dataAccessLog.getType().getType());
 				tbTr.addDataKeyLinkTd(dataAccessLog.getCommand(), dataAccessLog.getDlSeq());
 				tbTr.addTextTd(dataAccessLog.getClassName());
 				tbTr.addTextTd(dataAccessLog.getMethodName());
@@ -98,11 +98,10 @@ public class LogLayoutBuilder
 	public static Document getJdbcLog(DataAccessLogDto dataAccessLog)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Type", dataAccessLog.getDisplayType());
+		elementMap.put("Type", dataAccessLog.getType().getType());
 		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
 		elementMap.put("Reg. Username", dataAccessLog.getRegUsername());
 		elementMap.put("Elapsed", CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
-		elementMap.put("Error", new Element("xmp", dataAccessLog.getError()));
 		elementMap.put("Command", new Element("xmp", dataAccessLog.getCommand()));
 
 		Document document = new Document();
@@ -153,12 +152,11 @@ public class LogLayoutBuilder
 		Document document = new Document();
 
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Type", dataAccessLog.getDisplayType());
+		elementMap.put("Type", dataAccessLog.getType().getType());
 		elementMap.put("Command", dataAccessLog.getCommand());
 		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
 		elementMap.put("Reg. Username", dataAccessLog.getRegUsername());
 		elementMap.put("Elapsed(sec)", CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
-		elementMap.put("Error", new Element("xmp", dataAccessLog.getError()));
 
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
 		document.addElement(Div.hiddenDivider());
@@ -382,5 +380,13 @@ public class LogLayoutBuilder
 		element.setClass("ui dividing small header");
 
 		return element;
+	}
+
+	public static Document getError(DataAccessLogDto dataAccessLog)
+	{
+		Document document = new Document();
+		document.addElement(PlatformLayoutBuildUtils.defaultText(new Element("xmp", dataAccessLog.getError())));
+
+		return document;
 	}
 }

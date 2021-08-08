@@ -17,9 +17,7 @@
 	<div class="fields">
 		<div class="six wide field">
 			<select name="type" class="ui search dropdown">
-				<option value="">Type</option>
-				<option value="J" selected>JDBC</option>
-				<option value="R">RFC</option>
+				<option th:each="type: ${T(org.jwebppy.platform.mgmt.logging.dto.IfType).values()}" th:value="${type.name()}" th:text="${type.getType()}"></option>
 			</select>
 		</div>
 	</div>

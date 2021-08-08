@@ -4,7 +4,7 @@ import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 
 public class JdbcStatementContextUtils
 {
-	private static ThreadLocal<DataAccessLogDto> threadLocal = new ThreadLocal<>();
+	private static final ThreadLocal<DataAccessLogDto> threadLocal = new ThreadLocal<>();
 
 	public static DataAccessLogDto get()
 	{

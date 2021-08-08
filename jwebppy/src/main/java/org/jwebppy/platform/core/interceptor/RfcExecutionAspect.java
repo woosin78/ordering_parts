@@ -24,6 +24,7 @@ import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
+import org.jwebppy.platform.mgmt.logging.dto.IfType;
 import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
@@ -44,11 +45,11 @@ public class RfcExecutionAspect
     @Around("execution(* org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate.response(..))")
     public Object onAround(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable
     {
-		Object result = null;
+		RfcResponse result = null;
 
 		try
 		{
-			result = proceedingJoinPoint.proceed();
+			result = (RfcResponse)proceedingJoinPoint.proceed();
 		}
 		catch (Exception e)
 		{
@@ -56,7 +57,7 @@ public class RfcExecutionAspect
 		}
 		finally
 		{
-	    	writeLog(proceedingJoinPoint, (RfcResponse)result);
+	    	result.setDlSeq(writeLog(proceedingJoinPoint, result));
 		}
 
 		return result;
@@ -87,7 +88,7 @@ public class RfcExecutionAspect
 		return stackTrace;
     }
 
-    private void writeLog(ProceedingJoinPoint proceedingJoinPoint, RfcResponse rfcResponse)
+    private String writeLog(ProceedingJoinPoint proceedingJoinPoint, RfcResponse rfcResponse)
     {
     	Object[] args = proceedingJoinPoint.getArgs();
     	RfcRequest rfcRequest = (RfcRequest)args[0];
@@ -99,21 +100,27 @@ public class RfcExecutionAspect
 		DataAccessLogDto dataAccessLog = new DataAccessLogDto();
 		dataAccessLog.setDlSeq(dlSeq);
 		dataAccessLog.setCommand(rfcRequest.getFunctionName());
-		dataAccessLog.setType("R");
+		dataAccessLog.setType(IfType.R);
 		dataAccessLog.setClassName(stackTrace[0]);
 		dataAccessLog.setMethodName(stackTrace[1]);
 		dataAccessLog.setRequestId(MDC.get(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY));
 		dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
-		dataAccessLog.setError(rfcResponse.getErrorMsg());
-		dataAccessLog.setDestination(rfcResponse.getDestination());
-		dataAccessLog.setStartTime(rfcResponse.getStartTime());
-		dataAccessLog.setElapsed(rfcResponse.getElapsed());
 		dataAccessLog.setDataAccessLogParameters(makeParameters(rfcRequest));
 		dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
 
+		if (rfcResponse != null)
+		{
+			dataAccessLog.setDestination(rfcResponse.getDestination());
+			dataAccessLog.setStartTime(rfcResponse.getStartTime());
+			dataAccessLog.setElapsed(rfcResponse.getElapsed());
+			dataAccessLog.setError(rfcResponse.getErrorMsg());
+		}
+
 		dataAccessLogService.writeLog(dataAccessLog);
 
-		dataAccessResultLogService.writeLog(dlSeq, rfcResponse.getResultMap());
+		dataAccessResultLogService.writeLog(dlSeq, rfcResponse);
+
+		return dlSeq;
     }
 
 	private List<DataAccessLogParameterDto> makeParameters(RfcRequest rfcRequest)

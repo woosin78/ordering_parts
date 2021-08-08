@@ -14,6 +14,7 @@ import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.service.UserAuthenticationService;
 import org.jwebppy.platform.core.util.CmAnnotationUtils;
 import org.jwebppy.platform.core.util.CmArrayUtils;
@@ -110,6 +111,14 @@ public class RequestMonitorAspect
 	@Around("execution(* org.jwebppy..*Controller.*(..))")
 	public Object onAround(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable
 	{
+		if (UserAuthenticationUtils.isLogin())
+		{
+			if (PlatformCommonVo.YES.equals(UserAuthenticationUtils.getUserDetails().getFgPasswordLocked()))
+			{
+				return "/platform/common/authentication/login_form";
+			}
+		}
+
 		//사용자 정보 업데이트
 		updateUserDetails();
 
