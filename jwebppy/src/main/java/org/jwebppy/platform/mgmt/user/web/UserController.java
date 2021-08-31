@@ -17,10 +17,14 @@ import org.jwebppy.platform.mgmt.content.dto.CItemUserRlDto;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.content.service.ContentService;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
+import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +51,9 @@ public class UserController extends UserGeneralController
 	private ContentService contentService;
 
 	@Autowired
+	private CredentialsPolicyService credentialsPolicyService;
+
+	@Autowired
 	private LoginHistoryService loginHistoryService;
 
 	@Autowired
@@ -55,7 +62,7 @@ public class UserController extends UserGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		addAllAttributeFromRequest(model, webRequest);
+		setDefaultAttribute(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -101,7 +108,13 @@ public class UserController extends UserGeneralController
 				}
 				else if ("account".equals(tabPath))
 				{
-					return UserLayoutBuilder.getAccountInfo(user.getUserAccount());
+					UserAccountDto userAccount = user.getUserAccount();
+
+					CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
+					credentialsPolicySearch.setCpSeq(userAccount.getCpSeq());
+					credentialsPolicySearch.setType(CredentialsPolicyType.U);
+
+					return UserLayoutBuilder.getAccountInfo(userAccount, credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch));
 				}
 				else if ("login_history".equals(tabPath))
 				{
@@ -154,7 +167,11 @@ public class UserController extends UserGeneralController
 			}
 			else if ("account".equals(tabPath))
 			{
-				return UserLayoutBuilder.getAccountInfoForm(user.getUserAccount());
+				CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
+				credentialsPolicySearch.setType(CredentialsPolicyType.U);
+				credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
+
+				return UserLayoutBuilder.getAccountInfoForm(user.getUserAccount(), credentialsPolicyService.getCredentialPolicies(credentialsPolicySearch));
 			}
 			else
 			{
@@ -269,18 +286,30 @@ public class UserController extends UserGeneralController
 		return timezones;
 	}
 
-	@GetMapping("/valid_check/{field}/{value}")
+	@GetMapping("/credentials/valid_check")
 	@ResponseBody
-	public Object validCheck(@PathVariable("field") String field, @PathVariable("value") String value)
+	public Object validCheck(@ModelAttribute CredentialsPolicySearchDto credentialsPolicySearch)
 	{
-		UserDto user = userService.getUserByUsername(value.toUpperCase());
+		String value = CmStringUtils.trimToEmpty(credentialsPolicySearch.getValue());
 
-		if (user != null)
+		if (CredentialsPolicyType.U.equals(credentialsPolicySearch.getType()))
 		{
-			return "DUPLICATED";
+			UserDto user = userService.getUserByUsername(value.toUpperCase());
+
+			if (user != null)
+			{
+				Map<String, Object> resultMap = new HashMap<>();
+				resultMap.put("TYPE", credentialsPolicySearch.getType());
+				resultMap.put("RESULT", 999);
+				resultMap.put("MESSAGE", "The username is not available. Please enter another one.");
+
+				return resultMap;
+			}
 		}
 
-		return EMPTY_RETURN_VALUE;
+		CredentialsPolicyDto credentialPolicy = credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch);
+
+		return credentialsPolicyService.checkValid(credentialPolicy, credentialsPolicySearch.getType(), value);
 	}
 
 	@PostMapping("/copy")

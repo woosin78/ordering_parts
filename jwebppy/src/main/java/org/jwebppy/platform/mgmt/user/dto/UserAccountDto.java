@@ -29,6 +29,7 @@ public class UserAccountDto extends GeneralDto
 	private LocalDateTime fromValid;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime toValid;
+	private Integer cpSeq;
 
 	public String getDisplayFromValid()
 	{

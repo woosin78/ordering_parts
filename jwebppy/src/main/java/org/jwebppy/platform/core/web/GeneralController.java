@@ -74,6 +74,14 @@ public abstract class GeneralController
         }
     }
 
+	protected void setDefaultAttribute(Model model, WebRequest webRequest)
+	{
+		model.addAttribute("pageNumber", CmStringUtils.defaultString(webRequest.getParameter("pageNumber"), "1"));
+		model.addAttribute("rowPerPage", CmStringUtils.defaultString(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
+
+		addAllAttributeFromRequest(model, webRequest);
+	}
+
     /*
      * RequestParam 을 Array 로 받을 때 구분자를 ',' 에서 '^' 으로 변경함
      */

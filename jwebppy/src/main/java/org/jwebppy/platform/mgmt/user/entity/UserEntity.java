@@ -25,13 +25,9 @@ public class UserEntity extends GeneralEntity implements IPagination
 	private String department;
 	private String position;
 	private String language;
-	private String fgDelete = PlatformCommonVo.NO;
+	private String fgDelete;
 	private UserAccountEntity userAccount;
 	private UserContactInfoEntity userContactInfo;
-
-	private int pageNumber;
-	private int rowPerPage;
-	private int totalCount;
 
 	public String getFgDelete()
 	{

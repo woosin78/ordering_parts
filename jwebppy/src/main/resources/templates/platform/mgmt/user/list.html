@@ -12,8 +12,8 @@
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
 	<input type="checkbox" name="uSeq" style="display:none" value="" checked />
-	<input type="hidden" name="pageNumber" value="1"/>
-	<input type="hidden" name="rowPerPage" value="10"/>
+	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
+	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>	
 	<div class="fields">
 		<div class="twelve wide field">
 			<div class="ui icon input">
@@ -175,30 +175,48 @@ $(document).ready(function() {
 	};
 
 	//Add custom rules in the form validation
-	$.fn.form.settings.rules.checkDuplicatedUsername = function(value)
+	let checkUsernameResultMsg = "";
+	let checkPasswordResultMsg = "";
+	
+	$.fn.form.settings.rules.checkCredentialPolicy = function(value, type)
 	{
+		let isValid = false;
+		
 		if (JpUtilsString.isNotEmpty(value))
 		{
-			let isValid = true;
-
 			JpUtilsAjax.get({
-				url: JpUtilsPath.url("/platform/mgmt/user/valid_check/username/" + value),
-				//data: { username: value },
+				url: JpUtilsPath.url("/platform/mgmt/user/credentials/valid_check"),
+				data: { value: value, type: type, cpSeq: $("#FORM_modifyUser select[name=cpSeq]").val() },
 				global: false,
 				async: false,
 				success: function(data, textStatus, jqXHR)
 				{
-					if (data.RESULT == "DUPLICATED")
+					let result = data.RESULT;
+					
+					if (result.RESULT == 1)
 					{
-						isValid = false;
+						isValid = true;
+					};
+					
+					let message = "";
+					
+					$.each(data.RESULT.MESSAGE, function (index, value) {
+						message += value + "<br/>";
+					});
+					
+					if (type == "U")
+					{
+						checkUsernameResultMsg = message;
+					}
+					else
+					{
+						checkPasswordResultMsg = message;
 					};
 				}
 			});
-
-			return isValid;
 		};
 
-		return false;
+		return isValid;
 	};
 
 	let formValidCheck = {
@@ -230,26 +248,27 @@ $(document).ready(function() {
 						prompt: "Please enter {name}."
 					},
 					{
-						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)).{6,12}$/]",
-						prompt: "Please enter a valid username. A username should be between 6 and 12 digits."
-					},
-					{
-						type: "checkDuplicatedUsername",
-						prompt: "The {name} is not available. Please enter another username."
+						type: "checkCredentialPolicy[U]",
+						prompt: function (value)
+						{
+							return checkUsernameResultMsg;
+						}
 					}
 				]
 			},
 			Password: {
 				identifier: "password",
-				optional: true,
 				rules: [
 					{
 						type: "empty",
 						prompt: "Please enter {name}."
 					},
 					{
-						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)|(?=.*\W)).{8,12}$/]",
-						prompt: "Please enter a valid password. A password should be between 8 and 12 digits and contain number, special, lower and upper case characters."
+						type: "checkCredentialPolicy[P]",
+						prompt: function (value)
+						{
+							return checkPasswordResultMsg;
+						}
 					}
 				]
 			},
@@ -594,13 +613,12 @@ $(document).ready(function() {
 						prompt: "Please enter {name}."
 					},
 					{
-						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)).{6,12}$/]",
-						prompt: "Please enter a valid username. A username should be between 6 and 12 digits."
-					},
-					{
-						type: "checkDuplicatedUsername",
-						prompt: "The {name} is not available. Please enter another username."
-					}
+						type: "checkCredentialPolicy[U]",
+						prompt: function (value)
+						{
+							return checkUsernameResultMsg;
+						}						
+					}					
 				]
 			},
 			Password: {
@@ -611,9 +629,12 @@ $(document).ready(function() {
 						prompt: "Please enter {name}."
 					},
 					{
-						type: "regExp[/^((?=.*[a-zA-Z])|(?=.*\d)|(?=.*\W)).{8,12}$/]",
-						prompt: "Please enter a valid password. It should be between 8 and 12 digits and contain number, special, lower and upper case characters."
-					}
+						type: "checkCredentialPolicy[P]",
+						prompt: function (value)
+						{
+							return checkPasswordResultMsg;
+						}						
+					}					
 				]
 			},
 			"Last Name": {
@@ -866,7 +887,7 @@ $(document).ready(function() {
 
 	function isCreating()
 	{
-		if (isOnForm() && JpUtilsString.isEmpty(getSeq()))
+		if (isOnForm() && JpUtilsString.isEmpty($("#FORM_modifyUser input[name=username]").val()))
 		{
 			return true;
 		}

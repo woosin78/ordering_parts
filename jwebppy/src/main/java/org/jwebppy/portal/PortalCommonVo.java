@@ -13,7 +13,7 @@ public class PortalCommonVo
 	public static final String DEFAULT_DATE_TIME_MMHH_FORMAT = "yyyy-MM-dd HH:mm";
 	public static final String UNLIMITED_DATE_TIME = "9999-12-31 23:59:59";
 
-	//Yes or No flag
+	//flag of Yes or No
 	public static final String ALL = "A";
 	public static final String YES = "Y";
 	public static final String NO = "N";
@@ -21,13 +21,19 @@ public class PortalCommonVo
 	//Delimiter to split
 	public static final String DELIMITER = "^";
 
-	//Root Content Name
+	//Root name of menu tree
 	public static final String ROOT = "ROOT";
 
-	/** Language **/
-	//Default basename
+	//Default basename of language
 	public static final String DEFAULT_BASENAME = "PLTF";
 
 	//Default row-per-page of list
 	public static final int DEFAULT_ROW_PER_PAGE = 20;
+
+	//Allowable characters of credential
+	public static final String[] CREDENTIAL_NUMBER = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "0"};
+	public static final String[] CREDENTIAL_UPPERCASE = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+	public static final String[] CREDENTIAL_LOWERCASE = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
+	public static final String[] CREDENTIAL_SPECIAL = {"!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "="};
+	public static final int CREDENTIAL_MAX_LENGTH = 20;
 }

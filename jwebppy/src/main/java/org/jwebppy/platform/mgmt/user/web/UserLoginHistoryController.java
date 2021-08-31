@@ -1,9 +1,7 @@
 package org.jwebppy.platform.mgmt.user.web;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +30,8 @@ public class UserLoginHistoryController extends UserGeneralController
 
 	@GetMapping("/list/data")
 	@ResponseBody
-	public Object listData(@ModelAttribute("loginHistorySearchDto") LoginHistorySearchDto loginHistorySearch)
+	public Object listData(@ModelAttribute LoginHistorySearchDto loginHistorySearch)
 	{
 		return UserLayoutBuilder.getLoginHistories(new PageableList<>(loginHistoryService.getPageableLoginHistories(loginHistorySearch)));
-	}
-
-	protected void setDefaultAttribute(Model model, WebRequest webRequest)
-	{
-		model.addAttribute("pageNumber", CmStringUtils.defaultString(webRequest.getParameter("pageNumber"), "1"));
-		model.addAttribute("rowPerPage", CmStringUtils.defaultString(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
-
-		addAllAttributeFromRequest(model, webRequest);
 	}
 }

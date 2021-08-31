@@ -5,11 +5,9 @@ import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 public class UserSearchDto extends GeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -6452889800109776370L;

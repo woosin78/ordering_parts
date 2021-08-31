@@ -25,6 +25,7 @@ import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
@@ -137,7 +138,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getAccountInfo(UserAccountDto userAccount)
+	public static Document getAccountInfo(UserAccountDto userAccount, CredentialsPolicyDto credentialPolicy)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Username", userAccount.getUsername());
@@ -146,6 +147,7 @@ public class UserLayoutBuilder
 		elementMap.put("No Use Password", userAccount.getFgNoUsePassword());
 		elementMap.put("Valid From", userAccount.getDisplayFromValid());
 		elementMap.put("Valid To", userAccount.getDisplayToValid());
+		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getName() : "");
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
@@ -153,7 +155,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getAccountInfoForm(UserAccountDto userAccount)
+	public static Document getAccountInfoForm(UserAccountDto userAccount, List<CredentialsPolicyDto> credentialPolicies)
 	{
 		InputPassword loPassword = new InputPassword("password");
 		loPassword.setLabel("Password");
@@ -179,6 +181,16 @@ public class UserLayoutBuilder
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
 
+		Select loCredentialPolicy = new Select("cpSeq");
+		loCredentialPolicy.setLabel("Credential Policy");
+		loCredentialPolicy.setRequired(true);
+		loCredentialPolicy.setValue(userAccount.getCpSeq());
+
+		for (CredentialsPolicyDto credentialPolicy: credentialPolicies)
+		{
+			loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getName());
+		}
+
 		Document document = new Document();
 
 		if (CmStringUtils.isEmpty(userAccount.getUsername()))
@@ -202,6 +214,7 @@ public class UserLayoutBuilder
 		document.addElement(loFgNoUsePassword);
 		document.addElement(loFromValid);
 		document.addElement(loToValid);
+		document.addElement(loCredentialPolicy);
 
 		return document;
 	}

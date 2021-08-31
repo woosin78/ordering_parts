@@ -31,7 +31,7 @@ public class AuthorityLayoutBuilder
 		thTr.addCheckAllTh();
 		thTr.addTextTh("Type", "one wide");
 		thTr.addTextTh("Name", "two wide");
-		thTr.addTextTh("Description", "three wide");
+		thTr.addTextTh("Description", "four wide");
 		thTr.addTextTh("Valid From", "two wide");
 		thTr.addTextTh("Valid To", "two wide");
 		thTr.addTextTh("Reg.Date", "two wide");
