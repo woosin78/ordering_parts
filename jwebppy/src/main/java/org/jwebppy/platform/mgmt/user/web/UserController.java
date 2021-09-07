@@ -9,6 +9,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
+import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
@@ -23,8 +24,10 @@ import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
+import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
 import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
+import org.jwebppy.platform.mgmt.user.service.UserGroupService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+import org.thymeleaf.util.ListUtils;
 
 import com.ibm.icu.util.TimeZone;
 
@@ -55,6 +59,9 @@ public class UserController extends UserGeneralController
 
 	@Autowired
 	private LoginHistoryService loginHistoryService;
+
+	@Autowired
+	private UserGroupService userGroupService;
 
 	@Autowired
 	private UserService userService;
@@ -175,14 +182,14 @@ public class UserController extends UserGeneralController
 			}
 			else
 			{
-				return UserLayoutBuilder.getGeneralInfoForm(user);
+				return UserLayoutBuilder.getGeneralInfoForm(user, userGroupService.getUserGroups(null));
 			}
 		}
 	}
 
 	@PostMapping("/save/{tabPath}")
 	@ResponseBody
-	public Object save(@PathVariable("tabPath") String tabPath, @ModelAttribute UserDto user, @ModelAttribute UserAccountDto userAccount, @ModelAttribute UserContactInfoDto userContactInfo, @RequestParam(value = "cSeq", required = false) List<Integer> cSeqs)
+	public Object save(@PathVariable("tabPath") String tabPath, @ModelAttribute UserDto user, @ModelAttribute UserAccountDto userAccount, @ModelAttribute UserContactInfoDto userContactInfo, WebRequest webRequest)
 	{
 		if ("account".equals(tabPath))
 		{
@@ -199,14 +206,18 @@ public class UserController extends UserGeneralController
 		}
 		else if ("authority".equals(tabPath))
 		{
-			CItemUserRlDto cItemUserRlDto = new CItemUserRlDto();
-			cItemUserRlDto.setUSeq(user.getUSeq());
-			cItemUserRlDto.setCSeqs(cSeqs);
+			List<Integer> cSeqs = CmModelMapperUtils.mapAll(ListUtils.toList(webRequest.getParameterValues("cSeq")), Integer.class);
 
-			return contentAuthorityService.save(cItemUserRlDto);
+			CItemUserRlDto cItemUserRl = new CItemUserRlDto();
+			cItemUserRl.setUSeq(user.getUSeq());
+			cItemUserRl.setCSeqs(cSeqs);
+
+			return contentAuthorityService.save(cItemUserRl);
 		}
 		else
 		{
+			user.setUserGroup(new UserGroupDto(Integer.valueOf(webRequest.getParameter("ugSeq"))));
+
 			return userService.saveUser(user);
 		}
 	}

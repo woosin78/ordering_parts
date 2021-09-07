@@ -1,17 +1,20 @@
 package org.jwebppy.platform.mgmt.user.web;
 
+import java.util.List;
+
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
+import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
+import org.jwebppy.platform.mgmt.user.service.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +27,9 @@ public class CredentialsPolicyController extends UserGeneralController
 {
 	@Autowired
 	private CredentialsPolicyService credentialPolicyService;
+
+	@Autowired
+	private UserGroupService userGroupService;
 
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
@@ -40,21 +46,39 @@ public class CredentialsPolicyController extends UserGeneralController
 		return CredentialsPolicyLayoutBuilder.getList(new PageableList<>(credentialPolicyService.getPageableCredentialPolicies(credentialPolicySearch)));
 	}
 
-	@PostMapping("/modify/{field}")
-	@ResponseBody
-	public Object modifyStatus(@PathVariable("field") String field, @RequestParam("cpSeq") Integer cpSeq, @RequestParam("value") String value)
+	@GetMapping("/write")
+	public String write(Model model, WebRequest webRequest)
 	{
-		CredentialsPolicyDto credentialsPolicy = credentialPolicyService.getCredentialPolicy(cpSeq);
+		CredentialsPolicyDto credentialsPolicy = new CredentialsPolicyDto();
 
-		if (CmStringUtils.equals("use", field))
+		String cpSeq = webRequest.getParameter("cpSeq");
+
+		if (CmStringUtils.isNotEmpty(cpSeq))
 		{
-			credentialsPolicy.setFgUse(value);
-		}
-		else if (CmStringUtils.equals("default", field))
-		{
-			credentialsPolicy.setFgDefault(value);
+			credentialsPolicy = credentialPolicyService.getCredentialPolicy(Integer.valueOf(cpSeq));
 		}
 
-		return credentialPolicyService.modify(credentialsPolicy);
+		model.addAttribute("credentialsPolicy", credentialsPolicy);
+		model.addAttribute("userGroups", userGroupService.getUserGroups(null));
+
+		setDefaultAttribute(model, webRequest);
+
+		return DEFAULT_VIEW_URL;
+	}
+
+	@PostMapping("/save")
+	@ResponseBody
+	public Object save(@ModelAttribute CredentialsPolicyDto inCredentialsPolicy, WebRequest webRequest)
+	{
+		inCredentialsPolicy.setUserGroup(new UserGroupDto(Integer.valueOf(webRequest.getParameter("ugSeq"))));
+
+		return credentialPolicyService.save(inCredentialsPolicy);
+	}
+
+	@PostMapping("/delete")
+	@ResponseBody
+	public Object delete(@RequestParam("cpSeq") List<Integer> cpSeqs)
+	{
+		return credentialPolicyService.delete(cpSeqs);
 	}
 }

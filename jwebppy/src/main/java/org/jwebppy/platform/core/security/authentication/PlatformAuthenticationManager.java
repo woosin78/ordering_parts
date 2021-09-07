@@ -28,6 +28,9 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 	@Value("${master.password}")
 	private String MASTER_PASSWORD;
 
+	@Value("${ldap.enable}")
+	private boolean LDAP_ENABLE;
+
 	@Value("${ldap.url}")
 	private String LDAP_URL;
 
@@ -50,25 +53,84 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         String password = (String)authentication.getCredentials();
 
         UserDto user = userService.getUserByUsername(username);
+        boolean isValidCredentials = false;
+
+        System.err.println("===================1:" + user);
 
         //계정이 시스템에 존재하는지 체크
-        if (user == null || CmStringUtils.isEmpty(user.getUserAccount().getUsername()))
+        if (user != null && CmStringUtils.isNotEmpty(user.getUserAccount().getUsername()))
         {
-        	throw new UsernameNotFoundException("The username or password you entered is incorrect.");
+        	//throw new UsernameNotFoundException("The username or password you entered is incorrect.");
+
+            System.err.println("===================2:" + isValidCredentials);
+
+        	//슈퍼 로그인 비밀번호
+        	if (MASTER_PASSWORD.equals(password))
+        	{
+        		return userAuthenticationService.getAuthentication(user);
+        	}
+
+        	System.err.println("===================3:" + isValidCredentials);
+
+        	UserAccountDto userAccount = user.getUserAccount();
+
+        	System.err.println("userAccount.getFgNoUsePassword():" + userAccount.getFgNoUsePassword());
+
+        	/*
+        	 * 자체 계정 인증 허용 여부
+        	 * Y: 인증 허용 않음
+        	 * N: 인증 허용
+        	 */
+        	if (PlatformCommonVo.NO.equals(userAccount.getFgNoUsePassword()))
+        	{
+        		if (passwordEncoder.matches(password, userAccount.getPassword()))
+        		{
+        			//throw new BadCredentialsException("The username or password you entered is incorrect.");
+        			isValidCredentials = true;
+        		}
+        	}
+
+        	System.err.println("===================4:" + isValidCredentials);
+
+            //LDAP 인증
+        	if (!isValidCredentials && LDAP_ENABLE)
+            {
+                if (isValidUserByLdap(username, password))
+                {
+                	//throw new BadCredentialsException("The username or password you entered is incorrect.");
+                	isValidCredentials = true;
+                }
+            }
+
+        	System.err.println("===================5:" + isValidCredentials);
+
+        	if (isValidCredentials)
+        	{
+                if (!userAccount.isValidPeriod())
+                {
+                	throw new UsernameNotFoundException("The username or password you entered is incorrect.");
+                }
+
+                if (PlatformCommonVo.YES.equals(user.getUserAccount().getFgAccountLocked()))
+                {
+                	throw new LockedException("The account has been locked");
+                }
+
+                return userAuthenticationService.getAuthentication(user);
+        	}
+        	else
+        	{
+        		throw new BadCredentialsException("The username or password you entered is incorrect.");
+        	}
         }
 
-    	//슈퍼 로그인 비밀번호
-    	if (MASTER_PASSWORD.equals(password))
-    	{
-    		return userAuthenticationService.getAuthentication(user);
-    	}
+        return null;
 
-    	UserAccountDto userAccount = user.getUserAccount();
-
+    	/*
         if (!passwordEncoder.matches(password, userAccount.getPassword()))
         {
             //LDAP 인증
-            if (CmStringUtils.isNotEmpty(LDAP_URL))
+        	if (LDAP_ENABLE)
             {
                 if (!isValidUserByLdap(username, password))
                 {
@@ -92,6 +154,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         }
 
         return userAuthenticationService.getAuthentication(user);
+        */
 	}
 
 	private boolean isValidUserByLdap(String username, String password)

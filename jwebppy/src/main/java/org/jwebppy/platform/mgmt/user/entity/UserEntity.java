@@ -28,6 +28,7 @@ public class UserEntity extends GeneralEntity implements IPagination
 	private String fgDelete;
 	private UserAccountEntity userAccount;
 	private UserContactInfoEntity userContactInfo;
+	private UserGroupEntity userGroup;
 
 	public String getFgDelete()
 	{

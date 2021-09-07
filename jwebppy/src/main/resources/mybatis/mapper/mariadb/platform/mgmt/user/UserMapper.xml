@@ -20,12 +20,13 @@
 		<result property="totalCount" column="total_count" />
 		<association property="userAccount" foreignColumn="u_seq" column="u_seq" javaType="UserAccountEntity" select="findUserAccount" />
 		<association property="userContactInfo" foreignColumn="u_seq" column="u_seq" javaType="UserContactInfoEntity" select="findUserContactInfo" />
+		<association property="userGroup" foreignColumn="ug_seq" column="ug_seq" javaType="UserGroupEntity" select="org.jwebppy.platform.mgmt.user.mapper.UserGroupMapper.findUserGroup" />
 	</resultMap>
 	
 	<insert id="insertUser" parameterType="UserEntity" useGeneratedKeys="true" keyProperty="uSeq">
-		insert into pltf_user (first_name, last_name, en_first_name, en_last_name, company, organization, department, position, language, fg_delete, reg_username, reg_date) values
+		insert into pltf_user (first_name, last_name, en_first_name, en_last_name, company, organization, department, position, language, ug_seq, fg_delete, reg_username, reg_date) values
 		(
-			#{firstName}, #{lastName}, #{enFirstName}, #{enLastName}, #{company}, #{organization}, #{department}, #{position}, #{language}, #{fgDelete}, #{regUsername}, #{regDate}
+			#{firstName}, #{lastName}, #{enFirstName}, #{enLastName}, #{company}, #{organization}, #{department}, #{position}, #{language}, #{userGroup.ugSeq}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -58,6 +59,7 @@
 			department=#{department},
 			position=#{position},
 			language=#{language},
+			ug_seq=#{userGroup.ugSeq},
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where

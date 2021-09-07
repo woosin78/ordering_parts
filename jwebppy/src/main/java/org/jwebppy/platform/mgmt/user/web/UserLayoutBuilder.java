@@ -29,6 +29,7 @@ import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
+import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 
 import com.ibm.icu.util.TimeZone;
 
@@ -40,10 +41,11 @@ public class UserLayoutBuilder
 		thTr.addCheckAllTh();
 		thTr.addTextTh("Status", "one wide");
 		thTr.addTextTh("Username", "two wide");
-		thTr.addTextTh("Name", "three wide");
+		thTr.addTextTh("Name", "two wide");
 		thTr.addTextTh("E-mail", "three wide");
 		thTr.addTextTh("Company", "three wide");
-		thTr.addTextTh("Department", "three wide");
+		thTr.addTextTh("Department", "two wide");
+		thTr.addTextTh("User Group", "two wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -66,6 +68,7 @@ public class UserLayoutBuilder
 				tbTr.addTextTd(userContactInfo.getEmail());
 				tbTr.addTextTd(user.getCompany());
 				tbTr.addTextTd(user.getDepartment());
+				tbTr.addTextTd(user.getUserGroup().getName());
 
 				tbody.addTr(tbTr);
 			}
@@ -91,6 +94,11 @@ public class UserLayoutBuilder
 		elementMap.put("Position", user.getPosition());
 		elementMap.put("Department", user.getDepartment());
 		elementMap.put("Language", user.getDisplayLanguage());
+		elementMap.put("User Group", user.getUserGroup().getName());
+		elementMap.put("Reg.Username", user.getRegUsername());
+		elementMap.put("Reg.Date", user.getDisplayRegDate());
+		elementMap.put("Mod.Username", user.getModUsername());
+		elementMap.put("Mod.Date", user.getDisplayModDate());
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
@@ -98,7 +106,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getGeneralInfoForm(UserDto user)
+	public static Document getGeneralInfoForm(UserDto user, List<UserGroupDto> userGroups)
 	{
 		Element loLastName = new Input("lastName", user.getLastName());
 		loLastName.setLabel("Last Name");
@@ -126,6 +134,16 @@ public class UserLayoutBuilder
 		loLanguage.addOption("en", new Locale("en").getDisplayLanguage());
 		loLanguage.addOption("ko", new Locale("ko").getDisplayLanguage());
 
+		Select loUserGroup = new Select("ugSeq");
+		loUserGroup.setLabel("User Group");
+		loUserGroup.setRequired(true);
+		loUserGroup.setValue(user.getUserGroup().getUgSeq());
+
+		for (UserGroupDto userGroup: userGroups)
+		{
+			loUserGroup.addOption(userGroup.getUgSeq(), userGroup.getName());
+		}
+
 		Document document = new Document();
 		document.addElement(loLastName);
 		document.addElement(loFirstName);
@@ -134,6 +152,7 @@ public class UserLayoutBuilder
 		document.addElement(loPosition);
 		document.addElement(loDepartment);
 		document.addElement(loLanguage);
+		document.addElement(loUserGroup);
 
 		return document;
 	}
@@ -147,7 +166,11 @@ public class UserLayoutBuilder
 		elementMap.put("No Use Password", userAccount.getFgNoUsePassword());
 		elementMap.put("Valid From", userAccount.getDisplayFromValid());
 		elementMap.put("Valid To", userAccount.getDisplayToValid());
-		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getName() : "");
+		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getUserGroup().getName() : "");
+		elementMap.put("Reg.Username", userAccount.getRegUsername());
+		elementMap.put("Reg.Date", userAccount.getDisplayRegDate());
+		elementMap.put("Mod.Username", userAccount.getModUsername());
+		elementMap.put("Mod.Date", userAccount.getDisplayModDate());
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
@@ -186,9 +209,12 @@ public class UserLayoutBuilder
 		loCredentialPolicy.setRequired(true);
 		loCredentialPolicy.setValue(userAccount.getCpSeq());
 
-		for (CredentialsPolicyDto credentialPolicy: credentialPolicies)
+		if (CollectionUtils.isNotEmpty(credentialPolicies))
 		{
-			loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getName());
+			for (CredentialsPolicyDto credentialPolicy: credentialPolicies)
+			{
+				loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getUserGroup().getName());
+			}
 		}
 
 		Document document = new Document();
@@ -232,6 +258,10 @@ public class UserLayoutBuilder
 		elementMap.put("State", userContactInfo.getState());
 		elementMap.put("Country", userContactInfo.getDisplayCountry());
 		elementMap.put("Timezone", userContactInfo.getDisplayTimezone());
+		elementMap.put("Reg.Username", userContactInfo.getRegUsername());
+		elementMap.put("Reg.Date", userContactInfo.getDisplayRegDate());
+		elementMap.put("Mod.Username", userContactInfo.getModUsername());
+		elementMap.put("Mod.Date", userContactInfo.getDisplayModDate());
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));

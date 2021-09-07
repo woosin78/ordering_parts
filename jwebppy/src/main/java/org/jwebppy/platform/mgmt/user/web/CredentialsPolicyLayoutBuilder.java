@@ -3,8 +3,6 @@ package org.jwebppy.platform.mgmt.user.web;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
@@ -41,10 +39,12 @@ public class CredentialsPolicyLayoutBuilder
 				Tr tbTr = new Tr();
 
 				tbTr.addDataKeyCheckboxTd("cpSeq", credentialsPolicy.getCpSeq());
-				tbTr.addTextTd(credentialsPolicy.getName());
+				tbTr.addDataKeyLinkTd(credentialsPolicy.getUserGroup().getName(), credentialsPolicy.getCpSeq());
 				tbTr.addTextTd(credentialsPolicy.getDescription());
-				tbTr.addCheckboxTd("fgUse", credentialsPolicy.getCpSeq(), PlatformCommonVo.YES, CmStringUtils.defaultIfEmpty(credentialsPolicy.getFgUse(), PlatformCommonVo.NO));
-				tbTr.addCheckboxTd("fgDefault", credentialsPolicy.getCpSeq(), PlatformCommonVo.YES, CmStringUtils.defaultIfEmpty(credentialsPolicy.getFgDefault(), PlatformCommonVo.NO));
+				tbTr.addTextTd(credentialsPolicy.getFgUse());
+				tbTr.addTextTd(credentialsPolicy.getFgDefault());
+				//tbTr.addCheckboxTd("fgUse", credentialsPolicy.getCpSeq(), PlatformCommonVo.YES, CmStringUtils.defaultIfEmpty(credentialsPolicy.getFgUse(), PlatformCommonVo.NO));
+				//tbTr.addCheckboxTd("fgDefault", credentialsPolicy.getCpSeq(), PlatformCommonVo.YES, CmStringUtils.defaultIfEmpty(credentialsPolicy.getFgDefault(), PlatformCommonVo.NO));
 				tbTr.addTextTd(credentialsPolicy.getDisplayRegDate());
 				tbTr.addTextTd(credentialsPolicy.getRegUsername());
 				tbTr.addTextTd(credentialsPolicy.getDisplayModDate());

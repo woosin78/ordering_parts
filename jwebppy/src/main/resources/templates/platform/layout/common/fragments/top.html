@@ -1,8 +1,11 @@
 <div class="ui fixed inverted menu topMenu">
 <!-- Top menu area. This comment is mandatory to make a space between top and body.-->
 </div>
+
+<div id="gmbUsername" sec:authentication="name" style="display:none;"></div>
+
 <form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
-<script type="application/javascript">
+<script type="application/javascript" th:inline="javascript">
 function makeGmb()
 {
 	//Make GNB
@@ -32,7 +35,9 @@ function makeGmb()
 		    menu.push("<div class='ui dropdown item right inverted user settings'>");
 		    menu.push("<i class='cog icon'></i>");
 		    menu.push("<div class='menu'>");
-		    menu.push("<div class='item'><i class='history icon'></i> Last Login Time/IP : <span id='lastLoginTime'></span></div>");
+		    menu.push("<div class='item'><i class='user icon'></i> Username : <span id='gmbUsername'></span></div>");
+		    menu.push("<div class='divider'></div>");
+		    menu.push("<div class='item'><i class='history icon'></i> Last Login Time/IP : <span id='gmbLastLoginTime'></span></div>");
 		    menu.push("<div class='divider'></div>");
 		    menu.push("<a class='item' href='javascript:logout();'><i class='power off icon'></i> Log Off</a>");
 		    menu.push("</div>");
@@ -50,7 +55,7 @@ function makeGmb()
 					maxLength = length;
 				};
 		    });
-		    
+
 		    $(".ui.menu.topMenu span.text").css("width", maxLength * 8);
 		    /* 메뉴명 길이에 따라서 너비를 자동 조절함 */
 		    
@@ -94,13 +99,15 @@ function makeGmb()
 			    {
 			    	let data = response.RESULT;
 			    	
+			    	$("#gmbUsername").html(data.username);
+			    	
 			    	if (data != null && $.trim(data.regDate) != "")
 			    	{
-			    		$("#lastLoginTime").html(moment(data.regDate).format(DateFormat.FULL_FORMAT) + "/" + data.ip);
+			    		$("#gmbLastLoginTime").html(moment(data.regDate).format(DateFormat.FULL_FORMAT) + "/" + data.ip);
 			    	}
 			    	else
 			    	{
-			    		$("#lastLoginTime").html("-/-");
+			    		$("#gmbLastLoginTime").html("-/-");
 			    	};	    	
 			    }	
 			});

@@ -19,6 +19,6 @@ public class CredentialsPolicySearchDto extends GeneralDto implements IPaginatio
 	private String name;
 	private String fgUse;
 	private String fgDefault;
-	private String value;
+	private String value;//username or password
 	private String query;
 }

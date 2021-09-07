@@ -13,7 +13,7 @@ public class PortalCommonVo
 	public static final String DEFAULT_DATE_TIME_MMHH_FORMAT = "yyyy-MM-dd HH:mm";
 	public static final String UNLIMITED_DATE_TIME = "9999-12-31 23:59:59";
 
-	//flag of Yes or No
+	//flag
 	public static final String ALL = "A";
 	public static final String YES = "Y";
 	public static final String NO = "N";

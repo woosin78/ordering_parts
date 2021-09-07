@@ -167,7 +167,7 @@ public class JdbcStatementInterceptor implements Interceptor
 		{
 			for (ParameterMapping parameterMapping : parameterMappings)
 			{
-				sql = CmStringUtils.replace(sql, "?", ":" + parameterMapping.getProperty(), 1);
+				sql = CmStringUtils.replace(sql, "?", "@" + parameterMapping.getProperty(), 1);
 			}
 		}
 

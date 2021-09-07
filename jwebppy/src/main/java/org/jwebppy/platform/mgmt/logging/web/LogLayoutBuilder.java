@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmMyBatisQueryUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Div;
@@ -102,7 +103,7 @@ public class LogLayoutBuilder
 		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
 		elementMap.put("Reg. Username", dataAccessLog.getRegUsername());
 		elementMap.put("Elapsed", CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
-		elementMap.put("Command", new Element("xmp", dataAccessLog.getCommand()));
+		elementMap.put("Command", new Element("xmp", CmMyBatisQueryUtils.format(dataAccessLog.getCommand())));
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
@@ -28,7 +29,7 @@ public class CredentialsPolicyService extends GeneralService
 	@Autowired
 	private CredentialsPolicyMapper credentialsPolicyMapper;
 
-	public int save(CredentialsPolicyDto credentialsPolicy)
+	public int create(CredentialsPolicyDto credentialsPolicy)
 	{
 		return credentialsPolicyMapper.insert(CmModelMapperUtils.map(credentialsPolicy, CredentialsPolicyEntity.class));
 	}
@@ -43,31 +44,69 @@ public class CredentialsPolicyService extends GeneralService
 		return credentialsPolicyMapper.updateFgDelete(cpSeq);
 	}
 
+	public int delete(List<Integer> cpSeqs)
+	{
+		int result = 0;
+
+		if (CollectionUtils.isNotEmpty(cpSeqs))
+		{
+			for (Integer cpSeq: cpSeqs)
+			{
+				result += delete(cpSeq);
+			}
+		}
+
+		return result;
+	}
+
+	public int save(CredentialsPolicyDto credentialsPolicy)
+	{
+		if (credentialsPolicy.getCpSeq() == null)
+		{
+			return credentialsPolicyMapper.insert(CmModelMapperUtils.map(credentialsPolicy, CredentialsPolicyEntity.class));
+		}
+		else
+		{
+			return credentialsPolicyMapper.update(CmModelMapperUtils.map(credentialsPolicy, CredentialsPolicyEntity.class));
+		}
+	}
+
 	public CredentialsPolicyDto getCredentialPolicy(Integer cpSeq)
 	{
 		return CmModelMapperUtils.map(credentialsPolicyMapper.findCredentialsPolicy(cpSeq), CredentialsPolicyDto.class);
 	}
 
-	public CredentialsPolicyDto getDefaultCredentialPolicy(CredentialsPolicySearchDto credentialsPolicySearch)
-	{
-		return CmModelMapperUtils.map(credentialsPolicyMapper.findDefaultCredentialsPolicy(credentialsPolicySearch), CredentialsPolicyDto.class);
-	}
-
 	public CredentialsPolicyDto getDefaultCredentialPolicyIfEmpty(CredentialsPolicySearchDto credentialsPolicySearch)
 	{
+		CredentialsPolicyDto credentialsPolicy = null;
+
+		if (credentialsPolicySearch == null)
+		{
+			credentialsPolicySearch = new CredentialsPolicySearchDto();
+		}
+
 		Integer cpSeq = credentialsPolicySearch.getCpSeq();
-		CredentialsPolicyEntity credentialsPolicy = null;
 
 		if (cpSeq == null)
 		{
-			credentialsPolicy = credentialsPolicyMapper.findDefaultCredentialsPolicy(credentialsPolicySearch);
+			//pltf_user 에 user_group 필드 추가. 사용자 그룹 별로 각각의 credential policy 가 관리되도록 개선 필요
+			credentialsPolicySearch.setName(credentialsPolicySearch.getName());
+			credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
+			credentialsPolicySearch.setFgDefault(PlatformCommonVo.YES);
+
+			List<CredentialsPolicyDto> credentialsPolicies = getCredentialPolicies(credentialsPolicySearch);
+
+			if (CollectionUtils.isNotEmpty(credentialsPolicies))
+			{
+				credentialsPolicy = credentialsPolicies.get(0);
+			}
 		}
 		else
 		{
-			credentialsPolicy = credentialsPolicyMapper.findCredentialsPolicy(cpSeq);
+			credentialsPolicy = getCredentialPolicy(cpSeq);
 		}
 
-		return CmModelMapperUtils.map(credentialsPolicy, CredentialsPolicyDto.class);
+		return credentialsPolicy;
 	}
 
 	public List<CredentialsPolicyDto> getCredentialPolicies(CredentialsPolicySearchDto credentialsPolicySearch)

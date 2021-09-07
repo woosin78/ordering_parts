@@ -29,10 +29,16 @@ public class UserDto extends GeneralDto implements IPagination
 	private String department;
 	private String position;
 	private String language;
-	private String fgDelete = PlatformCommonVo.NO;
+	private String fgDelete;
 	private List<Integer> uSeqs;
 	private UserAccountDto userAccount;
 	private UserContactInfoDto userContactInfo;
+	private UserGroupDto userGroup;
+
+	public String getFgDelete()
+	{
+		return CmStringUtils.defaultIfEmpty(fgDelete, PlatformCommonVo.NO);
+	}
 
 	public UserAccountDto getUserAccount()
 	{
@@ -52,6 +58,16 @@ public class UserDto extends GeneralDto implements IPagination
 		}
 
 		return userContactInfo;
+	}
+
+	public UserGroupDto getUserGroup()
+	{
+		if (userGroup == null)
+		{
+			return new UserGroupDto();
+		}
+
+		return userGroup;
 	}
 
 	public String getName()

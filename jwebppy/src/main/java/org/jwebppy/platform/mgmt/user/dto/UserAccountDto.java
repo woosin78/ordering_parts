@@ -22,9 +22,9 @@ public class UserAccountDto extends GeneralDto
 	private Integer uSeq;
 	private String username;
 	private String password;
-	private String fgNoUsePassword = PlatformCommonVo.NO;
-	private String fgAccountLocked = PlatformCommonVo.NO;
-	private String fgPasswordLocked = PlatformCommonVo.NO;
+	private String fgNoUsePassword;
+	private String fgAccountLocked;
+	private String fgPasswordLocked;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime fromValid;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)

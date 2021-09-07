@@ -22,22 +22,22 @@ public class JCoConfig
 {
 	private Logger logger = LoggerFactory.getLogger(JCoConfig.class);
 
-    @Value("${sap.jco.isActive}")
-    private String isActive;
+    @Value("${sap.jco.enable}")
+    private boolean SAP_JCO_ENABLE;
 
     @Value("${sap.jco.sid}")
-    private String SID;
+    private String SAP_JCO_SID;
 
     @Value("${sap.jco.landscape}")
-    private String LANDSCAPE;
+    private String SAP_JCO_LANDSCAPE;
 
     @Value("${sap.jco.landscape.default}")
-    private String DEFAULT_LANDSCAPE;
+    private String SAP_JCO_LANDSCAPE_DEFAULT;
 
     @Bean
     public SimpleRfcTemplate rfcTemplate()
 	{
-		if (Boolean.valueOf(isActive))
+    	if (SAP_JCO_ENABLE)
 		{
 			return new SimpleRfcTemplate(jCoConnectionResource());
 		}
@@ -49,7 +49,7 @@ public class JCoConfig
 	{
 		JCoConnectionResource jCoConnectionResource = new JCoConnectionResource();
 
-		String[] landscapes = CmStringUtils.split(LANDSCAPE, PlatformCommonVo.DELIMITER);
+		String[] landscapes = CmStringUtils.split(SAP_JCO_LANDSCAPE, PlatformCommonVo.DELIMITER);
 		for (String landscape : landscapes)
 		{
 			jCoConnectionResource.addConnectionInfo(getConnectionInfo(landscape));
@@ -57,14 +57,14 @@ public class JCoConfig
 
 		jCoConnectionResource.initialize();
 
-		jCoConnectionResource.setDefaultLandscape(DEFAULT_LANDSCAPE);
+		jCoConnectionResource.setDefaultLandscape(SAP_JCO_LANDSCAPE_DEFAULT);
 
 		return jCoConnectionResource;
 	}
 
 	private JCoConnectionInfo getConnectionInfo(String landscape)
 	{
-		Resource resource = new ClassPathResource("/config/sap/" + SID + "/" + landscape + ".properties");
+		Resource resource = new ClassPathResource("/config/sap/" + SAP_JCO_SID + "/" + landscape + ".properties");
 
 		if (resource.exists())
 		{
@@ -90,7 +90,7 @@ public class JCoConfig
 						.peakLimit(properties.getProperty("JCO_PEAK_LIMIT"))
 						.build();
 
-				logger.info("[" + SID + "] The SAP Landscape has been loaded [" + landscape + "]");
+				logger.info("[" + SAP_JCO_SID + "] The SAP Landscape has been loaded [" + landscape + "]");
 
 				return jCoConnectionInfo;
 			}
@@ -101,7 +101,7 @@ public class JCoConfig
 		}
 		else
 		{
-			logger.warn("[" + SID + "] The SAP Landscape does not exist [" + landscape + "]");
+			logger.warn("[" + SAP_JCO_SID + "] The SAP Landscape does not exist [" + landscape + "]");
 		}
 
 		return null;

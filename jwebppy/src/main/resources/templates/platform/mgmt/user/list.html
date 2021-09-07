@@ -240,6 +240,15 @@ $(document).ready(function() {
 					}
 				]
 			},
+			"User Group": {
+				identifier: "ugSeq",
+				rules: [
+					{
+						type: "empty",
+						prompt: "Please select {name}."
+					}
+				]
+			},			
 			Username: {
 				identifier: "username",
 				rules: [
@@ -433,11 +442,11 @@ $(document).ready(function() {
 					{
 						if (isCreating())
 						{
-							formValidCheck.fields.Password.optional = false;
+							formValidCheck.fields.Password.optional = true;
 						}
 						else
 						{
-							formValidCheck.fields.Password.optional = true;
+							formValidCheck.fields.Password.optional = false;
 						};
 
 						$("#FORM_modifyUser").form(formValidCheck);
