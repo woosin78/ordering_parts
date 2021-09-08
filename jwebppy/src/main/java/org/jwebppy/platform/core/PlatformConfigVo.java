@@ -6,15 +6,23 @@ public class PlatformConfigVo
 	public final static String ERROR_PAGE_URL = "/error";
 
 	//Authentication
+	public final static String FORM_AUTHENTICATION_PATH = "/platform/common/authentication";
+
 	public final static String FORM_LOGIN_USERNAME = "username";
 	public final static String FORM_LOGIN_PASSWORD = "password";
-	public final static String FORM_LOGIN_PAGE_URL = "/platform/common/authentication/login_form";
-	public final static String FORM_LOGIN_PROCESSING_URL = "/platform/common/authentication/check";
-	public final static String FORM_LOGOUT_PROCESSING_URL = "/platform/common/authentication/logout";
-	public final static String FORM_LOGOUT_SUCCESS_URL = "/";
-	public final static String FORM_LOGIN_USERNAME_RULE_PATTERN = "^((?=.*[a-zA-Z])|(?=.*\\d)).{6,12}$";
-	public final static String FORM_LOGIN_PASSWORD_RULE_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\\W)(?=\\S+$).{8,20}$";
+	public final static String FORM_LOGIN_PAGE_PATH = "/login";
+	public final static String FORM_LOGIN_PROCESSING_PATH = "/login/check";
+	public final static String FORM_LOGIN_PAGE_URL = FORM_AUTHENTICATION_PATH + FORM_LOGIN_PAGE_PATH;
+	public final static String FORM_LOGIN_PROCESSING_URL = FORM_AUTHENTICATION_PATH + FORM_LOGIN_PROCESSING_PATH;
 	public final static int FORM_LOGIN_PASSWORD_FAIL_LIMIT_COUNT = 5;
+
+	public final static String FORM_LOGOUT_PROCESSING_URL = FORM_AUTHENTICATION_PATH + "/logout";
+	public final static String FORM_LOGOUT_SUCCESS_URL = INDEX_URL;
+
+	public final static String FORM_PASSWORD_CHANGE_PAGE_PATH = "/change_password";
+	public final static String FORM_PASSWORD_CHANGE_PROCESSING_PATH = "/change_password/check";
+	public final static String FORM_PASSWORD_CHANGE_PAGE_URL = FORM_AUTHENTICATION_PATH + FORM_PASSWORD_CHANGE_PAGE_PATH;
+	public final static String FORM_PASSWORD_CHANGE_PROCESSING_URL = FORM_AUTHENTICATION_PATH + FORM_PASSWORD_CHANGE_PROCESSING_PATH;
 
 	//Authorization
 	public final static String ROLE_PLTF_ADMIN = "PLTF_ADMIN";
@@ -22,7 +30,7 @@ public class PlatformConfigVo
 	//Key
 	public final static String REQUEST_MDC_UUID_TOKEN_KEY = "RUID";
 
-	//kinds of DB
+	//DB
 	public final static String MariaDB = "mariadb";
 	public final static String Oracle = "oracle";
 }

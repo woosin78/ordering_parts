@@ -17,14 +17,13 @@ public class CredentialsPolicyLayoutBuilder
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
+		thTr.addTextTh("User Group", "two wide");
 		thTr.addTextTh("Name", "two wide");
-		thTr.addTextTh("Description", "three wide");
+		thTr.addTextTh("Description", "five wide");
 		thTr.addTextTh("Use", "one wide");
 		thTr.addTextTh("Default", "one wide");
 		thTr.addTextTh("Reg.Date", "two wide");
 		thTr.addTextTh("Reg.Username", "two wide");
-		thTr.addTextTh("Mod.Date", "two wide");
-		thTr.addTextTh("Mod.Username", "two wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -39,16 +38,13 @@ public class CredentialsPolicyLayoutBuilder
 				Tr tbTr = new Tr();
 
 				tbTr.addDataKeyCheckboxTd("cpSeq", credentialsPolicy.getCpSeq());
-				tbTr.addDataKeyLinkTd(credentialsPolicy.getUserGroup().getName(), credentialsPolicy.getCpSeq());
+				tbTr.addTextTd(credentialsPolicy.getUserGroup().getName());
+				tbTr.addDataKeyLinkTd(credentialsPolicy.getName(), credentialsPolicy.getCpSeq());
 				tbTr.addTextTd(credentialsPolicy.getDescription());
 				tbTr.addTextTd(credentialsPolicy.getFgUse());
 				tbTr.addTextTd(credentialsPolicy.getFgDefault());
-				//tbTr.addCheckboxTd("fgUse", credentialsPolicy.getCpSeq(), PlatformCommonVo.YES, CmStringUtils.defaultIfEmpty(credentialsPolicy.getFgUse(), PlatformCommonVo.NO));
-				//tbTr.addCheckboxTd("fgDefault", credentialsPolicy.getCpSeq(), PlatformCommonVo.YES, CmStringUtils.defaultIfEmpty(credentialsPolicy.getFgDefault(), PlatformCommonVo.NO));
 				tbTr.addTextTd(credentialsPolicy.getDisplayRegDate());
 				tbTr.addTextTd(credentialsPolicy.getRegUsername());
-				tbTr.addTextTd(credentialsPolicy.getDisplayModDate());
-				tbTr.addTextTd(credentialsPolicy.getModUsername());
 
 				tbody.addTr(tbTr);
 			}

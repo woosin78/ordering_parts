@@ -56,9 +56,19 @@ public class UserAccountDto extends GeneralDto
 		return CmStringUtils.defaultString(fgPasswordLocked, PlatformCommonVo.NO);
 	}
 
+	public boolean isPasswordLocked()
+	{
+		if (CmStringUtils.equals(getFgAccountLocked(), PlatformCommonVo.YES))
+		{
+			return true;
+		}
+
+		return false;
+	}
+
 	public boolean isAccountLocked()
 	{
-		if (PlatformCommonVo.YES.equals(getFgAccountLocked()))
+		if (CmStringUtils.equals(getFgAccountLocked(), PlatformCommonVo.YES))
 		{
 			return true;
 		}

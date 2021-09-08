@@ -12,6 +12,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
+import org.jwebppy.platform.core.util.CmClassUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
@@ -20,7 +21,6 @@ import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
@@ -42,14 +42,10 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 
 		loginHistoryService.createLoginHistory(request, PlatformCommonVo.NO, fgAccountLocked);
 
-		if (exception instanceof LockedException || PlatformCommonVo.YES.equals(fgAccountLocked))
-		{
-			response.setStatus(HttpStatus.LOCKED.value());
-		}
-		else
-		{
-			response.setStatus(HttpStatus.UNAUTHORIZED.value());
-		}
+		response.setHeader("Error-Type", CmClassUtils.getShortClassName(exception.getClass()).replaceAll("Exception", ""));
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
+
+		request.getSession().setAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME, request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
 
 		request.getRequestDispatcher(PlatformConfigVo.FORM_LOGIN_PAGE_URL).forward(request, response);
 	}

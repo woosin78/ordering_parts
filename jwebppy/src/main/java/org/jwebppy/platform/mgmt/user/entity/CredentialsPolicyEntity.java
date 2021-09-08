@@ -16,6 +16,7 @@ public class CredentialsPolicyEntity extends GeneralEntity implements IPaginatio
 
 	private Integer cpSeq;
 	private UserGroupEntity userGroup;
+	private String name;
 	private String description;
 	private String uMinLength;
 	private String uMaxLength;

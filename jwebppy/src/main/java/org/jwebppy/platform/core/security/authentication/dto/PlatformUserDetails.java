@@ -66,6 +66,7 @@ public class PlatformUserDetails implements UserDetails
 		return username;
 	}
 
+	//Indicates whether the user's account has expired.
 	@Override
 	public boolean isAccountNonExpired()
 	{
@@ -82,6 +83,7 @@ public class PlatformUserDetails implements UserDetails
 		return false;
 	}
 
+	//Indicates whether the user is locked or unlocked.
 	@Override
 	public boolean isAccountNonLocked()
 	{
@@ -93,6 +95,7 @@ public class PlatformUserDetails implements UserDetails
 		return false;
 	}
 
+	//Indicates whether the user's credentials (password) has expired.
 	@Override
 	public boolean isCredentialsNonExpired()
 	{
@@ -104,10 +107,11 @@ public class PlatformUserDetails implements UserDetails
 		return false;
 	}
 
+	//Indicates whether the user is enabled or disabled.
 	@Override
 	public boolean isEnabled()
 	{
-		if (isAccountNonLocked() && isCredentialsNonExpired())
+		if (isAccountNonExpired() && isAccountNonLocked() && isCredentialsNonExpired())
 		{
 			return true;
 		}

@@ -124,7 +124,14 @@ public class CredentialsPolicyService extends GeneralService
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("TYPE", type);
 
-		if (credentialsPolicy == null || CmStringUtils.isEmpty(str))
+		if (credentialsPolicy == null)
+		{
+			resultMap.put("RESULT", CredentialsPolicyVo.VALID);
+
+			return resultMap;
+		}
+
+		if (CmStringUtils.isEmpty(str))
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.EMPTY);
 

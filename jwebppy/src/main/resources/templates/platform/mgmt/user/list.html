@@ -267,11 +267,8 @@ $(document).ready(function() {
 			},
 			Password: {
 				identifier: "password",
+				optional: true,
 				rules: [
-					{
-						type: "empty",
-						prompt: "Please enter {name}."
-					},
 					{
 						type: "checkCredentialPolicy[P]",
 						prompt: function (value)
@@ -440,15 +437,6 @@ $(document).ready(function() {
 				{
 					if (isOnForm())
 					{
-						if (isCreating())
-						{
-							formValidCheck.fields.Password.optional = true;
-						}
-						else
-						{
-							formValidCheck.fields.Password.optional = false;
-						};
-
 						$("#FORM_modifyUser").form(formValidCheck);
 
 						if (tabPath == "account")
@@ -563,18 +551,6 @@ $(document).ready(function() {
 							};
 						};
 					}
-					else
-					{
-						if (tabPath == "authority")
-						{
-							$.each($("#FORM_modifyUser div[data-tab=authority] div.ui.header"), function(i, item) {
-								$(this).on("click", function() {
-									alert(1);
-								});
-							});
-						}
-					};
-						
 
 					changeButtonStatus();
 					viewUserTab.changePath(JpUtilsPath.url("/platform/mgmt/user/detail"));

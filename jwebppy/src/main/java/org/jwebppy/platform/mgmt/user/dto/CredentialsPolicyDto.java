@@ -18,6 +18,7 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 
 	private Integer cpSeq;
 	private UserGroupDto userGroup;
+	private String name;
 	private String description;
 	private String uMinLength;
 	private String uMaxLength;

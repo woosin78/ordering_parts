@@ -18,6 +18,9 @@ public class PortalCommonVo
 	public static final String YES = "Y";
 	public static final String NO = "N";
 
+	public static final String OK = "O";
+	public static final String FAIL = "F";
+
 	//Delimiter to split
 	public static final String DELIMITER = "^";
 

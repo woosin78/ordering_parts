@@ -4,9 +4,7 @@ import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
-@Component
 public class UserAuthenticationUtils
 {
 	private static final String ROLE_PREFIX = "ROLE_";
@@ -22,7 +20,14 @@ public class UserAuthenticationUtils
 
 		if (authentication != null)
 		{
-			return (PlatformUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
+			try
+			{
+				return (PlatformUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
+			}
+			catch (ClassCastException e)
+			{
+				return null;
+			}
 		}
 
 		return null;
@@ -50,6 +55,54 @@ public class UserAuthenticationUtils
 		}
 
 		return true;
+	}
+
+	public static boolean isAccountNonExpired()
+	{
+		PlatformUserDetails platformUserDetails = getUserDetails();
+
+		if (platformUserDetails != null)
+		{
+			return platformUserDetails.isAccountNonExpired();
+		}
+
+		return false;
+	}
+
+	public static boolean isAccountNonLocked()
+	{
+		PlatformUserDetails platformUserDetails = getUserDetails();
+
+		if (platformUserDetails != null)
+		{
+			return platformUserDetails.isAccountNonLocked();
+		}
+
+		return false;
+	}
+
+	public static boolean isCredentialsNonExpired()
+	{
+		PlatformUserDetails platformUserDetails = getUserDetails();
+
+		if (platformUserDetails != null)
+		{
+			return platformUserDetails.isCredentialsNonExpired();
+		}
+
+		return false;
+	}
+
+	public static boolean isEnabled()
+	{
+		PlatformUserDetails platformUserDetails = getUserDetails();
+
+		if (platformUserDetails != null)
+		{
+			return platformUserDetails.isEnabled();
+		}
+
+		return false;
 	}
 
 	public static boolean hasRole(String[] roles)

@@ -33,7 +33,7 @@ public class IndexContoller extends PlatformGeneralController
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping("/")
+	@RequestMapping(PlatformConfigVo.INDEX_URL)
 	public Object index(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws UnknownHostException
 	{
 		if (UserAuthenticationUtils.isLogin())

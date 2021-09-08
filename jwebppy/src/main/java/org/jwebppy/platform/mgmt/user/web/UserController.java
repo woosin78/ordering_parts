@@ -175,7 +175,6 @@ public class UserController extends UserGeneralController
 			else if ("account".equals(tabPath))
 			{
 				CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
-				credentialsPolicySearch.setType(CredentialsPolicyType.U);
 				credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
 
 				return UserLayoutBuilder.getAccountInfoForm(user.getUserAccount(), credentialsPolicyService.getCredentialPolicies(credentialsPolicySearch));

@@ -166,7 +166,7 @@ public class UserLayoutBuilder
 		elementMap.put("No Use Password", userAccount.getFgNoUsePassword());
 		elementMap.put("Valid From", userAccount.getDisplayFromValid());
 		elementMap.put("Valid To", userAccount.getDisplayToValid());
-		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getUserGroup().getName() : "");
+		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getName() : "");
 		elementMap.put("Reg.Username", userAccount.getRegUsername());
 		elementMap.put("Reg.Date", userAccount.getDisplayRegDate());
 		elementMap.put("Mod.Username", userAccount.getModUsername());
