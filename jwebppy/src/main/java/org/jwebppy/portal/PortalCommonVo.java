@@ -13,18 +13,22 @@ public class PortalCommonVo
 	public static final String DEFAULT_DATE_TIME_MMHH_FORMAT = "yyyy-MM-dd HH:mm";
 	public static final String UNLIMITED_DATE_TIME = "9999-12-31 23:59:59";
 
+	//Number
+	public static final int UNLIMITED_POSITIVE_NUMBER = 9999999;
+	public static final int UNLIMITED_NEGATIVE_NUMBER = -9999999;
+
 	//flag
 	public static final String ALL = "A";
 	public static final String YES = "Y";
 	public static final String NO = "N";
 
-	public static final String OK = "O";
+	public static final String SUCCESS = "S";
 	public static final String FAIL = "F";
 
 	//Delimiter to split
 	public static final String DELIMITER = "^";
 
-	//Root name of menu tree
+	//Root name of menu tree in content Management
 	public static final String ROOT = "ROOT";
 
 	//Default basename of language

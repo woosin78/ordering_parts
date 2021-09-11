@@ -218,7 +218,7 @@ $(document).ready(function() {
 							$(".ui.tab[data-tab=authority]").html(html.join(""));
 
 							JpUtilsAjax.get({
-								url: JpUtilsPath.url("/platform/mgmt/content/contents"),
+								url: JpUtilsPath.url("/platform/mgmt/content/list/data"),
 								data: {"type" : "R"},
 								global: false,
 								success: function(data, textStatus, jqXHR)

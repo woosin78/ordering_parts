@@ -22,5 +22,5 @@ public class UserAccountEntity extends GeneralEntity
 	private String fgPasswordLocked;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
-	private Integer cpSeq;
+	private CredentialsPolicyEntity credentialsPolicy;
 }

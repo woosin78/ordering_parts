@@ -20,18 +20,34 @@
 		<result property="totalCount" column="total_count" />
 		<association property="userAccount" foreignColumn="u_seq" column="u_seq" javaType="UserAccountEntity" select="findUserAccount" />
 		<association property="userContactInfo" foreignColumn="u_seq" column="u_seq" javaType="UserContactInfoEntity" select="findUserContactInfo" />
+		<association property="userGroup" foreignColumn="ug_seq" column="ug_seq" javaType="UserGroupEntity" select="org.jwebppy.platform.mgmt.user.mapper.UserGroupMapper.findUserGroup" />
+	</resultMap>
+	
+	<resultMap type="UserAccountEntity" id="userAccountEntityMap">
+		<id property="uSeq" column="u_seq" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="fgNoUsePassword" column="fg_no_use_password" />
+		<result property="fgAccountLocked" column="fg_account_locked" />
+		<result property="fromValid" column="from_valid" />
+		<result property="toValid" column="to_valid" />		
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+		<result property="modUsername" column="mod_username" />
+		<result property="modDate" column="mod_date" />
+		<association property="credentialsPolicy" foreignColumn="cp_seq" column="cp_seq" javaType="CredentialsPolicyEntity" select="org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyMapper.findCredentialsPolicy" />
 	</resultMap>
 	
 	<insert id="insertUser" parameterType="UserEntity" useGeneratedKeys="true" keyProperty="uSeq">
-		insert into pltf_user (first_name, last_name, en_first_name, en_last_name, company, organization, department, position, language, fg_delete, reg_username, reg_date) values
+		insert into pltf_user (first_name, last_name, en_first_name, en_last_name, company, organization, department, position, language, ug_seq, fg_delete, reg_username, reg_date) values
 		(
-			#{firstName}, #{lastName}, #{enFirstName}, #{enLastName}, #{company}, #{organization}, #{department}, #{position}, #{language}, #{fgDelete}, #{regUsername}, #{regDate}
+			#{firstName}, #{lastName}, #{enFirstName}, #{enLastName}, #{company}, #{organization}, #{department}, #{position}, #{language}, #{userGroup.ugSeq}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
 	<insert id="insertUserAccount" parameterType="UserAccountEntity">
-		insert into pltf_user_account (u_seq, username, password, fg_account_locked, fg_password_locked, fg_no_use_password, from_valid, to_valid, reg_username, reg_date) values (
-			#{uSeq}, upper(#{username}), #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
+		insert into pltf_user_account (u_seq, username, password, fg_account_locked, fg_password_locked, fg_no_use_password, from_valid, to_valid, cp_seq, reg_username, reg_date) values (
+			#{uSeq}, #{username}, #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{cpSeq}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -58,6 +74,7 @@
 			department=#{department},
 			position=#{position},
 			language=#{language},
+			ug_seq=#{userGroup.ugSeq},
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
@@ -77,6 +94,7 @@
 			fg_no_use_password=#{fgNoUsePassword},
 			from_valid=#{fromValid},
 			to_valid=#{toValid},
+			cp_seq=#{credentialsPolicy.cpSeq},
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
@@ -158,7 +176,7 @@
 		</where>
 	</select>
 	
-	<select id="findUserAccount" resultType="UserAccountEntity" parameterType="Integer">
+	<select id="findUserAccount" parameterType="Integer" resultMap="userAccountEntityMap">
 		select
 		*
 		from
@@ -167,7 +185,7 @@
 		u_seq=#{uSeq}
 	</select>
 	
-	<select id="findUserContactInfo" resultType="UserContactInfoEntity" parameterType="Integer">
+	<select id="findUserContactInfo" parameterType="Integer" resultType="UserContactInfoEntity">
 		select 
 		*
 		from
@@ -207,7 +225,7 @@
 		<where>
 			<trim prefix="(" suffix=")" prefixOverrides="or">
 				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
-					a.username like concat('%', upper(trim(#{query})), '%')
+					upper(a.username) like concat('%', upper(trim(#{query})), '%')
 					or upper(a.last_name) like concat('%', upper(trim(#{query})), '%')
 					or upper(a.first_name) like concat('%', upper(trim(#{query})), '%')
 					or upper(b.email) like concat('%', upper(trim(#{query})), '%')
@@ -220,7 +238,7 @@
 			
 			<trim prefixOverrides="and">
 				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
-					and a.username like concat('%', upper(trim(#{username})), '%')
+					and upper(a.username) like concat('%', upper(trim(#{username})), '%')
 				</if>			
 			</trim>
 		</where>

@@ -28,12 +28,12 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
 		if ("".equals(username))
 		{
-			throw new UsernameNotFoundException("The username or password you entered is incorrect.");
+			throw new UsernameNotFoundException("The username or password is incorrect.");
 		}
 
 		if ("".equals(password))
 		{
-			throw new BadCredentialsException("The username or password you entered is incorrect.");
+			throw new BadCredentialsException("The username or password is incorrect.");
 		}
 
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);

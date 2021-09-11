@@ -28,7 +28,7 @@
 	<input type="hidden" name="rowPerPage" th:value="${rowPerPage}"/>	
 	<input type="file" id="files" name="files" multiple style="display:none;"/>
 	<textarea id="htmlContent" name="htmlContent" style="display:none;"></textarea>
-	<textarea id="textCcontent" name="textCcontent" style="display:none;"></textarea>
+	<textarea id="textContent" name="textContent" style="display:none;"></textarea>
 	<div class="field">
 		<input type="text" id="title" name="title" placeholder="Title"/>
 	</div>	
@@ -163,13 +163,13 @@ $(document).ready(function() {
 			$("#textContent").val(editor.getContent({format: "text"}));
 			
 			let options = {
-					enctype: "multipart/form-data",				
+					enctype: "multipart/form-data",
 					url: "/platform/mgmt/board/content/save",
 					data: new FormData($("#FORM_write")[0]),
 					global: false,
 					processData: false,
 					contentType: false,
-					cache: false,				
+					cache: false,
 					success: function(data, textStatus, jqXHR) {
 						$(".BTN_back").trigger("click");
 					},

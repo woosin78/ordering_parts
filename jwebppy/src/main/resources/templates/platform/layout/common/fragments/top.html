@@ -99,16 +99,15 @@ function makeGmb()
 			    {
 			    	let data = response.RESULT;
 			    	
-			    	$("#gmbUsername").html(data.username);
-			    	
-			    	if (data != null && $.trim(data.regDate) != "")
+			    	if (data != null)
 			    	{
-			    		$("#gmbLastLoginTime").html(moment(data.regDate).format(DateFormat.FULL_FORMAT) + "/" + data.ip);
-			    	}
-			    	else
-			    	{
-			    		$("#gmbLastLoginTime").html("-/-");
-			    	};	    	
+			    		$("#gmbUsername").html(data.username);
+			    		
+			    		if (JpUtilsString.isNotEmpty(data.regDate))
+			    		{
+			    			$("#gmbLastLoginTime").html(moment(data.regDate).format(DateFormat.FULL_FORMAT) + "/" + data.ip);	
+			    		};
+			    	};
 			    }	
 			});
 			

@@ -207,7 +207,7 @@ public class UserLayoutBuilder
 		Select loCredentialPolicy = new Select("cpSeq");
 		loCredentialPolicy.setLabel("Credential Policy");
 		loCredentialPolicy.setRequired(true);
-		loCredentialPolicy.setValue(userAccount.getCpSeq());
+		loCredentialPolicy.setValue(userAccount.getCredentialsPolicy().getCpSeq());
 
 		if (CollectionUtils.isNotEmpty(credentialPolicies))
 		{
@@ -226,7 +226,7 @@ public class UserLayoutBuilder
 
 			Input loUsername = new Input("username");
 			loUsername.setLabel("Username");
-			loUsername.setStyle("text-transform:uppercase");
+			//loUsername.setStyle("text-transform:uppercase");
 			loUsername.setRequired(true);
 			loUsername.addAttribute("autofocus");
 

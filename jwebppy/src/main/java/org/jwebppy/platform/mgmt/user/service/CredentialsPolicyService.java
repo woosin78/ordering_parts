@@ -287,11 +287,11 @@ public class CredentialsPolicyService extends GeneralService
 		}
 		else if (CmStringUtils.isNotEmpty(minLowercase) && CmStringUtils.isEmpty(maxLowercase))
 		{
-			messages.add(target + " should include a minimum of " + minLowercase + " lowercase letters.");
+			messages.add(target + " should include a minimum of " + minLowercase + " lowercase letter(s).");
 		}
 		else if (CmStringUtils.isEmpty(minLowercase) && CmStringUtils.isNotEmpty(maxLowercase))
 		{
-			messages.add(target + " should include a maximum of " + maxLowercase + " lowercase letters.");
+			messages.add(target + " should include a maximum of " + maxLowercase + " lowercase letter(s).");
 		}
 
 		if (CmStringUtils.isNotEmpty(minUppercase) && CmStringUtils.isNotEmpty(maxUppercase))
@@ -300,11 +300,11 @@ public class CredentialsPolicyService extends GeneralService
 		}
 		else if (CmStringUtils.isNotEmpty(minUppercase) && CmStringUtils.isEmpty(maxUppercase))
 		{
-			messages.add(target + " should include a minimum of " + minUppercase + " uppercase letters.");
+			messages.add(target + " should include a minimum of " + minUppercase + " uppercase letter(s).");
 		}
 		else if (CmStringUtils.isEmpty(minUppercase) && CmStringUtils.isNotEmpty(maxUppercase))
 		{
-			messages.add(target + " should include a maximum of " + maxUppercase + " uppercase letters.");
+			messages.add(target + " should include a maximum of " + maxUppercase + " uppercase letter(s).");
 		}
 
 		if (CmStringUtils.isNotEmpty(minNumber) && CmStringUtils.isNotEmpty(maxNumber))
@@ -313,11 +313,11 @@ public class CredentialsPolicyService extends GeneralService
 		}
 		else if (CmStringUtils.isNotEmpty(minNumber) && CmStringUtils.isEmpty(maxNumber))
 		{
-			messages.add(target + " should include a minimum of " + minNumber + " digits.");
+			messages.add(target + " should include a minimum of " + minNumber + " digit(s).");
 		}
 		else if (CmStringUtils.isEmpty(minNumber) && CmStringUtils.isNotEmpty(maxNumber))
 		{
-			messages.add(target + " should include a maximum of " + maxNumber + " digits.");
+			messages.add(target + " should include a maximum of " + maxNumber + " digit(s).");
 		}
 
 		if (CmStringUtils.isNotEmpty(minSpecial) && CmStringUtils.isNotEmpty(maxSpecial))
@@ -326,11 +326,11 @@ public class CredentialsPolicyService extends GeneralService
 		}
 		else if (CmStringUtils.isNotEmpty(minSpecial) && CmStringUtils.isEmpty(maxSpecial))
 		{
-			messages.add(target + " should include a minimum of " + minSpecial + " special letters.");
+			messages.add(target + " should include a minimum of " + minSpecial + " special letter(s).");
 		}
 		else if (CmStringUtils.isEmpty(minSpecial) && CmStringUtils.isNotEmpty(maxSpecial))
 		{
-			messages.add(target + " should include a maximum of " + maxSpecial + " special letters.");
+			messages.add(target + " should include a maximum of " + maxSpecial + " special letter(s).");
 		}
 
 		return messages;

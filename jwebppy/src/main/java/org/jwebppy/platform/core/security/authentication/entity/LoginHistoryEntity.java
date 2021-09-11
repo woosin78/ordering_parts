@@ -14,6 +14,8 @@ import lombok.ToString;
 public class LoginHistoryEntity extends GeneralEntity
 {
 	private static final long serialVersionUID = -2953109150988945919L;
+
+	private Integer lhSeq;
 	private String username;
 	private String sessionId;
 	private String ip;

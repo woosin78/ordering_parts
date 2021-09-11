@@ -43,7 +43,7 @@ let JpUiRender = function()
 
 	    if (data.RESULT != null && Array.isArray(data.RESULT))
 	    {
-	    	result.push("<div class='ui one column grid'>");
+	    	result.push("<div class=\"ui one column grid\">");
 		    
 		    data.RESULT.forEach(function(element, index) {
 		    	let content = _this.makeElement(element);
@@ -54,7 +54,7 @@ let JpUiRender = function()
 		    	}
 		    	else
 		    	{
-			    	result.push("<div class='column' style='padding-top: 0.5rem; padding-bottom: 0.5rem;'>");
+			    	result.push("<div class=\"column\" style=\"padding-top: 0.5rem; padding-bottom: 0.5rem\">");
 			    	result.push(content);
 			    	result.push("</div>");		    		
 		    	};
@@ -105,7 +105,7 @@ let JpUiRender = function()
 
 				if (isFormElement && attributeName == "TYPE" && JpUtilsString.equalsIgnoreCase(attributeValue, "DATE"))
 				{
-					attributes.push(attributeName + "='TEXT' ");
+					attributes.push(attributeName + "=\"text\" ");
 					attributes.push("readonly ");					
 				}
 				else
@@ -114,7 +114,7 @@ let JpUiRender = function()
 					{
 						if (JpUtilsString.isNotEmpty(attributeValue))
 						{
-							attributes.push(attributeName + "='" + attributeValue + "' ");
+							attributes.push(attributeName + "=\"" + attributeValue + "\" ");
 						}
 						else
 						{
@@ -123,7 +123,7 @@ let JpUiRender = function()
 					}
 				};
 				
-				if (JpUtilsString.equalsIgnoreCase(attributeName, "DATA-KEY"))
+				if (JpUtilsString.equalsIgnoreCase(attributeName, "data-key"))
 				{
 					dataKey = attributeValue;
 				}
@@ -134,7 +134,7 @@ let JpUiRender = function()
 		{
 			if (!isHiddenFormElement)
 			{
-				content.push("<div class='field" + (isRequired ? " required" : "") + "'>");
+				content.push("<div class=\"field" + (isRequired ? " required" : "") + "\">");
 				closeTags.push("</div>");
 
 				if (typeFormElement != "CHECKBOX")
@@ -160,20 +160,20 @@ let JpUiRender = function()
 		{
 			if (typeFormElement == "DATE")
 			{
-				content.push("<div class='ui calendar'><div class='ui input left icon'><i class='calendar icon'></i>");
+				content.push("<div class=\"ui calendar\"><div class=\"ui input left icon\"><i class=\"calendar icon\"></i>");
 				closeTags.push("</div></div>");
 			};
 			
 			if (typeFormElement == "CHECKBOX")
 			{
-				content.push("<div class='ui checkbox");
+				content.push("<div class=\"ui checkbox");
 				
 				if (dataKey != "")
 				{
 					content.push(" data-key");
 				}
 				
-				content.push("'>");
+				content.push("\">");
 				
 				closeTags.push("</div>");
 			};			
@@ -183,7 +183,7 @@ let JpUiRender = function()
 	    	
 	    	if (isHiddenFormElement)
     		{
-	    		content.push(" style='display:none;' ")
+	    		content.push(" style=\"display:none;\" ")
     		};
     		
     		content.push(">");
@@ -234,30 +234,30 @@ let JpUiRender = function()
 			});
 		};
 		
-		content.push("<div class='ui fluid search selection dropdown " + attributes["NAME"] + "'>");
-		content.push("<input type='hidden' ");
+		content.push("<div class=\"ui fluid search selection dropdown " + attributes["NAME"] + "\">");
+		content.push("<input type=\"hidden\" ");
 		
 		if (JpUtilsObject.isNotNull(attributes["ID"]))
 		{
-			content.push("id='" + attributes["ID"] + "' ");
+			content.push("id=\"" + attributes["ID"] + "\" ");
 		};
 		
-		content.push("name='" + attributes["NAME"] + "' ");
+		content.push("name=\"" + attributes["NAME"] + "\" ");
 		
 		if (JpUtilsObject.isNotNull(attributes["VALUE"]))
 		{
-			content.push("value='" + attributes["VALUE"] + "' ");
+			content.push("value=\"" + attributes["VALUE"] + "\" ");
 		};
 		
 		content.push("/>");
-		content.push("<i class='dropdown icon'></i>");
+		content.push("<i class=\"dropdown icon\"></i>");
 		
 		if (JpUtilsObject.isNotNull(attributes["DEFAULT_TEXT"]))
 		{
-			content.push("<div class='default text'>" + attributes["DEFAULT_TEXT"] + "</div>");
+			content.push("<div class=\"default text\">" + attributes["DEFAULT_TEXT"] + "</div>");
 		};		
 		
-		content.push("<div class='menu'>");
+		content.push("<div class=\"menu\">");
 		
     	if (element.children != null)
     	{
@@ -268,7 +268,7 @@ let JpUiRender = function()
     				subAttributes[$.trim(attribute.name).toUpperCase()] = $.trim(attribute.value);
     			});        		
         		
-        		content.push("<div class='item' data-value='" + subAttributes["VALUE"] + "'>" + subElement.text + "</div>");
+        		content.push("<div class=\"item\" data-value=\"" + subAttributes["VALUE"] + "\">" + subElement.text + "</div>");
         	});
     	};		
 		

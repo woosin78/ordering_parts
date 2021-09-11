@@ -130,9 +130,12 @@ public class ContentAuthorityService extends GeneralService
 
 					List<CItemDto> subRoles = authorityService.getSubRoles(cItemSearch2);
 
-					for (CItemDto subRole : subRoles)
+					if (CollectionUtils.isNotEmpty(subRoles))
 					{
-						roles.add(subRole);
+						for (CItemDto subRole : subRoles)
+						{
+							roles.add(subRole);
+						}
 					}
 				}
 				else

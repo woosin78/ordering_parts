@@ -61,9 +61,9 @@ public class ContentController extends ContentGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/contents")
+	@GetMapping("/list/data")
 	@ResponseBody
-	public Object contents(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object listData(@ModelAttribute CItemSearchDto cItemSearch)
 	{
 		return contentService.getCItems(cItemSearch);
 	}
@@ -100,9 +100,9 @@ public class ContentController extends ContentGeneralController
 		return Document.EMPTY;
 	}
 
-	@PostMapping("/save/{tabPath}")
+	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemDto cItem)
+	public Object save(@ModelAttribute CItemDto cItem)
 	{
 		cItem.setName(cItem.getName().toUpperCase());
 

@@ -329,7 +329,7 @@
 		if ($("#FORM_modifyItem").form("validate form"))
 		{
 			JpUtilsAjax.post({
-				url: JpUtilsPath.url("/platform/mgmt/content/save/" + viewItemTab.tabPath),
+				url: JpUtilsPath.url("/platform/mgmt/content/save"),
 				data: $("#FORM_modifyItem").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{

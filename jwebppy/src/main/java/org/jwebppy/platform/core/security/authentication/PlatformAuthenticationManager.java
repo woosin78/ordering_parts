@@ -105,13 +105,9 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
                 return userAuthenticationService.getAuthentication(user);
         	}
-        	else
-        	{
-        		throw new BadCredentialsException("The username or password is incorrect.");
-        	}
         }
 
-        return null;
+        throw new BadCredentialsException("The username or password is incorrect.");
 	}
 
 	private boolean isValidUserByLdap(String username, String password)

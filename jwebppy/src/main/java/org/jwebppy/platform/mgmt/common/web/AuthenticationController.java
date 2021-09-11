@@ -1,6 +1,9 @@
 package org.jwebppy.platform.mgmt.common.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,8 +16,11 @@ import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchD
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyVo;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
+import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +39,9 @@ public class AuthenticationController extends PlatformGeneralController
 {
 	//@Autowired
 	//private Environment environment;
+
+	@Autowired
+	private CredentialsPolicyService credentialsPolicyService;
 
 	@Autowired
 	private LoginHistoryService loginHistoryService;
@@ -59,39 +68,84 @@ public class AuthenticationController extends PlatformGeneralController
 	@ResponseBody
 	public Object checkChangePassword(HttpSession session, @RequestParam String password, @RequestParam String newPassword, @RequestParam String confirmPassword)
 	{
-		if (CmStringUtils.equals(newPassword, confirmPassword))
+		String username = CmStringUtils.trimToEmpty(session.getAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME));
+
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("TYPE", CredentialsPolicyType.P);
+
+		List<String> messages = new ArrayList<>();
+
+		if (CmStringUtils.isNotEmpty(username))
 		{
-			String username = CmStringUtils.trimToEmpty(session.getAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME));
-
-			UserDto user = userService.getUserByUsername(username);
-
-			//사용자 정보가 존재하는지 체크
-			if (user != null)
+			if (CmStringUtils.equals(newPassword, confirmPassword))
 			{
-				UserAccountDto userAccount = user.getUserAccount();
+				UserDto user = userService.getUserByUsername(username);
 
-				//계정이 유효한 상태인지 체크
-				if (userAccount.isValidPeriod() && !userAccount.isAccountLocked())
+				//사용자 정보가 존재하는지 체크
+				if (user != null)
 				{
-					//현재 비밀번호 체크
-					if (passwordEncoder.matches(password, userAccount.getPassword()))
+					UserAccountDto userAccount = user.getUserAccount();
+
+					//계정이 유효한 상태인지 체크
+					if (userAccount.isValidPeriod() && !userAccount.isAccountLocked())
 					{
-						//이전 비밀번호와 신규 비밀번호가 동일한지 체크
-						if (!passwordEncoder.matches(newPassword, userAccount.getPassword()))
+						//현재 비밀번호 체크
+						if (passwordEncoder.matches(password, userAccount.getPassword()))
 						{
-							userAccount.setPassword(newPassword);
-							userAccount.setFgPasswordLocked(PlatformCommonVo.NO);
+							//이전 비밀번호와 신규 비밀번호가 동일한지 체크
+							if (!passwordEncoder.matches(newPassword, userAccount.getPassword()))
+							{
+								resultMap = credentialsPolicyService.checkValid(userAccount.getCredentialsPolicy(), CredentialsPolicyType.P, newPassword);
+								int result = (Integer)resultMap.get("RESULT");
 
-							userService.modifyUserAccount(userAccount);
+								if (result == CredentialsPolicyVo.VALID)
+								{
+									userAccount.setPassword(newPassword);
+									userAccount.setFgPasswordLocked(PlatformCommonVo.NO);
 
-							return PlatformCommonVo.OK;
+									userService.modifyUserAccount(userAccount);
+
+									return resultMap;
+								}
+								else
+								{
+									messages = (List<String>)resultMap.get("MESSAGE");
+								}
+							}
+							else
+							{
+								messages.add("A new password should not be same with your previod one.");
+							}
+						}
+						else
+						{
+							messages.add("The password you filled in doesn't match your current password.");
 						}
 					}
+					else
+					{
+						messages.add("The account is not valid.");
+					}
+				}
+				else
+				{
+					messages.add("There is no account");
 				}
 			}
+			else
+			{
+				messages.add("Please check the password. The password and confirm password don't match.");
+			}
+		}
+		else
+		{
+			messages.add("Session has expired. Please try this again.");
+			resultMap.put("RESULT", -999);
 		}
 
-		return PlatformCommonVo.FAIL;
+		resultMap.put("MESSAGE", messages);
+
+		return resultMap;
 	}
 
 	@GetMapping("/last_login_info")
@@ -104,9 +158,16 @@ public class AuthenticationController extends PlatformGeneralController
 
 		List<LoginHistoryDto> loginHistories = loginHistoryService.getPageableLoginHistories(loginHistorySearch);
 
-		if (CollectionUtils.isNotEmpty(loginHistories) && loginHistories.size() > 1)
+		if (CollectionUtils.isNotEmpty(loginHistories))
 		{
-			return loginHistories.get(1);
+			if (loginHistories.size() == 1)
+			{
+				return loginHistories.get(0);
+			}
+			else
+			{
+				return loginHistories.get(1);
+			}
 		}
 
 		return null;

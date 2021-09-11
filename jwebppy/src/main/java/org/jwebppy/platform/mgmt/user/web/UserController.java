@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-import org.thymeleaf.util.ListUtils;
+import org.yaml.snakeyaml.util.ArrayUtils;
 
 import com.ibm.icu.util.TimeZone;
 
@@ -118,7 +118,7 @@ public class UserController extends UserGeneralController
 					UserAccountDto userAccount = user.getUserAccount();
 
 					CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
-					credentialsPolicySearch.setCpSeq(userAccount.getCpSeq());
+					credentialsPolicySearch.setCpSeq(userAccount.getCredentialsPolicy().getCpSeq());
 					credentialsPolicySearch.setType(CredentialsPolicyType.U);
 
 					return UserLayoutBuilder.getAccountInfo(userAccount, credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch));
@@ -188,7 +188,9 @@ public class UserController extends UserGeneralController
 
 	@PostMapping("/save/{tabPath}")
 	@ResponseBody
-	public Object save(@PathVariable("tabPath") String tabPath, @ModelAttribute UserDto user, @ModelAttribute UserAccountDto userAccount, @ModelAttribute UserContactInfoDto userContactInfo, WebRequest webRequest)
+	public Object save(@PathVariable("tabPath") String tabPath,
+			@ModelAttribute UserDto user, @ModelAttribute UserAccountDto userAccount, @ModelAttribute UserContactInfoDto userContactInfo,
+			@ModelAttribute CItemUserRlDto cItemUserRl, @ModelAttribute UserGroupDto userGroup,  @ModelAttribute CredentialsPolicyDto credentialsPolicy, WebRequest webRequest)
 	{
 		if ("account".equals(tabPath))
 		{
@@ -196,6 +198,8 @@ public class UserController extends UserGeneralController
 			{
 				userAccount.setFgPasswordLocked(PlatformCommonVo.YES);
 			}
+
+			userAccount.setCredentialsPolicy(credentialsPolicy);
 
 			return userService.saveUserAccount(userAccount);
 		}
@@ -205,17 +209,21 @@ public class UserController extends UserGeneralController
 		}
 		else if ("authority".equals(tabPath))
 		{
+			/*
 			List<Integer> cSeqs = CmModelMapperUtils.mapAll(ListUtils.toList(webRequest.getParameterValues("cSeq")), Integer.class);
 
 			CItemUserRlDto cItemUserRl = new CItemUserRlDto();
 			cItemUserRl.setUSeq(user.getUSeq());
 			cItemUserRl.setCSeqs(cSeqs);
+			*/
+
+			cItemUserRl.setCSeqs(CmModelMapperUtils.mapAll(ArrayUtils.toUnmodifiableList(webRequest.getParameterValues("cSeq")), Integer.class));
 
 			return contentAuthorityService.save(cItemUserRl);
 		}
 		else
 		{
-			user.setUserGroup(new UserGroupDto(Integer.valueOf(webRequest.getParameter("ugSeq"))));
+			user.setUserGroup(userGroup);
 
 			return userService.saveUser(user);
 		}
