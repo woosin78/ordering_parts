@@ -66,7 +66,7 @@ public class AuthenticationController extends PlatformGeneralController
 
 	@PostMapping(PlatformConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_PATH)
 	@ResponseBody
-	public Object checkChangePassword(HttpSession session, @RequestParam String password, @RequestParam String newPassword, @RequestParam String confirmPassword)
+	public Object checkValidPassword(HttpSession session, @RequestParam String password, @RequestParam String newPassword, @RequestParam String confirmPassword)
 	{
 		String username = CmStringUtils.trimToEmpty(session.getAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME));
 
@@ -150,7 +150,7 @@ public class AuthenticationController extends PlatformGeneralController
 
 	@GetMapping("/last_login_info")
 	@ResponseBody
-	public Object lastLoginHistory(@ModelAttribute("loginHistorySearchDto") LoginHistorySearchDto loginHistorySearch)
+	public Object lastLoginInfo(@ModelAttribute("loginHistorySearchDto") LoginHistorySearchDto loginHistorySearch)
 	{
 		loginHistorySearch.setRowPerPage(2);
 		loginHistorySearch.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
@@ -169,6 +169,15 @@ public class AuthenticationController extends PlatformGeneralController
 				return loginHistories.get(1);
 			}
 		}
+
+		return null;
+	}
+
+	@GetMapping("/password_expiration/check")
+	@ResponseBody
+	public Object checkPasswordExpiration()
+	{
+		UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
 
 		return null;
 	}

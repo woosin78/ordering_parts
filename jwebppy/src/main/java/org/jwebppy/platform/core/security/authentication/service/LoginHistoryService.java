@@ -15,6 +15,8 @@ import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.mgmt.user.dto.UserDto;
+import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,9 @@ public class LoginHistoryService extends GeneralService
 {
 	@Autowired
 	private LoginHistoryMapper loginHistoryMapper;
+
+	@Autowired
+	private UserService userService;
 
 	public int createLoginHistory(HttpServletRequest request, String fgLoginResult)
 	{
@@ -40,7 +45,7 @@ public class LoginHistoryService extends GeneralService
 		loginHistory.setSessionId(request.getSession().getId());
 		loginHistory.setReferer(CmStringUtils.trimToEmpty(request.getHeader("referer")));
 		loginHistory.setFgResult(fgLoginResult);
-		loginHistory.setFgAccountLocked(fgAccountLocked);
+		loginHistory.setTimezone(PlatformCommonVo.DEFAULT_TIMEZONE);
 
 		if (CmStringUtils.equals(fgAccountLocked, PlatformCommonVo.YES))
 		{
@@ -49,7 +54,12 @@ public class LoginHistoryService extends GeneralService
 
 		if (UserAuthenticationUtils.getUserDetails() != null)
 		{
-			loginHistory.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
+			Integer uSeq = UserAuthenticationUtils.getUserDetails().getUSeq();
+
+			UserDto user = userService.getUser(uSeq);
+
+			loginHistory.setUSeq(user.getUSeq());
+			loginHistory.setTimezone(user.getUserContactInfo().getTimezone());
 		}
 
 		return loginHistoryMapper.insertLoginHistory(loginHistory);

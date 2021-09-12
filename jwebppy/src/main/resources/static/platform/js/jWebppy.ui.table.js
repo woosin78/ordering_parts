@@ -303,7 +303,7 @@ let JpUiTable = function(table)
 		content.push("			</div>");
 		content.push("		</div>");
 		content.push("	</div>");
-		content.push("	<div class='five wide column summary right aligned'>Total rows : " + JpUtilsNumber.addComma(totalCount) + "</div>");
+		content.push("	<div class='five wide column summary right aligned'>Total row(s) : " + JpUtilsNumber.addComma(totalCount) + "</div>");
 		content.push("</div>");
 
 		return content.join("");

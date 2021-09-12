@@ -16,4 +16,5 @@ public class UserPasswordChangeHistoryDto extends GeneralDto
 	private Integer uSeq;
 	private String oldPassword;
 	private String reason;
+	private String timezone;
 }

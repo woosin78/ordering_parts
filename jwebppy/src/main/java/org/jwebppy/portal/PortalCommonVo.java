@@ -3,6 +3,7 @@ package org.jwebppy.portal;
 public class PortalCommonVo
 {
 	//Default date format
+	public static final String DEFAULT_TIMEZONE = "Asia/Seoul";
 	public static final String DEFAULT_DATE_TIME_YYYYMMDDHHMMSS_FORMAT = "yyyyMMddHHmmss";
 	public static final String DEFAULT_DATE_YYYYMMDD_FORMAT = "yyyyMMdd";
 	public static final String DEFAULT_TIME_HHMMSS_FORMAT = "HHmmss";

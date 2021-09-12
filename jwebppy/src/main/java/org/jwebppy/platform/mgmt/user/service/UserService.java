@@ -17,11 +17,11 @@ import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
+import org.jwebppy.platform.mgmt.user.dto.UserPasswordChangeHistoryDto;
 import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
 import org.jwebppy.platform.mgmt.user.entity.UserAccountEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserContactInfoEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserEntity;
-import org.jwebppy.platform.mgmt.user.entity.UserPasswordChangeHistoryEntity;
 import org.jwebppy.platform.mgmt.user.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +37,9 @@ public class UserService extends GeneralService
 
 	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private UserPasswordChangeHistoryService userPasswordChangeHistoryService;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -76,10 +79,7 @@ public class UserService extends GeneralService
 	{
 		Integer sourceUSeq = new Integer(paramMap.get("uSeq"));
 
-		UserSearchDto userSearch = new UserSearchDto();
-		userSearch.setUSeq(sourceUSeq);
-
-		UserDto user = getUser(userSearch);
+		UserDto user = getUser(sourceUSeq);
 		user.setFirstName(CmStringUtils.trimToEmpty(paramMap.get("firstName")));
 		user.setLastName(CmStringUtils.trimToEmpty(paramMap.get("lastName")));
 		user.setUSeq(null);
@@ -146,10 +146,13 @@ public class UserService extends GeneralService
 		//비밀번호 변경 이력 남기기
 		if (CmStringUtils.isNotEmpty(userAccount.getPassword()))
 		{
-			UserPasswordChangeHistoryEntity userPasswordChangeHistory = new UserPasswordChangeHistoryEntity();
-			userPasswordChangeHistory.setUSeq(userAccount.getUSeq());
+			UserDto user = getUser(userAccount.getUSeq());
 
-			userMapper.insertUserPasswordChangeHistory(userPasswordChangeHistory);
+			UserPasswordChangeHistoryDto userPasswordChangeHistory = new UserPasswordChangeHistoryDto();
+			userPasswordChangeHistory.setUSeq(userAccount.getUSeq());
+			userPasswordChangeHistory.setTimezone(user.getUserContactInfo().getTimezone());
+
+			userPasswordChangeHistoryService.create(userPasswordChangeHistory);
 
 			userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
 		}
@@ -282,6 +285,11 @@ public class UserService extends GeneralService
 	public UserDto getUserByUsername(String username)
 	{
 		return getUser(new UserSearchDto(username));
+	}
+
+	public UserDto getUser(Integer uSeq)
+	{
+		return getUser(new UserSearchDto(uSeq));
 	}
 
 	public UserDto getUser(UserSearchDto userSearch)

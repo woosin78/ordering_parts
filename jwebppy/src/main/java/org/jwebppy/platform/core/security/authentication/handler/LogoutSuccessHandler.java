@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.security.authentication.dto.LogoutHistoryDto;
+import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.security.authentication.service.LogoutHistoryService;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
@@ -27,14 +28,20 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
     {
     	if (authentication != null)
     	{
-            UserDto user = userService.getUserByUsername(authentication.getName());
+    		PlatformUserDetails platformUserDetails = (PlatformUserDetails)authentication.getDetails();
 
-            LogoutHistoryDto logoutHistory = new LogoutHistoryDto();
-            logoutHistory.setUSeq(user.getUSeq());
-            logoutHistory.setSessionId(request.getSession().getId());
-            logoutHistory.setReferer(request.getHeader("referer"));
+    		if (platformUserDetails != null)
+    		{
+    			UserDto user = userService.getUser(platformUserDetails.getUSeq());
 
-            logoutHistoryService.createLogoutHistory(logoutHistory);
+                LogoutHistoryDto logoutHistory = new LogoutHistoryDto();
+                logoutHistory.setUSeq(user.getUSeq());
+                logoutHistory.setSessionId(request.getSession().getId());
+                logoutHistory.setReferer(request.getHeader("referer"));
+                logoutHistory.setTimezone(user.getUserContactInfo().getTimezone());
+
+                logoutHistoryService.createLogoutHistory(logoutHistory);
+    		}
     	}
 
         super.onLogoutSuccess(request, response, authentication);

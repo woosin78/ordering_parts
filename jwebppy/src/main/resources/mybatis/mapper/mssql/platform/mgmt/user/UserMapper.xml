@@ -58,8 +58,8 @@
 	</insert>
 	
 	<insert id="insertUserPasswordChangeHistory" parameterType="UserPasswordChangeHistoryEntity">
-		insert into pltf_user_pwd_change_history (u_seq, old_password, reg_username, reg_date) values (
-			#{uSeq}, (select password from pltf_user_account where u_seq=#{uSeq}), #{regUsername}, #{regDate}
+		insert into pltf_user_pwd_change_history (u_seq, old_password, timezone, reg_username, reg_date) values (
+			#{uSeq}, (select password from pltf_user_account where u_seq=#{uSeq}), #{timezone}, #{regUsername}, #{regDate}
 		)
 	</insert>
 

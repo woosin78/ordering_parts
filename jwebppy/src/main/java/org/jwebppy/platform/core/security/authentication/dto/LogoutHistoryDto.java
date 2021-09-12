@@ -11,7 +11,10 @@ import lombok.ToString;
 @ToString
 public class LogoutHistoryDto extends GeneralDto
 {
+	private static final long serialVersionUID = -2670652458161535402L;
+
 	private Integer uSeq;
 	private String sessionId;
 	private String referer;
+	private String timezone;
 }

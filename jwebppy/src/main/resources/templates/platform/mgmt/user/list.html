@@ -43,7 +43,7 @@
 		<div id="TAB_viewUserDetail" class="ui secondary pointing menu">
 			<a class="item wrap" data-tab="general">General</a>
 			<a class="item wrap" data-tab="account">Account</a>
-			<a class="item wrap" data-tab="contact">Contact</a>
+			<a class="item wrap" data-tab="contact">Contact Info.</a>
 			<a class="item wrap" data-tab="authority">Authority</a>
 			<a class="item wrap" data-tab="login_history">Login History</a>
 		</div>
@@ -452,7 +452,7 @@ $(document).ready(function() {
 						}
 						else if (tabPath == "contact")
 						{
-							$("#country").closest(".ui.dropdown").dropdown({
+							$("select[name=country]").closest(".ui.dropdown").dropdown({
 								onChange: function(value, text, $choice)
 								{
 									JpUtilsAjax.get({
@@ -461,7 +461,7 @@ $(document).ready(function() {
 										global: false,
 										success: function(data, textStatus, jqXHR)
 										{
-											$("#timezone").closest(".ui.dropdown").dropdown("change values", data.RESULT).dropdown("set text", "");
+											$("select[name=timezone]").closest(".ui.dropdown").dropdown("change values", data.RESULT).dropdown("set text", "");
 										}
 									});
 								}
@@ -493,8 +493,6 @@ $(document).ready(function() {
 									if (data.RESULT != null)
 									{
 										let options = [];
-										
-										alert(JSON.stringify(data));
 
 									    data.RESULT.forEach(function(element, index) {
 									    	options.push("<option value='" + element.cseq + "' data-key='" + element.cseq + "'>" + element.description + " - " + element.name + "</option>");

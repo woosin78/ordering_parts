@@ -104,6 +104,14 @@ public class ContentAuthorityService extends GeneralService
 		return 0;
 	}
 
+	public List<CItemDto> getMyCItems(Integer uSeq)
+	{
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setUSeq(uSeq);
+
+		return getMyCItems(cItemSearch);
+	}
+
 	public List<CItemDto> getMyCItems(CItemSearchDto cItemSearch)
 	{
 		return CmModelMapperUtils.mapAll(contentMapper.findMyCItems(cItemSearch), CItemDto.class);

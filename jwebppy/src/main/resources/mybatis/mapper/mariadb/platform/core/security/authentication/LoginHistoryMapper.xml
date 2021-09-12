@@ -3,14 +3,29 @@
 
 <mapper namespace="org.jwebppy.platform.core.security.authentication.mapper.LoginHistoryMapper">
 
+	<resultMap type="LoginHistoryEntity" id="loginHistoryEntityMap">
+		<id property="lhSeq" column="lh_seq" />
+		<result property="username" column="username" />
+		<result property="sessionId" column="session_id" />
+		<result property="ip" column="ip" />
+		<result property="referer" column="referer" />
+		<result property="userAgent" column="user_agent" />
+		<result property="accountLockedDate" column="account_locked_date" />
+		<result property="uSeq" column="u_seq" />
+		<result property="fgResult" column="fg_result" />
+		<result property="timezone" column="timezone" />
+		<result property="regDate" column="reg_date" />
+		<association property="userContactInfo" foreignColumn="u_seq" column="u_seq" javaType="UserContactInfoEntity" select="org.jwebppy.platform.mgmt.user.mapper.UserMapper.findUserContactInfo" />
+	</resultMap>
+
 	<insert id="insertLoginHistory" parameterType="LoginHistoryEntity">
-		insert into pltf_login_history (username, session_id, ip, referer, user_agent, fg_result, reg_date, u_seq, account_locked_date) values
+		insert into pltf_login_history (username, session_id, ip, referer, user_agent, account_locked_date, u_seq, fg_result, timezone, reg_date) values
 		(
-			#{username}, #{sessionId}, #{ip}, #{referer}, #{userAgent}, #{fgResult}, #{regDate}, #{uSeq}, #{accountLockedDate}
+			#{username}, #{sessionId}, #{ip}, #{referer}, #{userAgent}, #{accountLockedDate}, #{uSeq}, #{fgResult}, #{timezone}, #{regDate}
 		)
 	</insert>
 	
-	<select id="findPageableLoginHistories" parameterType="LoginHistorySearchDto" resultType="LoginHistoryEntity">
+	<select id="findPageableLoginHistories" parameterType="LoginHistorySearchDto" resultMap="loginHistoryEntityMap">
 		<include refid="PaginationMapper.header">
 			<property name="orderBy" value="reg_date desc"/>
 		</include>

@@ -16,4 +16,5 @@ public class UserPasswordChangeHistoryEntity extends GeneralEntity
 	private Integer uSeq;
 	private String oldPassword;
 	private String reason;
+	private String timezone;
 }

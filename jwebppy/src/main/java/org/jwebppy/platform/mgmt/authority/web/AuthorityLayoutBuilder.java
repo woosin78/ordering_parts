@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
@@ -133,11 +134,13 @@ public class AuthorityLayoutBuilder
 	public static Document getUsers(List<UserDto> users)
 	{
 		Tr thTr = new Tr();
+		thTr.addTextTh("Status", "one wide");
 		thTr.addTextTh("Username", "two wide");
 		thTr.addTextTh("Name", "three wide");
-		thTr.addTextTh("E-mail", "four wide");
+		thTr.addTextTh("E-mail", "three wide");
 		thTr.addTextTh("Company", "three wide");
-		thTr.addTextTh("Department", "three wide");
+		thTr.addTextTh("Department", "two wide");
+		thTr.addTextTh("User Group", "two wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -153,11 +156,20 @@ public class AuthorityLayoutBuilder
 
 				Tr tbTr = new Tr();
 
+				String status = "<i class='lock icon'></i>";
+
+				if (CmStringUtils.equals(userAccount.getFgAccountLocked(), PlatformCommonVo.NO))
+				{
+					status = "<i class='lock open icon'></i>";
+				}
+
+				tbTr.addTextTd(status);
 				tbTr.addDataKeyLinkTd(userAccount.getUsername(), user.getUSeq());
 				tbTr.addTextTd(user.getName());
 				tbTr.addTextTd(userContactInfo.getEmail());
 				tbTr.addTextTd(user.getCompany());
 				tbTr.addTextTd(user.getDepartment());
+				tbTr.addTextTd(user.getUserGroup().getName());
 
 				tbody.addTr(tbTr);
 			}

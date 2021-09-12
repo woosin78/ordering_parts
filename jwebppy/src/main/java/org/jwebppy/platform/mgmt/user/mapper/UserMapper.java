@@ -7,7 +7,6 @@ import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
 import org.jwebppy.platform.mgmt.user.entity.UserAccountEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserContactInfoEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserEntity;
-import org.jwebppy.platform.mgmt.user.entity.UserPasswordChangeHistoryEntity;
 
 @NoLogging
 public interface UserMapper
@@ -15,7 +14,6 @@ public interface UserMapper
 	public int insertUser(UserEntity user);
 	public int insertUserAccount(UserAccountEntity userAccount);
 	public int insertUserContactInfo(UserContactInfoEntity userContactInfo);
-	public int insertUserPasswordChangeHistory(UserPasswordChangeHistoryEntity userPasswordChangeHistory);
 	public int updateUser(UserEntity user);
 	public int updateUserAccount(UserAccountEntity userAccount);
 	public int updateUserContactInfo(UserContactInfoEntity userContactInfo);

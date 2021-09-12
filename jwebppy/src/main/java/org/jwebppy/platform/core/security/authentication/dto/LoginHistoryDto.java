@@ -4,8 +4,10 @@ import java.time.LocalDateTime;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,18 +26,26 @@ public class LoginHistoryDto extends GeneralDto implements IPagination
 	private String ip;
 	private String referer;
 	private String userAgent;
-	private String fgResult;
-	private Integer uSeq;
-	private String fgAccountLocked;
 	private LocalDateTime accountLockedDate;
+	private Integer uSeq;
+	private String fgResult;
+	private String timezone;
+	private UserContactInfoDto userContactInfo;
 
 	public String getRgResult()
 	{
 		return CmStringUtils.defaultIfEmpty(fgResult, PlatformCommonVo.NO);
 	}
 
-	public String getFgAccountLocked()
+	public String getDisplayZonedRegDate()
 	{
-		return CmStringUtils.defaultIfEmpty(fgAccountLocked, PlatformCommonVo.NO);
+		String timezone = null;
+
+		if (userContactInfo != null)
+		{
+			timezone = userContactInfo.getTimezone();
+		}
+
+		return CmDateFormatUtils.format(regDate, timezone);
 	}
 }

@@ -33,6 +33,18 @@ public class UserAuthenticationUtils
 		return null;
 	}
 
+	public static Integer getUSeq()
+	{
+		PlatformUserDetails platformUserDetails = getUserDetails();
+
+		if (platformUserDetails != null)
+		{
+			return platformUserDetails.getUSeq();
+		}
+
+		return null;
+	}
+
 	public static String getUsername()
 	{
 		try
@@ -41,7 +53,7 @@ public class UserAuthenticationUtils
 		}
 		catch (NullPointerException e)
 		{
-			return "";
+			return null;
 		}
 	}
 

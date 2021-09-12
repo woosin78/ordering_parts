@@ -37,7 +37,7 @@ function makeGmb()
 		    menu.push("<div class='menu'>");
 		    menu.push("<div class='item'><i class='user icon'></i> Username : <span id='gmbUsername'></span></div>");
 		    menu.push("<div class='divider'></div>");
-		    menu.push("<div class='item'><i class='history icon'></i> Last Login Time/IP : <span id='gmbLastLoginTime'></span></div>");
+		    menu.push("<div class='item'><i class='history icon'></i> Last Login Time / IP : <span id='gmbLastLoginTime'></span></div>");
 		    menu.push("<div class='divider'></div>");
 		    menu.push("<a class='item' href='javascript:logout();'><i class='power off icon'></i> Log Off</a>");
 		    menu.push("</div>");
@@ -101,11 +101,13 @@ function makeGmb()
 			    	
 			    	if (data != null)
 			    	{
+			    		console.log(JSON.stringify(data));
+			    		
 			    		$("#gmbUsername").html(data.username);
 			    		
-			    		if (JpUtilsString.isNotEmpty(data.regDate))
+			    		if (JpUtilsString.isNotEmpty(data.displayZonedRegDate))
 			    		{
-			    			$("#gmbLastLoginTime").html(moment(data.regDate).format(DateFormat.FULL_FORMAT) + "/" + data.ip);	
+			    			$("#gmbLastLoginTime").html(moment(data.displayZonedRegDate).format(DateFormat.FULL_FORMAT) + " / " + data.ip);
 			    		};
 			    	};
 			    }	
@@ -152,5 +154,18 @@ $(document).ready(function() {
 function logout()
 {
 	$("#FORM_logout").submit();	
+};
+
+function checkExpiredPassword()
+{
+	JpUtilsAjax.get({
+		url: JpUtilsPath.url("/platform/mgmt/user/credentials/valid_check"),
+		global: false,
+		async: false,
+		success: function(data, textStatus, jqXHR)
+		{
+			let result = data.RESULT;
+		}
+	});
 };
 </script>

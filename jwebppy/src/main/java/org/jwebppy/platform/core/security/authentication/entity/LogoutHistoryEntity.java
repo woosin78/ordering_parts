@@ -16,4 +16,5 @@ public class LogoutHistoryEntity extends GeneralEntity
 	private Integer uSeq;
 	private String sessionId;
 	private String referer;
+	private String timezone;
 }

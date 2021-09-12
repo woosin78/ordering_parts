@@ -98,10 +98,7 @@ public class UserController extends UserGeneralController
 	{
 		if ("authority".equals(tabPath))
 		{
-			CItemSearchDto cItemSearch = new CItemSearchDto();
-			cItemSearch.setUSeq(userSearch.getUSeq());
-
-			return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyCItems(cItemSearch));
+			return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyCItems(userSearch.getUSeq()));
 		}
 		else
 		{
