@@ -94,15 +94,13 @@ function makeGmb()
 			
 			//Get last login information
 			$.ajax({
-				url: "/platform/common/authentication/last_login_info",		
+				url: JpUtilsPath.url("/platform/common/authentication/last_login_info"),		
 			    success: function(response, textStatus, jqXHR) 
 			    {
 			    	let data = response.RESULT;
 			    	
 			    	if (data != null)
 			    	{
-			    		console.log(JSON.stringify(data));
-			    		
 			    		$("#gmbUsername").html(data.username);
 			    		
 			    		if (JpUtilsString.isNotEmpty(data.displayZonedRegDate))
@@ -159,13 +157,26 @@ function logout()
 function checkExpiredPassword()
 {
 	JpUtilsAjax.get({
-		url: JpUtilsPath.url("/platform/mgmt/user/credentials/valid_check"),
+		url: JpUtilsPath.url("/platform/common/authentication/password_expiration/check"),
 		global: false,
-		async: false,
 		success: function(data, textStatus, jqXHR)
 		{
 			let result = data.RESULT;
+			
+			let difference = parseInt(result.difference);
+
+			console.log(JSON.stringify(result));
+			
+			if (difference < 15)
+			{
+				if (confirm("Your password will expire on " + result.expiredDate + ". Please change it within the date.\nDo you want to change it now?"))
+				{
+					document.location.href = [[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]];
+				};
+			};
 		}
 	});
 };
+
+checkExpiredPassword();
 </script>

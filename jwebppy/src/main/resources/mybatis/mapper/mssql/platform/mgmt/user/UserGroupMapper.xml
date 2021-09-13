@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.mgmt.user.mapper.UserGroupMapper">
+	<select id="findUserGroup" resultType="UserGroupEntity">
+		select 
+		*
+		from
+		pltf_user_group
+		where
+		fg_delete='N'
+		and ug_seq=#{ugSeq}
+	</select>
+
+	<select id="findUserGroups" resultType="UserGroupEntity">
+		select 
+		*
+		from
+		pltf_user_group
+		where
+		fg_delete='N'
+	</select>	
+</mapper>

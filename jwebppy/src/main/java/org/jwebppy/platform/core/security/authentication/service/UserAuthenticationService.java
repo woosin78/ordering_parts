@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.jwebppy.platform.PlatformGeneralService;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
@@ -56,11 +57,14 @@ public class UserAuthenticationService extends PlatformGeneralService
 
 	public Authentication getAuthentication(String username)
 	{
-		UserDto user = userService.getUserByUsername(username);
-
-		if (user != null)
+		if (CmStringUtils.isNotEmpty(username))
 		{
-			return getAuthentication(user);
+			UserDto user = userService.getUserByUsername(username);
+
+			if (user != null)
+			{
+				return getAuthentication(user);
+			}
 		}
 
 		return null;

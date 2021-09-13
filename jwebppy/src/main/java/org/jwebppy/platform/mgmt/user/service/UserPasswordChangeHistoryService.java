@@ -1,5 +1,7 @@
 package org.jwebppy.platform.mgmt.user.service;
 
+import java.util.List;
+
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.mgmt.user.dto.UserPasswordChangeHistoryDto;
@@ -19,5 +21,10 @@ public class UserPasswordChangeHistoryService extends GeneralService
 	public int create(UserPasswordChangeHistoryDto userPasswordChangeHistory)
 	{
 		return userPasswordChangeHistoryMapper.insertUserPasswordChangeHistory(CmModelMapperUtils.map(userPasswordChangeHistory, UserPasswordChangeHistoryEntity.class));
+	}
+
+	public List<UserPasswordChangeHistoryDto> getPageableUserPasswordChangeHistories(UserPasswordChangeHistoryDto userPasswordChangeHistory)
+	{
+		return CmModelMapperUtils.mapAll(userPasswordChangeHistoryMapper.findPageUserPasswordChangeHistories(userPasswordChangeHistory), UserPasswordChangeHistoryDto.class);
 	}
 }

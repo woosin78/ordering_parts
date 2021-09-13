@@ -20,7 +20,7 @@ public class PlatformConfigVo
 	public final static String FORM_LOGOUT_SUCCESS_URL = INDEX_URL;
 
 	public final static String FORM_PASSWORD_CHANGE_PAGE_PATH = "/change_password";
-	public final static String FORM_PASSWORD_CHANGE_PROCESSING_PATH = "/change_password/check";
+	public final static String FORM_PASSWORD_CHANGE_PROCESSING_PATH = "/change_password/save";
 	public final static String FORM_PASSWORD_CHANGE_PAGE_URL = FORM_AUTHENTICATION_PATH + FORM_PASSWORD_CHANGE_PAGE_PATH;
 	public final static String FORM_PASSWORD_CHANGE_PROCESSING_URL = FORM_AUTHENTICATION_PATH + FORM_PASSWORD_CHANGE_PROCESSING_PATH;
 

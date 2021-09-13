@@ -69,12 +69,12 @@ public class CmDateFormatUtils
 		}
 	}
 
-	public static ZonedDateTime zonedNow()
+	public static ZonedDateTime localNow()
 	{
-		return zonedNow(null);
+		return localNow(null);
 	}
 
-	public static ZonedDateTime zonedNow(String zoneId)
+	public static ZonedDateTime localNow(String zoneId)
 	{
 		if (CmStringUtils.isNotEmpty(zoneId))
 		{
@@ -86,7 +86,7 @@ public class CmDateFormatUtils
 
 	public static String now()
 	{
-		return format(zonedNow());
+		return format(localNow());
 	}
 
 	public static String now(String zoneId)
@@ -101,52 +101,52 @@ public class CmDateFormatUtils
 
 	public static String today()
 	{
-		return format(zonedNow(PlatformCommonVo.DEFAULT_TIMEZONE), PlatformCommonVo.DEFAULT_DATE_FORMAT);
+		return format(localNow(PlatformCommonVo.DEFAULT_TIMEZONE), PlatformCommonVo.DEFAULT_DATE_FORMAT);
 	}
 
 	public static String today(String zoneId)
 	{
-		return format(zonedNow(zoneId), PlatformCommonVo.DEFAULT_DATE_FORMAT);
+		return format(localNow(zoneId), PlatformCommonVo.DEFAULT_DATE_FORMAT);
 	}
 
 	public static String plusDays(String zoneId, long days)
 	{
-		return format(zonedNow(zoneId).plusDays(days), null);
+		return format(localNow(zoneId).plusDays(days), null);
 	}
 
 	public static String plusDays(String zoneId, int days, String format)
 	{
-		return format(zonedNow(zoneId).plusDays(days), format);
+		return format(localNow(zoneId).plusDays(days), format);
 	}
 
 	public static String plusWeeks(String zoneId, long weeks)
 	{
-		return format(zonedNow(zoneId).plusWeeks(weeks), null);
+		return format(localNow(zoneId).plusWeeks(weeks), null);
 	}
 
 	public static String plusWeeks(String zoneId, long weeks, String format)
 	{
-		return format(zonedNow(zoneId).plusWeeks(weeks), format);
+		return format(localNow(zoneId).plusWeeks(weeks), format);
 	}
 
 	public static String plusMonths(String zoneId, long months)
 	{
-		return format(zonedNow(zoneId).plusMonths(months), null);
+		return format(localNow(zoneId).plusMonths(months), null);
 	}
 
 	public static String plusMonths(String zoneId, long months, String format)
 	{
-		return format(zonedNow(zoneId).plusMonths(months), format);
+		return format(localNow(zoneId).plusMonths(months), format);
 	}
 
 	public static String plusYears(String zoneId, long years)
 	{
-		return format(zonedNow(zoneId).plusYears(years), null);
+		return format(localNow(zoneId).plusYears(years), null);
 	}
 
 	public static String plusYears(String zoneId, long years, String format)
 	{
-		return format(zonedNow(zoneId).plusMonths(years), format);
+		return format(localNow(zoneId).plusMonths(years), format);
 	}
 
 	public static String theFirstDateMonth(ZonedDateTime zonedDateTime)
@@ -156,7 +156,7 @@ public class CmDateFormatUtils
 
 	public static String theFirstDateThisMonth()
 	{
-		return theFirstDateMonth(zonedNow());
+		return theFirstDateMonth(localNow());
 	}
 
 	public static String unlimitDate(String format)

@@ -1,5 +1,8 @@
 package org.jwebppy.platform.mgmt.common.web;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,13 +17,16 @@ import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyVo;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
+import org.jwebppy.platform.mgmt.user.dto.UserPasswordChangeHistoryDto;
 import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
+import org.jwebppy.platform.mgmt.user.service.UserPasswordChangeHistoryService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -48,6 +54,9 @@ public class AuthenticationController extends PlatformGeneralController
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private UserPasswordChangeHistoryService userPasswordChangeHistoryService;
 
 	@Autowired
 	private UserService userService;
@@ -177,8 +186,36 @@ public class AuthenticationController extends PlatformGeneralController
 	@ResponseBody
 	public Object checkPasswordExpiration()
 	{
+		Map<String, String> resultMap = new HashMap<>();
+		resultMap.put("expiredDate", "");
+		resultMap.put("difference", "-1");
+
 		UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
 
-		return null;
+		int pwdValidPeriod = user.getUserAccount().getCredentialsPolicy().getPwdValidPeriod();
+
+		if (pwdValidPeriod > 0)
+		{
+			UserPasswordChangeHistoryDto inUserPasswordChangeHistory = new UserPasswordChangeHistoryDto();
+			inUserPasswordChangeHistory.setUSeq(UserAuthenticationUtils.getUSeq());
+			inUserPasswordChangeHistory.setPageNumber(1);
+			inUserPasswordChangeHistory.setRowPerPage(1);
+
+			List<UserPasswordChangeHistoryDto> userPasswordChangeHistories = userPasswordChangeHistoryService.getPageableUserPasswordChangeHistories(inUserPasswordChangeHistory);
+
+			if (CollectionUtils.isNotEmpty(userPasswordChangeHistories))
+			{
+				UserPasswordChangeHistoryDto userPasswordChangeHistory = userPasswordChangeHistories.get(0);
+
+				String timezone = userPasswordChangeHistory.getTimezone();
+				ZonedDateTime regDate = ZonedDateTime.of(userPasswordChangeHistory.getRegDate(),  ZoneId.of(timezone));
+				ZonedDateTime exiredDate = regDate.plusDays(pwdValidPeriod);
+
+				resultMap.put("expiredDate", CmDateFormatUtils.format(exiredDate, PlatformCommonVo.DEFAULT_DATE_FORMAT));
+				resultMap.put("difference", Long.toString(ChronoUnit.DAYS.between(CmDateFormatUtils.localNow(timezone), exiredDate)));
+			}
+		}
+
+		return resultMap;
 	}
 }
