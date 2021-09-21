@@ -12,6 +12,8 @@
 		<result property="startTime" column="start_time" />
 		<result property="elapsed" column="elapsed" />
 		<result property="sessionId" column="session_id" />
+		<result property="error" column="error" />
+		<result property="timezone" column="timezone" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
 		<collection property="dataAccessLogParameters" foreignColumn="dl_seq" column="dl_seq" javaType="java.util.ArrayList" ofType="DataAccessLogParameterEntity" select="findDataAccessLogParameters" />
@@ -25,11 +27,11 @@
 		<collection property="dataAccessLogParameterDetails" foreignColumn="dlp_seq" column="dlp_seq" javaType="java.util.ArrayList" ofType="DataAccessLogParameterDetailEntity" select="findDataAccessLogParameterDetails" />
 	</resultMap>	
 
-	<insert id="insertDataAccessLog" parameterType="DataAccessLogEntity" useGeneratedKeys="true" keyProperty="dlSeq">
-		insert into pltf_dacs_log (type, command, class_name, method_name, destination, start_time, elapsed, request_id, session_id, error, reg_username, reg_date) values (
-			#{type}, #{command}, #{className}, #{methodName}, #{destination}, #{startTime}, #{elapsed}, #{requestId}, #{sessionId}, #{error}, #{regUsername}, #{regDate}
+	<insert id="insertDataAccessLog" parameterType="DataAccessLogEntity">
+		insert into pltf_dacs_log (dl_seq, type, command, class_name, method_name, destination, start_time, elapsed, request_id, session_id, error, timezone, reg_username, reg_date) values (
+			#{dlSeq}, #{type}, #{command}, #{className}, #{methodName}, #{destination}, #{startTime}, #{elapsed}, #{requestId}, #{sessionId}, #{error}, #{timezone}, #{regUsername}, #{regDate}
 		)
-	</insert>
+	</insert>	
 
 	<insert id="insertDataAccessLogParameter" parameterType="DataAccessLogParameterEntity" useGeneratedKeys="true" keyProperty="dlpSeq">
 		insert into pltf_dacs_log_param (dl_seq, type, name) values (
@@ -43,7 +45,7 @@
 		)
 	</insert>
 
-	<select id="findLog" parameterType="Long" resultMap="dataAccessLogMap">
+	<select id="findLog" parameterType="String" resultMap="dataAccessLogMap">
 		select
 		a.*
 		from
@@ -54,7 +56,7 @@
 
 	<select id="findPageableLogs" parameterType="DataAccessLogSearchDto" resultMap="dataAccessLogMap">
 		<include refid="PaginationMapper.header">
-			<property name="orderBy" value="dl_seq desc"/>
+			<property name="orderBy" value="reg_date desc"/>
 		</include>		
 
 			select
@@ -98,7 +100,7 @@
 		<include refid="PaginationMapper.footer"/>
 	</select>
 
-	<select id="findDataAccessLogParameters" parameterType="Long" resultMap="dataAccessLogParameterMap">
+	<select id="findDataAccessLogParameters" parameterType="String" resultMap="dataAccessLogParameterMap">
 		select
 		a.*
 		from

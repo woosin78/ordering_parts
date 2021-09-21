@@ -7,7 +7,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.jwebppy.config.JCoConfig;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoDestinationManager;
@@ -17,6 +21,11 @@ import com.sap.conn.jco.ext.Environment;
 
 public class JCoConnectionResource
 {
+	private Logger logger = LoggerFactory.getLogger(JCoConfig.class);
+
+    @Value("${sap.jco.env}")
+    private String SAP_JCO_ENV;
+
     private Map<String, JCoConnectionInfo> connectionInfoMap;
     private SapDestinationDataProvider sapDestinationDataProvider;
     private String defaultLandscape;
@@ -37,7 +46,7 @@ public class JCoConnectionResource
         		connectionInfoMap = new HashMap<>();
         	}
 
-        	if (CmStringUtils.isNotEmpty(jCoConnectionInfo.getLandscape()))
+        	if (CmStringUtils.isNotEmpty(jCoConnectionInfo.getName()))
         	{
         		connectionInfoMap.put(jCoConnectionInfo.getName(), jCoConnectionInfo);
         	}
@@ -115,6 +124,8 @@ public class JCoConnectionResource
                 }
 
                 sapDestinationDataProvider.setDestinationProperties(entry.getKey(), properties);
+
+                logger.info("[" + SAP_JCO_ENV + "] The SAP Landscape has been loaded [" + entry.getKey() + "]");
             }
 
             Environment.registerDestinationDataProvider(sapDestinationDataProvider);

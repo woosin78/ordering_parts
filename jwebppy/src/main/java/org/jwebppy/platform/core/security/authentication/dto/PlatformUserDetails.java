@@ -34,6 +34,7 @@ public class PlatformUserDetails implements UserDetails
 	private LocalDateTime toValid;
 	private List<CItemDto> cItems;
 	private String language;
+	private String timezone;
 	private Object erpUserContext;
 
 	@Override

@@ -19,7 +19,6 @@ public class CItemAuthRlDto extends GeneralDto
 	private Integer pSeq;
 	private Integer cSeq;
 	private int sort = -1;
-	private String fgDelete;
 	private List<Integer> cSeqs;
 
 	public int getSort()

@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
@@ -23,7 +22,6 @@ import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,7 +49,6 @@ public class ContentService extends GeneralService
 		return contentMapper.update(CmModelMapperUtils.map(cItem, CItemEntity.class));
 	}
 
-	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int save(CItemDto cItem)
 	{
 		if (cItem.getCSeq() == null)
@@ -82,7 +79,6 @@ public class ContentService extends GeneralService
 		return 1;
 	}
 
-	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int delete(Integer cSeq)
 	{
 		CItemDto cItem = getCItem(cSeq);
@@ -114,7 +110,6 @@ public class ContentService extends GeneralService
 		return 1;
 	}
 
-	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	private void delete(Map<String, Object> cItemMap)
 	{
 		CItemEntity cItem = new CItemEntity();
@@ -134,7 +129,6 @@ public class ContentService extends GeneralService
 		}
 	}
 
-	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int copy(Integer cSeq, Integer pSeq, String fgCopyWithSubItems)
 	{
 		if (cSeq == null || pSeq == null)
@@ -194,7 +188,6 @@ public class ContentService extends GeneralService
 		return create(cItem);
 	}
 
-	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int move(Integer cSeq, Integer pSeq)
 	{
 		CItemDto cItem = getCItem(cSeq);

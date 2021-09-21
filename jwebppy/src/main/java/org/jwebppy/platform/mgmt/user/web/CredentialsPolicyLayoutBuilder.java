@@ -2,7 +2,7 @@ package org.jwebppy.platform.mgmt.user.web;
 
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
@@ -13,7 +13,7 @@ import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 
 public class CredentialsPolicyLayoutBuilder
 {
-	public static Document getList(PageableList<CredentialsPolicyDto> pageableList)
+	public static Document pageableList(PageableList<CredentialsPolicyDto> pageableList)
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
@@ -29,33 +29,26 @@ public class CredentialsPolicyLayoutBuilder
 		thead.addTr(thTr);
 
 		Tbody tbody = new Tbody();
-		List<CredentialsPolicyDto> credentialsPolicies = pageableList.getList();
+		List<CredentialsPolicyDto> credentialsPolicies = ListUtils.emptyIfNull(pageableList.getList());
 
-		if (CollectionUtils.isNotEmpty(credentialsPolicies))
+		for (CredentialsPolicyDto credentialsPolicy: credentialsPolicies)
 		{
-			for (CredentialsPolicyDto credentialsPolicy: credentialsPolicies)
-			{
-				Tr tbTr = new Tr();
+			Tr tbTr = new Tr();
 
-				tbTr.addDataKeyCheckboxTd("cpSeq", credentialsPolicy.getCpSeq());
-				tbTr.addTextTd(credentialsPolicy.getUserGroup().getName());
-				tbTr.addDataKeyLinkTd(credentialsPolicy.getName(), credentialsPolicy.getCpSeq());
-				tbTr.addTextTd(credentialsPolicy.getDescription());
-				tbTr.addTextTd(credentialsPolicy.getFgUse());
-				tbTr.addTextTd(credentialsPolicy.getFgDefault());
-				tbTr.addTextTd(credentialsPolicy.getDisplayRegDate());
-				tbTr.addTextTd(credentialsPolicy.getRegUsername());
+			tbTr.addDataKeyCheckboxTd("cpSeq", credentialsPolicy.getCpSeq());
+			tbTr.addTextTd(credentialsPolicy.getUserGroup().getName());
+			tbTr.addDataKeyLinkTd(credentialsPolicy.getName(), credentialsPolicy.getCpSeq());
+			tbTr.addTextTd(credentialsPolicy.getDescription());
+			tbTr.addTextTd(credentialsPolicy.getFgUse());
+			tbTr.addTextTd(credentialsPolicy.getFgDefault());
+			tbTr.addTextTd(credentialsPolicy.getDisplayRegDate());
+			tbTr.addTextTd(credentialsPolicy.getRegUsername());
 
-				tbody.addTr(tbTr);
-			}
+			tbody.addTr(tbTr);
 		}
 
-		Table table = new Table(pageableList);
-		table.addThead(thead);
-		table.addTbody(tbody);
-
 		Document document = new Document();
-		document.add(table);
+		document.add(new Table(thead, tbody, pageableList));
 
 		return document;
 	}

@@ -39,11 +39,11 @@ public class CredentialsPolicyController extends UserGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/list/data")
+	@GetMapping("/list/layout")
 	@ResponseBody
-	public Object listData(@ModelAttribute CredentialsPolicySearchDto credentialPolicySearch)
+	public Object listLayout(@ModelAttribute CredentialsPolicySearchDto credentialPolicySearch)
 	{
-		return CredentialsPolicyLayoutBuilder.getList(new PageableList<>(credentialPolicyService.getPageableCredentialPolicies(credentialPolicySearch)));
+		return CredentialsPolicyLayoutBuilder.pageableList(new PageableList<>(credentialPolicyService.getPageableCredentialPolicies(credentialPolicySearch)));
 	}
 
 	@GetMapping("/write")

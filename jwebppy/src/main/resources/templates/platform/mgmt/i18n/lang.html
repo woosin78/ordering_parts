@@ -32,7 +32,7 @@
    	langModal.contentArea = $("#AREA_langContent");
    	langModal.settings = {
 			ajax: {
-				url: JpUtilsPath.url("/platform/mgmt/i18n/write"),
+				url: "/platform/mgmt/i18n/write",
 				form: $("#FORM_lang")
 			}
 	};
@@ -65,7 +65,7 @@
 			let isValid = true;
 
 			JpUtilsAjax.get({
-				url: JpUtilsPath.url("/platform/mgmt/i18n/valid_check"),
+				url: "/platform/mgmt/i18n/valid_check",
 				data: $("#FORM_lang").serialize(),
 				global: false,
 				async: false,
@@ -116,7 +116,7 @@
 		if ($("#FORM_lang").form("validate form"))
 		{
 			JpUtilsAjax.post({
-				url: JpUtilsPath.url("/platform/mgmt/i18n/save"),
+				url: "/platform/mgmt/i18n/save",
 				data: $("#FORM_lang").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -139,7 +139,7 @@
 		if (confirm("Do you want to delete it?"))
 		{
 			JpUtilsAjax.post({
-				url: JpUtilsPath.url("/platform/mgmt/i18n/delete"),
+				url: "/platform/mgmt/i18n/delete",
 				data: $("#FORM_lang").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{

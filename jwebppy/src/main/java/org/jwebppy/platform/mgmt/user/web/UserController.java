@@ -74,9 +74,9 @@ public class UserController extends UserGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/list/data")
+	@GetMapping("/list/layout")
 	@ResponseBody
-	public Object listData(@ModelAttribute UserSearchDto userSearch)
+	public Object listLayout(@ModelAttribute UserSearchDto userSearch)
 	{
 		PageableList<UserDto> pageableList = null;
 
@@ -89,16 +89,16 @@ public class UserController extends UserGeneralController
 			pageableList = new PageableList<>(userService.getPageableUsers(userSearch));
 		}
 
-		return UserLayoutBuilder.getList(pageableList);
+		return UserLayoutBuilder.pageableList(pageableList);
 	}
 
-	@GetMapping("/detail/{tabPath}")
+	@GetMapping("/view/layout/{tabPath}")
 	@ResponseBody
-	public Object detail(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
+	public Object viewLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
-			return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyCItems(userSearch.getUSeq()));
+			return UserLayoutBuilder.viewAuthority(contentAuthorityService.getMyCItems(userSearch.getUSeq()));
 		}
 		else
 		{
@@ -108,7 +108,7 @@ public class UserController extends UserGeneralController
 
 				if ("contact".equals(tabPath))
 				{
-					return UserLayoutBuilder.getContactInfo(user.getUserContactInfo());
+					return UserLayoutBuilder.viewContactInfo(user.getUserContactInfo());
 				}
 				else if ("account".equals(tabPath))
 				{
@@ -118,19 +118,20 @@ public class UserController extends UserGeneralController
 					credentialsPolicySearch.setCpSeq(userAccount.getCredentialsPolicy().getCpSeq());
 					credentialsPolicySearch.setType(CredentialsPolicyType.U);
 
-					return UserLayoutBuilder.getAccountInfo(userAccount, credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch));
+					return UserLayoutBuilder.viewAccountInfo(userAccount, credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch));
 				}
 				else if ("login_history".equals(tabPath))
 				{
 					LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
 					loginHistorySearch.setUsername(userSearch.getUsername());
-					loginHistorySearch.setUSeq(userSearch.getUSeq());
+					loginHistorySearch.setPageNumber(1);
+					loginHistorySearch.setRowPerPage(20);
 
-					return UserLayoutBuilder.getSimpleLoginHistories(loginHistoryService.getPageableLoginHistories(loginHistorySearch));
+					return LoginHistoryLayoutBuilder.listLoginHistory(loginHistoryService.getPageableLoginHistories(loginHistorySearch));
 				}
 				else
 				{
-					return UserLayoutBuilder.getGeneralInfo(user);
+					return UserLayoutBuilder.viewGeneralInfo(user);
 				}
 			}
 		}
@@ -138,9 +139,9 @@ public class UserController extends UserGeneralController
 		return EMPTY_RETURN_VALUE;
 	}
 
-	@GetMapping("/write/{tabPath}")
+	@GetMapping("/write/layout/{tabPath}")
 	@ResponseBody
-	public Object write(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
+	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
@@ -154,7 +155,7 @@ public class UserController extends UserGeneralController
 				cItems = contentAuthorityService.getMyCItemHierarchy(cItemSearch);
 			}
 
-			return UserLayoutBuilder.getAuthorityForm(cItems);
+			return UserLayoutBuilder.writeAuthority(cItems);
 		}
 		else
 		{
@@ -167,18 +168,18 @@ public class UserController extends UserGeneralController
 
 			if ("contact".equals(tabPath))
 			{
-				return UserLayoutBuilder.getContactInfoForm(user.getUserContactInfo());
+				return UserLayoutBuilder.writeContactInfo(user.getUserContactInfo());
 			}
 			else if ("account".equals(tabPath))
 			{
 				CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
 				credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
 
-				return UserLayoutBuilder.getAccountInfoForm(user.getUserAccount(), credentialsPolicyService.getCredentialPolicies(credentialsPolicySearch));
+				return UserLayoutBuilder.writeAccountInfo(user.getUserAccount(), credentialsPolicyService.getCredentialPolicies(credentialsPolicySearch));
 			}
 			else
 			{
-				return UserLayoutBuilder.getGeneralInfoForm(user, userGroupService.getUserGroups(null));
+				return UserLayoutBuilder.writeGeneralInfo(user, userGroupService.getUserGroups(null));
 			}
 		}
 	}
@@ -249,13 +250,13 @@ public class UserController extends UserGeneralController
 		return EMPTY_RETURN_VALUE;
 	}
 
-	@GetMapping("/authority")
+	@GetMapping("/layout/authority")
 	@ResponseBody
-	public Object authority(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object authorityLayout(@ModelAttribute CItemSearchDto cItemSearch)
 	{
 		cItemSearch.setFgShowGroup(PlatformCommonVo.YES);
 
-		return UserLayoutBuilder.getAuthority(contentAuthorityService.getMyCItemHierarchy(cItemSearch));
+		return UserLayoutBuilder.viewAuthority(contentAuthorityService.getMyCItemHierarchy(cItemSearch));
 	}
 
 	@GetMapping("/my_authority")
@@ -276,7 +277,7 @@ public class UserController extends UserGeneralController
 			cItems = contentAuthorityService.getMyCItems(cItemSearch);
 		}
 
-		return UserLayoutBuilder.getAuthorityForm(cItems);
+		return UserLayoutBuilder.writeAuthority(cItems);
 	}
 
 	@GetMapping("/timezone")

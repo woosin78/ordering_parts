@@ -55,28 +55,28 @@ public class ContentController extends ContentGeneralController
 	@Autowired
 	private LangService langService;
 
-	@RequestMapping("/main")
-	public String main()
+	@RequestMapping("/view")
+	public String view()
 	{
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/list/data")
+	@GetMapping("/list/layout")
 	@ResponseBody
-	public Object listData(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object listLayout(@ModelAttribute CItemSearchDto cItemSearch)
 	{
 		return contentService.getCItems(cItemSearch);
 	}
 
-	@GetMapping("/{tabPath}")
+	@GetMapping("/layout/{tabPath}")
 	@ResponseBody
-	public Object view(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto cItemSearch)
+	public Object viewLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto cItemSearch)
 	{
 		if ("general".equals(tabPath))
 		{
 			CItemDto cItem = (cItemSearch.getCSeq() == null) ? contentService.getRoot() : contentService.getCItem(cItemSearch.getCSeq());
 
-			return ContentLayoutBuilder.getGeneralInfo(cItem);
+			return ContentLayoutBuilder.viewGeneralInfo(cItem);
 		}
 		else
 		{
@@ -93,11 +93,25 @@ public class ContentController extends ContentGeneralController
 				LangKindDto langKind = new LangKindDto();
 				langKind.setBasename(lang.getBasename());
 
-				return ContentLayoutBuilder.getLang(langService.getBasenames(), langService.getLangKinds(langKind), lang);
+				return ContentLayoutBuilder.viewLang(langService.getBasenames(), langService.getLangKinds(langKind), lang);
 			}
 		}
 
 		return Document.EMPTY;
+	}
+
+	@GetMapping("/write/layout/{tabPath}")
+	@ResponseBody
+	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto cItemSearch)
+	{
+		CItemDto cItem = new CItemDto();
+
+		if (cItemSearch.getCSeq() != null)
+		{
+			cItem = contentService.getCItem(cItemSearch.getCSeq());
+		}
+
+		return ContentLayoutBuilder.writeGeneralInfo(cItem, getComponents(), getEntryPoints(cItem.getComponent()));
 	}
 
 	@PostMapping("/save")
@@ -107,20 +121,6 @@ public class ContentController extends ContentGeneralController
 		cItem.setName(cItem.getName().toUpperCase());
 
 		return contentService.save(cItem);
-	}
-
-	@GetMapping("/modify/{tabPath}")
-	@ResponseBody
-	public Object modify(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto cItemSearch)
-	{
-		CItemDto cItem = new CItemDto();
-
-		if (cItemSearch.getCSeq() != null)
-		{
-			cItem = contentService.getCItem(cItemSearch.getCSeq());
-		}
-
-		return ContentLayoutBuilder.getGeneralInfoForm(cItem, getComponents(), getEntryPoints(cItem.getComponent()));
 	}
 
 	@PostMapping("/delete")

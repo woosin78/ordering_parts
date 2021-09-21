@@ -14,7 +14,6 @@
 		<result property="uSeq" column="u_seq" />
 		<result property="fgResult" column="fg_result" />
 		<result property="regDate" column="reg_date" />
-		<association property="userContactInfo" foreignColumn="u_seq" column="u_seq" javaType="UserContactInfoEntity" select="findUserContactInfo" />
 	</resultMap>
 
 	<insert id="insertLoginHistory" parameterType="LoginHistoryEntity">
@@ -30,7 +29,7 @@
 		</include>
 		
 		select
-		a.*
+		a.*		
 		from
 		pltf_login_history a
 

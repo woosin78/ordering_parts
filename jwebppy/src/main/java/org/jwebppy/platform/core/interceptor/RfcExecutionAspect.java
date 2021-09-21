@@ -106,7 +106,12 @@ public class RfcExecutionAspect
 		dataAccessLog.setRequestId(MDC.get(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY));
 		dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
 		dataAccessLog.setDataAccessLogParameters(makeParameters(rfcRequest));
-		dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
+
+		if (UserAuthenticationUtils.isLogin())
+		{
+			dataAccessLog.setTimezone(UserAuthenticationUtils.getUserDetails().getTimezone());
+			dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
+		}
 
 		if (rfcResponse != null)
 		{

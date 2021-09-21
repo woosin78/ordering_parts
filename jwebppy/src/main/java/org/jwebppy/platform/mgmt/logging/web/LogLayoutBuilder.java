@@ -30,7 +30,7 @@ import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
 
 public class LogLayoutBuilder
 {
-	public static Document getList(PageableList<DataAccessLogDto> pageableList)
+	public static Document pageableList(PageableList<DataAccessLogDto> pageableList)
 	{
 		Tr thTr = new Tr();
 		thTr.addTextTh("Type", "one wide");
@@ -46,57 +46,50 @@ public class LogLayoutBuilder
 		thead.addTr(thTr);
 
 		Tbody tbody = new Tbody();
-		List<DataAccessLogDto> dataAccessLogs = pageableList.getList();
+		List<DataAccessLogDto> dataAccessLogs = ListUtils.emptyIfNull(pageableList.getList());
 
-		if (CollectionUtils.isNotEmpty(dataAccessLogs))
+		for (DataAccessLogDto dataAccessLog : dataAccessLogs)
 		{
-			for (DataAccessLogDto dataAccessLog : dataAccessLogs)
+			Tr tbTr = new Tr();
+
+			tbTr.addTextTd(dataAccessLog.getType().getType());
+			tbTr.addDataKeyLinkTd(dataAccessLog.getCommand(), dataAccessLog.getDlSeq());
+			tbTr.addTextTd(dataAccessLog.getClassName());
+			tbTr.addTextTd(dataAccessLog.getMethodName());
+			tbTr.addTextTd(CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
+			tbTr.addTextTd(dataAccessLog.getStartTimeToDate());
+			tbTr.addTextTd(dataAccessLog.getFinishTimeToDate());
+			tbTr.addTextTd(dataAccessLog.getRegUsername());
+
+			if (dataAccessLog.getError() != null)
 			{
-				Tr tbTr = new Tr();
-
-				tbTr.addTextTd(dataAccessLog.getType().getType());
-				tbTr.addDataKeyLinkTd(dataAccessLog.getCommand(), dataAccessLog.getDlSeq());
-				tbTr.addTextTd(dataAccessLog.getClassName());
-				tbTr.addTextTd(dataAccessLog.getMethodName());
-				tbTr.addTextTd(CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
-				tbTr.addTextTd(dataAccessLog.getStartTimeToDate());
-				tbTr.addTextTd(dataAccessLog.getFinishTimeToDate());
-				tbTr.addTextTd(dataAccessLog.getRegUsername());
-
-				if (dataAccessLog.getError() != null)
-				{
-					tbTr.setClass("error");
-				}
-
-				tbody.addTr(tbTr);
+				tbTr.setClass("error");
 			}
+
+			tbody.addTr(tbTr);
 		}
 
-		Table table = new Table(pageableList);
-		table.addThead(thead);
-		table.addTbody(tbody);
-
 		Document document = new Document();
-		document.addElement(table);
+		document.addElement(new Table(thead, tbody, pageableList));
 
 		return document;
 	}
 
-	public static Document getLog(DataAccessLogDto dataAccessLog)
+	public static Document view(DataAccessLogDto dataAccessLog)
 	{
 		if (CmStringUtils.equals(dataAccessLog.getType(), "J"))
 		{
-			return getJdbcLog(dataAccessLog);
+			return viewJdbc(dataAccessLog);
 		}
 		else if (CmStringUtils.equals(dataAccessLog.getType(), "R"))
 		{
-			return getRfcLog(dataAccessLog);
+			return viewRfc(dataAccessLog);
 		}
 
 		return null;
 	}
 
-	public static Document getJdbcLog(DataAccessLogDto dataAccessLog)
+	public static Document viewJdbc(DataAccessLogDto dataAccessLog)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Type", dataAccessLog.getType().getType());
@@ -138,17 +131,13 @@ public class LogLayoutBuilder
 				}
 			}
 
-			Table table = new Table();
-			table.addThead(thead);
-			table.addTbody(tbody);
-
-			document.addElement(table);
+			document.addElement(new Table(thead, tbody));
 		}
 
 		return document;
 	}
 
-	public static Document getRfcLog(DataAccessLogDto dataAccessLog)
+	public static Document viewRfc(DataAccessLogDto dataAccessLog)
 	{
 		Document document = new Document();
 
@@ -158,29 +147,6 @@ public class LogLayoutBuilder
 		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
 		elementMap.put("Reg. Username", dataAccessLog.getRegUsername());
 		elementMap.put("Elapsed(sec)", CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
-
-		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
-		document.addElement(Div.hiddenDivider());
-
-		addFields(document, dataAccessLog);
-
-		document.addElement(Div.hiddenDivider());
-
-		addStructures(document, dataAccessLog);
-
-		document.addElement(Div.hiddenDivider());
-
-		addTables(document, dataAccessLog);
-
-		return document;
-	}
-
-	public static Document getRfcResultLog(DataAccessLogDto dataAccessLog)
-	{
-		Document document = new Document();
-
-		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
 
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
 		document.addElement(Div.hiddenDivider());

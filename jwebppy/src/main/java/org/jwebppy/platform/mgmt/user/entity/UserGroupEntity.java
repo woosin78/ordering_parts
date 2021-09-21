@@ -16,5 +16,5 @@ public class UserGroupEntity extends GeneralDto
 	private Integer ugSeq;
 	private String name;
 	private String description;
-	private String fgDelete;
+	private Integer scrSeq;
 }

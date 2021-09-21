@@ -7,7 +7,7 @@
 <th:block layout:fragment="content">
 <div class="ui dividing header">
   Authority
-  <div class="sub header">A group consists of roles. You can manage the groups here and check members that belong to the groups or the roles.</div>
+  <div class="sub header">Authorities has roles and groups. You can create or modify the authorities and check users who belong to each of them.</div>
 </div>
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
@@ -37,8 +37,8 @@
 	<div class="ui divider"></div>
 	<div class="ui one column grid">
 		<div class="column">
-			<div id="BTN_createAuthority" class="ui teal button"><i class="plus icon"></i> Create</div>
-			<div id="BTN_deleteAuthority" class="ui teal button"><i class="minus icon"></i> Delete</div>
+			<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
+			<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
 		</div>
 	</div>
 	<div id="TBL_authority"></div>
@@ -49,15 +49,15 @@
 		<div id="TAB_viewAuthorityDetail" class="ui secondary pointing menu">
 			<a class="item active wrap" data-tab="general">General</a>
 			<a class="item wrap" data-tab="user">User</a>
-			<a class="item wrap" data-tab="authority">Authority</a>
+			<a class="item wrap" data-tab="authority">Sub Authority</a>
 		</div>
 		<div class="AREA_moveToModifyAuthority" style="display:none;">
-			<div class="ui teal button BTN_modifyAuthority"><i class="edit outline icon"></i> Modify</div>
+			<div class="ui teal button BTN_modify"><i class="edit outline icon"></i> Modify</div>
 			<div class="ui clearing divider"></div>
 		</div>
 		<div class="AREA_modifyAuthority" style="display:none;">
-			<div class="ui teal button modify BTN_saveAuthority"><i class="check icon"></i> Save</div>
-			<div class="ui button modify BTN_cancelAuthority"><i class="times icon"></i> Cancel</div>
+			<div class="ui teal button modify BTN_save"><i class="check icon"></i> Save</div>
+			<div class="ui button modify BTN_cancel"><i class="times icon"></i> Cancel</div>
 			<div class="ui clearing divider"></div>
 		</div>
 		<form id="FORM_modifyAuthority" class="ui form" autocomplete="off" onsubmit="return false;">
@@ -68,12 +68,12 @@
 		</form>
 		<div class="AREA_moveToModifyAuthority" style="display:none;">
 			<div class="ui clearing divider"></div>
-			<div class="ui teal button BTN_modifyAuthority"><i class="edit outline icon"></i> Modify</div>				
+			<div class="ui teal button BTN_modify"><i class="edit outline icon"></i> Modify</div>				
 		</div>			
 		<div class="AREA_modifyAuthority" style="display:none;">
 			<div class="ui clearing divider"></div>
-			<div class="ui teal button modify BTN_saveAuthority"><i class="check icon"></i> Save</div>
-			<div class="ui button modify BTN_cancelAuthority"> Cancel</div>				
+			<div class="ui teal button modify BTN_save"><i class="check icon"></i> Save</div>
+			<div class="ui button modify BTN_cancel"> Cancel</div>				
 		</div>			
 	</div>
 </div>
@@ -82,9 +82,9 @@ $(document).ready(function() {
 	let authorityTable = new JpUiTable($("#TBL_authority"));
 	authorityTable.settings = {
 			ajax: {
-				url: JpUtilsPath.url("/platform/mgmt/authority/list/data"),
-				async: false,
+				url: "/platform/mgmt/authority/list/layout",				
 				form: $("#FORM_search"),
+				async: false,
 		  		beforeSend: function(jqXHR, settings)
 		  		{
 		  			hideUserDetailsArea();
@@ -93,16 +93,16 @@ $(document).ready(function() {
 				{
 		  			if (textStatus == "success")
 	  				{
-		  				if ($("#FORM_search input:hidden[name=cSeq]").val() != "")
+		  				if ($("#FORM_search input:checkbox[name=cSeq]").val() != "")
 		  				{
-			  				authorityTable.getBodyCell(0, 3).find("a").trigger("click");
+			  				authorityTable.getBodyCell(0, 2).find("a").trigger("click");
 		  				};
 	  				};
 				}
 			},
 			onClickDataKey: function(element, key, row)
 			{
-				viewAuthorityTab.changePath(JpUtilsPath.url("/platform/mgmt/authority/detail"));
+				viewAuthorityTab.changePath("/platform/mgmt/authority/view/layout");
 				
 				if ($(row).hasClass("active"))
 				{
@@ -142,7 +142,7 @@ $(document).ready(function() {
 				}
 			},
 			tab: {
-				path: JpUtilsPath.url("/platform/mgmt/authority/detail"),
+				path: "/platform/mgmt/authority/view/layout",
 				alwaysRefresh: true,
 				onLoaded: function(tabPath, parameterArray, historyEvent)
 				{
@@ -156,8 +156,8 @@ $(document).ready(function() {
 								let isValid = true; 
 								
 								JpUtilsAjax.get({
-									url: JpUtilsPath.url("/platform/mgmt/content/valid_check/name/" + value),
-									data: { cSeq: getSeq() },
+									url: "/platform/mgmt/content/valid_check/name",
+									data: { cSeq: getSeq(), value: value },
 									global: false,
 									async: false,
 									success: function(data, textStatus, jqXHR)
@@ -218,7 +218,7 @@ $(document).ready(function() {
 							$(".ui.tab[data-tab=authority]").html(html.join(""));
 
 							JpUtilsAjax.get({
-								url: JpUtilsPath.url("/platform/mgmt/content/list/data"),
+								url: "/platform/mgmt/content/list/data",
 								data: {"type" : "R"},
 								global: false,
 								success: function(data, textStatus, jqXHR)
@@ -245,7 +245,7 @@ $(document).ready(function() {
 							let myAuthorityTable = new JpUiTable($("#TBL_myAuthorityList"));
 							myAuthorityTable.settings = {
 									ajax: {
-										url: JpUtilsPath.url("/platform/mgmt/authority/sub_roles"),
+										url: "/platform/mgmt/authority/sub_role/layout",
 										global: false,
 										form: $("#FORM_modifyAuthority")
 									}
@@ -288,7 +288,7 @@ $(document).ready(function() {
 						{
 							$("#FORM_modifyAuthority div[data-tab=user] a").on("click", function() {
 								JpUiPopup.open({
-									url: JpUtilsPath.url("/platform/mgmt/user/list?uSeq=" + $(this).attr("data-key")),
+									url: "/platform/mgmt/user/list?uSeq=" + $(this).attr("data-key"),
 									width: screen.availWidth * 0.7,
 									height: screen.availHeight * 0.7,
 									fgCenter: "Y"
@@ -299,24 +299,24 @@ $(document).ready(function() {
 					};
 
 					changeButtonStatus();
-					viewAuthorityTab.changePath(JpUtilsPath.url("/platform/mgmt/authority/detail"));
+					viewAuthorityTab.changePath("/platform/mgmt/authority/view/layout");
 				}
 			}
 	};
 
 	viewAuthorityTab.render();
 
-	$("#BTN_createAuthority").on("click", function() {
+	$("#BTN_create").on("click", function() {
 		showCreateAuthorityArea();		
 	});
 	
-	$(".BTN_modifyAuthority").on("click", function() {
-		viewAuthorityTab.changePath(JpUtilsPath.url("/platform/mgmt/authority/write"));
+	$(".BTN_modify").on("click", function() {
+		viewAuthorityTab.changePath("/platform/mgmt/authority/write/layout");
 
 		changeTab();
 	});
 
-	$("#BTN_deleteAuthority").on("click", function() {
+	$("#BTN_delete").on("click", function() {
 		if (getCheckedAuthorityCount() == 0)
 		{
 			alert("Please choose the authorities to delete.");
@@ -326,11 +326,11 @@ $(document).ready(function() {
 		if (confirm("Do you want to delete the authorities?"))
 		{
 			JpUtilsAjax.post({
-				url: JpUtilsPath.url("/platform/mgmt/authority/delete"),
+				url: "/platform/mgmt/authority/delete",
 				data: $("#FORM_search").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
-					doReload();
+					doSearch();
 				}
 			});
 		};
@@ -356,14 +356,16 @@ $(document).ready(function() {
 		return authorityTable.getCheckedCount();
 	};
 
+	/*
 	function doSearch(pageNumber)
 	{
-		$("#FORM_search input:hidden[name=nCseq]").val("");
+		$("#FORM_search input:hidden[name=cSeq]").val("");
 
-		doReload(pageNumber)
+		doSearch(pageNumber)
 	};
+	*/
 	
-	function doReload(pageNumber)
+	function doSearch(pageNumber)
 	{
 		$("#FORM_search input:hidden[name=pageNumber]").val(JpUtilsString.defaultString(pageNumber, "1"));
 		$("#FORM_search input:hidden[name=rowPerPage]").val("10");		
@@ -389,7 +391,7 @@ $(document).ready(function() {
 
 		initSeq();
 
-		viewAuthorityTab.changePath(JpUtilsPath.url("/platform/mgmt/authority/write"));
+		viewAuthorityTab.changePath("/platform/mgmt/authority/write/layout");
 		changeTab("general");
 
 		$("#AREA_viewAuthorityDetail").show();
@@ -409,7 +411,7 @@ $(document).ready(function() {
 		doSearch();
 	});
 
-	$(".BTN_saveAuthority").on("click", function() {
+	$(".BTN_save").on("click", function() {
 		if ($("#FORM_modifyAuthority").form("validate form"))
 		{
 			if (viewAuthorityTab.tabPath == "authority")
@@ -418,7 +420,7 @@ $(document).ready(function() {
 			};
 			
 			JpUtilsAjax.post({
-				url: JpUtilsPath.url("/platform/mgmt/authority/save/" + viewAuthorityTab.tabPath),
+				url: "/platform/mgmt/authority/save/" + viewAuthorityTab.tabPath,
 				data: $("#FORM_modifyAuthority").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -428,24 +430,21 @@ $(document).ready(function() {
 						
 						if (JpUtilsObject.isNotNull(cSeq))
 						{
-							setSeq(cSeq);
-							
-							$("#FORM_search input:hidden[name=nCseq]").val(cSeq);
+							$("#FORM_search input:hidden[name=cSeq]").val(cSeq);
 						};
 					};
 					
 					//reload 후에는 General Tab 으로 이동하기 때문에 현재 tabPath 를 저장해 둠.
-					let currentTabPath = viewAuthorityTab.tabPath;
+					let tabPath = viewAuthorityTab.tabPath;
 					
-					doReload();
-					
-					changeTab(currentTabPath);
+					doSearch();
+					changeTab(tabPath);					
 				}
 			});
 		}
 	});
 
-	$(".BTN_cancelAuthority").on("click", function() {
+	$(".BTN_cancel").on("click", function() {
 		if (getSeq() == "")
 		{
 			hideUserDetailsArea();
@@ -483,16 +482,6 @@ $(document).ready(function() {
 		changeButtonStatus();
 
 		viewAuthorityTab.changeTab(tabPath);
-	};
-	
-	function isCreating()
-	{
-		if (isOnForm() && getSeq() == "")
-		{
-			return true;
-		}
-
-		return false;
 	};
 	
 	function isOnForm()

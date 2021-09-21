@@ -23,7 +23,6 @@ public class UploadFileListDto extends GeneralDto
 	private String savedName;
 	private String extension;
 	private long size;
-	private String fgDelete;
 
 	public String getFullOriginName()
 	{

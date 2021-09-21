@@ -27,7 +27,6 @@ public class CItemEntity extends GeneralEntity
 	private int sort;
 	private String fgPopup;
 	private String fgVisible;
-	private String fgDelete;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
 	private Integer lSeq;

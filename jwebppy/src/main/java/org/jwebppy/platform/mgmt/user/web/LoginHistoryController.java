@@ -15,7 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping("/platform/mgmt/user/login/history")
-public class UserLoginHistoryController extends UserGeneralController
+public class LoginHistoryController extends UserGeneralController
 {
 	@Autowired
 	private LoginHistoryService loginHistoryService;
@@ -28,10 +28,10 @@ public class UserLoginHistoryController extends UserGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/list/data")
+	@GetMapping("/list/layout")
 	@ResponseBody
-	public Object listData(@ModelAttribute LoginHistorySearchDto loginHistorySearch)
+	public Object listLayout(@ModelAttribute LoginHistorySearchDto loginHistorySearch)
 	{
-		return UserLayoutBuilder.getLoginHistories(new PageableList<>(loginHistoryService.getPageableLoginHistories(loginHistorySearch)));
+		return LoginHistoryLayoutBuilder.pageableList(new PageableList<>(loginHistoryService.getPageableLoginHistories(loginHistorySearch)));
 	}
 }

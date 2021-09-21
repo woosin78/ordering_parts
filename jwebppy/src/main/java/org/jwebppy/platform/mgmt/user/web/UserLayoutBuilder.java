@@ -6,9 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
@@ -35,7 +33,7 @@ import com.ibm.icu.util.TimeZone;
 
 public class UserLayoutBuilder
 {
-	public static Document getList(PageableList<UserDto> pageableList)
+	public static Document pageableList(PageableList<UserDto> pageableList)
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
@@ -74,17 +72,13 @@ public class UserLayoutBuilder
 			}
 		}
 
-		Table table = new Table(pageableList);
-		table.addThead(thead);
-		table.addTbody(tbody);
-
 		Document document = new Document();
-		document.add(table);
+		document.addElement(new Table(thead, tbody, pageableList));
 
 		return document;
 	}
 
-	public static Document getGeneralInfo(UserDto user)
+	public static Document viewGeneralInfo(UserDto user)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Last Name", user.getLastName());
@@ -106,25 +100,25 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getGeneralInfoForm(UserDto user, List<UserGroupDto> userGroups)
+	public static Document writeGeneralInfo(UserDto user, List<UserGroupDto> userGroups)
 	{
-		Element loLastName = new Input("lastName", user.getLastName());
+		Input loLastName = new Input("lastName", user.getLastName());
 		loLastName.setLabel("Last Name");
-		loLastName.addAttribute("REQUIRED");
+		loLastName.setRequired(true);
 
-		Element loFirstName = new Input("firstName", user.getFirstName());
+		Input loFirstName = new Input("firstName", user.getFirstName());
 		loFirstName.setLabel("First Name");
 
-		Element loCompany = new Input("company", user.getCompany());
+		Input loCompany = new Input("company", user.getCompany());
 		loCompany.setLabel("Company");
 
-		Element loOrganization = new Input("organization", user.getOrganization());
+		Input loOrganization = new Input("organization", user.getOrganization());
 		loOrganization.setLabel("Organization");
 
-		Element loPosition = new Input("position", user.getPosition());
+		Input loPosition = new Input("position", user.getPosition());
 		loPosition.setLabel("Position");
 
-		Element loDepartment = new Input("department", user.getDepartment());
+		Input loDepartment = new Input("department", user.getDepartment());
 		loDepartment.setLabel("Department");
 
 		Select loLanguage = new Select("language");
@@ -157,7 +151,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getAccountInfo(UserAccountDto userAccount, CredentialsPolicyDto credentialPolicy)
+	public static Document viewAccountInfo(UserAccountDto userAccount, CredentialsPolicyDto credentialPolicy)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Username", userAccount.getUsername());
@@ -178,7 +172,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getAccountInfoForm(UserAccountDto userAccount, List<CredentialsPolicyDto> credentialPolicies)
+	public static Document writeAccountInfo(UserAccountDto userAccount, List<CredentialsPolicyDto> credentialPolicies)
 	{
 		InputPassword loPassword = new InputPassword("password");
 		loPassword.setLabel("Password");
@@ -245,7 +239,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getContactInfo(UserContactInfoDto userContactInfo)
+	public static Document viewContactInfo(UserContactInfoDto userContactInfo)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Email", userContactInfo.getEmail());
@@ -269,7 +263,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getContactInfoForm(UserContactInfoDto userContactInfo)
+	public static Document writeContactInfo(UserContactInfoDto userContactInfo)
 	{
 		Input loEmail = new Input("email", userContactInfo.getEmail());
 		loEmail.setLabel("Email");
@@ -351,7 +345,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getAuthority(List<CItemDto> cItems)
+	public static Document viewAuthority(List<CItemDto> cItems)
 	{
 		Document document = new Document();
 
@@ -368,7 +362,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document getAuthorityForm(List<CItemDto> cItems)
+	public static Document writeAuthority(List<CItemDto> cItems)
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
@@ -395,113 +389,8 @@ public class UserLayoutBuilder
 			}
 		}
 
-		Table table = new Table();
-		table.addThead(thead);
-		table.addTbody(tbody);
-
 		Document document = new Document();
-		document.addElement(table);
-
-		return document;
-	}
-
-	public static Document getSimpleLoginHistories(List<LoginHistoryDto> loginHistories)
-	{
-		Tr thTr = new Tr();
-		thTr.addTextTh("Login Date", "two wide");
-		thTr.addTextTh("IP", "two wide");
-		thTr.addTextTh("Referer", "five wide");
-		thTr.addTextTh("User Agent", "six wide");
-
-		Thead thead = new Thead();
-		thead.addTr(thTr);
-
-		Tbody tbody = new Tbody();
-
-		if (CollectionUtils.isNotEmpty(loginHistories))
-		{
-			for (LoginHistoryDto loginHistory : loginHistories)
-			{
-				Tr tbTr = new Tr();
-				tbTr.addTextTd(CmDateFormatUtils.format(loginHistory.getRegDate()));
-				tbTr.addTextTd(loginHistory.getIp());
-				tbTr.addTextTd(loginHistory.getReferer());
-				tbTr.addTextTd(loginHistory.getUserAgent());
-
-				if (CmStringUtils.equals(loginHistory.getFgResult(), PlatformCommonVo.NO))
-				{
-					tbTr.setClass("error");
-				}
-
-				tbody.addTr(tbTr);
-			}
-		}
-
-		Table table = new Table();
-		table.addThead(thead);
-		table.addTbody(tbody);
-
-		Document document = new Document();
-		document.addElement(table);
-
-		return document;
-	}
-
-	public static Document getLoginHistories(PageableList<LoginHistoryDto> pageableList)
-	{
-		Th thLoginDate = new Th("Login Date");
-		thLoginDate.setClass("two wide");
-
-		Th thUsername = new Th("Username");
-		thUsername.setClass("two wide");
-
-		Th thIp = new Th("IP");
-		thIp.setClass("two wide");
-
-		Th thReferer = new Th("Referer");
-		thReferer.setClass("five wide");
-
-		Th thUserAgent = new Th("User Agent");
-		thUserAgent.addAttribute("CLASS", "six wide");
-
-		Tr thTr = new Tr();
-		thTr.addTh(thLoginDate);
-		thTr.addTh(thUsername);
-		thTr.addTh(thIp);
-		thTr.addTh(thReferer);
-		thTr.addTh(thUserAgent);
-
-		Thead thead = new Thead();
-		thead.addTr(thTr);
-
-		Tbody tbody = new Tbody();
-
-		List<LoginHistoryDto> loginHistories = ListUtils.emptyIfNull(pageableList.getList());
-
-		for (LoginHistoryDto loginHistory : loginHistories)
-		{
-			Tr tbTr = new Tr();
-			tbTr.addTextTd(CmDateFormatUtils.format(loginHistory.getRegDate()));
-			tbTr.addTextTd(loginHistory.getUsername());
-			tbTr.addTextTd(loginHistory.getIp());
-			tbTr.addTextTd(loginHistory.getReferer());
-			tbTr.addTextTd(loginHistory.getUserAgent());
-
-			if (CmStringUtils.equals(loginHistory.getFgResult(), PlatformCommonVo.NO))
-			{
-				tbTr.setClass("error");
-			}
-
-			tbody.addTr(tbTr);
-		}
-
-		Table table = new Table();
-		table.addThead(thead);
-		table.addTbody(tbody);
-		table.setPagination(pageableList);
-
-		Document document = new Document();
-		document.addElement(table);
+		document.addElement(new Table(thead, tbody));
 
 		return document;
 	}

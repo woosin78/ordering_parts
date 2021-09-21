@@ -19,5 +19,4 @@ public class UploadFileDto extends GeneralDto
 	private String path;
 	private String exExtension;
 	private String inExtension;
-	private String fgDelete;
 }

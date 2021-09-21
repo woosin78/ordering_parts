@@ -5,17 +5,21 @@
 <meta http-equiv="Pragma" content="no-cache" />
 <meta http-equiv="Expires" content="-1" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
 <title th:text="#{PLTF_T_0006}"></title>
 
 <link rel="stylesheet" type="text/css" th:href="@{/platform/css/login/login.css}" />
 <link rel="stylesheet" type="text/css" class="ui" th:href="@{/platform/css/semantic/semantic.min.css}" />
 
 <script type="application/javascript" th:src="@{/platform/js/jquery/jquery.min.js}"></script>
+<script type="application/javascript" th:src="@{/platform/js/jquery/jquery.cookie.js}"></script>
 <script type="application/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="application/javascript" th:src="@{/platform/js/jWebppy.ui.dimmer.js}"></script>
+<script type="application/javascript" th:src="@{/platform/js/jWebppy.utils.path.js}"></script>
 <script type="application/javascript" th:src="@{/platform/js/jWebppy.utils.object.js}"></script>
 <script type="application/javascript" th:src="@{/platform/js/jWebppy.utils.string.js}"></script>
-<script type="application/javascript" th:src="@{/platform/js/jquery/jquery.cookie.js}"></script>
+<script type="application/javascript" th:src="@{/platform/js/jWebppy.utils.ajax.js}"></script>
 <script type="application/javascript" th:src="@{/platform/js/semantic/semantic.min.js}"></script>
 <script type="application/javascript">
 let INDEX_URL = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).INDEX_URL}]]";
@@ -66,42 +70,48 @@ function login()
 	{
 		isProcessing = true;
 		
-		let url = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_PROCESSING_URL}]]";
-		let username = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_USERNAME}]]";
-		
-		$.ajax({
-			type: "POST", //GET, POST
-			url: url,
-			data: $("#FORM_login").serialize(),
-			beforeSend: function(jqXHR, settings)
-			{
-				JpUiDimmer.showDimmer();
-			},
-			success: function(data, textStatus, jqXHR)
-			{
-				$.cookie(username, $("#" + username).val(), { expires : 365 });
-				document.location.href = "/forward/entry_point";
-			},			
-			error: function(jqXHR, textStatus, errorThrown)
-			{
-				let errorType = jqXHR.getResponseHeader("Error-Type");
-				
-				if (errorType == "CredentialsExpired")
+		let options = {
+				url: "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_PROCESSING_URL}]]",
+				data: $("#FORM_login").serialize(),
+				beforeSend: function(jqXHR, settings)
 				{
-					alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]");
-					document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					JpUiDimmer.showDimmer();
+				},
+				success: function(data, textStatus, jqXHR)
+				{
+					let username = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_USERNAME}]]";
+					
+					$.cookie(username, $("#" + username).val(), { expires : 365 });
+					document.location.href = "/forward/entry_point";
+				},			
+				error: function(jqXHR, textStatus, errorThrown)
+				{
+					let errorType = jqXHR.getResponseHeader("Error-Type");
+					
+					if (errorType == "CredentialsExpired")
+					{
+						alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]");
+						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					}
+					else
+					{
+						alert("[[#{PLTF_M_LOGIN_AUTHENTICATION_FAILED}]]");
+					};
+					
+					JpUiDimmer.hideDimmer();
+				},
+				complete: function(jqXHR, textStatus) {
+					isProcessing = false;
 				}
-				else
-				{
-					alert("[[#{PLTF_M_LOGIN_AUTHENTICATION_FAILED}]]");
-				};
-				
-				JpUiDimmer.hideDimmer();
-			},
-			complete: function(jqXHR, textStatus) {
-				isProcessing = false;
-			}
-		});		
+		};
+		
+		let headerName = $("meta[name=_csrf_header]").attr("content");
+		let token = $("meta[name=_csrf]").attr("content");
+		
+		options.headers = {};
+		options.headers[headerName] = token;
+		
+		JpUtilsAjax.post(options);
 	};
 };
 

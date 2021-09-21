@@ -29,12 +29,12 @@ public class UserDto extends GeneralDto implements IPagination
 	private String department;
 	private String position;
 	private String language;
-	private String fgDelete;
 	private List<Integer> uSeqs;
 	private UserAccountDto userAccount;
 	private UserContactInfoDto userContactInfo;
 	private UserGroupDto userGroup;
 
+	@Override
 	public String getFgDelete()
 	{
 		return CmStringUtils.defaultIfEmpty(fgDelete, PlatformCommonVo.NO);

@@ -58,7 +58,12 @@ public class JdbcExecutionAspect extends DataAccessAspect
 					dataAccessLog.setRequestId(MDC.get(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY));
 					dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
 					dataAccessLog.setError(error);
-					dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
+
+					if (UserAuthenticationUtils.isLogin())
+					{
+						dataAccessLog.setTimezone(UserAuthenticationUtils.getUserDetails().getTimezone());
+						dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
+					}
 
 					dataAccessLogService.writeLog(dataAccessLog);
 				}

@@ -1,8 +1,6 @@
 package org.jwebppy.platform.mgmt.user.entity;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.entity.GeneralEntity;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
 import lombok.Getter;
@@ -25,13 +23,7 @@ public class UserEntity extends GeneralEntity implements IPagination
 	private String department;
 	private String position;
 	private String language;
-	private String fgDelete;
 	private UserAccountEntity userAccount;
 	private UserContactInfoEntity userContactInfo;
 	private UserGroupEntity userGroup;
-
-	public String getFgDelete()
-	{
-		return CmStringUtils.defaultString(fgDelete, PlatformCommonVo.NO);
-	}
 }

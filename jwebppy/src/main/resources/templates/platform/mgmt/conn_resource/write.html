@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{platform/layout/popup/index}">
+
+<th:block layout:fragment="content">
+<div class="ui dividing header">
+	SAP Connection Resource
+	<div class="sub header">You can manage credentials policy such as username and password.</div>
+</div>
+<div class="ui one column grid">
+	<div class="column">
+		<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
+		<div class="ui button BTN_back" th:if="${scrSeq != null}"><i class="arrow left icon"></i> Back</div>
+	</div>
+</div>
+<div class="ui divider"></div>
+<div class="ui segment">
+	<form id="FORM_write" class="ui form" autocomplete="off" onsubmit="return false;">
+	<input type="hidden" id="scrSeq" name="scrSeq" th:value="${scrSeq}"/>
+	<div class="inline fields">
+		<div class="field" th:each="type: ${T(org.jwebppy.platform.mgmt.conn_resource.dto.SapConnType).values()}">
+			<div class="ui radio checkbox">
+				<input type="radio" name="type" th:value="${type}" tabindex="0" class="hidden"/>
+				<label th:text="${type.type}">Customer Application Server</label>
+			</div>		
+		</div>
+	</div>
+	<div class="ui divider"></div>
+	<div id="contentArea"></div>
+	</form>
+</div>
+<div class="ui divider"></div>
+<div class="ui one column grid">
+	<div class="column">
+		<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
+		<div class="ui button BTN_back" th:if="${scrSeq != null}"><i class="arrow left icon"></i> Back</div>
+	</div>
+</div>
+<script th:inline="javascript">
+$(document).ready(function() {
+	let type = $("input:radio[name=type]");
+	JpUiForm.checkbox.checkByValue(type, [[${sapConnResource.type}]]);
+	
+	if (JpUtilsString.isNotEmpty($("#scrSeq").val()))
+	{
+		type.attr("readonly", "readonly");
+	};
+	
+	let formValidCheck = {
+			inline: true,
+			fields: {
+				Name: {
+					identifier: "name",
+					rules: [
+						{
+							type: "empty",
+							prompt: "Please input {name}."
+						}
+					]
+				},
+				"Application Server": {
+					identifier: "appServer",
+					rules: [
+						{
+							type: "empty",
+							prompt: "Please input {name}."
+						}
+					]
+				},
+				"Message Server": {
+					identifier: "msgServer",
+					rules: [
+						{
+							type: "empty",
+							prompt: "Please input {name}."
+						}
+					]
+				},
+				"Group/Server": {
+					identifier: "grpServer",
+					rules: [
+						{
+							type: "empty",
+							prompt: "Please input {name}."
+						}
+					]
+				}
+			}
+	};
+	
+	function clickType()
+	{
+		JpUtilsAjax.get({
+			url: "/platform/mgmt/conn_resource/write/layout",
+			data: {scrSeq: $("#scrSeq").val(), type: JpUiForm.checkbox.checkedRadioValue(type)},
+			success: function(data, textStatus, jqXHR)
+			{
+				$("#contentArea").html(new JpUiRender().render(data));
+				$("#FORM_write").form(formValidCheck);
+				
+				$(JpUiForm.checkbox.checkedRadio(type)).checkbox("check");
+			}
+		});
+	};
+	
+	clickType();	
+	
+	$(".ui.radio.checkbox").checkbox({
+		onChecked: clickType
+	});
+	
+	$(".BTN_save").on("click", function() {
+		if ($("#FORM_write").form("validate form"))
+		{
+			JpUtilsAjax.post({
+				url: "/platform/mgmt/conn_resource/save",
+				data: $("#FORM_write").serialize(),
+				success: function(data, textStatus, jqXHR)
+				{
+					if (JpUtilsString.isEmpty($("#scrSeq").val()))
+					{
+						opener.document.location.reload();
+						$("#scrSeq").val(data.RESULT);
+					}
+					else
+					{
+						opener.doSearch();
+					};
+					
+					goBack();
+				}
+			});
+		};
+	});		
+	
+	$(".BTN_back").on("click", function() {
+		goBack();
+	});
+	
+	function goBack()
+	{
+		document.location.href = JpUtilsPath.url("/platform/mgmt/conn_resource/view?scrSeq=" + $("#scrSeq").val());
+	};	
+});
+</script>
+
+</th:block>
+</html>

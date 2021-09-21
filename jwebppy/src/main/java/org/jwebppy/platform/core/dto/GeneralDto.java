@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
@@ -18,6 +19,7 @@ public class GeneralDto implements Serializable
 {
 	private static final long serialVersionUID = -2141681838401701675L;
 
+	protected String fgDelete;
 	protected String regUsername;
 	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	protected LocalDateTime regDate;
@@ -30,6 +32,11 @@ public class GeneralDto implements Serializable
 	protected int pageNumber = 1;
 	protected int rowPerPage = PlatformCommonVo.DEFAULT_ROW_PER_PAGE;
 	protected int totalCount = 0;
+
+	public String getFgDelete()
+	{
+		return CmStringUtils.defaultString(fgDelete, PlatformCommonVo.NO);
+	}
 
 	public int getNo()
 	{

@@ -32,30 +32,10 @@ public class DataAccessLogDto extends GeneralDto implements IPagination
 	private String requestId;
 	private String sessionId;
 	private String error;
+	private String timezone;
 	private List<DataAccessLogParameterDto> dataAccessLogParameters;
 	private Map<String, Object> executionResult;
 	private boolean loggingTarget;
-
-	/*
-	public String getDisplayType()
-	{
-		if (CmStringUtils.isEmpty(type))
-		{
-			return null;
-		}
-
-		if ("J".equals(type))
-		{
-			return "JDBC";
-		}
-		else if ("R".equals(type))
-		{
-			return "RFC";
-		}
-
-		return type;
-	}
-	*/
 
 	public Double getElapsedTime()
 	{

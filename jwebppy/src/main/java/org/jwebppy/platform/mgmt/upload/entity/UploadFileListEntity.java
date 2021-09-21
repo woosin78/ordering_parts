@@ -23,6 +23,5 @@ public class UploadFileListEntity extends GeneralEntity
 	private String savedName;
 	private String extension;
 	private long size;
-	private String fgDelete;
 	private List<MultipartFile> multipartFiles;
 }

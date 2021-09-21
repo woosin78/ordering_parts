@@ -47,6 +47,7 @@ public class UserAuthenticationService extends PlatformGeneralService
         platformUserDetails.setFromValid(userAccount.getFromValid());
         platformUserDetails.setToValid(userAccount.getToValid());
         platformUserDetails.setLanguage(user.getLanguage());
+        platformUserDetails.setTimezone(user.getUserContactInfo().getTimezone());
         platformUserDetails.setCItems(cItems);
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userAccount.getUsername(), userAccount.getPassword(), platformUserDetails.getAuthorities());
@@ -55,11 +56,11 @@ public class UserAuthenticationService extends PlatformGeneralService
         return usernamePasswordAuthenticationToken;
 	}
 
-	public Authentication getAuthentication(String username)
+	public Authentication getAuthentication(Integer uSeq)
 	{
-		if (CmStringUtils.isNotEmpty(username))
+		if (CmStringUtils.isNotEmpty(uSeq))
 		{
-			UserDto user = userService.getUserByUsername(username);
+			UserDto user = userService.getUser(uSeq);
 
 			if (user != null)
 			{

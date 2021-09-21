@@ -158,16 +158,16 @@
 
 	<select id="findUser" parameterType="UserSearchDto" resultMap="userEntityMap">
 		select
-		a.*
+		*
 		from
-		vw_pltf_user a
+		vw_pltf_user
 
 		<where>
 			<if test="uSeq != null">
-				and a.u_seq=#{uSeq}
+				and u_seq=#{uSeq}
 			</if>
 			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
-				and a.username=#{username}
+				and username=#{username}
 			</if>
 		</where>
 	</select>

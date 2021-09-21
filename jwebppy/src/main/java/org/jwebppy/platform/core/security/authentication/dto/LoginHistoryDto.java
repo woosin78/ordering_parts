@@ -7,7 +7,6 @@ import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
-import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +29,6 @@ public class LoginHistoryDto extends GeneralDto implements IPagination
 	private Integer uSeq;
 	private String fgResult;
 	private String timezone;
-	private UserContactInfoDto userContactInfo;
 
 	public String getRgResult()
 	{
@@ -39,13 +37,6 @@ public class LoginHistoryDto extends GeneralDto implements IPagination
 
 	public String getDisplayZonedRegDate()
 	{
-		String timezone = null;
-
-		if (userContactInfo != null)
-		{
-			timezone = userContactInfo.getTimezone();
-		}
-
 		return CmDateFormatUtils.format(regDate, timezone);
 	}
 }

@@ -31,7 +31,7 @@ public class DataAccessLogService extends GeneralService
 	@Autowired
 	private DataAccessLogMapper dataAccessLogMapper;
 
-	@Autowired
+	@Autowired(required = false)
 	private SimpleRfcTemplate simpleRfcTemplate;
 
 	@Async("threadPoolTaskExecutor")

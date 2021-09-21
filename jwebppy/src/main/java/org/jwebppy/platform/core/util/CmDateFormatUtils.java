@@ -161,7 +161,8 @@ public class CmDateFormatUtils
 
 	public static String unlimitDate(String format)
 	{
-		return format(ZonedDateTime.parse(PlatformCommonVo.UNLIMITED_DATE_TIME, DateTimeFormatter.ofPattern(PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)), format);
+
+		return format(LocalDateTime.parse(PlatformCommonVo.UNLIMITED_DATE_TIME, DateTimeFormatter.ofPattern(PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)), format);
 	}
 
 	public static String unlimitDate()

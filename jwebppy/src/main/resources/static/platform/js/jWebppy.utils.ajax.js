@@ -16,6 +16,19 @@ JpUtilsAjax.post = function(options)
 		method : "POST"		
 	};
 	
+	try
+	{
+		if (JpUtilsObject.isNull(options.headers))
+		{
+			additionalOption.headers = {};
+		}
+		
+		additionalOption.headers[$("meta[name=_csrf_header]").attr("content")] = $("meta[name=_csrf]").attr("content");
+	}
+	catch (e) {};
+	
+	options.url = JpUtilsPath.url(options.url);
+	
 	$.extend(true, options, additionalOption);
 	$.ajax(options);
 };

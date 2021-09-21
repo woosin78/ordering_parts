@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
-import org.jwebppy.platform.core.web.ui.dom.Element;
 import org.jwebppy.platform.core.web.ui.dom.form.Input;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
@@ -26,7 +26,7 @@ import org.jwebppy.platform.mgmt.user.dto.UserDto;
 
 public class AuthorityLayoutBuilder
 {
-	public static Document getList(PageableList<CItemDto> pageableList)
+	public static Document pageableList(PageableList<CItemDto> pageableList)
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
@@ -42,46 +42,39 @@ public class AuthorityLayoutBuilder
 		thead.addTr(thTr);
 
 		Tbody tbody = new Tbody();
-		List<CItemDto> cItems = pageableList.getList();
+		List<CItemDto> cItems = ListUtils.emptyIfNull(pageableList.getList());
 
-		if (CollectionUtils.isNotEmpty(cItems))
+		for (CItemDto cItem : cItems)
 		{
-			for (CItemDto cItem : cItems)
+			Tr tbTr = new Tr();
+
+			if (cItem.getType().equals(CItemType.G))
 			{
-				Tr tbTr = new Tr();
-
-				if (cItem.getType().equals(CItemType.G))
-				{
-					tbTr.addDataKeyCheckboxTd("cSeq", cItem.getCSeq());
-				}
-				else
-				{
-					tbTr.addTextTd("");
-				}
-
-				tbTr.addTextTd(cItem.getType().getType());
-				tbTr.addDataKeyLinkTd(cItem.getName(), cItem.getCSeq());
-				tbTr.addTextTd(cItem.getDescription());
-				tbTr.addTextTd(cItem.getDisplayFromValid());
-				tbTr.addTextTd(cItem.getDisplayToValid());
-				tbTr.addTextTd(cItem.getDisplayRegDate());
-				tbTr.addTextTd(cItem.getRegUsername());
-
-				tbody.addTr(tbTr);
+				tbTr.addDataKeyCheckboxTd("cSeq", cItem.getCSeq());
 			}
+			else
+			{
+				tbTr.addTextTd("");
+			}
+
+			tbTr.addTextTd(cItem.getType().getType());
+			tbTr.addDataKeyLinkTd(cItem.getName(), cItem.getCSeq());
+			tbTr.addTextTd(cItem.getDescription());
+			tbTr.addTextTd(cItem.getDisplayFromValid());
+			tbTr.addTextTd(cItem.getDisplayToValid());
+			tbTr.addTextTd(cItem.getDisplayRegDate());
+			tbTr.addTextTd(cItem.getRegUsername());
+
+			tbody.addTr(tbTr);
 		}
 
-		Table table = new Table(pageableList);
-		table.addThead(thead);
-		table.addTbody(tbody);
-
 		Document document = new Document();
-		document.add(table);
+		document.addElement(new Table(thead, tbody, pageableList));
 
 		return document;
 	}
 
-	public static Document getGeneralInfo(CItemDto cItem)
+	public static Document viewGeneralInfo(CItemDto cItem)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 
@@ -104,14 +97,14 @@ public class AuthorityLayoutBuilder
 		return document;
 	}
 
-	public static Document getGeneralInfoForm(CItemDto cItem)
+	public static Document writeGeneralInfo(CItemDto cItem)
 	{
-		Element loName = new Input("name", cItem.getName());
+		Input loName = new Input("name", cItem.getName());
 		loName.setLabel("Name");
 		loName.setStyle("text-transform: uppercase");
-		loName.addAttribute("REQUIRED");
+		loName.setRequired(true);
 
-		Element loDescription = new Input("description", cItem.getDescription());
+		Input loDescription = new Input("description", cItem.getDescription());
 		loDescription.setLabel("Description");
 
 		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(cItem.getDisplayFromValid(), CmDateFormatUtils.now()));
@@ -131,7 +124,7 @@ public class AuthorityLayoutBuilder
 		return document;
 	}
 
-	public static Document getUsers(List<UserDto> users)
+	public static Document listUser(List<UserDto> users)
 	{
 		Tr thTr = new Tr();
 		thTr.addTextTh("Status", "one wide");
@@ -175,17 +168,13 @@ public class AuthorityLayoutBuilder
 			}
 		}
 
-		Table table = new Table();
-		table.addThead(thead);
-		table.addTbody(tbody);
-
 		Document document = new Document();
-		document.add(table);
+		document.addElement(new Table(thead, tbody));
 
 		return document;
 	}
 
-	public static Document getAuthority(List<CItemDto> cItems)
+	public static Document viewAuthority(List<CItemDto> cItems)
 	{
 		Document document = new Document();
 
@@ -200,7 +189,7 @@ public class AuthorityLayoutBuilder
 		return document;
 	}
 
-	public static Document getAuthorityForm(List<CItemDto> cItems)
+	public static Document writeAuthority(List<CItemDto> cItems)
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
@@ -225,12 +214,8 @@ public class AuthorityLayoutBuilder
 			}
 		}
 
-		Table table = new Table();
-		table.addThead(thead);
-		table.addTbody(tbody);
-
 		Document document = new Document();
-		document.addElement(table);
+		document.addElement(new Table(thead, tbody));
 
 		return document;
 	}

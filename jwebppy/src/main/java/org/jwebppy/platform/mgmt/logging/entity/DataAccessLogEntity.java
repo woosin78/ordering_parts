@@ -25,5 +25,6 @@ public class DataAccessLogEntity extends GeneralEntity
 	private String requestId;
 	private String sessionId;
 	private String error;
+	private String timezone;
 	private List<DataAccessLogParameterEntity> dataAccessLogParameters;
 }

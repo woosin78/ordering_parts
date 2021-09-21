@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmAnnotationUtils;
 import org.jwebppy.platform.core.util.CmReflectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -38,19 +39,40 @@ public class DataAccessAspect
 					setValue(argument, "modUsername", UserAuthenticationUtils.getUsername());
 					setValue(argument, "modDate", LocalDateTime.now());
 				}
+
+				setValue(argument, "fgDelete", CmStringUtils.defaultIfEmpty(getValue(argument, "fgDelete"), PlatformCommonVo.NO));
 			}
 		}
 	}
 
 	protected void setValue(Object target, String fieldName, Object value)
 	{
-		Field field = CmReflectionUtils.findField(target.getClass(), fieldName);
-
-		if (field != null && CmStringUtils.isNotEmpty(value))
+		if (target != null)
 		{
-			CmReflectionUtils.makeAccessible(field);
-			CmReflectionUtils.setField(field, target, value);
+			Field field = CmReflectionUtils.findField(target.getClass(), fieldName);
+
+			if (field != null && CmStringUtils.isNotEmpty(value))
+			{
+				CmReflectionUtils.makeAccessible(field);
+				CmReflectionUtils.setField(field, target, value);
+			}
 		}
+	}
+
+	protected Object getValue(Object target, String fieldName)
+	{
+		if (target != null)
+		{
+			Field field = CmReflectionUtils.findField(target.getClass(), fieldName);
+
+			if (field != null)
+			{
+				CmReflectionUtils.makeAccessible(field);
+				return CmReflectionUtils.getField(field, target);
+			}
+		}
+
+		return null;
 	}
 
 	protected boolean hasNoLoggingAnnotation(Signature signature)

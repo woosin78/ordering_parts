@@ -28,5 +28,4 @@ public class BoardContentEntity extends GeneralEntity
 	private LocalDateTime toView;
 	private int views;
 	private String writer;
-	private String fgDelete;
 }

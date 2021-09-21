@@ -3,7 +3,9 @@ package org.jwebppy.platform.core.entity;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,6 +18,7 @@ public class GeneralEntity implements Serializable
 {
 	private static final long serialVersionUID = 8736258968068994440L;
 
+	protected String fgDelete;
 	protected String regUsername;
 	protected LocalDateTime regDate;
 	protected String modUsername;
@@ -25,6 +28,11 @@ public class GeneralEntity implements Serializable
 	protected int pageNumber = 1;
 	protected int rowPerPage = 20;
 	protected int totalCount = 0;
+
+	public String getFgDelete()
+	{
+		return CmStringUtils.defaultString(fgDelete, PlatformCommonVo.NO);
+	}
 
 	public String getDisplayRegDate()
 	{

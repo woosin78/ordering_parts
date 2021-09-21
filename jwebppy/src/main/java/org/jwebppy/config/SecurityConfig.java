@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 			.sessionManagement()
 				.sessionFixation().migrateSession()
 			.and()
-			.csrf().disable()
+			//.csrf().disable()
 			.logout()
 				.logoutUrl(PlatformConfigVo.FORM_LOGOUT_PROCESSING_URL)
 				.invalidateHttpSession(true)

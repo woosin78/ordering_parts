@@ -29,7 +29,7 @@ let JpUiTree = function(object)
 		if (this.url != null)
 		{
 			let option = {
-				url: _this.url,
+				url: JpUtilsPath.url(_this.url),
 				dataType: "json",
 				success: function(data, textStatus, jqXHR)
 				{

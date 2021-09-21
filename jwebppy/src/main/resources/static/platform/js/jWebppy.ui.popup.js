@@ -20,7 +20,7 @@ JpUiPopup.open = function(settings)
 	
     let popup = window.open("about:blank", "", "left=" + left + ", top=" + top + ", width=" + width + ", height=" + height + ", " + specs);    
     
-    if (popup) popup.location.href = url; //열림   
+    if (popup) popup.location.href = JpUtilsPath.url(url); //열림   
     popup.focus();
 	
 	return popup;

@@ -19,5 +19,4 @@ public class UploadFileEntity extends GeneralEntity
 	private String path;
 	private String exExtension;
 	private String inExtension;
-	private String fgDelete;
 }

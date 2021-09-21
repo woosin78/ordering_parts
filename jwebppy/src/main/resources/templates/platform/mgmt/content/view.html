@@ -30,13 +30,13 @@
 						<form id="FORM_modifyItem" class="ui form">
 						<input type="hidden" name="cSeq"/>
 						<input type="hidden" name="pSeq"/>
-							<div class="AREA_modifyItem" style="display: none;">
-								<div class="ui teal button BTN_saveItem"><i class="check icon"></i> Save</div>
-								<div class="ui button modify BTN_cancelItem"><i class="times icon"></i> Cancel</div>
+							<div class="AREA_modify" style="display: none;">
+								<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
+								<div class="ui button modify BTN_cancel"><i class="times icon"></i> Cancel</div>
 								<div class="ui clearing divider"></div>									
 							</div>
-							<div class="AREA_moveToModifyItem" style="display: none;">
-								<div class="ui teal button BTN_modifyItem"><i class="edit outline icon"></i> Modify</div>
+							<div class="AREA_moveToModify" style="display: none;">
+								<div class="ui teal button BTN_modify"><i class="edit outline icon"></i> Modify</div>
 								<div class="ui clearing divider"></div>
 							</div>
 							<div class="AREA_moveToViewLang" style="display: none;">
@@ -45,14 +45,14 @@
 							</div>
 							<div class="ui segment tab teal" data-tab="general"></div>
 							<div class="ui segment tab teal" data-tab="language"></div>
-							<div class="AREA_modifyItem" style="display: none;">
+							<div class="AREA_modify" style="display: none;">
 								<div class="ui clearing divider"></div>
-								<div class="ui teal button BTN_saveItem"><i class="check icon"></i> Save</div>
-								<div class="ui button modify BTN_cancelItem"><i class="times icon"></i> Cancel</div>
+								<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
+								<div class="ui button modify BTN_cancel"><i class="times icon"></i> Cancel</div>
 							</div>
-							<div class="AREA_moveToModifyItem" style="display: none;">
+							<div class="AREA_moveToModify" style="display: none;">
 								<div class="ui clearing divider"></div>
-								<div class="ui teal button BTN_modifyItem"><i class="edit outline icon"></i> Modify</div>
+								<div class="ui teal button BTN_modify"><i class="edit outline icon"></i> Modify</div>
 							</div>
 							<div class="AREA_moveToViewLang" style="display: none;">
 								<div class="ui clearing divider"></div>
@@ -88,7 +88,7 @@
 				}
 			},
 			tab: {
-				path: JpUtilsPath.url("/platform/mgmt/content"),
+				path: "/platform/mgmt/content/layout",
 				form: $("#FORM_modifyItem"),
 				onLoaded: function(tabPath, parameterArray, historyEvent)
 				{
@@ -100,7 +100,7 @@
 							
 							$("#FORM_modifyItem select[name=component]").on("change", function() {
 								JpUtilsAjax.get({
-									url: JpUtilsPath.url("/platform/mgmt/content/component/entry_points?component=" + $(this).val()),
+									url: "/platform/mgmt/content/component/entry_points?component=" + $(this).val(),
 									global: false,
 									success: function(data, textStatus, jqXHR)
 									{
@@ -124,7 +124,7 @@
 									let isValid = false;
 									
 									JpUtilsAjax.get({
-										url: JpUtilsPath.url("/platform/mgmt/content/valid_check/name"),
+										url: "/platform/mgmt/content/valid_check/name",
 										data: { cSeq: getSeq(), value: value },
 										global: false,
 										async: false,
@@ -218,7 +218,7 @@
 					}
 					
 					changeButtonStatus();
-					viewItemTab.changePath(JpUtilsPath.url("/platform/mgmt/content"));
+					viewItemTab.changePath("/platform/mgmt/content/layout");
 				}
 			}
 	};
@@ -248,7 +248,7 @@
 	
 		$("#FORM_modifyItem input[name='pSeq']").val(key);
 	
-		viewItemTab.changePath(JpUtilsPath.url("/platform/mgmt/content/modify"));
+		viewItemTab.changePath("/platform/mgmt/content/write/layout");
 		changeTab();
 	};
 	tree.deleteItem = function(key, pKey)
@@ -258,7 +258,7 @@
 			setSeq(key, pKey);
 			
 			JpUtilsAjax.post({
-				url: JpUtilsPath.url("/platform/mgmt/content/delete"),
+				url: "/platform/mgmt/content/delete",
 				data: $("#FORM_modifyItem").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -305,7 +305,7 @@
 			setSeq(previousCommand.KEY, key);
 			
 			JpUtilsAjax.post({
-				url: JpUtilsPath.url(url),
+				url: url,
 				data: $("#FORM_modifyItem").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -320,16 +320,16 @@
 	tree.setUrl("/platform/mgmt/content/tree");
 	tree.render();
 	
-	$(".BTN_modifyItem").on("click", function() {
-		viewItemTab.changePath(JpUtilsPath.url("/platform/mgmt/content/modify"));
+	$(".BTN_modify").on("click", function() {
+		viewItemTab.changePath("/platform/mgmt/content/write/layout");
 		changeTab();
 	});
 	
-	$(".BTN_saveItem").on("click", function() {
+	$(".BTN_save").on("click", function() {
 		if ($("#FORM_modifyItem").form("validate form"))
 		{
 			JpUtilsAjax.post({
-				url: JpUtilsPath.url("/platform/mgmt/content/save"),
+				url: "/platform/mgmt/content/save",
 				data: $("#FORM_modifyItem").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -369,13 +369,13 @@
 		$("#FORM_modifyItem input[name=cSeq], [name=pSeq]").val("");
 	};	
 	
-	$(".BTN_cancelItem").on("click", function() {
+	$(".BTN_cancel").on("click", function() {
 		changeTab();
 	});	
 	
 	function changeButtonStatus()
 	{
-		$(".AREA_moveToModifyItem, .AREA_modifyItem, .AREA_moveToViewLang").css("display", "none");
+		$(".AREA_moveToModify, .AREA_modify, .AREA_moveToViewLang").css("display", "none");
 		
 		if (viewItemTab.tabPath == "general")
 		{
@@ -383,11 +383,11 @@
 			{
 				if (isOnForm())
 				{
-					$(".AREA_modifyItem").css("display", "block");
+					$(".AREA_modify").css("display", "block");
 				}
 				else
 				{
-					$(".AREA_moveToModifyItem").css("display", "block");
+					$(".AREA_moveToModify").css("display", "block");
 				};					
 			};
 		}
@@ -416,7 +416,7 @@
 	
 	function isOnForm()
 	{
-		return (viewItemTab.getPath().indexOf("modify") > -1) ? true : false;
+		return (viewItemTab.getPath().indexOf("write") > -1) ? true : false;
 	};	
 	
 	function isRoot()
@@ -431,7 +431,7 @@
 	
 	$(".BTN_translation").on("click", function() {
 		JpUtilsAjax.get({
-			url: JpUtilsPath.url("/platform/mgmt/content/lang"),
+			url: "/platform/mgmt/content/lang",
 			data: $("#FORM_modifyItem").serialize(),
 			global: false,
 			success: function(data, textStatus, jqXHR)
@@ -454,7 +454,7 @@
 		$("#FORM_updateLang input[name=lSeq]").val(lSeq);
 		
 		JpUtilsAjax.post({
-			url: JpUtilsPath.url("/platform/mgmt/content/lang/save"),
+			url: "/platform/mgmt/content/lang/save",
 			data: $("#FORM_updateLang").serialize(),
 			success: function(data, textStatus, jqXHR)
 			{

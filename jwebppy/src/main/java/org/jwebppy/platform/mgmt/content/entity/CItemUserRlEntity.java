@@ -16,6 +16,5 @@ public class CItemUserRlEntity extends GeneralEntity
 	private Integer cSeq;
 	private Integer uSeq;
 	private int sort;
-	private String fgDelete;
 	private String name;
 }

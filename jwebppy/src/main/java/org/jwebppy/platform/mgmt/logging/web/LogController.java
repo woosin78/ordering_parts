@@ -37,15 +37,15 @@ public class LogController extends LoggingGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/list/data")
+	@GetMapping("/list/layout")
 	@ResponseBody
-	public Object listData(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
+	public Object listLayout(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
 	{
-		return LogLayoutBuilder.getList(new PageableList<>(dataAccessLogService.getPageableLogs(dataAccessLogSearch)));
+		return LogLayoutBuilder.pageableList(new PageableList<>(dataAccessLogService.getPageableLogs(dataAccessLogSearch)));
 	}
 
-	@GetMapping("/detail_popup")
-	public String detailPopup(@ModelAttribute("dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch, Model model)
+	@GetMapping("/view")
+	public String view(@ModelAttribute("dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch, Model model)
 	{
 		DataAccessLogDto dataAccessLog = dataAccessLogService.getLog(dataAccessLogSearch.getDlSeq());
 
@@ -59,13 +59,13 @@ public class LogController extends LoggingGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/detail_popup/{tabPath}")
+	@GetMapping("/view/layout/{tabPath}")
 	@ResponseBody
 	public Object log(@PathVariable("tabPath") String tabPath, @RequestParam("dlSeq") String dlSeq)
 	{
 		if ("parameter".equals(tabPath))
 		{
-			return LogLayoutBuilder.getLog(dataAccessLogService.getLog(dlSeq));
+			return LogLayoutBuilder.view(dataAccessLogService.getLog(dlSeq));
 		}
 		else if ("result".equals(tabPath))
 		{

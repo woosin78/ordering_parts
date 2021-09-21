@@ -23,7 +23,7 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangType;
 
 public class LangLayoutBuilder
 {
-	public static Document getList(PageableList<LangDto> pageableList, List<LangKindDto> langKinds)
+	public static Document pageableList(PageableList<LangDto> pageableList, List<LangKindDto> langKinds)
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
@@ -78,18 +78,13 @@ public class LangLayoutBuilder
 			tbody.addElement(tbTr);
 		}
 
-		Table table = new Table();
-		table.addThead(thead);
-		table.addTbody(tbody);
-		table.setPagination(pageableList);
-
 		Document document = new Document();
-		document.addElement(table);
+		document.addElement(new Table(thead, tbody, pageableList));
 
 		return document;
 	}
 
-	public static Document getLangForm(List<String> basenames, List<LangKindDto> langKinds, LangDto lang, String from)
+	public static Document write(List<String> basenames, List<LangKindDto> langKinds, LangDto lang, String from)
 	{
 		Document document = new Document();
 

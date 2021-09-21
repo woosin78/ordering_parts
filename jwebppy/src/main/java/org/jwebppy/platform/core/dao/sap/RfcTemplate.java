@@ -31,12 +31,6 @@ public class RfcTemplate extends AbstractDaoTemplate
 {
 	private Logger logger = LoggerFactory.getLogger(RfcTemplate.class);
 
-//	@Autowired
-//	private DataAccessLogService dataAccessLogService;
-//
-//	@Autowired
-//	private DataAccessResultLogService dataAccessResultLogService;
-
     private JCoConnectionResource jCoConnectionResource;
 
     private RowMapper DEFAULT_ROW_MAPPER = new JCoMapRowMapper();
@@ -60,9 +54,9 @@ public class RfcTemplate extends AbstractDaoTemplate
 
     private String getLandscape(RfcRequest rfcRequest)
     {
-    	if (CmStringUtils.isNotEmpty(rfcRequest.getLandscape()))
+    	if (CmStringUtils.isNotEmpty(rfcRequest.getConnectorName()))
     	{
-    		return rfcRequest.getLandscape();
+    		return rfcRequest.getConnectorName();
     	}
 
     	/*
@@ -81,7 +75,7 @@ public class RfcTemplate extends AbstractDaoTemplate
     	}
     	*/
 
-    	return "P09";
+    	return "GSQCLNTEPQ_POC";
     }
 
 	@Override

@@ -16,12 +16,12 @@
 	<div class="fields">
 		<div class="six wide field">
 			<div class="ui calendar">
-				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromDate" name="fromDate" placeholder="From Reg.Date"/></div>
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromDate" name="fromDate" placeholder="From Login Time"/></div>
 			</div>				
 		</div>
 		<div class="six wide field">
 			<div class="ui calendar">
-				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toDate" name="toDate" placeholder="To Reg.Date"/></div>
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toDate" name="toDate" placeholder="To Login Time"/></div>
 			</div>				
 		</div>
 	</div>	
@@ -47,7 +47,7 @@
 		let listTable = new JpUiTable($("#TBL_list"));
 		listTable.settings = {
 				ajax: {
-					url: JpUtilsPath.url("/platform/mgmt/user/login/history/list/data"),
+					url: "/platform/mgmt/user/login/history/list/layout",
 					form: $("#FORM_search")
 				},
 				onClickPageNumber: function(pageNumber)

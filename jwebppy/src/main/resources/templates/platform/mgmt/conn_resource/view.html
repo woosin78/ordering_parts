@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{platform/layout/popup/index}">
+
+<th:block layout:fragment="content">
+<div class="ui dividing header">
+	SAP Connection Resource
+	<div class="sub header">You can manage credentials policy such as username and password.</div>
+</div>
+
+<div class="ui one column grid">
+	<div class="column">
+		<div class="ui teal button BTN_modify"><i class="edit outline icon"></i> Modify</div>
+		<div class="ui teal button BTN_delete"><i class="minus icon"></i> Delete</div>
+	</div>
+</div>
+<div class="ui divider"></div>
+<div class="ui segment" id="contentArea"></div>
+<div class="ui divider"></div>
+<div class="ui one column grid">
+	<div class="column">
+		<div class="ui teal button BTN_modify"><i class="edit outline icon"></i> Modify</div>
+		<div class="ui teal button BTN_delete"><i class="minus icon"></i> Delete</div>
+	</div>
+</div>
+<form id="FORM_view" class="ui form" autocomplete="off" onsubmit="return false;">
+<input type="hidden" name="scrSeq" th:value="${scrSeq}" />
+</form>
+<script type="application/javascript">
+$(document).ready(function() {
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/conn_resource/view/layout",
+		data: $("#FORM_view").serialize(),
+		success: function(data, textStatus, jqXHR)
+		{
+			$("#contentArea").html(new JpUiRender().render(data));
+		}
+	});
+	
+	$(".BTN_modify").on("click", function() {
+		document.location.href = JpUtilsPath.url("/platform/mgmt/conn_resource/write?scrSeq=" + $("#FORM_view input[name=scrSeq]").val());
+	});
+	
+	$(".BTN_delete").on("click", function() {
+		if (confirm("Do you want to delete?"))
+		{
+			JpUtilsAjax.post({
+				url: "/platform/mgmt/conn_resource/delete",
+				data: $("#FORM_view").serialize(),
+				success: function(data, textStatus, jqXHR)
+				{
+					opener.doSearch();
+					window.close();
+				}
+			});			
+		};
+	});	
+});
+</script>
+</th:block>
+</html>

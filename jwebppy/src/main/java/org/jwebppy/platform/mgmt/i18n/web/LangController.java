@@ -34,14 +34,14 @@ public class LangController extends MgmtGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/list/data")
+	@GetMapping("/list/layout")
 	@ResponseBody
-	public Object listData(@ModelAttribute LangSearchDto langSearch)
+	public Object listLayout(@ModelAttribute LangSearchDto langSearch)
 	{
 		LangKindDto langKind = new LangKindDto();
 		langKind.setBasename(langSearch.getBasename());
 
-		return LangLayoutBuilder.getList(new PageableList<>(langService.getPageableLangs(langSearch)), langService.getLangKinds(langKind));
+		return LangLayoutBuilder.pageableList(new PageableList<>(langService.getPageableLangs(langSearch)), langService.getLangKinds(langKind));
 	}
 
 	@GetMapping("/write")
@@ -83,19 +83,7 @@ public class LangController extends MgmtGeneralController
 		LangKindDto langKind = new LangKindDto();
 		langKind.setBasename(lang.getBasename());
 
-		return LangLayoutBuilder.getLangForm(basenames, langService.getLangKinds(langKind), lang, langSearch.getFrom());
-	}
-
-	@GetMapping("/valid_check")
-	@ResponseBody
-	public Object validCheck(@ModelAttribute LangDto lang)
-	{
-		if (langService.isDuplicated(lang))
-		{
-			return "DUPLICATED";
-		}
-
-		return EMPTY_RETURN_VALUE;
+		return LangLayoutBuilder.write(basenames, langService.getLangKinds(langKind), lang, langSearch.getFrom());
 	}
 
 	@PostMapping("/save")
@@ -127,6 +115,18 @@ public class LangController extends MgmtGeneralController
 		lang.setLSeqs(lSeqs);
 
 		return langService.delete(lang);
+	}
+
+	@GetMapping("/valid_check")
+	@ResponseBody
+	public Object validCheck(@ModelAttribute LangDto lang)
+	{
+		if (langService.isDuplicated(lang))
+		{
+			return "DUPLICATED";
+		}
+
+		return EMPTY_RETURN_VALUE;
 	}
 
 	@GetMapping("/basenames")

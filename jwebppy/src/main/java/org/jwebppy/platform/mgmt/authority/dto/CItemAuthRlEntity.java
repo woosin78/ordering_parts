@@ -19,6 +19,5 @@ public class CItemAuthRlEntity extends GeneralEntity
 	private Integer pSeq;
 	private Integer cSeq;
 	private int sort;
-	private String fgDelete;
 	private List<Integer> cSeqs;
 }

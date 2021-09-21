@@ -15,7 +15,6 @@
 		<result property="fgResult" column="fg_result" />
 		<result property="timezone" column="timezone" />
 		<result property="regDate" column="reg_date" />
-		<association property="userContactInfo" foreignColumn="u_seq" column="u_seq" javaType="UserContactInfoEntity" select="org.jwebppy.platform.mgmt.user.mapper.UserMapper.findUserContactInfo" />
 	</resultMap>
 
 	<insert id="insertLoginHistory" parameterType="LoginHistoryEntity">

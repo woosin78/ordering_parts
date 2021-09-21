@@ -21,6 +21,7 @@ import org.jwebppy.platform.core.util.CmClassUtils;
 import org.jwebppy.platform.core.util.CmResponseEntityUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.core.web.GeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
@@ -140,7 +141,7 @@ public class RequestMonitorAspect
 
 	private String getViewUrl(Signature signature, Object returnValue)
 	{
-		if (!"DUMMY".equals(CmStringUtils.trimToEmpty(returnValue)))
+		if (CmStringUtils.notEquals(GeneralController.DEFAULT_VIEW_URL, CmStringUtils.trimToEmpty(returnValue)))
 		{
 			return CmStringUtils.trimToEmpty(returnValue);
 		}
@@ -152,7 +153,7 @@ public class RequestMonitorAspect
 	{
 		if (UserAuthenticationUtils.isLogin())
 		{
-			SecurityContextHolder.getContext().setAuthentication(userAuthenticationService.getAuthentication(UserAuthenticationUtils.getUsername()));
+			SecurityContextHolder.getContext().setAuthentication(userAuthenticationService.getAuthentication(UserAuthenticationUtils.getUSeq()));
 		}
 	}
 }

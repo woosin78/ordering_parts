@@ -42,7 +42,7 @@ $(document).ready(function() {
 				}
 			},
 			tab: {
-				path: JpUtilsPath.url("/platform/mgmt/log/detail_popup"),
+				path: "/platform/mgmt/log/view/layout",
 				alwaysRefresh: true,
 				isLoadFirstTab: true				
 			}
@@ -52,10 +52,10 @@ $(document).ready(function() {
 
 	$("#BTN_execute").on("click", function() {
 		JpUtilsAjax.get({
-			url: JpUtilsPath.url("/platform/mgmt/log/rfc/execute?dlSeq=" + $("#dlSeq").val()),
+			url: "/platform/mgmt/log/rfc/execute?dlSeq=" + $("#dlSeq").val(),
 			success: function(response, textStatus, jqXHR)
 			{
-				document.location.href = "/platform/mgmt/log/detail_popup?dlSeq=" + response.RESULT;
+				document.location.href = "/platform/mgmt/log/view?dlSeq=" + response.RESULT;
 			}
 		});		
 	});

@@ -41,5 +41,4 @@ public class CredentialsPolicyEntity extends GeneralEntity implements IPaginatio
 	private int pwdValidPeriod;
 	private String fgUse;
 	private String fgDefault;
-	private String fgDelete;
 }

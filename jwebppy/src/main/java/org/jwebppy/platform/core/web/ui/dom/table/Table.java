@@ -21,15 +21,40 @@ public class Table extends Element implements IPagination
 	public Table()
 	{
 		super("TABLE");
-		addAttribute("CLASS", "ui table selectable celled sortable teal");
+		setDefaultTableClass();
 	}
 
 	public Table(IPagination pagination)
 	{
 		super("TABLE");
-		addAttribute("CLASS", "ui table selectable celled sortable teal");
+		setDefaultTableClass();
 
 		setPagination(pagination);
+	}
+
+	public Table(Element thead, Element tbody)
+	{
+		super("TABLE");
+		setDefaultTableClass();
+
+		addElement(thead);
+		addElement(tbody);
+	}
+
+	public Table(Element thead, Element tbody, IPagination pagination)
+	{
+		super("TABLE");
+		setDefaultTableClass();
+
+		addElement(thead);
+		addElement(tbody);
+
+		setPagination(pagination);
+	}
+
+	private void setDefaultTableClass()
+	{
+		addAttribute("CLASS", "ui table selectable celled sortable teal");
 	}
 
 	public void addThead(Element thead)

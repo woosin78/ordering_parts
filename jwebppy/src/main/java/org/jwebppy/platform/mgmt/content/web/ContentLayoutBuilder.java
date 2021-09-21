@@ -25,7 +25,7 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangKindDto;
 
 public class ContentLayoutBuilder
 {
-	public static Document getGeneralInfo(CItemDto cItem)
+	public static Document viewGeneralInfo(CItemDto cItem)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Item Type", cItem.getType().getType());
@@ -49,11 +49,11 @@ public class ContentLayoutBuilder
 		return document;
 	}
 
-	public static Document getGeneralInfoForm(CItemDto cItem, List<CItemComponentDto> cItemComponents, List<CItemComponentDto> cItemEntryPoints)
+	public static Document writeGeneralInfo(CItemDto cItem, List<CItemComponentDto> cItemComponents, List<CItemComponentDto> cItemEntryPoints)
 	{
 		Select loType = new Select("type");
 		loType.setLabel("Item Type");
-		loType.addAttribute("required");
+		loType.setRequired(true);
 
 		if (cItem.getCSeq() != null)
 		{
@@ -67,10 +67,10 @@ public class ContentLayoutBuilder
 			}
 		}
 
-		Element loId = new Input("name", cItem.getName());
+		Input loId = new Input("name", cItem.getName());
 		loId.setLabel("Name");
 		loId.setStyle("text-transform: uppercase");
-		loId.addAttribute("required");
+		loId.setRequired(true);
 
 		Textarea loDescription = new Textarea("description");
 		loDescription.setText(cItem.getDescription());
@@ -110,16 +110,16 @@ public class ContentLayoutBuilder
 		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(cItem.getDisplayFromValid(), CmDateFormatUtils.now()));
 		loFromValid.setId("fromValid");
 		loFromValid.setLabel("Valid From");
-		loFromValid.addAttribute("required");
+		loFromValid.setRequired(true);
 
 		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(cItem.getDisplayToValid(), PlatformCommonVo.UNLIMITED_DATE_TIME));
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
-		loToValid.addAttribute("required");
+		loToValid.setRequired(true);
 
 		Element loSort = new Input("sort", cItem.getSort());
 		loSort.setLabel("Sort");
-		loSort.addAttribute("required");
+		loSort.setRequired(true);
 
 		Element loVisible = new Checkbox("fgVisible", PlatformCommonVo.YES, cItem.getFgVisible());
 		loVisible.setLabel("Visible");
@@ -139,7 +139,7 @@ public class ContentLayoutBuilder
 		return document;
 	}
 
-	public static Document getLang(List<String> basenames, List<LangKindDto> langKinds, LangDto lang)
+	public static Document viewLang(List<String> basenames, List<LangKindDto> langKinds, LangDto lang)
 	{
 		Document document = new Document();
 

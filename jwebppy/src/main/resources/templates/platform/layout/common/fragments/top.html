@@ -12,7 +12,7 @@ function makeGmb()
 	let menu = [];
 
 	JpUtilsAjax.get({
-		url: JpUtilsPath.url("/platform/mgmt/content/my_menu"),
+		url: "/platform/mgmt/content/my_menu",
 		success: function(data, textStatus, jqXHR)
 		{
 			menu.push("<div class='header item'>");
@@ -94,7 +94,7 @@ function makeGmb()
 			
 			//Get last login information
 			$.ajax({
-				url: JpUtilsPath.url("/platform/common/authentication/last_login_info"),		
+				url: "/platform/common/authentication/last_login_info",		
 			    success: function(response, textStatus, jqXHR) 
 			    {
 			    	let data = response.RESULT;
@@ -110,8 +110,6 @@ function makeGmb()
 			    	};
 			    }	
 			});
-			
-			//$(".ui.dropdown").dropdown();
 		}
 	});
 	
@@ -130,7 +128,7 @@ function makeGmb()
 		
 		if (length > 0)
 		{
-			menu.push(" <i class='dropdown icon'></i>");
+			menu.push("<i class='dropdown icon'></i>");
 			menu.push("<div class='menu'>");
 
 			for (let i=0; i<length; i++)
@@ -157,15 +155,13 @@ function logout()
 function checkExpiredPassword()
 {
 	JpUtilsAjax.get({
-		url: JpUtilsPath.url("/platform/common/authentication/password_expiration/check"),
+		url: "/platform/common/authentication/password_expiration/check",
 		global: false,
 		success: function(data, textStatus, jqXHR)
 		{
 			let result = data.RESULT;
 			
 			let difference = parseInt(result.difference);
-
-			console.log(JSON.stringify(result));
 			
 			if (difference < 15)
 			{

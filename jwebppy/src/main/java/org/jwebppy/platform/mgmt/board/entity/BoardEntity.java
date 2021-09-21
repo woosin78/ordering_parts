@@ -20,5 +20,4 @@ public class BoardEntity extends GeneralEntity
 	private String fgUseComment;
 	private String fgSetPeriod;
 	private Integer ufSeq;
-	private String fgDelete;
 }

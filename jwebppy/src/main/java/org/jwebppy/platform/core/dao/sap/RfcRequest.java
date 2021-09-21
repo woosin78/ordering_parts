@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class RfcRequest extends AbstractDaoRequest
 {
-	private String landscape;
+	private String connectorName;
 	private String functionName;
 
 	public RfcRequest() {}
@@ -21,9 +21,9 @@ public class RfcRequest extends AbstractDaoRequest
 		this.functionName = functionName;
 	}
 
-	public RfcRequest(String landscape, String functionName)
+	public RfcRequest(String connectorName, String functionName)
 	{
-		this.landscape = landscape;
+		this.connectorName = connectorName;
 		this.functionName = functionName;
 	}
 }

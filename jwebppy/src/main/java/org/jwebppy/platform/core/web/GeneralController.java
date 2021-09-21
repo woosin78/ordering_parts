@@ -18,8 +18,8 @@ public abstract class GeneralController
 	@Autowired
 	private Environment environment;
 
-	protected final String DEFAULT_VIEW_URL = "DUMMY";
-	protected final String EMPTY_RETURN_VALUE = "";
+	public final static String DEFAULT_VIEW_URL = "DUMMY";
+	public final static String EMPTY_RETURN_VALUE = "";
 
 	protected Integer getUSeq()
 	{

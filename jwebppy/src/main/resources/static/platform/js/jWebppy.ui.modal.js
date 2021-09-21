@@ -64,6 +64,11 @@ let JpUiModal = function(target)
 			        }
     		};
     		
+    		if (JpUtilsObject.isNull(this.settings.ajax.url))
+    		{
+    			this.settings.ajax.url = JpUtilsPath.url(this.settings.ajax.url);
+    		};	    		
+    		
     		$.extend(true, ajaxSettings, this.settings.ajax);
     		
     		JpUtilsAjax.get(ajaxSettings);

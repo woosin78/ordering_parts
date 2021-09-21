@@ -59,7 +59,7 @@ let JpUiTab = function(context)
 					let thisTab = $(".ui.tab[data-tab=" + tabPath + "]");
 					
 					thisTab.find(".ui.dropdown").dropdown({
-						minCharacters: 3,
+						minCharacters: 2,
 						//placeholder: "Search",
 						fullTextSearch: true
 					});
@@ -98,6 +98,11 @@ let JpUiTab = function(context)
 				}
 		};
 		
+		if (JpUtilsObject.isNull(this.settings.tab.url))
+		{
+			this.settings.tab.url = JpUtilsPath.url(this.settings.tab.url);
+		};		
+		
 		this.tabSettings.apiSettings = ajaxSettings;
 
 		$.extend(true, this.tabSettings, this.settings.tab);
@@ -121,7 +126,7 @@ let JpUiTab = function(context)
 	
 	this.changePath = function(path)
 	{
-		this.settings.tab.path = path;
+		this.settings.tab.path = JpUtilsPath.url(path);
 		this.render();
 	};    
     

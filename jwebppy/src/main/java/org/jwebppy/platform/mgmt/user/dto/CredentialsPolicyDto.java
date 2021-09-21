@@ -43,7 +43,6 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private int pwdValidPeriod;
 	private String fgUse;
 	private String fgDefault;
-	private String fgDelete;
 
 	public CredentialsPolicyDto() {}
 
@@ -82,6 +81,7 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 		return fgDefault;
 	}
 
+	@Override
 	public String getFgDelete()
 	{
 		if (CmStringUtils.isEmpty(fgDelete))

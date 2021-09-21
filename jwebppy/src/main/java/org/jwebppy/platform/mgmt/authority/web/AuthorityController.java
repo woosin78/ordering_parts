@@ -40,14 +40,14 @@ public class AuthorityController extends UserGeneralController
 	private UserService userService;
 
 	@RequestMapping("/list")
-	public String main()
+	public String list()
 	{
 		return DEFAULT_VIEW_URL;
 	}
 
-	@GetMapping("/list/data")
+	@GetMapping("/list/layout")
 	@ResponseBody
-	public Object authorities(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object listLayout(@ModelAttribute CItemSearchDto cItemSearch)
 	{
 		PageableList<CItemDto> pageableList = null;
 
@@ -62,12 +62,12 @@ public class AuthorityController extends UserGeneralController
 			pageableList = new PageableList<>(contentService.getPageableCItems(cItemSearch));
 		}
 
-		return AuthorityLayoutBuilder.getList(pageableList);
+		return AuthorityLayoutBuilder.pageableList(pageableList);
 	}
 
-	@GetMapping("/detail/{tabPath}")
+	@GetMapping("/view/layout/{tabPath}")
 	@ResponseBody
-	public Object detail(@PathVariable("tabPath") String tabPath, @ModelAttribute("cItemSearch") CItemSearchDto cItemSearch, @ModelAttribute("userSearch") UserSearchDto userSearch)
+	public Object viewLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("cItemSearch") CItemSearchDto cItemSearch, @ModelAttribute("userSearch") UserSearchDto userSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
@@ -75,22 +75,22 @@ public class AuthorityController extends UserGeneralController
 
 			if (cItem.getType().equals(CItemType.G))
 			{
-				 return AuthorityLayoutBuilder.getAuthority(authorityService.getCItemAuthorities(cItemSearch));
+				 return AuthorityLayoutBuilder.viewAuthority(authorityService.getCItemAuthorities(cItemSearch));
 			}
 
 			return Collections.emptyList();
 		}
 		else if ("user".equals(tabPath))
 		{
-			return AuthorityLayoutBuilder.getUsers(userService.getUsersInCItem(userSearch));
+			return AuthorityLayoutBuilder.listUser(userService.getUsersInCItem(userSearch));
 		}
 
-		return AuthorityLayoutBuilder.getGeneralInfo(contentService.getCItem(cItemSearch.getCSeq()));
+		return AuthorityLayoutBuilder.viewGeneralInfo(contentService.getCItem(cItemSearch.getCSeq()));
 	}
 
-	@GetMapping("/write/{tabPath}")
+	@GetMapping("/write/layout/{tabPath}")
 	@ResponseBody
-	public Object modify(@PathVariable("tabPath") String tabPath, @ModelAttribute("cItemSearch") CItemSearchDto cItemSearch)
+	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("cItemSearch") CItemSearchDto cItemSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
@@ -104,7 +104,7 @@ public class AuthorityController extends UserGeneralController
 				cItems = authorityService.getSubRoles(cItemSearch2);
 			}
 
-			return AuthorityLayoutBuilder.getAuthorityForm(cItems);
+			return AuthorityLayoutBuilder.writeAuthority(cItems);
 		}
 		else
 		{
@@ -115,7 +115,7 @@ public class AuthorityController extends UserGeneralController
 				cItem = contentService.getCItem(cItemSearch.getCSeq());
 			}
 
-			return AuthorityLayoutBuilder.getGeneralInfoForm(cItem);
+			return AuthorityLayoutBuilder.writeGeneralInfo(cItem);
 		}
 	}
 
@@ -159,9 +159,9 @@ public class AuthorityController extends UserGeneralController
 		return contentService.delete(cSeqs);
 	}
 
-	@GetMapping("/sub_roles")
+	@GetMapping("/sub_role/layout")
 	@ResponseBody
-	public Object subRoles(@ModelAttribute CItemSearchDto cItemSearch, @RequestParam(value = "cSeqs", required = false) List<Integer> cSeqs)
+	public Object subRoleLayout(@ModelAttribute CItemSearchDto cItemSearch, @RequestParam(value = "cSeqs", required = false) List<Integer> cSeqs)
 	{
 		List<CItemDto> cItems = null;
 
@@ -180,6 +180,6 @@ public class AuthorityController extends UserGeneralController
 
 		}
 
-		return AuthorityLayoutBuilder.getAuthorityForm(cItems);
+		return AuthorityLayoutBuilder.writeAuthority(cItems);
 	}
 }
