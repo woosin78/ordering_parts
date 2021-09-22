@@ -11,8 +11,8 @@ public interface SapConnResourceMapper
 {
 	public int insert(SapConnResourceEntity sapConnResource);
 	public int update(SapConnResourceEntity sapConnResource);
-	public int updateFgDelete(Integer srcSeq);
-	public int updateFgUse(Integer scrSeq, String fgUse);
+	public int updateFgDelete(SapConnResourceEntity sapConnResource);
+	public int updateFgUse(SapConnResourceEntity sapConnResource);
 	public SapConnResourceEntity findSapConnResource(Integer scrSeq);
 	public List<SapConnResourceEntity> findPageSapConnResources(SapConnResourceSearchDto sapConnResourceSearch);
 	public List<SapConnResourceEntity> findAvailableSapConnResources();

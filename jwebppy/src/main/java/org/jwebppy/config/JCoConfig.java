@@ -53,7 +53,7 @@ public class JCoConfig
 					.client(sapConnResource.getClient())
 					.sysnr(sapConnResource.getInstanceNo())//Instance Number
 					.user(sapConnResource.getUsername())
-					.password(sapConnResource.getPassword())
+					.password(sapConnResource.getDecodedPassword())
 					.language(sapConnResource.getLanguage())
 					.poolCapacity(sapConnResource.getPoolCapacity())
 					.peakLimit(sapConnResource.getPeakLimit())

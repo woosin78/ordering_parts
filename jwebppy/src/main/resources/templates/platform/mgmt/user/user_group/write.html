@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{platform/layout/popup/index}">
+
+<th:block layout:fragment="content">
+<div class="ui dividing header">
+	User Group
+	<div class="sub header">Users can be classified according to regions, sales divisions, types of customers so on.</div>
+</div>
+<div class="ui one column grid">
+	<div class="column">
+		<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
+		<div class="ui button BTN_back" th:if="${ugSeq != null}"><i class="arrow left icon"></i> Back</div>
+	</div>
+</div>
+<div class="ui divider"></div>
+<div class="ui segment">
+	<form id="FORM_write" class="ui form" autocomplete="off" onsubmit="return false;">
+	<input type="hidden" id="ugSeq" name="ugSeq" th:value="${ugSeq}"/>
+	</form>
+</div>
+<div class="ui divider"></div>
+<div class="ui one column grid">
+	<div class="column">
+		<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
+		<div class="ui button BTN_back" th:if="${ugSeq != null}"><i class="arrow left icon"></i> Back</div>
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/user_group/write/layout",
+		data: { ugSeq: $("#ugSeq").val() },
+		success: function(data, textStatus, jqXHR)
+		{
+			$("#FORM_write").html(new JpUiRender().render(data));
+
+			$("#FORM_write").form({
+				inline: true,
+				fields: {
+					Name: {
+						identifier: "name",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					},
+					"Default SAP Connection Reousrce": {
+						identifier: "scrSeq",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					}					
+				}				
+			});
+		}
+	});	
+	
+	$(".BTN_save").on("click", function() {
+		if ($("#FORM_write").form("validate form"))
+		{
+			JpUtilsAjax.post({
+				url: "/platform/mgmt/user/user_group/save",
+				data: $("#FORM_write").serialize(),
+				success: function(data, textStatus, jqXHR)
+				{
+					if (JpUtilsString.isEmpty($("#ugSeq").val()))
+					{
+						opener.document.location.reload();
+						$("#ugSeq").val(data.RESULT);
+					}
+					else
+					{
+						opener.doSearch();
+					};
+					
+					goBack();
+				}
+			});
+		};
+	});		
+	
+	$(".BTN_back").on("click", function() {
+		goBack();
+	});
+	
+	function goBack()
+	{
+		document.location.href = JpUtilsPath.url("/platform/mgmt/user/user_group/view?ugSeq=" + $("#ugSeq").val());
+	};	
+});
+</script>
+
+</th:block>
+</html>

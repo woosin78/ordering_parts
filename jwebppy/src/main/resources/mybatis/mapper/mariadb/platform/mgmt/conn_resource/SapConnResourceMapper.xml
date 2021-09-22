@@ -3,8 +3,8 @@
 
 <mapper namespace="org.jwebppy.platform.mgmt.conn_resource.mapper.SapConnResourceMapper">
 	<insert id="insert" parameterType="SapConnResourceEntity" useGeneratedKeys="true" keyProperty="scrSeq">
-		insert into pltf_sap_conn_resource (type, name, description, app_server, instance_no, system_id, router_string, msg_server, router, grp_server, client, username, password, pool_capacity, peak_limit, fg_use, fg_delete, reg_username, reg_date) values (
-			#{type}, #{name}, #{description}, #{appServer}, #{instanceNo}, #{systemId}, #{routerString}, #{msgServer}, #{router}, #{grpServer}, #{client}, #{username}, #{password}, #{poolCapacity}, #{peakLimit}, 'N', 'N', #{regUsername}, #{regDate}
+		insert into pltf_sap_conn_resource (type, name, description, app_server, instance_no, system_id, router_string, msg_server, router, grp_server, client, username, password, pool_capacity, peak_limit, language, fg_use_user_lang, fg_use, fg_delete, reg_username, reg_date) values (
+			#{type}, #{name}, #{description}, #{appServer}, #{instanceNo}, #{systemId}, #{routerString}, #{msgServer}, #{router}, #{grpServer}, #{client}, #{username}, #{password}, #{poolCapacity}, #{peakLimit}, #{language}, #{fgUseUserLang}, 'N', 'N', #{regUsername}, #{regDate}
 		) 
 	</insert>
 
@@ -25,21 +25,29 @@
 			password=#{password},
 			pool_capacity=#{poolCapacity},
 			peak_limit=#{peakLimit},
-			fg_use=#{fgUse}
+			language=#{language},
+			fg_use_user_lang=#{fgUseUserLang},
+			fg_use=#{fgUse},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
 		where
 			scr_seq=#{scrSeq}
 	</update>
 	
 	<update id="updateFgDelete">
 		update pltf_sap_conn_resource set
-			fg_delete='Y'
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}			
 		where
-			scr_seq=#{scrSeq}			
+			scr_seq=#{scrSeq}
 	</update>
 	
 	<update id="updateFgUse">
 		update pltf_sap_conn_resource set
-			fg_use=#{fgUse}
+			fg_use=#{fgUse},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}			
 		where
 			scr_seq=#{scrSeq}			
 	</update>	

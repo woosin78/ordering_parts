@@ -6,8 +6,8 @@
 
 <th:block layout:fragment="content">
 <div class="ui dividing header">
-	SAP Connection Resource
-	<div class="sub header">This platform offers how to access functions of SAP using JCO and you need to set up the connection info. first.</div>
+  User Group
+  <div class="sub header">Users can be classified according to regions, sales divisions, types of customers so on.</div>
 </div>
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
@@ -30,8 +30,6 @@
 		<div class="column">
 			<div id="BTN_new" class="ui teal button"><i class="plus icon"></i> New</div>
 			<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
-			<div id="BTN_use" class="ui teal button"><i class="toggle on icon"></i> Use</div>
-			<div id="BTN_disuse" class="ui teal button"><i class="toggle off icon"></i> Disuse</div>
 		</div>
 	</div>	
 	<div class="ui divider"></div>
@@ -46,7 +44,7 @@ $(document).ready(function() {
 	listTable = new JpUiTable($("#TBL_list"));
 	listTable.settings = {
 			ajax: {
-				url: "/platform/mgmt/conn_resource/list/layout",
+				url: "/platform/mgmt/user/user_group/list/layout",
 				form: $("#FORM_search")
 			},
 			onClickPageNumber: function(pageNumber)
@@ -57,7 +55,7 @@ $(document).ready(function() {
 			onClickDataKey: function(element, key, row)
 			{
 				JpUiPopup.open({
-					url: "/platform/mgmt/conn_resource/view?scrSeq=" + JpUtilsString.trimToEmpty(key)
+					url: "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key)
 				});
 			}
 	};
@@ -75,7 +73,7 @@ $(document).ready(function() {
 	
 	$("#BTN_new").on("click", function() {
 		JpUiPopup.open({
-			url: "/platform/mgmt/conn_resource/write"
+			url: "/platform/mgmt/user/user_group/write"
 		});
 	});
 	
@@ -90,7 +88,7 @@ $(document).ready(function() {
 		if (confirm("Do you want to delete?"))
 		{
 			JpUtilsAjax.post({
-				url: "/platform/mgmt/conn_resource/delete",
+				url: "/platform/mgmt/user/user_group/delete",
 				data: $("#FORM_write").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -99,27 +97,7 @@ $(document).ready(function() {
 			});					
 		};
 	});
-	
-	$("#BTN_use").on("click", function() {
-		changeUse("use");
-	});
 
-	$("#BTN_disuse").on("click", function() {
-		changeUse("disuse");
-	});
-	
-	function changeUse(status)
-	{
-		JpUtilsAjax.post({
-			url: "/platform/mgmt/conn_resource/" + status,
-			data: $("#FORM_write").serialize(),
-			success: function(data, textStatus, jqXHR)
-			{
-				doSearch();
-			}
-		});
-	};
-	
 	doSearch();
 });
 

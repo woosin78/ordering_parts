@@ -2,7 +2,6 @@ package org.jwebppy.platform.mgmt.conn_resource.web;
 
 import java.util.List;
 
-import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.MgmtGeneralController;
@@ -83,21 +82,6 @@ public class SapConnResourceController extends MgmtGeneralController
 		return SapConnResourceLayoutBuilder.write(sapConnResource);
 	}
 
-	@GetMapping("/modify")
-	public Object modify(Model model, WebRequest webRequest)
-	{
-		setDefaultAttribute(model, webRequest);
-
-		return DEFAULT_VIEW_URL;
-	}
-
-	@GetMapping("/modify/layout")
-	@ResponseBody
-	public Object modifyLayout(@RequestParam("scrSeq") Integer scrSeq)
-	{
-		return SapConnResourceLayoutBuilder.write(sapConnResourceService.getSapConnResource(scrSeq));
-	}
-
 	@PostMapping("/save")
 	@ResponseBody
 	public Object save(@ModelAttribute SapConnResourceDto sapConnResource)
@@ -116,23 +100,23 @@ public class SapConnResourceController extends MgmtGeneralController
 	@ResponseBody
 	public Object use(@RequestParam("scrSeq") List<Integer> scrSeqs)
 	{
-		for (Integer scrSeq: ListUtils.emptyIfNull(scrSeqs))
+		if (sapConnResourceService.modifyFgUse(scrSeqs, PlatformCommonVo.YES) > 0)
 		{
-			sapConnResourceService.modifyFgUse(scrSeq, PlatformCommonVo.YES);
+			return PlatformCommonVo.SUCCESS;
 		}
 
-		return PlatformCommonVo.SUCCESS;
+		return PlatformCommonVo.FAIL;
 	}
 
 	@PostMapping("/disuse")
 	@ResponseBody
 	public Object disuse(@RequestParam("scrSeq") List<Integer> scrSeqs)
 	{
-		for (Integer scrSeq: ListUtils.emptyIfNull(scrSeqs))
+		if (sapConnResourceService.modifyFgUse(scrSeqs, PlatformCommonVo.NO) > 0)
 		{
-			sapConnResourceService.modifyFgUse(scrSeq, PlatformCommonVo.NO);
+			return PlatformCommonVo.SUCCESS;
 		}
 
-		return PlatformCommonVo.SUCCESS;
+		return PlatformCommonVo.FAIL;
 	}
 }

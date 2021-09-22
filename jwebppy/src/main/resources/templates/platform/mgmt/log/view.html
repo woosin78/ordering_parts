@@ -29,7 +29,7 @@
 <div th:if="${not #strings.isEmpty(dataAccessLog.error)}" class="ui tab attached segment teal" data-tab="error"></div>
 </form>
 
-<script type="application/javascript">
+<script>
 $(document).ready(function() {
 	let viewLogTab = new JpUiTab($("#TAB_viewLogDetail"));
 	viewLogTab.settings = {

@@ -7,7 +7,7 @@
 <th:block layout:fragment="content">
 <div class="ui dividing header">
 	SAP Connection Resource
-	<div class="sub header">You can manage credentials policy such as username and password.</div>
+	<div class="sub header">This platform offers how to access functions of SAP using JCO and you need to set up the connection info. first.</div>
 </div>
 <div class="ui one column grid">
 	<div class="column">
@@ -38,10 +38,10 @@
 		<div class="ui button BTN_back" th:if="${scrSeq != null}"><i class="arrow left icon"></i> Back</div>
 	</div>
 </div>
-<script th:inline="javascript">
+<script>
 $(document).ready(function() {
 	let type = $("input:radio[name=type]");
-	JpUiForm.checkbox.checkByValue(type, [[${sapConnResource.type}]]);
+	JpUiForm.checkbox.checkByValue(type, "[[${sapConnResource.type}]]");
 	
 	if (JpUtilsString.isNotEmpty($("#scrSeq").val()))
 	{
@@ -86,7 +86,25 @@ $(document).ready(function() {
 							prompt: "Please input {name}."
 						}
 					]
-				}
+				},
+				Username: {
+					identifier: "username",
+					rules: [
+						{
+							type: "empty",
+							prompt: "Please input {name}."
+						}
+					]
+				},
+				Password: {
+					identifier: "password",
+					rules: [
+						{
+							type: "empty",
+							prompt: "Please input {name}."
+						}
+					]
+				}				
 			}
 	};
 	
@@ -98,6 +116,13 @@ $(document).ready(function() {
 			success: function(data, textStatus, jqXHR)
 			{
 				$("#contentArea").html(new JpUiRender().render(data));
+				
+				if (JpUtilsString.isNotEmpty($("#scrSeq").val()))
+				{
+					formValidCheck.fields.Username.optional = true;
+					formValidCheck.fields.Password.optional = true;					
+				};
+				
 				$("#FORM_write").form(formValidCheck);
 				
 				$(JpUiForm.checkbox.checkedRadio(type)).checkbox("check");

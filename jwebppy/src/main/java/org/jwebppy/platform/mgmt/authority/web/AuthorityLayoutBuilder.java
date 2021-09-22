@@ -10,6 +10,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
+import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
 import org.jwebppy.platform.core.web.ui.dom.form.Input;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
@@ -82,6 +83,7 @@ public class AuthorityLayoutBuilder
 		elementMap.put("Description", cItem.getDescription());
 		elementMap.put("Valid From", cItem.getDisplayFromValid());
 		elementMap.put("Valid To", cItem.getDisplayToValid());
+		elementMap.put("Visible", cItem.getFgVisible());
 		elementMap.put("Reg.Date", cItem.getDisplayRegDate());
 		elementMap.put("Reg.Username", cItem.getRegUsername());
 
@@ -115,11 +117,15 @@ public class AuthorityLayoutBuilder
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
 
+		Checkbox loFgVisible = new Checkbox("fgVisible", PlatformCommonVo.YES, cItem.getFgVisible());
+		loFgVisible.setLabel("Visible");
+
 		Document document = new Document();
 		document.addElement(loName);
 		document.addElement(loDescription);
 		document.addElement(loFromValid);
 		document.addElement(loToValid);
+		document.addElement(loFgVisible);
 
 		return document;
 	}

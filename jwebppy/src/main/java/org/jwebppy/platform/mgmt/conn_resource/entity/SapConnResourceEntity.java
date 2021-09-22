@@ -34,4 +34,11 @@ public class SapConnResourceEntity extends GeneralEntity implements IPagination
 	private String language;
 	private String fgUseUserLang;
 	private String fgUse;
+
+	public SapConnResourceEntity() {}
+
+	public SapConnResourceEntity(Integer scrSeq)
+	{
+		this.scrSeq = scrSeq;
+	}
 }

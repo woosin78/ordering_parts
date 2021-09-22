@@ -3,8 +3,11 @@ package org.jwebppy.platform.mgmt.conn_resource.service;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
+import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceSearchDto;
 import org.jwebppy.platform.mgmt.conn_resource.entity.SapConnResourceEntity;
@@ -22,6 +25,11 @@ public class SapConnResourceService extends GeneralService
 
 	public int save(SapConnResourceDto sapConnResource)
 	{
+		if (CmStringUtils.isNotEmpty(sapConnResource.getPassword()))
+		{
+			sapConnResource.setPassword(AES256Cipher.getInstance().encode(sapConnResource.getPassword()));
+		}
+
 		if (sapConnResource.getScrSeq() == null)
 		{
 			return create(sapConnResource);
@@ -46,14 +54,24 @@ public class SapConnResourceService extends GeneralService
 		return sapConnResourceMapper.update(CmModelMapperUtils.map(sapConnResource, SapConnResourceEntity.class));
 	}
 
-	public int modifyFgUse(Integer scrSeq, String fgUse)
+	public int modifyFgUse(List<Integer> scrSeqs, String fgUse)
 	{
-		return sapConnResourceMapper.updateFgUse(scrSeq, fgUse);
+		int result = 0;
+
+		for (Integer scrSeq: ListUtils.emptyIfNull(scrSeqs))
+		{
+			SapConnResourceEntity sapConnResource = new SapConnResourceEntity(scrSeq);
+			sapConnResource.setFgUse(fgUse);
+
+			result += sapConnResourceMapper.updateFgUse(sapConnResource);
+		}
+
+		return result;
 	}
 
 	public int delete(Integer scrSeq)
 	{
-		return sapConnResourceMapper.updateFgDelete(scrSeq);
+		return sapConnResourceMapper.updateFgDelete(new SapConnResourceEntity(scrSeq));
 	}
 
 	public int delete(List<Integer> scrSeqs)

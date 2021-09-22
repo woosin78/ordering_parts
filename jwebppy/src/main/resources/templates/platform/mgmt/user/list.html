@@ -11,7 +11,7 @@
 </div>
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="checkbox" name="uSeq" style="display:none" value="" checked />
+	<input type="checkbox" name="uSeq" style="display:none" th:value="${uSeq}" checked />
 	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
 	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>	
 	<div class="fields">
@@ -114,7 +114,7 @@
 	    <div class="ui hidden divider"></div>
 	</div>
 </div>
-<script th:inline="javascript">
+<script>
 $(document).ready(function() {
 	let usersTable = new JpUiTable($("#TBL_users"));
 	usersTable.settings = {
@@ -484,7 +484,7 @@ $(document).ready(function() {
 							$(".ui.tab[data-tab=authority]").html(html.join(""));
 
 							JpUtilsAjax.get({
-								url: "/platform/mgmt/content/list/data",
+								url: "/platform/mgmt/content/list/layout",
 								data: {"types" : ["R", "G"]},
 								global: false,
 								traditional: true,
@@ -524,6 +524,7 @@ $(document).ready(function() {
 									ajax: {
 										url: "/platform/mgmt/user/my_authority",
 										global: false,
+										traditional : true,
 										form: $("#FORM_modify")
 									}
 							};
@@ -540,8 +541,8 @@ $(document).ready(function() {
 								$.each($("#TBL_myAuthorityList").find("input:checkbox[name=cSeq]"), function(i, item) {
 									values.push($(this).val());
 								});
-
-								myAuthorityTable.settings.ajax.data = "cSeqs=" + values.join(",");
+								
+								myAuthorityTable.settings.ajax.data = { cSeqs: values };
 								myAuthorityTable.render();
 
 								$("#availableAutority").dropdown("clear");
@@ -767,8 +768,8 @@ $(document).ready(function() {
 
 	function doSearch(pageNumber)
 	{
-		$("#FORM_search input:hidden[name=pageNumber]").val(JpUtilsString.defaultString(pageNumber, "1"));
-		$("#FORM_search input:hidden[name=rowPerPage]").val("10");
+		$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
+		$("#rowPerPage").val("10");
 
 		usersTable.load();
 	};
@@ -895,12 +896,6 @@ $(document).ready(function() {
 	{
 		return (viewUserTab.getPath().indexOf("write") > -1) ? true : false;
 	};
-
-	[# th:if="${uSeq != null}"]
-
-	$("#FORM_search input[name=uSeq]").val([[${uSeq}]]);	
-
-	[/]		
 	
 	doSearch();
 });

@@ -6,8 +6,8 @@
 
 <th:block layout:fragment="content">
 <div class="ui dividing header">
-	SAP Connection Resource
-	<div class="sub header">This platform offers how to access functions of SAP using JCO and you need to set up the connection info. first.</div>
+	User Group
+	<div class="sub header">Users can be classified according to regions, sales divisions, types of customers so on.</div>
 </div>
 <div class="ui one column grid">
 	<div class="column">
@@ -25,12 +25,12 @@
 	</div>
 </div>
 <form id="FORM_view" class="ui form" autocomplete="off" onsubmit="return false;">
-<input type="hidden" name="scrSeq" th:value="${scrSeq}" />
+<input type="hidden" id="ugSeq" name="ugSeq" th:value="${ugSeq}" />
 </form>
 <script>
 $(document).ready(function() {
 	JpUtilsAjax.get({
-		url: "/platform/mgmt/conn_resource/view/layout",
+		url: "/platform/mgmt/user/user_group/view/layout",
 		data: $("#FORM_view").serialize(),
 		success: function(data, textStatus, jqXHR)
 		{
@@ -39,14 +39,14 @@ $(document).ready(function() {
 	});
 	
 	$(".BTN_modify").on("click", function() {
-		document.location.href = JpUtilsPath.url("/platform/mgmt/conn_resource/write?scrSeq=" + $("#FORM_view input[name=scrSeq]").val());
+		document.location.href = JpUtilsPath.url("/platform/mgmt/user/user_group/write?ugSeq=" + $("#ugSeq").val());
 	});
 	
 	$(".BTN_delete").on("click", function() {
 		if (confirm("Do you want to delete?"))
 		{
 			JpUtilsAjax.post({
-				url: "/platform/mgmt/conn_resource/delete",
+				url: "/platform/mgmt/user/user_group/delete",
 				data: $("#FORM_view").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{

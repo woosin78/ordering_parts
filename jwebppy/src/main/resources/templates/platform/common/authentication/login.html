@@ -1,5 +1,8 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="Pragma" content="no-cache" />
@@ -12,16 +15,16 @@
 <link rel="stylesheet" type="text/css" th:href="@{/platform/css/login/login.css}" />
 <link rel="stylesheet" type="text/css" class="ui" th:href="@{/platform/css/semantic/semantic.min.css}" />
 
-<script type="application/javascript" th:src="@{/platform/js/jquery/jquery.min.js}"></script>
-<script type="application/javascript" th:src="@{/platform/js/jquery/jquery.cookie.js}"></script>
-<script type="application/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script type="application/javascript" th:src="@{/platform/js/jWebppy.ui.dimmer.js}"></script>
-<script type="application/javascript" th:src="@{/platform/js/jWebppy.utils.path.js}"></script>
-<script type="application/javascript" th:src="@{/platform/js/jWebppy.utils.object.js}"></script>
-<script type="application/javascript" th:src="@{/platform/js/jWebppy.utils.string.js}"></script>
-<script type="application/javascript" th:src="@{/platform/js/jWebppy.utils.ajax.js}"></script>
-<script type="application/javascript" th:src="@{/platform/js/semantic/semantic.min.js}"></script>
-<script type="application/javascript">
+<script th:src="@{/platform/js/jquery/jquery.min.js}"></script>
+<script th:src="@{/platform/js/jquery/jquery.cookie.js}"></script>
+<script th:src="@{/platform/js/jquery/jquery-ui.min.js}"></script>
+<script th:src="@{/platform/js/jWebppy.utils.object.js}"></script>
+<script th:src="@{/platform/js/jWebppy.utils.path.js}"></script>
+<script th:src="@{/platform/js/jWebppy.utils.string.js}"></script>
+<script th:src="@{/platform/js/jWebppy.utils.ajax.js}"></script>
+<script th:src="@{/platform/js/jWebppy.ui.dimmer.js}"></script>
+<script th:src="@{/platform/js/semantic/semantic.min.js}"></script>
+<script>
 let INDEX_URL = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).INDEX_URL}]]";
 
 $(window).load(function() {

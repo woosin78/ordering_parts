@@ -2,6 +2,7 @@ package org.jwebppy.platform.mgmt.conn_resource.dto;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
+import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
@@ -36,18 +37,30 @@ public class SapConnResourceDto extends GeneralDto implements IPagination
 	private String fgUseUserLang;
 	private String fgUse;
 
+	public SapConnResourceDto() {}
+
+	public SapConnResourceDto(Integer scrSeq)
+	{
+		this.scrSeq = scrSeq;
+	}
+
 	public SapConnType getType()
 	{
-		if (type == null)
-		{
-			return SapConnType.C;
-		}
-
-		return type;
+		return (type == null) ? SapConnType.C : type;
 	}
 
 	public String getFgUse()
 	{
 		return CmStringUtils.defaultIfEmpty(fgUse, PlatformCommonVo.NO);
+	}
+
+	public String getFgUseUserLang()
+	{
+		return CmStringUtils.defaultIfEmpty(fgUseUserLang, PlatformCommonVo.NO);
+	}
+
+	public String getDecodedPassword()
+	{
+		return (CmStringUtils.isNotEmpty(password)) ? AES256Cipher.getInstance().decode(password) : password;
 	}
 }

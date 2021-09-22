@@ -133,13 +133,16 @@ public class AuthorityController extends UserGeneralController
 		}
 		else
 		{
+			cItem.setName(CmStringUtils.upperCase(cItem.getName()));
+
 			if (cItem.getCSeq() != null)
 			{
 				CItemDto cItem2 = contentService.getCItem(cItem.getCSeq());
-				cItem2.setName(cItem.getName().toUpperCase());
+				cItem2.setName(cItem.getName());
 				cItem2.setDescription(cItem.getDescription());
 				cItem2.setFromValid(cItem.getFromValid());
 				cItem2.setToValid(cItem.getToValid());
+				cItem2.setFgVisible(cItem.getFgVisible());
 
 				return contentService.modify(cItem2);
 			}

@@ -190,7 +190,7 @@ let JpUiTable = function(table)
 					success: function(data, textStatus, jqXHR)
 					{
 						_this.afterHandle(data);
-					}			
+					}
 			};
 			
 			if (JpUtilsObject.isNull(this.settings.ajax.url))

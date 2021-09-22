@@ -2,6 +2,7 @@ package org.jwebppy.platform.mgmt.conn_resource.web;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections4.ListUtils;
@@ -11,6 +12,7 @@ import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
 import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
 import org.jwebppy.platform.core.web.ui.dom.form.Input;
+import org.jwebppy.platform.core.web.ui.dom.form.Select;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
 import org.jwebppy.platform.core.web.ui.dom.table.Thead;
@@ -84,9 +86,10 @@ public class SapConnResourceLayoutBuilder
 
 		elementMap.put("Client", sapConnResource.getClient());
 		elementMap.put("Username", sapConnResource.getUsername());
-		elementMap.put("Password", sapConnResource.getPassword());
 		elementMap.put("Pool Capacity", sapConnResource.getPoolCapacity());
 		elementMap.put("Peak Limit", sapConnResource.getPeakLimit());
+		elementMap.put("Language", sapConnResource.getLanguage());
+		elementMap.put("Use User Language", sapConnResource.getFgUseUserLang());
 		elementMap.put("Use", sapConnResource.getFgUse());
 		elementMap.put("Reg. Username", sapConnResource.getRegUsername());
 		elementMap.put("Reg. Date", sapConnResource.getDisplayRegDate());
@@ -143,9 +146,35 @@ public class SapConnResourceLayoutBuilder
 			document.addElement(logGrpServer);
 		}
 
+		Input loUsername = new Input("username", sapConnResource.getUsername());
+		loUsername.setLabel("Username");
+
+		Input loPassword = new Input("password", sapConnResource.getDecodedPassword());
+		loPassword.setLabel("Password");
+
+		if (sapConnResource.getScrSeq() == null)
+		{
+			loUsername.setRequired(true);
+			loPassword.setRequired(true);
+		}
+
+		Select loLanguage = new Select("language");
+		loLanguage.setLabel("Language");
+		loLanguage.setRequired(true);
+		loLanguage.setValue(sapConnResource.getLanguage());
+		loLanguage.addOption("en", new Locale("en").getDisplayLanguage());
+		loLanguage.addOption("ko", new Locale("ko").getDisplayLanguage());
+
+		Element loFgUseUserLang = new Checkbox("fgUseUserLang", PlatformCommonVo.YES, sapConnResource.getFgUseUserLang());
+		loFgUseUserLang.setLabel("Use User Language");
+
 		Element loFgUse = new Checkbox("fgUse", PlatformCommonVo.YES, sapConnResource.getFgUse());
 		loFgUse.setLabel("Use");
 
+		document.addElement(loUsername);
+		document.addElement(loPassword);
+		document.addElement(loLanguage);
+		document.addElement(loFgUseUserLang);
 		document.addElement(loFgUse);
 
 		return document;

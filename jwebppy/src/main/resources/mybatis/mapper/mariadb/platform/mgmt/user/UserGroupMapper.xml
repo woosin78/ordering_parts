@@ -2,6 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.platform.mgmt.user.mapper.UserGroupMapper">
+	<resultMap type="UserGroupEntity" id="userGroupEntityMap">
+		<id property="ugSeq" column="ug_seq" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+		<result property="modUsername" column="mod_username" />
+		<result property="modDate" column="mod_date" />
+		<association property="sapConnResource" foreignColumn="scr_seq" column="scr_seq" javaType="SapConnResourceEntity" select="org.jwebppy.platform.mgmt.conn_resource.mapper.SapConnResourceMapper.findSapConnResource" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="UserGroupEntity" useGeneratedKeys="true" keyProperty="ugSeq">
+		insert into pltf_user_group (name, description, scr_seq, fg_delete, reg_username, reg_date) values (
+			#{name}, #{description}, #{sapConnResource.scrSeq}, 'N', #{regUsername}, #{regDate}
+		) 
+	</insert>
+
+	<update id="update" parameterType="UserGroupEntity">
+		update pltf_user_group set
+			name=#{name},
+			description=#{description},
+			scr_seq=#{sapConnResource.scrSeq},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			ug_seq=#{ugSeq}
+	</update>
+	
+	<update id="updateFgDelete">
+		update pltf_user_group set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			ug_seq=#{ugSeq}			
+	</update>	
+
 	<select id="findUserGroup" resultType="UserGroupEntity">
 		select 
 		*
@@ -19,5 +56,20 @@
 		pltf_user_group
 		where
 		fg_delete='N'
+	</select>
+	
+	<select id="findfindPageUserGroups" resultType="UserGroupEntity">
+		<include refid="PaginationMapper.header">
+			<property name="orderBy" value="ug_seq desc"/>
+		</include>
+			
+		select 
+		*
+		from
+		pltf_user_group
+		where
+		fg_delete='N'
+		
+		<include refid="PaginationMapper.footer"/>
 	</select>	
 </mapper>

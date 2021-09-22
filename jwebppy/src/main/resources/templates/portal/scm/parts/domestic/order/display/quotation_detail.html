@@ -5,7 +5,7 @@
 	layout:decorate="~{portal/layout/common/index}">
 
 <th:block layout:fragment="content">
-	<script type="application/javascript" th:src="@{/portal/js/portal.utils.grid.download.js}"></script>
+	<script th:src="@{/portal/js/portal.utils.grid.download.js}"></script>
 
 	<div class="block-header">
 		<div class="block-title" th:text="#{DIVEU_TXT_0048}"></div>
@@ -81,7 +81,7 @@
 		<input type="hidden" name="pToDate" th:value="${pToDate}">
 	</form>
 	
-<script type="application/javascript">
+<script>
 
 //화면중 일부 area 를 채우는 그리드 예제. 상위 div #sample-grid-area 영역을 100% 채움.
 //컬럼 width 자동. scroller 자동.

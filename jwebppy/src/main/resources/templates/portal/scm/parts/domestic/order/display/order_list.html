@@ -5,7 +5,7 @@
 	layout:decorate="~{portal/layout/common/index}">
 
 <th:block layout:fragment="content">
-	<script type="application/javascript" th:src="@{/portal/js/portal.utils.order.js}"></script>
+	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
 
 	<div class="block-header">
 		<div class="block-title" th:text="#{DCP_T_ORDER_LIST}"></div>
@@ -84,7 +84,7 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
-<script type="application/javascript">
+<script>
 $(function(){
 	let customerType = "[[${erpUserInfo.get("TYPE")}]]";
 	
