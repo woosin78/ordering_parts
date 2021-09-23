@@ -1,82 +1,49 @@
 package org.jwebppy.platform.core.security.authentication.handler;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections4.CollectionUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
-import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmClassUtils;
-import org.jwebppy.platform.mgmt.content.dto.CItemDto;
-import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
-import org.jwebppy.platform.mgmt.content.dto.CItemType;
-import org.jwebppy.platform.mgmt.content.service.ContentService;
-import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 public class LoginFailureHandler implements AuthenticationFailureHandler
 {
 	@Autowired
-	private ContentService contentService;
-
-	@Autowired
 	private LoginHistoryService loginHistoryService;
-
-	@Autowired
-	private UserService userService;
 
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException
 	{
-		String fgAccountLocked = checkAccountLockedByWrongPassword(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME), exception);
+		loginHistoryService.fail(request, response, exception);
 
-		loginHistoryService.createLoginHistory(request, PlatformCommonVo.NO, fgAccountLocked);
+		response.setHeader("Login-Error-Type", CmClassUtils.getShortClassName(exception.getClass()).replaceAll("Exception", "") + ":" + exception.getMessage());
+		response.setStatus(getStatus(exception).value());
 
-		response.setHeader("Error-Type", CmClassUtils.getShortClassName(exception.getClass()).replaceAll("Exception", ""));
-		response.setStatus(HttpStatus.UNAUTHORIZED.value());
-
-		request.getSession().setAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME, request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
+		request.setAttribute(PlatformConfigVo.FORM_LOGIN_FAIL_TYPE, CmClassUtils.getShortClassName(exception.getClass()).replaceAll("Exception", ""));
 
 		request.getRequestDispatcher(PlatformConfigVo.FORM_LOGIN_PAGE_URL).forward(request, response);
 	}
 
-	//Super Admin 의 경우 로그인 실패 횟수 체크
-	protected String checkAccountLockedByWrongPassword(String username, AuthenticationException exception)
+	private HttpStatus getStatus(AuthenticationException exception)
 	{
-		if (exception instanceof BadCredentialsException)
+		HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
+
+		if (exception instanceof LockedException || exception instanceof CredentialsExpiredException)
 		{
-			CItemSearchDto cItemSearch = new CItemSearchDto();
-			cItemSearch.setUsername(username);
-			cItemSearch.setType(CItemType.R);
-			cItemSearch.setName(PlatformConfigVo.ROLE_PLTF_ADMIN);
-
-			List<CItemDto> cItems = contentService.getMyItems(cItemSearch);
-
-			if (CollectionUtils.isNotEmpty(cItems))
-			{
-				LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
-				loginHistorySearch.setUsername(username);
-
-				if (loginHistoryService.getLoginFailureCount(loginHistorySearch) >= PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_LIMIT_COUNT - 1)
-				{
-					userService.lockUserAccount(userService.getUserByUsername(username).getUSeq(), PlatformCommonVo.YES);
-
-					return PlatformCommonVo.YES;
-				}
-			}
+			httpStatus = HttpStatus.LOCKED;
 		}
 
-		return PlatformCommonVo.NO;
+		return httpStatus;
 	}
 }
 

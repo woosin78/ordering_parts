@@ -14,6 +14,7 @@ public class PlatformConfigVo
 	public final static String FORM_LOGIN_PROCESSING_PATH = "/login/check";
 	public final static String FORM_LOGIN_PAGE_URL = FORM_AUTHENTICATION_PATH + FORM_LOGIN_PAGE_PATH;
 	public final static String FORM_LOGIN_PROCESSING_URL = FORM_AUTHENTICATION_PATH + FORM_LOGIN_PROCESSING_PATH;
+	public final static String FORM_LOGIN_FAIL_TYPE = "Login-Fail-Type";
 	public final static int FORM_LOGIN_PASSWORD_FAIL_LIMIT_COUNT = 5;
 
 	public final static String FORM_LOGOUT_PROCESSING_URL = FORM_AUTHENTICATION_PATH + "/logout";

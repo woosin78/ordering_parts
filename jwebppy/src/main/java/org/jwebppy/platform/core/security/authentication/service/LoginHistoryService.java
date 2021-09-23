@@ -4,7 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
@@ -15,9 +17,17 @@ import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.mgmt.content.dto.CItemDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
+import org.jwebppy.platform.mgmt.content.service.ContentService;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,25 +36,42 @@ import org.springframework.transaction.annotation.Transactional;
 public class LoginHistoryService extends GeneralService
 {
 	@Autowired
+	private ContentService contentService;
+
+	@Autowired
 	private LoginHistoryMapper loginHistoryMapper;
+
+	@Autowired
+	private RequestCache requestCache;
 
 	@Autowired
 	private UserService userService;
 
-	public int createLoginHistory(HttpServletRequest request, String fgLoginResult)
+	public int success(HttpServletRequest request, HttpServletResponse response)
 	{
-		return createLoginHistory(request, fgLoginResult, null);
+		return createLoginHistory(request, response, PlatformCommonVo.YES, null);
 	}
 
-	public int createLoginHistory(HttpServletRequest request, String fgLoginResult, String fgAccountLocked)
+	public int fail(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
 	{
+		String fgAccountLocked = checkAccountLockedByWrongPassword(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME), exception);
+
+		return createLoginHistory(request, response, PlatformCommonVo.YES, fgAccountLocked);
+	}
+
+	public int createLoginHistory(HttpServletRequest request, HttpServletResponse response, String fgResult, String fgAccountLocked)
+	{
+		SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+		String referer = (savedRequest == null) ? request.getHeader("Referer") : savedRequest.getRedirectUrl();
+
 		LoginHistoryEntity loginHistory = new LoginHistoryEntity();
 		loginHistory.setUsername(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
 		loginHistory.setUserAgent(CmStringUtils.trimToEmpty(request.getHeader("user-agent")));
 		loginHistory.setIp(getIp(request));
 		loginHistory.setSessionId(request.getSession().getId());
-		loginHistory.setReferer(CmStringUtils.trimToEmpty(request.getHeader("referer")));
-		loginHistory.setFgResult(fgLoginResult);
+		loginHistory.setReferer(referer);
+		loginHistory.setFgResult(fgResult);
 		loginHistory.setTimezone(PlatformCommonVo.DEFAULT_TIMEZONE);
 
 		if (CmStringUtils.equals(fgAccountLocked, PlatformCommonVo.YES))
@@ -73,6 +100,35 @@ public class LoginHistoryService extends GeneralService
 	public int getLoginFailureCount(LoginHistorySearchDto loginHistorySearch)
 	{
 		return loginHistoryMapper.findLoginFailureCount(loginHistorySearch);
+	}
+
+	//Super Admin 의 경우 로그인 실패 횟수 체크
+	private String checkAccountLockedByWrongPassword(String username, AuthenticationException exception)
+	{
+		if (exception instanceof BadCredentialsException)
+		{
+			CItemSearchDto cItemSearch = new CItemSearchDto();
+			cItemSearch.setUsername(username);
+			cItemSearch.setType(CItemType.R);
+			cItemSearch.setName(PlatformConfigVo.ROLE_PLTF_ADMIN);
+
+			List<CItemDto> cItems = contentService.getMyItems(cItemSearch);
+
+			if (CollectionUtils.isNotEmpty(cItems))
+			{
+				LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
+				loginHistorySearch.setUsername(username);
+
+				if (getLoginFailureCount(loginHistorySearch) >= PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_LIMIT_COUNT - 1)
+				{
+					userService.lockUserAccount(userService.getUserByUsername(username).getUSeq(), PlatformCommonVo.YES);
+
+					return PlatformCommonVo.YES;
+				}
+			}
+		}
+
+		return PlatformCommonVo.NO;
 	}
 
 	private String getIp(HttpServletRequest request)

@@ -29,7 +29,30 @@ let INDEX_URL = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).INDEX_URL}]]"
 
 $(window).load(function() {
 	showLoginBox();
-	$("#username").focus();
+	
+	if (JpUtilsString.isNotEmpty($("#username").val()))
+	{
+		$("#password").select();
+	}
+	else
+	{
+		$("#username").select();
+	};
+	
+	let loginFailType = JpUtilsString.trimToEmpty("[[${#request.getAttribute(T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_FAIL_TYPE)}]]");
+	
+	if (JpUtilsString.isNotEmpty(loginFailType))
+	{
+		if (loginFailType == "CredentialsExpired")
+		{
+			alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]");
+			document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+		}
+		else
+		{
+			alert("[[#{PLTF_M_LOGIN_AUTHENTICATION_FAILED}]]");
+		};
+	};
 	
 	JpUiDimmer.hideDimmer();
 });
@@ -69,59 +92,21 @@ function loginCheck()
 let isProcessing = false;
 function login()
 {
+	JpUiDimmer.showDimmer();
+
+	//중복 submit 방지
 	if (!isProcessing)
 	{
 		isProcessing = true;
 		
-		let options = {
-				url: "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_PROCESSING_URL}]]",
-				data: $("#FORM_login").serialize(),
-				beforeSend: function(jqXHR, settings)
-				{
-					JpUiDimmer.showDimmer();
-				},
-				success: function(data, textStatus, jqXHR)
-				{
-					let username = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_USERNAME}]]";
-					
-					$.cookie(username, $("#" + username).val(), { expires : 365 });
-					document.location.href = "/forward/entry_point";
-				},			
-				error: function(jqXHR, textStatus, errorThrown)
-				{
-					let errorType = jqXHR.getResponseHeader("Error-Type");
-					
-					if (errorType == "CredentialsExpired")
-					{
-						alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]");
-						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
-					}
-					else
-					{
-						alert("[[#{PLTF_M_LOGIN_AUTHENTICATION_FAILED}]]");
-					};
-					
-					JpUiDimmer.hideDimmer();
-				},
-				complete: function(jqXHR, textStatus) {
-					isProcessing = false;
-				}
-		};
-		
-		let headerName = $("meta[name=_csrf_header]").attr("content");
-		let token = $("meta[name=_csrf]").attr("content");
-		
-		options.headers = {};
-		options.headers[headerName] = token;
-		
-		JpUtilsAjax.post(options);
+		$("#FORM_login").submit();
 	};
 };
 
 $(document).ready(function() {
 	JpUiDimmer.showDimmer();
 	
-	if ($.trim($.cookie("username")) != "")
+	if (JpUtilsString.isNotEmpty($.cookie("username")))
 	{
 		$("#username").val($.cookie("username"));
 	};	
@@ -133,10 +118,6 @@ $(document).ready(function() {
 		};	
 	});
 
-	$("#username, #password").on("focus", function(event) {
-		this.select();
-	});	
-	
 	$("#username, #password").on("keydown", function(event) {
 		if (event.keyCode == 13)
 		{
@@ -178,7 +159,7 @@ function showLoginBox()
 </head>
 <body>
 <div id="openNewWindow" style="position: fixed; top: 5px; right: 5px; cursor: pointer; font-weight: bold;">New Window</div>
-<form id="FORM_login" method="post" onsubmit="return loginCheck();">
+<form id="FORM_login" method="post" th:action="${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_PROCESSING_URL}" onsubmit="return loginCheck();">
 <input type="hidden" id="saveUsername" name="saveUsername" />
 <div id="wrap" class="wrap">
 	<div style="text-align: center">

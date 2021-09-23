@@ -11,7 +11,8 @@ public class CmHttpSessionRequestCache extends HttpSessionRequestCache
 	@Override
 	public void saveRequest(HttpServletRequest request, HttpServletResponse response)
 	{
-		if (CmStringUtils.notEquals(request.getHeader("x-requested-with"), "XMLHttpRequest"))
+		//if (CmStringUtils.notEquals(request.getHeader("x-requested-with"), "XMLHttpRequest"))
+		if (CmStringUtils.equals(request.getHeader("sec-fetch-dest"), "document"))
 		{
 			super.saveRequest(request, response);
 		}

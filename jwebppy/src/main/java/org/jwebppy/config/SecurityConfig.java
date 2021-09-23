@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	{
 		http
 			.authorizeRequests()
-				.antMatchers(PlatformConfigVo.INDEX_URL, PlatformConfigVo.ERROR_PAGE_URL, PlatformConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL, PlatformConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL, "/mail/tracking").permitAll()
+				.antMatchers(PlatformConfigVo.INDEX_URL, PlatformConfigVo.ERROR_PAGE_URL, PlatformConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL, PlatformConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL, "/mail/tracking", "/platform/common/authentication/test").permitAll()
 				.antMatchers("/platform/common/**").authenticated()
 				.antMatchers("/platform/**").hasRole(PlatformConfigVo.ROLE_PLTF_ADMIN)
 				.anyRequest().authenticated()
@@ -42,7 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 			.sessionManagement()
 				.sessionFixation().migrateSession()
 			.and()
-			//.csrf().disable()
 			.logout()
 				.logoutUrl(PlatformConfigVo.FORM_LOGOUT_PROCESSING_URL)
 				.invalidateHttpSession(true)

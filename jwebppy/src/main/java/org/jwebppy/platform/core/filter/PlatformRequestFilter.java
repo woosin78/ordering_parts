@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
@@ -34,7 +35,7 @@ public class PlatformRequestFilter implements Filter
 	{
 		HttpServletRequest httpRequest = (HttpServletRequest)request;
 
-		String method = httpRequest.getMethod();
+		String method = CmStringUtils.trimToEmpty(httpRequest.getMethod());
 
 		if (HttpMethod.GET.matches(method) || HttpMethod.POST.matches(method))
 		{
