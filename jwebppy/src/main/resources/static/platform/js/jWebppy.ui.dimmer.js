@@ -1,6 +1,6 @@
 let JpUiDimmer = {
 	//html: "<div id='jsUiDimmer' class='ui top aligned dimmer'></div>",
-		html: "<div id='jsUiDimmer' class='ui dimmer'></div>",
+	html: "<div id='jsUiDimmer' class='ui dimmer'></div>",
 	
 	type1: "<div class='ui text inverted loader'><div class='content'></div></div>",
 	type2: "<div class='content'><h3 class='ui inverted header'></h2><div class='ui teal button ok'>OK</div></div>",
