@@ -1,33 +1,106 @@
 let JpUiDimmer = {
-	html: "<div id='jsUiDimmer' class='ui dimmer'><div class='ui text inverted loader'><div class='content'>Loading</div></div></div>",	
-	showDimmer: function(message) {
-		if (!JpUiDimmer.isThereActiveDimmer())
+	//html: "<div id='jsUiDimmer' class='ui top aligned dimmer'></div>",
+		html: "<div id='jsUiDimmer' class='ui dimmer'></div>",
+	
+	type1: "<div class='ui text inverted loader'><div class='content'></div></div>",
+	type2: "<div class='content'><h3 class='ui inverted header'></h2><div class='ui teal button ok'>OK</div></div>",
+	type3: "<div class='content'><h3 class='ui inverted header'></h2><div class='ui teal button ok'>OK</div><div class='ui button cancel'>Cancel</div></div>",
+	
+	isMessageDimmerActive: false,
+	obj: null,
+	show: function(message) {
+		let obj = JpUiDimmer.getDimmer(1, message);
+		
+		//if (!obj.dimmer("is animating"))
 		{
-			let dimmer = $("#jsUiDimmer");
-
-			if (dimmer.length == 0)
-			{
-				$("body").append(JpUiDimmer.html);
-				dimmer = $("#jsUiDimmer");
-			};
-			
-		    if (!dimmer.dimmer("is active"))
-		    {
-		        if (message == null)
-		        {
-		            message = "페이지를 불러오는 중입니다.";
-		        };
-
-		        dimmer.find(".content").text(message);
-		        dimmer.dimmer({ closable: false }).dimmer("show");
-		    };			
+			JpUiDimmer.showDimmer();
 		};
 	},
-	hideDimmer: function() {
-		$("#jsUiDimmer").dimmer("hide");
+	alert: function(message, callEvent) {
+		JpUiDimmer.isMessageDimmerActive = true;
+		
+		let obj = JpUiDimmer.getDimmer(2, message);
+		let isClicked = false;
+		
+		obj.find(".ui.button.ok").on("click", function() {
+			JpUiDimmer.isMessageDimmerActive = false;
+			obj.dimmer("hide");
+			
+			if (JpUtilsObject.isNotNull(callEvent))
+			{
+				callEvent();
+			};
+		});
+		
+		JpUiDimmer.showDimmer();
 	},
-	isThereActiveDimmer: function()
-	{
-		return ($(".ui.dimmer.active").length == 0) ? false : true;
+	confirm: function(message, callEvent, cancelEvent) {
+		JpUiDimmer.isMessageDimmerActive = true;
+		
+		let obj = JpUiDimmer.getDimmer(3, message);
+		let isClicked = false;
+		
+		obj.find(".ui.button").on("click", function() {
+			JpUiDimmer.isMessageDimmerActive = false;
+			obj.dimmer("hide");
+			
+			if ($(this).hasClass("ok"))
+			{
+				if (JpUtilsObject.isNotNull(callEvent))
+				{
+					callEvent();
+				};				
+			}
+			else
+			{
+				if (JpUtilsObject.isNotNull(cancelEvent))
+				{
+					cancelEvent();
+				};				
+			};
+			
+			isClicked = true;
+		});
+		
+		JpUiDimmer.showDimmer();
+		$(this).delay(100000000);
+	},	
+	showDimmer: function() {
+		$("#jsUiDimmer").dimmer({
+			closable: false,
+			duration: { show: 300, hide:0 }
+		}).dimmer("show");
+	},
+	hide: function() {
+		if (!JpUiDimmer.isMessageDimmerActive)
+		{
+			$("#jsUiDimmer").dimmer("hide");
+		};
+	},
+	getDimmer: function(type, message) {
+		let obj = $("#jsUiDimmer");
+		
+		if (JpUtilsObject.isNull(obj))
+		{
+			$("body").append(JpUiDimmer.html);
+			obj = $("#jsUiDimmer");
+		};
+		
+		switch(type) {
+		case 1:
+			obj.html(JpUiDimmer.type1);
+			obj.find(".content").html(JpUtilsString.defaultString(message, "페이지를 불러오는 중입니다."));
+			break;
+		case 2:
+			obj.html(JpUiDimmer.type2);
+			obj.find(".ui.header").html(JpUtilsString.trimToEmpty(message));
+			break;
+		case 3:
+			obj.html(JpUiDimmer.type3);
+			obj.find(".ui.header").html(JpUtilsString.trimToEmpty(message));
+			break;
+		}
+		
+		return obj;
 	}
 };

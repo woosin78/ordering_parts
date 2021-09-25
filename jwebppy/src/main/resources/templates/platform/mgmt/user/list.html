@@ -13,7 +13,7 @@
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
 	<input type="checkbox" name="uSeq" style="display:none" th:value="${uSeq}" checked />
 	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
-	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>	
+	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
 	<div class="fields">
 		<div class="twelve wide field">
 			<div class="ui icon input">
@@ -74,7 +74,7 @@
 			<div class="ui button modify BTN_cancel"> Cancel</div>
 		</div>
 	</div>
-	
+
 	<div id="MDL_coptyToCreate" class="ui tiny modal">
 	    <h3 class="ui header">Create User</h3>
 	    <div class="content">
@@ -162,7 +162,7 @@ $(document).ready(function() {
 					{
 						return "<i class='lock icon'></i>";
 					}
-					else 
+					else
 					{
 						return "<i class='lock open icon'></i>";
 					};
@@ -177,11 +177,11 @@ $(document).ready(function() {
 	//Add custom rules in the form validation
 	let checkUsernameResultMsg = "";
 	let checkPasswordResultMsg = "";
-	
+
 	$.fn.form.settings.rules.checkCredentialPolicy = function(value, type)
 	{
 		let isValid = false;
-		
+
 		if (JpUtilsString.isNotEmpty(value))
 		{
 			JpUtilsAjax.get({
@@ -192,18 +192,18 @@ $(document).ready(function() {
 				success: function(data, textStatus, jqXHR)
 				{
 					let result = data.RESULT;
-					
+
 					if (result.RESULT == 1)
 					{
 						isValid = true;
 					};
-					
+
 					let message = "";
-					
+
 					$.each(data.RESULT.MESSAGE, function (index, value) {
 						message += value + "<br/>";
 					});
-					
+
 					if (type == "U")
 					{
 						checkUsernameResultMsg = message;
@@ -248,7 +248,7 @@ $(document).ready(function() {
 						prompt: "Please select {name}."
 					}
 				]
-			},			
+			},
 			Username: {
 				identifier: "username",
 				rules: [
@@ -419,9 +419,10 @@ $(document).ready(function() {
 				{
 					if (viewUserTab.tabPath != "general" && JpUtilsString.isEmpty(getSeq()))
 					{
-						alert("Please register the general information in advance.");
-						showCreateUserArea();
-
+						JpUiDimmer.alert("Please register the general information first.", function() {
+							showCreateUserArea();	
+						});
+						
 						return false;
 					};
 
@@ -442,11 +443,11 @@ $(document).ready(function() {
 						if (tabPath == "account")
 						{
 							JpUiCalendar.datetimeCalendar($("#fromValid"), $("#toValid"));
-							
+
 							$("input:password[name=password], input:password[name=confirmPassword]").on("keydown", function(event) {
 								if (event.keyCode == 13)
 								{
-									doSave();	
+									doSave();
 								};
 							});
 						}
@@ -541,7 +542,7 @@ $(document).ready(function() {
 								$.each($("#TBL_myAuthorityList").find("input:checkbox[name=cSeq]"), function(i, item) {
 									values.push($(this).val());
 								});
-								
+
 								myAuthorityTable.settings.ajax.data = { cSeqs: values };
 								myAuthorityTable.render();
 
@@ -579,14 +580,16 @@ $(document).ready(function() {
 
 		if (checkedCount == 0)
 		{
-			alert("Please select the target to copy.");
-			return;
+			JpUiDimmer.alert("Please select the target to copy.", function() {
+				return;
+			});
 		};
 
 		if (checkedCount > 1)
 		{
-			alert("Please select one.");
-			return;
+			JpUiDimmer.alert("Please select one.", function() {
+				return;
+			});			
 		};
 
 		$("#FORM_copyToCreate").form("reset");
@@ -611,8 +614,8 @@ $(document).ready(function() {
 						prompt: function (value)
 						{
 							return checkUsernameResultMsg;
-						}						
-					}					
+						}
+					}
 				]
 			},
 			Password: {
@@ -627,8 +630,8 @@ $(document).ready(function() {
 						prompt: function (value)
 						{
 							return checkPasswordResultMsg;
-						}						
-					}					
+						}
+					}
 				]
 			},
 			"Last Name": {
@@ -654,7 +657,7 @@ $(document).ready(function() {
 				success: function(data, textStatus, jqXHR)
 				{
 					let uSeq = data.RESULT;
-					
+
 					if (JpUtilsObject.isNotNull(uSeq))
 					{
 						//신규 생성한 계정이 조회되도록 함
@@ -686,15 +689,14 @@ $(document).ready(function() {
 		changeTab();
 	});
 
-	$("#BTN_lock").on("click", function() {
+	$("#BTN_lock").on("click", function(e) {
 		if (getCheckedUserCount() == 0)
 		{
-			alert("Please choose the users to lock.");
+			JpUiDimmer.alert("Please choose users to lock.");
 			return;
 		};
-
-		if (confirm("Do you want to lock the users?"))
-		{
+		
+		JpUiDimmer.confirm("Do you want to lock the users?", function() {
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/lock",
 				data: $("#FORM_search").serialize(),
@@ -703,18 +705,17 @@ $(document).ready(function() {
 					doSearch();
 				}
 			});
-		};
+		});
 	});
 
 	$("#BTN_unlock").on("click", function() {
 		if (getCheckedUserCount() == 0)
 		{
-			alert("Please choose the users to unlock.");
+			JpUiDimmer.alert("Please choose users to unlock.");
 			return;
 		};
-
-		if (confirm("Do you want to unlock the users?"))
-		{
+		
+		JpUiDimmer.confirm("Do you want to unlock the users?", function() {
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/unlock",
 				data: $("#FORM_search").serialize(),
@@ -723,18 +724,17 @@ $(document).ready(function() {
 					doSearch();
 				}
 			});
-		};
+		});
 	});
 
 	$("#BTN_delete").on("click", function() {
 		if (getCheckedUserCount() == 0)
 		{
-			alert("Please choose the users to delete.");
+			JpUiDimmer.alert("Please choose users to delete.");
 			return;
 		};
 
-		if (confirm("Do you want to delete the users?"))
-		{
+		JpUiDimmer.confirm("Do you want to delete the users?", function() {
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/delete",
 				data: $("#FORM_search").serialize(),
@@ -743,7 +743,7 @@ $(document).ready(function() {
 					doSearch();
 				}
 			});
-		};
+		});
 	});
 
 	function setSeq(seq)
@@ -794,7 +794,7 @@ $(document).ready(function() {
 
 		viewUserTab.changePath("/platform/mgmt/user/write/layout");
 		changeTab("general");
-
+		
 		$("#AREA_viewDetail").show();
 	};
 
@@ -807,13 +807,13 @@ $(document).ready(function() {
 		this.select();
 	});
 
-	$("#BTN_search").on("click", function() {		
+	$("#BTN_search").on("click", function() {
 		setSeq("");
 		doSearch();
 	});
 
 	$(".BTN_save").on("click", doSave);
-	
+
 	function doSave()
 	{
 		if ($("#FORM_modify").form("validate form"))
@@ -822,7 +822,7 @@ $(document).ready(function() {
 			{
 				$("#TBL_myAuthorityList").find(".ui.checkbox").checkbox("check");
 			};
-			
+
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/save/" + viewUserTab.tabPath,
 				data: $("#FORM_modify").serialize(),
@@ -837,9 +837,9 @@ $(document).ready(function() {
 							setSeq(uSeq);
 						};
 					};
-					
+
 					let tabPath = viewUserTab.tabPath;
-					
+
 					doSearch();
 					changeTab(tabPath);
 				}
@@ -896,7 +896,7 @@ $(document).ready(function() {
 	{
 		return (viewUserTab.getPath().indexOf("write") > -1) ? true : false;
 	};
-	
+
 	doSearch();
 });
 

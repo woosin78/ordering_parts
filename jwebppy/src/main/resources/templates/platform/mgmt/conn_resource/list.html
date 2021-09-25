@@ -83,12 +83,11 @@ $(document).ready(function() {
 		
 		if (listTable.getCheckedCount() == 0)
 		{
-			alert("Please select targets.");
+			JpUiDimmer.alert("Please choose targets.");
 			return;
 		};
 		
-		if (confirm("Do you want to delete?"))
-		{
+		JpUiDimmer.confirm("Do you want to delete?", function() {
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/conn_resource/delete",
 				data: $("#FORM_write").serialize(),
@@ -96,15 +95,27 @@ $(document).ready(function() {
 				{
 					listTable.load();
 				}
-			});					
-		};
+			});				
+		});
 	});
 	
 	$("#BTN_use").on("click", function() {
+		if (listTable.getCheckedCount() == 0)
+		{
+			JpUiDimmer.alert("Please choose targets.");
+			return;
+		};		
+		
 		changeUse("use");
 	});
 
 	$("#BTN_disuse").on("click", function() {
+		if (listTable.getCheckedCount() == 0)
+		{
+			JpUiDimmer.alert("Please choose targets.");
+			return;
+		};		
+		
 		changeUse("disuse");
 	});
 	

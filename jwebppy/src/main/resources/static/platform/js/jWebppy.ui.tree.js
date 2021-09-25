@@ -201,7 +201,9 @@ let JpUiTree = function(object)
 			};
 		};
 		
-		$("#MENU_command").show();
+		$("#MENU_command").hide(0, "linear", function() {
+			$("#MENU_command").fadeIn(200);
+		});
 	};
 	
 	this.hidePopupMenu = function()

@@ -43,8 +43,7 @@ $(document).ready(function() {
 	});
 	
 	$(".BTN_delete").on("click", function() {
-		if (confirm("Do you want to delete?"))
-		{
+		JpUiDimmer.confirm("Do you want to delete?", function() {
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/user_group/delete",
 				data: $("#FORM_view").serialize(),
@@ -53,8 +52,8 @@ $(document).ready(function() {
 					opener.doSearch();
 					window.close();
 				}
-			});			
-		};
+			});				
+		});
 	});	
 });
 </script>

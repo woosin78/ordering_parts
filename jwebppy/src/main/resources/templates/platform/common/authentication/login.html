@@ -54,7 +54,7 @@ $(window).load(function() {
 		};
 	};
 	
-	JpUiDimmer.hideDimmer();
+	JpUiDimmer.hide();
 });
 
 $(window).resize(function() {
@@ -92,7 +92,7 @@ function loginCheck()
 let isProcessing = false;
 function login()
 {
-	JpUiDimmer.showDimmer();
+	JpUiDimmer.show();
 
 	//중복 submit 방지
 	if (!isProcessing)
@@ -104,7 +104,7 @@ function login()
 };
 
 $(document).ready(function() {
-	JpUiDimmer.showDimmer();
+	JpUiDimmer.show();
 	
 	if (JpUtilsString.isNotEmpty($.cookie("username")))
 	{

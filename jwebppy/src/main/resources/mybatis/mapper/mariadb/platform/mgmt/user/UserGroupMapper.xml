@@ -39,7 +39,7 @@
 			ug_seq=#{ugSeq}			
 	</update>	
 
-	<select id="findUserGroup" resultType="UserGroupEntity">
+	<select id="findUserGroup" resultMap="userGroupEntityMap">
 		select 
 		*
 		from
@@ -49,7 +49,7 @@
 		and ug_seq=#{ugSeq}
 	</select>
 
-	<select id="findUserGroups" resultType="UserGroupEntity">
+	<select id="findUserGroups" resultMap="userGroupEntityMap">
 		select 
 		*
 		from
@@ -58,7 +58,7 @@
 		fg_delete='N'
 	</select>
 	
-	<select id="findfindPageUserGroups" resultType="UserGroupEntity">
+	<select id="findfindPageUserGroups" resultMap="userGroupEntityMap">
 		<include refid="PaginationMapper.header">
 			<property name="orderBy" value="ug_seq desc"/>
 		</include>

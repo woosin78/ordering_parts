@@ -78,15 +78,13 @@ $(document).ready(function() {
 	});
 	
 	$("#BTN_delete").on("click", function() {
-		
 		if (listTable.getCheckedCount() == 0)
 		{
-			alert("Please select targets.");
+			JpUiDimmer.alert("Please choose targets.");
 			return;
 		};
 		
-		if (confirm("Do you want to delete?"))
-		{
+		JpUiDimmer.confirm("Do you want to delete?", function() {
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/user_group/delete",
 				data: $("#FORM_write").serialize(),
@@ -94,8 +92,8 @@ $(document).ready(function() {
 				{
 					listTable.load();
 				}
-			});					
-		};
+			});				
+		});
 	});
 
 	doSearch();

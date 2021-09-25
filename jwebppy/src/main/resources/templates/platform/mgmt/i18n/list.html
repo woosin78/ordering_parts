@@ -90,12 +90,11 @@
 	$("#BTN_delete").on("click", function() {
 		if (langTable.getCheckedCount() == 0)
 		{
-			alert("Please choose targets to delete.");
+			JpUiDimmer.alert("Please choose targets.");
 			return;
-		};
-	 	
-		if (confirm("Do you want to delete?"))
-		{
+		};		
+		
+		JpUiDimmer.confirm("Do you want to delete?", function() {
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/i18n/delete",
 				data: $("#FORM_search").serialize(),
@@ -103,8 +102,8 @@
 				{
 					doSearch();
 				}
-			});         		
-		}
+			}); 			
+		});
 	});
 	
 	$("#BTN_search").on("click", function() {

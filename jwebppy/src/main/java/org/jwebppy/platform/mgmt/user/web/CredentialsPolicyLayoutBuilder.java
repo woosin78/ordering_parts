@@ -10,6 +10,7 @@ import org.jwebppy.platform.core.web.ui.dom.table.Thead;
 import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
+import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 
 public class CredentialsPolicyLayoutBuilder
 {
@@ -33,10 +34,12 @@ public class CredentialsPolicyLayoutBuilder
 
 		for (CredentialsPolicyDto credentialsPolicy: credentialsPolicies)
 		{
+			UserGroupDto userGroup = credentialsPolicy.getUserGroup();
+
 			Tr tbTr = new Tr();
 
 			tbTr.addDataKeyCheckboxTd("cpSeq", credentialsPolicy.getCpSeq());
-			tbTr.addTextTd(credentialsPolicy.getUserGroup().getName());
+			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
 			tbTr.addDataKeyLinkTd(credentialsPolicy.getName(), credentialsPolicy.getCpSeq());
 			tbTr.addTextTd(credentialsPolicy.getDescription());
 			tbTr.addTextTd(credentialsPolicy.getFgUse());

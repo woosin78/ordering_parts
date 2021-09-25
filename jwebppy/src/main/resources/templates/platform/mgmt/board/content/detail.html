@@ -115,16 +115,15 @@ $(document).ready(function() {
 	});
 
 	$(".BTN_delete").on("click", function() {
-		if (confirm("Do you want delete it?"))
-		{
+		JpUiDimmer.confirm("Do you want delete it?", function() {
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/board/content/delete",
 				data: { bcSeq: $("#bcSeq").val() },
 				success: function(data, textStatus, jqXHR) {
 					$(".BTN_list").trigger("click");
 				}	
-			});
-		};
+			});			
+		});
 	});
 
 	$(".BTN_list").on("click", function() {

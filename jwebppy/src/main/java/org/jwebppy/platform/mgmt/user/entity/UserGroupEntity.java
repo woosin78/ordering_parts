@@ -2,7 +2,7 @@ package org.jwebppy.platform.mgmt.user.entity;
 
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
-import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
+import org.jwebppy.platform.mgmt.conn_resource.entity.SapConnResourceEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +18,7 @@ public class UserGroupEntity extends GeneralDto implements IPagination
 	private Integer ugSeq;
 	private String name;
 	private String description;
-	private SapConnResourceDto sapConnResource;
+	private SapConnResourceEntity sapConnResource;
 
 	public UserGroupEntity() {}
 

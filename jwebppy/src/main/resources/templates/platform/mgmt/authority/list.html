@@ -130,8 +130,9 @@ $(document).ready(function() {
 				{
 					if (viewAuthorityTab.tabPath != "general" && getSeq() == "")
 					{
-						alert("Please register the general information in advance.");
-						showCreateAuthorityArea();
+						JpUiDimmer.alert("Please register the general information first.", function() {
+							showCreateAuthorityArea();	
+						});
 
 						return false;
 					};
@@ -320,12 +321,11 @@ $(document).ready(function() {
 	$("#BTN_delete").on("click", function() {
 		if (getCheckedAuthorityCount() == 0)
 		{
-			alert("Please choose the authorities to delete.");
+			JpUiDimmer.alert("Please choose authorities to delete.");
 			return;
 		};
-
-		if (confirm("Do you want to delete the authorities?"))
-		{
+		
+		JpUiDimmer.confirm("Do you want to delete the authorities?", function() {
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/authority/delete",
 				data: $("#FORM_search").serialize(),
@@ -333,8 +333,8 @@ $(document).ready(function() {
 				{
 					doSearch();
 				}
-			});
-		};
+			});			
+		});
 	});
 	
 	function setSeq(seq)
@@ -356,15 +356,6 @@ $(document).ready(function() {
 	{
 		return authorityTable.getCheckedCount();
 	};
-
-	/*
-	function doSearch(pageNumber)
-	{
-		$("#FORM_search input:hidden[name=cSeq]").val("");
-
-		doSearch(pageNumber)
-	};
-	*/
 	
 	function doSearch(pageNumber)
 	{

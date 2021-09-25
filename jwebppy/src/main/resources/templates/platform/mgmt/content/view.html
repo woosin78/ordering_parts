@@ -253,8 +253,7 @@
 	};
 	tree.deleteItem = function(key, pKey)
 	{
-		if (confirm("Do you want to delete the item?"))
-		{
+		JpUiDimmer.confirm("Do you want to delete the item?", function() {
 			setSeq(key, pKey);
 			
 			JpUtilsAjax.post({
@@ -268,17 +267,12 @@
 					changeTab();
 				}
 			});
-		};
+		});
 	};
 	tree.pasteItem = function(key, pKey)
 	{
 		let previousCommand = tree.getPreviousCommand();
 		let url;
-		
-		for (let i=0, length=tree.commands.length; i<length; i++)
-		{
-			console.log(tree.commands[i]);	
-		};
 		
 		if (previousCommand.COMMAND == "COPY")
 		{
@@ -286,35 +280,36 @@
 			
 			if (tree.isSubItems())
 			{
-				if (confirm("Do you want to copy including the sub items?"))
-				{
-					url = "/platform/mgmt/content/copy_with_sub_items";	
-				};
-					
+				JpUiDimmer.confirm("Do you want to copy including the sub items?", function() {
+					doPaste("/platform/mgmt/content/copy_with_sub_items");
+				});
 			};
 		}
 		else if (previousCommand.COMMAND == "CUT")
 		{
-			url = "/platform/mgmt/content/move";
+			doPaste("/platform/mgmt/content/move");
 		};
 		
-		if (JpUtilsString.isNotEmpty(url))
+		function doPaste(url)
 		{
-			let command = tree.getCommand();
-			
-			setSeq(previousCommand.KEY, key);
-			
-			JpUtilsAjax.post({
-				url: url,
-				data: $("#FORM_modifyItem").serialize(),
-				success: function(data, textStatus, jqXHR)
-				{
-					initSeq();
-					
-					tree.refresh();
-					changeTab();
-				}
-			});
+			if (JpUtilsString.isNotEmpty(url))
+			{
+				let command = tree.getCommand();
+				
+				setSeq(previousCommand.KEY, key);
+				
+				JpUtilsAjax.post({
+					url: url,
+					data: $("#FORM_modifyItem").serialize(),
+					success: function(data, textStatus, jqXHR)
+					{
+						initSeq();
+						
+						tree.refresh();
+						changeTab();
+					}
+				});
+			};			
 		};
 	};	
 	tree.setUrl("/platform/mgmt/content/tree");

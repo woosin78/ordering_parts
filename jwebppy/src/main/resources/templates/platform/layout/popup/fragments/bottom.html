@@ -48,11 +48,11 @@ $(document).ready(function() {
 });
 
 $(document).ajaxStart(function(event, jqXHR, ajaxOptions) {
-	JpUiDimmer.showDimmer();
+	JpUiDimmer.show();
 });
 
 $(document).ajaxStop(function() {
-	JpUiDimmer.hideDimmer();
+	JpUiDimmer.hide();
 });
 
 $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
