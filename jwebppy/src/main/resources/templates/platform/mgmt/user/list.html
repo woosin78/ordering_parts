@@ -137,22 +137,32 @@ $(document).ready(function() {
 	  				};
 				}
 			},
-			onClickDataKey: function(element, key, row)
+			onClickDataKey: function(element, key, row, column, rowIndex, columnIndex)
 			{
-				viewUserTab.changePath("/platform/mgmt/user/view/layout");
-
-				if ($(row).hasClass("active"))
+				if (columnIndex == 3)
 				{
-					$("#AREA_viewDetail .ui.header").html("Details of User, " + $(element).html());
+					viewUserTab.changePath("/platform/mgmt/user/view/layout");
 
-					setSeq(key);
-					showUserDetailsArea();
+					if ($(row).hasClass("active"))
+					{
+						$("#AREA_viewDetail .ui.header").html("Details of User, " + $(element).html());
+
+						setSeq(key);
+						showUserDetailsArea();
+					}
+					else
+					{
+						initSeq();
+						hideUserDetailsArea();
+					};					
 				}
-				else
+				else if (columnIndex == 7)
 				{
-					initSeq();
-					hideUserDetailsArea();
+					JpUiPopup.open({
+						url: "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key)
+					});					
 				};
+
 			},
 			editColumns: function(trIndex, tr, tdIndex, td, text)
 			{

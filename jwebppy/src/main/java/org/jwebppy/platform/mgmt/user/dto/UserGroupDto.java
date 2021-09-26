@@ -19,6 +19,9 @@ public class UserGroupDto extends GeneralDto implements IPagination
 	private String name;
 	private String description;
 	private SapConnResourceDto sapConnResource;
+	private String dateFormat;
+	private String timeFormat;
+	private String timezone;
 
 	public UserGroupDto() {}
 

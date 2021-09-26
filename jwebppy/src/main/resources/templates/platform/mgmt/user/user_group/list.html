@@ -52,11 +52,25 @@ $(document).ready(function() {
 				$("#pageNumber").val(pageNumber);
 				doSearch();
 			},
-			onClickDataKey: function(element, key, row)
+			onClickDataKey: function(element, key, row, column, rowIndex, columnIndex)
 			{
-				JpUiPopup.open({
-					url: "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key)
-				});
+				let url = null;
+				
+				if (columnIndex == 1)
+				{
+					url = "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key);
+				}
+				else if (columnIndex == 6)
+				{
+					url = "/platform/mgmt/conn_resource/view?scrSeq=" + JpUtilsString.trimToEmpty(key);
+				}
+				
+				if (JpUtilsString.isNotEmpty(url))
+				{
+					JpUiPopup.open({
+						url: url
+					});
+				};
 			}
 	};
 

@@ -82,6 +82,9 @@ $(document).ready(function() {
 				$("a[downloadKey]").on("click", function() {					
 					let downloadKey = $(this).attr("downloadKey");
 					
+					JpUtilsDownload.download(downloadKey);
+					
+					/*
 					$.fileDownload("/platform/mgmt/download", {
 						httpMethod: "post",
 						data: { key: downloadKey },
@@ -93,6 +96,7 @@ $(document).ready(function() {
 							return false;
 						}	
 					});
+					*/
 				});
 			}
 			else

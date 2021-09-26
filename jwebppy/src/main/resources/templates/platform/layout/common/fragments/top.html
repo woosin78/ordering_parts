@@ -64,14 +64,14 @@ function makeGmb()
 			});
 			
 			$(".ui.menu.topMenu span.text").on("click", function() {
-				moveToLink(this);
+				goToMenu(this);
 			});
 			
 			$(".ui.menu.topMenu span.text[url]").parent("div.item").on("click", function() {
-				moveToLink($(this).find("span.text[url]"));
+				goToMenu($(this).find("span.text[url]"));
 			});
 			
-			function moveToLink(menu)
+			function goToMenu(menu)
 			{
 				let url = $(menu).attr("url");
 				
@@ -165,10 +165,9 @@ function checkExpiredPassword()
 			
 			if (difference < 15)
 			{
-				if (confirm("Your password will expire on " + result.expiredDate + ". Please change it within the date.\nDo you want to change it now?"))
-				{
+				JpUiDimmer.confirm("Your password will expire on " + result.expiredDate + ". Please change it within the date.<br/>Do you want to change it now?", function() {
 					document.location.href = [[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]];
-				};
+				});				
 			};
 		}
 	});

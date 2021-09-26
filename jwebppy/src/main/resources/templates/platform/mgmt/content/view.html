@@ -83,6 +83,16 @@
 			ajax: {
 				beforeSend: function(settings)
 				{
+					if (viewItemTab.tabPath != "general" && JpUtilsString.isEmpty(getSeq()))
+					{
+						JpUiDimmer.alert("Please register the general information first.", function() {
+							viewItemTab.changePath("/platform/mgmt/content/write/layout");
+							changeTab();
+						});
+						
+						return false;
+					};					
+					
 					settings.data = $("#FORM_modifyItem").serialize();					
 					return settings;
 				}
@@ -253,7 +263,7 @@
 	};
 	tree.deleteItem = function(key, pKey)
 	{
-		JpUiDimmer.confirm("Do you want to delete the item?", function() {
+		JpUiDimmer.confirm("Do you want to delete?", function() {
 			setSeq(key, pKey);
 			
 			JpUtilsAjax.post({
@@ -396,17 +406,7 @@
 	{
 		changeButtonStatus();
 	
-		viewItemTab.changeTab(tabPath);
-	};
-	
-	function isCreating()
-	{
-		if (isOnForm() && getSeq() == "")
-		{
-			return true;
-		}
-	
-		return false;
+		viewItemTab.changeTab(JpUtilsString.defaultString(tabPath, "general"));
 	};
 	
 	function isOnForm()

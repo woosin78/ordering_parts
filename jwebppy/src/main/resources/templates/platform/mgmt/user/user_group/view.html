@@ -35,6 +35,12 @@ $(document).ready(function() {
 		success: function(data, textStatus, jqXHR)
 		{
 			$("#contentArea").html(new JpUiRender().render(data));
+			
+			$("a.sap-conn-resource").on("click", function() {
+				JpUiPopup.open({
+					url: url = "/platform/mgmt/conn_resource/view?scrSeq=" + JpUtilsString.trimToEmpty($(this).attr("data-key"))
+				});
+			});			
 		}
 	});
 	
@@ -54,7 +60,7 @@ $(document).ready(function() {
 				}
 			});				
 		});
-	});	
+	});
 });
 </script>
 </th:block>

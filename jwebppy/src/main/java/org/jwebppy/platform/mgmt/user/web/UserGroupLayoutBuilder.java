@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
+import org.jwebppy.platform.core.web.ui.dom.Link;
 import org.jwebppy.platform.core.web.ui.dom.form.Input;
 import org.jwebppy.platform.core.web.ui.dom.form.InputHidden;
 import org.jwebppy.platform.core.web.ui.dom.form.Select;
@@ -24,11 +25,12 @@ public class UserGroupLayoutBuilder
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
-		thTr.addTextTh("Name", "four wide");
-		thTr.addTextTh("Description", "four wide");
+		thTr.addTextTh("Name", "three wide");
+		thTr.addTextTh("Description", "three wide");
+		thTr.addTextTh("Date Format", "two wide");
+		thTr.addTextTh("Time Format", "two wide");
+		thTr.addTextTh("Timezone", "two wide");
 		thTr.addTextTh("Default SAP Connection Resource", "three wide");
-		thTr.addTextTh("Reg.Username", "two wide");
-		thTr.addTextTh("Reg.Date", "two wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -37,13 +39,16 @@ public class UserGroupLayoutBuilder
 
 		for (UserGroupDto userGroup : ListUtils.emptyIfNull(pageableList.getList()))
 		{
+			SapConnResourceDto sapConnResource = userGroup.getSapConnResource();
+
 			Tr tbTr = new Tr();
 			tbTr.addDataKeyCheckboxTd("ugSeq", userGroup.getUgSeq());
 			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
 			tbTr.addTextTd(userGroup.getDescription());
-			tbTr.addTextTd(userGroup.getSapConnResource().getName());
-			tbTr.addTextTd(userGroup.getRegUsername());
-			tbTr.addTextTd(userGroup.getDisplayRegDate());
+			tbTr.addTextTd(userGroup.getDateFormat());
+			tbTr.addTextTd(userGroup.getTimeFormat());
+			tbTr.addTextTd(userGroup.getTimezone());
+			tbTr.addDataKeyLinkTd(sapConnResource.getName(), sapConnResource.getScrSeq());
 
 			tbody.addTr(tbTr);
 		}
@@ -56,10 +61,19 @@ public class UserGroupLayoutBuilder
 
 	public static Document view(UserGroupDto userGroup)
 	{
+		SapConnResourceDto sapConnResource = userGroup.getSapConnResource();
+
+		Link loSapConnResource = new Link(sapConnResource.getName());
+		loSapConnResource.setClass("sap-conn-resource");
+		loSapConnResource.setKey(sapConnResource.getScrSeq());
+
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Name", userGroup.getName());
 		elementMap.put("Description", userGroup.getDescription());
-		elementMap.put("Default SAP Connection Resource", userGroup.getSapConnResource().getName());
+		elementMap.put("Date Format", userGroup.getDateFormat());
+		elementMap.put("Time Format", userGroup.getTimeFormat());
+		elementMap.put("Timezone", userGroup.getTimezone());
+		elementMap.put("Default SAP Connection Resource", loSapConnResource);
 		elementMap.put("Reg. Username", userGroup.getRegUsername());
 		elementMap.put("Reg. Date", userGroup.getDisplayRegDate());
 		elementMap.put("Mod. Username", userGroup.getModUsername());
@@ -92,10 +106,22 @@ public class UserGroupLayoutBuilder
 			loSapConnResource.addOption(sapConnResource.getScrSeq(), sapConnResource.getName());
 		}
 
+		Input loDateFormat = new Input("dateFormat", userGroup.getDateFormat());
+		loDateFormat.setLabel("Date Format");
+
+		Input loTimeFormat = new Input("timeFormat", userGroup.getTimeFormat());
+		loTimeFormat.setLabel("Time Format");
+
+		Input loTimezone = new Input("timezone", userGroup.getTimezone());
+		loTimezone.setLabel("Timezone");
+
 		Document document = new Document();
 		document.addElement(loUgSeq);
 		document.addElement(loName);
 		document.addElement(loDescription);
+		document.addElement(loDateFormat);
+		document.addElement(loTimeFormat);
+		document.addElement(loTimezone);
 		document.addElement(loSapConnResource);
 
 		return document;

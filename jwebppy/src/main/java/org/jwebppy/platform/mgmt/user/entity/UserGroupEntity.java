@@ -19,6 +19,9 @@ public class UserGroupEntity extends GeneralDto implements IPagination
 	private String name;
 	private String description;
 	private SapConnResourceEntity sapConnResource;
+	private String dateFormat;
+	private String timeFormat;
+	private String timezone;
 
 	public UserGroupEntity() {}
 

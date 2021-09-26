@@ -3,8 +3,8 @@ let JpUiDimmer = {
 	html: "<div id='jsUiDimmer' class='ui dimmer'></div>",
 	
 	type1: "<div class='ui text inverted loader'><div class='content'></div></div>",
-	type2: "<div class='content'><h3 class='ui inverted header'></h2><div class='ui teal button ok'>OK</div></div>",
-	type3: "<div class='content'><h3 class='ui inverted header'></h2><div class='ui teal button ok'>OK</div><div class='ui button cancel'>Cancel</div></div>",
+	type2: "<div class='content'><h3 class='ui inverted header'></h2><button class='ui teal button ok'>OK</button></div>",
+	type3: "<div class='content'><h3 class='ui inverted header'></h2><button class='ui teal button ok'>OK</button><button class='ui button cancel'>Cancel</button></div>",
 	
 	isMessageDimmerActive: false,
 	obj: null,
@@ -20,7 +20,6 @@ let JpUiDimmer = {
 		JpUiDimmer.isMessageDimmerActive = true;
 		
 		let obj = JpUiDimmer.getDimmer(2, message);
-		let isClicked = false;
 		
 		obj.find(".ui.button.ok").on("click", function() {
 			JpUiDimmer.isMessageDimmerActive = false;
@@ -38,7 +37,6 @@ let JpUiDimmer = {
 		JpUiDimmer.isMessageDimmerActive = true;
 		
 		let obj = JpUiDimmer.getDimmer(3, message);
-		let isClicked = false;
 		
 		obj.find(".ui.button").on("click", function() {
 			JpUiDimmer.isMessageDimmerActive = false;
@@ -49,7 +47,7 @@ let JpUiDimmer = {
 				if (JpUtilsObject.isNotNull(callEvent))
 				{
 					callEvent();
-				};				
+				};
 			}
 			else
 			{
@@ -58,18 +56,29 @@ let JpUiDimmer = {
 					cancelEvent();
 				};				
 			};
-			
-			isClicked = true;
 		});
 		
 		JpUiDimmer.showDimmer();
-		$(this).delay(100000000);
 	},	
 	showDimmer: function() {
 		$("#jsUiDimmer").dimmer({
 			closable: false,
 			duration: { show: 300, hide:0 }
 		}).dimmer("show");
+		
+		if (JpUtilsObject.isNotNull($("#jsUiDimmer").find(".ui.button")))
+		{
+			let cancelButton = $("#jsUiDimmer").find(".ui.button.cancel");
+			
+			if (JpUtilsObject.isNotNull(cancelButton))
+			{
+				cancelButton.focus();
+			}
+			else
+			{
+				$("#jsUiDimmer").find(".ui.button.ok").focus();
+			};			
+		}
 	},
 	hide: function() {
 		if (!JpUiDimmer.isMessageDimmerActive)

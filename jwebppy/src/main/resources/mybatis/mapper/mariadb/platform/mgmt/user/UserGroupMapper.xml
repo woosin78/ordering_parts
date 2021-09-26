@@ -6,6 +6,9 @@
 		<id property="ugSeq" column="ug_seq" />
 		<result property="name" column="name" />
 		<result property="description" column="description" />
+		<result property="dateFormat" column="date_format" />
+		<result property="timeFormat" column="time_format" />
+		<result property="timezone" column="timezone" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
 		<result property="modUsername" column="mod_username" />
@@ -14,8 +17,8 @@
 	</resultMap>
 	
 	<insert id="insert" parameterType="UserGroupEntity" useGeneratedKeys="true" keyProperty="ugSeq">
-		insert into pltf_user_group (name, description, scr_seq, fg_delete, reg_username, reg_date) values (
-			#{name}, #{description}, #{sapConnResource.scrSeq}, 'N', #{regUsername}, #{regDate}
+		insert into pltf_user_group (name, description, scr_seq, date_format, time_format, timezone, fg_delete, reg_username, reg_date) values (
+			#{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat}, #{timeFormat}, #{timezone}, 'N', #{regUsername}, #{regDate}
 		) 
 	</insert>
 
@@ -24,6 +27,9 @@
 			name=#{name},
 			description=#{description},
 			scr_seq=#{sapConnResource.scrSeq},
+			date_format=#{dateFormat},
+			time_format=#{timeFormat},
+			timezone=#{timezone},
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where

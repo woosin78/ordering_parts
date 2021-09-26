@@ -47,7 +47,7 @@ public class BoardContentController extends MgmtGeneralController
 		return BoardContentLayoutBuilder.getList(new PageableList<>(boardContentService.getPageableBoardContents(boardContentSearch)));
 	}
 
-	@RequestMapping("/detail")
+	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest)
 	{
 		boardContentService.plusViews(CmNumberUtils.toInt(webRequest.getParameter("bcSeq")));
@@ -59,7 +59,7 @@ public class BoardContentController extends MgmtGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/detail/data")
+	@RequestMapping("/view/data")
 	@ResponseBody
 	public Object detailData(@RequestParam("bcSeq") Integer bcSeq)
 	{
@@ -96,6 +96,7 @@ public class BoardContentController extends MgmtGeneralController
 		return boardContentService.delete(bcSeqs);
 	}
 
+	@Override
 	protected void setDefaultAttribute(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("board", boardService.getBoard(webRequest.getParameter("bId")));
