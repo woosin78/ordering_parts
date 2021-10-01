@@ -121,7 +121,6 @@ $(document).ready(function() {
 			ajax: {
 				url: "/platform/mgmt/user/list/layout",
 				form: $("#FORM_search"),
-				//async: false,
 		  		beforeSend: function(jqXHR, settings)
 		  		{
 		  			hideUserDetailsArea();
@@ -141,20 +140,18 @@ $(document).ready(function() {
 			{
 				if (columnIndex == 3)
 				{
-					viewUserTab.changePath("/platform/mgmt/user/view/layout");
-
 					if ($(row).hasClass("active"))
 					{
-						$("#AREA_viewDetail .ui.header").html("Details of User, " + $(element).html());
-
-						setSeq(key);
+						setSeq(key);						
+						viewUserTab.changePath("/platform/mgmt/user/view/layout");						
+						$("#AREA_viewDetail .ui.header").html("Details of User, " + $(element).html());						
 						showUserDetailsArea();
 					}
 					else
 					{
 						initSeq();
 						hideUserDetailsArea();
-					};					
+					};
 				}
 				else if (columnIndex == 7)
 				{
@@ -162,7 +159,6 @@ $(document).ready(function() {
 						url: "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key)
 					});					
 				};
-
 			},
 			editColumns: function(trIndex, tr, tdIndex, td, text)
 			{
@@ -578,7 +574,7 @@ $(document).ready(function() {
 			}
 	};
 
-	viewUserTab.render();
+	//viewUserTab.render();
 
 	$("#BTN_create").on("click", function() {
 		showCreateUserArea();
