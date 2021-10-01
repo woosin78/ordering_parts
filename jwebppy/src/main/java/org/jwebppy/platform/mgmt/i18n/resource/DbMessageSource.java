@@ -25,8 +25,9 @@ public class DbMessageSource extends AbstractMessageSource
 	{
 		String[] codes = CmStringUtils.split(key, "_");
 
-		String lang = locale.getLanguage();
-
+		//String lang = locale.getLanguage();
+		String lang = locale.toLanguageTag();
+		
 		if (UserAuthenticationUtils.isLogin())
 		{
 			PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();

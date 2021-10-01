@@ -59,9 +59,7 @@ public class UserAuthenticationUtils
 
 	public static boolean isLogin()
 	{
-		String username = getUsername();
-
-		if ("".equals(username) || "anonymousUser".equals(username))
+		if (getUSeq() == null)
 		{
 			return false;
 		}

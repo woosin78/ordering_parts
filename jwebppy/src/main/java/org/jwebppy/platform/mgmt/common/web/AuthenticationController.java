@@ -204,17 +204,27 @@ public class AuthenticationController extends PlatformGeneralController
 
 			List<UserPasswordChangeHistoryDto> userPasswordChangeHistories = userPasswordChangeHistoryService.getPageableUserPasswordChangeHistories(inUserPasswordChangeHistory);
 
+			String timezone = null;
+			ZonedDateTime regDate = null;
+			ZonedDateTime exiredDate = null;
+
 			if (CollectionUtils.isNotEmpty(userPasswordChangeHistories))
 			{
 				UserPasswordChangeHistoryDto userPasswordChangeHistory = userPasswordChangeHistories.get(0);
 
-				String timezone = userPasswordChangeHistory.getTimezone();
-				ZonedDateTime regDate = ZonedDateTime.of(userPasswordChangeHistory.getRegDate(),  ZoneId.of(timezone));
-				ZonedDateTime exiredDate = regDate.plusDays(pwdValidPeriod);
-
-				resultMap.put("expiredDate", CmDateFormatUtils.format(exiredDate, PlatformCommonVo.DEFAULT_DATE_FORMAT));
-				resultMap.put("difference", Long.toString(ChronoUnit.DAYS.between(CmDateTimeUtils.now(timezone), exiredDate)));
+				timezone = userPasswordChangeHistory.getTimezone();
+				regDate = ZonedDateTime.of(userPasswordChangeHistory.getRegDate(),  ZoneId.of(timezone));
+				exiredDate = regDate.plusDays(pwdValidPeriod);
 			}
+			else
+			{
+				timezone = user.getUserContactInfo().getTimezone();
+				regDate = ZonedDateTime.of(user.getRegDate(),  ZoneId.of(timezone));
+				exiredDate = regDate.plusDays(pwdValidPeriod);
+			}
+
+			resultMap.put("expiredDate", CmDateFormatUtils.format(exiredDate, PlatformCommonVo.DEFAULT_DATE_FORMAT));
+			resultMap.put("difference", Long.toString(ChronoUnit.DAYS.between(CmDateTimeUtils.now(timezone), exiredDate)));
 		}
 
 		return resultMap;

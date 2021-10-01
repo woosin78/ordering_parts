@@ -79,12 +79,10 @@ public class LoginHistoryService extends GeneralService
 			loginHistory.setAccountLockedDate(LocalDateTime.now());
 		}
 
-		if (UserAuthenticationUtils.getUserDetails() != null)
+		if (UserAuthenticationUtils.isLogin())
 		{
-			Integer uSeq = UserAuthenticationUtils.getUserDetails().getUSeq();
-
-			UserDto user = userService.getUser(uSeq);
-
+			UserDto user = userService.getUser(UserAuthenticationUtils.getUserDetails().getUSeq());
+			
 			loginHistory.setUSeq(user.getUSeq());
 			loginHistory.setTimezone(user.getUserContactInfo().getTimezone());
 		}
