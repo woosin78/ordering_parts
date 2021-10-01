@@ -47,7 +47,7 @@
 
 	<insert id="insertUserAccount" parameterType="UserAccountEntity">
 		insert into pltf_user_account (u_seq, username, password, fg_account_locked, fg_password_locked, fg_no_use_password, from_valid, to_valid, cp_seq, reg_username, reg_date) values (
-			#{uSeq}, #{username}, #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{cpSeq}, #{regUsername}, #{regDate}
+			#{uSeq}, #{username}, #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{credentialsPolicy.cpSeq}, #{regUsername}, #{regDate}
 		)
 	</insert>
 

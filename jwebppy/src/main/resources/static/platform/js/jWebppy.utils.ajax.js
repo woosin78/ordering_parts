@@ -3,7 +3,7 @@ let JpUtilsAjax = {};
 JpUtilsAjax.get = function(options)
 {
 	let additionalOption = {
-		method : "GET"
+		method: "GET"
 	};
 	
 	$.extend(true, options, additionalOption);

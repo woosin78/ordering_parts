@@ -142,7 +142,7 @@ function makeGmb()
 	    	
 	    	if (data != null && $.trim(data.regDate) != "")
 	    	{
-	    		$("#lastLoginTime").html(moment(data.regDate).format(DateFormat.FULL_FORMAT) + "/" + data.ip);
+	    		$("#lastLoginTime").html(data.regDate + "/" + data.ip);
 	    	}
 	    	else
 	    	{

@@ -26,11 +26,11 @@ public class UserAuthenticationUtils
 			}
 			catch (ClassCastException e)
 			{
-				return null;
+				return new PlatformUserDetails();
 			}
 		}
 
-		return null;
+		return new PlatformUserDetails();
 	}
 
 	public static Integer getUSeq()

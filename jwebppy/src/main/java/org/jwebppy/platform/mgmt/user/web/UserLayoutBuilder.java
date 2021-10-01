@@ -194,14 +194,13 @@ public class UserLayoutBuilder
 		loFromValid.setId("fromValid");
 		loFromValid.setLabel("Valid From");
 
-		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(userAccount.getDisplayToValid(), PlatformCommonVo.UNLIMITED_DATE_TIME));
+		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(userAccount.getDisplayToValid(), CmDateFormatUtils.unlimitDate()));
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
 
 		Select loCredentialPolicy = new Select("cpSeq");
 		loCredentialPolicy.setLabel("Credential Policy");
 		loCredentialPolicy.setRequired(true);
-		loCredentialPolicy.setValue(userAccount.getCredentialsPolicy().getCpSeq());
 
 		if (CollectionUtils.isNotEmpty(credentialPolicies))
 		{
@@ -209,6 +208,13 @@ public class UserLayoutBuilder
 			{
 				loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getUserGroup().getName());
 			}
+		}
+
+		CredentialsPolicyDto credentialsPolicy = userAccount.getCredentialsPolicy();
+
+		if (credentialsPolicy != null)
+		{
+			loCredentialPolicy.setValue(credentialsPolicy.getCpSeq());
 		}
 
 		Document document = new Document();
@@ -220,7 +226,6 @@ public class UserLayoutBuilder
 
 			Input loUsername = new Input("username");
 			loUsername.setLabel("Username");
-			//loUsername.setStyle("text-transform:uppercase");
 			loUsername.setRequired(true);
 			loUsername.addAttribute("autofocus");
 

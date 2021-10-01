@@ -1,12 +1,13 @@
 package org.jwebppy.platform.mgmt.user.dto;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,9 +26,7 @@ public class UserAccountDto extends GeneralDto
 	private String fgNoUsePassword;
 	private String fgAccountLocked;
 	private String fgPasswordLocked;
-	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime fromValid;
-	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime toValid;
 	private CredentialsPolicyDto credentialsPolicy;
 
@@ -78,25 +77,27 @@ public class UserAccountDto extends GeneralDto
 
 	public boolean isValidPeriod()
 	{
-        LocalDateTime localDateTime = LocalDateTime.now();
+		ZonedDateTime now = CmDateTimeUtils.now();
+		ZonedDateTime localFromValid = CmDateTimeUtils.toZonedDateTime(fromValid);
+		ZonedDateTime localToValid = CmDateTimeUtils.toZonedDateTime(toValid);
 
-        if (fromValid != null && toValid != null)
+        if (localFromValid != null && localToValid != null)
         {
-            if (localDateTime.isAfter(fromValid) && localDateTime.isBefore(toValid))
+            if (now.isAfter(localFromValid) && now.isBefore(localToValid))
             {
             	return true;
             }
         }
-        else if (fromValid != null && toValid == null)
+        else if (localFromValid != null && localToValid == null)
         {
-        	if (localDateTime.isAfter(fromValid))
+        	if (now.isAfter(localFromValid))
         	{
         		return true;
         	}
         }
-        else if (fromValid == null && toValid != null)
+        else if (localFromValid == null && localToValid != null)
         {
-        	if (localDateTime.isBefore(toValid))
+        	if (now.isBefore(localToValid))
         	{
         		return true;
         	}

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.service.GeneralService;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
@@ -59,12 +60,12 @@ public class UserService extends GeneralService
 
 		if (userAccount.getFromValid() == null)
 		{
-			userAccount.setFromValid(LocalDateTime.now());
+			userAccount.setFromValid(CmDateTimeUtils.now().toLocalDateTime());
 		}
 
 		if (userAccount.getToValid() == null)
 		{
-			userAccount.setToValid(LocalDateTime.now().plusYears(1000));
+			userAccount.setToValid(CmDateTimeUtils.now().plusYears(1000).toLocalDateTime());
 		}
 
 		return userMapper.insertUserAccount(CmModelMapperUtils.map(userAccount, UserAccountEntity.class));
@@ -77,7 +78,7 @@ public class UserService extends GeneralService
 
 	public int createUserByCopy(Map<String, String> paramMap)
 	{
-		Integer sourceUSeq = new Integer(paramMap.get("uSeq"));
+		Integer sourceUSeq = Integer.valueOf(paramMap.get("uSeq"));
 
 		UserDto user = getUser(sourceUSeq);
 		user.setFirstName(CmStringUtils.trimToEmpty(paramMap.get("firstName")));

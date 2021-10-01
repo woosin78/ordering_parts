@@ -121,7 +121,7 @@ $(document).ready(function() {
 			ajax: {
 				url: "/platform/mgmt/user/list/layout",
 				form: $("#FORM_search"),
-				async: false,
+				//async: false,
 		  		beforeSend: function(jqXHR, settings)
 		  		{
 		  			hideUserDetailsArea();
@@ -812,9 +812,10 @@ $(document).ready(function() {
 		if (event.keyCode==13)
 		{
 			doSearch();
-		}
-	}).on("click", function(event) {
-		this.select();
+			event.preventDefault();
+		};
+	}).on("focus", function() {
+		$(this).select();
 	});
 
 	$("#BTN_search").on("click", function() {
@@ -828,11 +829,19 @@ $(document).ready(function() {
 	{
 		if ($("#FORM_modify").form("validate form"))
 		{
-			if (viewUserTab.tabPath == "authority")
+			let tabPath = viewUserTab.tabPath;
+			
+			if (tabPath == "authority")
 			{
 				$("#TBL_myAuthorityList").find(".ui.checkbox").checkbox("check");
-			};
-
+			}
+			else if (tabPath == "account")
+			{
+				$.each($("#FORM_modify").find("input[input-type=calendar]"), function() {
+					$(this).val(JpUtilsDateFormat.format($(this).val(), JpUtilsDateFormat.SUBMIT_FORMAT));
+				});						
+			}			
+			
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/save/" + viewUserTab.tabPath,
 				data: $("#FORM_modify").serialize(),

@@ -6,8 +6,10 @@
 		<id property="ugSeq" column="ug_seq" />
 		<result property="name" column="name" />
 		<result property="description" column="description" />
-		<result property="dateFormat" column="date_format" />
-		<result property="timeFormat" column="time_format" />
+		<result property="dateFormat1" column="date_format1" />
+		<result property="timeFormat1" column="time_format1" />
+		<result property="dateFormat2" column="date_format2" />
+		<result property="timeFormat2" column="time_format2" />		
 		<result property="timezone" column="timezone" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
@@ -17,8 +19,8 @@
 	</resultMap>
 	
 	<insert id="insert" parameterType="UserGroupEntity" useGeneratedKeys="true" keyProperty="ugSeq">
-		insert into pltf_user_group (name, description, scr_seq, date_format, time_format, timezone, fg_delete, reg_username, reg_date) values (
-			#{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat}, #{timeFormat}, #{timezone}, 'N', #{regUsername}, #{regDate}
+		insert into pltf_user_group (name, description, scr_seq, date_format1, time_format1, date_format2, time_format2, timezone, fg_delete, reg_username, reg_date) values (
+			#{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat1}, #{timeFormat1}, #{dateFormat2}, #{timeFormat2}, #{timezone}, 'N', #{regUsername}, #{regDate}
 		) 
 	</insert>
 

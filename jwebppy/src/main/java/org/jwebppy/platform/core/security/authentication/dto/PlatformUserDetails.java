@@ -32,10 +32,15 @@ public class PlatformUserDetails implements UserDetails
 	private String fgPasswordLocked;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
-	private List<CItemDto> cItems;
 	private String language;
+	private String dateFormat1;//Back-End
+	private String timeFormat1;//Back-End
+	private String dateFormat2;//Front-End
+	private String timeFormat2;//Front-End
 	private String timezone;
-	private Object erpUserContext;
+	private List<CItemDto> cItems;
+
+	private ErpUserContext erpUserContext;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities()
@@ -123,5 +128,15 @@ public class PlatformUserDetails implements UserDetails
 	public String getLanguage()
 	{
 		return CmStringUtils.lowerCase(language);
+	}
+
+	public String getDateTimeFormat1()
+	{
+		return CmStringUtils.defaultIfEmpty(dateFormat1, PlatformCommonVo.DEFAULT_DATE_FORMAT) + " " + CmStringUtils.defaultIfEmpty(timeFormat1, PlatformCommonVo.DEFAULT_TIME_FORMAT);
+	}
+
+	public String getDateTimeFormat2()
+	{
+		return CmStringUtils.defaultIfEmpty(dateFormat2, PlatformCommonVo.DEFAULT_DATE_FORMAT) + " " + CmStringUtils.defaultIfEmpty(timeFormat2, PlatformCommonVo.DEFAULT_TIME_FORMAT);
 	}
 }

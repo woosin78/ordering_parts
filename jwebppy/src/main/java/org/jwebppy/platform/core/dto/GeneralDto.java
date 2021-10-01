@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,10 +21,8 @@ public class GeneralDto implements Serializable
 
 	protected String fgDelete;
 	protected String regUsername;
-	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	protected LocalDateTime regDate;
 	protected String modUsername;
-	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	protected LocalDateTime modDate;
 
 	protected int no = 0;
@@ -41,6 +39,11 @@ public class GeneralDto implements Serializable
 	public int getNo()
 	{
 		return totalCount - rnum + 1;
+	}
+
+	public String getDateTimeFormat()
+	{
+		return CmStringUtils.defaultIfEmpty(UserAuthenticationUtils.getUserDetails().getDateTimeFormat1(), PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT);
 	}
 
 	public String getDisplayRegDate()

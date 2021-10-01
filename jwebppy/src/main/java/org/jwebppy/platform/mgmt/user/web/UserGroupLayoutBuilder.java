@@ -27,8 +27,8 @@ public class UserGroupLayoutBuilder
 		thTr.addCheckAllTh();
 		thTr.addTextTh("Name", "three wide");
 		thTr.addTextTh("Description", "three wide");
-		thTr.addTextTh("Date Format", "two wide");
-		thTr.addTextTh("Time Format", "two wide");
+		thTr.addTextTh("Date Format (Back-End / Front-End)", "two wide");
+		thTr.addTextTh("Time Format (Back-End / Front-End)", "two wide");
 		thTr.addTextTh("Timezone", "two wide");
 		thTr.addTextTh("Default SAP Connection Resource", "three wide");
 
@@ -45,8 +45,8 @@ public class UserGroupLayoutBuilder
 			tbTr.addDataKeyCheckboxTd("ugSeq", userGroup.getUgSeq());
 			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
 			tbTr.addTextTd(userGroup.getDescription());
-			tbTr.addTextTd(userGroup.getDateFormat());
-			tbTr.addTextTd(userGroup.getTimeFormat());
+			tbTr.addTextTd(userGroup.getDateFormat1() + " / " + userGroup.getDateFormat2());
+			tbTr.addTextTd(userGroup.getTimeFormat2() + " / " + userGroup.getTimeFormat2());
 			tbTr.addTextTd(userGroup.getTimezone());
 			tbTr.addDataKeyLinkTd(sapConnResource.getName(), sapConnResource.getScrSeq());
 
@@ -70,8 +70,10 @@ public class UserGroupLayoutBuilder
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Name", userGroup.getName());
 		elementMap.put("Description", userGroup.getDescription());
-		elementMap.put("Date Format", userGroup.getDateFormat());
-		elementMap.put("Time Format", userGroup.getTimeFormat());
+		elementMap.put("Date Format (Back-End)", userGroup.getDateFormat1());
+		elementMap.put("Time Format (Back-End)", userGroup.getTimeFormat1());
+		elementMap.put("Date Format (Front-End)", userGroup.getDateFormat2());
+		elementMap.put("Time Format (Front-End)", userGroup.getTimeFormat2());
 		elementMap.put("Timezone", userGroup.getTimezone());
 		elementMap.put("Default SAP Connection Resource", loSapConnResource);
 		elementMap.put("Reg. Username", userGroup.getRegUsername());
@@ -106,21 +108,34 @@ public class UserGroupLayoutBuilder
 			loSapConnResource.addOption(sapConnResource.getScrSeq(), sapConnResource.getName());
 		}
 
-		Input loDateFormat = new Input("dateFormat", userGroup.getDateFormat());
-		loDateFormat.setLabel("Date Format");
+		Input loDateFormat1 = new Input("dateFormat1", userGroup.getDateFormat1());
+		loDateFormat1.setLabel("Date Format(Back-End)");
+		loDateFormat1.setRequired(true);
 
-		Input loTimeFormat = new Input("timeFormat", userGroup.getTimeFormat());
-		loTimeFormat.setLabel("Time Format");
+		Input loTimeFormat1 = new Input("timeFormat1", userGroup.getTimeFormat1());
+		loTimeFormat1.setLabel("Time Format(Back-End)");
+		loTimeFormat1.setRequired(true);
+
+		Input loDateFormat2 = new Input("dateFormat1", userGroup.getDateFormat2());
+		loDateFormat2.setLabel("Date Format(Front-End)");
+		loDateFormat2.setRequired(true);
+
+		Input loTimeFormat2 = new Input("timeFormat1", userGroup.getTimeFormat2());
+		loTimeFormat2.setLabel("Time Format(Front-End)");
+		loTimeFormat2.setRequired(true);
 
 		Input loTimezone = new Input("timezone", userGroup.getTimezone());
 		loTimezone.setLabel("Timezone");
+		loTimezone.setRequired(true);
 
 		Document document = new Document();
 		document.addElement(loUgSeq);
 		document.addElement(loName);
 		document.addElement(loDescription);
-		document.addElement(loDateFormat);
-		document.addElement(loTimeFormat);
+		document.addElement(loDateFormat1);
+		document.addElement(loTimeFormat1);
+		document.addElement(loDateFormat2);
+		document.addElement(loTimeFormat2);
 		document.addElement(loTimezone);
 		document.addElement(loSapConnResource);
 

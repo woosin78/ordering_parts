@@ -18,6 +18,7 @@ import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
@@ -212,7 +213,7 @@ public class AuthenticationController extends PlatformGeneralController
 				ZonedDateTime exiredDate = regDate.plusDays(pwdValidPeriod);
 
 				resultMap.put("expiredDate", CmDateFormatUtils.format(exiredDate, PlatformCommonVo.DEFAULT_DATE_FORMAT));
-				resultMap.put("difference", Long.toString(ChronoUnit.DAYS.between(CmDateFormatUtils.localNow(timezone), exiredDate)));
+				resultMap.put("difference", Long.toString(ChronoUnit.DAYS.between(CmDateTimeUtils.now(timezone), exiredDate)));
 			}
 		}
 

@@ -106,7 +106,7 @@ let JpUiRender = function()
 				if (isFormElement && attributeName == "TYPE" && JpUtilsString.equalsIgnoreCase(attributeValue, "DATE"))
 				{
 					attributes.push(attributeName + "=\"text\" ");
-					attributes.push("readonly ");					
+					attributes.push("input-type=\"calendar\" readonly ");
 				}
 				else
 				{

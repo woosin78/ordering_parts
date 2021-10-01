@@ -1,33 +1,37 @@
 package org.jwebppy.platform.core.util;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.zone.ZoneRulesException;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 
 public class CmDateFormatUtils
 {
 	public static String format(LocalDateTime localDateTime)
 	{
-		if (localDateTime != null)
+		if (localDateTime == null)
 		{
-			return format(ZonedDateTime.of(localDateTime, getZoneId(null)));
+			return null;
 		}
 
-		return null;
+		return format(ZonedDateTime.of(localDateTime, CmDateTimeUtils.getZoneId(null)));
 	}
 
 	public static String format(LocalDateTime localDateTime, String zoneId)
 	{
-		return format(ZonedDateTime.of(localDateTime, getZoneId(zoneId)));
+		return format(ZonedDateTime.of(localDateTime, CmDateTimeUtils.getZoneId(zoneId)));
 	}
 
 	public static String format(LocalDateTime localDateTime, String zoneId, String format)
 	{
-		return format(ZonedDateTime.of(localDateTime, getZoneId(zoneId)), format);
+		if (localDateTime == null)
+		{
+			return null;
+		}
+
+		return format(ZonedDateTime.of(localDateTime, CmDateTimeUtils.getZoneId(zoneId)), format);
 	}
 
 	public static String format(ZonedDateTime zonedDateTime)
@@ -37,136 +41,151 @@ public class CmDateFormatUtils
 
 	public static String format(ZonedDateTime zonedDateTime, String format)
 	{
-		if (zonedDateTime != null)
+		if (zonedDateTime == null)
 		{
-			if (CmStringUtils.isEmpty(format))
-			{
-				return zonedDateTime.format(DateTimeFormatter.ofPattern(PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT));
-			}
-			else
-			{
-				return zonedDateTime.format(DateTimeFormatter.ofPattern(format));
-			}
+			return null;
 		}
 
-		return null;
-	}
-
-	public static ZoneId getZoneId(String zoneId)
-	{
-		if (CmStringUtils.isEmpty(zoneId))
+		if (CmStringUtils.isEmpty(format))
 		{
-			zoneId = PlatformCommonVo.DEFAULT_TIMEZONE;
+			return zonedDateTime.format(DateTimeFormatter.ofPattern(getDateTimeFormat()));
 		}
-
-		try
+		else
 		{
-			return ZoneId.of(zoneId);
+			return zonedDateTime.format(DateTimeFormatter.ofPattern(format));
 		}
-		catch (ZoneRulesException e)
-		{
-			return ZoneId.of(PlatformCommonVo.DEFAULT_TIMEZONE);
-		}
-	}
-
-	public static ZonedDateTime localNow()
-	{
-		return localNow(null);
-	}
-
-	public static ZonedDateTime localNow(String zoneId)
-	{
-		if (CmStringUtils.isNotEmpty(zoneId))
-		{
-			zoneId = PlatformCommonVo.DEFAULT_TIMEZONE;
-		}
-
-		return ZonedDateTime.now(getZoneId(zoneId));
 	}
 
 	public static String now()
 	{
-		return format(localNow());
+		return format(CmDateTimeUtils.now());
 	}
 
 	public static String now(String zoneId)
 	{
-		return format(ZonedDateTime.now(getZoneId(zoneId)));
+		return format(ZonedDateTime.now(CmDateTimeUtils.getZoneId(zoneId)));
 	}
 
 	public static String now(String zoneId, String format)
 	{
-		return format(ZonedDateTime.now(getZoneId(zoneId)), format);
+		return format(ZonedDateTime.now(CmDateTimeUtils.getZoneId(zoneId)), format);
 	}
 
 	public static String today()
 	{
-		return format(localNow(PlatformCommonVo.DEFAULT_TIMEZONE), PlatformCommonVo.DEFAULT_DATE_FORMAT);
+		return format(CmDateTimeUtils.now(getTimezone()), getDateFormat());
 	}
 
 	public static String today(String zoneId)
 	{
-		return format(localNow(zoneId), PlatformCommonVo.DEFAULT_DATE_FORMAT);
+		return format(CmDateTimeUtils.now(zoneId), getDateFormat());
 	}
 
 	public static String plusDays(String zoneId, long days)
 	{
-		return format(localNow(zoneId).plusDays(days), null);
+		return format(CmDateTimeUtils.now(zoneId).plusDays(days), null);
 	}
 
 	public static String plusDays(String zoneId, int days, String format)
 	{
-		return format(localNow(zoneId).plusDays(days), format);
+		return format(CmDateTimeUtils.now(zoneId).plusDays(days), format);
 	}
 
 	public static String plusWeeks(String zoneId, long weeks)
 	{
-		return format(localNow(zoneId).plusWeeks(weeks), null);
+		return format(CmDateTimeUtils.now(zoneId).plusWeeks(weeks), null);
 	}
 
 	public static String plusWeeks(String zoneId, long weeks, String format)
 	{
-		return format(localNow(zoneId).plusWeeks(weeks), format);
+		return format(CmDateTimeUtils.now(zoneId).plusWeeks(weeks), format);
 	}
 
 	public static String plusMonths(String zoneId, long months)
 	{
-		return format(localNow(zoneId).plusMonths(months), null);
+		return format(CmDateTimeUtils.now(zoneId).plusMonths(months), null);
 	}
 
 	public static String plusMonths(String zoneId, long months, String format)
 	{
-		return format(localNow(zoneId).plusMonths(months), format);
+		return format(CmDateTimeUtils.now(zoneId).plusMonths(months), format);
 	}
 
 	public static String plusYears(String zoneId, long years)
 	{
-		return format(localNow(zoneId).plusYears(years), null);
+		return format(CmDateTimeUtils.now(zoneId).plusYears(years), null);
 	}
 
 	public static String plusYears(String zoneId, long years, String format)
 	{
-		return format(localNow(zoneId).plusMonths(years), format);
+		return format(CmDateTimeUtils.now(zoneId).plusMonths(years), format);
 	}
 
 	public static String theFirstDateMonth(ZonedDateTime zonedDateTime)
 	{
-		return format(zonedDateTime.withDayOfMonth(1), PlatformCommonVo.DEFAULT_DATE_FORMAT);
+		return format(zonedDateTime.withDayOfMonth(1), getDateFormat());
 	}
 
 	public static String theFirstDateThisMonth()
 	{
-		return theFirstDateMonth(localNow());
+		return theFirstDateMonth(CmDateTimeUtils.now());
 	}
 
 	public static String unlimitDate(String format)
 	{
-
-		return format(LocalDateTime.parse(PlatformCommonVo.UNLIMITED_DATE_TIME, DateTimeFormatter.ofPattern(PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)), format);
+		return format(LocalDateTime.parse(PlatformCommonVo.UNLIMITED_DATE_TIME, DateTimeFormatter.ofPattern(PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)), null, format);
 	}
 
 	public static String unlimitDate()
 	{
-		return unlimitDate(PlatformCommonVo.DEFAULT_DATE_FORMAT);
+		return unlimitDate(getDateTimeFormat());
+	}
+
+	public static String getDateTimeFormat()
+	{
+		PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
+
+		if (platformUserDetails == null)
+		{
+			return PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT;
+		}
+
+		return platformUserDetails.getDateTimeFormat1();
+	}
+
+	public static String getDateFormat()
+	{
+		PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
+
+		if (platformUserDetails == null)
+		{
+			return PlatformCommonVo.DEFAULT_DATE_FORMAT;
+		}
+
+		return platformUserDetails.getDateFormat1();
+	}
+
+	public static String getTimeFormat()
+	{
+		PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
+
+		if (platformUserDetails == null)
+		{
+			return PlatformCommonVo.DEFAULT_TIME_FORMAT;
+		}
+
+		return platformUserDetails.getDateFormat1();
+	}
+
+	public static String getTimezone()
+	{
+		PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
+
+		if (platformUserDetails == null)
+		{
+			return PlatformCommonVo.DEFAULT_TIMEZONE;
+		}
+
+		return platformUserDetails.getTimezone();
 	}
 }

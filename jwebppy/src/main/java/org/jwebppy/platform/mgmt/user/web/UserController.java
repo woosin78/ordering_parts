@@ -30,6 +30,7 @@ import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
 import org.jwebppy.platform.mgmt.user.service.UserGroupService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -114,11 +115,18 @@ public class UserController extends UserGeneralController
 				{
 					UserAccountDto userAccount = user.getUserAccount();
 
-					CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
-					credentialsPolicySearch.setCpSeq(userAccount.getCredentialsPolicy().getCpSeq());
-					credentialsPolicySearch.setType(CredentialsPolicyType.U);
+					CredentialsPolicyDto credentialPolicy = userAccount.getCredentialsPolicy();
 
-					return UserLayoutBuilder.viewAccountInfo(userAccount, credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch));
+					if (credentialPolicy != null)
+					{
+						CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
+						credentialsPolicySearch.setCpSeq(credentialPolicy.getCpSeq());
+						credentialsPolicySearch.setType(CredentialsPolicyType.U);
+
+						credentialPolicy = credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch);
+					}
+
+					return UserLayoutBuilder.viewAccountInfo(userAccount, credentialPolicy);
 				}
 				else if ("login_history".equals(tabPath))
 				{
@@ -186,6 +194,7 @@ public class UserController extends UserGeneralController
 
 	@PostMapping("/save/{tabPath}")
 	@ResponseBody
+	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	public Object save(@PathVariable("tabPath") String tabPath,
 			@ModelAttribute UserDto user, @ModelAttribute UserAccountDto userAccount, @ModelAttribute UserContactInfoDto userContactInfo,
 			@ModelAttribute CItemUserRlDto cItemUserRl, @ModelAttribute UserGroupDto userGroup,  @ModelAttribute CredentialsPolicyDto credentialsPolicy, WebRequest webRequest)
