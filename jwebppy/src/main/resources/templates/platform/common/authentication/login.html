@@ -82,7 +82,7 @@ function resizeView()
 
 function checkForm()
 {
-	if (JpUtilsString.isEmpty($("#username").val()))
+	if (JpUtilsString.isEmpty($("#username")))
 	{
 		JpUiDimmer.alert("[[#{PLTF_M_LOGIN_EMPTY_USERNAME}]]", function() {
 			$("#username").focus();	
@@ -90,7 +90,7 @@ function checkForm()
 		
 		return false;
 	}
-	else if (JpUtilsString.isEmpty($("#password").val()))
+	else if (JpUtilsString.isEmpty($("#password")))
 	{
 		JpUiDimmer.alert("[[#{PLTF_M_LOGIN_EMPTY_PWD}]]", function() {
 			$("#password").focus();	

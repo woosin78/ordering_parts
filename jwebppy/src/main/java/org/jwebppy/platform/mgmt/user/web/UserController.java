@@ -30,7 +30,6 @@ import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
 import org.jwebppy.platform.mgmt.user.service.UserGroupService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -194,7 +193,6 @@ public class UserController extends UserGeneralController
 
 	@PostMapping("/save/{tabPath}")
 	@ResponseBody
-	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	public Object save(@PathVariable("tabPath") String tabPath,
 			@ModelAttribute UserDto user, @ModelAttribute UserAccountDto userAccount, @ModelAttribute UserContactInfoDto userContactInfo,
 			@ModelAttribute CItemUserRlDto cItemUserRl, @ModelAttribute UserGroupDto userGroup,  @ModelAttribute CredentialsPolicyDto credentialsPolicy, WebRequest webRequest)
@@ -216,14 +214,6 @@ public class UserController extends UserGeneralController
 		}
 		else if ("authority".equals(tabPath))
 		{
-			/*
-			List<Integer> cSeqs = CmModelMapperUtils.mapAll(ListUtils.toList(webRequest.getParameterValues("cSeq")), Integer.class);
-
-			CItemUserRlDto cItemUserRl = new CItemUserRlDto();
-			cItemUserRl.setUSeq(user.getUSeq());
-			cItemUserRl.setCSeqs(cSeqs);
-			*/
-
 			cItemUserRl.setCSeqs(CmModelMapperUtils.mapAll(ArrayUtils.toUnmodifiableList(webRequest.getParameterValues("cSeq")), Integer.class));
 
 			return contentAuthorityService.save(cItemUserRl);

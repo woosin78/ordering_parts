@@ -3,7 +3,6 @@ package org.jwebppy.platform.mgmt.user.dto;
 import java.util.List;
 import java.util.Locale;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
@@ -33,12 +32,6 @@ public class UserDto extends GeneralDto implements IPagination
 	private UserAccountDto userAccount;
 	private UserContactInfoDto userContactInfo;
 	private UserGroupDto userGroup;
-
-	@Override
-	public String getFgDelete()
-	{
-		return CmStringUtils.defaultIfEmpty(fgDelete, PlatformCommonVo.NO);
-	}
 
 	public UserAccountDto getUserAccount()
 	{

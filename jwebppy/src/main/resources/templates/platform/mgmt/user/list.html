@@ -11,7 +11,7 @@
 </div>
 <div class="ui segment">
 	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="checkbox" name="uSeq" style="display:none" th:value="${uSeq}" checked />
+	<input type="checkbox" name="uSeq" style="display:none" checked />
 	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
 	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
 	<div class="fields">
@@ -574,8 +574,6 @@ $(document).ready(function() {
 			}
 	};
 
-	//viewUserTab.render();
-
 	$("#BTN_create").on("click", function() {
 		showCreateUserArea();
 	});
@@ -835,7 +833,7 @@ $(document).ready(function() {
 			{
 				$.each($("#FORM_modify").find("input[input-type=calendar]"), function() {
 					$(this).val(JpUtilsDateFormat.format($(this).val(), JpUtilsDateFormat.SUBMIT_FORMAT));
-				});						
+				});
 			}			
 			
 			JpUtilsAjax.post({
@@ -911,6 +909,8 @@ $(document).ready(function() {
 	{
 		return (viewUserTab.getPath().indexOf("write") > -1) ? true : false;
 	};
+
+	setSeq("[[${uSeq}]]");
 
 	doSearch();
 });

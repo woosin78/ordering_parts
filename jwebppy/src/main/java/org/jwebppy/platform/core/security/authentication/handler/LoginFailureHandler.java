@@ -31,6 +31,12 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 
 		request.setAttribute(PlatformConfigVo.FORM_LOGIN_FAIL_TYPE, CmClassUtils.getShortClassName(exception.getClass()).replaceAll("Exception", ""));
 
+		//비밀번호가 만료되었을 경우 비밀번호 변경을 위해 username 을 세션에 저장하고 비밀번호 변경 페이지로 이동한다
+		if (exception instanceof CredentialsExpiredException)
+		{
+			request.getSession().setAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME, request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
+		}
+
 		request.getRequestDispatcher(PlatformConfigVo.FORM_LOGIN_PAGE_URL).forward(request, response);
 	}
 

@@ -3,8 +3,8 @@ let JpUiDimmer = {
 		html: "<div id='jsUiDimmer' class='ui dimmer'></div>",
 	
 		type1: "<div class='ui text inverted loader'><div class='content'></div></div>",
-		type2: "<div class='content'><h3 class='ui inverted header'></h2><div id='dimmerOkButton' class='ui teal button ok'>OK</div></div>",
-		type3: "<div class='content'><h3 class='ui inverted header'></h2><div class='ui teal button ok'>OK</div><button class='ui button cancel'>Cancel</div></div>",
+		type2: "<div class='content'><h3 class='ui inverted header'></h3><div class='ui teal button ok'>OK</div></div>",
+		type3: "<div class='content'><h3 class='ui inverted header'></h3><div class='ui teal button ok'>OK</div><div class='ui button cancel'>Cancel</div></div>",
 		
 		isMessageDimmerActive: false,
 		obj: null,
@@ -65,9 +65,10 @@ let JpUiDimmer = {
 		},	
 		showDimmer: function() {
 			$("#jsUiDimmer").dimmer({
-				closable: false,
-				duration: { show: 300, hide:0 }
+				closable: false				
 			}).dimmer("show");
+			
+			$(document).find("input, select").blur();
 		},
 		getDimmer: function(type, message) {
 			let obj = $("#jsUiDimmer");

@@ -63,5 +63,9 @@ let JpUiCalendar = {
 			
 			$(from).closest(".ui.calendar").calendar(settingsFrom);
 			$(to).closest(".ui.calendar").calendar(settingsTo);
+		},
+		setDate: function(obj, date)
+		{
+			$(obj).closest(".ui.calendar").calendar("set date", new Date(date));
 		}
 };

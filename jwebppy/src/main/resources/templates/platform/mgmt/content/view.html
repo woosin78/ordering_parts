@@ -27,7 +27,7 @@
 						<a class="item wrap" data-tab="language">Language</a>
 					</div>
 					<div class="ui bottom attached segment">
-						<form id="FORM_modifyItem" class="ui form">
+						<form id="FORM_modify" class="ui form">
 						<input type="hidden" name="cSeq"/>
 						<input type="hidden" name="pSeq"/>
 							<div class="AREA_modify" style="display: none;">
@@ -93,13 +93,13 @@
 						return false;
 					};					
 					
-					settings.data = $("#FORM_modifyItem").serialize();					
+					settings.data = $("#FORM_modify").serialize();					
 					return settings;
 				}
 			},
 			tab: {
 				path: "/platform/mgmt/content/layout",
-				form: $("#FORM_modifyItem"),
+				form: $("#FORM_modify"),
 				onLoaded: function(tabPath, parameterArray, historyEvent)
 				{
 					if (tabPath == "general")
@@ -108,7 +108,7 @@
 						{
 							JpUiCalendar.datetimeCalendar($("#fromValid"), $("#toValid"));
 							
-							$("#FORM_modifyItem select[name=component]").on("change", function() {
+							$("#FORM_modify select[name=component]").on("change", function() {
 								JpUtilsAjax.get({
 									url: "/platform/mgmt/content/component/entry_points?component=" + $(this).val(),
 									global: false,
@@ -121,7 +121,7 @@
 									    	options.push("<option value='" + element.url + "' data-key='" + element.url + "'>" + element.url + "</option>");
 									    });
 									    
-									    $("#FORM_modifyItem select[name=entryPoint]").html(options.join(""));
+									    $("#FORM_modify select[name=entryPoint]").html(options.join(""));
 									}
 								});								
 							});
@@ -217,12 +217,12 @@
 									keyboardShortcuts: false
 								};
 							
-							$("#FORM_modifyItem").form(formValidCheck);					
+							$("#FORM_modify").form(formValidCheck);					
 						};
 					}
 					else
 					{
-						$("#FORM_modifyItem select[name=basename]").on("change", function() {
+						$("#FORM_modify select[name=basename]").on("change", function() {
 							changeTab("language");
 						});
 					}
@@ -256,7 +256,7 @@
 	{
 		initSeq();
 	
-		$("#FORM_modifyItem input[name='pSeq']").val(key);
+		$("#FORM_modify input[name='pSeq']").val(key);
 	
 		viewItemTab.changePath("/platform/mgmt/content/write/layout");
 		changeTab();
@@ -268,7 +268,7 @@
 			
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/content/delete",
-				data: $("#FORM_modifyItem").serialize(),
+				data: $("#FORM_modify").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
 					initSeq();
@@ -310,7 +310,7 @@
 				
 				JpUtilsAjax.post({
 					url: url,
-					data: $("#FORM_modifyItem").serialize(),
+					data: $("#FORM_modify").serialize(),
 					success: function(data, textStatus, jqXHR)
 					{
 						initSeq();
@@ -331,11 +331,15 @@
 	});
 	
 	$(".BTN_save").on("click", function() {
-		if ($("#FORM_modifyItem").form("validate form"))
+		if ($("#FORM_modify").form("validate form"))
 		{
+			$.each($("#FORM_modify").find("input[input-type=calendar]"), function() {
+				$(this).val(JpUtilsDateFormat.format($(this).val(), JpUtilsDateFormat.SUBMIT_FORMAT));
+			});			
+			
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/content/save",
-				data: $("#FORM_modifyItem").serialize(),
+				data: $("#FORM_modify").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
 					if (JpUtilsString.isEmpty(getSeq()))
@@ -355,23 +359,23 @@
 	
 	function setSeq(seq, pSeq)
 	{
-		$("#FORM_modifyItem input[name=cSeq]").val(JpUtilsString.trimToEmpty(seq));
-		$("#FORM_modifyItem input[name=pSeq]").val(JpUtilsString.trimToEmpty(pSeq));
+		$("#FORM_modify input[name=cSeq]").val(JpUtilsString.trimToEmpty(seq));
+		$("#FORM_modify input[name=pSeq]").val(JpUtilsString.trimToEmpty(pSeq));
 	};
 	
 	function getSeq()
 	{
-		return $("#FORM_modifyItem input[name=cSeq]").val(); 
+		return $("#FORM_modify input[name=cSeq]").val(); 
 	};
 	
 	function getPSeq()
 	{
-		return $("#FORM_modifyItem input[name=pSeq]").val(); 
+		return $("#FORM_modify input[name=pSeq]").val(); 
 	};
 	
 	function initSeq()
 	{
-		$("#FORM_modifyItem input[name=cSeq], [name=pSeq]").val("");
+		$("#FORM_modify input[name=cSeq], [name=pSeq]").val("");
 	};	
 	
 	$(".BTN_cancel").on("click", function() {
@@ -427,7 +431,7 @@
 	$(".BTN_translation").on("click", function() {
 		JpUtilsAjax.get({
 			url: "/platform/mgmt/content/lang",
-			data: $("#FORM_modifyItem").serialize(),
+			data: $("#FORM_modify").serialize(),
 			global: false,
 			success: function(data, textStatus, jqXHR)
 			{

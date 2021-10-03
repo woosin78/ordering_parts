@@ -78,7 +78,7 @@ public class AuthenticationController extends PlatformGeneralController
 	@ResponseBody
 	public Object checkValidPassword(HttpSession session, @RequestParam String password, @RequestParam String newPassword, @RequestParam String confirmPassword)
 	{
-		String username = CmStringUtils.trimToEmpty(session.getAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME));
+		String username = CmStringUtils.defaultIfEmpty(session.getAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME), UserAuthenticationUtils.getUsername());
 
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("TYPE", CredentialsPolicyType.P);
@@ -129,7 +129,7 @@ public class AuthenticationController extends PlatformGeneralController
 						}
 						else
 						{
-							messages.add("The password you filled in doesn't match your current password.");
+							messages.add("The password you inputed doesn't match your current password.");
 						}
 					}
 					else

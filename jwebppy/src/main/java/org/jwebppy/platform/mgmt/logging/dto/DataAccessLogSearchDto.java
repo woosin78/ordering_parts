@@ -3,8 +3,10 @@ package org.jwebppy.platform.mgmt.logging.dto;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,9 +21,9 @@ public class DataAccessLogSearchDto extends GeneralDto implements IPagination
 
 	private String dlSeq;
 	private String type;
-	//@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
+	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	private LocalDateTime fromDate;
-	//@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
+	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	private LocalDateTime toDate;
 	private String command;
 	private String query;

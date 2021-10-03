@@ -102,13 +102,11 @@ $(document).ready(function() {
 			},
 			onClickDataKey: function(element, key, row)
 			{
-				viewAuthorityTab.changePath("/platform/mgmt/authority/view/layout");
-				
 				if ($(row).hasClass("active"))
 				{
+					setSeq(key);					
 					$("#AREA_viewAuthorityDetail .ui.header").html("Details of Authority, " + $(element).html());
-					
-					setSeq(key);
+					viewAuthorityTab.changePath("/platform/mgmt/authority/view/layout");
 					showUserDetailsArea();
 				}
 				else
@@ -306,7 +304,7 @@ $(document).ready(function() {
 			}
 	};
 
-	viewAuthorityTab.render();
+	//viewAuthorityTab.render();
 
 	$("#BTN_create").on("click", function() {
 		showCreateAuthorityArea();		

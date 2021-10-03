@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -28,15 +30,24 @@ public class BoardContentDto extends GeneralDto implements IPagination
 	private String title;
 	private String htmlContent;
 	private String textContent;
-	//@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
+	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	private LocalDateTime fromView;
-	//@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
+	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	private LocalDateTime toView;
 	private int views;
 	private String writer;
-	private String fgDelete = PlatformCommonVo.NO;
 
 	//variables for file upload
 	private List<MultipartFile> files;
 	private List<Integer> uflSeqs;
+
+	public String getDisplayFromView()
+	{
+		return CmDateFormatUtils.format(fromView);
+	}
+
+	public String getDisplayToView()
+	{
+		return CmDateFormatUtils.format(toView);
+	}
 }

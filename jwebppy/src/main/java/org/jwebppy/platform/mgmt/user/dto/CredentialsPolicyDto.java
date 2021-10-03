@@ -2,7 +2,6 @@ package org.jwebppy.platform.mgmt.user.dto;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
 import lombok.Getter;
@@ -41,8 +40,8 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private String pMinSpecial;
 	private String pMaxSpecial;
 	private int pwdValidPeriod;
-	private String fgUse;
-	private String fgDefault;
+	private String fgUse = PlatformCommonVo.NO;
+	private String fgDefault = PlatformCommonVo.NO;
 
 	public CredentialsPolicyDto() {}
 
@@ -59,36 +58,5 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 		}
 
 		return userGroup;
-	}
-
-	public String getFgUse()
-	{
-		if (CmStringUtils.isEmpty(fgUse))
-		{
-			return PlatformCommonVo.NO;
-		}
-
-		return fgUse;
-	}
-
-	public String getFgDefault()
-	{
-		if (CmStringUtils.isEmpty(fgDefault))
-		{
-			return PlatformCommonVo.NO;
-		}
-
-		return fgDefault;
-	}
-
-	@Override
-	public String getFgDelete()
-	{
-		if (CmStringUtils.isEmpty(fgDelete))
-		{
-			return PlatformCommonVo.NO;
-		}
-
-		return fgDelete;
 	}
 }

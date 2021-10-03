@@ -33,7 +33,7 @@ public class GeneralDto implements Serializable
 
 	public String getFgDelete()
 	{
-		return CmStringUtils.defaultString(fgDelete, PlatformCommonVo.NO);
+		return CmStringUtils.defaultIfEmpty(fgDelete, PlatformCommonVo.NO);
 	}
 
 	public int getNo()

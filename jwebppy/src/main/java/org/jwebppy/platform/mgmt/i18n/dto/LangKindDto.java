@@ -20,7 +20,6 @@ public class LangKindDto extends GeneralDto
 	private String code;
 	private int sort;
 	private String fgDefault = PlatformCommonVo.NO;
-	private String fgDelete = PlatformCommonVo.NO;
 
 	public LangKindDto() {}
 

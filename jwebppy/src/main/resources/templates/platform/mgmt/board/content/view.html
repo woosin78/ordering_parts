@@ -29,12 +29,12 @@
 	<div class="ui two column grid">
 		<div class="column">
 			<div class="ui header render small">View From
-				<div class="sub header" th:text="${boardContent.fromView}"></div>
+				<div class="sub header" th:text="${boardContent.displayFromView}"></div>
 			</div>
 		</div>
 		<div class="column">
 			<div class="ui header render small">View To
-				<div class="sub header" th:text="${boardContent.toView}"></div>
+				<div class="sub header" th:text="${boardContent.displayToView}"></div>
 			</div>		
 		</div>
 	</div>
@@ -83,20 +83,6 @@ $(document).ready(function() {
 					let downloadKey = $(this).attr("downloadKey");
 					
 					JpUtilsDownload.download(downloadKey);
-					
-					/*
-					$.fileDownload("/platform/mgmt/download", {
-						httpMethod: "post",
-						data: { key: downloadKey },
-						successCallback: function()
-						{
-						},
-						failCallback: function(responseHtml, url)
-						{
-							return false;
-						}	
-					});
-					*/
 				});
 			}
 			else

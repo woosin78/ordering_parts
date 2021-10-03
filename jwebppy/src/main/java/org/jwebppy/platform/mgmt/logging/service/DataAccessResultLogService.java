@@ -18,6 +18,7 @@ import org.jwebppy.platform.mgmt.logging.entity.DataAccessResultLogParameterDeta
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessResultLogParameterEntity;
 import org.jwebppy.platform.mgmt.logging.mapper.DataAccessResultLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +29,7 @@ public class DataAccessResultLogService extends GeneralService
 	@Autowired
 	private DataAccessResultLogMapper dataAccessResultLogMapper;
 
-	//@Async("threadPoolTaskExecutor")
+	@Async("threadPoolTaskExecutor")
 	public void writeLog(String dlSeq, RfcResponse rfcResponse)
 	{
 		if (rfcResponse != null)
