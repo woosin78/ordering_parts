@@ -829,12 +829,6 @@ $(document).ready(function() {
 			{
 				$("#TBL_myAuthorityList").find(".ui.checkbox").checkbox("check");
 			}
-			else if (tabPath == "account")
-			{
-				$.each($("#FORM_modify").find("input[input-type=calendar]"), function() {
-					$(this).val(JpUtilsDateFormat.format($(this).val(), JpUtilsDateFormat.SUBMIT_FORMAT));
-				});
-			}			
 			
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/save/" + viewUserTab.tabPath,
@@ -849,12 +843,13 @@ $(document).ready(function() {
 						{
 							setSeq(uSeq);
 						};
+						
+						doSearch();
+					}
+					else
+					{
+						changeTab(viewUserTab.tabPath);
 					};
-
-					let tabPath = viewUserTab.tabPath;
-
-					doSearch();
-					changeTab(tabPath);
 				}
 			});
 		}

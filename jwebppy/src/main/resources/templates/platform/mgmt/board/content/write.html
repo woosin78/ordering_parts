@@ -41,13 +41,13 @@
 		<div class="eight wide field">
 			<label>Visible From</label>
 			<div class="ui calendar">
-				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromView" name="fromView" placeholder="From Date" input-type="calendar"/></div>
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromView" name="fromView" placeholder="From Date"/></div>
 			</div>				
 		</div>
 		<div class="eight wide field">
 			<label>Visible To</label>
 			<div class="ui calendar">
-				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toView" name="toView" placeholder="To Date" input-type="calendar"/></div>
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toView" name="toView" placeholder="To Date"/></div>
 			</div>				
 		</div>
 	</div>
@@ -69,12 +69,6 @@
 			</div>
 		</div>
 	</div>
-<div class="ui calendar" id="disabledmonth_calendar">
-    <div class="ui input left icon">
-        <i class="calendar icon"></i>
-        <input type="text" placeholder="Date">
-    </div>
-</div>	
 	</th:block>
 	</form>
 </div>
@@ -168,10 +162,6 @@ $(document).ready(function() {
 			
 			$("#htmlContent").val(editor.getContent());
 			$("#textContent").val(editor.getContent({format: "text"}));
-			
-			$.each($("#FORM_write").find("input[input-type=calendar]"), function() {
-				$(this).val(JpUtilsDateFormat.format($(this).val(), JpUtilsDateFormat.SUBMIT_FORMAT));
-			});
 			
 			let options = {
 					enctype: "multipart/form-data",

@@ -8,7 +8,7 @@
 <!-- body start -->
 <div class="ui dividing header">
   Content
-  <div class="sub header">You can create Page, Menu and Role here. The items are translated into other languages.</div>
+  <div class="sub header">You're able to create new pages, menus and roles. The contents can be translated into other languages.</div>
 </div>
 <div class="ui segment">
 	<div class="ui stackable grid">
@@ -73,8 +73,8 @@
 <th:block th:replace="/platform/mgmt/i18n/lang :: addLang"></th:block>
 <!-- End add language -->
 <script>
-
 	$(document).ready(function() {
+		JpUiDimmer.show();
 	});
 	
 	let viewItemTab = new JpUiTab($("#TAB_viewItem"));
@@ -241,9 +241,10 @@
 		{
 			let root = tree.getRoot();
 			setSeq(root.KEY, root.P_KEY);
-			
-			viewItemTab.render();
 		};
+		
+		viewItemTab.render();
+		JpUiDimmer.hide();
 	};
 	tree.viewDetail = function(key, pKey, target)
 	{
@@ -333,10 +334,6 @@
 	$(".BTN_save").on("click", function() {
 		if ($("#FORM_modify").form("validate form"))
 		{
-			$.each($("#FORM_modify").find("input[input-type=calendar]"), function() {
-				$(this).val(JpUtilsDateFormat.format($(this).val(), JpUtilsDateFormat.SUBMIT_FORMAT));
-			});			
-			
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/content/save",
 				data: $("#FORM_modify").serialize(),

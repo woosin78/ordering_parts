@@ -8,7 +8,6 @@ import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,9 +32,7 @@ public class CItemDto extends GeneralDto implements IPagination
 	private String fgPopup = PlatformCommonVo.NO;
 	private String fgVisible = PlatformCommonVo.NO;
 	private String fgDelete = PlatformCommonVo.NO;
-	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	private LocalDateTime fromValid;
-	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	private LocalDateTime toValid;
 	private Integer lSeq;
 	private List<Integer> seqs;

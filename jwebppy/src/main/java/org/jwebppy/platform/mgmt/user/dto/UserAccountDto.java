@@ -8,7 +8,6 @@ import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,9 +26,7 @@ public class UserAccountDto extends GeneralDto
 	private String fgNoUsePassword = PlatformCommonVo.NO;
 	private String fgAccountLocked = PlatformCommonVo.NO;
 	private String fgPasswordLocked = PlatformCommonVo.NO;
-	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	private LocalDateTime fromValid;
-	@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)
 	private LocalDateTime toValid;
 	private CredentialsPolicyDto credentialsPolicy;
 
