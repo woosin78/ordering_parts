@@ -16,8 +16,8 @@ import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyVo;
-import org.jwebppy.platform.mgmt.user.entity.CredentialsPolicyEntity;
 import org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyMapper;
+import org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,12 +31,12 @@ public class CredentialsPolicyService extends GeneralService
 
 	public int create(CredentialsPolicyDto credentialsPolicy)
 	{
-		return credentialsPolicyMapper.insert(CmModelMapperUtils.map(credentialsPolicy, CredentialsPolicyEntity.class));
+		return credentialsPolicyMapper.insert(CmModelMapperUtils.mapToEntity(CredentialsPolicyObjectMapper.INSTANCE, credentialsPolicy));
 	}
 
 	public int modify(CredentialsPolicyDto credentialsPolicy)
 	{
-		return credentialsPolicyMapper.update(CmModelMapperUtils.map(credentialsPolicy, CredentialsPolicyEntity.class));
+		return credentialsPolicyMapper.update(CmModelMapperUtils.mapToEntity(CredentialsPolicyObjectMapper.INSTANCE, credentialsPolicy));
 	}
 
 	public int delete(Integer cpSeq)
@@ -63,17 +63,17 @@ public class CredentialsPolicyService extends GeneralService
 	{
 		if (credentialsPolicy.getCpSeq() == null)
 		{
-			return credentialsPolicyMapper.insert(CmModelMapperUtils.map(credentialsPolicy, CredentialsPolicyEntity.class));
+			return create(credentialsPolicy);
 		}
 		else
 		{
-			return credentialsPolicyMapper.update(CmModelMapperUtils.map(credentialsPolicy, CredentialsPolicyEntity.class));
+			return modify(credentialsPolicy);
 		}
 	}
 
 	public CredentialsPolicyDto getCredentialPolicy(Integer cpSeq)
 	{
-		return CmModelMapperUtils.map(credentialsPolicyMapper.findCredentialsPolicy(cpSeq), CredentialsPolicyDto.class);
+		return CmModelMapperUtils.mapToDto(CredentialsPolicyObjectMapper.INSTANCE, credentialsPolicyMapper.findCredentialsPolicy(cpSeq));
 	}
 
 	public CredentialsPolicyDto getDefaultCredentialPolicyIfEmpty(CredentialsPolicySearchDto credentialsPolicySearch)
@@ -111,12 +111,12 @@ public class CredentialsPolicyService extends GeneralService
 
 	public List<CredentialsPolicyDto> getCredentialPolicies(CredentialsPolicySearchDto credentialsPolicySearch)
 	{
-		return CmModelMapperUtils.mapAll(credentialsPolicyMapper.findCredentialsPolicies(credentialsPolicySearch), CredentialsPolicyDto.class);
+		return CmModelMapperUtils.mapToDto(CredentialsPolicyObjectMapper.INSTANCE, credentialsPolicyMapper.findCredentialsPolicies(credentialsPolicySearch));
 	}
 
 	public List<CredentialsPolicyDto> getPageableCredentialPolicies(CredentialsPolicySearchDto credentialsPolicySearch)
 	{
-		return CmModelMapperUtils.mapAll(credentialsPolicyMapper.findPageCredentialsPolicies(credentialsPolicySearch), CredentialsPolicyDto.class);
+		return CmModelMapperUtils.mapToDto(CredentialsPolicyObjectMapper.INSTANCE, credentialsPolicyMapper.findPageCredentialsPolicies(credentialsPolicySearch));
 	}
 
 	public Map<String, Object> checkValid(CredentialsPolicyDto credentialsPolicy, CredentialsPolicyType type ,String str)

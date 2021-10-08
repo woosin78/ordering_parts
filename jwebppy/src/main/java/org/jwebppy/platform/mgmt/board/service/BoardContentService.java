@@ -14,6 +14,7 @@ import org.jwebppy.platform.mgmt.board.dto.BoardContentSearchDto;
 import org.jwebppy.platform.mgmt.board.dto.BoardDto;
 import org.jwebppy.platform.mgmt.board.entity.BoardContentEntity;
 import org.jwebppy.platform.mgmt.board.mapper.BoardContentMapper;
+import org.jwebppy.platform.mgmt.board.mapper.BoardContentObjectMapper;
 import org.jwebppy.platform.mgmt.upload.service.UploadFileListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,7 @@ public class BoardContentService extends MgmtGeneralService
 		boardContent.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		boardContent.setWriter(UserAuthenticationUtils.getUserDetails().getName());
 
-		BoardContentEntity boardContentEntity = CmModelMapperUtils.map(boardContent, BoardContentEntity.class);
+		BoardContentEntity boardContentEntity = CmModelMapperUtils.mapToEntity(BoardContentObjectMapper.INSTANCE, boardContent);
 
 		boardContentMapper.insert(boardContentEntity);
 
@@ -81,30 +82,14 @@ public class BoardContentService extends MgmtGeneralService
 
 	public int modify(BoardContentDto boardContent) throws IOException
 	{
-		if (boardContentMapper.update(CmModelMapperUtils.map(boardContent, BoardContentEntity.class)) > 0)
+		if (boardContentMapper.update(CmModelMapperUtils.mapToEntity(BoardContentObjectMapper.INSTANCE, boardContent)) > 0)
 		{
 			BoardDto board = boardService.getBoard(boardContent.getBSeq());
 
 			uploadFileListService.save(board.getUfSeq(), boardContent.getBcSeq(), boardContent.getFiles());
 
-			/*
-			String rUflSeq = CmStringUtils.trimToEmpty(boardContent.getRUflSeq());
-			String[] rUflSeqs = CmStringUtils.split(rUflSeq, PlatformCommonVo.DELIMITER);
-
-			CmNumberUtils.
-
-			for (String uflSeq: rUflSeqs)
-			{
-				if (CmStringUtils.isNotEmpty(uflSeq))
-				{
-					uploadFileListService.delete(Integer.parseInt(uflSeq));
-				}
-			}
-			*/
-
 			uploadFileListService.delete(boardContent.getUflSeqs());
 		}
-
 
 		return 1;
 	}
@@ -137,11 +122,11 @@ public class BoardContentService extends MgmtGeneralService
 
 	public BoardContentDto getBoardContent(int bcSeq)
 	{
-		return CmModelMapperUtils.map(boardContentMapper.findBoardContent(bcSeq), BoardContentDto.class);
+		return CmModelMapperUtils.mapToDto(BoardContentObjectMapper.INSTANCE, boardContentMapper.findBoardContent(bcSeq));
 	}
 
 	public List<BoardContentDto> getPageableBoardContents(BoardContentSearchDto boardContentSearch)
 	{
-		return CmModelMapperUtils.mapAll(boardContentMapper.findPageableBoardContents(boardContentSearch), BoardContentDto.class);
+		return CmModelMapperUtils.mapToDto(BoardContentObjectMapper.INSTANCE, boardContentMapper.findPageableBoardContents(boardContentSearch));
 	}
 }

@@ -21,7 +21,10 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangType;
 import org.jwebppy.platform.mgmt.i18n.entity.LangDetailEntity;
 import org.jwebppy.platform.mgmt.i18n.entity.LangEntity;
 import org.jwebppy.platform.mgmt.i18n.entity.LangKindEntity;
+import org.jwebppy.platform.mgmt.i18n.mapper.LangDetailObjectMapper;
+import org.jwebppy.platform.mgmt.i18n.mapper.LangKindObjectMapper;
 import org.jwebppy.platform.mgmt.i18n.mapper.LangMapper;
+import org.jwebppy.platform.mgmt.i18n.mapper.LangObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -56,7 +59,7 @@ public class LangService extends MgmtGeneralService
 
 		if (langEntity == null)
 		{
-			langEntity = CmModelMapperUtils.map(lang, LangEntity.class);
+			langEntity = LangObjectMapper.INSTANCE.toEntity(lang);
 
 			if (CmStringUtils.isEmpty(langEntity.getSeq()))
 			{
@@ -69,7 +72,7 @@ public class LangService extends MgmtGeneralService
 		}
 		else
 		{
-			langMapper.updateLang(CmModelMapperUtils.map(lang, LangEntity.class));
+			langMapper.updateLang(LangObjectMapper.INSTANCE.toEntity(lang));
 			lSeq = langEntity.getLSeq();
 		}
 
@@ -77,7 +80,7 @@ public class LangService extends MgmtGeneralService
 		{
 			langDetail.setLSeq(lSeq);
 
-			LangDetailEntity langDetailEntity = CmModelMapperUtils.map(langDetail, LangDetailEntity.class);
+			LangDetailEntity langDetailEntity = LangDetailObjectMapper.INSTANCE.toEntity(langDetail);
 
 			if (langMapper.findLangDetail(langDetail) == null)
 			{
@@ -105,17 +108,17 @@ public class LangService extends MgmtGeneralService
 		LangDto lang = new LangDto();
 		lang.setLSeq(lSeq);
 
-		return CmModelMapperUtils.map(langMapper.findLang(lang), LangDto.class);
+		return CmModelMapperUtils.mapToDto(LangObjectMapper.INSTANCE, langMapper.findLang(lang));
 	}
 
 	public LangDto getLang(LangDto lang)
 	{
-		return CmModelMapperUtils.map(langMapper.findLang(lang), LangDto.class);
+		return CmModelMapperUtils.mapToDto(LangObjectMapper.INSTANCE, langMapper.findLang(lang));
 	}
 
 	public List<LangDto> getPageableLangs(LangSearchDto langSearchDto)
 	{
-		return CmModelMapperUtils.mapAll(langMapper.findLangs(langSearchDto), LangDto.class);
+		return CmModelMapperUtils.mapToDto(LangObjectMapper.INSTANCE, langMapper.findLangs(langSearchDto));
 	}
 
 	public String getText(String key)
@@ -169,12 +172,12 @@ public class LangService extends MgmtGeneralService
 
 	public List<LangDetailDto> getLangDetails(LangSearchDto langSearch)
 	{
-		return CmModelMapperUtils.mapAll(langMapper.findLangDetails(langSearch), LangDetailDto.class);
+		return CmModelMapperUtils.mapToDto(LangDetailObjectMapper.INSTANCE, langMapper.findLangDetails(langSearch));
 	}
 
 	public List<LangKindDto> getLangKinds(LangKindDto langKind)
 	{
-		return CmModelMapperUtils.mapAll(langMapper.findLangKinds(langKind), LangKindDto.class);
+		return LangKindObjectMapper.INSTANCE.toDtoList(langMapper.findLangKinds(langKind));
 	}
 
 	@Cacheable(value = CacheConfig.LANG, key = "{#basename, #cSeq, #lang}", unless="#result == null")
@@ -190,7 +193,7 @@ public class LangService extends MgmtGeneralService
 		cItemSearch.setBasename(basename);
 		cItemSearch.setLang(lang);
 
-		List<LangDetailDto> langDetails = CmModelMapperUtils.mapAll(langMapper.findLangDetailsCItems(cItemSearch), LangDetailDto.class);
+		List<LangDetailDto> langDetails = CmModelMapperUtils.mapToDto(LangDetailObjectMapper.INSTANCE, langMapper.findLangDetailsCItems(cItemSearch));
 
 		if (CollectionUtils.isNotEmpty(langDetails))
 		{

@@ -16,6 +16,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+		<project.lib.path>${project.basedir}/lib</project.lib.path>
 	</properties>
 
 	<dependencies>
@@ -48,6 +50,20 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>${org.mapstruct.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>${org.mapstruct.version}</version>
+			<scope>compile</scope>
+		</dependency>		
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -103,18 +119,25 @@
 			<artifactId>spring-session-jdbc</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-batch</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.batch</groupId>
+			<artifactId>spring-batch-test</artifactId>
+			<scope>test</scope>
+		</dependency>		
+		<dependency>
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
 			<version>3.11.0</version>
 		</dependency>
 
-		<!-- JDBC Driver-Mariadb -->
-		<dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
-		</dependency>
-		<!-- JDBC Driver-Mariadb -->
-		
 		<!-- JDBC Driver-MSSQL -->
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
@@ -160,7 +183,6 @@
 		</dependency>
 		<!-- modelmapper -->
 		
-		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
@@ -186,24 +208,33 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-batch</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.batch</groupId>
-			<artifactId>spring-batch-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>com.github.vertical-blank</groupId>
 			<artifactId>sql-formatter</artifactId>
 			<version>2.0.2</version>
 		</dependency>
+		
+		<!-- SAP Jco -->
+		<dependency>
+		    <groupId>sapjco3</groupId>
+		    <artifactId>sapjco3</artifactId>
+		    <version>1.0</version>
+		    <scope>system</scope>
+		    <systemPath>${project.lib.path}/sap/sapjco3.jar</systemPath>
+		</dependency>		
+		<dependency>
+			<groupId>javax.resource</groupId>
+			<artifactId>connector</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.lib.path}/sap/connector1.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.sapportals.connector.connection</groupId>
+			<artifactId>GenericConnector</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.lib.path}/sap/GenericConnector.jar</systemPath>
+		</dependency>			
 	</dependencies>
 
 	<build>
@@ -211,6 +242,22 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${org.mapstruct.version}</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</path>						
+					</annotationProcessorPaths>
+					<compilerArgs>
+						-Amapstruct.defaultComponentModel=spring
+					</compilerArgs>
+				</configuration>				
 			</plugin>
 		</plugins>
 	</build>

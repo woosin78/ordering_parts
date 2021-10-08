@@ -2,10 +2,12 @@ package org.jwebppy.platform.mgmt.board.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.jwebppy.platform.mgmt.board.dto.BoardContentSearchDto;
 import org.jwebppy.platform.mgmt.board.entity.BoardContentEntity;
 
 //@NoLogging
+@Mapper
 public interface BoardContentMapper
 {
 	public int insert(BoardContentEntity boardContent);

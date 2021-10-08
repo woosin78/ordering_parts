@@ -2,12 +2,14 @@ package org.jwebppy.portal.scm.parts.domestic.order.create.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.jwebppy.portal.scm.parts.domestic.order.create.dto.OnetimeAddressDto;
 import org.jwebppy.portal.scm.parts.domestic.order.create.dto.OrderHistoryHeaderDto;
 import org.jwebppy.portal.scm.parts.domestic.order.create.entity.OnetimeAddressEntity;
 import org.jwebppy.portal.scm.parts.domestic.order.create.entity.OrderHistoryHeaderEntity;
 import org.jwebppy.portal.scm.parts.domestic.order.create.entity.OrderHistoryItemEntity;
 
+@Mapper
 public interface OrderCreateMapper
 {
 	public int insertOnetimeAddress(OnetimeAddressEntity onetimeAddress);

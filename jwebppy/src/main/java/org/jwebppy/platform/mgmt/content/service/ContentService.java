@@ -19,6 +19,7 @@ import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
+import org.jwebppy.platform.mgmt.content.mapper.CItemObjectMapper;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class ContentService extends GeneralService
 
 	public int create(CItemDto cItem)
 	{
-		CItemEntity cItemEntity = CmModelMapperUtils.map(cItem, CItemEntity.class);
+		CItemEntity cItemEntity = CmModelMapperUtils.mapToEntity(CItemObjectMapper.INSTANCE, cItem);
 
 		contentMapper.insert(cItemEntity);
 
@@ -46,7 +47,7 @@ public class ContentService extends GeneralService
 
 	public int modify(CItemDto cItem)
 	{
-		return contentMapper.update(CmModelMapperUtils.map(cItem, CItemEntity.class));
+		return contentMapper.update(CmModelMapperUtils.mapToEntity(CItemObjectMapper.INSTANCE, cItem));
 	}
 
 	public int save(CItemDto cItem)
@@ -193,7 +194,7 @@ public class ContentService extends GeneralService
 		CItemDto cItem = getCItem(cSeq);
 		cItem.setPSeq(pSeq);
 
-		return contentMapper.update(CmModelMapperUtils.map(cItem, CItemEntity.class));
+		return contentMapper.update(CmModelMapperUtils.mapToEntity(CItemObjectMapper.INSTANCE, cItem));
 	}
 
 	public CItemDto getRoot()
@@ -214,17 +215,17 @@ public class ContentService extends GeneralService
 
 	public CItemDto getCItem(CItemSearchDto cItemSearch)
 	{
-		return CmModelMapperUtils.map(contentMapper.findCItem(cItemSearch), CItemDto.class);
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCItem(cItemSearch));
 	}
 
 	public List<CItemDto> getCItems(CItemSearchDto cItemSearch)
 	{
-		return CmModelMapperUtils.mapAll(contentMapper.findCItems(cItemSearch), CItemDto.class);
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCItems(cItemSearch));
 	}
 
 	public List<CItemDto> getPageableCItems(CItemSearchDto cItemSearch)
 	{
-		return CmModelMapperUtils.mapAll(contentMapper.findPageCItems(cItemSearch), CItemDto.class);
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findPageCItems(cItemSearch));
 	}
 
 	public List<CItemDto> getCItemHierarchy(CItemSearchDto cItemSearch)
@@ -316,6 +317,6 @@ public class ContentService extends GeneralService
 
 	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)
 	{
-		return CmModelMapperUtils.mapAll(contentMapper.findMyCItems(cItemSearch), CItemDto.class);
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findMyCItems(cItemSearch));
 	}
 }

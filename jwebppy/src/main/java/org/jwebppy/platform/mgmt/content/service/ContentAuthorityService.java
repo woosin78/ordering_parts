@@ -1,6 +1,7 @@
 package org.jwebppy.platform.mgmt.content.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.dto.CItemUserRlDto;
 import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
 import org.jwebppy.platform.mgmt.content.entity.CItemUserRlEntity;
+import org.jwebppy.platform.mgmt.content.mapper.CItemObjectMapper;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,17 +112,17 @@ public class ContentAuthorityService extends GeneralService
 
 	public List<CItemDto> getMyCItems(CItemSearchDto cItemSearch)
 	{
-		return CmModelMapperUtils.mapAll(contentMapper.findMyCItems(cItemSearch), CItemDto.class);
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findMyCItems(cItemSearch));
 	}
 
 	public List<CItemDto> getMyCItemHierarchy(CItemSearchDto cItemSearch)
 	{
-		List<CItemDto> hierarchy = new LinkedList<>();
-
-		List<CItemDto> cItems = CmModelMapperUtils.mapAll(contentMapper.findMyCItems(cItemSearch), CItemDto.class);
+		List<CItemDto> cItems = getMyCItems(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
+			List<CItemDto> hierarchy = new LinkedList<>();
+
 			List<CItemDto> roles = new ArrayList<>();
 
 			for (CItemDto cItem : cItems)
@@ -168,9 +170,11 @@ public class ContentAuthorityService extends GeneralService
 
 				hierarchy.add(role);
 			}
+
+			return hierarchy;
 		}
 
-		return hierarchy;
+		return Collections.emptyList();
 	}
 
 	private List<CItemDto> getSubCItems(Integer cSeq, String lang)

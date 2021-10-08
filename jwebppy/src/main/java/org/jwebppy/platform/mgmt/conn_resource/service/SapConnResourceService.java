@@ -12,6 +12,7 @@ import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceSearchDto;
 import org.jwebppy.platform.mgmt.conn_resource.entity.SapConnResourceEntity;
 import org.jwebppy.platform.mgmt.conn_resource.mapper.SapConnResourceMapper;
+import org.jwebppy.platform.mgmt.conn_resource.mapper.SapConnResourceObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,7 @@ public class SapConnResourceService extends GeneralService
 
 	public int create(SapConnResourceDto sapConnResource)
 	{
-		SapConnResourceEntity sapConnResourceEntity = CmModelMapperUtils.map(sapConnResource, SapConnResourceEntity.class);
+		SapConnResourceEntity sapConnResourceEntity = CmModelMapperUtils.mapToEntity(SapConnResourceObjectMapper.INSTANCE, sapConnResource);
 
 		sapConnResourceMapper.insert(sapConnResourceEntity);
 
@@ -51,7 +52,7 @@ public class SapConnResourceService extends GeneralService
 
 	public int modify(SapConnResourceDto sapConnResource)
 	{
-		return sapConnResourceMapper.update(CmModelMapperUtils.map(sapConnResource, SapConnResourceEntity.class));
+		return sapConnResourceMapper.update(CmModelMapperUtils.mapToEntity(SapConnResourceObjectMapper.INSTANCE, sapConnResource));
 	}
 
 	public int modifyFgUse(List<Integer> scrSeqs, String fgUse)
@@ -91,16 +92,16 @@ public class SapConnResourceService extends GeneralService
 
 	public SapConnResourceDto getSapConnResource(Integer scrSeq)
 	{
-		return CmModelMapperUtils.map(sapConnResourceMapper.findSapConnResource(scrSeq), SapConnResourceDto.class);
+		return CmModelMapperUtils.mapToDto(SapConnResourceObjectMapper.INSTANCE, sapConnResourceMapper.findSapConnResource(scrSeq));
 	}
 
 	public List<SapConnResourceDto> getPageableSapConnResources(SapConnResourceSearchDto sapConnResourceSearch)
 	{
-		return CmModelMapperUtils.mapAll(sapConnResourceMapper.findPageSapConnResources(sapConnResourceSearch), SapConnResourceDto.class);
+		return CmModelMapperUtils.mapToDto(SapConnResourceObjectMapper.INSTANCE, sapConnResourceMapper.findPageSapConnResources(sapConnResourceSearch));
 	}
 
 	public List<SapConnResourceDto> getAvailableSapConnResources()
 	{
-		return CmModelMapperUtils.mapAll(sapConnResourceMapper.findAvailableSapConnResources(), SapConnResourceDto.class);
+		return CmModelMapperUtils.mapToDto(SapConnResourceObjectMapper.INSTANCE, sapConnResourceMapper.findAvailableSapConnResources());
 	}
 }

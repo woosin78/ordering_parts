@@ -1,4 +1,4 @@
-package org.jwebppy.platform.mgmt.authority.dto;
+package org.jwebppy.platform.mgmt.authority.entity;
 
 import java.util.List;
 

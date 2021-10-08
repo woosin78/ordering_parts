@@ -13,6 +13,7 @@ import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.entity.LoginHistoryEntity;
 import org.jwebppy.platform.core.security.authentication.mapper.LoginHistoryMapper;
+import org.jwebppy.platform.core.security.authentication.mapper.LoginHistoryObjectMapper;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -82,7 +83,7 @@ public class LoginHistoryService extends GeneralService
 		if (UserAuthenticationUtils.isLogin())
 		{
 			UserDto user = userService.getUser(UserAuthenticationUtils.getUserDetails().getUSeq());
-			
+
 			loginHistory.setUSeq(user.getUSeq());
 			loginHistory.setTimezone(user.getUserContactInfo().getTimezone());
 		}
@@ -92,7 +93,7 @@ public class LoginHistoryService extends GeneralService
 
 	public List<LoginHistoryDto> getPageableLoginHistories(LoginHistorySearchDto loginHistorySearch)
 	{
-		return CmModelMapperUtils.mapAll(loginHistoryMapper.findPageableLoginHistories(loginHistorySearch), LoginHistoryDto.class);
+		return CmModelMapperUtils.mapToDto(LoginHistoryObjectMapper.INSTANCE, loginHistoryMapper.findPageableLoginHistories(loginHistorySearch));
 	}
 
 	public int getLoginFailureCount(LoginHistorySearchDto loginHistorySearch)

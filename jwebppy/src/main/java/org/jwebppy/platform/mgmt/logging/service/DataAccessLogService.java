@@ -19,6 +19,9 @@ import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogEntity;
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogParameterDetailEntity;
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogParameterEntity;
 import org.jwebppy.platform.mgmt.logging.mapper.DataAccessLogMapper;
+import org.jwebppy.platform.mgmt.logging.mapper.DataAccessLogObjectMapper;
+import org.jwebppy.platform.mgmt.logging.mapper.DataAccessLogParameterDetailObjectMapper;
+import org.jwebppy.platform.mgmt.logging.mapper.DataAccessLogParameterObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -37,7 +40,7 @@ public class DataAccessLogService extends GeneralService
 	@Async("threadPoolTaskExecutor")
 	public void writeLog(DataAccessLogDto dataAccessLog)
 	{
-		DataAccessLogEntity dataAccessLogEntity = CmModelMapperUtils.map(dataAccessLog, DataAccessLogEntity.class);
+		DataAccessLogEntity dataAccessLogEntity = CmModelMapperUtils.mapToEntity(DataAccessLogObjectMapper.INSTANCE, dataAccessLog);
 
 		//Insert Header
 		dataAccessLogMapper.insertDataAccessLog(dataAccessLogEntity);
@@ -46,7 +49,7 @@ public class DataAccessLogService extends GeneralService
 		{
 			for (DataAccessLogParameterDto dataAccessLogParameter : dataAccessLog.getDataAccessLogParameters())
 			{
-				DataAccessLogParameterEntity dataAccessLogParameterEntity = CmModelMapperUtils.map(dataAccessLogParameter, DataAccessLogParameterEntity.class);
+				DataAccessLogParameterEntity dataAccessLogParameterEntity = CmModelMapperUtils.mapToEntity(DataAccessLogParameterObjectMapper.INSTANCE, dataAccessLogParameter);
 
 				dataAccessLogParameterEntity.setDlSeq(dataAccessLog.getDlSeq());
 
@@ -56,7 +59,7 @@ public class DataAccessLogService extends GeneralService
 				{
 					for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail : dataAccessLogParameter.getDataAccessLogParameterDetails())
 					{
-						DataAccessLogParameterDetailEntity dataAccessLogParameterDetailEntity = CmModelMapperUtils.map(dataAccessLogParameterDetail, DataAccessLogParameterDetailEntity.class);
+						DataAccessLogParameterDetailEntity dataAccessLogParameterDetailEntity = CmModelMapperUtils.mapToEntity(DataAccessLogParameterDetailObjectMapper.INSTANCE, dataAccessLogParameterDetail);
 
 						dataAccessLogParameterDetailEntity.setDlpSeq(dataAccessLogParameterEntity.getDlpSeq());
 						dataAccessLogMapper.insertDataAccessLogParameterDetail(dataAccessLogParameterDetailEntity);
@@ -68,12 +71,12 @@ public class DataAccessLogService extends GeneralService
 
 	public List<DataAccessLogDto> getPageableLogs(DataAccessLogSearchDto dataAccessLogSearch)
 	{
-		return CmModelMapperUtils.mapAll(dataAccessLogMapper.findPageableLogs(dataAccessLogSearch), DataAccessLogDto.class);
+		return CmModelMapperUtils.mapToDto(DataAccessLogObjectMapper.INSTANCE, dataAccessLogMapper.findPageableLogs(dataAccessLogSearch));
 	}
 
 	public DataAccessLogDto getLog(String dlSeq)
 	{
-		return CmModelMapperUtils.map(dataAccessLogMapper.findLog(dlSeq), DataAccessLogDto.class);
+		return CmModelMapperUtils.mapToDto(DataAccessLogObjectMapper.INSTANCE, dataAccessLogMapper.findLog(dlSeq));
 	}
 
 	public String execute(String dlSeq)

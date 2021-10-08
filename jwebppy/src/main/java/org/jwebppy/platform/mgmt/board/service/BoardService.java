@@ -4,6 +4,7 @@ import org.jwebppy.platform.PlatformGeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.mgmt.board.dto.BoardDto;
 import org.jwebppy.platform.mgmt.board.mapper.BoardMapper;
+import org.jwebppy.platform.mgmt.board.mapper.BoardObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,6 @@ public class BoardService extends PlatformGeneralService
 
 	public BoardDto getBoard(BoardDto board)
 	{
-		return CmModelMapperUtils.map(boardMapper.findBoard(board), BoardDto.class);
+		return CmModelMapperUtils.mapToDto(BoardObjectMapper.INSTANCE, boardMapper.findBoard(board));
 	}
 }

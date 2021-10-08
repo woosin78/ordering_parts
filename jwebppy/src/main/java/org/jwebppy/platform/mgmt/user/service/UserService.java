@@ -23,7 +23,10 @@ import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
 import org.jwebppy.platform.mgmt.user.entity.UserAccountEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserContactInfoEntity;
 import org.jwebppy.platform.mgmt.user.entity.UserEntity;
+import org.jwebppy.platform.mgmt.user.mapper.UserAccountObjectMapper;
+import org.jwebppy.platform.mgmt.user.mapper.UserContactInfoObjectMapper;
 import org.jwebppy.platform.mgmt.user.mapper.UserMapper;
+import org.jwebppy.platform.mgmt.user.mapper.UserObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,7 +50,7 @@ public class UserService extends GeneralService
 
 	public int createUser(UserDto user)
 	{
-		UserEntity userEntity = CmModelMapperUtils.map(user, UserEntity.class);
+		UserEntity userEntity = CmModelMapperUtils.mapToEntity(UserObjectMapper.INSTANCE, user);
 
 		userMapper.insertUser(userEntity);
 
@@ -68,12 +71,12 @@ public class UserService extends GeneralService
 			userAccount.setToValid(CmDateTimeUtils.now().plusYears(1000).toLocalDateTime());
 		}
 
-		return userMapper.insertUserAccount(CmModelMapperUtils.map(userAccount, UserAccountEntity.class));
+		return userMapper.insertUserAccount(CmModelMapperUtils.mapToEntity(UserAccountObjectMapper.INSTANCE, userAccount));
 	}
 
 	public int createUserContactInfo(UserContactInfoDto userContactInfo)
 	{
-		return userMapper.insertUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
+		return userMapper.insertUserContactInfo(CmModelMapperUtils.mapToEntity(UserContactInfoObjectMapper.INSTANCE, userContactInfo));
 	}
 
 	public int createUserByCopy(Map<String, String> paramMap)
@@ -139,7 +142,7 @@ public class UserService extends GeneralService
 
 	public int modifyUser(UserDto user)
 	{
-		return userMapper.updateUser(CmModelMapperUtils.map(user, UserEntity.class));
+		return userMapper.updateUser(CmModelMapperUtils.mapToEntity(UserObjectMapper.INSTANCE, user));
 	}
 
 	public int modifyUserAccount(UserAccountDto userAccount)
@@ -168,12 +171,12 @@ public class UserService extends GeneralService
 			userAccount.setToValid(LocalDateTime.now().plusYears(1000));
 		}
 
-		return userMapper.updateUserAccount(CmModelMapperUtils.map(userAccount, UserAccountEntity.class));
+		return userMapper.updateUserAccount(CmModelMapperUtils.mapToEntity(UserAccountObjectMapper.INSTANCE, userAccount));
 	}
 
 	public int modifyUserContactInfo(UserContactInfoDto userContactInfo)
 	{
-		return userMapper.updateUserContactInfo(CmModelMapperUtils.map(userContactInfo, UserContactInfoEntity.class));
+		return userMapper.updateUserContactInfo(CmModelMapperUtils.mapToEntity(UserContactInfoObjectMapper.INSTANCE, userContactInfo));
 	}
 
 	public int lockUserAccount(Integer uSeq, String fgAccountLocked)
@@ -295,16 +298,16 @@ public class UserService extends GeneralService
 
 	public UserDto getUser(UserSearchDto userSearch)
 	{
-		return CmModelMapperUtils.map(userMapper.findUser(userSearch), UserDto.class);
+		return CmModelMapperUtils.mapToDto(UserObjectMapper.INSTANCE, userMapper.findUser(userSearch));
 	}
 
 	public List<UserDto> getPageableUsers(UserSearchDto userSearch)
 	{
-		return CmModelMapperUtils.mapAll(userMapper.findPageUsers(userSearch), UserDto.class);
+		return CmModelMapperUtils.mapToDto(UserObjectMapper.INSTANCE, userMapper.findPageUsers(userSearch));
 	}
 
 	public List<UserDto> getUsersInCItem(UserSearchDto userSearch)
 	{
-		return CmModelMapperUtils.mapAll(userMapper.findUsersInCItem(userSearch), UserDto.class);
+		return CmModelMapperUtils.mapToDto(UserObjectMapper.INSTANCE, userMapper.findUsersInCItem(userSearch));
 	}
 }

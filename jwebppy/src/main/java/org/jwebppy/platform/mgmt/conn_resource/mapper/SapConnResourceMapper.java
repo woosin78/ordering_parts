@@ -2,11 +2,13 @@ package org.jwebppy.platform.mgmt.conn_resource.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.jwebppy.platform.core.interceptor.NoLogging;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceSearchDto;
 import org.jwebppy.platform.mgmt.conn_resource.entity.SapConnResourceEntity;
 
 @NoLogging
+@Mapper
 public interface SapConnResourceMapper
 {
 	public int insert(SapConnResourceEntity sapConnResource);

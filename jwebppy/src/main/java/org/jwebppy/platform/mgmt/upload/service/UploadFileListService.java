@@ -16,6 +16,7 @@ import org.jwebppy.platform.mgmt.upload.dto.UploadFileDto;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileListDto;
 import org.jwebppy.platform.mgmt.upload.entity.UploadFileListEntity;
 import org.jwebppy.platform.mgmt.upload.mapper.UploadFileListMapper;
+import org.jwebppy.platform.mgmt.upload.mapper.UploadFileListObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -83,7 +84,7 @@ public class UploadFileListService extends GeneralService
 				uploadFileList.setSize(multipartFile.getSize());
 				uploadFileList.setFgDelete(PlatformCommonVo.NO);
 
-				uploadFileListMapper.insert(CmModelMapperUtils.map(uploadFileList, UploadFileListEntity.class));
+				uploadFileListMapper.insert(CmModelMapperUtils.mapToEntity(UploadFileListObjectMapper.INSTANCE, uploadFileList));
 			}
 
 			return 1;
@@ -187,7 +188,7 @@ public class UploadFileListService extends GeneralService
 
 	public UploadFileListDto getUploadFileList(int uflSeq)
 	{
-		return CmModelMapperUtils.map(uploadFileListMapper.findUploadFileList(uflSeq), UploadFileListDto.class);
+		return CmModelMapperUtils.mapToDto(UploadFileListObjectMapper.INSTANCE, uploadFileListMapper.findUploadFileList(uflSeq));
 	}
 
 	public List<UploadFileListDto> getUploadFileLists(int ufSeq, int tSeq)
@@ -196,6 +197,6 @@ public class UploadFileListService extends GeneralService
 		uploadFileList.setUfSeq(ufSeq);
 		uploadFileList.setTSeq(tSeq);
 
-		return CmModelMapperUtils.mapAll(uploadFileListMapper.findUploadFileLists(uploadFileList), UploadFileListDto.class);
+		return CmModelMapperUtils.mapToDto(UploadFileListObjectMapper.INSTANCE, uploadFileListMapper.findUploadFileLists(uploadFileList));
 	}
 }

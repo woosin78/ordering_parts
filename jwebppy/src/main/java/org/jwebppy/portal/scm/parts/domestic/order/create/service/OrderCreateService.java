@@ -29,8 +29,10 @@ import org.jwebppy.portal.scm.parts.domestic.order.create.dto.OrderHistoryItemDt
 import org.jwebppy.portal.scm.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.scm.parts.domestic.order.create.entity.OnetimeAddressEntity;
 import org.jwebppy.portal.scm.parts.domestic.order.create.entity.OrderHistoryHeaderEntity;
-import org.jwebppy.portal.scm.parts.domestic.order.create.entity.OrderHistoryItemEntity;
+import org.jwebppy.portal.scm.parts.domestic.order.create.mapper.OnetimeAddressObjectMapper;
 import org.jwebppy.portal.scm.parts.domestic.order.create.mapper.OrderCreateMapper;
+import org.jwebppy.portal.scm.parts.domestic.order.create.mapper.OrderHistoryHeaderObjectMapper;
+import org.jwebppy.portal.scm.parts.domestic.order.create.mapper.OrderHistoryItemObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -353,7 +355,7 @@ public class OrderCreateService
 
 	public List<OnetimeAddressDto> getOnetimeAddresses(OnetimeAddressDto onetimeAddress)
 	{
-		return CmModelMapperUtils.mapAll(orderCreateMapper.findAllOnetimeAddresses(onetimeAddress), OnetimeAddressDto.class);
+		return CmModelMapperUtils.mapToDto(OnetimeAddressObjectMapper.INSTANCE, orderCreateMapper.findAllOnetimeAddresses(onetimeAddress));
 	}
 
 	public String getPostalCode(ErpDataMap erpParamMap)
@@ -402,12 +404,12 @@ public class OrderCreateService
 
 	public List<OnetimeAddressDto> getOnetimeAddressesForDuplicationCheck(OnetimeAddressDto onetimeAddress)
 	{
-		return CmModelMapperUtils.mapAll(orderCreateMapper.findAllSameOnetimeAddresses(onetimeAddress), OnetimeAddressDto.class);
+		return CmModelMapperUtils.mapToDto(OnetimeAddressObjectMapper.INSTANCE, orderCreateMapper.findAllSameOnetimeAddresses(onetimeAddress));
 	}
 
 	public Integer saveOnetimeAddress(OnetimeAddressDto onetimeAddress)
 	{
-		OnetimeAddressEntity onetimeAddressEntity = CmModelMapperUtils.map(onetimeAddress, OnetimeAddressEntity.class);
+		OnetimeAddressEntity onetimeAddressEntity = CmModelMapperUtils.mapToEntity(OnetimeAddressObjectMapper.INSTANCE, onetimeAddress);
 
 		orderCreateMapper.insertOnetimeAddress(onetimeAddressEntity);
 
@@ -416,12 +418,12 @@ public class OrderCreateService
 
 	public int modifyFgUseOfOnetimeAddress(OnetimeAddressDto onetimeAddress)
 	{
-		return orderCreateMapper.updateFgUseOfOnetimeAddress(CmModelMapperUtils.map(onetimeAddress, OnetimeAddressEntity.class));
+		return orderCreateMapper.updateFgUseOfOnetimeAddress(CmModelMapperUtils.mapToEntity(OnetimeAddressObjectMapper.INSTANCE, onetimeAddress));
 	}
 
 	public int deleteOnetimeAddress(OnetimeAddressDto onetimeAddress)
 	{
-		return orderCreateMapper.updateFgDeleteOfOnetimeAddress(CmModelMapperUtils.map(onetimeAddress, OnetimeAddressEntity.class));
+		return orderCreateMapper.updateFgDeleteOfOnetimeAddress(CmModelMapperUtils.mapToEntity(OnetimeAddressObjectMapper.INSTANCE, onetimeAddress));
 	}
 
 	public List<OrderHistoryHeaderDto> getOrderHistoryList(String regUsername, Integer ohhSeq)
@@ -430,7 +432,7 @@ public class OrderCreateService
 		orderHistoryHeader.setRegUsername(regUsername);
 		orderHistoryHeader.setOhhSeq(ohhSeq);
 
-		return CmModelMapperUtils.mapAll(orderCreateMapper.findAllOrderHistoryHeader(orderHistoryHeader), OrderHistoryHeaderDto.class);
+		return CmModelMapperUtils.mapToDto(OrderHistoryHeaderObjectMapper.INSTANCE, orderCreateMapper.findAllOrderHistoryHeader(orderHistoryHeader));
 	}
 
 	@Transactional
@@ -439,7 +441,7 @@ public class OrderCreateService
 		OrderHistoryHeaderDto orderHistoryHeader = new OrderHistoryHeaderDto();
 		orderHistoryHeader.setHeader(order);
 
-		OrderHistoryHeaderEntity orderHistoryHeaderEntity = CmModelMapperUtils.map(orderHistoryHeader, OrderHistoryHeaderEntity.class);
+		OrderHistoryHeaderEntity orderHistoryHeaderEntity = CmModelMapperUtils.mapToEntity(OrderHistoryHeaderObjectMapper.INSTANCE, orderHistoryHeader);
 
 		orderCreateMapper.insertOrderHistoryHeader(orderHistoryHeaderEntity);
 
@@ -455,7 +457,7 @@ public class OrderCreateService
 			{
 				for (OrderHistoryItemDto orderHistoryItem: orderHistoryItems)
 				{
-					orderCreateMapper.insertOrderHistoryItem(CmModelMapperUtils.map(orderHistoryItem, OrderHistoryItemEntity.class));
+					orderCreateMapper.insertOrderHistoryItem(CmModelMapperUtils.mapToEntity(OrderHistoryItemObjectMapper.INSTANCE, orderHistoryItem));
 				}
 			}
 		}

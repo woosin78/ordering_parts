@@ -17,6 +17,7 @@ import org.jwebppy.platform.mgmt.logging.entity.DataAccessResultLogEntity;
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessResultLogParameterDetailEntity;
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessResultLogParameterEntity;
 import org.jwebppy.platform.mgmt.logging.mapper.DataAccessResultLogMapper;
+import org.jwebppy.platform.mgmt.logging.mapper.DataAccessResultLogObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -132,11 +133,11 @@ public class DataAccessResultLogService extends GeneralService
 
 	public DataAccessResultLogDto getResultLog(long drlSeq)
 	{
-		return CmModelMapperUtils.map(dataAccessResultLogMapper.findResultLog(drlSeq), DataAccessResultLogDto.class);
+		return CmModelMapperUtils.mapToDto(DataAccessResultLogObjectMapper.INSTANCE, dataAccessResultLogMapper.findResultLog(drlSeq));
 	}
 
 	public List<DataAccessResultLogDto> getResultLogs(String dlSeq)
 	{
-		return CmModelMapperUtils.mapAll(dataAccessResultLogMapper.findResultLogs(dlSeq), DataAccessResultLogDto.class);
+		return CmModelMapperUtils.mapToDto(DataAccessResultLogObjectMapper.INSTANCE, dataAccessResultLogMapper.findResultLogs(dlSeq));
 	}
 }

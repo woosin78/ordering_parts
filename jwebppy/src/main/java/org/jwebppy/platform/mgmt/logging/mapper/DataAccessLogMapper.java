@@ -2,6 +2,7 @@ package org.jwebppy.platform.mgmt.logging.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.jwebppy.platform.core.interceptor.NoLogging;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogSearchDto;
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessLogEntity;
@@ -12,6 +13,7 @@ import org.jwebppy.platform.mgmt.logging.entity.DataAccessResultLogParameterDeta
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessResultLogParameterEntity;
 
 @NoLogging
+@Mapper
 public interface DataAccessLogMapper
 {
 	public void insertDataAccessLog(DataAccessLogEntity dataAccessLog);

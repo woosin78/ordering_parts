@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
-import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
@@ -214,7 +214,12 @@ public class UserController extends UserGeneralController
 		}
 		else if ("authority".equals(tabPath))
 		{
-			cItemUserRl.setCSeqs(CmModelMapperUtils.mapAll(ArrayUtils.toUnmodifiableList(webRequest.getParameterValues("cSeq")), Integer.class));
+			List<Integer> cSeqs = ArrayUtils.toUnmodifiableList(webRequest.getParameterValues("cSeq"))
+					.stream()
+					.map(s -> Integer.parseInt(s))
+					.collect(Collectors.toList());
+
+			cItemUserRl.setCSeqs(cSeqs);
 
 			return contentAuthorityService.save(cItemUserRl);
 		}

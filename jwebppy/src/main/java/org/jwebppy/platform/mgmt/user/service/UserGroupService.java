@@ -9,6 +9,7 @@ import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupSearchDto;
 import org.jwebppy.platform.mgmt.user.entity.UserGroupEntity;
 import org.jwebppy.platform.mgmt.user.mapper.UserGroupMapper;
+import org.jwebppy.platform.mgmt.user.mapper.UserGroupObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +35,7 @@ public class UserGroupService extends GeneralService
 
 	public int create(UserGroupDto userGroup)
 	{
-		UserGroupEntity userGroupEntity = CmModelMapperUtils.map(userGroup, UserGroupEntity.class);
+		UserGroupEntity userGroupEntity = CmModelMapperUtils.mapToEntity(UserGroupObjectMapper.INSTANCE, userGroup);
 
 		userGroupMapper.insert(userGroupEntity);
 
@@ -43,7 +44,7 @@ public class UserGroupService extends GeneralService
 
 	public int modify(UserGroupDto userGroup)
 	{
-		return userGroupMapper.update(CmModelMapperUtils.map(userGroup, UserGroupEntity.class));
+		return userGroupMapper.update(CmModelMapperUtils.mapToEntity(UserGroupObjectMapper.INSTANCE, userGroup));
 	}
 
 	public int delete(UserGroupEntity userGroup)
@@ -68,16 +69,16 @@ public class UserGroupService extends GeneralService
 
 	public UserGroupDto getUserGroup(Integer ugSeq)
 	{
-		return CmModelMapperUtils.map(userGroupMapper.findUserGroup(ugSeq), UserGroupDto.class);
+		return CmModelMapperUtils.mapToDto(UserGroupObjectMapper.INSTANCE, userGroupMapper.findUserGroup(ugSeq));
 	}
 
 	public List<UserGroupDto> getUserGroups(UserGroupSearchDto userGroupSearch)
 	{
-		return CmModelMapperUtils.mapAll(userGroupMapper.findUserGroups(userGroupSearch), UserGroupDto.class);
+		return CmModelMapperUtils.mapToDto(UserGroupObjectMapper.INSTANCE, userGroupMapper.findUserGroups(userGroupSearch));
 	}
 
 	public List<UserGroupDto> getPageableUserGroups(UserGroupSearchDto userGroupSearch)
 	{
-		return CmModelMapperUtils.mapAll(userGroupMapper.findfindPageUserGroups(userGroupSearch), UserGroupDto.class);
+		return CmModelMapperUtils.mapToDto(UserGroupObjectMapper.INSTANCE, userGroupMapper.findfindPageUserGroups(userGroupSearch));
 	}
 }

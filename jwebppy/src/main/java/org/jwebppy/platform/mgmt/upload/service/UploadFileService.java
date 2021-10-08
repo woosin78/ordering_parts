@@ -5,6 +5,7 @@ import org.jwebppy.platform.mgmt.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileDto;
 import org.jwebppy.platform.mgmt.upload.entity.UploadFileEntity;
 import org.jwebppy.platform.mgmt.upload.mapper.UploadFileMapper;
+import org.jwebppy.platform.mgmt.upload.mapper.UploadFileObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,6 @@ public class UploadFileService extends MgmtGeneralService
 
 	public UploadFileDto getUploadFile(Integer ufSeq)
 	{
-		return CmModelMapperUtils.map(uploadFileMapper.findUploadFile(ufSeq), UploadFileDto.class);
+		return CmModelMapperUtils.mapToDto(UploadFileObjectMapper.INSTANCE, uploadFileMapper.findUploadFile(ufSeq));
 	}
 }

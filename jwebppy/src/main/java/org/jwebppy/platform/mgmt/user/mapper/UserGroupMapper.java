@@ -2,11 +2,13 @@ package org.jwebppy.platform.mgmt.user.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.jwebppy.platform.core.interceptor.NoLogging;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupSearchDto;
 import org.jwebppy.platform.mgmt.user.entity.UserGroupEntity;
 
 @NoLogging
+@Mapper
 public interface UserGroupMapper
 {
 	public int insert(UserGroupEntity userGroup);

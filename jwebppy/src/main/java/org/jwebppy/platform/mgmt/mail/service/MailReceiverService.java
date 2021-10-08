@@ -7,6 +7,7 @@ import org.jwebppy.platform.mgmt.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.mail.dto.MailReceiverDto;
 import org.jwebppy.platform.mgmt.mail.entity.MailReceiverEntity;
 import org.jwebppy.platform.mgmt.mail.mapper.MailReceiverMapper;
+import org.jwebppy.platform.mgmt.mail.mapper.MailReceiverObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class MailReceiverService extends MgmtGeneralService
 
 	public Integer save(MailReceiverDto mailReceiver)
 	{
-		MailReceiverEntity mailReceiverEntity = CmModelMapperUtils.map(mailReceiver, MailReceiverEntity.class);
+		MailReceiverEntity mailReceiverEntity = CmModelMapperUtils.mapToEntity(MailReceiverObjectMapper.INSTANCE, mailReceiver);
 
 		mailReceiverMapper.insert(mailReceiverEntity);
 

@@ -2,11 +2,13 @@ package org.jwebppy.platform.mgmt.user.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.jwebppy.platform.core.interceptor.NoLogging;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
 import org.jwebppy.platform.mgmt.user.entity.CredentialsPolicyEntity;
 
 @NoLogging
+@Mapper
 public interface CredentialsPolicyMapper
 {
 	public int insert(CredentialsPolicyEntity credentialsPolicy);

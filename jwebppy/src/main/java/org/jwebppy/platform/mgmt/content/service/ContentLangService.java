@@ -7,6 +7,7 @@ import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemLangRlDto;
 import org.jwebppy.platform.mgmt.content.entity.CItemLangRlEntity;
+import org.jwebppy.platform.mgmt.content.mapper.CItemLangRlObjectMapper;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
@@ -31,7 +32,7 @@ public class ContentLangService extends GeneralService
 	{
 		if (CollectionUtils.isEmpty(getLangs(cItemLangRl)))
 		{
-			CItemLangRlEntity cItemLangRlEntity = CmModelMapperUtils.map(cItemLangRl, CItemLangRlEntity.class);
+			CItemLangRlEntity cItemLangRlEntity = CmModelMapperUtils.mapToEntity(CItemLangRlObjectMapper.INSTANCE, cItemLangRl);
 
 			contentMapper.insertCItemLangRl(cItemLangRlEntity);
 
@@ -43,6 +44,6 @@ public class ContentLangService extends GeneralService
 
 	public List<CItemLangRlDto> getLangs(CItemLangRlDto cItemLangRl)
 	{
-		return CmModelMapperUtils.mapAll(contentMapper.findLangs(cItemLangRl), CItemLangRlDto.class);
+		return CmModelMapperUtils.mapToDto(CItemLangRlObjectMapper.INSTANCE, contentMapper.findLangs(cItemLangRl));
 	}
 }
