@@ -25,6 +25,8 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private String uMaxUppercase;
 	private String uMinLowercase;
 	private String uMaxLowercase;
+	private String uFgOnlyUppercase = PlatformCommonVo.NO;
+	private String uFgOnlyLowercase = PlatformCommonVo.NO;
 	private String uMinNumber;
 	private String uMaxNumber;
 	private String uMinSpecial;

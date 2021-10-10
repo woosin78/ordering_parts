@@ -24,6 +24,8 @@ public class CredentialsPolicyEntity extends GeneralEntity implements IPaginatio
 	private String uMaxUppercase;
 	private String uMinLowercase;
 	private String uMaxLowercase;
+	private String uFgOnlyUppercase;
+	private String uFgOnlyLowercase;
 	private String uMinNumber;
 	private String uMaxNumber;
 	private String uMinSpecial;

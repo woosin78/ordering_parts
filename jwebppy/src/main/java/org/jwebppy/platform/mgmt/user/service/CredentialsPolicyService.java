@@ -148,6 +148,8 @@ public class CredentialsPolicyService extends GeneralService
 		String maxNumber;
 		String minSpecial;
 		String maxSpecial;
+		String fgOnlyLowercase = PlatformCommonVo.NO;
+		String fgOnlyUppercase = PlatformCommonVo.NO;
 
 		if (type == CredentialsPolicyType.U)
 		{
@@ -161,6 +163,8 @@ public class CredentialsPolicyService extends GeneralService
 			maxNumber = credentialsPolicy.getUMaxNumber();
 			minSpecial = credentialsPolicy.getUMinSpecial();
 			maxSpecial = credentialsPolicy.getUMaxSpecial();
+			fgOnlyLowercase = credentialsPolicy.getUFgOnlyLowercase();
+			fgOnlyUppercase = credentialsPolicy.getUFgOnlyUppercase();
 		}
 		else
 		{
@@ -200,6 +204,14 @@ public class CredentialsPolicyService extends GeneralService
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_LENGTH);
 			resultMap.put("MIN", minLength);
 			resultMap.put("MAX", maxLength);
+		}
+		else if (CmStringUtils.equals(fgOnlyLowercase, PlatformCommonVo.YES) && uppercaseCount > 0)
+		{
+			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_ONLY_LOWERCASE);
+		}
+		else if (CmStringUtils.equals(fgOnlyUppercase, PlatformCommonVo.YES) && lowercaseCount > 0)
+		{
+			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_ONLY_UPPERCASE);
 		}
 		else if (lowercaseCount < iMinLowerCase || lowercaseCount > iMaxLowerCase)
 		{
@@ -248,6 +260,8 @@ public class CredentialsPolicyService extends GeneralService
 		String maxNumber;
 		String minSpecial;
 		String maxSpecial;
+		String fgOnlyUppercase = PlatformCommonVo.NO;
+		String fgOnlyLowercase = PlatformCommonVo.NO;
 		String target = type.getType();
 
 		if (type == CredentialsPolicyType.U)
@@ -262,6 +276,8 @@ public class CredentialsPolicyService extends GeneralService
 			maxNumber = credentialsPolicy.getUMaxNumber();
 			minSpecial = credentialsPolicy.getUMinSpecial();
 			maxSpecial = credentialsPolicy.getUMaxSpecial();
+			fgOnlyLowercase = credentialsPolicy.getUFgOnlyLowercase();
+			fgOnlyUppercase = credentialsPolicy.getUFgOnlyUppercase();
 		}
 		else
 		{
@@ -331,6 +347,16 @@ public class CredentialsPolicyService extends GeneralService
 		else if (CmStringUtils.isEmpty(minSpecial) && CmStringUtils.isNotEmpty(maxSpecial))
 		{
 			messages.add(target + " should include a maximum of " + maxSpecial + " special letter(s).");
+		}
+
+		if (CmStringUtils.equals(fgOnlyLowercase, PlatformCommonVo.YES))
+		{
+			messages.add(target + " should be only lowercases.");
+		}
+
+		if (CmStringUtils.equals(fgOnlyUppercase, PlatformCommonVo.YES))
+		{
+			messages.add(target + " should be only uppercases.");
 		}
 
 		return messages;
