@@ -35,7 +35,22 @@ $(document).ready(function() {
 		data: { ugSeq: $("#ugSeq").val() },
 		success: function(data, textStatus, jqXHR)
 		{
-			$("#FORM_write").html(new JpUiRender().render(data));
+			$("#FORM_write").html(new JpUiRender().render(data)).find(".ui.dropdown").dropdown({ minCharacters: 2, fullTextSearch: true });
+			
+			$("select[name=country]").closest(".ui.dropdown").dropdown({
+				onChange: function(value, text, $choice)
+				{
+					JpUtilsAjax.get({
+						url: "/platform/mgmt/user/timezone",
+						data: {"country": value},
+						global: false,
+						success: function(data, textStatus, jqXHR)
+						{
+							$("select[name=timezone]").closest(".ui.dropdown").dropdown("change values", data.RESULT).dropdown("set text", "");
+						}
+					});
+				}
+			});			
 
 			$("#FORM_write").form({
 				inline: true,
@@ -84,7 +99,25 @@ $(document).ready(function() {
 								prompt: "Please input {name}."
 							}
 						]
-					}					
+					},
+					Country: {
+						identifier: "country",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					},
+					Timezone: {
+						identifier: "timezone",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					}
 				}				
 			});
 		}

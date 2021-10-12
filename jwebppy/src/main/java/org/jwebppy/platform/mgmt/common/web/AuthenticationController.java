@@ -1,6 +1,6 @@
 package org.jwebppy.platform.mgmt.common.web;
 
-import java.time.ZoneId;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -170,14 +170,7 @@ public class AuthenticationController extends PlatformGeneralController
 
 		if (CollectionUtils.isNotEmpty(loginHistories))
 		{
-			if (loginHistories.size() == 1)
-			{
-				return loginHistories.get(0);
-			}
-			else
-			{
-				return loginHistories.get(1);
-			}
+			return loginHistories.get(0);
 		}
 
 		return null;
@@ -204,24 +197,22 @@ public class AuthenticationController extends PlatformGeneralController
 
 			List<UserPasswordChangeHistoryDto> userPasswordChangeHistories = userPasswordChangeHistoryService.getPageableUserPasswordChangeHistories(inUserPasswordChangeHistory);
 
-			String timezone = null;
-			ZonedDateTime regDate = null;
-			ZonedDateTime exiredDate = null;
+			LocalDateTime regDate = null;
 
 			if (CollectionUtils.isNotEmpty(userPasswordChangeHistories))
 			{
 				UserPasswordChangeHistoryDto userPasswordChangeHistory = userPasswordChangeHistories.get(0);
 
-				timezone = userPasswordChangeHistory.getTimezone();
-				regDate = ZonedDateTime.of(userPasswordChangeHistory.getRegDate(),  ZoneId.of(timezone));
-				exiredDate = regDate.plusDays(pwdValidPeriod);
+				regDate = userPasswordChangeHistory.getRegDate();
 			}
 			else
 			{
-				timezone = user.getUserContactInfo().getTimezone();
-				regDate = ZonedDateTime.of(user.getRegDate(),  ZoneId.of(timezone));
-				exiredDate = regDate.plusDays(pwdValidPeriod);
+				regDate = user.getRegDate();
 			}
+
+			String timezone = user.getUserContactInfo().getTimezone();
+			ZonedDateTime zonedRegDate = CmDateTimeUtils.toZonedDateTime(regDate, timezone);
+			ZonedDateTime exiredDate = zonedRegDate.plusDays(pwdValidPeriod);
 
 			resultMap.put("expiredDate", CmDateFormatUtils.format(exiredDate, PlatformCommonVo.DEFAULT_DATE_FORMAT));
 			resultMap.put("difference", Long.toString(ChronoUnit.DAYS.between(CmDateTimeUtils.now(timezone), exiredDate)));

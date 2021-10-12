@@ -105,7 +105,7 @@ function makeGmb()
 			    		
 			    		if (JpUtilsString.isNotEmpty(data.displayZonedRegDate))
 			    		{
-			    			$("#gmbLastLoginTime").html(data.displayZonedRegDate + " / " + data.ip);
+			    			$("#gmbLastLoginTime").html(data.displayZonedRegDate + ", " + data.timezone + " / " + data.ip);
 			    		};
 			    	};
 			    }	

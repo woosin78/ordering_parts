@@ -130,7 +130,7 @@ public class UserController extends UserGeneralController
 				else if ("login_history".equals(tabPath))
 				{
 					LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
-					loginHistorySearch.setUsername(userSearch.getUsername());
+					loginHistorySearch.setUsername(user.getUserAccount().getUsername());
 					loginHistorySearch.setPageNumber(1);
 					loginHistorySearch.setRowPerPage(20);
 
@@ -175,7 +175,9 @@ public class UserController extends UserGeneralController
 
 			if ("contact".equals(tabPath))
 			{
-				return UserLayoutBuilder.writeContactInfo(user.getUserContactInfo());
+				//user.getUserGroup();
+
+				return UserLayoutBuilder.writeContactInfo(user.getUserContactInfo(), user.getUserGroup());
 			}
 			else if ("account".equals(tabPath))
 			{

@@ -9,10 +9,10 @@
   Translation
   <div class="sub header">The content is translated into other languages here.</div>
 </div>
-<div class="ui segment">
-	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" name="pageNumber" value="1"/>
-	<input type="hidden" name="rowPerPage" value="20"/>
+<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
+<input type="hidden" name="pageNumber" value="1"/>
+<input type="hidden" name="rowPerPage" value="20"/>
+<div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
 			<select name="basename" class="ui dropdown"></select>
@@ -34,17 +34,17 @@
 			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>
 			<div class="ui button" onclick="document.location.reload()"><i class="undo icon"></i> Reset</div>
 		</div>
-	</div>		
-	<div class="ui divider"></div>
-	<div class="ui one column grid">
-		<div class="column">
-			<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
-			<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>				
-		</div>
 	</div>
-	<div id="TBL_list"></div>
-	</form>
+</div>		
+<div class="ui divider"></div>
+<div class="ui one column grid">
+	<div class="column">
+		<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
+		<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>				
+	</div>
 </div>
+<div id="TBL_list"></div>
+</form>
 <!-- Start add language -->
 <th:block th:replace="/platform/mgmt/i18n/lang :: addLang"></th:block>
 <!-- End add language -->

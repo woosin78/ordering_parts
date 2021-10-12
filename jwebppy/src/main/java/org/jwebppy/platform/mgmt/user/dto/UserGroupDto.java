@@ -1,8 +1,13 @@
 package org.jwebppy.platform.mgmt.user.dto;
 
+import java.util.Locale;
+
 import org.jwebppy.platform.core.dto.GeneralDto;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
+
+import com.ibm.icu.util.TimeZone;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +28,9 @@ public class UserGroupDto extends GeneralDto implements IPagination
 	private String timeFormat1;
 	private String dateFormat2;
 	private String timeFormat2;
+	private String country;
 	private String timezone;
+	private int userCount;
 
 	public UserGroupDto() {}
 
@@ -35,5 +42,27 @@ public class UserGroupDto extends GeneralDto implements IPagination
 	public SapConnResourceDto getSapConnResource()
 	{
 		return (sapConnResource == null) ? new SapConnResourceDto() : sapConnResource;
+	}
+
+	public String getDisplayCountry()
+	{
+		if (CmStringUtils.isNotEmpty(country))
+		{
+			return new Locale("", country).getDisplayName();
+		}
+
+		return country;
+	}
+
+	public String getDisplayTimezone()
+	{
+		if (CmStringUtils.isNotEmpty(timezone))
+		{
+			TimeZone myTimezone = TimeZone.getTimeZone(timezone);
+
+			return timezone + ", " + myTimezone.getDisplayName();
+		}
+
+		return timezone;
 	}
 }

@@ -37,7 +37,7 @@ public class LoginHistoryLayoutBuilder
 
 				if (CmStringUtils.isNotEmpty(loginHistory.getTimezone()))
 				{
-					regDate += "<br/>(" + loginHistory.getDisplayZonedRegDate() + ")";
+					regDate += "<br/>(" + loginHistory.getDisplayZonedRegDate() + ", " + loginHistory.getTimezone() + ")";
 				}
 
 				Tr tbTr = new Tr();

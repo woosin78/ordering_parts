@@ -16,12 +16,12 @@ public class CmDateFormatUtils
 			return null;
 		}
 
-		return format(ZonedDateTime.of(localDateTime, CmDateTimeUtils.getZoneId(null)));
+		return format(CmDateTimeUtils.toZonedDateTime(localDateTime));
 	}
 
 	public static String format(LocalDateTime localDateTime, String zoneId)
 	{
-		return format(ZonedDateTime.of(localDateTime, CmDateTimeUtils.getZoneId(zoneId)));
+		return format(localDateTime, zoneId, null);
 	}
 
 	public static String format(LocalDateTime localDateTime, String zoneId, String format)
@@ -31,7 +31,7 @@ public class CmDateFormatUtils
 			return null;
 		}
 
-		return format(ZonedDateTime.of(localDateTime, CmDateTimeUtils.getZoneId(zoneId)), format);
+		return format(CmDateTimeUtils.toZonedDateTime(localDateTime, zoneId), format);
 	}
 
 	public static String format(ZonedDateTime zonedDateTime)
@@ -63,12 +63,12 @@ public class CmDateFormatUtils
 
 	public static String now(String zoneId)
 	{
-		return format(ZonedDateTime.now(CmDateTimeUtils.getZoneId(zoneId)));
+		return now(zoneId, null);
 	}
 
 	public static String now(String zoneId, String format)
 	{
-		return format(ZonedDateTime.now(CmDateTimeUtils.getZoneId(zoneId)), format);
+		return format(CmDateTimeUtils.now(zoneId), format);
 	}
 
 	public static String today()

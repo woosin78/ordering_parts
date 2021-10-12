@@ -2,7 +2,6 @@ package org.jwebppy.platform.mgmt.user.dto;
 
 import java.util.Locale;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
 
@@ -36,16 +35,6 @@ public class UserContactInfoDto extends GeneralDto
 	private String state;
 	private String country;
 	private String timezone;
-
-	public String getTimezone()
-	{
-		if (CmStringUtils.isEmpty(timezone))
-		{
-			return PlatformCommonVo.DEFAULT_TIMEZONE;
-		}
-
-		return timezone;
-	}
 
 	public String getTel()
 	{

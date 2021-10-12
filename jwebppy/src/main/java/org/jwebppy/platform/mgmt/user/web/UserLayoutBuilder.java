@@ -268,7 +268,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document writeContactInfo(UserContactInfoDto userContactInfo)
+	public static Document writeContactInfo(UserContactInfoDto userContactInfo, UserGroupDto userGroup)
 	{
 		Input loEmail = new Input("email", userContactInfo.getEmail());
 		loEmail.setLabel("Email");
@@ -310,7 +310,7 @@ public class UserLayoutBuilder
 		Select loCountry = new Select("country");
 		loCountry.setLabel("Country");
 		loCountry.setRequired(true);
-		loCountry.setValue(userContactInfo.getCountry());
+		loCountry.setValue(CmStringUtils.defaultIfEmpty(userContactInfo.getCountry(), userGroup.getCountry()));
 
 		String[] locales = Locale.getISOCountries();
 
@@ -324,15 +324,13 @@ public class UserLayoutBuilder
 		Select loTimezone = new Select("timezone");
 		loTimezone.setLabel("Timezone");
 		loTimezone.setRequired(true);
-		loTimezone.setValue(userContactInfo.getTimezone());
+		loTimezone.setValue(CmStringUtils.defaultIfEmpty(userContactInfo.getTimezone(), userGroup.getTimezone()));
 
 		String[] ids = TimeZone.getAvailableIDs(userContactInfo.getCountry());
 
 		for (String id : ids)
 		{
-			TimeZone theTimezone = TimeZone.getTimeZone(id);
-
-			loTimezone.addOption(id, id + ", " + theTimezone.getDisplayName());
+			loTimezone.addOption(id, id + ", " + TimeZone.getTimeZone(id).getDisplayName());
 		}
 
 		Document document = new Document();
@@ -340,10 +338,10 @@ public class UserLayoutBuilder
 		document.addElement(loTelephone);
 		document.addElement(loMobile);
 		document.addElement(loFax);
-		document.addElement(loCity);
-		document.addElement(loStreet);
-		document.addElement(loState);
 		document.addElement(loZipcode);
+		document.addElement(loStreet);
+		document.addElement(loCity);
+		document.addElement(loState);
 		document.addElement(loCountry);
 		document.addElement(loTimezone);
 

@@ -7,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.zone.ZoneRulesException;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 
 public class CmDateTimeUtils
 {
@@ -18,14 +17,7 @@ public class CmDateTimeUtils
 
 	public static ZonedDateTime now(String zoneId)
 	{
-		if (CmStringUtils.isEmpty(zoneId))
-		{
-			PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
-
-			zoneId = (platformUserDetails != null) ? platformUserDetails.getTimezone() : PlatformCommonVo.DEFAULT_TIMEZONE;
-		}
-
-		return ZonedDateTime.now(getZoneId(zoneId));
+		return ZonedDateTime.now().withZoneSameInstant(getZoneId(zoneId));
 	}
 
 	public static LocalDateTime toLocalDateTime(String dateTime)
@@ -35,19 +27,28 @@ public class CmDateTimeUtils
 
 	public static ZonedDateTime toZonedDateTime(Object dateTime)
 	{
-		if (dateTime != null)
+		return toZonedDateTime(dateTime, null);
+	}
+
+	public static ZonedDateTime toZonedDateTime(Object dateTime, String zoneId)
+	{
+		if (dateTime == null)
 		{
-			if (dateTime instanceof LocalDateTime)
-			{
-				return ZonedDateTime.of((LocalDateTime)dateTime, getZoneId());
-			}
-			else
-			{
-				return ZonedDateTime.parse((String)dateTime, DateTimeFormatter.ofPattern(CmDateFormatUtils.getDateTimeFormat()));
-			}
+			return null;
 		}
 
-		return null;
+		ZonedDateTime zonedDateTime;
+
+		if (dateTime instanceof LocalDateTime)
+		{
+			zonedDateTime = ZonedDateTime.of((LocalDateTime)dateTime, ZoneId.of(PlatformCommonVo.DEFAULT_TIMEZONE));
+		}
+		else
+		{
+			zonedDateTime = ZonedDateTime.parse((String)dateTime, DateTimeFormatter.ofPattern(CmDateFormatUtils.getDateTimeFormat()));
+		}
+
+		return zonedDateTime.withZoneSameInstant(getZoneId(zoneId));
 	}
 
 	public static ZoneId getZoneId()

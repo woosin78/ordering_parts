@@ -9,11 +9,11 @@
   Account
   <div class="sub header">You can create new accounts and modify users' information and give them the authorities.</div>
 </div>
-<div class="ui segment">
-	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="checkbox" name="uSeq" style="display:none" checked />
-	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
-	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
+<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
+<input type="checkbox" name="uSeq" style="display:none" checked />
+<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
+<div class="ui grey attached segment">
 	<div class="fields">
 		<div class="twelve wide field">
 			<div class="ui icon input">
@@ -25,19 +25,22 @@
 			<div class="ui button" onclick="document.location.reload()"><i class="redo icon"></i> Reset</div>
 		</div>
 	</div>
-	<div class="ui divider"></div>
-	<div class="ui one column grid">
-		<div class="column">
-			<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
-			<div id="BTN_copyToCreate" class="ui teal button"><i class="copy outline icon"></i> Copy To Create</div>
-			<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
-			<div id="BTN_lock" class="ui teal button"><i class="lock icon"></i> Lock</div>
-			<div id="BTN_unlock" class="ui teal button"><i class="lock open icon"></i> Unlock</div>
-		</div>
+</div>
+<div class="ui divider"></div>
+<div class="ui one column grid">
+	<div class="column">
+		<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
+		<div id="BTN_copyToCreate" class="ui teal button"><i class="copy outline icon"></i> Copy To Create</div>
+		<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
+		<div id="BTN_lock" class="ui teal button"><i class="lock icon"></i> Lock</div>
+		<div id="BTN_unlock" class="ui teal button"><i class="lock open icon"></i> Unlock</div>
 	</div>
-	<div id="TBL_users"></div>
-	</form>
-	<div class="ui segment" id="AREA_viewDetail" style="display:none;">
+</div>
+<div id="TBL_users"></div>
+</form>
+<div id="AREA_viewDetail" style="margin: 0; padding: 0; display:none;">
+	<div class="ui divider"></div>
+	<div class="ui segment">
 		<div class="ui header"></div>
 		<div class="ui clearing divider"></div>
 		<div id="TAB_viewDetail" class="ui secondary pointing menu">
@@ -74,46 +77,46 @@
 			<div class="ui button modify BTN_cancel"> Cancel</div>
 		</div>
 	</div>
-
-	<div id="MDL_coptyToCreate" class="ui tiny modal">
-	    <h3 class="ui header">Create User</h3>
-	    <div class="content">
-	    	<form id="FORM_copyToCreate" method="POST" class="ui form" autocomplete="off">
-	    	<input type="hidden" name="uSeq"/>
-	    	<div class="ui one column grid">
-	    		<div class="column">
-	    			<div class="field required">
-	    				<label>Username</label>
-	    				<input type="text" name="username"/>
-	    			</div>
-	    			<div class="field required">
-	    				<label>Password</label>
-	    				<input type="password" name="password"/>
-	    			</div>
-	    			<div class="field required">
-	    				<label>Last Name</label>
-	    				<input type="text" name="lastName"/>
-	    			</div>
-	    			<div class="field">
-	    				<label>First Name</label>
-	    				<input type="text" name="firstName"/>
-	    			</div>
-	    		</div>
-	    	</div>
-	    	</form>
-	    </div>
-	    <div class="ui divider"></div>
-	    <div class="footer">
-			<div class="ui one column grid">
-			    <div class="column right aligned">
-			    	<div id="BTN_saveByCopy" class="ui teal button"><i class="check icon"></i> Save</div>
-			        <div id="BTN_cancelByCopy" class="ui normal button"><i class="times icon"></i> Cancel</div>
-			    </div>
-			</div>
-	    </div>
-	    <div class="ui hidden divider"></div>
-	</div>
 </div>
+<div id="MDL_coptyToCreate" class="ui tiny modal">
+    <h3 class="ui header">Create User</h3>
+    <div class="content">
+    	<form id="FORM_copyToCreate" method="POST" class="ui form" autocomplete="off">
+    	<input type="hidden" name="uSeq"/>
+    	<div class="ui one column grid">
+    		<div class="column">
+    			<div class="field required">
+    				<label>Username</label>
+    				<input type="text" name="username"/>
+    			</div>
+    			<div class="field required">
+    				<label>Password</label>
+    				<input type="password" name="password"/>
+    			</div>
+    			<div class="field required">
+    				<label>Last Name</label>
+    				<input type="text" name="lastName"/>
+    			</div>
+    			<div class="field">
+    				<label>First Name</label>
+    				<input type="text" name="firstName"/>
+    			</div>
+    		</div>
+    	</div>
+    	</form>
+    </div>
+    <div class="ui divider"></div>
+    <div class="footer">
+		<div class="ui one column grid">
+		    <div class="column right aligned">
+		    	<div id="BTN_saveByCopy" class="ui teal button"><i class="check icon"></i> Save</div>
+		        <div id="BTN_cancelByCopy" class="ui normal button"><i class="times icon"></i> Cancel</div>
+		    </div>
+		</div>
+    </div>
+    <div class="ui hidden divider"></div>
+</div>
+
 <script>
 $(document).ready(function() {
 	let usersTable = new JpUiTable($("#TBL_users"));
@@ -143,8 +146,8 @@ $(document).ready(function() {
 					if ($(row).hasClass("active"))
 					{
 						setSeq(key);						
-						viewUserTab.changePath("/platform/mgmt/user/view/layout");						
-						$("#AREA_viewDetail .ui.header").html("Details of User, " + $(element).html());						
+						viewUserTab.changePath("/platform/mgmt/user/view/layout");
+						$("#AREA_viewDetail .ui.header").html("Details of User, " + $(element).html());
 						showUserDetailsArea();
 					}
 					else

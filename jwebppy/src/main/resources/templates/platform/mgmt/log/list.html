@@ -9,11 +9,11 @@
   Interface Log
   <div class="sub header">There are all the interface logs that have occurred with Database, EAI and SAP.</div>
 </div>
-<div class="ui segment">
-	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" name="dlSeq"/>
-	<input type="hidden" name="pageNumber" value="1"/>
-	<input type="hidden" name="rowPerPage" value="20"/>
+<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
+<input type="hidden" name="dlSeq"/>
+<input type="hidden" name="pageNumber" value="1"/>
+<input type="hidden" name="rowPerPage" value="20"/>
+<div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
 			<select name="type" class="ui search dropdown">
@@ -47,10 +47,10 @@
 			<div class="ui button" onclick="document.location.reload()"><i class="undo icon"></i> Reset</div>
 		</div>
 	</div>
-	</form>
-	<div class="ui divider"></div>
-	<div id="TBL_logs"></div>
 </div>
+</form>
+<div class="ui divider"></div>
+<div id="TBL_logs"></div>
 <form id="FORM_viewLog" name="FORM_viewLog">
 <input type="hidden" name="dlSeq"/>
 </form>

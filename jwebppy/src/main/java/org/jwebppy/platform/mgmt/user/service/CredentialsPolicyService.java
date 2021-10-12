@@ -204,43 +204,59 @@ public class CredentialsPolicyService extends GeneralService
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_LENGTH);
 			resultMap.put("MIN", minLength);
 			resultMap.put("MAX", maxLength);
+
+			System.err.println("1");
 		}
 		else if (CmStringUtils.equals(fgOnlyLowercase, PlatformCommonVo.YES) && uppercaseCount > 0)
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_ONLY_LOWERCASE);
+
+			System.err.println("2");
 		}
 		else if (CmStringUtils.equals(fgOnlyUppercase, PlatformCommonVo.YES) && lowercaseCount > 0)
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_ONLY_UPPERCASE);
+
+			System.err.println("3");
 		}
 		else if (lowercaseCount < iMinLowerCase || lowercaseCount > iMaxLowerCase)
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_LOWERCASE_COUNT);
 			resultMap.put("MIN", minLowercase);
 			resultMap.put("MAX", maxLowercase);
+
+			System.err.println("4");
 		}
 		else if (uppercaseCount < iMinUpperCase || uppercaseCount > iMaxUpperCase)
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_UPPERCASE_COUNT);
 			resultMap.put("MIN", minUppercase);
 			resultMap.put("MAX", maxUppercase);
+
+			System.err.println("5");
 		}
 		else if (numberCount < iMinNumber || numberCount > iMaxNumber)
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_NUMBER_COUNT);
 			resultMap.put("MIN", minNumber);
 			resultMap.put("MAX", maxNumber);
+
+			System.err.println("6");
 		}
 		else if (specialCount < iMinSpecial || specialCount > iMaxSpecial)
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_SPECIAL_COUNT);
 			resultMap.put("MIN", minSpecial);
 			resultMap.put("MAX", maxSpecial);
+
+			System.err.println("7");
 		}
 		else
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.VALID);
 			isValid = true;
+
+			System.err.println("8");
 		}
 
 		resultMap.put("MESSAGE", (isValid) ? Collections.EMPTY_LIST : getMessage(credentialsPolicy, type));
@@ -299,28 +315,28 @@ public class CredentialsPolicyService extends GeneralService
 
 		if (CmStringUtils.isNotEmpty(minLowercase) && CmStringUtils.isNotEmpty(maxLowercase))
 		{
-			messages.add(target + " should include lowercase letters between " + minLowercase + " and " + maxLowercase + ".");
+			messages.add(target + " should include lower case letters between " + minLowercase + " and " + maxLowercase + ".");
 		}
 		else if (CmStringUtils.isNotEmpty(minLowercase) && CmStringUtils.isEmpty(maxLowercase))
 		{
-			messages.add(target + " should include a minimum of " + minLowercase + " lowercase letter(s).");
+			messages.add(target + " should include a minimum of " + minLowercase + " lower case letter(s).");
 		}
 		else if (CmStringUtils.isEmpty(minLowercase) && CmStringUtils.isNotEmpty(maxLowercase))
 		{
-			messages.add(target + " should include a maximum of " + maxLowercase + " lowercase letter(s).");
+			messages.add(target + " should include a maximum of " + maxLowercase + " lower case letter(s).");
 		}
 
 		if (CmStringUtils.isNotEmpty(minUppercase) && CmStringUtils.isNotEmpty(maxUppercase))
 		{
-			messages.add(target + " should include uppercase letters between " + minUppercase + " and " + maxUppercase + ".");
+			messages.add(target + " should include upper case letters between " + minUppercase + " and " + maxUppercase + ".");
 		}
 		else if (CmStringUtils.isNotEmpty(minUppercase) && CmStringUtils.isEmpty(maxUppercase))
 		{
-			messages.add(target + " should include a minimum of " + minUppercase + " uppercase letter(s).");
+			messages.add(target + " should include a minimum of " + minUppercase + " upper case letter(s).");
 		}
 		else if (CmStringUtils.isEmpty(minUppercase) && CmStringUtils.isNotEmpty(maxUppercase))
 		{
-			messages.add(target + " should include a maximum of " + maxUppercase + " uppercase letter(s).");
+			messages.add(target + " should include a maximum of " + maxUppercase + " upper case letter(s).");
 		}
 
 		if (CmStringUtils.isNotEmpty(minNumber) && CmStringUtils.isNotEmpty(maxNumber))
@@ -351,12 +367,12 @@ public class CredentialsPolicyService extends GeneralService
 
 		if (CmStringUtils.equals(fgOnlyLowercase, PlatformCommonVo.YES))
 		{
-			messages.add(target + " should be only lowercases.");
+			messages.add(target + " should be only lower case.");
 		}
 
 		if (CmStringUtils.equals(fgOnlyUppercase, PlatformCommonVo.YES))
 		{
-			messages.add(target + " should be only uppercases.");
+			messages.add(target + " should be only upper case.");
 		}
 
 		return messages;

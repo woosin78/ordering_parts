@@ -46,6 +46,11 @@ public class Tr extends Element
 		addElement(new Td(text));
 	}
 
+	public void addEmptyTd()
+	{
+		addElement(new Td(""));
+	}
+
 	public void addTd(Element element)
 	{
 		Element td = new Td();

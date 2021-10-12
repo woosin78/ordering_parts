@@ -237,6 +237,10 @@
 					and upper(a.username) like concat('%', upper(trim(#{username})), '%')
 				</if>			
 			</trim>
+			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(ugSeq)">
+				 and a.ug_seq=#{ugSeq}
+			</if>
 		</where>
 		
 		<include refid="PaginationMapper.footer"/>

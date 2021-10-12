@@ -9,10 +9,10 @@
   Login History
   <div class="sub header">There are users' login histories. You can check when users login and from where users access this system.</div>
 </div>
-<div class="ui segment">
-	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
-	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
+<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
+<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
+<div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
 			<div class="ui calendar">
@@ -35,11 +35,11 @@
 			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>
 			<div class="ui button" onclick="document.location.reload()"><i class="undo icon"></i> Reset</div>
 		</div>
-	</div>		
-	<div class="ui divider"></div>
-	<div id="TBL_list"></div>
-	</form>
+	</div>
 </div>
+<div class="ui divider"></div>
+<div id="TBL_list"></div>
+</form>
 <script>
 	$(document).ready(function() {
 		JpUiCalendar.datetimeCalendar($("#fromDate"), $("#toDate"));

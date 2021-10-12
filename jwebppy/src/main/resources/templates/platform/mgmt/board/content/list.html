@@ -9,12 +9,12 @@
 	Notice
 	<div class="sub header"></div>
 </div>
-<div class="ui segment">
-	<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" name="bSeq" th:value="${board.bSeq}"/>
-	<input type="checkbox" id="bcSeq" name="bcSeq" value="" style="display:none"/>
-	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
-	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
+<form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
+<input type="hidden" name="bSeq" th:value="${board.bSeq}"/>
+<input type="checkbox" id="bcSeq" name="bcSeq" value="" style="display:none"/>
+<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
+<div class="ui grey attached segment">
 	<div class="fields">
 		<div class="three wide field">
 			<div class="ui calendar">
@@ -44,16 +44,16 @@
 			<div id="BTN_reset" class="ui button"><i class="undo icon"></i> Reset</div>
 		</div>
 	</div>
-	<div class="ui divider"></div>
-	<div class="ui one column grid">
-		<div class="column">
-			<div id="BTN_new" class="ui teal button"><i class="plus icon"></i> New</div>
-			<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
-		</div>
-	</div>	
-	<div id="TBL_list"></div>
-	</form>
 </div>
+<div class="ui divider"></div>
+<div class="ui one column grid">
+	<div class="column">
+		<div id="BTN_new" class="ui teal button"><i class="plus icon"></i> New</div>
+		<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
+	</div>
+</div>
+<div id="TBL_list"></div>
+</form>
 <script>
 	$(document).ready(function() {
 		JpUiCalendar.datetimeCalendar($("#fromDate"), $("#toDate"));
