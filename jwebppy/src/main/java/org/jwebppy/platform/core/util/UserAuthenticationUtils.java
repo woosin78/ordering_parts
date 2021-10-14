@@ -16,13 +16,13 @@ public class UserAuthenticationUtils
 
 	public static PlatformUserDetails getUserDetails()
 	{
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Authentication authentication = getAuthentication();
 
 		if (authentication != null)
 		{
 			try
 			{
-				return (PlatformUserDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
+				return (PlatformUserDetails)authentication.getDetails();
 			}
 			catch (ClassCastException e)
 			{
@@ -57,7 +57,7 @@ public class UserAuthenticationUtils
 		}
 	}
 
-	public static boolean isLogin()
+	public static boolean isAuthenticated()
 	{
 		if (getUSeq() == null)
 		{

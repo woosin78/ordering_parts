@@ -10,8 +10,10 @@ import org.jwebppy.platform.core.security.authentication.handler.LogoutSuccessHa
 import org.jwebppy.platform.core.web.CmHttpSessionRequestCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,9 +23,13 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)//스프링 시큐리티의 메소드 어노테이션 기반 시큐리티를 활성화 하기 위해서 필요
+@EnableJdbcHttpSession//@EnableRedisHttpSession
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
 	@Override
@@ -39,12 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 			.headers()
 				.frameOptions().disable()
 			.and()
-			.sessionManagement()
-				.sessionFixation().migrateSession()
+			.sessionManagement()//세션고정보호. request 시 마다 cookie 의 jsessionid 값을 변경함
+				.sessionFixation().changeSessionId()
 			.and()
 			.logout()
 				.logoutUrl(PlatformConfigVo.FORM_LOGOUT_PROCESSING_URL)
-				.invalidateHttpSession(true)
 				.deleteCookies("JSESSIONID", "J_SESSIONID", "SESSION")
 				.logoutSuccessHandler(logoutSuccessHandler())
 			.and()
@@ -131,7 +136,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     }
 
 	@Bean
-	public SpringSecurityDialect securityDialect()
+	public SpringSecurityDialect springSecurityDialect()
 	{
 		return new SpringSecurityDialect();
 	}

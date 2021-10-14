@@ -3,6 +3,8 @@ package org.jwebppy.platform.mgmt.user.web;
 import java.util.List;
 
 import org.apache.commons.collections4.ListUtils;
+import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
@@ -18,11 +20,11 @@ public class CredentialsPolicyLayoutBuilder
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
-		thTr.addTextTh("User Group", "two wide");
 		thTr.addTextTh("Name", "two wide");
 		thTr.addTextTh("Description", "five wide");
 		thTr.addTextTh("Use", "one wide");
 		thTr.addTextTh("Default", "one wide");
+		thTr.addTextTh("User Group", "two wide");
 		thTr.addTextTh("Reg.Date", "two wide");
 		thTr.addTextTh("Reg.Username", "two wide");
 
@@ -35,15 +37,24 @@ public class CredentialsPolicyLayoutBuilder
 		for (CredentialsPolicyDto credentialsPolicy: credentialsPolicies)
 		{
 			UserGroupDto userGroup = credentialsPolicy.getUserGroup();
+			String fgDefault = credentialsPolicy.getFgDefault();
 
 			Tr tbTr = new Tr();
 
-			tbTr.addDataKeyCheckboxTd("cpSeq", credentialsPolicy.getCpSeq());
-			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
+			if (CmStringUtils.equals(fgDefault, PlatformCommonVo.YES))
+			{
+				tbTr.addEmptyTd();
+			}
+			else
+			{
+				tbTr.addDataKeyCheckboxTd("cpSeq", credentialsPolicy.getCpSeq());
+			}
+
 			tbTr.addDataKeyLinkTd(credentialsPolicy.getName(), credentialsPolicy.getCpSeq());
 			tbTr.addTextTd(credentialsPolicy.getDescription());
 			tbTr.addTextTd(credentialsPolicy.getFgUse());
-			tbTr.addTextTd(credentialsPolicy.getFgDefault());
+			tbTr.addTextTd(fgDefault);
+			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
 			tbTr.addTextTd(credentialsPolicy.getDisplayRegDate());
 			tbTr.addTextTd(credentialsPolicy.getRegUsername());
 

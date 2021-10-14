@@ -59,7 +59,7 @@ public class JdbcExecutionAspect extends DataAccessAspect
 					dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
 					dataAccessLog.setError(error);
 
-					if (UserAuthenticationUtils.isLogin())
+					if (UserAuthenticationUtils.isAuthenticated())
 					{
 						dataAccessLog.setTimezone(UserAuthenticationUtils.getUserDetails().getTimezone());
 						dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());

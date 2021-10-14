@@ -3,8 +3,8 @@ let JpUiDimmer = {
 		html: "<div id='jsUiDimmer' class='ui dimmer'></div>",
 	
 		type1: "<div class='ui text inverted loader'><div class='content'></div></div>",
-		type2: "<div class='content'><h3 class='ui inverted header'></h3><div class='ui teal button ok'>OK</div></div>",
-		type3: "<div class='content'><h3 class='ui inverted header'></h3><div class='ui teal button ok'>OK</div><div class='ui button cancel'>Cancel</div></div>",
+		type2: "<div class='content'><h3 class='ui inverted header'></h3><button class='ui teal button ok'>OK</div></button>",
+		type3: "<div class='content'><h3 class='ui inverted header'></h3><button class='ui teal button ok'>OK</button><button class='ui button cancel'>Cancel</button></button>",
 		
 		isMessageDimmerActive: false,
 		obj: null,
@@ -28,7 +28,9 @@ let JpUiDimmer = {
 				};
 			});
 			
-			JpUiDimmer.showDimmer();
+			JpUiDimmer.showDimmer(function() {
+				obj.find(".ui.button.ok").focus();
+			});
 		},
 		confirm: function(message, callEvent, cancelEvent) {
 			JpUiDimmer.isMessageDimmerActive = true;
@@ -55,7 +57,9 @@ let JpUiDimmer = {
 				};
 			});
 			
-			JpUiDimmer.showDimmer();
+			JpUiDimmer.showDimmer(function() {
+				obj.find(".ui.button.cancel").focus();
+			});
 		},
 		hide: function() {
 			if (!JpUiDimmer.isMessageDimmerActive)
@@ -63,9 +67,10 @@ let JpUiDimmer = {
 				$("#jsUiDimmer").dimmer("hide");
 			};
 		},	
-		showDimmer: function() {
+		showDimmer: function(onShow) {
 			$("#jsUiDimmer").dimmer({
-				closable: false				
+				closable: false,
+				onShow: onShow
 			}).dimmer("show");
 			
 			$(document).find("input, select").blur();

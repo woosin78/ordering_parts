@@ -44,6 +44,8 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
     		}
     	}
 
+    	request.getSession().invalidate();
+
         super.onLogoutSuccess(request, response, authentication);
     }
 }

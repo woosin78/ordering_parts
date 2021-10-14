@@ -36,7 +36,7 @@ public class IndexContoller extends PlatformGeneralController
 	@RequestMapping(PlatformConfigVo.INDEX_URL)
 	public Object index(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws UnknownHostException
 	{
-		if (UserAuthenticationUtils.isLogin())
+		if (UserAuthenticationUtils.isAuthenticated())
 		{
 			return new RedirectView("/forward/entry_point");
 		}

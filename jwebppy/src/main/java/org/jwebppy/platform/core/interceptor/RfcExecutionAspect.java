@@ -107,7 +107,7 @@ public class RfcExecutionAspect
 		dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
 		dataAccessLog.setDataAccessLogParameters(makeParameters(rfcRequest));
 
-		if (UserAuthenticationUtils.isLogin())
+		if (UserAuthenticationUtils.isAuthenticated())
 		{
 			dataAccessLog.setTimezone(UserAuthenticationUtils.getUserDetails().getTimezone());
 			dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());

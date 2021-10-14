@@ -62,33 +62,40 @@ public class LoginHistoryService extends GeneralService
 
 	public int createLoginHistory(HttpServletRequest request, HttpServletResponse response, String fgResult, String fgAccountLocked)
 	{
-		SavedRequest savedRequest = requestCache.getRequest(request, response);
+		String username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
 
-		String referer = (savedRequest == null) ? request.getHeader("Referer") : savedRequest.getRedirectUrl();
-
-		LoginHistoryEntity loginHistory = new LoginHistoryEntity();
-		loginHistory.setUsername(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
-		loginHistory.setUserAgent(CmStringUtils.trimToEmpty(request.getHeader("user-agent")));
-		loginHistory.setIp(getIp(request));
-		loginHistory.setSessionId(request.getSession().getId());
-		loginHistory.setReferer(referer);
-		loginHistory.setFgResult(fgResult);
-		loginHistory.setTimezone(PlatformCommonVo.DEFAULT_TIMEZONE);
-
-		if (CmStringUtils.equals(fgAccountLocked, PlatformCommonVo.YES))
+		if (CmStringUtils.isNotEmpty(username))
 		{
-			loginHistory.setAccountLockedDate(LocalDateTime.now());
+			SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+			String referer = (savedRequest == null) ? request.getHeader("Referer") : savedRequest.getRedirectUrl();
+
+			LoginHistoryEntity loginHistory = new LoginHistoryEntity();
+			loginHistory.setUsername(username);
+			loginHistory.setUserAgent(CmStringUtils.trimToEmpty(request.getHeader("user-agent")));
+			loginHistory.setIp(getIp(request));
+			loginHistory.setSessionId(request.getSession().getId());
+			loginHistory.setReferer(referer);
+			loginHistory.setFgResult(fgResult);
+			loginHistory.setTimezone(PlatformCommonVo.DEFAULT_TIMEZONE);
+
+			if (CmStringUtils.equals(fgAccountLocked, PlatformCommonVo.YES))
+			{
+				loginHistory.setAccountLockedDate(LocalDateTime.now());
+			}
+
+			if (UserAuthenticationUtils.isAuthenticated())
+			{
+				UserDto user = userService.getUser(UserAuthenticationUtils.getUserDetails().getUSeq());
+
+				loginHistory.setUSeq(user.getUSeq());
+				loginHistory.setTimezone(user.getUserContactInfo().getTimezone());
+			}
+
+			return loginHistoryMapper.insertLoginHistory(loginHistory);
 		}
 
-		if (UserAuthenticationUtils.isLogin())
-		{
-			UserDto user = userService.getUser(UserAuthenticationUtils.getUserDetails().getUSeq());
-
-			loginHistory.setUSeq(user.getUSeq());
-			loginHistory.setTimezone(user.getUserContactInfo().getTimezone());
-		}
-
-		return loginHistoryMapper.insertLoginHistory(loginHistory);
+		return 0;
 	}
 
 	public List<LoginHistoryDto> getPageableLoginHistories(LoginHistorySearchDto loginHistorySearch)

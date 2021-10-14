@@ -151,7 +151,7 @@ public class RequestMonitorAspect
 
 	private void updateUserDetails()
 	{
-		if (UserAuthenticationUtils.isLogin())
+		if (UserAuthenticationUtils.isAuthenticated())
 		{
 			SecurityContextHolder.getContext().setAuthentication(userAuthenticationService.getAuthentication(UserAuthenticationUtils.getUSeq()));
 		}

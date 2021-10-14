@@ -153,7 +153,7 @@ public class ContentAuthorityService extends GeneralService
 
 			if (CmStringUtils.isEmpty(lang))
 			{
-				if (UserAuthenticationUtils.isLogin())
+				if (UserAuthenticationUtils.isAuthenticated())
 				{
 					lang = UserAuthenticationUtils.getUserDetails().getLanguage();
 				}

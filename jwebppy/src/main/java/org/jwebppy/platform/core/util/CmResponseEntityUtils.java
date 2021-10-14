@@ -21,6 +21,8 @@ public class CmResponseEntityUtils
 
 	public static <T> ResponseEntity<Map<String, Object>> responseEntity(Map<String, Object> responseMap, HttpStatus status)
 	{
+		ResponseEntity.noContent().build();
+
 		return new ResponseEntity<>(responseMap, status);
 	}
 

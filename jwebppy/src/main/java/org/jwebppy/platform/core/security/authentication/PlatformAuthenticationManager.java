@@ -9,6 +9,7 @@ import javax.naming.directory.InitialDirContext;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.service.UserAuthenticationService;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
@@ -51,6 +52,11 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 	{
         String username = authentication.getName();
         String password = (String)authentication.getCredentials();
+
+        if (CmStringUtils.isEmpty(username) || CmStringUtils.isEmpty(password))
+        {
+        	throw new BadCredentialsException("The username or password is incorrect.");
+        }
 
         UserDto user = userService.getUserByUsername(username);
         boolean isValidCredentials = false;
