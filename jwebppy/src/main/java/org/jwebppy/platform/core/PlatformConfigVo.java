@@ -2,11 +2,12 @@ package org.jwebppy.platform.core;
 
 public class PlatformConfigVo
 {
-	public final static String INDEX_URL = "/";
+	public final static String CONTEXT_PATH = "/platform";
+	public final static String INDEX_URL = CONTEXT_PATH;
 	public final static String ERROR_PAGE_URL = "/error";
 
 	//Authentication
-	public final static String FORM_AUTHENTICATION_PATH = "/platform/common/authentication";
+	public final static String FORM_AUTHENTICATION_PATH = CONTEXT_PATH + "/common/authentication";
 
 	public final static String FORM_LOGIN_USERNAME = "username";
 	public final static String FORM_LOGIN_PASSWORD = "password";

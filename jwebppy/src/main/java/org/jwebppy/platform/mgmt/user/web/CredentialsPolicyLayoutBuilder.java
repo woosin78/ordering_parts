@@ -20,13 +20,11 @@ public class CredentialsPolicyLayoutBuilder
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
-		thTr.addTextTh("Name", "two wide");
-		thTr.addTextTh("Description", "five wide");
+		thTr.addTextTh("Name", "four wide");
+		thTr.addTextTh("Description", "six wide");
 		thTr.addTextTh("Use", "one wide");
 		thTr.addTextTh("Default", "one wide");
-		thTr.addTextTh("User Group", "two wide");
-		thTr.addTextTh("Reg.Date", "two wide");
-		thTr.addTextTh("Reg.Username", "two wide");
+		thTr.addTextTh("User Group", "three wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -55,8 +53,6 @@ public class CredentialsPolicyLayoutBuilder
 			tbTr.addTextTd(credentialsPolicy.getFgUse());
 			tbTr.addTextTd(fgDefault);
 			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
-			tbTr.addTextTd(credentialsPolicy.getDisplayRegDate());
-			tbTr.addTextTd(credentialsPolicy.getRegUsername());
 
 			tbody.addTr(tbTr);
 		}

@@ -213,6 +213,12 @@
 			<version>2.0.2</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>flying-saucer-pdf</artifactId>
+			<version>9.1.22</version>
+		</dependency>
+		
 		<!-- SAP Jco -->
 		<dependency>
 		    <groupId>sapjco3</groupId>
@@ -234,7 +240,7 @@
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.lib.path}/sap/GenericConnector.jar</systemPath>
-		</dependency>			
+		</dependency>
 	</dependencies>
 
 	<build>

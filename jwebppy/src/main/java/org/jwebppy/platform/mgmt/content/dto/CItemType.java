@@ -1,8 +1,11 @@
 package org.jwebppy.platform.mgmt.content.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum CItemType
 {
-	P("PAGE"), M("MENU"), R("ROLE"), G("GROUP"), F("FOLDER");
+	P("PAGE"), M("MENU"), R("ROLE"), F("FOLDER"), G("GROUP");
 
 	private String type;
 
@@ -21,10 +24,9 @@ public enum CItemType
 		this.type = type;
 	}
 
-	public static CItemType[] values2()
+	public static List<CItemType> values2()
 	{
-		CItemType[] cItemTypes = new CItemType[CItemType.values().length-1];
-		int index = 0;
+		List<CItemType> cItemTypes = new ArrayList<>();
 
 		for (CItemType cItemType: CItemType.values())
 		{
@@ -33,7 +35,24 @@ public enum CItemType
 				continue;
 			}
 
-			cItemTypes[index++] = cItemType;
+			cItemTypes.add(cItemType);
+		}
+
+		return cItemTypes;
+	}
+
+	public static List<CItemType> availableTypes(CItemType cItemType)
+	{
+		List<CItemType> cItemTypes = new ArrayList<>();
+
+		if (CItemType.F.equals(cItemType))
+		{
+			return values2();
+		}
+		else if (CItemType.R.equals(cItemType) || CItemType.M.equals(cItemType))
+		{
+			cItemTypes.add(CItemType.P);
+			cItemTypes.add(CItemType.M);
 		}
 
 		return cItemTypes;

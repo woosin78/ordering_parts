@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmAnnotationUtils;
 import org.jwebppy.platform.core.util.CmClassUtils;
 import org.jwebppy.platform.core.util.CmReflectionUtils;
@@ -40,7 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/platform/mgmt/content")
+@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/content")
 public class ContentController extends ContentGeneralController
 {
 	@Autowired
@@ -104,14 +105,10 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto cItemSearch)
 	{
-		CItemDto cItem = new CItemDto();
+		CItemDto cItem = (cItemSearch.getCSeq() != null) ? contentService.getCItem(cItemSearch.getCSeq()) : new CItemDto();
+		CItemDto parentCItem = (cItemSearch.getPSeq() != null) ? contentService.getCItem(cItemSearch.getPSeq()) : new CItemDto();
 
-		if (cItemSearch.getCSeq() != null)
-		{
-			cItem = contentService.getCItem(cItemSearch.getCSeq());
-		}
-
-		return ContentLayoutBuilder.writeGeneralInfo(cItem, getComponents(), getEntryPoints(cItem.getComponent()));
+		return ContentLayoutBuilder.writeGeneralInfo(cItem, parentCItem,  getComponents(), getEntryPoints(cItem.getComponent()));
 	}
 
 	@PostMapping("/save")

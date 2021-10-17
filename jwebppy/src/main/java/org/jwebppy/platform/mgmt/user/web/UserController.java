@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -45,7 +46,7 @@ import org.yaml.snakeyaml.util.ArrayUtils;
 import com.ibm.icu.util.TimeZone;
 
 @Controller
-@RequestMapping("/platform/mgmt/user")
+@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/user")
 public class UserController extends UserGeneralController
 {
 	@Autowired
@@ -175,8 +176,6 @@ public class UserController extends UserGeneralController
 
 			if ("contact".equals(tabPath))
 			{
-				//user.getUserGroup();
-
 				return UserLayoutBuilder.writeContactInfo(user.getUserContactInfo(), user.getUserGroup());
 			}
 			else if ("account".equals(tabPath))

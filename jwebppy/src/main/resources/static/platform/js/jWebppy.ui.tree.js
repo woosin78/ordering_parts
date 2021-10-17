@@ -137,7 +137,7 @@ let JpUiTree = function(object)
 			};
 
 			this.content.push("<div class='content'>");
-			this.content.push("<div class='header' data-key='" + items[i].KEY + "' parent-data-key='" + items[i].P_KEY + "' data-title='" + items[i].NAME + "'><span class='name'>" + items[i].NAME + "</span>");
+			this.content.push("<div class='header' data-key='" + items[i].KEY + "' parent-data-key='" + items[i].P_KEY + "' data-title='" + items[i].NAME + "' data-type='" + items[i].TYPE + "'><span class='name'>" + items[i].NAME + "</span>");
 			this.content.push("</div>");
 
 			if (subItemsLength > 0)
@@ -162,6 +162,11 @@ let JpUiTree = function(object)
 		return $(item).closest("div").attr("parent-data-key");
 	};
 	
+	this.getDataType = function(item)
+	{
+		return $(item).closest("div").attr("data-type");
+	};	
+	
 	this.getRoot = function()
 	{
 		return this.items[0];
@@ -174,35 +179,38 @@ let JpUiTree = function(object)
 	
 	this.showPopupMenu = function()
 	{
+		$("#MENU_command .item").hide();
+		
 		if (this.isRoot())
 		{
-			$("#MC_deleteItem, #MC_copyItem, #MC_cutItem, #MC_pasteItem").hide();
+			$("#MC_createItem").show();
 		}
 		else
 		{
-			$("#MC_createItem, #MC_deleteItem, #MC_copyItem, #MC_cutItem").show();
+			let type = this.getDataType($(_this.selectedItem));
+			
+			if (type == "PAGE")
+			{
+				$("#MC_deleteItem, #MC_copyItem, #MC_cutItem").show();
+			}
+			else
+			{
+				$("#MC_createItem, #MC_deleteItem, #MC_copyItem, #MC_cutItem").show();				
+			};
 			
 			let command = this.getCommand();
 			
-			if (JpUtilsObject.isNull(command))
-			{
-				$("#MC_pasteItem").hide();
-			}
-			else
+			if (JpUtilsObject.isNotNull(command))
 			{
 				if (command.COMMAND == "COPY" || command.COMMAND == "CUT")
 				{
 					$("#MC_pasteItem").show();	
-				}
-				else
-				{
-					$("#MC_pasteItem").hide();
 				};				
 			};
 		};
 		
 		$("#MENU_command").hide(0, "linear", function() {
-			$("#MENU_command").fadeIn(200);
+			$("#MENU_command").fadeIn(150);
 		});
 	};
 	

@@ -8,20 +8,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
 
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler
 {
 	@Autowired
 	private LoginHistoryService loginHistoryService;
 
+	private RequestCache requestCache = new HttpSessionRequestCache();
+
 	public LoginSuccessHandler()
 	{
 	    super();
+	}
+
+	public LoginSuccessHandler(String defaultTargetUrl)
+	{
+		if (CmStringUtils.isNotEmpty(defaultTargetUrl))
+		{
+			setDefaultTargetUrl(defaultTargetUrl);
+		}
 	}
 
 	@Override
@@ -36,6 +49,13 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         	response.addCookie(cookie);
         }
 
-		super.onAuthenticationSuccess(request, response, authentication);
+        if (requestCache.getRequest(request, response) == null)
+        {
+        	getRedirectStrategy().sendRedirect(request, response, PlatformConfigVo.INDEX_URL);
+        }
+        else
+        {
+        	super.onAuthenticationSuccess(request, response, authentication);
+        }
 	}
 }

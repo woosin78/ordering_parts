@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping("/platform/mgmt/board/content")
+@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/board/content")
 public class BoardContentController extends MgmtGeneralController
 {
 	@Autowired

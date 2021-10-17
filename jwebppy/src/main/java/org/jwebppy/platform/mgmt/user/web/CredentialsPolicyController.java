@@ -2,6 +2,7 @@ package org.jwebppy.platform.mgmt.user.web;
 
 import java.util.List;
 
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping("/platform/mgmt/user/credentials/policy")
+@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/credentials/policy")
 public class CredentialsPolicyController extends UserGeneralController
 {
 	@Autowired

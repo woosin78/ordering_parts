@@ -36,10 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	protected void configure(HttpSecurity http) throws Exception
 	{
 		http
+			.antMatcher(PlatformConfigVo.CONTEXT_PATH + "/**")
 			.authorizeRequests()
 				.antMatchers(PlatformConfigVo.INDEX_URL, PlatformConfigVo.ERROR_PAGE_URL, PlatformConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL, PlatformConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL, "/mail/tracking", "/platform/common/authentication/test").permitAll()
-				.antMatchers("/platform/common/**").authenticated()
-				.antMatchers("/platform/**").hasRole(PlatformConfigVo.ROLE_PLTF_ADMIN)
+				.antMatchers(PlatformConfigVo.CONTEXT_PATH + "/**").hasRole(PlatformConfigVo.ROLE_PLTF_ADMIN)
 				.anyRequest().authenticated()
 			.and()
 			.headers()
@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	{
 		web
 			.ignoring()
-				.antMatchers("/static/**", "/platform/css/**", "/platform/js/**", "/platform/img/**", "/favicon.ico");
+				.antMatchers("/static/**", PlatformConfigVo.CONTEXT_PATH + "/css/**", PlatformConfigVo.CONTEXT_PATH + "/js/**", PlatformConfigVo.CONTEXT_PATH + "/img/**", "/favicon.ico");
 	}
 
 	@Bean
@@ -107,9 +107,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	}
 
 	@Bean
-	public AuthenticationSuccessHandler loginSuccessHandler()
+	public AuthenticationSuccessHandler loginSuccessHandler(String defaultTargetUrl)
 	{
-		return new LoginSuccessHandler();
+		return new LoginSuccessHandler(PlatformConfigVo.INDEX_URL);
 	}
 
 	@Bean
@@ -127,7 +127,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     	platformAuthenticationFilter.setPasswordParameter(PlatformConfigVo.FORM_LOGIN_PASSWORD);
     	platformAuthenticationFilter.setPostOnly(true);
 
-    	platformAuthenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler());
+    	platformAuthenticationFilter.setAuthenticationSuccessHandler(loginSuccessHandler(PlatformConfigVo.INDEX_URL));
     	platformAuthenticationFilter.setAuthenticationFailureHandler(loginFailureHandler());
 
     	platformAuthenticationFilter.afterPropertiesSet();

@@ -182,7 +182,7 @@ function showLoginBox()
 <body>
 <div id="openNewWindow" style="position: fixed; top: 5px; right: 5px; cursor: pointer; font-weight: bold;">New Window</div>
 <form id="FORM_login" method="post" th:action="${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_PROCESSING_URL}">
-<input type="hidden" id="saveUsername" name="saveUsername" />
+<input type="hidden" id="saveUsername" name="saveUsername" value="Y" />
 <div id="wrap" class="wrap">
 	<div style="text-align: center">
 		<img id="IMG_main" th:src="@{/platform/img/login/main2.jpg}" alt="Main Image" />

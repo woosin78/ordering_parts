@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.logging.LoggingGeneralController;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/platform/mgmt/log")
+@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/log")
 public class LogController extends LoggingGeneralController
 {
 	@Autowired

@@ -49,7 +49,7 @@ public class ContentLayoutBuilder
 		return document;
 	}
 
-	public static Document writeGeneralInfo(CItemDto cItem, List<CItemComponentDto> cItemComponents, List<CItemComponentDto> cItemEntryPoints)
+	public static Document writeGeneralInfo(CItemDto cItem, CItemDto parentCItem, List<CItemComponentDto> cItemComponents, List<CItemComponentDto> cItemEntryPoints)
 	{
 		Select loType = new Select("type");
 		loType.setLabel("Item Type");
@@ -61,7 +61,7 @@ public class ContentLayoutBuilder
 		}
 		else
 		{
-			for (CItemType cItemType: CItemType.values2())
+			for (CItemType cItemType: CItemType.availableTypes(parentCItem.getType()))
 			{
 				loType.addOption(cItemType.name(), cItemType.getType());
 			}
