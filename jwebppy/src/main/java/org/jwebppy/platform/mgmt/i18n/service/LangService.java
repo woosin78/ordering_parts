@@ -220,7 +220,12 @@ public class LangService extends MgmtGeneralService
 
 			for (LangKindEntity langKind: langKinds)
 			{
-				basenames.add(langKind.getBasename());
+				String basename = langKind.getBasename();
+
+				if (!basenames.contains(basename))
+				{
+					basenames.add(basename);
+				}
 			}
 
 			return basenames;
