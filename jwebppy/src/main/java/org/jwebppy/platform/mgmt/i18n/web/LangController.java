@@ -26,6 +26,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/i18n")
 public class LangController extends MgmtGeneralController
 {
+	/*
+	Chinese: zh_CN
+	English: en
+	French: fr
+	German: de
+	Italian: it
+	Spanish: es
+	Korean: ko
+	 */
+
 	@Autowired
 	private LangService langService;
 

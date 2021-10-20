@@ -44,18 +44,19 @@ function makeGmb()
 		    menu.push("</div>");		    
 		    
 		    $(".ui.menu.topMenu").html(menu.join(""));
-
+		    
 		    /* 메뉴명 길이에 따라서 width 를 자동 조절함 */
 		    let maxLength = 0;
 		    $(".ui.menu.topMenu span.text").each(function(index, element) {
-				let length = $(this).html().length;
+				//let length = $(this).html().length;
+				let length = JpUtilsString.lengthAsByte($(this).text());
 				
-				if (length > maxLength)
+				if (maxLength < length)
 				{
 					maxLength = length;
 				};
 		    });
-
+		    
 		    $(".ui.menu.topMenu span.text").css("width", maxLength * 8);
 		    /* 메뉴명 길이에 따라서 너비를 자동 조절함 */
 		    
