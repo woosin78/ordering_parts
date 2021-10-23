@@ -8,8 +8,11 @@ import java.util.Map;
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Document;
+import org.jwebppy.platform.core.web.ui.dom.Label;
 import org.jwebppy.platform.core.web.ui.dom.Link;
+import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
 import org.jwebppy.platform.core.web.ui.dom.form.Input;
 import org.jwebppy.platform.core.web.ui.dom.form.InputHidden;
 import org.jwebppy.platform.core.web.ui.dom.form.Select;
@@ -19,6 +22,7 @@ import org.jwebppy.platform.core.web.ui.dom.table.Thead;
 import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
+import org.jwebppy.platform.mgmt.i18n.dto.LangKindType;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 
 import com.ibm.icu.util.TimeZone;
@@ -134,15 +138,6 @@ public class UserGroupLayoutBuilder
 		Input loDescription = new Input("description", userGroup.getDescription());
 		loDescription.setLabel("Description");
 
-		Select loSapConnResource = new Select("scrSeq");
-		loSapConnResource.setLabel("Default SAP Connection Resource");
-		loSapConnResource.setValue(userGroup.getSapConnResource().getScrSeq());
-
-		for (SapConnResourceDto sapConnResource: ListUtils.emptyIfNull(sapConnResources))
-		{
-			loSapConnResource.addOption(sapConnResource.getScrSeq(), sapConnResource.getName());
-		}
-
 		Input loDateFormat1 = new Input("dateFormat1", userGroup.getDateFormat1());
 		loDateFormat1.setLabel("Date Format(Back-End)");
 		loDateFormat1.setRequired(true);
@@ -185,6 +180,27 @@ public class UserGroupLayoutBuilder
 			loTimezone.addOption(id, id + ", " + TimeZone.getTimeZone(id).getDisplayName());
 		}
 
+		Select loSapConnResource = new Select("scrSeq");
+		loSapConnResource.setLabel("SAP Connection Resource");
+		loSapConnResource.setValue(userGroup.getSapConnResource().getScrSeq());
+
+		for (SapConnResourceDto sapConnResource: ListUtils.emptyIfNull(sapConnResources))
+		{
+			loSapConnResource.addOption(sapConnResource.getScrSeq(), sapConnResource.getName());
+		}
+
+		Div loFields = new Div();
+		loFields.setClass("inline fields");
+		loFields.addElement(new Label("Language"));
+
+		for (LangKindType langKindType: LangKindType.values())
+		{
+			Checkbox loLangKind = new Checkbox("langKind", langKindType.name());
+			loLangKind.setLabel(langKindType.getType());
+
+			loFields.addElement(loLangKind);
+		}
+
 		Document document = new Document();
 		document.addElement(loUgSeq);
 		document.addElement(loName);
@@ -196,6 +212,7 @@ public class UserGroupLayoutBuilder
 		document.addElement(loCountry);
 		document.addElement(loTimezone);
 		document.addElement(loSapConnResource);
+		document.addElement(loFields);
 
 		return document;
 	}
