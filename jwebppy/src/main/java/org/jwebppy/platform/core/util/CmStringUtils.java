@@ -1,6 +1,10 @@
 package org.jwebppy.platform.core.util;
 
+import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.jwebppy.platform.core.PlatformConfigVo;
 
 public class CmStringUtils extends StringUtils
 {
@@ -102,5 +106,27 @@ public class CmStringUtils extends StringUtils
 		}
 
 		return containsIgnoreCase(str1, str2);
+	}
+
+	public static <E> String arrayToString(List<E> list)
+	{
+		if (CollectionUtils.isNotEmpty(list))
+		{
+			StringBuilder result = new StringBuilder();
+
+			for (int i=0, size=list.size(); i<size; i++)
+			{
+				result.append(list.get(i).toString());
+
+				if (i < size-1)
+				{
+					result.append(PlatformConfigVo.DELIMITER);
+				}
+			}
+
+			return result.toString();
+		}
+
+		return null;
 	}
 }

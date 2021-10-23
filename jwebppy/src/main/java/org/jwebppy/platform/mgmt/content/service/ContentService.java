@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
@@ -200,7 +201,7 @@ public class ContentService extends GeneralService
 	public CItemDto getRoot()
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setName(PlatformCommonVo.ROOT);
+		cItemSearch.setName(PlatformConfigVo.CITEM_ROOT);
 
 		return getCItem(cItemSearch);
 	}
@@ -272,7 +273,7 @@ public class ContentService extends GeneralService
 
 			itemMap.put("KEY", cItem.getCSeq());
 			itemMap.put("P_KEY", cItem.getPSeq());
-			itemMap.put("NAME", langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, cItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+			itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, cItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 			itemMap.put("TYPE", cItem.getType().getType());
 			itemMap.put("SUB_ITEMS", getSubItems(cItem.getCSeq()));
 
@@ -302,7 +303,7 @@ public class ContentService extends GeneralService
 
 				itemMap.put("KEY", subCItem.getCSeq());
 				itemMap.put("P_KEY", subCItem.getPSeq());
-				itemMap.put("NAME", langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+				itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 				itemMap.put("TYPE", subCItem.getType().getType());
 				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getCSeq()));
 

@@ -146,4 +146,4 @@ JpUiForm.checkbox = {
 			
 			return null;
 		}		
-}
+};

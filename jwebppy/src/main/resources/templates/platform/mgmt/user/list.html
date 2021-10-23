@@ -568,6 +568,24 @@ $(document).ready(function() {
 							{
 								$("#TBL_myAuthorityList").find("thead .ui.checkbox").checkbox("uncheck");
 							};
+						}
+						else
+						{
+							$(".ui.dropdown.ugSeq").dropdown({
+								onChange: function(value, text, $choice)
+								{
+									JpUtilsAjax.get({
+										url: "/platform/mgmt/user/user_group/lang_kind",
+										data: {ugSeq: value},
+										success: function(data, textStatus, jqXHR)
+										{
+											$(".ui.dropdown.language").dropdown({
+												values: data.RESULT
+											});
+										}
+									});
+								}
+							});
 						};
 					}
 
@@ -907,7 +925,7 @@ $(document).ready(function() {
 	{
 		return (viewUserTab.getPath().indexOf("write") > -1) ? true : false;
 	};
-
+	
 	setSeq("[[${uSeq}]]");
 
 	doSearch();

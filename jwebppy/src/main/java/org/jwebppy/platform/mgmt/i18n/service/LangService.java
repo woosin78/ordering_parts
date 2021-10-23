@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.config.CacheConfig;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
@@ -237,7 +237,7 @@ public class LangService extends MgmtGeneralService
 	public String getDefaultLang(String basename)
 	{
 		LangKindDto pLangKind = new LangKindDto();
-		pLangKind.setBasename(PlatformCommonVo.DEFAULT_BASENAME);
+		pLangKind.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
 
 		List<LangKindEntity> langKinds = langMapper.findLangKinds(pLangKind);
 

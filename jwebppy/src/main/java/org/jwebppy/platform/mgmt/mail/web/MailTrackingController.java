@@ -1,6 +1,6 @@
 package org.jwebppy.platform.mgmt.mail.web;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.MgmtGeneralController;
@@ -23,7 +23,7 @@ public class MailTrackingController extends MgmtGeneralController
 	@ResponseBody
 	public void tracking(@RequestParam(value = "key") String key)
 	{
-		String[] values = CmStringUtils.split(AES256Cipher.getInstance().decode(key), PlatformCommonVo.DELIMITER);
+		String[] values = CmStringUtils.split(AES256Cipher.getInstance().decode(key), PlatformConfigVo.DELIMITER);
 
 		if (values.length == 2)
 		{

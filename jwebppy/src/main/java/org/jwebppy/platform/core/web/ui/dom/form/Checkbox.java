@@ -28,7 +28,12 @@ public class Checkbox extends Input
 
 		if (CmStringUtils.equals(value, checkedValue))
 		{
-			addAttribute("checked", "checked");
+			checked();
 		}
+	}
+
+	public void checked()
+	{
+		addAttribute("checked", "checked");
 	}
 }

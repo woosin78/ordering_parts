@@ -1,8 +1,12 @@
 package org.jwebppy.platform.core.web;
 
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,12 +86,29 @@ public abstract class GeneralController
 		addAllAttributeFromRequest(model, webRequest);
 	}
 
-    /*
-     * RequestParam 을 Array 로 받을 때 구분자를 ',' 에서 '^' 으로 변경함
-     */
 	@InitBinder
 	public void initBinder(WebDataBinder webDataBinder)
 	{
-		webDataBinder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(PlatformCommonVo.DELIMITER));
+		//RequestParam 을 Array 로 받을 때 구분자를 ',' 에서 '^' 으로 변경함
+		webDataBinder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(PlatformConfigVo.DELIMITER));
+
+		//String 으로 넘어온 날짜를 LocalDateTime type 으로 convert 함
+		webDataBinder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
+			@Override
+			public void setAsText(String text) throws IllegalArgumentException
+			{
+				try
+				{
+					if (CmStringUtils.isNotEmpty(text))
+					{
+						setValue(LocalDateTime.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getDateTimeFormat1())));
+					}
+				}
+				catch (Exception e)
+				{
+					setValue(null);
+				}
+			}
+		});
 	}
 }

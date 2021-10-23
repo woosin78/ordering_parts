@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.MgmtGeneralService;
@@ -168,7 +169,7 @@ public class MailSenderService extends MgmtGeneralService
 
 		try
 		{
-			key = URLEncoder.encode(AES256Cipher.getInstance().encode(mshSeq + PlatformCommonVo.DELIMITER + email), "UTF-8");
+			key = URLEncoder.encode(AES256Cipher.getInstance().encode(mshSeq + PlatformConfigVo.DELIMITER + email), "UTF-8");
 		}
 		catch (UnsupportedEncodingException e)
 		{

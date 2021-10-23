@@ -23,13 +23,11 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)//스프링 시큐리티의 메소드 어노테이션 기반 시큐리티를 활성화 하기 위해서 필요
-@EnableJdbcHttpSession//@EnableRedisHttpSession
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
 	@Override

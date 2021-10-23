@@ -252,7 +252,7 @@ public class ContentController extends ContentGeneralController
 			{
 				Map<String, Object> itemMap = new LinkedHashMap<>();
 				itemMap.put("KEY", subCItem.getCSeq());
-				itemMap.put("NAME", langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+				itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 				itemMap.put("TYPE", subCItem.getType().toString());
 				itemMap.put("URL", subCItem.getUrl());
 				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getSubCItems()));

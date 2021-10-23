@@ -12,7 +12,7 @@ public enum LangKindType
 	Korean: ko
 	 */
 
-	en("English"), ko("Korea"), fr("French"), de("German"), it("Italian"), es("Spanish"), zh_CN("Chinese");
+	en("English"), ko("Korean"), fr("French"), de("German"), it("Italian"), es("Spanish"), zh_CN("Chinese");
 
 	private String type;
 

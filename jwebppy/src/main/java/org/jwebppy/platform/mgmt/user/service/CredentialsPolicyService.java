@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
@@ -181,20 +182,20 @@ public class CredentialsPolicyService extends GeneralService
 		}
 
 		int iMinLength = CmNumberUtils.toInt(minLength);
-		int iMaxLength = CmNumberUtils.toInt(maxLength, PlatformCommonVo.CREDENTIAL_MAX_LENGTH);
+		int iMaxLength = CmNumberUtils.toInt(maxLength, PlatformConfigVo.CREDENTIAL_MAX_LENGTH);
 		int iMinLowerCase = CmNumberUtils.toInt(minLowercase);
-		int iMaxLowerCase = CmNumberUtils.toInt(maxLowercase, PlatformCommonVo.CREDENTIAL_MAX_LENGTH);
+		int iMaxLowerCase = CmNumberUtils.toInt(maxLowercase, PlatformConfigVo.CREDENTIAL_MAX_LENGTH);
 		int iMinUpperCase = CmNumberUtils.toInt(minUppercase);
-		int iMaxUpperCase = CmNumberUtils.toInt(maxUppercase, PlatformCommonVo.CREDENTIAL_MAX_LENGTH);
+		int iMaxUpperCase = CmNumberUtils.toInt(maxUppercase, PlatformConfigVo.CREDENTIAL_MAX_LENGTH);
 		int iMinNumber = CmNumberUtils.toInt(minNumber);
-		int iMaxNumber = CmNumberUtils.toInt(maxNumber, PlatformCommonVo.CREDENTIAL_MAX_LENGTH);
+		int iMaxNumber = CmNumberUtils.toInt(maxNumber, PlatformConfigVo.CREDENTIAL_MAX_LENGTH);
 		int iMinSpecial = CmNumberUtils.toInt(minSpecial);
-		int iMaxSpecial = CmNumberUtils.toInt(maxSpecial, PlatformCommonVo.CREDENTIAL_MAX_LENGTH);
+		int iMaxSpecial = CmNumberUtils.toInt(maxSpecial, PlatformConfigVo.CREDENTIAL_MAX_LENGTH);
 
-		int numberCount = getMatchedCount(PlatformCommonVo.CREDENTIAL_NUMBER, str);
-		int lowercaseCount = getMatchedCount(PlatformCommonVo.CREDENTIAL_LOWERCASE, str);
-		int uppercaseCount = getMatchedCount(PlatformCommonVo.CREDENTIAL_UPPERCASE, str);
-		int specialCount = getMatchedCount(PlatformCommonVo.CREDENTIAL_SPECIAL, str);
+		int numberCount = getMatchedCount(PlatformConfigVo.CREDENTIAL_NUMBER, str);
+		int lowercaseCount = getMatchedCount(PlatformConfigVo.CREDENTIAL_LOWERCASE, str);
+		int uppercaseCount = getMatchedCount(PlatformConfigVo.CREDENTIAL_UPPERCASE, str);
+		int specialCount = getMatchedCount(PlatformConfigVo.CREDENTIAL_SPECIAL, str);
 
 		int strLength = str.length();
 		boolean isValid = false;

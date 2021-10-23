@@ -1,8 +1,13 @@
 package org.jwebppy.platform.mgmt.user.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.MgmtGeneralController;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
@@ -89,9 +94,10 @@ public class UserGroupController extends MgmtGeneralController
 
 	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@ModelAttribute UserGroupDto userGroup, @ModelAttribute SapConnResourceDto sapConnResource)
+	public Object save(@ModelAttribute UserGroupDto userGroup, @ModelAttribute SapConnResourceDto sapConnResource, @RequestParam List<String> langKind)
 	{
 		userGroup.setSapConnResource(sapConnResource);
+		userGroup.setLangKind(CmStringUtils.arrayToString(langKind));
 
 		return userGroupService.save(userGroup);
 	}
@@ -101,5 +107,26 @@ public class UserGroupController extends MgmtGeneralController
 	public Object delete(@RequestParam("ugSeq") List<Integer> ugSeqs)
 	{
 		return userGroupService.delete(ugSeqs);
+	}
+
+	@GetMapping("/lang_kind")
+	@ResponseBody
+	public Object langKind(@ModelAttribute UserGroupSearchDto userGroupSearch)
+	{
+		UserGroupDto userGroup = userGroupService.getUserGroup(userGroupSearch.getUgSeq());
+
+		List<Map<String, String>> langKinds = new ArrayList<>();
+
+		for (String language: CmStringUtils.split(userGroup.getLangKind(), PlatformConfigVo.DELIMITER))
+		{
+			Map<String, String> resultMap = new HashMap<>();
+
+			resultMap.put("name", new Locale(language).getDisplayLanguage());
+			resultMap.put("value", language);
+
+			langKinds.add(resultMap);
+		}
+
+		return langKinds;
 	}
 }

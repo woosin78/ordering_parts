@@ -1,12 +1,11 @@
 package org.jwebppy.platform.mgmt.user.web;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Document;
@@ -86,27 +85,23 @@ public class UserGroupLayoutBuilder
 		loSapConnResource.setClass("sap-conn-resource");
 		loSapConnResource.setKey(sapConnResource.getScrSeq());
 
-		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Name", userGroup.getName());
-		elementMap.put("Description", userGroup.getDescription());
-		elementMap.put("Date Format (Back-End)", userGroup.getDateFormat1());
-		elementMap.put("Time Format (Back-End)", userGroup.getTimeFormat1());
-		elementMap.put("Date Format (Front-End)", userGroup.getDateFormat2());
-		elementMap.put("Time Format (Front-End)", userGroup.getTimeFormat2());
-		elementMap.put("Country", userGroup.getDisplayCountry());
-		elementMap.put("Timezone", userGroup.getDisplayTimezone());
-		elementMap.put("Default SAP Connection Resource", loSapConnResource);
-		elementMap.put("Reg. Username", userGroup.getRegUsername());
-		elementMap.put("Reg. Date", userGroup.getDisplayRegDate());
-		elementMap.put("Mod. Username", userGroup.getModUsername());
-		elementMap.put("Mod. Date", userGroup.getDisplayModDate());
-		elementMap.put("userCount", new InputHidden("userCount", userGroup.getUserCount()));
+		StringBuilder langKind = new StringBuilder();
+		String[] langKinds = CmStringUtils.split(userGroup.getLangKind(), PlatformConfigVo.DELIMITER);
+
+		if (langKinds != null)
+		{
+			for (int i=0, length=langKinds.length; i<length; i++)
+			{
+				langKind.append(new Locale(langKinds[i]).getDisplayLanguage());
+
+				if (i < length-1)
+				{
+					langKind.append(", ");
+				}
+			}
+		}
 
 		Document document = new Document();
-		//document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
-
-
-
 		document.addDefaultLabelText("Name", userGroup.getName());
 		document.addDefaultLabelText("Description", userGroup.getDescription());
 		document.addDefaultLabelText("Date Format (Back-End)", userGroup.getDateFormat1());
@@ -115,7 +110,8 @@ public class UserGroupLayoutBuilder
 		document.addDefaultLabelText("Time Format (Front-End)", userGroup.getTimeFormat2());
 		document.addDefaultLabelText("Country", userGroup.getDisplayCountry());
 		document.addDefaultLabelText("Timezone", userGroup.getDisplayTimezone());
-		document.addDefaultLabelText("Default SAP Connection Resource", loSapConnResource);
+		document.addDefaultLabelText("Language", langKind);
+		document.addDefaultLabelText("SAP Connection Resource", loSapConnResource);
 		document.addDefaultLabelText("Users", userGroup.getUserCount());
 		document.addDefaultLabelText("Reg. Username", userGroup.getRegUsername());
 		document.addDefaultLabelText("Reg. Date", userGroup.getDisplayRegDate());
@@ -195,8 +191,15 @@ public class UserGroupLayoutBuilder
 
 		for (LangKindType langKindType: LangKindType.values())
 		{
-			Checkbox loLangKind = new Checkbox("langKind", langKindType.name());
+			String lanauge = langKindType.name();
+
+			Checkbox loLangKind = new Checkbox("langKind", lanauge);
 			loLangKind.setLabel(langKindType.getType());
+
+			if (CmStringUtils.contains(userGroup.getLangKind(), lanauge))
+			{
+				loLangKind.checked();
+			}
 
 			loFields.addElement(loLangKind);
 		}

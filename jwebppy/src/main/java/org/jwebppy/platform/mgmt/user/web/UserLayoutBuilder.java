@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
@@ -87,8 +88,8 @@ public class UserLayoutBuilder
 		elementMap.put("Organization", user.getOrganization());
 		elementMap.put("Position", user.getPosition());
 		elementMap.put("Department", user.getDepartment());
-		elementMap.put("Language", user.getDisplayLanguage());
 		elementMap.put("User Group", user.getUserGroup().getName());
+		elementMap.put("Language", user.getDisplayLanguage());
 		elementMap.put("Reg.Username", user.getRegUsername());
 		elementMap.put("Reg.Date", user.getDisplayRegDate());
 		elementMap.put("Mod.Username", user.getModUsername());
@@ -121,13 +122,6 @@ public class UserLayoutBuilder
 		Input loDepartment = new Input("department", user.getDepartment());
 		loDepartment.setLabel("Department");
 
-		Select loLanguage = new Select("language");
-		loLanguage.setLabel("Language");
-		loLanguage.setRequired(true);
-		loLanguage.setValue(user.getLanguage());
-		loLanguage.addOption("en", new Locale("en").getDisplayLanguage());
-		loLanguage.addOption("ko", new Locale("ko").getDisplayLanguage());
-
 		Select loUserGroup = new Select("ugSeq");
 		loUserGroup.setLabel("User Group");
 		loUserGroup.setRequired(true);
@@ -138,6 +132,16 @@ public class UserLayoutBuilder
 			loUserGroup.addOption(userGroup.getUgSeq(), userGroup.getName());
 		}
 
+		Select loLanguage = new Select("language");
+		loLanguage.setLabel("Language");
+		loLanguage.setRequired(true);
+		loLanguage.setValue(user.getLanguage());
+
+		for (String language: CmStringUtils.split(user.getUserGroup().getLangKind(), PlatformConfigVo.DELIMITER))
+		{
+			loLanguage.addOption(language, new Locale(language).getDisplayLanguage());
+		}
+
 		Document document = new Document();
 		document.addElement(loLastName);
 		document.addElement(loFirstName);
@@ -145,8 +149,8 @@ public class UserLayoutBuilder
 		document.addElement(loOrganization);
 		document.addElement(loPosition);
 		document.addElement(loDepartment);
-		document.addElement(loLanguage);
 		document.addElement(loUserGroup);
+		document.addElement(loLanguage);
 
 		return document;
 	}

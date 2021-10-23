@@ -1,6 +1,6 @@
 package org.jwebppy.platform.mgmt.upload.dto;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
@@ -33,7 +33,7 @@ public class UploadFileListDto extends GeneralDto
 	{
 		try
 		{
-			return AES256Cipher.getInstance().encode(CmDateFormatUtils.now() + PlatformCommonVo.DELIMITER + uflSeq);
+			return AES256Cipher.getInstance().encode(CmDateFormatUtils.now() + PlatformConfigVo.DELIMITER + uflSeq);
 		}
 		catch (Exception e)
 		{

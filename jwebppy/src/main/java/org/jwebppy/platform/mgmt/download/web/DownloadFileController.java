@@ -53,7 +53,7 @@ public class DownloadFileController extends MgmtGeneralController
 	@ResponseBody
 	public void download(@RequestParam("key") String key, HttpServletResponse httpServletResponse) throws Exception
 	{
-		String[] decodedKey = CmStringUtils.split(AES256Cipher.getInstance().decode(key), PlatformCommonVo.DELIMITER);
+		String[] decodedKey = CmStringUtils.split(AES256Cipher.getInstance().decode(key), PlatformConfigVo.DELIMITER);
 
 		if (decodedKey.length != 2)
 		{

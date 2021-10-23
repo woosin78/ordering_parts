@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -159,13 +160,13 @@ public class ContentAuthorityService extends GeneralService
 				}
 				else
 				{
-					lang = langService.getDefaultLang(PlatformCommonVo.DEFAULT_BASENAME);
+					lang = langService.getDefaultLang(PlatformConfigVo.DEFAULT_BASENAME);
 				}
 			}
 
 			for (CItemDto role : roles)
 			{
-				role.setName2(langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, role.getCSeq(), lang));
+				role.setName2(langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, role.getCSeq(), lang));
 				role.setSubCItems(getSubCItems(role.getCSeq(), lang));
 
 				hierarchy.add(role);
@@ -195,7 +196,7 @@ public class ContentAuthorityService extends GeneralService
 
 				if (cSeq.equals(subCItem.getPSeq()))
 				{
-					subCItem.setName2(langService.getCItemText(PlatformCommonVo.DEFAULT_BASENAME, subCSeq, lang));
+					subCItem.setName2(langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCSeq, lang));
 					subCItem.setSubCItems(getSubCItems(subCSeq, lang));
 
 					cItems.add(subCItem);
