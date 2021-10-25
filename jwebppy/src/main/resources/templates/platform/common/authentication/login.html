@@ -45,6 +45,12 @@ $(window).load(function() {
 				document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";	
 			});
 		}
+		else if (loginFailType == "Locked")
+		{
+			JpUiDimmer.alert("[[#{PLTF_M_LOGIN_ACCOUNT_LOCKED}]]", function() {
+				setFocus();
+			});
+		}
 		else
 		{
 			JpUiDimmer.alert("[[#{PLTF_M_LOGIN_AUTHENTICATION_FAILED}]]", function() {

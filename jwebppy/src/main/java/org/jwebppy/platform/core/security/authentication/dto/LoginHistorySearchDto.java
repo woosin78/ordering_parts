@@ -19,9 +19,7 @@ public class LoginHistorySearchDto extends GeneralDto implements IPagination
 	private Integer uSeq;
 	private String username;
 	private String fgResult;
-	//@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime fromDate;
-	//@DateTimeFormat(pattern = PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)
 	private LocalDateTime toDate;
 	private String query;
 }

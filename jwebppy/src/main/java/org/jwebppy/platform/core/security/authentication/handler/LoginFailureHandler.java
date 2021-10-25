@@ -24,7 +24,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException
 	{
-		loginHistoryService.fail(request, response, exception);
+		loginHistoryService.fail(request, response);
 
 		response.setHeader("Login-Error-Type", CmClassUtils.getShortClassName(exception.getClass()).replaceAll("Exception", "") + ":" + exception.getMessage());
 		response.setStatus(getStatus(exception).value());

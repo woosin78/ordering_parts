@@ -6,7 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
@@ -18,15 +18,9 @@ import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.platform.mgmt.content.dto.CItemDto;
-import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
-import org.jwebppy.platform.mgmt.content.dto.CItemType;
-import org.jwebppy.platform.mgmt.content.service.ContentService;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Service;
@@ -36,9 +30,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LoginHistoryService extends GeneralService
 {
-	@Autowired
-	private ContentService contentService;
-
 	@Autowired
 	private LoginHistoryMapper loginHistoryMapper;
 
@@ -50,17 +41,46 @@ public class LoginHistoryService extends GeneralService
 
 	public int success(HttpServletRequest request, HttpServletResponse response)
 	{
-		return createLoginHistory(request, response, PlatformCommonVo.YES, null);
+		return createLoginHistory(request, response, PlatformCommonVo.YES);
 	}
 
-	public int fail(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception)
+	public int fail(HttpServletRequest request, HttpServletResponse response)
 	{
-		String fgAccountLocked = checkAccountLockedByWrongPassword(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME), exception);
+		if (createLoginHistory(request, response, PlatformCommonVo.NO) > 0)
+		{
+			if (PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_ALLOWABLE_COUNT > 0)
+			{
+				String username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
 
-		return createLoginHistory(request, response, PlatformCommonVo.YES, fgAccountLocked);
+				LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
+				loginHistorySearch.setUsername(username);
+				loginHistorySearch.setFromDate(LocalDateTime.now().minusMinutes(5));
+				loginHistorySearch.setPageNumber(1);
+				loginHistorySearch.setRowPerPage(5);
+
+				List<LoginHistoryDto> loginHistories = ListUtils.emptyIfNull(getPageableLoginHistories(loginHistorySearch));
+
+				if (loginHistories.size() >= PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_ALLOWABLE_COUNT)
+				{
+					if (CmStringUtils.equals(PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_PENALTY, "LOCK"))
+					{
+						UserDto user = userService.getUserByUsername(username);
+
+						if (!user.getUserAccount().isAccountLocked())
+						{
+							userService.lockUserAccount(userService.getUserByUsername(username).getUSeq(), PlatformCommonVo.YES);
+						}
+					}
+				}
+			}
+
+			return 1;
+		}
+
+		return 0;
 	}
 
-	public int createLoginHistory(HttpServletRequest request, HttpServletResponse response, String fgResult, String fgAccountLocked)
+	public int createLoginHistory(HttpServletRequest request, HttpServletResponse response, String fgResult)
 	{
 		String username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
 
@@ -78,11 +98,6 @@ public class LoginHistoryService extends GeneralService
 			loginHistory.setReferer(referer);
 			loginHistory.setFgResult(fgResult);
 			loginHistory.setTimezone(PlatformCommonVo.DEFAULT_TIMEZONE);
-
-			if (CmStringUtils.equals(fgAccountLocked, PlatformCommonVo.YES))
-			{
-				loginHistory.setAccountLockedDate(LocalDateTime.now());
-			}
 
 			if (UserAuthenticationUtils.isAuthenticated())
 			{
@@ -106,35 +121,6 @@ public class LoginHistoryService extends GeneralService
 	public int getLoginFailureCount(LoginHistorySearchDto loginHistorySearch)
 	{
 		return loginHistoryMapper.findLoginFailureCount(loginHistorySearch);
-	}
-
-	//Super Admin 의 경우 로그인 실패 횟수 체크
-	private String checkAccountLockedByWrongPassword(String username, AuthenticationException exception)
-	{
-		if (exception instanceof BadCredentialsException)
-		{
-			CItemSearchDto cItemSearch = new CItemSearchDto();
-			cItemSearch.setUsername(username);
-			cItemSearch.setType(CItemType.R);
-			cItemSearch.setName(PlatformConfigVo.ROLE_PLTF_ADMIN);
-
-			List<CItemDto> cItems = contentService.getMyItems(cItemSearch);
-
-			if (CollectionUtils.isNotEmpty(cItems))
-			{
-				LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
-				loginHistorySearch.setUsername(username);
-
-				if (getLoginFailureCount(loginHistorySearch) >= PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_LIMIT_COUNT - 1)
-				{
-					userService.lockUserAccount(userService.getUserByUsername(username).getUSeq(), PlatformCommonVo.YES);
-
-					return PlatformCommonVo.YES;
-				}
-			}
-		}
-
-		return PlatformCommonVo.NO;
 	}
 
 	private String getIp(HttpServletRequest request)

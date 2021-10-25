@@ -210,7 +210,7 @@ public class UserLayoutBuilder
 		{
 			for (CredentialsPolicyDto credentialPolicy: credentialPolicies)
 			{
-				loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getUserGroup().getName());
+				loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getName());
 			}
 		}
 
