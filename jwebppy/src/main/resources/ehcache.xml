@@ -32,10 +32,9 @@
 		</resources>
 	</cache-template>
 	
-	<cache alias="Language" uses-template="platform">
-	<!-- key-type>java.lang.Long</key-type>  key-type 요소는 Cache 인스턴스에 저장될 캐시의 키의 FQCN을 지정한다. 즉, 키의 타입을 명시해주면 된다. 기본 값은 java.lang.Object 이다. -->
-	<!-- value-type>java.math.BigDecimal</value-type>  value-type 요소는 Cache 인스턴스에 저장된 값의 FQCN을 지정한다. 기본 값은 java.lang.Object 이다. -->
-	</cache>
+	<cache alias="Language" uses-template="platform"/>
+	
+	<cache alias="Content" uses-template="platform"/>
 	
 	<!-- SAP -->
 	<cache alias="Customer" uses-template="platform">
