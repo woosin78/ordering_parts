@@ -40,7 +40,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 		request.getRequestDispatcher(PlatformConfigVo.FORM_LOGIN_PAGE_URL).forward(request, response);
 	}
 
-	private HttpStatus getStatus(AuthenticationException exception)
+	protected HttpStatus getStatus(AuthenticationException exception)
 	{
 		HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
 

@@ -15,6 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 public class PlatformAuthenticationFilter extends UsernamePasswordAuthenticationFilter
 {
+	public PlatformAuthenticationFilter() {}
+
 	public PlatformAuthenticationFilter(AuthenticationManager authenticationManager)
 	{
 		super.setAuthenticationManager(authenticationManager);

@@ -1,0 +1,315 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="-1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title th:text="#{PLTF_TXT_0006}"></title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/portal/css/login.css}" />
+
+<script type="application/javascript" th:src="@{/portal/js/jquery/jquery.min.js}"></script>
+<script type="application/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="application/javascript" th:src="@{/portal/js/jquery/jquery.cookie.js}"></script>
+<script type="application/javascript" th:src="@{/platform/js/detect_browser/detect-browser.js}"></script>
+<script type="application/javascript" th:src="@{/portal/js/portal.utils.progressbar.js}"></script>
+<script type="application/javascript" th:src="@{/portal/js/portal.utils.modal.js}"></script>
+<script type="application/javascript">
+$(window).resize(function() {
+	resizeView();
+});
+
+$(window).load(function() {
+	resizeView();
+	
+	if (getBrowserName() == "Internet Explorer" && $.cookie("notShowNote") != "Y")
+	{
+		let content = "<div style='border: solid 1px #003081; padding: 10px 10px; border-radius: 4px;'>";
+		content += "Please note that DOOBIZ Plus only works when turning off the Compatibility View Mode in Internet Explorer. Please make sure if the option is disabled before you sign in. We expect the guide as follows would help you.";
+		content += "<p><a href='/portal/manual/CompatibilityViewModeGuide.docx'>[Compatibility View Mode Setting Guide]</a></p>"
+		content += "</div>";
+		content += "<div class='save-username' style='margin-top:5px;'><img class='IMG_notShowNote cursor-pointer' src='/portal/img/login/uncheck.png' alt='Check' /><span class='IMG_notShowNote' style='margin-bottom:20px; font-size:13px; position:relative; top: -5px; left: 5px; text-decoration: underline; cursor: pointer;'>Do not show today</span></div>";
+		
+		Modal.show("Notification", 500, 270, content);
+		
+		$(".IMG_notShowNote").on("click", function() {
+			let src = "/portal/img/login/uncheck.png";
+			let img = $(this).closest("div").find("img"); 
+
+			if (img.attr("src").indexOf("uncheck") > -1)
+			{
+				src = "/portal/img/login/check.png";
+				$.cookie("notShowNote", "Y", { expires : 1 });
+			}
+			else
+			{
+				$.cookie("notShowNote", "N", { expires : 0 });
+			};
+			
+			img.attr("src", src);		
+		});		
+	};
+});
+
+let RESIZING_MIN_WIDTH = 1500;
+let VIEW_MARGIN_WIDTH = 80;
+
+function resizeView()
+{
+	let width = $(window).width();
+	
+	if (width > RESIZING_MIN_WIDTH)
+	{
+		$("#mainImg, #header, #bottom").width(width - VIEW_MARGIN_WIDTH);
+	}
+	else
+	{
+		$("#mainImg, #header, #bottom").width(RESIZING_MIN_WIDTH - VIEW_MARGIN_WIDTH);
+	}
+};
+
+function loginFormCheck()
+{
+	if ($.trim($("#username").val()) == "")
+	{
+		alert("[[#{PLTF_MSG_0005}]]");
+		$("#username").focus();
+		return false;
+	}
+	else if ($.trim($("#password").val()) == "")
+	{
+		alert("[[#{PLTF_MSG_0006}]]");
+		$("#password").focus();			
+		return false;				
+	};
+	
+	return true;
+};
+
+function loginStep1()
+{
+	let key = "[[${key}]]";
+	let token = "[[${token}]]";
+
+	$.ajax({
+		contentType:"application/json",         
+		type: "GET", //GET, POST
+		// url: "https://gateway.apig.d-platform.doosan.com/authform/sso/inbound/ad",
+		url: "[[${gateway}]]/authform/sso/inbound/ad",
+		headers: { "user-key": key, "user-token": token, "user-xuser": $("#username").val(), "user-xpass": $("#password").val() },
+		beforeSend: function(jqXHR, settings)
+		{
+			//ProgressBar.show();
+		},
+		success: function(response, textStatus, jqXHR)
+		{
+			if (response != null)
+			{
+				let result = response.RESULT;
+				
+				console.log(response);
+				$("#token").val(result);
+			};
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+			console.log("AD authorization failed. Start to login using this system.");
+		},
+		complete: function(jqXHR, textStatus)
+		{
+			loginStep2();
+		}
+	});
+};
+
+function loginStep2()
+{
+	$.ajax({
+		type: "POST", //GET, POST
+		url: "/platform/security/authentication/check",
+		data: $("#loginForm").serialize(),
+		success: function(data, textStatus, jqXHR)
+		{
+			$.cookie("username", $("#username").val(), { expires : 365 });
+			document.location.href = "/forward/entry_point";
+		},			
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+			let status = jqXHR.status;
+
+			if (status == "401")
+			{
+				alert("[[#{PLTF_MSG_0004}]]");
+			}
+			else if (status == "403")
+			{
+				alert("[[#{PLTF_MSG_0050}]]");
+			}
+			else if (status == "423")
+			{
+				alert("[[#{PLTF_MSG_ACCOUNT_LOCKED}]]");
+			};
+		},
+		complete: function(jqXHR, textStatus)
+		{
+			//ProgressBar.hide();
+		}
+	});
+};
+
+$(document).ready(function() {
+	if ($.trim($.cookie("username")) != "")
+	{
+		$("#username").val($.cookie("username"));
+		$("#password").focus();
+	};	
+	
+	$(".btn-login").on("click", function() {
+		if (loginFormCheck())
+		{
+			loginStep1();
+		};	
+	});
+
+	$("#username, #password").on("focus", function(event) {
+		this.select();
+	});	
+	
+	$("#username, #password").on("keydown", function(event) {
+		if (event.keyCode == 13)
+		{
+			if (loginFormCheck())
+			{
+				loginStep1();
+			}
+		}
+	});
+	
+	$("#openNewWindow").on("click", function() {
+		window.open("/", new Date().getMilliseconds());
+	});
+	
+	$(".save-username").on("click", function() {
+		let src = "/portal/img/login/uncheck.png";		
+		
+		if ($(this).find("img").attr("src").indexOf("uncheck") > -1)
+		{
+			src = "/portal/img/login/check.png";
+			$("#saveUsername").val("Y");
+		}
+		else
+		{
+			$("#saveUsername").val("N");
+		};
+		
+		$(this).find("img").attr("src", src);
+	});
+	
+	$(".gdpr").on("click", function() {
+		document.location.href = "/portal/img/login/Doosan_General_Data_Protection_Policy.docx";
+	});
+	
+	$("#IMG_doobizPlus").on("click", function() {
+		document.location.href = "/forward/entry_point";
+	});	
+});
+</script>
+</head>
+<body>
+<form id="loginForm" method="post" onsubmit="return loginFormCheck();">
+<input type="hidden" id="token" name="token" />
+<input type="hidden" id="saveUsername" name="saveUsername" />
+<div id="wrap" class="wrap"> 
+	<div id="header" class="header">
+		<img class="logo" th:src="@{/portal/img/login/logo.png}" alt="DOOSAN" /><img id="IMG_doobizPlus" class="doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus"/>
+		<div id="openNewWindow" class="button">New Window</div>
+	</div>
+	<div id="body" class="body">
+		<div><img id="mainImg" th:src="@{/portal/img/login/main.png}" alt="Main Image" /></div>
+		<div class="login-box">
+			<div class="title" th:text="#{PLTF_TXT_0007}"></div>
+			<div class="username"><img th:src="@{/portal/img/login/username.png}" class="login-input" alt="Username" /><input type="text" id="username" name="username" th:placeholder="#{PLTF_TXT_0002}" autofocus /></div>
+			<div class="password"><img th:src="@{/portal/img/login/password.png}" class="login-input" alt="Password" /><input type="password" id="password" name="password" th:placeholder="#{PLTF_TXT_0001}" /></div>
+			<button class="btn-login" type="button" th:text="#{PLTF_BTN_0002}"></button>
+			<div class="bottom"> 
+				<div class="save-username"><img th:src="@{/portal/img/login/check.png}" class="save-username-chk" alt="Save Username" /><span>[[#{PLTF_TXT_0005}]]</span></div>
+				<!-- div class="manual">
+					<select class="select-box">
+						<option>Manual Download</option>
+						<option>Korean</option>
+						<option>English</option>
+					</select>				
+				</div -->
+			</div>
+		</div>
+	</div>
+	<div id="bottom" class="bottom">
+		<div class="personal-policy" style="float: left;">
+This Site is for the use of authorized Doosan Group Personnel only and by accessing this site you hereby consent to the site being monitored.<br/>
+Any unauthorized use will be considered a breach of Doosan Group Information Security Policies and may also be in violation of laws.<br/>
+본 사이트는 두산 임직원 및 인가된 사용자만 사용할 수 있으며, 사용자 접속 모니터링 및 로그를 기록하고 있습니다. 불법 사용시에는 법령에 의해 민∙형사상 책임을 질 수 있습니다.
+			<img class="gdpr" th:src="@{/portal/img/login/gdpr.png}" alt="GDPR" />
+		</div>
+		<div style="height:52px;"></div>
+		<div class="line"></div>
+		<div class="copy-right">
+			<img id="gdpr" th:src="@{/portal/img/login/logo_s.png}" style="vertical-align: middle;" alt="GDPR" />
+			<span class=".text">[[#{PLTF_TXT_0008}]]</span>
+		</div>
+	</div>
+</div>
+</form>
+
+<!-- 팝업 레이어 
+<div id="main_notice" style="position:absolute; left:0px; top:0px; border:1px solid #cccccc; background: #fff; width: 1000px; height:500px;">
+	<div onclick="$('#main_notice').hide()" style="font-size:18px; text-align: right; margin-right:10px; cursor:pointer;">Ｘ</div>
+	<div style="margin-left: 10px; margin-right:10px;">
+	<hr/>
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt;">Dear Doosan Partners,<span style="font-family: Calibri,sans-serif;">
+	<br>
+	 
+	<br>
+	 A new System Event has been scheduled. Here are the updates about this event:</span></p>
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt;"><span style="font-family: Calibri,sans-serif;">
+	<br>
+	</span></p>
+	  
+	<table class="MsoNormalTable" border="0" cellspacing="0" cellpadding="0">
+	 <tbody>
+	<tr>
+	 
+	<td style="padding: 0cm;">
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt;"><u><span style="font-family: Calibri,sans-serif;">Original details of the System Event</span></u><span style="font-family: Calibri,sans-serif;">:
+	<br>
+	 </span></p>
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt;"><span style="font-family: Calibri,sans-serif;">Currently, the SAP ERP application is a common system leveraged by both the Doosan </span><span style="font-family: Calibri,sans-serif;">Corporation Industrial Vehicle</span><span style="font-family: Calibri,sans-serif;"> (DI</span><span style="font-family: Calibri,sans-serif;">V</span><span style="font-family: Calibri,sans-serif;">) and DI</span><span style="font-family: Calibri,sans-serif;">V</span><span style="font-family: Calibri,sans-serif;"> overseas subsidiary business units. DIV business is currently working on migrating to S4/Hana in the month of August. The Project TF team has worked with business stakeholders and other teams and determined that a move of our all business to conversion ECC to S/4Hana environment, built on new system and hardware would be the best option.</span></p>
+	<p style="text-align: justify; font-family: Calibri, sans-serif; font-size: 11pt; margin-right: 0cm; margin-left: 0cm;"><span style="font-size: 10pt;">This transition will occur over the upcoming Summer vacation holiday weekend starting on the evening of August 7<sup>th</sup> and be completed on the evening of August 10<sup>th</sup>. During the transition period several systems will be unavailable, or functionality will be partially impacted. </span></p>
+	<p style="font-family: Calibri, sans-serif; font-size: 11pt; margin-right: 0cm; margin-left: 0cm;"><b><span style="font-size: 10pt;">Impacted Systems:</span></b></p>
+	<p align="left" class="MsoListParagraph" style="margin: 0cm 0cm 0pt 36pt; text-align: left; text-indent: -18pt; font-family: Calibri, sans-serif; font-size: 11pt;"><span style="font-family: Symbol;">·<span style="font: 7pt/normal Times New Roman; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: Calibri,sans-serif;">SAP ERP systems</span></p>
+	<p align="left" class="MsoListParagraph" style="margin: 0cm 0cm 0pt 72pt; text-align: left; text-indent: -18pt; font-family: Calibri, sans-serif; font-size: 11pt;"><span style="font-family: Courier New;">o<span style="font: 7pt/normal Times New Roman; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: Calibri,sans-serif;">ECC, APO, BW</span></p>
+	<p align="left" class="MsoListParagraph" style="margin: 0cm 0cm 0pt 72pt; text-align: left; text-indent: -18pt; font-family: Calibri, sans-serif; font-size: 11pt;"><span style="font-family: Courier New;">o<span style="font: 7pt/normal Times New Roman; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: Calibri,sans-serif;">DOOINS (ERP SSO)</span></p>
+	<p align="left" class="MsoListParagraph" style="margin: 0cm 0cm 0pt 36pt; text-align: left; text-indent: -18pt; font-family: Calibri, sans-serif; font-size: 11pt;"><span style="font-family: Symbol;">·<span style="font: 7pt/normal Times New Roman; font-size-adjust: none; font-stretch: normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: Calibri,sans-serif;">Doobiz Portal (Complete Machine, Parts Ordering, Warranty Management, Merchandise Ordering)</span></p>
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt;"><span style="font-family: Calibri,sans-serif;"></span></p>
+	 
+	</td>
+	</tr>
+	 
+	<tr>
+	 
+	<td style="padding: 0cm;">
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt;"><b><u><span style="color: red; font-family: Calibri,sans-serif;">System Event Start Date</span></u></b><span style="font-family: Calibri,sans-serif">: &nbsp;&nbsp;8/7/2020 18:00:00 PM (KR Time)</span></p>
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt 110pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt;"><span style="font-family: Calibri,sans-serif;">8/7/2020 11:00:00 AM (Central European Time)</span></p>
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt;"><u><span style="font-family: Calibri,sans-serif;"><br/></span></u></p>
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt;"><b><u><span style="color: red; font-family: Calibri,sans-serif;">System Event End Date</span></u></b><span style="font-family: Calibri,sans-serif; font-weight: bolder">: &nbsp;&nbsp;&nbsp;&nbsp;8/11/2020 01:00:00 AM (KR Time)</span></p>
+	<p align="left" class="MsoNormal" style="margin: 0cm 0cm 0pt 110pt; text-align: left; font-family: 맑은 고딕; font-size: 10pt; font-weight: bolder"><span style="font-family: Calibri,sans-serif;">8/10/2020 18:00:00 PM (</span><span style="font-family: Calibri,sans-serif;">Central European Time</span><span style="font-family: Calibri,sans-serif;">)</span></p>
+	 
+	</td>
+	</tr>
+	 </tbody>
+	</table>
+	</div>
+</div>
+-->
+</body>
+</html>

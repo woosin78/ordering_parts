@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
 import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
@@ -30,10 +29,13 @@ public class SapConnResourceLayoutBuilder
 		thTr.addCheckAllTh();
 		thTr.addTextTh("Name", "three wide");
 		thTr.addTextTh("Description", "three wide");
+		thTr.addTextTh("Type", "two wide");
 		thTr.addTextTh("System ID", "one wide");
-		thTr.addTextTh("Group/Server", "three wide");
-		thTr.addTextTh("Instance No.", "one wide");
-		thTr.addTextTh("Message Server / Application Server", "three wide");
+		thTr.addTextTh("Client", "one wide");
+		//thTr.addTextTh("Group/Server", "three wide");
+		//thTr.addTextTh("Instance No.", "one wide");
+		//thTr.addTextTh("Server", "one wide");//Message or Application
+		thTr.addTextTh("Username", "two wide");
 		thTr.addTextTh("Use", "one wide");
 
 		Thead thead = new Thead();
@@ -49,10 +51,14 @@ public class SapConnResourceLayoutBuilder
 			tbTr.addDataKeyCheckboxTd("scrSeq", sapConnResource.getScrSeq());
 			tbTr.addDataKeyLinkTd(sapConnResource.getName(), sapConnResource.getScrSeq());
 			tbTr.addTextTd(sapConnResource.getDescription());
+			tbTr.addTextTd(sapConnResource.getType().getType());
 			tbTr.addTextTd(sapConnResource.getSystemId());
-			tbTr.addTextTd(sapConnResource.getGrpServer());
-			tbTr.addTextTd(sapConnResource.getInstanceNo());
-			tbTr.addTextTd(CmStringUtils.defaultIfEmpty(sapConnResource.getMsgServer(), "-") + " / " + CmStringUtils.defaultIfEmpty(sapConnResource.getAppServer(), "-"));
+			tbTr.addTextTd(sapConnResource.getClient());
+			tbTr.addTextTd(sapConnResource.getUsername());
+			//tbTr.addTextTd(sapConnResource.getSystemId());
+			//tbTr.addTextTd(sapConnResource.getGrpServer());
+			//tbTr.addTextTd(sapConnResource.getInstanceNo());
+			//tbTr.addTextTd(CmStringUtils.defaultIfEmpty(sapConnResource.getMsgServer(), "-") + " / " + CmStringUtils.defaultIfEmpty(sapConnResource.getAppServer(), "-"));
 			tbTr.addTextTd(sapConnResource.getFgUse());
 
 			tbody.addTr(tbTr);
@@ -146,6 +152,9 @@ public class SapConnResourceLayoutBuilder
 			document.addElement(logGrpServer);
 		}
 
+		Input loClient = new Input("client", sapConnResource.getClient());
+		loClient.setLabel("Client");
+
 		Input loUsername = new Input("username", sapConnResource.getUsername());
 		loUsername.setLabel("Username");
 
@@ -171,6 +180,7 @@ public class SapConnResourceLayoutBuilder
 		Element loFgUse = new Checkbox("fgUse", PlatformCommonVo.YES, sapConnResource.getFgUse());
 		loFgUse.setLabel("Use");
 
+		document.addElement(loClient);
 		document.addElement(loUsername);
 		document.addElement(loPassword);
 		document.addElement(loLanguage);

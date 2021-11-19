@@ -116,7 +116,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         throw new BadCredentialsException("The username or password is incorrect.");
 	}
 
-	private boolean isValidUserByLdap(String username, String password)
+	protected boolean isValidUserByLdap(String username, String password)
 	{
 		try
 		{
