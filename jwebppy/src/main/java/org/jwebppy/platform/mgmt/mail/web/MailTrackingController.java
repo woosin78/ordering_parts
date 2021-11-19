@@ -3,7 +3,7 @@ package org.jwebppy.platform.mgmt.mail.web;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.mgmt.MgmtGeneralController;
+import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
 import org.jwebppy.platform.mgmt.mail.service.MailReceiverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

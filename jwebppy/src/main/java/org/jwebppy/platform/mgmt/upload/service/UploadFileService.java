@@ -1,7 +1,7 @@
 package org.jwebppy.platform.mgmt.upload.service;
 
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
-import org.jwebppy.platform.mgmt.MgmtGeneralService;
+import org.jwebppy.platform.mgmt.common.service.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileDto;
 import org.jwebppy.platform.mgmt.upload.entity.UploadFileEntity;
 import org.jwebppy.platform.mgmt.upload.mapper.UploadFileMapper;

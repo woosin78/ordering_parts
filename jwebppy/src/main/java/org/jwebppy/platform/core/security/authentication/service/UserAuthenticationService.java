@@ -3,7 +3,7 @@ package org.jwebppy.platform.core.security.authentication.service;
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.jwebppy.platform.PlatformGeneralService;
+import org.jwebppy.platform.common.service.PlatformGeneralService;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.util.CmReflectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;

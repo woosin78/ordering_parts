@@ -9,7 +9,7 @@ import java.util.Map;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
-import org.jwebppy.platform.mgmt.MgmtGeneralController;
+import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.conn_resource.service.SapConnResourceService;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;

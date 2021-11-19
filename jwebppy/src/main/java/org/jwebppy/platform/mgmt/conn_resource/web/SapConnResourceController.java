@@ -5,7 +5,7 @@ import java.util.List;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
-import org.jwebppy.platform.mgmt.MgmtGeneralController;
+import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceSearchDto;
 import org.jwebppy.platform.mgmt.conn_resource.service.SapConnResourceService;

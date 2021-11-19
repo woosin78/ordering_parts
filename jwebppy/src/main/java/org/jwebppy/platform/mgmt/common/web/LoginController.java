@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.jwebppy.platform.PlatformGeneralController;
+import org.jwebppy.platform.common.web.PlatformGeneralController;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(PlatformConfigVo.FORM_AUTHENTICATION_PATH)
-public class AuthenticationController extends PlatformGeneralController
+public class LoginController extends PlatformGeneralController
 {
 	//@Autowired
 	//private Environment environment;

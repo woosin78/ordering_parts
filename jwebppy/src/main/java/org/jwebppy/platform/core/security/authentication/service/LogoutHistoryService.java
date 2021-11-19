@@ -1,6 +1,6 @@
 package org.jwebppy.platform.core.security.authentication.service;
 
-import org.jwebppy.platform.PlatformGeneralService;
+import org.jwebppy.platform.common.service.PlatformGeneralService;
 import org.jwebppy.platform.core.security.authentication.dto.LogoutHistoryDto;
 import org.jwebppy.platform.core.security.authentication.entity.LogoutHistoryEntity;
 import org.jwebppy.platform.core.security.authentication.mapper.LogoutHistoryMapper;

@@ -1,6 +1,6 @@
 package org.jwebppy.platform.mgmt.board.service;
 
-import org.jwebppy.platform.PlatformGeneralService;
+import org.jwebppy.platform.common.service.PlatformGeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.mgmt.board.dto.BoardDto;
 import org.jwebppy.platform.mgmt.board.mapper.BoardMapper;

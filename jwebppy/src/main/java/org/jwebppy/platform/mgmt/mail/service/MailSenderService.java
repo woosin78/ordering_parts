@@ -18,7 +18,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.mgmt.MgmtGeneralService;
+import org.jwebppy.platform.mgmt.common.service.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.mail.dto.Attachment;
 import org.jwebppy.platform.mgmt.mail.dto.MailReceiverDto;
 import org.jwebppy.platform.mgmt.mail.dto.MailSenderDto;

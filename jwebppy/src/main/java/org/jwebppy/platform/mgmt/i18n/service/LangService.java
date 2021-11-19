@@ -9,7 +9,7 @@ import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.platform.mgmt.MgmtGeneralService;
+import org.jwebppy.platform.mgmt.common.service.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.service.ContentService;

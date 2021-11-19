@@ -1,7 +1,7 @@
 package org.jwebppy.platform.mgmt.download.service;
 
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
-import org.jwebppy.platform.mgmt.MgmtGeneralService;
+import org.jwebppy.platform.mgmt.common.service.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.download.dto.DownloadFileHistoryDto;
 import org.jwebppy.platform.mgmt.download.mapper.DownloadFileHistoryMapper;
 import org.jwebppy.platform.mgmt.download.mapper.DownloadFileHistoryObjectMapper;

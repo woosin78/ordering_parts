@@ -19,7 +19,7 @@ import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.platform.mgmt.MgmtGeneralController;
+import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
 import org.jwebppy.platform.mgmt.download.dto.DownloadFileHistoryDto;
 import org.jwebppy.platform.mgmt.download.service.DownloadFileHistoryService;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileDto;

@@ -1,6 +1,6 @@
 package org.jwebppy.platform.mgmt.common.web;
 
-import org.jwebppy.platform.PlatformGeneralController;
+import org.jwebppy.platform.common.web.PlatformGeneralController;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -7,7 +7,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
-import org.jwebppy.platform.mgmt.MgmtGeneralController;
+import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDetailDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangKindDto;

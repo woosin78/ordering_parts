@@ -3,7 +3,7 @@ package org.jwebppy.platform.mgmt.mail.service;
 import java.time.LocalDateTime;
 
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
-import org.jwebppy.platform.mgmt.MgmtGeneralService;
+import org.jwebppy.platform.mgmt.common.service.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.mail.dto.MailReceiverDto;
 import org.jwebppy.platform.mgmt.mail.entity.MailReceiverEntity;
 import org.jwebppy.platform.mgmt.mail.mapper.MailReceiverMapper;

@@ -5,7 +5,7 @@ import java.net.UnknownHostException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jwebppy.platform.PlatformGeneralController;
+import org.jwebppy.platform.common.web.PlatformGeneralController;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.common.PortalConfigVo;
 import org.springframework.security.core.Authentication;

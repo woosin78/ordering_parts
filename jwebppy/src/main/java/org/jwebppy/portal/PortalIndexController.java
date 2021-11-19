@@ -6,7 +6,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jwebppy.platform.PlatformGeneralController;
+import org.jwebppy.platform.common.web.PlatformGeneralController;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
@@ -36,16 +36,10 @@ public class PortalIndexController extends PlatformGeneralController
 	@RequestMapping
 	public Object index(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws UnknownHostException
 	{
-		System.err.println("PortalIndexController:1");
-
 		if (UserAuthenticationUtils.isAuthenticated())
 		{
-			System.err.println("PortalIndexController:2");
-
 			return new RedirectView(PortalConfigVo.CONTEXT_PATH + "/forward/entry_point");
 		}
-
-		System.err.println("PortalIndexController:" + PortalConfigVo.FORM_LOGIN_PAGE_URL);
 
 		return new RedirectView(PortalConfigVo.FORM_LOGIN_PAGE_URL);
 	}
