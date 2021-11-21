@@ -100,3 +100,25 @@ JpUtilsString.padLeft = function(str, chr, length)
 	
 	return result.join("");
 };
+
+JpUtilsString.lengthAsByte = function(str)
+{
+	let totalLength = 0;
+	
+	if (JpUtilsString.isNotEmpty(str))
+	{
+    	for (let i=0, length=str.length; i<length; i++)
+    	{
+    		if (escape(str.charAt(i)).length > 4)
+    		{
+    			totalLength += 3;
+    		}
+    		else
+    		{
+    			totalLength++;
+    		};
+    	};		    		
+	};
+	
+	return totalLength;
+};

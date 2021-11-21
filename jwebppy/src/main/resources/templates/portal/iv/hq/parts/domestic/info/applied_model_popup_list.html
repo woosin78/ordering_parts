@@ -6,10 +6,10 @@
 
 <th:block layout:fragment="content">
 <div class="block-header">
-	<div class="block-title" th:text="#{DCP_T_APPLIED_MODELS}"></div><!-- Applied Models  -->
+	<div class="block-title" th:text="#{HQPD_T_APPLIED_MODELS}"></div><!-- Applied Models  -->
 	<div class="block-button-area">
-		<button id="BTN_download" type="button" th:text="#{DCP_B_DOWNLOAD}"></button><!-- Download -->
-		<button id="BTN_search" type="button" th:text="#{DCP_B_SEARCH}"></button><!-- Search -->		
+		<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button><!-- Download -->
+		<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->		
 	</div>		
 </div>	
 
@@ -19,7 +19,7 @@
 <table class="condition">
 	<tbody>
 		<tr>
-			<th th:text="#{DCP_L_PARTS_NO}"></th><!--Parts No.  -->
+			<th th:text="#{HQPD_L_PARTS_NO}"></th><!--Parts No.  -->
 			<td>
 				<div class="input-area">
 					<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" th:value="${pPartsNo}" style="text-transform: uppercase;">
@@ -54,8 +54,8 @@ $(function(){
 		ordering: true, 
 		scrollY: 100,
 		columns : [					
-			{data: "SEQ", 		title: "[[#{DCP_L_SEQ}]]"	},	//Seq.
-			{data: "MAKTX", 	title: "[[#{DCP_L_MODEL}]]"	},	//Model
+			{data: "SEQ", 		title: "[[#{HQPD_L_SEQ}]]"	},	//Seq.
+			{data: "MAKTX", 	title: "[[#{HQPD_L_MODEL}]]"	},	//Model
 			{data: "MATNR", 	title: "MATNR"	},	
 			{data: "MDESC", 	title: "MDESC"	},	
 			{data: "MVGR3", 	title: "MVGR3"	},	

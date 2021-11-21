@@ -8,12 +8,12 @@
 	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
 	
 	<div class="block-header">
-		<div class="block-title" th:text="#{DCP_T_ONETIME_ADDRESS}"></div>
+		<div class="block-title" th:text="#{HQPD_T_ONETIME_ADDRESS}"></div>
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{DCP_B_SEARCH}"></button>
-			<button id="BTN_select" type="button" th:text="#{DCP_B_SELECT}"></button>
-			<button id="BTN_add" type="button" th:text="#{DCP_B_ADD}"></button>
-			<button id="BTN_delete" type="button" th:text="#{DCP_B_DELETE}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button>
+			<button id="BTN_select" type="button" th:text="#{HQPD_B_SELECT}"></button>
+			<button id="BTN_add" type="button" th:text="#{HQPD_B_ADD}"></button>
+			<button id="BTN_delete" type="button" th:text="#{HQPD_B_DELETE}"></button>
 		</div>
 	</div>
 	
@@ -25,13 +25,13 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DCP_L_CUSTOMER_NAME}"></th>
+				<th th:text="#{HQPD_L_CUSTOMER_NAME}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="name" name="name" class="custom-ui" tabindex="1">
 					</div>
 				</td>
-				<th th:text="#{DCP_L_STREET}"></th>
+				<th th:text="#{HQPD_L_STREET}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="street" name="street" class="custom-ui" tabindex="2">
@@ -39,26 +39,26 @@
 				</td>				
 			</tr>
 			<tr>
-				<th th:text="#{DCP_L_CITY}"></th>
+				<th th:text="#{HQPD_L_CITY}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="city" name="city" class="custom-ui" tabindex="3">
 					</div>				
 				</td>
-				<th th:text="#{DCP_L_COUNTRY}"></th>
+				<th th:text="#{HQPD_L_COUNTRY}"></th>
 				<td>
 					<div class="input-area"></div>				
 				</td>
 			</tr>
 			<tr>
-				<th th:text="#{DCP_L_POSTAL_CODE}"></th>
+				<th th:text="#{HQPD_L_POSTAL_CODE}"></th>
 				<td>
 					<div>
-						<div><button id="BTN_tZone" type="button" th:text="#{DCP_L_GET_T_ZONE}" class="small_button"></button></div>
+						<div><button id="BTN_tZone" type="button" th:text="#{HQPD_L_GET_T_ZONE}" class="small_button"></button></div>
 						<input type="text" id="postalCode" name="postalCode" class="custom-ui" tabindex="4">						
 					</div>
 				</td>
-				<th th:text="#{DCP_L_T_ZONE}"></th>
+				<th th:text="#{HQPD_L_T_ZONE}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="transportZoneName" name="transportZoneName" class="custom-ui" tabindex="5" readonly>
@@ -104,12 +104,12 @@ $(function(){
 					return '<input type="checkbox" name="oaSeq" class="custom-ui" value="' + row.oaSeq + '" onchange="syncInput(this)"><label></label>';
 				}				
 			},		
-			{data: "name", title: "[[#{DCP_L_CUSTOMER_NAME}]]"},//Customer Name
-			{data: "postalCode", title: "[[#{DCP_L_POSTAL_CODE}]]"},//Postal Code
-			{data: "street", title: "[[#{DCP_L_STREET}]]"},//Street
-			{data: "city", title: "[[#{DCP_L_CITY}]]"},//City
-			{data: "countryName", title: "[[#{DCP_L_COUNTRY}]]"},//Country Name
-			{data: "transportZoneName", title: "[[#{DCP_L_T_ZONE}]]"}//Transportation Zone
+			{data: "name", title: "[[#{HQPD_L_CUSTOMER_NAME}]]"},//Customer Name
+			{data: "postalCode", title: "[[#{HQPD_L_POSTAL_CODE}]]"},//Postal Code
+			{data: "street", title: "[[#{HQPD_L_STREET}]]"},//Street
+			{data: "city", title: "[[#{HQPD_L_CITY}]]"},//City
+			{data: "countryName", title: "[[#{HQPD_L_COUNTRY}]]"},//Country Name
+			{data: "transportZoneName", title: "[[#{HQPD_L_T_ZONE}]]"}//Transportation Zone
 		],
 		ajax: {
 			url: "/portal/scm/parts/domestic/order/create/onetime_address_list/data",
@@ -157,13 +157,13 @@ $(function(){
 		
 		if (selectedCount == 0)
 		{
-			alert("[[#{DCP_M_EMPTY_ADDRESS}]]");
+			alert("[[#{HQPD_M_EMPTY_ADDRESS}]]");
 			return;
 		};
 		
 		if (selectedCount > 1)
 		{
-			alert("[[#{DCP_M_SELECT_ONLY_ONE}]]");
+			alert("[[#{HQPD_M_SELECT_ONLY_ONE}]]");
 			return;
 		};
 		
@@ -178,28 +178,28 @@ $(function(){
 	$("#BTN_add").on("click", function() {
 		if ($.trim($("#name").val()) == "")
 		{
-			alert("[[#{DCP_M_EMPTY_CUSTOMER_NAME}]]");
+			alert("[[#{HQPD_M_EMPTY_CUSTOMER_NAME}]]");
 			$("#name").focus();
 			return;
 		};
 		
 		if ($.trim($("#street").val()) == "")
 		{
-			alert("[[#{DCP_M_EMPTY_STREET}]]");
+			alert("[[#{HQPD_M_EMPTY_STREET}]]");
 			$("#street").focus();
 			return;
 		};
 		
 		if ($.trim($("#city").val()) == "")
 		{
-			alert("[[#{DCP_M_EMPTY_CITY}]]");
+			alert("[[#{HQPD_M_EMPTY_CITY}]]");
 			$("#city").focus();
 			return;
 		};
 		
 		if ($.trim($("#postalCode").val()) == "")
 		{
-			alert("[[#{DCP_M_EMPTY_PORTAL_CODE}]]");
+			alert("[[#{HQPD_M_EMPTY_PORTAL_CODE}]]");
 			$("#postalCode").focus();
 			return;
 		};
@@ -240,7 +240,7 @@ $(function(){
 		    	{
 		    		doSearch();
 		    		
-		    		if (confirm("[[#{DCP_M_ORDER_WITH_EXIST_ADDRESS}]]"))
+		    		if (confirm("[[#{HQPD_M_ORDER_WITH_EXIST_ADDRESS}]]"))
 		    		{
 		    			opener.changeShipToPartyByOnetimeAddress(result.oaSeq, $("#name").val(), address);
 		    			window.close();
@@ -255,11 +255,11 @@ $(function(){
 		
 		if (selectedTargets.length == 0)
 		{
-			alert("[[#{DCP_M_SELECT_TARGET_TO_DELETE}]]");
+			alert("[[#{HQPD_M_SELECT_TARGET_TO_DELETE}]]");
 			return;
 		};
 		
-		if (confirm("[[#{DCP_M_CONFIRM_DELETE}]]"))
+		if (confirm("[[#{HQPD_M_CONFIRM_DELETE}]]"))
 		{
 			$.ajax({
 				url: "/portal/corp/uk/scm/parts/order/create/onetime_address/delete",
@@ -290,7 +290,7 @@ $(function(){
 	{
 		if ($.trim($("#postalCode").val()) == "")
 		{
-			alert("[[#{DCP_M_EMPTY_PORTAL_CODE}]]");
+			alert("[[#{HQPD_M_EMPTY_PORTAL_CODE}]]");
 			$("#postalCode").focus();
 			return;
 		};
@@ -318,14 +318,14 @@ $(function(){
 		    		    	}
 		    		    	else
 		    		    	{
-		    		    		alert("[[#{DCP_M_EMPTY_RESULT}]]");
+		    		    		alert("[[#{HQPD_M_EMPTY_RESULT}]]");
 		    		    	};
 		    		    }
 		    		});			    		
 		    	}
 		    	else
 		    	{
-		    		alert("[[#{DCP_M_EMPTY_RESULT}]]");
+		    		alert("[[#{HQPD_M_EMPTY_RESULT}]]");
 		    	};
 		    }
 		});		

@@ -16,10 +16,10 @@
 		<div class="dropzone-body dropzone-click-zone">
 			<div class="dropzone-click-zone" style="height:40.5px"></div>
 			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/upload_file.png"/>
-			<div class="dropzone-body-content dropzone-click-zone" th:text="#{DCP_T_HOW_TO_UPLOAD_SIMULATION}"></div>
+			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQPD_T_HOW_TO_UPLOAD_SIMULATION}"></div>
 		</div>
 		<div class="dropzone-bottom dropzone-click-zone">
-			<button type="button" onclick="UploadModal.hide()">[[#{DCP_B_CANCEL}]]</button>
+			<button type="button" onclick="UploadModal.hide()">[[#{HQPD_B_CANCEL}]]</button>
 		</div>
 	</div>
 	<!-- Modal for upload simulation -->
@@ -27,8 +27,8 @@
 	<div class="block-header">
 		<div class="block-title" th:text="#{DIVEU_T_0042}"></div>
 		<div class="block-button-area">
-			<button id="BTN_create" type="button" th:text="#{DCP_B_CREATE}"></button>
-			<button id="BTN_shoppingCart" type="button" th:text="#{DCP_B_SHOPPING_CART}"></button>
+			<button id="BTN_create" type="button" th:text="#{HQPD_B_CREATE}"></button>
+			<button id="BTN_shoppingCart" type="button" th:text="#{HQPD_B_SHOPPING_CART}"></button>
 		</div>
 	</div>
 
@@ -66,60 +66,60 @@
 				<th colspan="4">
 					<div class="input-area">
 						<input type="radio" class="custom-ui" id="docType1" name="docType" value="C" checked />
-						<label th:text="#{DCP_L_ORDER}"></label>
+						<label th:text="#{HQPD_L_ORDER}"></label>
 						&nbsp;&nbsp;
 						<input type="radio" class="custom-ui" id="docType2" name="docType" value="A" />
-						<label th:text="#{DCP_L_INQUIRY}"></label>
+						<label th:text="#{HQPD_L_INQUIRY}"></label>
 					</div>
 				</th>
 			</tr>
 			<tr>
-				<th th:text="#{DCP_L_ORDER_TYPE}"></th><!-- Order Type -->
+				<th th:text="#{HQPD_L_ORDER_TYPE}"></th><!-- Order Type -->
 				<td>
 					<div class="input-area order-type"></div>
 				</td>
-				<th th:text="#{DCP_L_SHIP_TO_PARTY}"></th><!-- Ship To Party -->
+				<th th:text="#{HQPD_L_SHIP_TO_PARTY}"></th><!-- Ship To Party -->
 				<td>
-					<div><button id="BTN_shipToParty" type="button" th:text="#{DCP_B_GET_DATA}" class="small_button"></button><div class="split2"></div><button id="BTN_onetimeAddress" type="button" th:text="#{DCP_B_ONETIME_ADDRESS}" class="small_button"></button></div>
+					<div><button id="BTN_shipToParty" type="button" th:text="#{HQPD_B_GET_DATA}" class="small_button"></button><div class="split2"></div><button id="BTN_onetimeAddress" type="button" th:text="#{HQPD_B_ONETIME_ADDRESS}" class="small_button"></button></div>
 					<div id="AREA_shipToAddress"></div>					
 				</td>
 			</tr>
 			<tr>
 				<th>
-					<div th:text="#{DCP_L_PO_NO}"></div><img src="/portal/img/icon_required.png" class="required" />
+					<div th:text="#{HQPD_L_PO_NO}"></div><img src="/portal/img/icon_required.png" class="required" />
 				</th><!-- Customer P.O. Number -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="poNo" name="poNo" class="custom-ui"/>
 					</div>
 				</td>
-				<th th:text="#{DCP_L_SHIPPING_INFO}"></th><!-- Shipping Info -->
+				<th th:text="#{HQPD_L_SHIPPING_INFO}"></th><!-- Shipping Info -->
 				<td>
-					<div><button id="BTN_shippingInfo" type="button" th:text="#{DCP_B_GET_DATA}" class="small_button"></button></div><span id="AREA_shippingCondition"></span>
+					<div><button id="BTN_shippingInfo" type="button" th:text="#{HQPD_B_GET_DATA}" class="small_button"></button></div><span id="AREA_shippingCondition"></span>
 				</td>
 			</tr>
 			<tr>
-				<th th:text="#{DCP_L_RDD}"></th><!-- Request Delivery Date -->
+				<th th:text="#{HQPD_L_RDD}"></th><!-- Request Delivery Date -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="rdd" name="rdd" class="custom-ui" readonly />
 					</div>
 				</td>
-				<th th:text="#{DCP_L_COMPLETE_DELIVERY}"></th><!-- Complete Delivery -->
+				<th th:text="#{HQPD_L_COMPLETE_DELIVERY}"></th><!-- Complete Delivery -->
 				<td>
 					<div class="input-area">
 						<input type="radio" class="custom-ui" id=compleDelivery1 name="compleDelivery" value="X"/>
-						<label for="compleDelivery1" th:text="#{DCP_L_YES}"></label>
+						<label for="compleDelivery1" th:text="#{HQPD_L_YES}"></label>
 
 						<div class="split2"></div>
 
 						<input type="radio" class="custom-ui" id="compleDelivery2" name="compleDelivery" value="" checked/>
-						<label for="compleDelivery2" th:text="#{DCP_L_NO}"></label>
+						<label for="compleDelivery2" th:text="#{HQPD_L_NO}"></label>
 					</div>
 				</td>
 			</tr>
 			<tr>
-				<th th:text="#{DCP_L_REMARKS}"></th><!-- Remarks -->
+				<th th:text="#{HQPD_L_REMARKS}"></th><!-- Remarks -->
 				<td colspan="3">
 					<input type="text" id="remark" name="remark" class="custom-ui"/>
 				</td>
@@ -132,30 +132,30 @@
 
 	<div class="grid-info">
 		<div class="block-button-area">
-			<button id="BTN_addRow" type="button">[[#{DCP_B_ADD}]]</button>
+			<button id="BTN_addRow" type="button">[[#{HQPD_B_ADD}]]</button>
 			<div class="split"></div>
-			<button id="BTN_deleteRow" type="button">[[#{DCP_B_DELETE}]]</button>
+			<button id="BTN_deleteRow" type="button">[[#{HQPD_B_DELETE}]]</button>
 			<div class="split"></div>
-			<button id="BTN_simulation" type="button">[[#{DCP_B_SIMULATION}]]</button>
+			<button id="BTN_simulation" type="button">[[#{HQPD_B_SIMULATION}]]</button>
 			<div class="split"></div>
-			<button id="BTN_upload" type="button">[[#{DCP_B_UPLOAD}]]</button>
+			<button id="BTN_upload" type="button">[[#{HQPD_B_UPLOAD}]]</button>
 			<div class="split"></div>
-			<button id="BTN_download" type="button">[[#{DCP_B_DOWNLOAD}]]</button>
+			<button id="BTN_download" type="button">[[#{HQPD_B_DOWNLOAD}]]</button>
 			<div class="split"></div>
-			<button id="BTN_priceInfo" type="button">[[#{DCP_B_PRICE_INFO}]]</button>
+			<button id="BTN_priceInfo" type="button">[[#{HQPD_B_PRICE_INFO}]]</button>
 			<div class="split"></div>
 			<button id="BTN_errorReport" type="button">[[#{	DCP_B_ERROR_REPORT}]]</button>			
 		</div>
 		<div class="grid-total">
-			<span th:text="#{DCP_T_TOTAL_AMOUNT}"></span>
+			<span th:text="#{HQPD_T_TOTAL_AMOUNT}"></span>
 			<div class="split"></div>
 			<span class="total-number" id="totalAmount"></span>
 			<div class="split2"></div>
-			<span th:text="#{DCP_T_CREDIT}"></span>
+			<span th:text="#{HQPD_T_CREDIT}"></span>
 			<div class="split"></div>
 			<span class="total-number" id="credit"></span>
 			<div class="split2"></div>
-			<span th:text="#{DCP_T_ESTIMATE_WEIGHT}"></span>
+			<span th:text="#{HQPD_T_ESTIMATE_WEIGHT}"></span>
 			<div class="split"></div>
 			<span class="total-number" id="totalWeight"></span>
 		</div>
@@ -521,7 +521,7 @@
 	$("#BTN_upload").on("click", function() {
 		if ($("#shippingCondition").val() == "")
 		{
-			alert("[[#{DCP_M_EMPTY_SHIPPING_INFO}]]");
+			alert("[[#{HQPD_M_EMPTY_SHIPPING_INFO}]]");
 			return;
 		};		
 		
@@ -537,11 +537,11 @@
 	$("#BTN_priceInfo").on("click", function() {
 		if (!isDoneSimulation())
 		{
-			alert("[[#{DCP_M_DO_SIMULATION_FOR_PRICE_INFO}]]");
+			alert("[[#{HQPD_M_DO_SIMULATION_FOR_PRICE_INFO}]]");
 			return;
 		};
 	
-		Modal.show("[[#{DCP_T_PRICE_INFO}]]", 700, 450, $("#pricingInfo").val());
+		Modal.show("[[#{HQPD_T_PRICE_INFO}]]", 700, 450, $("#pricingInfo").val());
 	});
 	
 	$("#BTN_errorReport").on("click", function() {
@@ -552,14 +552,14 @@
 	
 		if ($("#poNo").val() == "")
 		{
-			alert("[[#{DCP_M_EMPTY_PONO}]]");
+			alert("[[#{HQPD_M_EMPTY_PONO}]]");
 			$("#poNo").focus();
 			return;
 		};	
 		
 		if (!isDoneSimulation())
 		{
-			alert("[[#{DCP_M_DO_SIMULATION}]]");
+			alert("[[#{HQPD_M_DO_SIMULATION}]]");
 			return;
 		};
 	
@@ -568,15 +568,15 @@
 			alert($("#blockMessage").val());
 		};
 		
-		let confirmMsg = "[[#{DCP_M_CONFIRM_SAVE_ORDER}]]";
+		let confirmMsg = "[[#{HQPD_M_CONFIRM_SAVE_ORDER}]]";
 		
 		if ($("#docType1").is(":checked"))
 		{
-			confirmMsg = confirmMsg.replace("{0}", "[[#{DCP_T_ORDER}]]");
+			confirmMsg = confirmMsg.replace("{0}", "[[#{HQPD_T_ORDER}]]");
 		}
 		else
 		{
-			confirmMsg = confirmMsg.replace("{0}", "[[#{DCP_T_INQUIRY}]]");
+			confirmMsg = confirmMsg.replace("{0}", "[[#{HQPD_T_INQUIRY}]]");
 		};
 		
 		if (!confirm(confirmMsg))
@@ -610,12 +610,12 @@
 		    	if (orderNo != "")
 		    	{
 		    		let url = "order_detail";
-		    		let message = "[[#{DCP_M_CREATE_ORDER_RESULT}]]".replace("{0}", orderNo);
+		    		let message = "[[#{HQPD_M_CREATE_ORDER_RESULT}]]".replace("{0}", orderNo);
 
 		    		if ($("#docType2").is(":checked"))
 		    		{
 		    			url = "inquiry_list";
-		    			"[[#{DCP_M_CREATE_INQUIRY_RESULT}]]".replace("{0}", orderNo);
+		    			"[[#{HQPD_M_CREATE_INQUIRY_RESULT}]]".replace("{0}", orderNo);
 		    		};		    		
 		    		
 		    		alert(message);
@@ -628,7 +628,7 @@
 		    		
 		    		if (errorMsg == "DUPLICATED_ORDER")
 		    		{
-		    			errorMsg = "[[#{DCP_M_EXIST_SAME_ORDER}]]";
+		    			errorMsg = "[[#{HQPD_M_EXIST_SAME_ORDER}]]";
 		    		};
 
 		    		alert(errorMsg);
@@ -679,11 +679,11 @@
 						return '<input type="checkbox" class="custom-ui check-all" onchange="syncInput(this)"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "lineNo", data: "lineNo", title: "[[#{DCP_L_ITEM}]]"},//Item
+				{name: "lineNo", data: "lineNo", title: "[[#{HQPD_L_ITEM}]]"},//Item
 				{
 					name: "materialNo",
 					data: "materialNo",
-					title: "[[#{DCP_L_ORDER_PART_NO}]]",				
+					title: "[[#{HQPD_L_ORDER_PART_NO}]]",				
 					width: 200,
 					orderable: false,
 					className:"center noselect",
@@ -692,12 +692,12 @@
 						return '<button class="btn-popup" type="button" onclick="showSearchPartsPopup(this)"></button><input type="text" name="materialNo" class="custom-ui" value="' + row.materialNo + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{DCP_L_SUPPLY_PARTS_NO}]]", width: 200},//Supply Part No
-				{name: "description", data: "description", title: "[[#{DCP_L_DESCRIPTION}]]"},//Description
+				{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{HQPD_L_SUPPLY_PARTS_NO}]]", width: 200},//Supply Part No
+				{name: "description", data: "description", title: "[[#{HQPD_L_DESCRIPTION}]]"},//Description
 				{
 					name: "orderQty",
 					data: "orderQty",
-					title: "[[#{DCP_L_REQ_QTY}]]",
+					title: "[[#{HQPD_L_REQ_QTY}]]",
 					orderable: false,
 					className:"center noselect",
 					render: function(data, type, row)
@@ -705,11 +705,11 @@
 						return '<input type="text" class="custom-ui" name="orderQty" style="width:70px" value="' + row.orderQty + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onkeyup="doSimulationByEnter(this)" onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},//Req Qty
-				{name: "lotQty", data: "lotQty", title: "[[#{DCP_L_SALES_LOT}]]"},//Sales Lot
-				{name: "uom", data: "uom", title: "[[#{DCP_L_UOM}]]"},//UoM
-				{name: "netPrice", data: "netPrice", title: "[[#{DCP_L_UNIT_PRICE}]]"},//Net Price
-				{name: "netValue", data: "netValue", title: "[[#{DCP_L_TOTAL_PRICE}]]"},//Net Value
-				{name: "availability", data: "availability", title: "[[#{DCP_L_AVAILABILITY}]]"},//Availability
+				{name: "lotQty", data: "lotQty", title: "[[#{HQPD_L_SALES_LOT}]]"},//Sales Lot
+				{name: "uom", data: "uom", title: "[[#{HQPD_L_UOM}]]"},//UoM
+				{name: "netPrice", data: "netPrice", title: "[[#{HQPD_L_UNIT_PRICE}]]"},//Net Price
+				{name: "netValue", data: "netValue", title: "[[#{HQPD_L_TOTAL_PRICE}]]"},//Net Value
+				{name: "availability", data: "availability", title: "[[#{HQPD_L_AVAILABILITY}]]"},//Availability
 			],
 			ajax: {
 				url: "/portal/scm/parts/domestic/order/create/simulation",
@@ -800,7 +800,7 @@
 					
 					if (errorCnt > 0)
 					{
-						alert("[[#{DCP_M_SIMULATION_ERROR}]]".replace("{0}", errorCnt));
+						alert("[[#{HQPD_M_SIMULATION_ERROR}]]".replace("{0}", errorCnt));
 					};
 	
 					return normalOrderItems;

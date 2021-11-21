@@ -6,9 +6,9 @@
 	
 <th:block layout:fragment="content">	
 	<div class="block-header">
-		<div class="block-title" th:text="#{DCP_T_PARTS_NO}"></div><!-- Parts No. -->
+		<div class="block-title" th:text="#{HQPD_T_PARTS_NO}"></div><!-- Parts No. -->
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{DCP_B_SEARCH}"></button><!-- Search -->
+			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
 		</div>	
 	</div>	
 	<div class="condition-area">
@@ -16,7 +16,7 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DCP_L_PARTS_NO}"></th><!--Parts No.  -->
+				<th th:text="#{HQPD_L_PARTS_NO}"></th><!--Parts No.  -->
 				<td>			
 					<div class="input-area">			
 						<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui" th:value="${pPartsNo}" style="text-transform: uppercase;">
@@ -24,7 +24,7 @@
 				</td>
 			</tr>
 			<tr>			
-				<th th:text="#{DCP_L_DESCRIPTION}"></th><!--Description  -->
+				<th th:text="#{HQPD_L_DESCRIPTION}"></th><!--Description  -->
 				<td>
 					<div class="input-area">			
 						<input type="text" id="pPartsNoDesc" name="pPartsNoDesc" class="custom-ui" th:value="${pPartsNoDesc}">
@@ -82,8 +82,8 @@
 						return '<input type="radio" name="RAD_MATNR" id="RAD_MATNR" class="custom-ui" value="' + row.MATNR + '" onclick="clickParts(this)"><label for="RAD_MATNR"></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "MATNR", data: "MATNR", title: "[[#{DCP_L_PARTS_NO}]]"},		//Parts No. 
-				{name: "MAKTX", data: "MAKTX", title: "[[#{DCP_L_DESCRIPTION}]]"}	//Description	
+				{name: "MATNR", data: "MATNR", title: "[[#{HQPD_L_PARTS_NO}]]"},		//Parts No. 
+				{name: "MAKTX", data: "MAKTX", title: "[[#{HQPD_L_DESCRIPTION}]]"}	//Description	
 			],
 			ajax: {
 				url: "/portal/scm/parts/domestic/info/parts_number_popup_list/data",

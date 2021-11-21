@@ -8,9 +8,9 @@
 	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
 
 	<div class="block-header">
-		<div class="block-title" th:text="#{DCP_T_ORDER_LIST}"></div>
+		<div class="block-title" th:text="#{HQPD_T_ORDER_LIST}"></div>
 		<div id="BTN_search" class="block-button-area">
-			<button th:text="#{DCP_B_SEARCH}"></button>
+			<button th:text="#{HQPD_B_SEARCH}"></button>
 		</div>
 	</div>
 	
@@ -23,28 +23,28 @@
 				<th colspan="4">
 					<div class="input-area">
 						<input type="radio" class="custom-ui" name="pDocType" value="C" checked/>
-						<label th:text="#{DCP_L_ORDER}"></label>
+						<label th:text="#{HQPD_L_ORDER}"></label>
 						
 						&nbsp;&nbsp;
 						
 						<input type="radio" class="custom-ui" name="pDocType" value="A" style="display:none" />
-						<label id="LB_docType2" th:text="#{DCP_L_INQUIRY}" style="display:none"></label>
+						<label id="LB_docType2" th:text="#{HQPD_L_INQUIRY}" style="display:none"></label>
 						
 						&nbsp;&nbsp;
 						
 						<input type="radio" class="custom-ui" name="pDocType" value="B" style="display:none" />
-						<label id="LB_docType3" th:text="#{DCP_L_QUOTATION}" style="display:none"></label>
+						<label id="LB_docType3" th:text="#{HQPD_L_QUOTATION}" style="display:none"></label>
 					</div>
 				</th>
 			</tr>
 			<tr>
-				<th th:text="#{DCP_L_ORDER_NO}"></th>
+				<th th:text="#{HQPD_L_ORDER_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
 					</div>
 				</td>
-				<th th:text="#{DCP_L_ORDER_TYPE}"></th>
+				<th th:text="#{HQPD_L_ORDER_TYPE}"></th>
 				<td>
 					<div class="input-area order-type">
 						<!-- select class="custom-ui" id="pOrderType" name="pOrderType"></select -->
@@ -52,13 +52,13 @@
 				</td>
 			</tr>		
 			<tr>
-				<th th:text="#{DCP_L_PO_NO}"></th>
+				<th th:text="#{HQPD_L_PO_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
 					</div>
 				</td>
-				<th th:text="#{DCP_L_PERIOD}"></th>
+				<th th:text="#{HQPD_L_ORDER_DATE}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -100,21 +100,21 @@ $(function(){
 	let orderComponent = new OrderComponent();
 	orderComponent.makeOrderType($(".order-type"), "pOrderType", "[[${pOrderType}]]");	
 	
-	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	//Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		select: true,   			// row 선택 기능 켬
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
 		columns : [
-			{data: "VBELN", title: "[[#{DCP_L_ORDER_NO}]]", className:"link"},//Order No.
-			{data: "ZZAUKON", title: "[[#{DCP_L_ORDER_TYPE}]]"},//Order Type
-			{data: "VTEXT2", title: "[[#{DCP_L_SHIPPING_INFO}]]"},//Shipping Condition
-			{data: "BSTKD", title: "[[#{DCP_L_PO_NO}]]"},//P.O. No. // className:"center"}, // 데이터 가운데 정렬. (css 만들어서 사용)
-			{data: "ERDAT2", title: "[[#{DCP_L_CREATE_DATE}]]"},//Create Date // 데이터 오른쪽 정렬.
-			{data: "COUNT", title: "[[#{DCP_L_LINE_ITEM}]]"},//Line Item // className:"center"}
-			{data: "T_NETWR", title: "[[#{DCP_L_ORDER_AMOUNT}]]"},//Order Amt. // className:"center"}
-			{data: "WAERK", title: "[[#{DCP_L_CURRENCY}]]"}//Curr. // className:"center"}
+			{data: "VBELN", title: "[[#{HQPD_L_ORDER_NO}]]", className:"link"},//Order No.
+			{data: "ZZAUKON", title: "[[#{HQPD_L_ORDER_TYPE}]]"},//Order Type
+			{data: "VTEXT2", title: "[[#{HQPD_L_SHIPPING_CONDITION}]]"},//Shipping Condition
+			{data: "BSTKD", title: "[[#{HQPD_L_PO_NO}]]"},//P.O. No. // className:"center"}, // 데이터 가운데 정렬. (css 만들어서 사용)
+			{data: "ERDAT2", title: "[[#{HQPD_L_ORDER_DATE}]]"},//Create Date // 데이터 오른쪽 정렬.
+			{data: "COUNT", title: "[[#{HQPD_L_LINE_ITEM}]]"},//Line Item // className:"center"}
+			{data: "T_NETWR", title: "[[#{HQPD_L_ORDER_AMOUNT}]]"},//Order Amt. // className:"center"}
+			{data: "WAERK", title: "[[#{HQPD_L_CURRENCY}]]"}//Curr. // className:"center"}
 		],
 		columnDefs: [
 			{ className: "left", targets: "_all" }

@@ -38,20 +38,6 @@ function clickLogout()
 	$("#FORM_logout").submit();
 };
 
-function checkExpiredPassword()
-{
-	$.ajax({
-		url: "/platform/security/authentication/check_password_expired",
-	    success: function(response, textStatus, jqXHR)
-	    {
-	    	if (response.RESULT == "Y")
-	    	{
-	    		Modal.show("[[#{DIVEU_T_0097}]]", 500, 150, "[[#{DIVEU_T_0098}]] <div style='text-align: center; margin-top:20px;'><button type='button' onclick='clickUserInfo()'>[[#{DIVEU_B_0041}]]</button></div>", false);	    		
-	    	};
-	    }
-	});	
-};
-
 $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
 	if (jqXHR.status == "401" || jqXHR.status == "403")
 	{
@@ -72,6 +58,5 @@ $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
 });
 
 $(document).ready(function() {
-	//checkExpiredPassword();
 });
 </script>

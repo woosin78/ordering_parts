@@ -6,10 +6,10 @@
 	<script th:src="@{/portal/js/portal.utils.grid.download.js}"></script>
 
 	<div class="block-header">
-		<div class="block-title" th:text="#{DCP_T_ORDER_DETAIL}"></div>
+		<div class="block-title" th:text="#{HQPD_T_ORDER_DETAIL}"></div>
 		<div id="BTN_search" class="block-button-area">
-			<button id="BTN_pdfDownload" th:text="#{DCP_B_PDF_DOWNLOAD}"></button>
-			<button id="BTN_back" th:text="#{DCP_B_BACK}"></button>
+			<button id="BTN_pdfDownload" th:text="#{HQPD_B_PDF_DOWNLOAD}"></button>
+			<button id="BTN_back" th:text="#{HQPD_B_BACK}"></button>
 		</div>
 	</div>
 	
@@ -17,25 +17,25 @@
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<th th:text="#{DCP_L_ORDER_TYPE}" style="width: 170px"></th><!-- Order Type -->
+				<th th:text="#{HQPD_L_ORDER_TYPE}" style="width: 170px"></th><!-- Order Type -->
 				<td id="KONDA_TEXT"></td>
-				<th th:text="#{DCP_L_SHIP_TO_PARTY}" style="width: 170px"></th><!-- Ship To Party -->
+				<th th:text="#{HQPD_L_SHIP_TO_PARTY}" style="width: 170px"></th><!-- Ship To Party -->
 				<td id="KUNAG_NAME"></td>
 			</tr>
 			<tr>
-				<th th:text="#{DCP_L_PO_NO}"></th><!-- Customer P.O. Number -->
+				<th th:text="#{HQPD_L_PO_NO}"></th><!-- Customer P.O. Number -->
 				<td id="BSTNK"></td>
-				<th th:text="#{DCP_L_SHIPPING_INFO}"></th><!-- Shipping Info -->
+				<th th:text="#{HQPD_L_SHIPPING_INFO}"></th><!-- Shipping Info -->
 				<td id="VSBED_TX"></td>
 			</tr>
 			<tr>
-				<th th:text="#{DCP_L_RDD}"></th><!-- Request Delivery Date -->
+				<th th:text="#{HQPD_L_RDD}"></th><!-- Request Delivery Date -->
 				<td id="VDATU"></td>
-				<th th:text="#{DCP_L_COMPLETE_DELIVERY}"></th><!-- Complete Delivery -->
+				<th th:text="#{HQPD_L_COMPLETE_DELIVERY}"></th><!-- Complete Delivery -->
 				<td id="COMPLETE_DELIVERY"></td>
 			</tr>
 			<tr>
-				<th th:text="#{DCP_L_REMARKS}"></th><!-- Remarks -->				
+				<th th:text="#{HQPD_L_REMARKS}"></th><!-- Remarks -->				
 				<td colspan="3" id="remark"></td>
 			</tr>
 		</tbody>
@@ -45,18 +45,18 @@
 	
 	<div class="grid-info">
 		<div class="block-button-area">
-			<button id="BTN_download" th:text="#{DCP_B_DOWNLOAD}"></button>
+			<button id="BTN_download" th:text="#{HQPD_B_DOWNLOAD}"></button>
 		</div>	
 		<div class="grid-total">
-			<span th:text="#{DCP_T_TOTAL_AMOUNT}"></span>
+			<span th:text="#{HQPD_T_TOTAL_AMOUNT}"></span>
 			<div class="split"></div>
 			<span class="total-number" id="NETWR"></span>
 			<div class="split2"></div>
-			<span th:text="#{DCP_T_CREDIT}"></span>
+			<span th:text="#{HQPD_T_CREDIT}"></span>
 			<div class="split"></div>
 			<span class="total-number" id="CREDIT"></span>
 			<div class="split2"></div>
-			<span th:text="#{DCP_T_ESTIMATE_WEIGHT}"></span>
+			<span th:text="#{HQPD_T_ESTIMATE_WEIGHT}"></span>
 			<div class="split"></div>
 			<span class="total-number" id="TOTAL_WEIGHT"></span>
 		</div>
@@ -115,17 +115,17 @@ $(function(){
 	    		ordering: true,// 정렬 기능 켬
 	    		scrollY: 100,
 	    		columns : [
-	    			{data: "VBELN", title: "[[#{DCP_L_ORDER_NO}]]"},//Order No.
-	    			{data: "ITEM", title: "[[#{DCP_L_ITEM}]]"},//Item
-	    			{data: "MATERIAL_ENT", title: "[[#{DCP_L_ORDER_PART_NO}]]"},//Order Part No.
-	    			{data: "MATERIAL", title: "[[#{DCP_L_SUPPLY_PART_NO}]]"},//Supply Part No
-	    			{data: "MATERIAL_TEXT", title: "[[#{DCP_L_DESCRIPTION}]]"},//Description
-	    			{data: "REQ_QTY", title: "[[#{DCP_L_REQ_QTY}]]"},//Req Qty
-	    			{data: "LOT_QTY", title: "[[#{DCP_L_SALES_LOT}]]"},//Sales Lot
-	    			{data: "UOM", title: "[[#{DCP_L_UOM}]]"},//UoM
-	    			{data: "NET_PRICE", title: "[[#{DCP_L_NET_PRICE}]]"},//Net Price
-	    			{data: "NET_VALUE", title: "[[#{DCP_L_NET_VALUE}]]"},//Net Value
-	    			{data: "AVAILABILITY", title: "[[#{DCP_L_AVAILABILITY}]]"}//Available
+	    			{data: "VBELN", title: "[[#{HQPD_L_ORDER_NO}]]"},//Order No.
+	    			{data: "ITEM", title: "[[#{HQPD_L_ITEM}]]"},//Item
+	    			{data: "MATERIAL_ENT", title: "[[#{HQPD_L_ORDER_PART_NO}]]"},//Order Part No.
+	    			{data: "MATERIAL", title: "[[#{HQPD_L_SUPPLY_PART_NO}]]"},//Supply Part No
+	    			{data: "MATERIAL_TEXT", title: "[[#{HQPD_L_DESCRIPTION}]]"},//Description
+	    			{data: "REQ_QTY", title: "[[#{HQPD_L_REQ_QTY}]]"},//Req Qty
+	    			{data: "LOT_QTY", title: "[[#{HQPD_L_SALES_LOT}]]"},//Sales Lot
+	    			{data: "UOM", title: "[[#{HQPD_L_UOM}]]"},//UoM
+	    			{data: "NET_PRICE", title: "[[#{HQPD_L_NET_PRICE}]]"},//Net Price
+	    			{data: "NET_VALUE", title: "[[#{HQPD_L_NET_VALUE}]]"},//Net Value
+	    			{data: "AVAILABILITY", title: "[[#{HQPD_L_AVAILABILITY}]]"}//Available
 	    		],
 	    		columnDefs: [
 	    			{ className: "left", targets: "_all" }
