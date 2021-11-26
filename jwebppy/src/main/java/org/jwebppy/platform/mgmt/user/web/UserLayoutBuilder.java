@@ -137,7 +137,14 @@ public class UserLayoutBuilder
 		loLanguage.setRequired(true);
 		loLanguage.setValue(user.getLanguage());
 
-		for (String language: CmStringUtils.split(user.getUserGroup().getLangKind(), PlatformConfigVo.DELIMITER))
+		String langKind = user.getUserGroup().getLangKind();
+
+		if (CmStringUtils.isEmpty(langKind))
+		{
+			langKind = userGroups.get(0).getLangKind();
+		}
+
+		for (String language: CmStringUtils.split(langKind, PlatformConfigVo.DELIMITER))
 		{
 			loLanguage.addOption(language, new Locale(language).getDisplayLanguage());
 		}

@@ -30,8 +30,8 @@
 	visibility: visible;
 }
 </style>
-<script th:src="@{/platform/js/semantic/semantic.min.js}"></script>
-<link rel="stylesheet" type="text/css" class="ui" th:href="@{/platform/css/semantic/semantic.min.css}" />
+<script th:src="@{/portal/js/semantic/semantic.min.js}"></script>
+<link rel="stylesheet" type="text/css" class="ui" th:href="@{/portal/css/semantic/semantic.min.css}" />
 <div class="header">
 	<div class="logo-area">
 		<img class="logo" th:src="@{/portal/img/logo.png}" alt="DOOSAN" /><img id="IMG_doobizPlus" class="doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
@@ -62,7 +62,7 @@ function makeGmb()
 	let menu = [];
 
 	$.ajax({
-		url: "/platform/mgmt/content/my_menu",
+		url: "/platform/mgmt/gnb/my_menu",
 		success: function(data, textStatus, jqXHR)
 		{
 		    data.RESULT.forEach(function(element, index) {

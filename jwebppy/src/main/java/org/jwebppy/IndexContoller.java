@@ -19,16 +19,10 @@ public class IndexContoller extends PlatformGeneralController
 	@RequestMapping("/")
 	public Object index(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws UnknownHostException
 	{
-		System.err.println("IndexContoller:1");
-
 		if (UserAuthenticationUtils.isAuthenticated())
 		{
-			System.err.println("IndexContoller:2");
-
 			return new RedirectView(PortalConfigVo.CONTEXT_PATH + "/forward/entry_point");
 		}
-
-		System.err.println("IndexContoller:3-" + PortalConfigVo.FORM_LOGIN_PAGE_URL);
 
 		return new RedirectView(PortalConfigVo.FORM_LOGIN_PAGE_URL);
 	}

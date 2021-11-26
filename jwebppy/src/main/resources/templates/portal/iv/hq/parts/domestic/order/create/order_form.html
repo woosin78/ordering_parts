@@ -144,7 +144,7 @@
 			<div class="split"></div>
 			<button id="BTN_priceInfo" type="button">[[#{HQPD_B_PRICE_INFO}]]</button>
 			<div class="split"></div>
-			<button id="BTN_errorReport" type="button">[[#{	DCP_B_ERROR_REPORT}]]</button>			
+			<button id="BTN_errorReport" type="button">[[#{HQPD_B_PRICE_INFO}]]</button>			
 		</div>
 		<div class="grid-total">
 			<span th:text="#{HQPD_T_TOTAL_AMOUNT}"></span>
@@ -195,7 +195,7 @@
 	};
 	
 	$(".dropzone-click-zone").dropzone({
-		url: "/portal/scm/parts/domestic/order/create/simulation/upload",
+		url: "/portal/iv/hq/parts/domestic/order/create/simulation/upload",
 		maxFilesize: 5, //MB
 		acceptedFiles: ".xls,.xlsx",
 		accept: function(file, done)
@@ -252,7 +252,7 @@
 	function changeOrderType()
 	{
 		$.ajax({
-			url: "/portal/scm/parts/domestic/order/create/header_info",
+			url: "/portal/iv/hq/parts/domestic/order/create/header_info",
 			data: "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&docType=" + orderComponent.getSelectedDocType(),
 		    success: function(response, textStatus, jqXHR)
 		    {
@@ -299,7 +299,7 @@
 	function setDefaultHeaderInfo()
 	{
 		$.ajax({
-			url: "/portal/scm/parts/domestic/order/create/header_info",
+			url: "/portal/iv/hq/parts/domestic/order/create/header_info",
 		    success: function(response, textStatus, jqXHR)
 		    {
 		    	let result = response.RESULT;
@@ -445,21 +445,21 @@
 	};
 	
 	$("#docType1, #docType2").on("click", function() {
-		document.location.href = "/portal/scm/parts/domestic/order/create/order_form?docType=" + $(this).val();
+		document.location.href = "/portal/iv/hq/parts/domestic/order/create/order_form?docType=" + $(this).val();
 	});
 	
 	$("#BTN_shipToParty").on("click", function(event) {
-		Popup.open("/portal/scm/parts/domestic/order/create/ship_to_party_list");
+		Popup.open("/portal/iv/hq/parts/domestic/order/create/ship_to_party_list");
 	});
 	
 	$("#BTN_onetimeAddress").on("click", function() {
-		Popup.open("/portal/scm/parts/domestic/order/create/onetime_address_list", 1200, 600);
+		Popup.open("/portal/iv/hq/parts/domestic/order/create/onetime_address_list", 1200, 600);
 	});	
 	
 	$("#BTN_shippingInfo").on("click", function(event) {
 		let param = "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&customerNo=" + $("#soldToNo").val();
 	
-		Popup.open("/portal/scm/parts/domestic/order/create/shipping_info_list?" + param, 700, 500);
+		Popup.open("/portal/iv/hq/parts/domestic/order/create/shipping_info_list?" + param, 700, 500);
 	});
 	
 	$("#BTN_addRow").on("click", function() {
@@ -545,7 +545,7 @@
 	});
 	
 	$("#BTN_errorReport").on("click", function() {
-		Popup.open("/portal/scm/parts/domestic/order/create/error_report", 1200, 400);
+		Popup.open("/portal/iv/hq/parts/domestic/order/create/error_report", 1200, 400);
 	});
 	
 	$("#BTN_create").on("click", function() {
@@ -594,7 +594,7 @@
 		$("#availability").val(itemParameter.availabilities.join("^"));
 	
 		$.ajax({
-			url: "/portal/scm/parts/domestic/order/create/save",
+			url: "/portal/iv/hq/parts/domestic/order/create/save",
 			method: "POST",
 			data: $("#FORM_order").serialize(),
 			beforeSend: function(jqXHR, settings)
@@ -712,7 +712,7 @@
 				{name: "availability", data: "availability", title: "[[#{HQPD_L_AVAILABILITY}]]"},//Availability
 			],
 			ajax: {
-				url: "/portal/scm/parts/domestic/order/create/simulation",
+				url: "/portal/iv/hq/parts/domestic/order/create/simulation",
 				type: "POST",
 				beforeSend: function()
 				{

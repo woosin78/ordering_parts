@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(PlatformConfigVo.FORM_AUTHENTICATION_PATH)
-public class LoginController extends PlatformGeneralController
+public class AuthenticationController extends PlatformGeneralController
 {
 	//@Autowired
 	//private Environment environment;
@@ -210,7 +210,7 @@ public class LoginController extends PlatformGeneralController
 				regDate = user.getRegDate();
 			}
 
-			String timezone = user.getUserContactInfo().getTimezone();
+			String timezone = user.getTimezone();
 			ZonedDateTime zonedRegDate = CmDateTimeUtils.toZonedDateTime(regDate, timezone);
 			ZonedDateTime exiredDate = zonedRegDate.plusDays(pwdValidPeriod);
 

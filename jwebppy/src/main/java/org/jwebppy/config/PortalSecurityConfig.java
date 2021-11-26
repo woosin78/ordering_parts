@@ -29,13 +29,20 @@ public class PortalSecurityConfig extends WebSecurityConfigurerAdapter
 	@Autowired
 	private PlatformAuthenticationManager authenticationManager;
 
+	private final String[] permitAllRequests = {
+			PortalConfigVo.INDEX_URL,
+			PortalConfigVo.ERROR_PAGE_URL,
+			PortalConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL,
+			PortalConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL
+	};
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception
 	{
 		http
 			.antMatcher(PortalConfigVo.CONTEXT_PATH + "/**")
 			.authorizeRequests()
-				.antMatchers(PortalConfigVo.INDEX_URL, PortalConfigVo.ERROR_PAGE_URL, PortalConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL, PortalConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL).permitAll()
+				.antMatchers(permitAllRequests).permitAll()
 				//.antMatchers(PortalConfigVo.CONTEXT_PATH + "/**").hasRole(PortalConfigVo.ROLE_PLTF_ADMIN)
 				.anyRequest().authenticated()
 			.and()

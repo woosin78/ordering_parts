@@ -19,7 +19,7 @@
 <script th:src="@{/portal/js/detect_browser/detect-browser.js}"></script>
 <script th:src="@{/portal/js/semantic/semantic.min.js}"></script>
 <script>
-let INDEX_URL = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).INDEX_URL}]]";
+let INDEX_URL = "[[${T(org.jwebppy.portal.common.PortalConfigVo).INDEX_URL}]]";
 
 $(window).resize(function() {
 	resizeView();
@@ -28,7 +28,7 @@ $(window).resize(function() {
 $(window).load(function() {
 	resizeView();
 	
-	let loginFailType = JpUtilsString.trimToEmpty("[[${#request.getAttribute(T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_FAIL_TYPE)}]]");
+	let loginFailType = JpUtilsString.trimToEmpty("[[${#request.getAttribute(T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGIN_FAIL_TYPE)}]]");
 	
 	if (JpUtilsString.isEmpty(loginFailType))
 	{
@@ -40,7 +40,7 @@ $(window).load(function() {
 		{
 			//비밀번호 초기화 or 만료 시 초기 비밀번호 변경 화면으로 이동
 			JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
-				document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";	
+				document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";	
 			});
 		}
 		else if (loginFailType == "Locked")

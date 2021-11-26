@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
         if (requestCache.getRequest(request, response) == null)
         {
-        	getRedirectStrategy().sendRedirect(request, response, PlatformConfigVo.INDEX_URL);
+        	getRedirectStrategy().sendRedirect(request, response, determineTargetUrl(request, response, authentication));
         }
         else
         {

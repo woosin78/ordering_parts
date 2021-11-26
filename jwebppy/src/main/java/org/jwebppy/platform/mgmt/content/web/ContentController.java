@@ -2,10 +2,8 @@ package org.jwebppy.platform.mgmt.content.web;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
@@ -14,14 +12,12 @@ import org.jwebppy.platform.core.util.CmAnnotationUtils;
 import org.jwebppy.platform.core.util.CmClassUtils;
 import org.jwebppy.platform.core.util.CmReflectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.mgmt.content.ContentGeneralController;
 import org.jwebppy.platform.mgmt.content.dto.CItemComponentDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemLangRlDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
-import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.content.service.ContentLangService;
 import org.jwebppy.platform.mgmt.content.service.ContentService;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDto;
@@ -44,8 +40,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/content")
 public class ContentController extends ContentGeneralController
 {
-	@Autowired
-	private ContentAuthorityService contentAuthorityService;
+//	@Autowired
+//	private ContentAuthorityService contentAuthorityService;
 
 	@Autowired
 	private ContentLangService contentLangService;
@@ -216,6 +212,7 @@ public class ContentController extends ContentGeneralController
 		return "duplicated";
 	}
 
+	/*
 	@GetMapping("/my_menu")
 	@ResponseBody
 	public Object myMenu(@ModelAttribute CItemSearchDto cItemSearch)
@@ -263,6 +260,7 @@ public class ContentController extends ContentGeneralController
 
 		return cItems;
 	}
+	*/
 
 	/*
 	@GetMapping("/breadcrumb")

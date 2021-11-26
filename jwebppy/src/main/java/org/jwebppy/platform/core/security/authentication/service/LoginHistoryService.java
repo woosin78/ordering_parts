@@ -104,7 +104,7 @@ public class LoginHistoryService extends GeneralService
 				UserDto user = userService.getUser(UserAuthenticationUtils.getUserDetails().getUSeq());
 
 				loginHistory.setUSeq(user.getUSeq());
-				loginHistory.setTimezone(user.getUserContactInfo().getTimezone());
+				loginHistory.setTimezone(user.getTimezone());
 			}
 
 			return loginHistoryMapper.insertLoginHistory(loginHistory);

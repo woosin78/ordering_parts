@@ -11,7 +11,7 @@ var OrderComponent = function(target)
 		this.target = $(target);
 		
 		$.ajax({
-			url: "/portal/scm/parts/domestic/order/create/order_type/data",
+			url: "/portal/iv/hq/parts/domestic/order/create/order_type/data",
 			async: false,//Order Type 은 async 필수
 			data: param,
 		    success: function(response, textStatus, jqXHR) 

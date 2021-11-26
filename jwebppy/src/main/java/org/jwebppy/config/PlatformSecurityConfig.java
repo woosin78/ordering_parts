@@ -26,15 +26,29 @@ public class PlatformSecurityConfig extends WebSecurityConfigurerAdapter
 	@Autowired
 	private RequestCache requestCache;
 
+	private final String[] permitAllRequests = {
+			PlatformConfigVo.INDEX_URL,
+			PlatformConfigVo.ERROR_PAGE_URL,
+			PlatformConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL,
+			PlatformConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL,
+			"/mail/tracking"
+	};
+
+	private final String[] commonRequests = {
+			PlatformConfigVo.CONTEXT_PATH + "/mgmt/gnb/my_menu", //GNB 메뉴
+			PlatformConfigVo.CONTEXT_PATH + "/common/authentication/last_login_info" //최종로그인정보 제공
+	};
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception
 	{
 		http
 			.antMatcher(PlatformConfigVo.CONTEXT_PATH + "/**")
 			.authorizeRequests()
-				.antMatchers(PlatformConfigVo.INDEX_URL, PlatformConfigVo.ERROR_PAGE_URL, PlatformConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL, PlatformConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL, "/mail/tracking", "/platform/common/authentication/test").permitAll()
+				.antMatchers(permitAllRequests).permitAll()
+				.antMatchers(commonRequests).authenticated()
 				.antMatchers(PlatformConfigVo.CONTEXT_PATH + "/**").hasRole(PlatformConfigVo.ROLE_PLTF_ADMIN)
-				.anyRequest().authenticated()
+				//.anyRequest().authenticated()
 			.and()
 			.headers()
 				.frameOptions().disable()

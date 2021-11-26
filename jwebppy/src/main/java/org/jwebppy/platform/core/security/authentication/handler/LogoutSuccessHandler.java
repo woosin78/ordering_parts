@@ -38,7 +38,7 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
                 logoutHistory.setUSeq(user.getUSeq());
                 logoutHistory.setSessionId(request.getSession().getId());
                 logoutHistory.setReferer(request.getHeader("referer"));
-                logoutHistory.setTimezone(user.getUserContactInfo().getTimezone());
+                logoutHistory.setTimezone(user.getTimezone());
 
                 logoutHistoryService.createLogoutHistory(logoutHistory);
     		}

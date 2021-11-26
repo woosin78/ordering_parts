@@ -100,7 +100,7 @@ $(function(){
 	let orderComponent = new OrderComponent();
 	orderComponent.makeOrderType($(".order-type"), "pOrderType", "[[${pOrderType}]]");	
 	
-	//Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		select: true,   			// row 선택 기능 켬
@@ -120,7 +120,7 @@ $(function(){
 			{ className: "left", targets: "_all" }
 		],
 		ajax: {
-			url: "/portal/scm/parts/domestic/order/display/order_list/data",
+			url: "/portal/iv/hq/parts/domestic/order/display/order_list/data",
 			data: function(p)
 			{
 				// ajax로 넘길 파라미터

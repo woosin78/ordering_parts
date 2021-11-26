@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsCommonVo.REQUEST_PATH + "/domestic/order/display")
+@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/domestic/order/display")
 public class OrderDisplayController extends PartsGeneralController
 {
 	@Autowired

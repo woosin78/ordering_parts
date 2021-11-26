@@ -154,7 +154,7 @@ public class UserService extends GeneralService
 
 			UserPasswordChangeHistoryDto userPasswordChangeHistory = new UserPasswordChangeHistoryDto();
 			userPasswordChangeHistory.setUSeq(userAccount.getUSeq());
-			userPasswordChangeHistory.setTimezone(user.getUserContactInfo().getTimezone());
+			userPasswordChangeHistory.setTimezone(user.getTimezone());
 
 			userPasswordChangeHistoryService.create(userPasswordChangeHistory);
 

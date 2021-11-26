@@ -10,6 +10,7 @@ import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.hq.common.HqCommonVo;
+import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.web.PartsGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OnetimeAddressDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping("/portal/scm/parts/domestic/order/create")
+@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/create")
 public class OrderCreateController extends PartsGeneralController
 {
 	@Autowired

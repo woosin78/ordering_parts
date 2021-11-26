@@ -89,4 +89,9 @@ public class UserDto extends GeneralDto implements IPagination
 
 		return language;
 	}
+
+	public String getTimezone()
+	{
+		return CmStringUtils.defaultString(getUserContactInfo().getTimezone(), getUserGroup().getTimezone());
+	}
 }
