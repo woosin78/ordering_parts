@@ -25,3 +25,18 @@ JpUiPopup.open = function(settings)
 	
 	return popup;
 };
+
+let Popup = {};
+
+Popup.open = function(url, width, height, fgCenter, fgScrollbars)
+{
+	let settings = {
+			url: url,
+			width: width,
+			height: height,
+			fgCenter: fgCenter,
+			fgScrollbars: fgScrollbars
+	};
+	
+	JpUiPopup.open(settings);
+};

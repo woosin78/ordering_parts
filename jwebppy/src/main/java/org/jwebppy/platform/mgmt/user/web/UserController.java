@@ -1,5 +1,8 @@
 package org.jwebppy.platform.mgmt.user.web;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +14,10 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
@@ -26,9 +32,11 @@ import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
+import org.jwebppy.platform.mgmt.user.dto.UserPasswordChangeHistoryDto;
 import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
 import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
 import org.jwebppy.platform.mgmt.user.service.UserGroupService;
+import org.jwebppy.platform.mgmt.user.service.UserPasswordChangeHistoryService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -63,6 +71,9 @@ public class UserController extends UserGeneralController
 
 	@Autowired
 	private UserGroupService userGroupService;
+
+	@Autowired
+	private UserPasswordChangeHistoryService userPasswordChangeHistoryService;
 
 	@Autowired
 	private UserService userService;
@@ -338,5 +349,50 @@ public class UserController extends UserGeneralController
 	public Object copy(@RequestParam Map<String, String> paramMap)
 	{
 		return userService.createUserByCopy(paramMap);
+	}
+
+	@GetMapping("/expired_password/check")
+	@ResponseBody
+	public Object checkPasswordExpiration()
+	{
+		Map<String, String> resultMap = new HashMap<>();
+		resultMap.put("expiredDate", "");
+		resultMap.put("difference", "-1");
+
+		UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
+
+		int pwdValidPeriod = user.getUserAccount().getCredentialsPolicy().getPwdValidPeriod();
+
+		if (pwdValidPeriod > 0)
+		{
+			UserPasswordChangeHistoryDto inUserPasswordChangeHistory = new UserPasswordChangeHistoryDto();
+			inUserPasswordChangeHistory.setUSeq(UserAuthenticationUtils.getUSeq());
+			inUserPasswordChangeHistory.setPageNumber(1);
+			inUserPasswordChangeHistory.setRowPerPage(1);
+
+			List<UserPasswordChangeHistoryDto> userPasswordChangeHistories = userPasswordChangeHistoryService.getPageableUserPasswordChangeHistories(inUserPasswordChangeHistory);
+
+			LocalDateTime regDate = null;
+
+			if (CollectionUtils.isNotEmpty(userPasswordChangeHistories))
+			{
+				UserPasswordChangeHistoryDto userPasswordChangeHistory = userPasswordChangeHistories.get(0);
+
+				regDate = userPasswordChangeHistory.getRegDate();
+			}
+			else
+			{
+				regDate = user.getRegDate();
+			}
+
+			String timezone = user.getTimezone();
+			ZonedDateTime zonedRegDate = CmDateTimeUtils.toZonedDateTime(regDate, timezone);
+			ZonedDateTime exiredDate = zonedRegDate.plusDays(pwdValidPeriod);
+
+			resultMap.put("expiredDate", CmDateFormatUtils.format(exiredDate, PlatformCommonVo.DEFAULT_DATE_FORMAT));
+			resultMap.put("difference", Long.toString(ChronoUnit.DAYS.between(CmDateTimeUtils.now(timezone), exiredDate)));
+		}
+
+		return resultMap;
 	}
 }

@@ -9,6 +9,7 @@ import org.jwebppy.platform.core.util.CmReflectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
@@ -53,8 +54,9 @@ public class UserAuthenticationService extends PlatformGeneralService
         CItemSearchDto userSearch = new CItemSearchDto();
         userSearch.setUSeq(user.getUSeq());
         userSearch.setLang(user.getLanguage());
+        userSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
 
-        List<CItemDto> cItems = contentAuthorityService.getMyCItemHierarchy(userSearch);
+        List<CItemDto> cItems = contentAuthorityService.getMyCItems(userSearch);
 
         PlatformUserDetails platformUserDetails = new PlatformUserDetails();
         platformUserDetails.setUSeq(user.getUSeq());

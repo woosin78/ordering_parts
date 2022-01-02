@@ -5,12 +5,12 @@
 	layout:decorate="~{platform/layout/popup/index}">
 
 <th:block layout:fragment="content">
-<th:block th:if="${dataAccessLog.type == 'R'}">
+<th:block th:if="${#strings.toString(dataAccessLog.type) eq 'R'}">
 <div class="ui one column grid">
 	<div class="column">
 		<div id="BTN_execute" class="ui teal button"><i class="play icon"></i> Execute</div>
 		<div id="BTN_copyLink" class="ui teal button"><i class="linkify icon"></i> Copy Link</div>
-		<div id="BTN_sendMailWithLink" class="ui teal button"><i class="paper plane outline icon"></i> Send Mail With Link</div>
+		<div id="BTN_sendMailWithLink" class="ui teal button"><i class="paper plane outline icon"></i> Send Mail</div>
 	</div>
 </div>
 <div class="ui divider"></div>
@@ -68,6 +68,14 @@ $(document).ready(function() {
 	});
 	
 	$("#BTN_sendMailWithLink").on("click", function() {
+		
+		let html = $("#FORM_search div[data-tab=parameter]").html(); 
+		
+		$.ajax({
+			url: "/platform/mgmt/log/view/download",
+			type: "post",
+			data: { html : html, functionName: "[[${dataAccessLog.command}]]" }
+		});
 	});
 });
 

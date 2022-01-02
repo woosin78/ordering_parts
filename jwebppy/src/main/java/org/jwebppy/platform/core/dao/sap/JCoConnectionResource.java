@@ -125,7 +125,7 @@ public class JCoConnectionResource
 
                 sapDestinationDataProvider.setDestinationProperties(entry.getKey(), properties);
 
-                logger.info("[" + SAP_JCO_ENV + "] The SAP Landscape has been loaded [" + entry.getKey() + "]");
+                logger.info("[" + entry.getKey() + "] SAP resource has been loaded ");
             }
 
             Environment.registerDestinationDataProvider(sapDestinationDataProvider);

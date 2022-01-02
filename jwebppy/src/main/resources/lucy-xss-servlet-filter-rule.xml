@@ -65,5 +65,13 @@
 		<url-rule>
 			<url disable="true">/platform/mgmt/i18n/save</url>
 		</url-rule>
+		
+		<url-rule>
+			<url disable="true">/portal/iv/download/grid/excel</url>			
+		</url-rule>
+		
+		<url-rule>
+			<url disable="true">/platform/mgmt/log/view/download</url>
+		</url-rule>
 	</url-rule-set>
 </config>

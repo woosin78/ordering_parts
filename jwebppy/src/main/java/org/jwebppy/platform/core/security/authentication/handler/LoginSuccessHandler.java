@@ -46,6 +46,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         {
         	Cookie cookie = new Cookie("username", authentication.getName());
         	response.addCookie(cookie);
+        	cookie.setMaxAge(10*365*24*60*60);
         }
 
         if (requestCache.getRequest(request, response) == null)

@@ -54,28 +54,7 @@ public class RfcTemplate extends AbstractDaoTemplate
 
     private String getLandscape(RfcRequest rfcRequest)
     {
-    	if (CmStringUtils.isNotEmpty(rfcRequest.getConnectorName()))
-    	{
-    		return rfcRequest.getConnectorName();
-    	}
-
-    	/*
-    	ErpUserContext erpUserContext = UserAuthenticationUtils.getUserDetails().getErpUserContext();
-
-    	if (erpUserContext != null)
-    	{
-        	if (CmStringUtils.equals(erpUserContext.getCorpName(), "DIVEU"))
-        	{
-        		return "P01";
-        	}
-        	else if (CmStringUtils.equals(erpUserContext.getCorpName(), "DIVUK"))
-        	{
-        		return "GMT";
-        	}
-    	}
-    	*/
-
-    	return "GSQCLNTEPQ_POC";
+    	return rfcRequest.getConnectorName();
     }
 
 	@Override
@@ -125,7 +104,7 @@ public class RfcTemplate extends AbstractDaoTemplate
         	resultMap.put("START_TIME", stopWatch.getStartTime());
         	resultMap.put("ELAPSED", stopWatch.getNanoTime());
 
-        	resultMap.put("DESTINATION", jCoDestination.getDestinationID());
+        	resultMap.put("DESTINATION", CmStringUtils.substringBetween(jCoDestination.toString(), "{", "}"));
         }
 
         return resultMap;

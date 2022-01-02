@@ -15,34 +15,18 @@
 </div>
 <!-- bottom.html end -->
 
-<form id="FORM_logout" method="post" th:action="@{/platform/security/authentication/logout}"></form>
-
 <script>
-function goHome()
-{
-	document.location.href = "/forward/entry_point";
-};
+$(document).ready(function() {
+});
 
-function clickUserInfo()
-{
-	Popup.open("/portal/corp/eu/common/info/user/account_form", 600, 250);
-};
-
-function clickDealerInfo()
-{
-	Popup.open("/portal/scm/parts/common/info/dealer/detail", 1024, 700);
-};
-
-function clickLogout()
-{
-	$("#FORM_logout").submit();
-};
-
+/*
+ * Ajax global settings.
+ */
 $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
 	if (jqXHR.status == "401" || jqXHR.status == "403")
 	{
 		alert("[[#{DIVEU_M_0048}]]");
-		document.location.href = "/";
+		document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}]]";
 	}
 	else
 	{
@@ -57,6 +41,7 @@ $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
 	catch (e) {}
 });
 
-$(document).ready(function() {
+$(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
+	jqXHR.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
 });
 </script>

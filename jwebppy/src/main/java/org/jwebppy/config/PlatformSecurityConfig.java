@@ -35,8 +35,8 @@ public class PlatformSecurityConfig extends WebSecurityConfigurerAdapter
 	};
 
 	private final String[] commonRequests = {
-			PlatformConfigVo.CONTEXT_PATH + "/mgmt/gnb/my_menu", //GNB 메뉴
-			PlatformConfigVo.CONTEXT_PATH + "/common/authentication/last_login_info" //최종로그인정보 제공
+			PlatformConfigVo.CONTEXT_PATH + "/mgmt/gnb/menu", //GNB 메뉴
+			PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/login/history/last_login_info" //최종로그인정보 제공
 	};
 
 	@Override

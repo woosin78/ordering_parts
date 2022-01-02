@@ -2,8 +2,6 @@
 <!-- Top menu area. This comment is mandatory to make a space between top and body.-->
 </div>
 
-<div id="gmbUsername" sec:authentication="name" style="display:none;"></div>
-
 <form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
 <script th:inline="javascript">
 function makeGmb()
@@ -12,7 +10,7 @@ function makeGmb()
 	let menu = [];
 
 	JpUtilsAjax.get({
-		url: "/platform/mgmt/gnb/my_menu",
+		url: "/platform/mgmt/gnb/menu",
 		success: function(data, textStatus, jqXHR)
 		{
 			menu.push("<div class='header item'>");
@@ -95,7 +93,7 @@ function makeGmb()
 			
 			//Get last login information
 			$.ajax({
-				url: "/platform/common/authentication/last_login_info",		
+				url: "/platform/mgmt/user/login/history/last_login_info",		
 			    success: function(response, textStatus, jqXHR) 
 			    {
 			    	let data = response.RESULT;
@@ -156,7 +154,7 @@ function logout()
 function checkExpiredPassword()
 {
 	JpUtilsAjax.get({
-		url: "/platform/common/authentication/password_expiration/check",
+		url: "/platform/mgmt/user/expired_password/check",
 		global: false,
 		success: function(data, textStatus, jqXHR)
 		{

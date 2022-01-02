@@ -80,7 +80,7 @@
 				</td>
 				<th th:text="#{HQPD_L_SHIP_TO_PARTY}"></th><!-- Ship To Party -->
 				<td>
-					<div><button id="BTN_shipToParty" type="button" th:text="#{HQPD_B_GET_DATA}" class="small_button"></button><div class="split2"></div><button id="BTN_onetimeAddress" type="button" th:text="#{HQPD_B_ONETIME_ADDRESS}" class="small_button"></button></div>
+					<div><button id="BTN_shipToParty" type="button" th:text="#{HQPD_B_GET_DATA}" class="small_button"></button></div>
 					<div id="AREA_shipToAddress"></div>					
 				</td>
 			</tr>
@@ -144,7 +144,7 @@
 			<div class="split"></div>
 			<button id="BTN_priceInfo" type="button">[[#{HQPD_B_PRICE_INFO}]]</button>
 			<div class="split"></div>
-			<button id="BTN_errorReport" type="button">[[#{HQPD_B_PRICE_INFO}]]</button>			
+			<button id="BTN_errorReport" type="button">[[#{HQPD_B_ERROR_REPORT}]]</button>			
 		</div>
 		<div class="grid-total">
 			<span th:text="#{HQPD_T_TOTAL_AMOUNT}"></span>
@@ -185,6 +185,11 @@
 			"left": left,
 			"top": top
 		});
+		
+		$(".dropzone-dimmer").css({
+			"width": "100%",
+			"height": $(document).height()
+		});
 	
 		$(".dropzone-dimmer, .dropzone-area").show();
 	};
@@ -207,6 +212,7 @@
 		},
 		sending: function(file, xhr, formData)
 		{
+			xhr.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
 		},
 		success: function(file, response)
 		{
@@ -431,17 +437,18 @@
 		return true;
 	};
 	
-	let targetToBeChanged;
+	//let targetToChange;
 	function showSearchPartsPopup(obj)
 	{
-		targetToBeChanged = $(obj).siblings("input[name=materialNo]");
+		//targetToChange = $(obj).siblings("input[name=materialNo]");
 	
-		Popup.open("/portal/scm/parts/domestic/info/parts_number_popup_list?pPartsNo=" + targetToBeChanged.val(), 700, 600);	
+		Popup.open("/portal/scm/parts/domestic/info/parts_number_popup_list?pPartsNo=" + $(obj).siblings("input[name=materialNo]").val(), 700, 600);
 	};
 	
 	function setPartsNo(partsNo)
 	{
-		$(targetToBeChanged).val(partsNo);
+		$(obj).siblings("input[name=materialNo]").val(partsNo);
+		//$(targetToChange).val(partsNo);
 	};
 	
 	$("#docType1, #docType2").on("click", function() {
@@ -714,9 +721,12 @@
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/order/create/simulation",
 				type: "POST",
-				beforeSend: function()
+				beforeSend: function(request)
 				{
 					tabIndex = 1;
+					
+					//POST 일 경우 CSRF 토큰 추가 
+					request.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
 				},
 				data: function(p)
 				{

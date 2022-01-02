@@ -1,8 +1,14 @@
 package org.jwebppy.platform.mgmt.user.web;
 
+import java.util.List;
+
+import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +40,23 @@ public class LoginHistoryController extends UserGeneralController
 	public Object listLayout(@ModelAttribute LoginHistorySearchDto loginHistorySearch)
 	{
 		return LoginHistoryLayoutBuilder.pageableList(new PageableList<>(loginHistoryService.getPageableLoginHistories(loginHistorySearch)));
+	}
+
+	@GetMapping("/last_login_info")
+	@ResponseBody
+	public Object lastLoginInfo(@ModelAttribute("loginHistorySearchDto") LoginHistorySearchDto loginHistorySearch)
+	{
+		loginHistorySearch.setRowPerPage(2);
+		loginHistorySearch.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
+		loginHistorySearch.setFgResult(PlatformCommonVo.YES);
+
+		List<LoginHistoryDto> loginHistories = loginHistoryService.getPageableLoginHistories(loginHistorySearch);
+
+		if (CollectionUtils.isNotEmpty(loginHistories))
+		{
+			return loginHistories.get(0);
+		}
+
+		return null;
 	}
 }

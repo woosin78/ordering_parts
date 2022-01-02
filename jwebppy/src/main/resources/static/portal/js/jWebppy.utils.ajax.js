@@ -22,8 +22,6 @@ JpUtilsAjax.post = function(options)
 		{
 			additionalOption.headers = {};
 		}
-		
-		additionalOption.headers[$("meta[name=_csrf_header]").attr("content")] = $("meta[name=_csrf]").attr("content");
 	}
 	catch (e) {};
 	

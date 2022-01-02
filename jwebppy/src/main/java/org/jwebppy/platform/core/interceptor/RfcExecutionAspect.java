@@ -21,6 +21,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.SessionContextUtils;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
@@ -28,6 +29,9 @@ import org.jwebppy.platform.mgmt.logging.dto.IfType;
 import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
+import org.jwebppy.platform.mgmt.user.dto.UserDto;
+import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
+import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,6 +46,9 @@ public class RfcExecutionAspect
 	@Autowired
 	private DataAccessResultLogService dataAccessResultLogService;
 
+	@Autowired
+	private UserService userService;
+
     @Around("execution(* org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate.response(..))")
     public Object onAround(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable
     {
@@ -49,6 +56,8 @@ public class RfcExecutionAspect
 
 		try
 		{
+			setSapConnector(proceedingJoinPoint);
+
 			result = (RfcResponse)proceedingJoinPoint.proceed();
 		}
 		catch (Exception e)
@@ -61,6 +70,39 @@ public class RfcExecutionAspect
 		}
 
 		return result;
+    }
+
+    private void setSapConnector(ProceedingJoinPoint proceedingJoinPoint)
+    {
+		Object[] args = proceedingJoinPoint.getArgs();
+
+		for (int i=0, length=args.length; i<length; i++)
+		{
+			if (args[i] != null && args[i] instanceof RfcRequest)
+			{
+				RfcRequest rfcRequest = (RfcRequest)args[i];
+
+				if (CmStringUtils.isEmpty(rfcRequest.getConnectorName()))
+				{
+					UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
+
+					if (user != null)
+					{
+						UserGroupDto userGroup = user.getUserGroup();
+
+						if (userGroup != null)
+						{
+							SapConnResourceDto sapConnResource = userGroup.getSapConnResource();
+
+							if (sapConnResource != null)
+							{
+								rfcRequest.setConnectorName(user.getUserGroup().getSapConnResource().getName());
+							}
+						}
+					}
+				}
+			}
+		}
     }
 
     private String[] getLastStackTrace()

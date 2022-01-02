@@ -27,7 +27,7 @@ import org.springframework.web.context.request.WebRequest;
 public class CredentialsPolicyController extends UserGeneralController
 {
 	@Autowired
-	private CredentialsPolicyService credentialPolicyService;
+	private CredentialsPolicyService credentialsPolicyService;
 
 	@Autowired
 	private UserGroupService userGroupService;
@@ -44,7 +44,7 @@ public class CredentialsPolicyController extends UserGeneralController
 	@ResponseBody
 	public Object listLayout(@ModelAttribute CredentialsPolicySearchDto credentialPolicySearch)
 	{
-		return CredentialsPolicyLayoutBuilder.pageableList(new PageableList<>(credentialPolicyService.getPageableCredentialPolicies(credentialPolicySearch)));
+		return CredentialsPolicyLayoutBuilder.pageableList(new PageableList<>(credentialsPolicyService.getPageableCredentialPolicies(credentialPolicySearch)));
 	}
 
 	@GetMapping("/write")
@@ -56,7 +56,7 @@ public class CredentialsPolicyController extends UserGeneralController
 
 		if (CmStringUtils.isNotEmpty(cpSeq))
 		{
-			credentialsPolicy = credentialPolicyService.getCredentialPolicy(Integer.valueOf(cpSeq));
+			credentialsPolicy = credentialsPolicyService.getCredentialPolicy(Integer.valueOf(cpSeq));
 		}
 
 		model.addAttribute("credentialsPolicy", credentialsPolicy);
@@ -73,13 +73,13 @@ public class CredentialsPolicyController extends UserGeneralController
 	{
 		inCredentialsPolicy.setUserGroup(new UserGroupDto(Integer.valueOf(webRequest.getParameter("ugSeq"))));
 
-		return credentialPolicyService.save(inCredentialsPolicy);
+		return credentialsPolicyService.save(inCredentialsPolicy);
 	}
 
 	@PostMapping("/delete")
 	@ResponseBody
 	public Object delete(@RequestParam("cpSeq") List<Integer> cpSeqs)
 	{
-		return credentialPolicyService.delete(cpSeqs);
+		return credentialsPolicyService.delete(cpSeqs);
 	}
 }

@@ -30,7 +30,7 @@ public class GnbController extends MgmtGeneralController
 	@Autowired
 	private LangService langService;
 
-	@GetMapping("/my_menu")
+	@GetMapping("/menu")
 	@ResponseBody
 	public Object myMenu(@ModelAttribute CItemSearchDto cItemSearch)
 	{

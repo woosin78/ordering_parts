@@ -30,8 +30,6 @@
 	visibility: visible;
 }
 </style>
-<script th:src="@{/portal/js/semantic/semantic.min.js}"></script>
-<link rel="stylesheet" type="text/css" class="ui" th:href="@{/portal/css/semantic/semantic.min.css}" />
 <div class="header">
 	<div class="logo-area">
 		<img class="logo" th:src="@{/portal/img/logo.png}" alt="DOOSAN" /><img id="IMG_doobizPlus" class="doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
@@ -55,6 +53,9 @@
 
 <div class="split-row"></div>
 
+<!-- Logout -->
+<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}" style="display:none;"></form>
+
 <script>
 function makeGmb()
 {
@@ -62,7 +63,7 @@ function makeGmb()
 	let menu = [];
 
 	$.ajax({
-		url: "/platform/mgmt/gnb/my_menu",
+		url: "/platform/mgmt/gnb/menu",
 		success: function(data, textStatus, jqXHR)
 		{
 		    data.RESULT.forEach(function(element, index) {
@@ -135,7 +136,7 @@ function makeGmb()
 	
 	//Get last login information
 	$.ajax({
-		url: "/platform/common/authentication/last_login_info",		
+		url: "/platform/mgmt/user/login/history/last_login_info",		
 	    success: function(response, textStatus, jqXHR) 
 	    {
 	    	let data = response.RESULT;
@@ -153,8 +154,6 @@ function makeGmb()
 	
 	let makeItems = function (cItem)
 	{
-		console.log(cItem);
-		
 		let length = (cItem.SUB_ITEMS != null) ? cItem.SUB_ITEMS.length : 0;
 		
 		menu.push("<span class='text " + cItem.TYPE + "'");
@@ -183,11 +182,31 @@ function makeGmb()
 	};
 };
 
+function goHome()
+{
+	document.location.href = "/portal/forward/entry_point";
+};
+
+function clickUserInfo()
+{
+	Popup.open("/portal/corp/eu/common/info/user/account_form", 600, 250);
+};
+
+function clickDealerInfo()
+{
+	Popup.open("/portal/scm/parts/common/info/dealer/detail", 1024, 700);
+};
+
+function clickLogout()
+{
+	$("#FORM_logout").submit();
+};
+
 $(document).ready(function() {
 	makeGmb();
 	
 	$(".header li.openNewWindow").on("click", function() {
-		window.open("/forward/entry_point", "");
+		window.open("/portal/forward/entry_point", "");
 	});
 	
 	$(".header li.dealerInfo").on("click", function() {
@@ -196,6 +215,10 @@ $(document).ready(function() {
 	
 	$(".header li.username").on("click", function() {
 		clickUserInfo();
+	});
+	
+	$(".header .logout-button").on("click", function() {
+		clickLogout();	    		
 	});	
 });
 </script>

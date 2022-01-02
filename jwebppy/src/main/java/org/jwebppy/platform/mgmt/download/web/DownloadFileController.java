@@ -106,6 +106,7 @@ public class DownloadFileController extends MgmtGeneralController
 			httpServletResponse.setHeader("Content-Transfer-Encoding", "binary");
 			httpServletResponse.setHeader("Cache-Control", "no-cache");
 			httpServletResponse.setHeader("Expires", "-1");
+			httpServletResponse.setHeader("Set-Cookie", "fileDownload=true; path=/");//ajax $.filedownload 의 event (successCallback 등) 이 동작히기 위해 필요
 
 			bufferOutputStream = new BufferedOutputStream (httpServletResponse.getOutputStream());
 

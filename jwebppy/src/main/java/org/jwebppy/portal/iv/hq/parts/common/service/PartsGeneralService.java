@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PartsGeneralService
 {
-	@Autowired(required = false)
+	@Autowired
 	private SimpleRfcTemplate simpleRfcTemplate;
 
 	@Cacheable(value = CacheConfig.CUSTOMER, key = "#username", unless="#result == null")

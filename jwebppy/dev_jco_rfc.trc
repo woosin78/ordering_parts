@@ -936,3 +936,163 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20211230 191828 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Dec 30 19:18:28,441<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=GSQCLNTEPQ_POC ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Dec 30 19:18:28 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Dec 30 19:18:49,475<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=GSQCLNTEPQ_POC ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Dec 30 19:18:49 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20211230 193932 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Dec 30 19:39:32,217<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=GSQCLNTEPQ_POC ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Dec 30 19:39:32 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220101 222810 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Jan 01 22:28:10,374<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Sat Jan 01 22:28:10 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Sat Jan 01 22:32:06,469<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=HDI_GSQ ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Sat Jan 01 22:32:06 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220102 182746 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun Jan 02 18:27:46,424<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Sun Jan 02 18:27:46 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220102 213836 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun Jan 02 21:38:36,469<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=HDI_GSQ ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Sun Jan 02 21:38:36 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

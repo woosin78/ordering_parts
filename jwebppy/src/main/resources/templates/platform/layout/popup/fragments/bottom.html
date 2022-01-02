@@ -47,6 +47,10 @@ $(document).ready(function() {
 	$(".ui.dropdown").dropdown();
 });
 
+$(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
+	jqXHR.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
+});
+
 $(document).ajaxStart(function(event, jqXHR, ajaxOptions) {
 	JpUiDimmer.show();
 });

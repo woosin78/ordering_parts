@@ -1,7 +1,7 @@
 let JpUtilsDownload = {
-		download: function(key, sCallback, fCallback, url) {
-			url = JpUtilsPath.url(JpUtilsString.defaultString(url, "/platform/mgmt/download"));
-			
+		url: "/platform/mgmt/download",
+		download: function(key, sCallback, fCallback) {
+
 			let options = {
 					data: { key: key },
 					successCallback: function(url)

@@ -45,6 +45,10 @@ $(document).ready(function() {
 	$(".ui.bottom_blank").height($(".ui.bottom").height());
 });
 
+$(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
+	jqXHR.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
+});
+
 $(document).ajaxStart(function() {	
 	JpUiDimmer.show();
 });

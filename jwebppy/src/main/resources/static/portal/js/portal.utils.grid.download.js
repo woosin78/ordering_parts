@@ -1,34 +1,29 @@
 var GridFileDownload = function(target)
 {
 	this.target = target;
-	this.url = "/portal/dbkr/download/grid/excel";
+	this.url = "/portal/iv/download/grid/excel";
 	this.fileName;
 	
 	let _this = this;
 	
 	this.excelDownload = function()
 	{
-		let download = $("iframe[name=IFM_download]");
+		ProgressBar.show("Downloading");
 		
-		if (download.length == 0)
-		{
-			$("body").append("<iframe name='IFM_download' style='display:none;'></iframe>");
-			
-			let form = [];
-			form.push("<form id='FORM_download' name='FORM_download' method='post' target='IFM_download'>");
-			form.push("<input type='hidden' name='fileName'/>")
-			form.push("<input type='hidden' name='data'/>")
-			form.push("</form>");
-			
-			$("body").append(form.join(""));
+		let options = {
+				data:  { fileName: _this.fileName, data: JSON.stringify(_this.getGridData()) },
+				successCallback: function(url)
+				{
+					ProgressBar.hide();
+				},
+				failCallback: function(responseHtml, url, error)
+				{
+					 alert("There was sonmething wrong with downloading. Please try it again.");
+					 ProgressBar.hide();
+				}
 		};
 		
-		console.log(JSON.stringify(this.getGridData()));
-		
-		$("#FORM_download input[name=fileName]").val(this.fileName);
-		$("#FORM_download input[name=data]").val(JSON.stringify(this.getGridData()));
-		
-		$("#FORM_download").attr("action", this.url).submit();
+		$.fileDownload(_this.url, options);
 	};
 	
 	this.getGridData = function()

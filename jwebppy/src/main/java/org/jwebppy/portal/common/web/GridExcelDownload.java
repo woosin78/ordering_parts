@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
-@RequestMapping("/portal/dbkr/download/grid")
+@RequestMapping("/portal/iv/download/grid")
 public class GridExcelDownload extends PortalGeneralController
 {
 	@RequestMapping("/excel")
@@ -64,6 +64,7 @@ public class GridExcelDownload extends PortalGeneralController
 		httpServletResponse.setContentType("application/download;charset=utf-8");
 		httpServletResponse.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\";");
 		httpServletResponse.setHeader("Content-Transfer-Encoding", "binary");
+		httpServletResponse.setHeader("Set-Cookie", "fileDownload=true; path=/");//ajax $.filedownload 의 event (successCallback 등) 이 동작히기 위해 필요
 
 		workbook.write(httpServletResponse.getOutputStream());
 

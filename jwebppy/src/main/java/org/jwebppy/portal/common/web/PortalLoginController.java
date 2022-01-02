@@ -16,11 +16,4 @@ public class PortalLoginController extends AuthenticationController
 	{
 		return DEFAULT_VIEW_URL;
 	}
-
-	@Override
-	@RequestMapping(PortalConfigVo.FORM_PASSWORD_CHANGE_PAGE_PATH)
-	public Object changePassword()
-	{
-		return DEFAULT_VIEW_URL;
-	}
 }
