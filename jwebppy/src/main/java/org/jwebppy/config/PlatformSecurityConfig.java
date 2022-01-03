@@ -96,7 +96,7 @@ public class PlatformSecurityConfig extends WebSecurityConfigurerAdapter
 	@Bean
 	public LoginFailureHandler loginFailureHandler()
 	{
-		return new LoginFailureHandler();
+		return new LoginFailureHandler(PlatformConfigVo.FORM_LOGIN_PAGE_URL);
 	}
 
 	@Bean

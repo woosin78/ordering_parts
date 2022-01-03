@@ -21,6 +21,15 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 	@Autowired
 	private LoginHistoryService loginHistoryService;
 
+	private String loginPageUrl = PlatformConfigVo.FORM_LOGIN_PAGE_URL;
+
+	public LoginFailureHandler() {}
+
+	public LoginFailureHandler(String loginPageUrl)
+	{
+		this.loginPageUrl = loginPageUrl;
+	}
+
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException
 	{
@@ -37,7 +46,8 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 			request.getSession().setAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME, request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
 		}
 
-		request.getRequestDispatcher(PlatformConfigVo.FORM_LOGIN_PAGE_URL).forward(request, response);
+		//request.getRequestDispatcher(PlatformConfigVo.FORM_LOGIN_PAGE_URL).forward(request, response);
+		request.getRequestDispatcher(loginPageUrl).forward(request, response);
 	}
 
 	protected HttpStatus getStatus(AuthenticationException exception)

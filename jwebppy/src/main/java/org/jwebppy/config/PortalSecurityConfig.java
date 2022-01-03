@@ -92,7 +92,7 @@ public class PortalSecurityConfig extends WebSecurityConfigurerAdapter
 	@Bean(name = "portalLoginFailureHandler")
 	public PortalLoginFailureHandler loginFailureHandler()
 	{
-		return new PortalLoginFailureHandler();
+		return new PortalLoginFailureHandler(PortalConfigVo.FORM_LOGIN_PAGE_URL);
 	}
 
 	@Bean(name = "portalLogoutSuccessHandler")
