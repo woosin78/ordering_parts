@@ -16,6 +16,7 @@ import org.jwebppy.platform.mgmt.logging.LoggingGeneralController;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogSearchDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessResultLogDto;
+import org.jwebppy.platform.mgmt.logging.dto.IfType;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,7 @@ public class LogController extends LoggingGeneralController
 
 	@GetMapping("/view/layout/{tabPath}")
 	@ResponseBody
-	public Object log(@PathVariable("tabPath") String tabPath, @RequestParam("dlSeq") String dlSeq)
+	public Object logLayout(@PathVariable("tabPath") String tabPath, @RequestParam("dlSeq") String dlSeq)
 	{
 		if ("parameter".equals(tabPath))
 		{
@@ -105,7 +106,7 @@ public class LogController extends LoggingGeneralController
 
 	@PostMapping("/view/download")
 	@ResponseBody
-	public Object download(@RequestParam("html") String html, @RequestParam("functionName") String functionName)
+	public Object download(@RequestParam("html") String html, @RequestParam("dlSeq") String dlSeq)
 	{
 		String templete = "<!DOCTYPE html>";
 		templete += "<html>";
@@ -126,7 +127,11 @@ public class LogController extends LoggingGeneralController
 		templete += "</body>";
 		templete += "</html>";
 
-		String savedFileName = path + File.separator + functionName + "-" + UserAuthenticationUtils.getUsername() + "-" + CmDateFormatUtils.format(CmDateTimeUtils.now(), PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS) + ".html";
+		DataAccessLogDto dataAccessLog = dataAccessLogService.getLog(dlSeq);
+
+		String command = (IfType.R.equals(dataAccessLog.getType())) ? dataAccessLog.getCommand() : "sql";
+
+		String savedFileName = path + File.separator + command + "-" + UserAuthenticationUtils.getUsername() + "-" + CmDateFormatUtils.format(CmDateTimeUtils.now(), PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS) + ".html";
 
 		FileWriter fileWriter = null;
 

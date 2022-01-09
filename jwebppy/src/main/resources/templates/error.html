@@ -32,7 +32,11 @@
 				color: #fff;
 				font-size: 18px;
 				vertical-align: middle;
-			} 
+			}
+			
+			.logo {
+				cursor: pointer
+			}
 		</style>		
 	</head>
 <body>
@@ -96,12 +100,13 @@
 	</div>
 </div>
 <!-- bottom.html end -->
-<form id="FORM_logout" method="post" th:action="@{/platform/security/authentication/logout}"></form>
+<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
 <!-- Start common javascript -->
 <script>
-$("#BTN_goMain, #IMG_doobizPlus").on("click", function() {
-	document.location.href = "/forward/entry_point";
+$("#BTN_goMain, .logo").on("click", function() {
+	document.location.href = "[[@{${T(org.jwebppy.portal.common.PortalConfigVo).INDEX_URL}}]]";
 });
+
 
 $(".logout-button").on("click", function() {
 	$("#FORM_logout").submit();

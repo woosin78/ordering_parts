@@ -67,7 +67,6 @@ let JpUiTree = function(object)
 		});
 		
 		$("#MENU_command").remove();
-		$("body").append(this.menu());
 		
 		this.attachEventClickItem();
 	};
@@ -90,7 +89,7 @@ let JpUiTree = function(object)
 		target.slideToggle("fast");
 	};
 
-	this.collapseAll = function(isCollpase)
+	this.collapseAll = function(isCollpase, callBack)
 	{
 		if (isCollpase)
 		{
@@ -123,12 +122,12 @@ let JpUiTree = function(object)
 
 			if (subItemsLength > 0)
 			{
-				this.content.push("<i class='caret down icon'></i>");
+				this.content.push("<i class='caret up icon'></i>");
 			};
 
 			if (items[i].TYPE == "FOLDER" && subItemsLength > 0)
 			{
-				type = "FOLDER_OPEN";
+				type = "FOLDER";
 			}
 
 			if (this.icons[items[i].TYPE] != null)
@@ -142,7 +141,7 @@ let JpUiTree = function(object)
 
 			if (subItemsLength > 0)
 			{
-				this.content.push("<div class='list'>");
+				this.content.push("<div class='list' style='display:none;'>");
 				this.makeItem(items[i].SUB_ITEMS);
 				this.content.push("		</div>");
 			};

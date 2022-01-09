@@ -15,6 +15,11 @@
 		<div class="nine wide column">
 			<div class="ui dividing header">Structure</div>
 			<div class="ui segment teal">
+				<div id="collapse" class="ui toggle checkbox">
+					<input type="checkbox" name="public">
+					<label>Collapse</label>
+				</div>
+				<div class="ui divider"></div>
 				<div id="TREE_items"></div>
 			</div>
 		</div>
@@ -71,6 +76,15 @@
 <script>
 	$(document).ready(function() {
 		JpUiDimmer.show();
+		
+		$("#collapse").checkbox({
+			onChecked: function() {
+				tree.collapseAll(false);
+			},
+			onUnchecked: function() {
+				tree.collapseAll(true);
+			}
+		});
 	});
 	
 	let viewItemTab = new JpUiTab($("#TAB_viewItem"));
@@ -240,6 +254,7 @@
 		};
 		
 		viewItemTab.render();
+		
 		JpUiDimmer.hide();
 	};
 	tree.viewDetail = function(key, pKey, target)

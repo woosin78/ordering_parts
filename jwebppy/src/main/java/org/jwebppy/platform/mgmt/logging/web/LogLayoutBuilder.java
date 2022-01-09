@@ -144,7 +144,7 @@ public class LogLayoutBuilder
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Type", dataAccessLog.getType().getType());
 		elementMap.put("Command", dataAccessLog.getCommand());
-		elementMap.put("Destination", dataAccessLog.getDestination());
+		//elementMap.put("Destination", dataAccessLog.getDestination());
 		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
 		elementMap.put("Reg. Username", dataAccessLog.getRegUsername());
 		elementMap.put("Elapsed(sec)", CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
