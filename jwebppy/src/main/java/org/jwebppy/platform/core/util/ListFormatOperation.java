@@ -243,7 +243,7 @@ public class ListFormatOperation implements FormatOperation
 
 	@Override
 	public void integerFormat(String key) {
-		applyEach("integerFormat", new Class[] { String[].class }, new Object[] { key });
+		applyEach("integerFormat", new Class[] { String.class }, new Object[] { key });
 	}
 
 	@Override

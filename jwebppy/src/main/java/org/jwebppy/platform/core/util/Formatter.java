@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Formatter {
-	static final String defaultDateFormat = "yyyy-MM-dd";
+	static final String defaultDateFormat = CmDateFormatUtils.getDateFormat();
 	static final String defaultCurrencyFormat = "#,###.##";
 
 	/**
@@ -171,7 +171,7 @@ public class Formatter {
 	 */
 	public static String getDefDecimalFormat(String strValue) {
 		if (strValue != null && !strValue.trim().equals("")) {
-			DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+			DecimalFormat decimalFormat = new DecimalFormat(defaultCurrencyFormat);
 			return decimalFormat.format(Double.parseDouble(strValue));
 		} else {
 			return "";
@@ -197,7 +197,7 @@ public class Formatter {
 			if (obj.toString().indexOf(",") > -1) {
 				return obj.toString();
 			} else {
-				DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+				DecimalFormat decimalFormat = new DecimalFormat(defaultCurrencyFormat);
 				return decimalFormat.format(Double.parseDouble(obj.toString()));
 
 			}

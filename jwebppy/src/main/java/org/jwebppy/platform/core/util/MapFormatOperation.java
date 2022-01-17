@@ -111,7 +111,7 @@ public class MapFormatOperation implements FormatOperation
 			}
 			else
 			{
-				map.put(key, Formatter.getDecimalFormat((String)value, format));
+				map.put(key, Formatter.getDecimalFormat(value.toString(), format));
 			}
 		}
 	}

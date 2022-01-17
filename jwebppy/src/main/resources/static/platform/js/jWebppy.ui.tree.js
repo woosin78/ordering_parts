@@ -66,7 +66,8 @@ let JpUiTree = function(object)
 			_this.collapse($(this));
 		});
 		
-		$("#MENU_command").remove();
+		$("#MENU_command").remove();		
+		$("body").append(this.menu());
 		
 		this.attachEventClickItem();
 	};

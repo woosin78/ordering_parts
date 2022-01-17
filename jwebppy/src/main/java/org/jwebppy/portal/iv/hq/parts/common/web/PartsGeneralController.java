@@ -1,6 +1,8 @@
 package org.jwebppy.portal.iv.hq.parts.common.web;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class PartsGeneralController extends HqGeneralController
 {
+	private static final String String = null;
 	@Autowired
 	private PartsGeneralService partsGeneralService;
 
@@ -74,5 +77,29 @@ public class PartsGeneralController extends HqGeneralController
 		}
 
 		return null;
+	}
+
+	//KRW, JPY 는 가격에 100을 곱해 줌
+	protected void makePriceByCurrency(List<Map<String, Object>> list, String[] keys, String currencyKey)
+	{
+		for (Map<String, Object> map: list)
+		{
+			String currency = (String)map.get(currencyKey);
+
+			if ("KRW".equals(currency) || "JPY".equals(currency))
+			{
+				for (int i=0, length=keys.length; i<length; i++)
+				{
+					if (CmStringUtils.isNotEmpty(map.get(keys[i])))
+					{
+						try
+						{
+							map.put(keys[i], Double.parseDouble(map.get(keys[i]).toString()) * 100);
+						}
+						catch (NumberFormatException e) {}
+					}
+				}
+			}
+		}
 	}
 }

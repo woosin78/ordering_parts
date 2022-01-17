@@ -7,74 +7,75 @@
 <th:block layout:fragment="content">
 
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVEU_TXT_0046}"></div>
+		<div class="block-title" th:text="#{HQPD_T_QUOTATION_LIST}"></div>
 		<div id="BTN_search" class="block-button-area">
-			<button th:text="#{DIVEU_BTN_0002}"></button>
+			<button type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
 		</div>
 	</div>
 	
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
 	<input type="hidden" id="orderNo" name="orderNo"/>
+	<input type="hidden" id="status" name="status"/>
 	<table class="condition">
 		<tbody>
 			<tr>
 				<th colspan="4">
 					<div class="input-area">
 						<input type="radio" class="custom-ui" name="pDocType" value="C"/>
-						<label th:text="#{DIVEU_LB_0037}"></label>
+						<label th:text="#{HQPD_L_ORDER}"></label>
 						
 						&nbsp;&nbsp;
 						
-						<input type="radio" class="custom-ui" name="pDocType" value="A" checked/>
-						<label th:text="#{DIVEU_LB_0038}"></label>
+						<input type="radio" class="custom-ui" name="pDocType" value="A"/>
+						<label th:text="#{HQPD_L_INQUIRY}"></label>
 						
 						&nbsp;&nbsp;
 						
-						<input type="radio" class="custom-ui" name="pDocType" value="B"/>
-						<label th:text="#{DIVEU_LB_0039}"></label>
+						<input type="radio" class="custom-ui" name="pDocType" value="B" checked/>
+						<label th:text="#{HQPD_L_QUOTATION}"></label>
 					</div>
 				</th>
 			</tr>
 			<tr>
-				<th th:text="#{DIVEU_LB_0041}"></th>
+				<th th:text="#{HQPD_L_INQUIRY_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
 					</div>
 				</td>
-				<th th:text="#{DIVEU_LB_0015}"></th>
-				<td colspan="3">
+				<th th:text="#{HQPD_L_ORDER_DATE}"></th>
+				<td>
 					<div class="input-area">
-						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<div class="split"></div>
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">
 					</div>
-				</td>
+				</td>				
 			</tr>
 			<tr>
-				<th th:text="#{DIVEU_LB_0029}"></th>
+				<th th:text="#{HQPD_L_ORDER_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
 					</div>
 				</td>
-				<th th:text="#{DIVEU_LB_0042}"></th>
+				<th th:text="#{HQPD_L_STATUS}"></th>
 				<td>
 					<div class="input-area">
 						<select class="custom-ui" id="pStatus" name="pStatus">
 							<option value="X"></option>
-							<option value="O" th:text="#{DIVEU_TXT_0043}"></option>
-							<option value="C" th:text="#{DIVEU_TXT_0044}"></option>
+							<option value="O" th:text="#{HQPD_L_OPEN}"></option>
+							<option value="C" th:text="#{	HQPD_L_CLOSE}"></option>
 						</select>
 					</div>	
 				</td>				
 			</tr>
 			<tr>
-				<th th:text="#{DIVEU_LB_0016}"></th>
+				<th th:text="#{HQPD_L_PO_NO}"></th>
 				<td colspan="3">
 					<div class="input-area">
-						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
-						<div class="split"></div>
-						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
 					</div>
 				</td>
 			</tr>
@@ -102,32 +103,35 @@
 //고정된 맵 데이터 사용. 페이지 생성시 데이터 넘겨서 그리드 만드는 방식
 
 $(function(){
-
 	$("input:radio[name=pDocType][value='[[${pDocType}]]']").prop("checked", true);
 	$("#pOrderType").val("[[${pOrderType}]]");
 	$("#pStatus").val("[[${pStatus}]]");
 	
-	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]"); 
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 	
 	$tableObj = $("#TBL_grid").DataTable({
-		select: true,   			// row 선택 기능 켬
-		ordering: true, 			// 정렬 기능 켬
+		select: {
+			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
 		columns : [
-			{data: "VBELN", title: "[[#{DIVEU_LB_0013}]]", className:"link"},//Inuqiry No.
-			{data: "BSTKD", title: "[[#{DIVEU_LB_0015}]]"},//P.O. No.
-			{data: "VBELN2", title: "[[#{DIVEU_LB_0043}]]"},//Sales Doc. No.
-			{data: "ERDAT2", title: "[[#{DIVEU_LB_0018}]]"},//Create Date
-			{data: "COUNT", title: "[[#{DIVEU_LB_0019}]]"},//Line Item
-			{data: "T_NETWR", title: "[[#{DIVEU_LB_0045}]]"},//Order Amt.
-			{data: "WAERK", title: "[[#{DIVEU_LB_0021}]]"},//Curr.
-			{data: "RFGSK_TX", title: "[[#{DIVEU_LB_0042}]]"}//Open Status
+			{data: "VBELN", title: "[[#{HQPD_L_QUOTATION_NO}]]", className: "link"},//Inuqiry No.
+			{data: "BSTKD", title: "[[#{HQPD_L_PO_NO}]]"},//P.O. No.
+			{data: "VBELN2", title: "[[#{HQPD_L_SALES_DOC_NO}]]", className: "link"},//Sales Doc. No.
+			{data: "ERDAT2", title: "[[#{HQPD_L_ORDER_DATE}]]"},//Create Date
+			{data: "COUNT", title: "[[#{HQPD_L_ITEM_ROWS}]]"},//Line Item
+			{data: "T_NETWR", title: "[[#{HQPD_L_ORDER_AMOUNT}]]", className: "right"},//Order Amt.
+			{data: "WAERK", title: "[[#{HQPD_L_CURRENCY}]]"},//Curr.
+			{data: "RFGSK_TX", title: "[[#{	HQPD_L_STATUS}]]"}//Open Status
 		],
+		/*
 		columnDefs: [
 			{ className: "left", targets: "_all" }
 		],
+		*/
 		ajax: {
-			url: "/portal/corp/eu/scm/parts/order/display/quotation_list/data",
+			url: "/portal/iv/hq/parts/domestic/order/display/quotation_list/data",
 			data: function(p)
 			{
 				// ajax로 넘길 파라미터
@@ -141,10 +145,10 @@ $(function(){
 			},
 			dataSrc: function(response) 
 			{
-				var result = response.RESULT;
-				var returnData = new Array();
+				let result = response.RESULT;
+				let returnData = new Array();
 				
-				for (var i=0, length=result.length; i<length; i++)
+				for (let i=0, length=result.length; i<length; i++)
 				{
 					result[i].ERDAT2 = result[i].ERDAT + " " + result[i].ERZET;
 					
@@ -158,24 +162,23 @@ $(function(){
 					};
 				};
 				
-				$("#totalRows").html(result.length + " row(s).");
+				$("#totalRows").html(result.length+" row(s).");
 
 				return result;
 			}
 		},
-		initComplete:function(settings, json) 
-		{			
+		initComplete: function() {
 			ProgressBar.hide();
 		}
-	});		
-	
+	});
+
 	// Datatable grid 초기 설정 셋업
 	initGridTable($tableObj);
 	
 	$("input:radio[name=pDocType]").on("click", function() {
-		var docType = $(this).val();
+		let docType = $(this).val();
 		
-		var docName = "order";
+		let docName = "order";
 		
 		if (docType == "A")
 		{
@@ -186,7 +189,7 @@ $(function(){
 			docName = "quotation";
 		}
 		
-		document.location.href = "/portal/corp/eu/scm/parts/order/display/" + docName + "_list?pDocType=" + $(this).val();
+		document.location.href = "/portal/iv/hq/parts/domestic/order/display/" + docName + "_list?pDocType=" + $(this).val();
 	});
 	
 	$("#BTN_search").on("click", function() {
@@ -204,17 +207,22 @@ $(function(){
 	function doSearch()
 	{
 		$tableObj.ajax.reload();
-	}
+	};
 	
 	$("#TBL_grid tbody").on("click", "td:first-child", function () {
-		var orderNo = $tableObj.cell(this).data();
+		let data = $tableObj.row($(this)).data();		
 		
-		if (orderNo != null)
-		{
-			$("#orderNo").val($tableObj.cell(this).data());
-			$("#FORM_search").attr("action", "/portal/corp/eu/scm/parts/order/display/quotation_detail").submit();
-		};
+		$("#orderNo").val(data.VBELN);
+		$("#status").val(data.RFGSK);
+		
+		$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/display/quotation_view").submit();
 	});
+	
+	$("#TBL_grid tbody").on("click", "td:nth-child(3)", function () {
+		let data = $tableObj.row($(this)).data();		
+		
+		Popup.open("/portal/iv/hq/parts/domestic/order/display/order_view_popup?orderNo=" + data.VBELN2 + "&pOrderNo=" + data.VBELN2, 1280, 720);
+	});		
 });
 </script>	
 </th:block>

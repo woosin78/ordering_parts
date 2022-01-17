@@ -1,23 +1,23 @@
 /** DataTables custom css */
 
-/** DataTables �뒪���씪 : display cell-border compact hover order-column row-border stripe , h-border */
+/** DataTables 스타일 : display cell-border compact hover order-column row-border stripe , h-border */
 
 table.dataTable {
 	width: 100% !important;
 }
 
 table.dataTable td{
-	/* 媛쒗뻾 �젣嫄� */
+	/* 개행 제거 */
 	white-space: nowrap;
 }
 
-/* �뿤�뜑 諛곌꼍�깋 */
+/* 헤더 배경색 */
 table.dataTable.h-border thead th {
     background-color: #ddd;
     box-shadow: inset 0 3px 4px -2px #fff;
 }
 
-/* �뿤�뜑 蹂대뜑 */
+/* 헤더 보더 */
 table.dataTable.h-border thead th, table.dataTable.h-border thead td,
 table.dataTable.cell-border thead th, table.dataTable.cell-border thead td {
     border-top: 1px solid #bbb;
@@ -27,11 +27,11 @@ table.dataTable thead th, table.dataTable thead td {
     border-bottom: 1px solid #bbb;
 }
 .dataTables_wrapper.no-footer .dataTables_scrollBody {
-	border-bottom: 0;	/* Fixed 踰꾧렇 �븣臾몄뿉 �젣嫄고븿 */
+	border-bottom: 0;	/* Fixed 버그 때문에 제거함 */
 }
 
 .dataTables_scroll {
-	border-bottom: 1px solid #003081;	/* Fixed 踰꾧렇 �븣臾몄뿉 �쇅遺��뿉 蹂대뜑 留뚮벉. �솗�씤�븘�슂! */
+	border-bottom: 1px solid #003081;	/* Fixed 버그 때문에 외부에 보더 만듬. 확인필요! */
 }
 
 table.dataTable.cell-border thead th {
@@ -41,7 +41,7 @@ table.dataTable.cell-border thead th:nth-child(1) {
     border-left: 1px solid #bbb;
 }
 
-/* �뿤�뜑 �뒪�겕濡ㅻ컮 紐⑥꽌由� �쁺�뿭 諛곌꼍�깋 */
+/* 헤더 스크롤바 모서리 영역 배경색 */
 .dataTables_scrollHeadInner {
 	background: rgb(236, 236, 236);
 }
@@ -49,16 +49,16 @@ table.DTFC_Cloned thead, table.DTFC_Cloned tfoot {
 	background: rgb(236, 236, 236);
 }
 
-/* �긽�떒 留덉쭊 */
+/* 상단 마진 */
 .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_length {
     margin-bottom: 8px;
 }
-/* �븯�떒 留덉쭊 */
+/* 하단 마진 */
 .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_paginate {
     margin-top: 8px;
 }
 
-/* �럹�씠吏��꽕�씠�뀡*/
+/* 페이지네이션*/
 .page-center .dataTables_wrapper .dataTables_paginate {
 	float : none;
 	text-align: center;
@@ -76,12 +76,12 @@ table.DTFC_Cloned thead, table.DTFC_Cloned tfoot {
 	background: #aaa;
 }
 
-/* ���닔�뻾 �깋�긽 */
+/* 홀수행 색상 */
 table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
     background-color: #f9fafc;
 }
 
-/* �꽑�깮 �깋�긽 : 諛앹쓬 */
+/* 선택 색상 : 밝음 */
 table.dataTable tbody tr.selected {
 	background-color: #b2e4d7;
 }
@@ -89,7 +89,7 @@ table.dataTable tbody > tr.selected,
 table.dataTable tbody > tr > .selected {
 	background-color: #b2e4d7;
 }
-/* �꽑�깮 �깋�긽 : �빟媛� �뼱�몢��*/
+/* 선택 색상 : 약간 어두움*/
 table.dataTable.stripe tbody tr.odd.selected, table.dataTable.display tbody tr.odd.selected {
 	background-color: #b2e4d7;
 }
@@ -99,7 +99,7 @@ table.dataTable.display tbody > tr.odd > .selected {
 	background-color: #b2e4d7;
 }
 
-/* �꽑�깮 �깋�긽 : 以묎컙 �뼱�몢��*/
+/* 선택 색상 : 중간 어두움*/
 table.dataTable.display tbody>tr.odd.selected>.sorting_1, table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_1,
 table.dataTable.display tbody>tr.odd.selected>.sorting_2, table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_2,
 table.dataTable.display tbody>tr.odd.selected>.sorting_3, table.dataTable.order-column.stripe tbody>tr.odd.selected>.sorting_3 {
@@ -128,7 +128,7 @@ table.dataTable.display tbody>tr.selected:hover>.sorting_1, table.dataTable.orde
 	background-color: #b2e4d7;
 }
 
-/* �꽑�깮 �깋�긽 : 媛��옣 諛앹쓬*/
+/* 선택 색상 : 가장 밝음*/
 table.dataTable.hover tbody tr:hover.selected, table.dataTable.display tbody tr:hover.selected {
 	background-color: #b2e4d7;
 }
@@ -203,7 +203,7 @@ table.dataTable.cell-border tbody tr th:last-child, table.dataTable.cell-border 
     margin-top: -34px;
     margin-left: -34px;
     display: inline-block;
-    background-image: url(/portal/img/loading.gif);
+    background-image: url(/portal/css/image/loading.gif);
     background-position: -74px -74px;
 }
 

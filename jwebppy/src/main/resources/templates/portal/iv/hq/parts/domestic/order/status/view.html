@@ -5,10 +5,10 @@
 	layout:decorate="~{portal/layout/common/index}">
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVEU_TXT_0072}"></div><!-- Order Status Detail -->
+		<div class="block-title" th:text="#{HQPD_T_ORDER_STATUS_DETAIL}"></div><!-- Order Status Detail -->
 		<div id="BTN_search" class="block-button-area">
-			<button id="BTN_download" th:text="#{DIVEU_BTN_0003}"></button>
-			<button id="BTN_back" th:text="#{DIVEU_BTN_0004}"></button>
+			<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button><!-- Download -->
+			<button id="BTN_back" type="button" th:text="#{HQPD_B_BACK}"></button><!-- Back -->
 		</div>
 	</div>
 	<input type="hidden" id="orderNo" name="orderNo" th:value="${orderNo}">	
@@ -16,22 +16,20 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DIVEU_LB_0013}"></th><!-- Order No. -->
+				<th th:text="#{HQPD_L_ORDER_NO}"></th><!-- Order No. -->
 	 			<td><span th:text="${orderNo}"></span></td>
-				<th th:text="#{DIVEU_LB_0132}"></th><!-- P.O No. -->
+				<th th:text="#{HQPD_L_PO_NO}"></th><!-- P.O No. -->
 	 			<td><span th:text="${poNo}"></span></td>
-				<th th:text="#{DIVEU_LB_0108}"></th><!-- Order Date -->
+				<th th:text="#{HQPD_L_ORDER_DATE}"></th><!-- Order Date -->
 	 			<td><span th:text="${orderDate}"></span></td> 			
 			</tr>
 		</tbody>
 	</table>
 	</div>
 	<div class="split-row"></div>
-	
 	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
-	
 	<form id="FORM_search" name="FORM_search">
 	<input type="hidden" id="pOrderNo" name="pOrderNo" th:value="${pOrderNo}">
 	<input type="hidden" id="pOrderType" name="pOrderType" th:value="${pOrderType}">
@@ -42,28 +40,31 @@
 	</form> 							
 	<script>		
 	$(function(){
+		let isLoadedData = false;
 		
 		$tableObj = $("#TBL_grid").DataTable({
-			select: true,   			
-			ordering: true, 
+			select: {
+				selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+		    },
+			ordering: true,// 정렬 기능 켬
 			scrollY: 100,
-			fixedColumns: { leftColumns: 5 },
+			//fixedColumns: { leftColumns: 5 },
 			columns : [
-				{data: "POSNR", 		title: "[[#{DIVEU_LB_0121}]]"},	// Item No
-				{data: "KONDA_T", 		title: "[[#{DIVEU_LB_0014}]]"},	// Order Type
-				{data: "MATNR_SO", 		title: "[[#{DIVEU_LB_0029}]]"},	// Order Part No.
-				{data: "MATNR_SH", 		title: "[[#{DIVEU_LB_0030}]]"},	// Supply Part No
-				{data: "MAKTX", 		title: "[[#{DIVEU_LB_0031}]]"},	// Description
-				{data: "SO_QTY", 		title: "[[#{DIVEU_LB_0111}]]"},	// Order Qty
-				{data: "RE_QTY", 		title: "[[#{DIVEU_LB_0122}]]"},	// Reserved Qty
-				{data: "PI_QTY", 		title: "[[#{DIVEU_LB_0116}]]"},	// Packed Qty
-				{data: "IN_QTY", 		title: "[[#{DIVEU_LB_0117}]]"},	// Invoiced Qty
-				{data: "SH_QTY", 		title: "[[#{DIVEU_LB_0112}]]"},	// S.Completion Qty
-				{data: "BO_QTY", 		title: "[[#{DIVEU_LB_0123}]]"}, // B/O Qty
-				{data: "LST_ETD", 		title: "[[#{DIVEU_LB_0124}]]"}	// Updated ETD
+				{data: "POSNR", 		title: "[[#{HQPD_L_LINE_ITEM}]]"},// Item No
+				{data: "KONDA_T", 		title: "[[#{HQPD_L_ORDER_TYPE}]]"},// Order Type
+				{data: "MATNR_SO", 		title: "[[#{HQPD_L_ORDER_PART_NO}]]"},// Order Part No.
+				{data: "MATNR_SH", 		title: "[[#{HQPD_L_SUPPLY_PART_NO}]]"},// Supply Part No
+				{data: "MAKTX", 		title: "[[#{HQPD_L_DESCRIPTION}]]"},// Description
+				{data: "SO_QTY", 		title: "[[#{HQPD_L_ORDER_QTY}]]"},// Order Qty
+				{data: "RE_QTY", 		title: "[[#{HQPD_L_RESERVED_QTY}]]"},// Reserved Qty
+				{data: "PI_QTY", 		title: "[[#{HQPD_L_PACKED_QTY}]]"},// Packed Qty
+				{data: "IN_QTY", 		title: "[[#{HQPD_L_INVOICE_QTY}]]"},// Invoiced Qty
+				{data: "SH_QTY", 		title: "[[#{HQPD_L_SHIPMENT_COMPLETE_QTY}]]"},// S.Completion Qty
+				{data: "BO_QTY", 		title: "[[#{HQPD_L_BACKORDER_QTY}]]"},// B/O Qty
+				{data: "LST_ETD", 		title: "[[#{HQPD_L_UPDATED_ETD}]]"}// Updated ETD
 			],		
 			ajax: {
-				url: "/portal/corp/eu/scm/parts/order/display/order_status_detail/data",
+				url: "/portal/iv/hq/parts/domestic/order/status/view/data",
 				data: function(p)
 				{
 					p.orderNo = $("#orderNo").val();
@@ -83,9 +84,11 @@
 						}
 						else
 						{
-							data[i].LST_ETD = '0000-00-00';
+							data[i].LST_ETD = "0000-00-00";
 						}
 					};
+					
+					isLoadedData = true;
 					
 					return data;
 				}
@@ -93,19 +96,26 @@
 			initComplete:function(settings, json) 
 			{			
 				ProgressBar.hide();
-			}		
+			},
+			"drawCallback": function( settings ) {
+				if (isLoadedData && "[[${fgDownload}]]" == "Y")
+				{
+					$("#BTN_download").trigger("click");
+					parent.ProgressBar.hide();
+				};
+			}
 		});
 		
 		// Datatable grid 초기 설정 셋업
 		initGridTable($tableObj);	
 	
 		$("#BTN_back").on("click", function() {
-			$("#FORM_search").attr("action", "/portal/corp/eu/scm/parts/order/display/order_status_list").submit();
+			$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/status/list").submit();
 		});
 	
 		$("#BTN_download").on("click", function() {
 			let gridFileDownload = new GridFileDownload($tableObj);
-			gridFileDownload.fileName = "order_status_list";
+			gridFileDownload.fileName = "Order_Status_Detail";
 			gridFileDownload.excelDownload();
 		});
 	});

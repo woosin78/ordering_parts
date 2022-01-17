@@ -3,6 +3,7 @@ package org.jwebppy.platform.core.util;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
@@ -121,14 +122,44 @@ public class CmDateFormatUtils
 		return format(CmDateTimeUtils.now(zoneId).plusMonths(years), format);
 	}
 
+	public static String theFirstDateMonth(ZonedDateTime zonedDateTime, String format)
+	{
+		return format(zonedDateTime.withDayOfMonth(1), format);
+	}
+
 	public static String theFirstDateMonth(ZonedDateTime zonedDateTime)
 	{
-		return format(zonedDateTime.withDayOfMonth(1), getDateFormat());
+		return theFirstDateMonth(CmDateTimeUtils.now(), getDateFormat());
+	}
+
+	public static String theFirstDateThisMonth(String format)
+	{
+		return theFirstDateMonth(CmDateTimeUtils.now(), format);
 	}
 
 	public static String theFirstDateThisMonth()
 	{
 		return theFirstDateMonth(CmDateTimeUtils.now());
+	}
+
+	public static String theLastDateMonth(ZonedDateTime zonedDateTime, String format)
+	{
+		return format(zonedDateTime.with(TemporalAdjusters.lastDayOfMonth()), format);
+	}
+
+	public static String theLastDateMonth(ZonedDateTime zonedDateTime)
+	{
+		return theLastDateMonth(zonedDateTime, getDateFormat());
+	}
+
+	public static String theLastDateThisMonth(String format)
+	{
+		return theLastDateMonth(CmDateTimeUtils.now(), format);
+	}
+
+	public static String theLastDateThisMonth()
+	{
+		return theLastDateMonth(CmDateTimeUtils.now());
 	}
 
 	public static String unlimitDate(String format)
@@ -174,7 +205,7 @@ public class CmDateFormatUtils
 			return PlatformCommonVo.DEFAULT_TIME_FORMAT;
 		}
 
-		return platformUserDetails.getDateFormat1();
+		return platformUserDetails.getTimeFormat1();
 	}
 
 	public static String getTimezone()

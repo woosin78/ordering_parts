@@ -10,7 +10,7 @@
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQPD_T_ORDER_LIST}"></div>
 		<div id="BTN_search" class="block-button-area">
-			<button th:text="#{HQPD_B_SEARCH}"></button>
+			<button type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
 		</div>
 	</div>
 	
@@ -52,12 +52,6 @@
 				</td>
 			</tr>		
 			<tr>
-				<th th:text="#{HQPD_L_PO_NO}"></th>
-				<td>
-					<div class="input-area">
-						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
-					</div>
-				</td>
 				<th th:text="#{HQPD_L_ORDER_DATE}"></th>
 				<td>
 					<div class="input-area">
@@ -65,7 +59,13 @@
 						<div class="split"></div>
 						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">
 					</div>
-				</td>				
+				</td>
+				<th th:text="#{HQPD_L_PO_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+					</div>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -103,22 +103,26 @@ $(function(){
 	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 	
 	$tableObj = $("#TBL_grid").DataTable({
-		select: true,   			// row 선택 기능 켬
-		ordering: true, 			// 정렬 기능 켬
+		select: {
+			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
 		columns : [
-			{data: "VBELN", title: "[[#{HQPD_L_ORDER_NO}]]", className:"link"},//Order No.
+			{data: "VBELN", title: "[[#{HQPD_L_ORDER_NO}]]", className: "link"},//Order No.
 			{data: "ZZAUKON", title: "[[#{HQPD_L_ORDER_TYPE}]]"},//Order Type
 			{data: "VTEXT2", title: "[[#{HQPD_L_SHIPPING_CONDITION}]]"},//Shipping Condition
-			{data: "BSTKD", title: "[[#{HQPD_L_PO_NO}]]"},//P.O. No. // className:"center"}, // 데이터 가운데 정렬. (css 만들어서 사용)
+			{data: "BSTKD", title: "[[#{HQPD_L_PO_NO}]]"},//P.O. No.
 			{data: "ERDAT2", title: "[[#{HQPD_L_ORDER_DATE}]]"},//Create Date // 데이터 오른쪽 정렬.
-			{data: "COUNT", title: "[[#{HQPD_L_LINE_ITEM}]]"},//Line Item // className:"center"}
-			{data: "T_NETWR", title: "[[#{HQPD_L_ORDER_AMOUNT}]]"},//Order Amt. // className:"center"}
-			{data: "WAERK", title: "[[#{HQPD_L_CURRENCY}]]"}//Curr. // className:"center"}
+			{data: "COUNT", title: "[[#{HQPD_L_ITEM_ROWS}]]"},//Item Rows
+			{data: "T_NETWR", title: "[[#{HQPD_L_ORDER_AMOUNT}]]", className: "right"},//Order Amt.
+			{data: "WAERK", title: "[[#{HQPD_L_CURRENCY}]]"}//Curr.
 		],
+		/*
 		columnDefs: [
 			{ className: "left", targets: "_all" }
 		],
+		*/
 		ajax: {
 			url: "/portal/iv/hq/parts/domestic/order/display/order_list/data",
 			data: function(p)
@@ -168,7 +172,7 @@ $(function(){
 			docName = "quotation";
 		}
 		
-		document.location.href = "/portal/scm/parts/domestic/order/display/" + docName + "_list?pDocType=" + $(this).val();
+		document.location.href = "/portal/iv/hq/parts/domestic/order/display/" + docName + "_list?pDocType=" + $(this).val();
 	});
 	
 	$("#BTN_search").on("click", function() {
@@ -194,7 +198,7 @@ $(function(){
 		if (orderNo != null)
 		{
 			$("#orderNo").val($tableObj.cell(this).data());
-			$("#FORM_search").attr("action", "/portal/scm/parts/domestic/order/display/order_detail").submit();
+			$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/display/order_view").submit();
 		};
 	});
 });

@@ -24,7 +24,7 @@ import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
-import org.jwebppy.portal.iv.hq.parts.common.web.PartsGeneralController;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.SimulationResultDto;
@@ -41,7 +41,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/create")
-public class OrderSimulationController extends PartsGeneralController
+public class OrderSimulationController extends PartsDomesticGeneralController
 {
 	@Autowired
 	private Environment environment;

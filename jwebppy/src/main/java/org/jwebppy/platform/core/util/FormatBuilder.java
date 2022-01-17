@@ -55,6 +55,16 @@ public class FormatBuilder
 		return this;
 	}
 
+	public FormatBuilder qtyFormat(String key) {
+		formatOperation.decimalFormat(key, "#,###");
+		return this;
+	}
+
+	public FormatBuilder qtyFormat(String[] keys) {
+		formatOperation.decimalFormat(keys, "#,###");
+		return this;
+	}
+
 	public FormatBuilder decimalFormat(String key) {
 		formatOperation.decimalFormat(key);
 		return this;
@@ -76,7 +86,7 @@ public class FormatBuilder
 	}
 
 	public FormatBuilder integerFormat(String key) {
-		formatOperation.integerFormat(key);;
+		formatOperation.integerFormat(key);
 		return this;
 	}
 
@@ -201,10 +211,12 @@ public class FormatBuilder
 		formatOperation.deleteZeroDate(key);
 		return this;
 	}
+
 	public FormatBuilder deleteZeroDate(String[] key) {
 		formatOperation.deleteZeroDate(key);
 		return this;
 	}
+
 	/**
 	 * 정수앞에 0을 지우기
 	 * @param key
@@ -214,6 +226,7 @@ public class FormatBuilder
 		formatOperation.viewCode(key);
 		return this;
 	}
+
 	public FormatBuilder viewCode(String[] key){
 		formatOperation.viewCode(key);
 		return this;
@@ -223,6 +236,7 @@ public class FormatBuilder
 		formatOperation.getDateFormat(key);
 		return this;
 	}
+
 	public FormatBuilder getDateFormat(String[] key){
 		formatOperation.getDateFormat(key);
 		return this;

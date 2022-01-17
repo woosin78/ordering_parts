@@ -5,11 +5,10 @@ import java.util.Map;
 
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
-import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
-import org.jwebppy.portal.iv.hq.parts.common.web.PartsGeneralController;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.parts_info.service.PartsInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping("/portal/scm/parts/domestic/info")
-public class PartsInfoController extends PartsGeneralController
+public class PartsInfoController extends PartsDomesticGeneralController
 {
 	@Autowired
 	private PartsInfoService partsInfoService;
@@ -75,7 +74,7 @@ public class PartsInfoController extends PartsGeneralController
 			return null;
 		}
 
-		ErpDataMap rfcParamMap = getErpUserInfo();
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.put("partsNo", pPartsNo.toUpperCase());//PartsNo
 
 		DataList dataList = partsInfoService.getSimplePartsInfo(rfcParamMap);
@@ -103,7 +102,7 @@ public class PartsInfoController extends PartsGeneralController
 			return null;
 		}
 
-		ErpDataMap rfcParamMap = getErpUserInfo();
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.put("partsNo", paramMap.get("pPartsNo"));			//PartsNo
 		rfcParamMap.put("partsNoDesc", paramMap.get("pPartsNoDesc"));	//PartsNoDesc
 
@@ -124,7 +123,7 @@ public class PartsInfoController extends PartsGeneralController
 	@ResponseBody
 	public Object subItemData(@RequestParam Map<String, Object> paramMap)
 	{
-		ErpDataMap rfcParamMap = getErpUserInfo();
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.put("partsNo", paramMap.get("pPartsNo"));			//PartsNo
 		rfcParamMap.put("partsNoDesc", paramMap.get("pPartsNoDesc"));	//PartsNoDesc
 
@@ -145,7 +144,7 @@ public class PartsInfoController extends PartsGeneralController
 	@ResponseBody
 	public Object appliedModelData(@RequestParam Map<String, Object> paramMap)
 	{
-		ErpDataMap rfcParamMap = getErpUserInfo();
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.put("partsNo", paramMap.get("pPartsNo"));			//PartsNo
 		rfcParamMap.put("productType", paramMap.get("pProductType"));	//PartsNoDesc
 
@@ -165,7 +164,7 @@ public class PartsInfoController extends PartsGeneralController
 	@ResponseBody
 	public Object alternativeData(@RequestParam Map<String, Object> paramMap)
 	{
-		ErpDataMap rfcParamMap = getErpUserInfo();
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.put("partsNo", paramMap.get("pPartsNo"));			//PartsNo
 
 		RfcResponse rfcResponse = partsInfoService.getAlternativeList(rfcParamMap);

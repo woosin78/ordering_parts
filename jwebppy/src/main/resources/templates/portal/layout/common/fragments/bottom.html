@@ -25,12 +25,10 @@ $(document).ready(function() {
 $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
 	if (jqXHR.status == "401" || jqXHR.status == "403")
 	{
-		alert("[[#{DIVEU_M_0048}]]");
 		document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}]]";
 	}
 	else
 	{
-		//alert("[[#{DIVEU_M_0049}]]");
 		//document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).ERROR_PAGE_URL}]]";
 	};
 	

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+	
+<th:block layout:fragment="content">
+	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
+	
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQPD_T_BACKORDER_LIST}"></div><!-- Backorder List -->
+		<div class="block-button-area">
+			<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button><!-- Download -->
+			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
+		</div>
+	</div>
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	<table class="condition">
+		<tbody>
+			<tr>
+				<th th:text="#{HQPD_L_ORDER_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
+					</div>			
+				</td>
+				<th th:text="#{HQPD_L_ORDER_TYPE}"></th>
+				<td>
+					<div class="input-area order-type"></div>
+				</td>			
+			</tr>
+			<tr>
+				<th th:text="#{HQPD_L_ORDER_PART_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
+					</div>		
+				</td>
+				<th th:text="#{HQPD_L_ORDER_DATE}"></th><!-- Period -->
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<div class="split"></div>
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">					
+					</div>
+				</td>
+			</tr>		
+			<tr>
+				<th th:text="#{HQPD_L_PO_NO}"></th>
+				<td colspan="3">
+					<div class="input-area">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+	<script type="application/javascript">
+	$(function(){
+		let orderComponent = new OrderComponent();
+		orderComponent.makeOrderType($(".order-type"), "pOrderType", "");
+		
+		Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+			
+		$tableObj = $("#TBL_grid").DataTable({
+			select: {
+				selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+		    },
+			ordering: true,// 정렬 기능 켬
+			scrollY: 100,
+			fixedColumns: { leftColumns: 8 },
+			columns : [
+				{data: "KONDA_T", 		title: "[[#{HQPD_L_ORDER_TYPE}]]"},	//Order<br>Type				
+				{data: "AUDAT", 		title: "[[#{HQPD_L_ORDER_DATE}]]"},	//Order Date				
+				{data: "VBELN", 		title: "[[#{HQPD_L_ORDER_NO}]]"}, //Order No.
+				{data: "POSNR", 		title: "[[#{HQPD_L_LINE_ITEM}]]"}, //Line Item 
+				{data: "MATNR_SO", 		title: "[[#{HQPD_L_ORDER_PART_NO}]]"}, //Order Part No.
+				{data: "MATNR_SH", 		title: "[[#{HQPD_L_SUPPLY_PART_NO}]]"}, //Supply Part No
+				{data: "MAKTX", 		title: "[[#{HQPD_L_DESCRIPTION}]]"}, //Description
+				{data: "KWMENG_SO", 	title: "[[#{HQPD_L_ORDER_QTY}]]"}, //Order Qty
+				{data: "KWMENG_SH", 	title: "[[#{HQPD_L_SHIPMENT_COMPLETE_QTY}]]"}, //S.Completion Qty
+				{data: "KWMENG", 		title: "[[#{HQPD_L_BACKORDER_QTY}]]"}, //B/O Quantity
+				{data: "VRKME", 		title: "[[#{HQPD_L_UOM}]]"}, //UoM,
+				{data: "PRETD",			title: "[[#{HQPD_L_ETD}]]"}, //ETD Comment
+				{data: "BSTKD", 		title: "[[#{HQPD_L_PO_NO}]]"}	//P.O. No.
+			],
+			ajax: {
+				url: "/portal/iv/hq/parts/domestic/order/backorder/list/data",
+				data: function(p)
+				{
+					p.pOrderNo 		= $("#pOrderNo").val();
+					p.pOrderType	= $("#pOrderType").val();
+					p.pPoNo 		= $("#pPoNo").val();
+					p.pOrderPartNo 	= $("#pOrderPartNo").val();
+					p.pFromDate 	= $("#pFromDate").val();
+					p.pToDate 		= $("#pToDate").val();				
+				},
+				dataSrc: function(response) 
+				{				
+					let data = response.RESULT;
+											
+					for (let i=0, length=data.length; i<length; i++)
+					{
+						let etd = $.trim(data[i].PRETD);
+						let etdat = $.trim(data[i].ETDAT);					
+										
+						if (etd == "0000-00-00")
+						{
+							etd = "";						
+						}
+						
+						data[i].ETDAT = etdat;
+						
+						let gubun = data[i].GUBUN;
+						let etdDesc = etd;
+						
+						if ("F" == gubun)
+						{
+							etdDesc = "All available";												
+						}
+						else if ("P" == gubun)
+						{
+							etdDesc = "Partially available";												
+						}
+						
+						data[i].PRETD = etdDesc;
+					};		
+					
+					$("#totalRows").html(data.length+" row(s).");
+					
+					return data;
+				}			
+			},
+			initComplete:function(settings, json) 
+			{			
+				ProgressBar.hide();
+			}
+		});
+		
+		// Datatable grid 초기 설정 셋업
+		initGridTable($tableObj);
+		
+		// Search 버튼 클릭
+		$("#BTN_search").on("click", function(){		
+			doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+		});
+		
+		//Input text 엔터 키 입력
+		$("#FORM_search input:text").on("keydown", function(event) {
+			if (event.keyCode == 13)
+			{
+				doSearch();
+			};
+		});	
+			
+		$("#BTN_download").on("click", function() {
+			let gridFileDownload = new GridFileDownload($tableObj);
+			gridFileDownload.fileName = "backorder_list";
+			gridFileDownload.excelDownload();
+		});
+		
+		function doSearch()
+		{
+			$tableObj.ajax.reload();
+		}	
+	});
+	
+	</script>	
+</th:block>

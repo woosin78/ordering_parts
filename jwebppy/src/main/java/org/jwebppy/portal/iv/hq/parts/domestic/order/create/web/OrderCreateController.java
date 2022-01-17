@@ -5,14 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.platform.core.dao.support.DataList;
+import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.hq.common.HqCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
-import org.jwebppy.portal.iv.hq.parts.common.web.PartsGeneralController;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OnetimeAddressDto;
+import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderCreateService;
@@ -28,7 +28,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/create")
-public class OrderCreateController extends PartsGeneralController
+public class OrderCreateController extends PartsDomesticGeneralController
 {
 	@Autowired
 	private OrderCreateService orderCreateService;
@@ -48,22 +48,22 @@ public class OrderCreateController extends PartsGeneralController
 	@ResponseBody
 	public Object headerInfo(@RequestParam Map<String, Object> paramMap)
 	{
-		ErpDataMap erpDateMap = getErpUserInfo();
-		erpDateMap.put("AUART", paramMap.get("orderType"));
-		erpDateMap.put("KONDA", paramMap.get("priceGroup"));
-		erpDateMap.put("VBTYP", paramMap.get("docType"));
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+		rfcParamMap.put("AUART", paramMap.get("orderType"));
+		rfcParamMap.put("KONDA", paramMap.get("priceGroup"));
+		rfcParamMap.put("VBTYP", paramMap.get("docType"));
 
-		return orderCreateService.getHeaderInfo(erpDateMap);
+		return orderCreateService.getHeaderInfo(rfcParamMap);
 	}
 
 	@RequestMapping("/order_type/data")
 	@ResponseBody
 	public Object orderTypeData(@RequestParam Map<String, Object> paramMap)
 	{
-		ErpDataMap erpDateMap = getErpUserInfo();
-		erpDateMap.putAll(paramMap);
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+		rfcParamMap.putAll(paramMap);
 
-		return orderCreateService.getOrderType(erpDateMap);
+		return orderCreateService.getOrderType(rfcParamMap);
 	}
 
 	@PostMapping("/valid_check")
@@ -97,7 +97,7 @@ public class OrderCreateController extends PartsGeneralController
 	{
 		if (CmStringUtils.isNotEmpty(order.getMaterialNo()))
 		{
-			ErpDataMap userInfoMap = getErpUserInfo();
+			PartsErpDataMap userInfoMap = getErpUserInfo();
 
 			order.setCorp(userInfoMap.getCorpNo());
 			order.setUsername(userInfoMap.getUsername());
@@ -156,11 +156,11 @@ public class OrderCreateController extends PartsGeneralController
 	@ResponseBody
 	public Object shipToPartyListData(@RequestParam Map<String, Object> paramMap)
 	{
-		ErpDataMap erpDateMap = getErpUserInfo();
-		erpDateMap.put("customerNo", paramMap.get("pCustomerNo"));
-		erpDateMap.put("customerName", paramMap.get("pCustomerName"));
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+		rfcParamMap.put("customerNo", paramMap.get("pCustomerNo"));
+		rfcParamMap.put("customerName", paramMap.get("pCustomerName"));
 
-		return orderCreateService.getShipToParty(erpDateMap);
+		return orderCreateService.getShipToParty(rfcParamMap);
 	}
 
 	@RequestMapping("/shipping_info_list")
@@ -175,97 +175,42 @@ public class OrderCreateController extends PartsGeneralController
 	@ResponseBody
 	public Object shippingInfoListData(@RequestParam Map<String, Object> paramMap)
 	{
-		ErpDataMap erpDateMap = getErpUserInfo();
-		erpDateMap.put("orderType", paramMap.get("orderType"));
-		erpDateMap.put("priceGroup", paramMap.get("priceGroup"));
-		erpDateMap.put("customerNo", erpDateMap.getCustomerNo());
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+		rfcParamMap.put("orderType", paramMap.get("orderType"));
+		rfcParamMap.put("priceGroup", paramMap.get("priceGroup"));
+		rfcParamMap.put("customerNo", rfcParamMap.getCustomerNo());
 
-		return orderCreateService.getShippingInfo(erpDateMap);
+		return orderCreateService.getShippingInfo(rfcParamMap);
 	}
 
-	@RequestMapping("/onetime_address_list")
-	public Object onetimeAddressList(@RequestParam Map<String, Object> paramMap)
+	@RequestMapping("/transfer_to_order")
+	public Object transferOrder(@RequestParam Map<String, Object> paramMap)
 	{
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/onetime_address_list/data")
+	@RequestMapping("/transfer_to_order/save")
 	@ResponseBody
-	public Object onetimeAddressListData(@ModelAttribute OnetimeAddressDto onetimeAddress)
+	public Object saveTransferOrder(@RequestParam Map<String, Object> paramMap)
 	{
-		ErpDataMap erpDataMap = getErpUserInfo();
+		DataMap rfcParamMap = new DataMap(paramMap);
 
-		onetimeAddress.setCorp(erpDataMap.getCorpName());
-		onetimeAddress.setRegUsername(getUsername());
+		RfcResponse rfcResponse = orderCreateService.transferOrder(rfcParamMap);
+		DataList dataList = rfcResponse.getTable("RETURN");
 
-		return orderCreateService.getOnetimeAddresses(onetimeAddress);
-	}
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("TYPE", "S");
+		resultMap.put("SALESDOCUMENT_EX", rfcResponse.getString("SALESDOCUMENT_EX"));
 
-	@RequestMapping("/onetime_address/duplication_check")
-	@ResponseBody
-	public Object checkOnetimeAddressDuplication(@ModelAttribute OnetimeAddressDto onetimeAddress)
-	{
-		ErpDataMap erpDataMap = getErpUserInfo();
-
-		onetimeAddress.setCorp(erpDataMap.getCorpName());
-		onetimeAddress.setCustomerNo(CmStringUtils.stripStart(erpDataMap.getCustomerNo(), "0"));
-		onetimeAddress.setRegUsername(getUsername());
-
-		List<OnetimeAddressDto> onetimeAddresses = orderCreateService.getOnetimeAddressesForDuplicationCheck(onetimeAddress);
-
-		if (CollectionUtils.isNotEmpty(onetimeAddresses))
+		if (!dataList.isEmpty())
 		{
-			return onetimeAddresses.get(0);
+			DataMap dataMap = new DataMap(dataList.get(0));
+
+			resultMap.put("TYPE", dataMap.getString("TYPE"));
+			resultMap.put("MESSAGE", dataMap.getString("MESSAGE"));
 		}
 
-		return null;
-	}
-
-	@RequestMapping("/onetime_address/save")
-	@ResponseBody
-	public Object saveOnetimeAddress(@ModelAttribute OnetimeAddressDto onetimeAddress)
-	{
-		ErpDataMap erpDataMap = getErpUserInfo();
-		onetimeAddress.setCorp(erpDataMap.getCorpName());
-		onetimeAddress.setCustomerNo(CmStringUtils.stripStart(erpDataMap.getCustomerNo(), "0"));
-		onetimeAddress.setFgDelete(HqCommonVo.NO);
-
-		return orderCreateService.saveOnetimeAddress(onetimeAddress);
-	}
-
-	@RequestMapping("/onetime_address/delete")
-	@ResponseBody
-	public Object deleteOnetimeAddress(@RequestParam("oaSeq") List<Integer> oaSeqs)
-	{
-		OnetimeAddressDto onetimeAddress = new OnetimeAddressDto();
-		onetimeAddress.setCorp(getErpUserInfo().getCorpName());
-		onetimeAddress.setRegUsername(getUsername());
-		onetimeAddress.setFgDelete(HqCommonVo.YES);
-		onetimeAddress.setOaSeqs(oaSeqs);
-
-		return orderCreateService.deleteOnetimeAddress(onetimeAddress);
-	}
-
-	@RequestMapping("/onetime_address/postal_code")
-	@ResponseBody
-	public Object postalCode(@ModelAttribute OnetimeAddressDto onetimeAddress)
-	{
-		ErpDataMap erpDateMap = new ErpDataMap(getErpUserInfo());
-		erpDateMap.put("country", onetimeAddress.getCountry());
-		erpDateMap.put("postalCode", onetimeAddress.getPostalCode());
-
-		return orderCreateService.getPostalCode(erpDateMap);
-	}
-
-	@RequestMapping("/onetime_address/tzone_list")
-	@ResponseBody
-	public Object tzone_list(@ModelAttribute OnetimeAddressDto onetimeAddress)
-	{
-		ErpDataMap erpDateMap = new ErpDataMap();
-		erpDateMap.put("country", onetimeAddress.getCountry());
-		erpDateMap.put("transportZone", onetimeAddress.getTransportZone());
-
-		return orderCreateService.getTransportZone(erpDateMap);
+		return resultMap;
 	}
 
 	@RequestMapping("/error_report")
