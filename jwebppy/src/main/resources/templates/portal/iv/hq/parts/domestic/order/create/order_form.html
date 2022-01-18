@@ -662,7 +662,7 @@
 	
 		$tableObj = $("#TBL_grid").DataTable({
 			select: {
-				selector: 'td:not(.noselect)'	// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+				selector: "td:not(.noselect)"	// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
 		    },
 			ordering: true,
 			scrollY: 100,
@@ -681,7 +681,7 @@
 							return "";
 						}
 	
-						return '<input type="checkbox" class="custom-ui check-all" onchange="syncInput(this)"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
+						return "<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)'><label></label>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
 				{name: "lineNo", data: "lineNo", title: "[[#{HQPD_L_ITEM}]]"},//Item
@@ -704,7 +704,7 @@
 					data: "orderQty",
 					title: "[[#{HQPD_L_REQ_QTY}]]",
 					orderable: false,
-					className:"center noselect",
+					className: "center noselect",
 					render: function(data, type, row)
 					{
 						return '<input type="text" class="custom-ui" name="orderQty" style="width:70px" value="' + row.orderQty + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onkeyup="doSimulationByEnter(this)" onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.

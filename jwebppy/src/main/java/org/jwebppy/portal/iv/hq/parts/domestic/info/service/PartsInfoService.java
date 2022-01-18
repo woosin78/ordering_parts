@@ -1,4 +1,4 @@
-package org.jwebppy.portal.iv.hq.parts.domestic.parts_info.service;
+package org.jwebppy.portal.iv.hq.parts.domestic.info.service;
 
 import java.util.HashMap;
 import java.util.LinkedList;

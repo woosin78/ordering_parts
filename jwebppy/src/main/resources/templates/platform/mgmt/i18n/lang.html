@@ -38,6 +38,9 @@
 	};
    	langModal.onShow = function()
 	{
+   		//Set focus to Suffix
+   		$("#FORM_lang input[name=seq]").focus();
+   		
 		if (JpUtilsString.isNotEmpty($("#FORM_lang input[name=lSeq]").val()))
 		{
 			$("#BTN_deleteLang").show();

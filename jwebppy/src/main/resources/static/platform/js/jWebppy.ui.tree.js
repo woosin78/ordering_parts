@@ -16,6 +16,7 @@ let JpUiTree = function(object)
 	this.onLoad;
 	this.selectedItem;
 	this.commands = new Array();
+	this.status = [];
 
 	let _this = this;
 	
@@ -31,6 +32,10 @@ let JpUiTree = function(object)
 			let option = {
 				url: JpUtilsPath.url(_this.url),
 				dataType: "json",
+				beforeSend: function(jqXHR, settings)
+				{
+					_this.refreshStatus();
+				},
 				success: function(data, textStatus, jqXHR)
 				{
 					_this.items = JpUtilsAjax.toJson(data).RESULT;
@@ -49,6 +54,19 @@ let JpUiTree = function(object)
 		{
 			_this.buildTree();
 		};
+	};
+	
+	this.refreshStatus = function()
+	{
+		this.status = null;
+		this.status = [];
+		
+		this.context.find(".caret").each(function(index) {
+			let key = String($(this).attr("data-key"));
+			let value = $(this).hasClass("down") ? "down" : "up";
+			
+			_this.status[key] = value;
+		});		
 	};
 	
 	this.buildTree = function()
@@ -118,12 +136,13 @@ let JpUiTree = function(object)
 		{
 			let subItemsLength = (items[i].SUB_ITEMS != null) ? items[i].SUB_ITEMS.length : 0;
 			let type = items[i].TYPE;
+			let direction = JpUtilsString.defaultString(this.status[items[i].KEY], "up");
 
 			this.content.push("<div class='item'>");
-
+			
 			if (subItemsLength > 0)
 			{
-				this.content.push("<i class='caret up icon'></i>");
+				this.content.push("<i class='caret " + direction + " icon' data-key='" + items[i].KEY + "'></i>");
 			};
 
 			if (items[i].TYPE == "FOLDER" && subItemsLength > 0)
@@ -142,7 +161,9 @@ let JpUiTree = function(object)
 
 			if (subItemsLength > 0)
 			{
-				this.content.push("<div class='list' style='display:none;'>");
+				let display = (direction == "up") ? "none" : "block";
+				
+				this.content.push("<div class='list' style='display:" + display + ";'>");
 				this.makeItem(items[i].SUB_ITEMS);
 				this.content.push("		</div>");
 			};

@@ -17,7 +17,8 @@
 <div class="block-header">
 	<div class="block-title" th:text="#{HQPD_T_PARTS_INFO}"></div><!-- Parts Info. -->
 	<div class="block-button-area">
-		<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->		
+		<button id="BTN_calc" type="button" th:text="#{HQPD_B_CALCULATE}"></button><!-- Calculate -->
+		<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
 	</div>	
 </div>	
 <div class="condition-area">
@@ -45,14 +46,14 @@
 			<th style="width:15%" th:text="#{HQPD_L_DESCRIPTION}"></th><!-- Description -->
 			<td id="MAKTX"></td>
 			<th style="width:15%" th:text="#{HQPD_L_STOCK}"></th><!-- Stock -->
-			<td id="AVA_FLAG"></td>			
+			<td id="STOCK"></td>			
 		</tr>		
 		<tr>
 			<th th:text="#{HQPD_L_SERVICEABLE}"></th><!-- Serviceable -->
 			<td id="SVRCD"></td>
 			<th th:text="#{HQPD_L_NOT_SERVICE_REASON}"></th><!-- Not Service Reason -->
 			<td>
-				<span id="NOT_SERVICE"></span>
+				<span id="NOT_SERVICE_REASON"></span>
 				
 				<span id="AREA_notServiceReason" style="display:none;">
 					<button id="BTN_notServiceReason" class="btn-popup2" type="button" onclick="showMoreInfoPopup(this);"></button>
@@ -64,9 +65,9 @@
 			<td id="AUMNG"></td>
 			<th th:text="#{HQPD_L_MODEL}"></th><!-- Model -->
 			<td>						
-				<div id="AREA_appliedModel" style="display:none;">			
+				<div id="AREA_model" style="display:none;">			
 				<span id="M_MATNR" class="custom-ui"></span>
-				<button id="BTN_appliedModel" class="btn-popup2" type="button" onclick="showMoreInfoPopup(this);"></button>
+				<button id="BTN_model" class="btn-popup2" type="button" onclick="showMoreInfoPopup(this);"></button>
 				</div>								
 			</td>			
 		</tr>			
@@ -79,46 +80,65 @@
 		<tr>
 			<th th:text="#{HQPD_L_NET_WEIGHT}"></th><!-- Net Weight -->
 			<td id="NTGEW"></td>
-			<th th:text="#{HQPD_L_LIST_PRICE_COST_CODE}"></th><!-- List Price Cost Code  -->
-			<td id="KONDM"></td>			
+			<th th:text="#{HQPD_L_PURCHASE_LEAD_TIME}"></th><!-- Purchase Lead Time -->
+			<td id="PLIFZ"></td>			
 		</tr>
+		<tr>
+			<th th:text="#{HQPD_L_GROSS_WEIGHT}"></th><!-- Gross Weight -->
+			<td id="BRGEW"></td>
+			<th th:text="#{HQPD_L_DIRECT_DELIVERY}"></th><!-- Direct Delivery -->
+			<td id="C_MTPOS"></td>			
+		</tr>
+		<tr>
+			<th th:text="#{HQPD_L_PRICE_APPLIED_DATE}"></th><!-- Price Applied Date -->
+			<td id="DATAB"></td>
+			<th th:text="#{HQPD_L_STOCK_LOCATION}"></th><!-- Stock Location -->
+			<td id="LADGR"></td>			
+		</tr>	
 		<tr>
 			<th th:text="#{HQPD_L_SUPPLY_PART_NO}"></th><!-- Supply Parts No. -->
 			<td>				
-				<div id="AREA_subItem" style="display:none;">			
+				<div id="AREA_substitution" style="display:none;">			
 				<span id="REPNR" class="custom-ui"></span>
-				<button id="BTN_subItem" class="btn-popup2" type="button" onclick="showMoreInfoPopup(this);"></button>
+				<button id="BTN_substitution" class="btn-popup2" type="button" onclick="showMoreInfoPopup(this);"></button>
 				</div>
 			</td>
-			<th th:text="#{HQPD_L_STOCK_OF_SUPPLY_PARTS}"></th><!-- Stock of Supply Parts -->
+			<th th:text="#{HQPD_L_STOCK_OF_SUPPLY_PART}"></th><!-- Stock of Supply Parts -->
 			<td id="STOCKP"></td>			
 		</tr>
+		<tr>
+			<th th:text="#{HQPD_L_BULLETIN}"></th><!-- Bulletin -->
+			<td id="BULLETIN"></td>
+			<th th:text="#{HQPD_L_KIT_AVAILABILITY}"></th><!-- KIT Availability -->
+			<td id="EXP_AVQ"></td>
+		</tr>
+		<tr>
+			<th th:text="#{HQPD_L_AM_DEV_PART}"></th><!-- AM Development Part -->
+			<td id="AM_PART_NO" colspan="3"></td>		
+		</tr>		
 	</tbody>
 </table>	
 </div>
+<div><button type="button" class="small_button">test</button></div>
 <div class="split-row"></div>
 <div class="condition-area">
-<table class="condition">
-	<thead>
-		<tr>
-			<th rowspan="2" th:text="#{HQPD_L_LIST_PRICE}" style="width:15%"></th><!--List Price  -->
-			<th colspan="3" th:text="#{HQPD_L_NET_PRICE}" style="width:85%"></th><!-- Net Price -->			
-		</tr>		
-        <tr>
-            <th th:text="#{HQPD_L_STOCK_ORDER}"></th><!-- Stock Order -->
-            <th th:text="#{HQPD_L_MACHINE_DOWN_ORDER}"></th><!-- Machine Down Order -->
-            <th th:text="#{HQPD_L_EMERGENCY_ORDER}"></th><!--Emergency Order  -->                        
-        </tr>
-     </thead>
-     <tbody>
-		<tr style="height:33px;">
-			<td id="LPRICE"></td>
-			<td id="YUSO"></td>
-			<td id="YUMO"></td>
-			<td id="YUEO"></td>						
-		</tr>
-	</tbody>        
-</table>	
+	<div class="condition-title" th:text="#{HQPD_L_SUPPLY_PART_PRICE_INFO}"></div>
+	<table class="condition">
+		<thead>
+	        <tr>
+	            <th th:text="#{HQPD_L_UOM}"></th><!-- UoM -->
+	            <th th:text="#{HQPD_L_LIST_PRICE}"></th><!--List Price  -->                        
+	            <th th:text="#{HQPD_L_STOCK_ORDER_LIST_PRICE}"></th><!--List Price (Stock Order)  -->
+	        </tr>
+	     </thead>
+	     <tbody>
+			<tr style="height:33px;">
+				<td id="MEINS"></td>
+				<td id="LPRICE_NETPR"></td>
+				<td id="YUSO"></td>						
+			</tr>
+		</tbody>        
+	</table>	
 </div>	
 <script>
 $(window).load(function() {
@@ -136,7 +156,7 @@ function doSearch()
 	$("#pPartsNo").val($("#pPartsNo").val().toUpperCase());
 	
 	$.ajax({
-		url: "/portal/scm/parts/domestic/info/parts_info/data",		
+		url: "/portal/iv/hq/parts/domestic/info/view/data",		
 		data: {	"pPartsNo": $("#pPartsNo").val() },
 		beforeSend: function(jqXHR, settings)
 		{
@@ -154,11 +174,12 @@ function doSearch()
 	    	};	    	
 	    	
 			$("#MAKTX").html(items[0].MAKTX);// Part No Desc
-			$("#AVA_FLAG").html(items[0].STOCK);// Stock
+			$("#STOCK").html(items[0].STOCK);// Stock
 			$("#SVRCD").html(items[0].SVRCD);// Serviceable
 			
-			let notcd = $.trim(items[0].NOTCD);
-			$("#NOT_SERVICE").html("");
+			// Not Service Reason
+			let notcd = JpUtilsString.trimToEmpty(items[0].NOTCD);
+			$("#NOT_SERVICE_REASON").html("");
 			
 			if (notcd != "")
 			{
@@ -171,62 +192,95 @@ function doSearch()
 					$("#AREA_notServiceReason").hide();
 				};
 				
-				$("#NOT_SERVICE").html(notcd + ":" + items[0].NOTCD_T);// Not Service Reason
+				$("#NOT_SERVICE_REASON").html(notcd + ":" + items[0].NOTCD_T);
 			};
 			
-			$("#AUMNG").html(items[0].AUMNG+" "+items[0].MEINS)
+			//Sales Lot
+			$("#AUMNG").html(items[0].AUMNG + " " + items[0].MEINS);
 
-			let model = $.trim(items[0].MDLNM);
+			// Model
+			let model = JpUtilsString.trimToEmpty(items[0].MDLNM);
 			$("#M_MATNR").html("");
-			$("#AREA_appliedModel").hide();
+			$("#AREA_model").hide();
 
 			if (model != "")
 			{
-				$("#M_MATNR").html(model);// Model
-				$("#AREA_appliedModel").show();
+				$("#M_MATNR").html(model);
+				$("#AREA_model").show();
 			};
 			
-			let openQty = $.trim(items[0].OPENQ);
-			$("#KWMENG").html("");
+			// Product Hierarchy
+			$("#PRODH_T").html(items[0].PRODH_T+" ["+items[0].PRODH+"]");
+			
+			// Open Qty
+			let openQty = JpUtilsString.trimToEmpty(items[0].OPENQ);
+			$("#KWMENG").html("");			
+			
 			if (openQty != "")
 			{
-				$("#KWMENG").html(openQty + " " + items[0].MEINS);// Open Qty	
+				$("#KWMENG").html(openQty + " " + items[0].MEINS);	
 			};
+			
+			// Net Weight
+			$("#NTGEW").html(items[0].NTGEW + " " + items[0].GEWEI);
 
-			let supplyPartsNo = $.trim(items[0].SUPNR);
+			// Gross Weight
+			$("#BRGEW").html(items[0].BRGEW + " " + items[0].GEWEI);			
+			
+			// Purchase Lead Time
+			$("#PLIFZ").html(items[0].PLIFZ);
+			
+			//Direct Delivery
+			$("#C_MTPOS").html(items[0].C_MTPOS);
+			
+			//Price Applied Date
+			$("#DATAB").html(items[0].DATAB);
+			
+			//Stock Location
+			$("#LADGR").html(items[0].LADGR);
+
+			//Supply Part No.
+			let supplyPartsNo = JpUtilsString.trimToEmpty(items[0].SUPNR);
 			$("#REPNR").html("");
-			$("#AREA_subItem").hide();
+			$("#AREA_substitution").hide();
 
 			if (supplyPartsNo != "")
 			{
-				$("#REPNR").html(supplyPartsNo);// Supply Part Number
-				$("#AREA_subItem").show();
+				$("#REPNR").html(supplyPartsNo);
+				$("#AREA_substitution").show();
 			};
 			
+			//Stock of Supply Part
 			let leadMes = $.trim(items[0].LEAD_MES);
 			if (leadMes != "")
 			{
-				$("#STOCKP").html(items[0].STOCKP + " " + leadMes); // Stock of Supply Part
+				$("#STOCKP").html(items[0].STOCKP + " " + leadMes);
 			}
 			else
 			{
 				$("#STOCKP").html(items[0].STOCKP);
 			};
-
-			let listPriceCostCode = $.trim(items[0].KONDM);
-			$("#KONDM").html("");
-
-			if (listPriceCostCode != "")
+			
+			//Bulletin
+			$("#BULLETIN").html("");
+			if (JpUtilsString.equals(items[0].BULLETIN, "X"))
 			{
-				$("#KONDM").html(listPriceCostCode + " : " + items[0].KONDM_T);// List Price Cost Code	
+				$("#BULLETIN").html("Y");
 			};
-							
-			$("#PRODH_T").html(items[0].PRODH_T+"  ["+items[0].PRODH+"]");// Product Hierarchy
-			$("#NTGEW").html(items[0].NTGEW+" "+items[0].GEWEI);// Net Weight
-			$("#LPRICE").html(items[0].LPRICE+" "+items[0].WAERS);
-			$("#YUSO").html(items[0].YUSO+" "+items[0].WAERS);
-			$("#YUMO").html(items[0].YUMO+" "+items[0].WAERS);				
-			$("#YUEO").html(items[0].YUEO+" "+items[0].WAERS);
+			
+			//AM Development Part
+			$("#AM_PART_NO").html(JpUtilsString.trimToEmpty(items[0].AM_PART_NO));
+			
+			//KIT Availability
+			$("#EXP_AVQ").html(JpUtilsString.trimToEmpty(items[0].EXP_AVQ));
+			
+			//UoM
+			$("#MEINS").html(JpUtilsString.trimToEmpty(items[0].MEINS));
+			$("#LPRICE_NETPR").html(JpUtilsString.trimToEmpty(items[0].LPRICE_NETPR) + " " + items[0].WAERS);
+			
+			$("#BTN_calc").on("click", function() {
+				$("#YUSO").html(JpUtilsString.trimToEmpty(items[0].LPRICE) + " " + items[0].WAERS);	
+			});			
     	},
     	complete: function(jqXHR, textStatus)
     	{
@@ -255,7 +309,7 @@ $("#pPartsNo").on("keydown", function(event) {
 $("#pPartsNo").autocomplete({	
 	source: function(request, response) {
 		$.ajax({
-			url: "/portal/scm/parts/domestic/info/autocompete/data",
+			url: "/portal/iv/hq/parts/domestic/info/autocompete/data",
 			data: {	"pPartsNo": $("#pPartsNo").val() },			
 			success: function(data, textStatus, jqXHR)
 			{
@@ -271,7 +325,7 @@ $("#pPartsNo").autocomplete({
 								}								
 							};
 						})
-						);
+				);
 			}
 		});
 	},
@@ -302,11 +356,11 @@ function showMoreInfoPopup(obj)
 	
 	if ($.trim($("#pPartsNo").val()).length > 0)
 	{
-		if ("BTN_subItem" == id)
+		if ("BTN_substitution" == id)
 		{
 			url = "/portal/scm/parts/domestic/info/sub_item_popup_list";	
 		}
-		else if ("BTN_appliedModel" == id)
+		else if ("BTN_model" == id)
 		{
 			url = "/portal/scm/parts/domestic/info/applied_model_popup_list";
 			width = 800;			
