@@ -131,7 +131,7 @@ $(function(){
 		],
 		*/
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/order/display/inquiry_list/data",
+			url: "/portal/iv/hq/parts/domestic/order/display/inquiry/list/data",
 			data: function(p)
 			{
 				// ajax로 넘길 파라미터
@@ -186,10 +186,10 @@ $(function(){
 		}
 		else if (docType == "B")
 		{
-			docName = "quotation";
+			docName = "quot";
 		}
 		
-		document.location.href = "/portal/iv/hq/parts/domestic/order/display/" + docName + "_list?pDocType=" + $(this).val();
+		document.location.href = "/portal/iv/hq/parts/domestic/order/display/" + docName + "/list?pDocType=" + $(this).val();
 	});
 	
 	$("#BTN_search").on("click", function() {
@@ -215,13 +215,13 @@ $(function(){
 		$("#orderNo").val(data.VBELN);
 		$("#status").val(data.RFGSK);
 		
-		$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/display/inquiry_view").submit();
+		$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/display/inquiry/view").submit();
 	});
 	
 	$("#TBL_grid tbody").on("click", "td:nth-child(3)", function () {
 		let data = $tableObj.row($(this)).data();		
 		
-		Popup.open("/portal/iv/hq/parts/domestic/order/display/order_view_popup?orderNo=" + data.VBELN2 + "&pOrderNo=" + data.VBELN2, 1280, 720);
+		Popup.open("/portal/iv/hq/parts/domestic/order/display/order/popup/view?orderNo=" + data.VBELN2 + "&pOrderNo=" + data.VBELN2, 1280, 720);
 	});		
 });
 </script>	

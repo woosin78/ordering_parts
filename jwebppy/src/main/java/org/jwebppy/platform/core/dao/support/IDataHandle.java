@@ -26,5 +26,6 @@ public interface IDataHandle
     public Object getObject(Object name);
     public boolean isNullValue(Object name);
     public boolean isEmptyValue(Object name);
+    public boolean isNotEmptyValue(Object name);
     public boolean isEquals(Object name, Object value);
 }

@@ -1,8 +1,18 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.claim.web;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.jwebppy.platform.core.dao.sap.RfcResponse;
+import org.jwebppy.platform.core.dao.support.DataList;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
+import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.claim.service.ClaimDisplayService;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +33,8 @@ public class ClaimDisplayController extends PartsDomesticGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-//		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateMonth(CmDateTimeUtils.now().minusMonths(6))));
-//		model.addAttribute("pToDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pToDate"), CmDateFormatUtils.today()));
+		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateMonth(CmDateTimeUtils.now())));
+		model.addAttribute("pToDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pToDate"), CmDateFormatUtils.today()));
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -35,25 +45,31 @@ public class ClaimDisplayController extends PartsDomesticGeneralController
 	@ResponseBody
 	public Object listData(@RequestParam Map<String, Object> paramMap)
 	{
-//		PartsErpDataMap rfcParamMap = getErpUserInfo();
-//		rfcParamMap.put("orderNo", paramMap.get("pOrderNo"));//Order No.
-//		rfcParamMap.put("orderType", paramMap.get("pOrderType"));//Order Type
-//		rfcParamMap.put("poNo", paramMap.get("pPoNo"));//P.O. No.
-//		rfcParamMap.put("orderPartNo", paramMap.get("pOrderPartNo"));//Order Part No.
-//		rfcParamMap.putDate("fromDate", CmStringUtils.defaultIfEmpty(paramMap.get("pFromDate"), CmDateFormatUtils.theFirstDateMonth(CmDateTimeUtils.now().minusMonths(6))));
-//		rfcParamMap.putDate("toDate", CmStringUtils.defaultIfEmpty(paramMap.get("pToDate"), CmDateFormatUtils.today()));
-//
-//		RfcResponse rfcResponse = backorderService.getList(rfcParamMap);
-//
-//		DataList dataList = rfcResponse.getTable("T_BACKORDER_LIST");
-//
-//		FormatBuilder.with(dataList)
-//			.dateFormat(new String[] { "AUDAT", "PRETD" })
-//			.qtyFormat(new String[] { "KWMENG_SO", "KWMENG_SH", "KWMENG" })
-//			.decimalFormat("NETWR");
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
-//		return dataList;
-		return null;
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"referenceNo", "pReferenceNo"},
+				{"complaintNo", "pComplaintNo"},
+				{"partNo", "pPartNo"}
+			})
+			.addDateByKey(new Object[][] {
+				{"fromDate", "pFromDate"},
+				{"toDate", "pToDate"}
+			});
+
+		RfcResponse rfcResponse = claimDisplayService.getList(rfcParamMap);
+		DataList dataList = rfcResponse.getTable("LT_SEARCH2");
+
+		FormatBuilder.with(dataList)
+			.dateFormat("ERDAT")
+			.decimalFormat("T_NETWR");
+
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("claimReason1List", claimDisplayService.getClaimReasonList(rfcParamMap));
+		resultMap.put("claimList", dataList);
+
+		return resultMap;
 	}
 
 	@RequestMapping("/view")
@@ -68,19 +84,67 @@ public class ClaimDisplayController extends PartsDomesticGeneralController
 	@ResponseBody
 	public Object viewData(@RequestParam Map<String, Object> paramMap)
 	{
-//		PartsErpDataMap rfcParamMap = getErpUserInfo();
-//		rfcParamMap.put("orderNo", paramMap.get("orderNo"));
-//
-//		RfcResponse rfcResponse = orderStatusService.getDetail(rfcParamMap);
-//		DataList dataList = rfcResponse.getTable("T_DETAIL");
-//
-//		FormatBuilder.with(dataList)
-//			.dateFormat("AUDAT")
-//			.dateFormat("ERDAT")
-//			.dateFormat("FST_ETD")
-//			.dateFormat("LST_ETD");
-//
-//		return dataList;
-		return null;
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"orderNo", "pOrderNo"},
+				{"docType", "pDocType"}
+			});
+
+		RfcResponse rfcResponse = claimDisplayService.getView(rfcParamMap);
+
+		DataList itemList = rfcResponse.getTable("LT_ITEM");
+
+		FormatBuilder.with(itemList)
+			.qtyFormat("QTY")
+			.dateFormat("ZZDEALDT");
+
+		Map<String, Object> resultMap = new HashMap<>();
+
+		resultMap.put("itemList", itemList);
+		resultMap.put("fileList", rfcResponse.getTable("LT_FILE"));
+
+		rfcParamMap.add("reason1", "");
+		resultMap.put("reason1List", claimDisplayService.getClaimReasonList(rfcParamMap));
+
+		rfcParamMap.add("reason1", "X");
+		resultMap.put("reason2List", claimDisplayService.getClaimReasonList(rfcParamMap));
+
+		return resultMap;
+	}
+
+	@RequestMapping("/download/doc")
+	public void downloadDocument(@RequestParam Map<String, Object> paramMap, HttpServletResponse httpServletResponse)
+	{
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"orderNo", "orderNo"},
+				{"docType", "docType"}
+			});
+
+		RfcResponse rfcResponse = claimDisplayService.getView(rfcParamMap);
+
+		downloadByRfc(httpServletResponse, rfcResponse.getTable("LT_FILE2"), "FILE_DATA", "Complain_" + CmStringUtils.trimToEmpty(paramMap.get("orderNo")) + ".pdf");
+	}
+
+	@RequestMapping("/download/attachment")
+	public void downloadAttachment(@RequestParam Map<String, Object> paramMap, HttpServletResponse httpServletResponse)
+	{
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"fileName", "fileName"},
+				{"orderNo", "orderNo"},
+				{"intNo", "intNo"},
+				{"docuItem", "docuItem"}
+			});
+
+		RfcResponse rfcResponse = claimDisplayService.getAttachment(rfcParamMap);
+
+		downloadByRfc(httpServletResponse, rfcResponse.getTable("LT_FILE"), "FILE_DATA", CmStringUtils.trimToEmpty(paramMap.get("fileName")));
 	}
 }

@@ -26,10 +26,10 @@
 <table class="condition table-fixed">
 	<tbody>
 		<tr>
-			<th style="width:15%" th:text="#{HQPD_L_PARTS_NO}"></th><!-- Part No. -->
+			<th style="width:15%" th:text="#{HQPD_L_PART_NO}"></th><!-- Part No. -->
 			<td colspan="3">
 				<div class="input-area">
-					<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" style="text-transform: uppercase;">
+					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" style="text-transform: uppercase;">
 					<button class="btn-popup2" type="button" onclick="showSearchPartsPopup();"></button>					
 				</div>
 			</td>
@@ -96,7 +96,7 @@
 			<td id="LADGR"></td>			
 		</tr>	
 		<tr>
-			<th th:text="#{HQPD_L_SUPPLY_PART_NO}"></th><!-- Supply Parts No. -->
+			<th th:text="#{HQPD_L_SUPPLY_PART_NO}"></th><!-- Supply Part No. -->
 			<td>				
 				<div id="AREA_substitution" style="display:none;">			
 				<span id="REPNR" class="custom-ui"></span>
@@ -119,7 +119,7 @@
 	</tbody>
 </table>	
 </div>
-<div><button type="button" class="small_button">test</button></div>
+
 <div class="split-row"></div>
 <div class="condition-area">
 	<div class="condition-title" th:text="#{HQPD_L_SUPPLY_PART_PRICE_INFO}"></div>
@@ -147,17 +147,17 @@ $(window).load(function() {
 
 function doSearch()
 {
-	if (JpUtilsString.isEmpty($("#pPartsNo").val()))
+	if (JpUtilsString.isEmpty($("#pPartNo").val()))
 	{
-		alert("[[#{HQPD_M_EMPTY_PARTS_NO}]]");
+		alert("[[#{HQPD_M_EMPTY_PART_NO}]]");
 		return;
 	}	
 	
-	$("#pPartsNo").val($("#pPartsNo").val().toUpperCase());
+	$("#pPartNo").val($("#pPartNo").val().toUpperCase());
 	
 	$.ajax({
 		url: "/portal/iv/hq/parts/domestic/info/view/data",		
-		data: {	"pPartsNo": $("#pPartsNo").val() },
+		data: {	"pPartNo": $("#pPartNo").val() },
 		beforeSend: function(jqXHR, settings)
 		{
 			ProgressBar.show();
@@ -294,23 +294,23 @@ $("#BTN_search").on("click", function(){
 	doSearch(); 
 });
 
-$("#pPartsNo").on("keydown", function(event) {
-	$("#pPartsNo").val($("#pPartsNo").val().toUpperCase());
+$("#pPartNo").on("keydown", function(event) {
+	$("#pPartNo").val($("#pPartNo").val().toUpperCase());
 
 	if (event.keyCode == 13)
 	{
-		if ($.trim($("#pPartsNo").val()) != "")
+		if ($.trim($("#pPartNo").val()) != "")
 		{
 			doSearch();	
 		};
 	};
 });
 
-$("#pPartsNo").autocomplete({	
+$("#pPartNo").autocomplete({	
 	source: function(request, response) {
 		$.ajax({
 			url: "/portal/iv/hq/parts/domestic/info/autocompete/data",
-			data: {	"pPartsNo": $("#pPartsNo").val() },			
+			data: {	"pPartNo": $("#pPartNo").val() },			
 			success: function(data, textStatus, jqXHR)
 			{
 				let result = data.RESULT;
@@ -338,8 +338,8 @@ $("#pPartsNo").autocomplete({
  */ 	
 function showSearchPartsPopup()
 {
-	let param = "pPartsNo=" + $("#pPartsNo").val();
-	Popup.open("/portal/scm/parts/domestic/info/parts_number_popup_list?" + param, 700, 600);
+	let param = "pPartNo=" + $("#pPartNo").val();
+	Popup.open("/portal/iv/hq/parts/domestic/info/popup/part_search?" + param, 700, 600);
 };
 
 /**
@@ -352,22 +352,22 @@ function showMoreInfoPopup(obj)
 	let width = 900;
 	let height = 520;
 	let url;
-	let param = "?pPartsNo=" + $("#pPartsNo").val();
+	let param = "?pPartNo=" + $("#pPartNo").val();
 	
-	if ($.trim($("#pPartsNo").val()).length > 0)
+	if ($.trim($("#pPartNo").val()).length > 0)
 	{
 		if ("BTN_substitution" == id)
 		{
-			url = "/portal/scm/parts/domestic/info/sub_item_popup_list";	
+			url = "/portal/iv/hq/parts/domestic/info/sub_item_popup_list";	
 		}
 		else if ("BTN_model" == id)
 		{
-			url = "/portal/scm/parts/domestic/info/applied_model_popup_list";
+			url = "/portal/iv/hq/parts/domestic/info/applied_model_popup_list";
 			width = 800;			
 		}
 		else if ("BTN_notServiceReason" == id)
 		{
-			url = "/portal/scm/parts/domestic/info/alternative_popup_list";
+			url = "/portal/iv/hq/parts/domestic/info/alternative_popup_list";
 			width = 700;
 		}
 		
@@ -376,13 +376,13 @@ function showMoreInfoPopup(obj)
 	else
 	{
 		  //display error message
-		  $("#pPartsNo").focus();	
+		  $("#pPartNo").focus();	
 	}	
 }
 
 function setPartsNo(partsNo)
 {
-	$("#pPartsNo").val(partsNo);
+	$("#pPartNo").val(partsNo);
 	doSearch();
 };
 </script>

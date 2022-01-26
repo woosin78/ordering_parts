@@ -40,7 +40,7 @@
 	</form> 							
 	<script>		
 	$(function(){
-		let isLoadedData = false;
+		let initCompleted = false;
 		
 		$tableObj = $("#TBL_grid").DataTable({
 			select: {
@@ -88,18 +88,19 @@
 						}
 					};
 					
-					isLoadedData = true;
-					
 					return data;
 				}
 			},
 			initComplete:function(settings, json) 
-			{			
+			{
+				initCompleted = true;
+				
 				ProgressBar.hide();
 			},
 			"drawCallback": function( settings ) {
-				if (isLoadedData && "[[${fgDownload}]]" == "Y")
+				if (initCompleted && "[[${fgDownload}]]" == "Y")
 				{
+					alert($("#orderNo").val());
 					$("#BTN_download").trigger("click");
 					parent.ProgressBar.hide();
 				};

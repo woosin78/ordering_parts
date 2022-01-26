@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/display")
+@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/display/inquiry")
 public class InquiryDisplayController extends PartsDomesticGeneralController
 {
 	@Autowired
 	private OrderDisplayService orderDisplayService;
 
-	@RequestMapping("/inquiry_list")
+	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth()));
@@ -39,19 +39,25 @@ public class InquiryDisplayController extends PartsDomesticGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/inquiry_list/data")
+	@RequestMapping("/list/data")
 	@ResponseBody
 	public Object listData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("orderType", CmStringUtils.trimToEmpty(paramMap.get("pOrderType")));//Order Type
-		rfcParamMap.put("orderNo", CmStringUtils.trimToEmpty(paramMap.get("pOrderNo")));//Order No.
-		rfcParamMap.put("poNo", CmStringUtils.trimToEmpty(paramMap.get("pPoNo")));//Purchase Order No.
-		rfcParamMap.put("orderPartNo", CmStringUtils.trimToEmpty(paramMap.get("pOrderPartNo")));//Order Part No.
-		rfcParamMap.put("status", CmStringUtils.trimToEmpty(paramMap.get("pStatus")));//Status
-		rfcParamMap.putDate("fromDate", CmStringUtils.defaultIfEmpty(paramMap.get("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth()));
-		rfcParamMap.putDate("toDate", CmStringUtils.defaultIfEmpty(paramMap.get("pToDate"), CmDateFormatUtils.today()));
-		rfcParamMap.put("docType", CmStringUtils.defaultString(paramMap.get("pDocType"), "A"));
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"orderType", "pOrderType"},
+				{"orderNo", "pOrderNo"},
+				{"poNo", "pPoNo"},
+				{"orderPartNo", "pOrderPartNo"},
+				{"status", "pStatus"},
+				{"docType", "pDocType"}
+			})
+			.addDate(new Object[][] {
+				{"fromDate", CmStringUtils.defaultIfEmpty(paramMap.get("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth())},
+				{"toDate", CmStringUtils.defaultIfEmpty(paramMap.get("pToDate"), CmDateFormatUtils.today())}
+			});
 
 		RfcResponse rfcResponse = orderDisplayService.getList(rfcParamMap);
 
@@ -66,7 +72,7 @@ public class InquiryDisplayController extends PartsDomesticGeneralController
 		return dataList;
 	}
 
-	@RequestMapping("/inquiry_view")
+	@RequestMapping("/view")
 	public Object view(@RequestParam Map<String, Object> paramMap, Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
@@ -74,15 +80,17 @@ public class InquiryDisplayController extends PartsDomesticGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/inquiry_view/data")
+	@RequestMapping("/view/data")
 	@ResponseBody
 	public Object viewData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("orderNo", paramMap.get("orderNo"));
-		rfcParamMap.put("docType", paramMap.get("docType"));
 
-		RfcResponse rfcResponse = orderDisplayService.getDetail(rfcParamMap);
+		rfcParamMap.with(paramMap)
+			.addByKey("orderNo", "orderNo")
+			.add("docType", "A");
+
+		RfcResponse rfcResponse = orderDisplayService.getView(rfcParamMap);
 
 		DataMap generalMap = rfcResponse.getStructure("LS_GENERAL");
 		DataMap mainHeadResult = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");

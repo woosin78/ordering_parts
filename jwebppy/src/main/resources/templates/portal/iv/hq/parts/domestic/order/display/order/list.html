@@ -27,13 +27,13 @@
 						
 						&nbsp;&nbsp;
 						
-						<input type="radio" class="custom-ui" name="pDocType" value="A" style="display:none" />
-						<label id="LB_docType2" th:text="#{HQPD_L_INQUIRY}" style="display:none"></label>
+						<input type="radio" class="custom-ui" name="pDocType" value="A"/>
+						<label id="LB_docType2" th:text="#{HQPD_L_INQUIRY}"></label>
 						
 						&nbsp;&nbsp;
 						
-						<input type="radio" class="custom-ui" name="pDocType" value="B" style="display:none" />
-						<label id="LB_docType3" th:text="#{HQPD_L_QUOTATION}" style="display:none"></label>
+						<input type="radio" class="custom-ui" name="pDocType" value="B" />
+						<label id="LB_docType3" th:text="#{HQPD_L_QUOTATION}"></label>
 					</div>
 				</th>
 			</tr>
@@ -88,12 +88,6 @@
 $(function(){
 	let customerType = "[[${erpUserInfo.get("TYPE")}]]";
 	
-	//Y06 : Sub Dealer
-	if (customerType != "Y06")
-	{
-		$("input:radio[name=pDocType][value=A], input:radio[name=pDocType][value=B], #LB_docType2, #LB_docType3").show();
-	};
-	
 	$("input:radio[name=pDocType][value='[[${pDocType}]]']").prop("checked", true);
 	
 	//주문유형 가져오기
@@ -124,7 +118,7 @@ $(function(){
 		],
 		*/
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/order/display/order_list/data",
+			url: "/portal/iv/hq/parts/domestic/order/display/order/list/data",
 			data: function(p)
 			{
 				// ajax로 넘길 파라미터
@@ -169,10 +163,10 @@ $(function(){
 		}
 		else if (docType == "B")
 		{
-			docName = "quotation";
+			docName = "quot";
 		}
 		
-		document.location.href = "/portal/iv/hq/parts/domestic/order/display/" + docName + "_list?pDocType=" + $(this).val();
+		document.location.href = "/portal/iv/hq/parts/domestic/order/display/" + docName + "/list?pDocType=" + $(this).val();
 	});
 	
 	$("#BTN_search").on("click", function() {
@@ -198,7 +192,7 @@ $(function(){
 		if (orderNo != null)
 		{
 			$("#orderNo").val($tableObj.cell(this).data());
-			$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/display/order_view").submit();
+			$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/display/order/view").submit();
 		};
 	});
 });

@@ -42,21 +42,27 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 	public Object listData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.putDate("fromDate", paramMap.get("pFromDate"));
-		rfcParamMap.putDate("toDate", paramMap.get("pToDate"));
-		rfcParamMap.putDate("fromOnboardDate", paramMap.get("pFromOnboardDate"));
-		rfcParamMap.putDate("toOnboardDate", paramMap.get("pToOnboardDate"));
-		rfcParamMap.put("shipmentNo", paramMap.get("pShipmentNo"));
-		rfcParamMap.put("orderNo", paramMap.get("pOrderNo"));
-		rfcParamMap.put("partNo", paramMap.get("pPartsNo"));
-		rfcParamMap.put("poNo", paramMap.get("pPoNo"));
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"shipmentNo", "pShipmentNo"},
+				{"orderNo", "pOrderNo"},
+				{"partNo", "pOrderNo"},
+				{"poNo", "pPoNo"}
+			})
+			.addDateByKey(new Object[][] {
+				{"fromDate", "pFromDate"},
+				{"toDate", "pToDate"},
+				{"fromOnboardDate", "pFromOnboardDate"},
+				{"toOnboardDate", "pToOnboardDate"}
+			});
 
 		RfcResponse rfcResponse = deliveryStatusService.getList(rfcParamMap);
 
 		DataList dataList = rfcResponse.getTable("T_LIST");
 
 		//KRW, JPY 는 가격에 100을 곱해줌
-		makePriceByCurrency(dataList, new String[] { "NETWR" }, "WAERK");
+		makePriceByCurrency(dataList, new String[] { "NETPR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.integerFormat("TKNUM")
@@ -83,21 +89,27 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 	public Object viewData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.putDate("fromDate", paramMap.get("pFromDate"));
-		rfcParamMap.putDate("toDate", paramMap.get("pToDate"));
-		rfcParamMap.putDate("fromOnboardDate", paramMap.get("pFromOnboardDate"));
-		rfcParamMap.putDate("toOnboardDate", paramMap.get("pToOnboardDate"));
-		rfcParamMap.put("shipmentNo", paramMap.get("pShipmentNo2"));
-		rfcParamMap.put("orderNo", paramMap.get("pOrderNo"));
-		rfcParamMap.put("partsNo", paramMap.get("pPartsNo"));
-		rfcParamMap.put("poNo", paramMap.get("pPoNo"));
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"shipmentNo", "pShipmentNo2"},
+				{"orderNo", "pOrderNo"},
+				{"partsNo", "pPartsNo"},
+				{"poNo", "pPoNo"}
+			})
+			.addDateByKey(new Object[][] {
+				{"fromDate", "pFromDate"},
+				{"toDate", "pToDate"},
+				{"fromOnboardDate", "pFromOnboardDate"},
+				{"toOnboardDate", "pToOnboardDate"}
+			});
 
 		RfcResponse rfcResponse = deliveryStatusService.getView(rfcParamMap);
 
 		DataList dataList = rfcResponse.getTable("T_DETAIL");
 
 		//KRW, JPY 는 가격에 100을 곱해줌
-		makePriceByCurrency(dataList, new String[] { "NETPR", "NETWR" }, "WAERK");
+		makePriceByCurrency(dataList, new String[] { "NETPR", "NETWR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.integerFormat(new String[] { "TKNUM", "EXIDV" })

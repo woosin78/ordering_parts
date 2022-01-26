@@ -1246,3 +1246,25 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220123 222748 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun Jan 23 22:27:48,307<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+Error:  >Sun Jan 23 22:28:10,826<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+Error:  >Sun Jan 23 22:28:11,955<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+Error:  >Sun Jan 23 22:28:19,719<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+Error:  >Sun Jan 23 22:28:20,714<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+
+**** Error file opened at 20220126 074603 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Jan 26 07:46:03,508<    >RfcGetException rc (7) message: No more memory available to add rows to an internal table.
+<RfcGetException
+

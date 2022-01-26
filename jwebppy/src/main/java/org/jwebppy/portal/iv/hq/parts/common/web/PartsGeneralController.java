@@ -5,6 +5,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
@@ -18,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class PartsGeneralController extends HqGeneralController
 {
-	private static final String String = null;
 	@Autowired
 	private PartsGeneralService partsGeneralService;
 
@@ -80,13 +80,13 @@ public class PartsGeneralController extends HqGeneralController
 	}
 
 	//KRW, JPY 는 가격에 100을 곱해 줌
-	protected void makePriceByCurrency(List<Map<String, Object>> list, String[] keys, String currencyKey)
+	protected void makePriceByCurrency(List<Map<String, Object>> list, String[] keys, String currencyKey, String[] targetCurrencies, double value)
 	{
 		for (Map<String, Object> map: list)
 		{
 			String currency = (String)map.get(currencyKey);
 
-			if ("KRW".equals(currency) || "JPY".equals(currency))
+			if (ArrayUtils.contains(targetCurrencies, currency))
 			{
 				for (int i=0, length=keys.length; i<length; i++)
 				{
@@ -94,7 +94,7 @@ public class PartsGeneralController extends HqGeneralController
 					{
 						try
 						{
-							map.put(keys[i], Double.parseDouble(map.get(keys[i]).toString()) * 100);
+							map.put(keys[i], Double.parseDouble(map.get(keys[i]).toString()) * value);
 						}
 						catch (NumberFormatException e) {}
 					}

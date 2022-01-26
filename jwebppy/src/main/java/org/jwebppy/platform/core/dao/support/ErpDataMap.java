@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.validator.GenericValidator;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -13,6 +16,8 @@ import org.jwebppy.portal.common.PortalCommonVo;
 public class ErpDataMap extends DataMap implements Serializable
 {
 	private static final long serialVersionUID = -2321068482595618638L;
+
+	private Map map = null;
 
 	public ErpDataMap()
 	{
@@ -28,22 +33,6 @@ public class ErpDataMap extends DataMap implements Serializable
 	{
 		return getString("BUKRS");
 	}
-
-	/*
-	public String getCorpName()
-	{
-		if (isEquals("BUKRS", "7800"))
-		{
-			return "DIVEU";
-		}
-		else if (isEquals("BUKRS", "7200"))
-		{
-			return "DIVUK";
-		}
-
-		return "";
-	}
-	*/
 
 	public String getUsername()
 	{
@@ -80,7 +69,121 @@ public class ErpDataMap extends DataMap implements Serializable
 		return getString("LANG");
 	}
 
-	public void putDate(String key, Object value)
+	public ErpDataMap with(Map map)
+	{
+		this.map = map;
+
+		return this;
+	}
+
+	public ErpDataMap addByKey(String to, String from)
+	{
+		if (MapUtils.isNotEmpty(map))
+		{
+			this.put(to, this.map.get(from));
+		}
+
+		return this;
+	}
+
+	public ErpDataMap addByKey(Object[][] fields)
+	{
+		if (ArrayUtils.isNotEmpty(fields))
+		{
+			for (Object[] field: fields)
+			{
+				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				{
+					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]))
+					{
+						this.put(field[0], this.map.get(field[1]));
+					}
+				}
+			}
+		}
+
+		return this;
+	}
+
+    public ErpDataMap add(String key, Object value)
+    {
+    	this.put(key, value);
+
+    	return this;
+    }
+
+	public ErpDataMap add(Object[][] fields)
+	{
+		if (ArrayUtils.isNotEmpty(fields))
+		{
+			for (Object[] field: fields)
+			{
+				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				{
+					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]))
+					{
+						this.put(field[0], field[1]);
+					}
+				}
+			}
+		}
+
+		return this;
+	}
+
+	public ErpDataMap addDate(String key, Object value)
+	{
+		addDateToMap(key, value);
+
+		return this;
+	}
+
+	public ErpDataMap addDate(Object[][] fields)
+	{
+		if (ArrayUtils.isNotEmpty(fields))
+		{
+			for (Object[] field: fields)
+			{
+				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				{
+					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]))
+					{
+						addDateToMap((String)field[0], (String)field[1]);
+					}
+				}
+			}
+		}
+
+		return this;
+	}
+
+	public ErpDataMap addDateByKey(String to, String from)
+	{
+		addDateToMap(to, this.map.get(from));
+
+		return this;
+	}
+
+	public ErpDataMap addDateByKey(Object[][] fields)
+	{
+		if (ArrayUtils.isNotEmpty(fields))
+		{
+			for (Object[] field: fields)
+			{
+				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				{
+					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]))
+					{
+						addDateToMap((String)field[0], this.map.get(field[1]));
+					}
+				}
+			}
+		}
+
+		return this;
+	}
+
+	public void addDateToMap(String key, Object value)
 	{
 		if (value instanceof CharSequence)
 		{
@@ -106,23 +209,7 @@ public class ErpDataMap extends DataMap implements Serializable
 		}
 	}
 
-	/*
-	public String getLandscape()
-	{
-		if (isEquals("BUKRS", "7800"))
-		{
-			return "P01";
-		}
-		else if (isEquals("BUKRS", "7200"))
-		{
-			return "GMT";
-		}
-
-		return "P09";
-	}
-	*/
-
-	public boolean isAnyEmptyValue(String[] keys)
+	public boolean hasEmptyValue(String[] keys)
 	{
 		if (keys != null)
 		{

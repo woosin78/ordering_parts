@@ -200,6 +200,12 @@ public class MapParameterSource extends AbstractParameterSource implements IData
 	}
 
 	@Override
+	public boolean isNotEmptyValue(Object name)
+	{
+		return !isEmptyValue(name);
+	}
+
+	@Override
 	public boolean isEquals(Object name, Object value)
 	{
 		return valueMap.isEquals(name, value);

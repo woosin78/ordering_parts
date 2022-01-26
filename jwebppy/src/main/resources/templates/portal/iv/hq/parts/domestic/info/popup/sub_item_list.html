@@ -22,10 +22,10 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_PARTS_NO}"></th><!--Parts No  -->
+				<th th:text="#{HQPD_L_PART_NO}"></th><!--Part No  -->
 				<td>
 					<div class="input-area">
-						<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" th:value="${pPartsNo}" style="text-transform: uppercase;">
+						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" th:value="${pPartNo}" style="text-transform: uppercase;">
 						<button class="btn-popup2" type="button" onclick="showSearchPartsPopup();"></button>
 					</div>
 				</td>
@@ -71,7 +71,7 @@
 						return '<input type="radio" name="RAD_MATNR" id="RAD_MATNR" class="custom-ui" value="' + row.MATNR + '" onchange="syncInput(this)"><label for="RAD_MATNR"></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},			
-				{name: "MATNR", 	data: "MATNR", 		title: "[[#{HQPD_L_PARTS_NO}]]"	},	// Parts No
+				{name: "MATNR", 	data: "MATNR", 		title: "[[#{HQPD_L_PART_NO}]]"	},	// Part No
 				{name: "MAKTX1", 	data: "MAKTX1", 	title: "[[#{HQPD_L_DESCRIPTION}]]"	},	// Part No Desc
 				{name: "AVA_FLAG", 	data: "AVA_FLAG", 	title: "[[#{HQPD_L_AVAILABILITY}]]"	},	// Availability			
 				{name: "SEQ", 		data: "SEQ", 		title: "SEQ(Hidden)"	},
@@ -88,8 +88,8 @@
 				url: "/portal/scm/parts/domestic/info/sub_item_popup_list/data",
 				data: function(p)
 				{				
-					p.pPartsNo = $("#pPartsNo").val();
-					p.pPartsNoDesc = $("#pPartsNoDesc").val();
+					p.pPartNo = $("#pPartNo").val();
+					p.pPartNoDesc = $("#pPartNoDesc").val();
 				},
 				dataSrc: function(response) 
 				{				
@@ -123,7 +123,7 @@
 		});
 		
 		//Input text 엔터 키 입력
-		$("#pPartsNo").on("keydown", function(event) {
+		$("#pPartNo").on("keydown", function(event) {
 			
 			$(this).val($(this).val().toUpperCase());
 			
@@ -146,7 +146,7 @@
 			
 			let vMATNR = rowData.MATNR;		
 			if(index == 0){	
-				$("input[name=pPartsNo]", opener.document).val(vMATNR);
+				$("input[name=pPartNo]", opener.document).val(vMATNR);
 				opener.doSearch();
 			}					
 		});		
@@ -162,20 +162,20 @@
 	 */ 	
 	function showSearchPartsPopup()
 	{
-		let param = "pPartsNo=" + $("#pPartsNo").val();
+		let param = "pPartNo=" + $("#pPartNo").val();
 		Popup.open("/portal/scm/parts/domestic/info/parts_number_popup_list?" + param, 700, 600);	
 	};
 	
 	function checkValidation()
 	{
-	    let pPartsNo = $('#pPartsNo').val();
+	    let pPartNo = $('#pPartNo').val();
 	    let rtnValue = 1;
 	    
 	    $(".error").remove();
 	    
-	    if (pPartsNo.length < 1)
+	    if (pPartNo.length < 1)
 	    {
-			alert("[[#{HQPD_M_EMPTY_PARTS_NO}]]");//Please input Parts No.
+			alert("[[#{HQPD_M_EMPTY_PARTS_NO}]]");//Please input Part No.
 	    	rtnValue = -1;
 	   	}
 	    
@@ -189,7 +189,7 @@
 	
 	function setPartsNo(partsNo)
 	{
-		$("#pPartsNo").val(partsNo);
+		$("#pPartNo").val(partsNo);
 		doSearch();
 	};	
 	</script>	

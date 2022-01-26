@@ -43,12 +43,18 @@ public class BackorderController extends PartsDomesticGeneralController
 	public Object listData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("orderNo", paramMap.get("pOrderNo"));//Order No.
-		rfcParamMap.put("orderType", paramMap.get("pOrderType"));//Order Type
-		rfcParamMap.put("poNo", paramMap.get("pPoNo"));//P.O. No.
-		rfcParamMap.put("orderPartNo", paramMap.get("pOrderPartNo"));//Order Part No.
-		rfcParamMap.putDate("fromDate", CmStringUtils.defaultIfEmpty(paramMap.get("pFromDate"), CmDateFormatUtils.theFirstDateMonth(CmDateTimeUtils.now().minusMonths(6))));
-		rfcParamMap.putDate("toDate", CmStringUtils.defaultIfEmpty(paramMap.get("pToDate"), CmDateFormatUtils.today()));
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"orderNo", "pOrderNo"},
+				{"orderType", "pOrderType"},
+				{"poNo", "pPoNo"},
+				{"orderPartNo", "pOrderPartNo"}
+			})
+			.addDate(new Object[][] {
+				{"fromDate", CmStringUtils.defaultIfEmpty(paramMap.get("pFromDate"), CmDateFormatUtils.theFirstDateMonth(CmDateTimeUtils.now().minusMonths(6)))},
+				{"toDate", CmStringUtils.defaultIfEmpty(paramMap.get("pToDate"), CmDateFormatUtils.today())}
+			});
 
 		RfcResponse rfcResponse = backorderService.getList(rfcParamMap);
 

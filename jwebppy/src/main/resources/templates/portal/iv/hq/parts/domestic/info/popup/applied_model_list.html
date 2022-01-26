@@ -19,10 +19,10 @@
 <table class="condition">
 	<tbody>
 		<tr>
-			<th th:text="#{HQPD_L_PARTS_NO}"></th><!--Parts No.  -->
+			<th th:text="#{HQPD_L_PART_NO}"></th><!--Part No.  -->
 			<td>
 				<div class="input-area">
-					<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" th:value="${pPartsNo}" style="text-transform: uppercase;">
+					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" th:value="${pPartNo}" style="text-transform: uppercase;">
 					<button class="btn-popup2" type="button" onclick="showSearchPartsPopup();"></button>					
 				</div>				
 			</td>
@@ -71,7 +71,7 @@ $(function(){
 			url: "/portal/scm/parts/domestic/info/applied_model_popup_list/data",
 			data: function(p)
 			{				
-				p.pPartsNo = $("#pPartsNo").val();
+				p.pPartNo = $("#pPartNo").val();
 				//p.pProductType = $("#pProductType").val();
 			},
 			dataSrc: function(response) 
@@ -102,7 +102,7 @@ $(function(){
 	});
 	
 	//Input text 엔터 키 입력
-	$("#pPartsNo").on("keydown", function(event) {
+	$("#pPartNo").on("keydown", function(event) {
 		
 		$(this).val($(this).val().toUpperCase());
 		
@@ -121,9 +121,9 @@ $(function(){
 
 function doSearch()
 {
-	if ($.trim($("#pPartsNo").val()) == "")
+	if ($.trim($("#pPartNo").val()) == "")
 	{
-		alert("Please input the Parts No.");
+		alert("Please input the Part No.");
 		return;
 	}
 	
@@ -135,13 +135,13 @@ function doSearch()
  */ 	
  function showSearchPartsPopup()
  {
- 	let param = "pPartsNo=" + $("#pPartsNo").val();
+ 	let param = "pPartNo=" + $("#pPartNo").val();
  	Popup.open("/portal/scm/parts/domestic/info/parts_number_popup_list?" + param, 700, 600);		
  }
 
 function setPartsNo(partsNo)
 {
-	$("#pPartsNo").val(partsNo);
+	$("#pPartNo").val(partsNo);
 };
 </script>	
 </th:block>

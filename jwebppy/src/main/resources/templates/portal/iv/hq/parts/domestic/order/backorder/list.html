@@ -84,7 +84,7 @@
 		    },
 			ordering: true,// 정렬 기능 켬
 			scrollY: 100,
-			fixedColumns: { leftColumns: 8 },
+			//fixedColumns: { leftColumns: 8 },
 			columns : [
 				{data: "KONDA_T", 		title: "[[#{HQPD_L_ORDER_TYPE}]]"},	//Order<br>Type				
 				{data: "AUDAT", 		title: "[[#{HQPD_L_ORDER_DATE}]]"},	//Order Date				
@@ -171,7 +171,7 @@
 			
 		$("#BTN_download").on("click", function() {
 			let gridFileDownload = new GridFileDownload($tableObj);
-			gridFileDownload.fileName = "backorder_list";
+			gridFileDownload.fileName = "Backorder_List";
 			gridFileDownload.excelDownload();
 		});
 		

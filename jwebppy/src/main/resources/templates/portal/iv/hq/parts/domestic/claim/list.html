@@ -6,26 +6,26 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVUK_TXT_0030}"></div>
+		<div class="block-title" th:text="#{HQPD_T_CLAIM_DISPLAY}"></div>
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{DIVUK_BTN_0012}"></button><!-- Search -->		
+			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->		
 		</div>
 	</div>	
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
 	<input type="hidden" id="orderNo" name="orderNo">
-	<input type="hidden" id="detailDate" name="detailDate">
+	<input type="hidden" id="docDate" name="docDate">
 	<input type="hidden" id="docType" name="docType">	
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DIVUK_LB_0040}"></th><!-- Complaint No. -->
+				<th th:text="#{HQPD_L_COMPLAINT_NO}"></th><!-- Complaint No. -->
 				<td> 
 					<div class="input-area">
 						<input type="text" id="pComplaintNo" name="pComplaintNo" class="custom-ui" th:value="${pComplaintNo}">
 					</div>							
 				</td>
-				<th th:text="#{DIVUK_LB_0041}"></th><!--Reference No.  -->
+				<th th:text="#{HQPD_L_REFERENCE_NO}"></th><!--Reference No.  -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pReferenceNo" name="pReferenceNo" class="custom-ui" th:value="${pReferenceNo}">
@@ -33,13 +33,13 @@
 				</td>			
 			</tr>
 			<tr>
-				<th th:text="#{DIVUK_LB_0042}"></th><!-- Parts No. -->
+				<th th:text="#{HQPD_L_PART_NO}"></th><!-- Part No. -->
 				<td> 		
 					<div class="input-area">
 						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
 					</div>					
 				</td>
-				<th th:text="#{DIVUK_LB_0043}"></th><!-- Period -->
+				<th th:text="#{HQPD_L_PERIOD}"></th><!-- Period -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -79,19 +79,19 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 3 },
 			columns : [
-				{data: "VBELN", 		title: "[[#{DIVUK_LB_0040}]]", className:"link"},//Complaint No.
-				{data: "POSNR", 		title: "[[#{DIVUK_LB_0044}]]"},// Seq.
-				{data: "TEXT", 			title: "[[#{DIVUK_LB_0045}]]"},// Reason
-				{data: "ERDAT", 		title: "[[#{DIVUK_LB_0046}]]"},// Doc. Date
-				{data: "VBELN2", 		title: "[[#{DIVUK_LB_0047}]]"},// Sales Document
-				{data: "T_NETWR", 		title: "[[#{DIVUK_LB_0048}]]"},// Total Amount
-				{data: "WAERK", 		title: "[[#{DIVUK_LB_0049}]]"},// Curr.
-				{data: "RFGSK_TX_T", 	title: "[[#{DIVUK_LB_0050}]]"},// Process Result						
-				{data: "RFGSK_TX_T1", 	title: "[[#{DIVUK_LB_0051}]]"},// Return Status			
-				{data: "VBELN3", 		title: "[[#{DIVUK_LB_0052}]]", className:"link"}		// Final Document		
+				{data: "VBELN", 		title: "[[#{HQPD_L_CLAIM_NO}]]", className:"link"},//Claim No.
+				{data: "POSNR", 		title: "[[#{HQPD_L_LINE_ITEM}]]"},// Line Item.
+				{data: "TEXT", 			title: "[[#{HQPD_L_REASON}]]"},// Reason
+				{data: "ERDAT", 		title: "[[#{HQPD_L_DOC_DATE}]]"},// Doc. Date
+				{data: "VBELN2", 		title: "[[#{HQPD_L_SALES_DOC_NO}]]", className: "link"},// Sales Doc. No.
+				{data: "T_NETWR", 		title: "[[#{HQPD_L_TOTAL_AMOUNT}]]", className: "right"},// Total Amount
+				{data: "WAERK", 		title: "[[#{HQPD_L_CURRENCY}]]"},// Curr.
+				{data: "RFGSK_TX_T", 	title: "[[#{HQPD_L_PROCESS_RESULT}]]"},// Process Result						
+				{data: "RFGSK_TX_T1", 	title: "[[#{HQPD_L_RETURN_RESULT}]]"},// Return Status			
+				{data: "VBELN3", 		title: "[[#{HQPD_L_FINAL_DOC}]]"}// Final Document		
 			],
 			ajax: {
-				url: "/portal/corp/uk/scm/parts/complaint/display/complaint_list/data",
+				url: "/portal/iv/hq/parts/domestic/claim/list/data",
 				data: function(p)
 				{
 					p.pComplaintNo 	= $("#pComplaintNo").val();
@@ -102,26 +102,27 @@
 				},
 				dataSrc: function(response) 
 				{				
-					let orderList = response.RESULT.resultOrderList;
-					let reasonList1 = response.RESULT.reasonList1;
+					let claimList = response.RESULT.claimList;
+					let claimReason1List = response.RESULT.claimReason1List;
 					
 					let returnData = new Array();
 											
-					for (let i=0, length=orderList.length; i<length; i++)
+					for (let i=0, length=claimList.length; i<length; i++)
 					{
-						orderList[i].SEQ = i+1;	
-						orderList[i].TEXT = '';
+						claimList[i].TEXT = "";
 							
-						for (let j=0, length1=reasonList1.length; j<length1; j++)
+						for (let j=0, length1=claimReason1List.length; j<length1; j++)
 						{
-							if (orderList[i].ZZCMPCD == reasonList1[j].VALUE)
+							if (claimList[i].ZZCMPCD == claimReason1List[j].VALUE)
 							{
-								orderList[i].TEXT = reasonList1[j].TEXT;							
+								claimList[i].TEXT = claimReason1List[j].TEXT;							
 							}
 						}
-					}				
-					$("#totalRows").html(orderList.length+" row(s).");				
-					return orderList;
+					}
+
+					$("#totalRows").html(claimList.length + " row(s).");
+
+					return claimList;
 				}			
 			},
 			initComplete:function(settings, json) 
@@ -149,41 +150,32 @@
 		/*
 		 *  detail display submit(컴플레인 생성번호)
 		 */	
-		$('#TBL_grid tbody').on('click', 'tr', function (e){				
-		    let tblGrid = $('#TBL_grid').DataTable();	    
-		    let index = $('#TBL_grid').dataTable().api().cell($(e.target).closest('td')).index().column;	    	    
+		$("#TBL_grid tbody").on("click", "tr", function (e){				
+		    let tblGrid = $("#TBL_grid").DataTable();	    
+		    let index = $("#TBL_grid").dataTable().api().cell($(e.target).closest("td")).index().column;	    	    
 			let rowData = tblGrid.row(this).data();
 			
 			if (index == 0)
 			{
 				let orderNo = rowData.VBELN;
-				let detailDate = rowData.ERDAT;	
-				let docType = "A";
 				
-				if(orderNo != null)
-				{							
+				if (orderNo != null)
+				{
 					$("#orderNo").val(orderNo);			
-					$("#detailDate").val(detailDate);
-					$("#docType").val(docType);			
-					$("#FORM_search").attr("action", "/portal/corp/uk/scm/parts/complaint/display/complaint_detail").submit();
-				}			    		    	
+					$("#docDate").val(rowData.ERDAT);
+					$("#docType").val("A");
+					$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/claim/view").submit();
+				}
 			}
-			
-			if (index == 9)
-			{	
-				let invoiceNo = rowData.VBELN3;	
-				let docType = "C";
+			else if (index == 4)
+			{
+				let soNo = rowData.VBELN2;
 				
-				if (invoiceNo != null)
-				{										
-					let param = "pInvoiceNo=" + invoiceNo;
-						param = param+"&"+"pType="+docType;			
-						param = param+"&"+"pFromDate=1900-01-01";
-						param = param+"&"+"pToDate=2900-12-31";
-						
-					Popup.open("/portal/corp/eu/scm/parts/order/invoice/invoice_status_popup_list?" + param, 1000, 600);				
-				}	
-			}			
+				if (JpUtilsString.isNotEmpty(soNo))
+				{
+					Popup.open("/portal/iv/hq/parts/domestic/order/display/order/popup/view?orderNo=" + soNo);
+				};
+			};
 		});			
 	});
 	

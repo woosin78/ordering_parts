@@ -17,10 +17,10 @@
 <table class="condition">
 	<tbody>
 		<tr>
-			<th th:text="#{DIVUK_LB_0042}"></th><!--Parts No.  -->
+			<th th:text="#{DIVUK_LB_0042}"></th><!--Part No.  -->
 			<td colspan="3">			
 				<div class="input-area">
-					<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" th:value="${pPartsNo}">
+					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" th:value="${pPartNo}">
 					<button class="btn-popup2" type="button" onclick="searchParts();"></button>
 				</div>										
 			</td>
@@ -52,7 +52,7 @@ $(function(){
 		ordering: true, 
 		scrollY: 100,
 		columns : [						
-			{data: "NMATNR", 		title: "[[#{DIVUK_LB_0042}]]"	},	//Parts No 
+			{data: "NMATNR", 		title: "[[#{DIVUK_LB_0042}]]"	},	//Part No 
 			{data: "AMATNR", 		title: "[[#{DIVUK_LB_0082}]]"	},	//Alternative
 			{data: "AQTY", 			title: "[[#{DIVUK_LB_0056}]]"	}	//Qty
 		],
@@ -60,7 +60,7 @@ $(function(){
 			url: "/portal/corp/uk/scm/parts/info/alternative_popup_list/data",
 			data: function(p)
 			{				
-				p.pPartsNo = $("#pPartsNo").val();
+				p.pPartNo = $("#pPartNo").val();
 			},
 			dataSrc: function(response) 
 			{				
@@ -97,7 +97,7 @@ function doSearch()
  * code(parts)변경 popup	 
  */ 	
 function searchParts(){
-	var param = "pPartsNo=" + $("#pPartsNo").val();
+	var param = "pPartNo=" + $("#pPartNo").val();
 	Popup.open("/portal/corp/uk/scm/parts/info/parts_number_popup_list?" + param, 700, 600);	
 }
 

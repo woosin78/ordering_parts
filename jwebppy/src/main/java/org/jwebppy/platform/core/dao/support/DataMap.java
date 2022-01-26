@@ -293,6 +293,11 @@ public class DataMap implements IDataMap, Serializable
 
     	return CmStringUtils.isEmpty(getString(key));
     }
+    
+    public boolean isNotEmptyValue(Object key)
+    {
+    	return !isEmptyValue(key);
+    }
 
     @Override
 	public boolean isEquals(Object key, Object value)

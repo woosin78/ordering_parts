@@ -3,6 +3,7 @@ package org.jwebppy.platform.core.dao;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -223,8 +224,9 @@ public abstract class AbstractDaoRequest implements IDaoRequest
 	    	Map paramMap = null;
 	    	Object value = null;
 	    	String index = null;
+	    	int size = paramSource.getValues().size();
 
-	    	for (int i=0,size=valueList.size(); i<size; i++)
+	    	for (int i=0,size2=valueList.size(); i<size2; i++)
 	    	{
 	    		value = valueList.get(i);
 
@@ -242,16 +244,26 @@ public abstract class AbstractDaoRequest implements IDaoRequest
 		        	paramMap = new BeanPropertyParameterSource(value).asMap();
 		        }
 
-		        index = Integer.toString(i);
+		        index = Integer.toString(i+size);
 
 		        paramSource.addValue(index, new ParameterValue(index, paramMap));
 	    	}
 		}
 	}
 
+	public void addTable(String name, Map valueMap)
+	{
+		if (MapUtils.isNotEmpty(valueMap))
+		{
+			List<Map<String, Object>> tableList = new LinkedList<>();
+			tableList.add(valueMap);
+
+			addTable(name, tableList);
+		}
+	}
+
 	public void addTable(Map tableMap)
 	{
-
 	    if (MapUtils.isNotEmpty(tableMap))
 	    {
 	        Iterator it = tableMap.entrySet().iterator();

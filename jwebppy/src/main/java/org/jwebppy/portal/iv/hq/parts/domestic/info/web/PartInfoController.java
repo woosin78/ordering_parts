@@ -10,7 +10,7 @@ import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
-import org.jwebppy.portal.iv.hq.parts.domestic.info.service.PartsInfoService;
+import org.jwebppy.portal.iv.hq.parts.domestic.info.service.PartInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +21,10 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/info")
-public class PartsInfoController extends PartsDomesticGeneralController
+public class PartInfoController extends PartsDomesticGeneralController
 {
 	@Autowired
-	private PartsInfoService partsInfoService;
+	private PartInfoService partsInfoService;
 
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest)
@@ -38,15 +38,15 @@ public class PartsInfoController extends PartsDomesticGeneralController
 	@ResponseBody
 	public Object viewData(@RequestParam Map<String, Object> paramMap)
 	{
-		String pPartsNo = CmStringUtils.trimToEmpty(paramMap.get("pPartsNo"));
+		String pPartNo = CmStringUtils.trimToEmpty(paramMap.get("pPartNo"));
 
-		if ("".equals(pPartsNo))
+		if ("".equals(pPartNo))
 		{
 			return null;
 		}
 
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partsNo", pPartsNo.toUpperCase());//PartsNo
+		rfcParamMap.put("partNo", pPartNo.toUpperCase());//PartsNo
 
 		RfcResponse rfcResponse = partsInfoService.getPartsStandardM(rfcParamMap);
 		DataList dataList = rfcResponse.getTable("T_RESULT");
@@ -58,7 +58,7 @@ public class PartsInfoController extends PartsDomesticGeneralController
 			dataMap.put("LPRICE_NETPR", Double.parseDouble(CmStringUtils.trimToEmpty(dataMap.get("LPRICE"))) * 1.25);
 		}
 
-		makePriceByCurrency(dataList, new String[] { "LPRICE_NETPR", "LPRICE" }, "WAERS");
+		makePriceByCurrency(dataList, new String[] { "LPRICE_NETPR", "LPRICE" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.qtyFormat(new String[] { "OPENQ", "EXP_AVQ" })
@@ -73,17 +73,17 @@ public class PartsInfoController extends PartsDomesticGeneralController
 
 	@RequestMapping("/autocompete/data")
 	@ResponseBody
-	public Object autocomplete(@RequestParam Map<String, Object> paramMap)
+	public Object autocompleteData(@RequestParam Map<String, Object> paramMap)
 	{
-		String pPartsNo = CmStringUtils.trimToEmpty(paramMap.get("pPartsNo"));
+		String pPartNo = CmStringUtils.trimToEmpty(paramMap.get("pPartNo"));
 
-		if ("".equals(pPartsNo))
+		if ("".equals(pPartNo))
 		{
 			return null;
 		}
 
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partsNo", pPartsNo.toUpperCase());//PartsNo
+		rfcParamMap.put("partNo", pPartNo.toUpperCase());//PartsNo
 
 		DataList dataList = partsInfoService.getSimplePartsInfo(rfcParamMap);
 
@@ -93,55 +93,53 @@ public class PartsInfoController extends PartsDomesticGeneralController
 		return resultMap;
 	}
 
-	@RequestMapping("/parts_number_popup_list")
-	public String partsNumberList(Model model, WebRequest webRequest)
+	@RequestMapping("/popup/part_search")
+	public String partSearch(Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 
-
-	@RequestMapping("/parts_number_popup_list/data")
+	@RequestMapping("/popup/part_search/data")
 	@ResponseBody
-	public Object partsNumberData(@RequestParam Map<String, Object> paramMap)
+	public Object partSearchData(@RequestParam Map<String, Object> paramMap)
 	{
-		if (CmStringUtils.isEmpty(paramMap.get("pPartsNo")) && CmStringUtils.isEmpty(paramMap.get("pPartsNoDesc")))
+		if (CmStringUtils.isEmpty(paramMap.get("pPartNo")) && CmStringUtils.isEmpty(paramMap.get("pPartDesc")))
 		{
 			return null;
 		}
 
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partsNo", paramMap.get("pPartsNo"));			//PartsNo
-		rfcParamMap.put("partsNoDesc", paramMap.get("pPartsNoDesc"));	//PartsNoDesc
+		rfcParamMap.put("partNo", paramMap.get("pPartNo"));			//PartsNo
+		rfcParamMap.put("partDesc", paramMap.get("pPartDesc"));	//PartsNoDesc
 
-		RfcResponse rfcResponse = partsInfoService.getPartsNumberList(rfcParamMap);
-		DataList dataList = rfcResponse.getTable("ZSVV0006");
+		RfcResponse rfcResponse = partsInfoService.getPartList(rfcParamMap);
 
-		return dataList;
+		return rfcResponse.getTable("ZSVV0006");
 	}
 
-	@RequestMapping("/sub_item_popup_list")
+	@RequestMapping("/popup/sub_item_list")
 	public String subItemList(Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/sub_item_popup_list/data")
+	@RequestMapping("/popup/sub_item_list/data")
 	@ResponseBody
-	public Object subItemData(@RequestParam Map<String, Object> paramMap)
+	public Object subItemListData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partsNo", paramMap.get("pPartsNo"));			//PartsNo
-		rfcParamMap.put("partsNoDesc", paramMap.get("pPartsNoDesc"));	//PartsNoDesc
+		rfcParamMap.put("partNo", paramMap.get("pPartNo"));
+		rfcParamMap.put("partDesc", paramMap.get("pPartDesc"));
 
 		RfcResponse rfcResponse = partsInfoService.getSubItemList(rfcParamMap);
-		DataList dataList = rfcResponse.getTable("T_CROSS");
 
-		return dataList;
+		return rfcResponse.getTable("T_CROSS");
 	}
 
-	@RequestMapping("/applied_model_popup_list")
+	@RequestMapping("/popup/applied_model_list")
 	public String appliedModelList(Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
@@ -149,20 +147,20 @@ public class PartsInfoController extends PartsDomesticGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/applied_model_popup_list/data")
+	@RequestMapping("/popup/applied_model_list/data")
 	@ResponseBody
-	public Object appliedModelData(@RequestParam Map<String, Object> paramMap)
+	public Object appliedModelListData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partsNo", paramMap.get("pPartsNo"));			//PartsNo
-		rfcParamMap.put("productType", paramMap.get("pProductType"));	//PartsNoDesc
+		rfcParamMap.put("partNo", paramMap.get("pPartNo"));
+		rfcParamMap.put("productType", paramMap.get("pProductType"));
 
 		RfcResponse rfcResponse = partsInfoService.getAppliedModelList(rfcParamMap);
 
 		return rfcResponse.getTable("T_MODEL");
 	}
 
-	@RequestMapping("/alternative_popup_list")
+	@RequestMapping("/popup/alternative_list")
 	public String alternativeList(Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
@@ -170,16 +168,15 @@ public class PartsInfoController extends PartsDomesticGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/alternative_popup_list/data")
+	@RequestMapping("/alternative_list/data")
 	@ResponseBody
-	public Object alternativeData(@RequestParam Map<String, Object> paramMap)
+	public Object alternativeListData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partsNo", paramMap.get("pPartsNo"));			//PartsNo
+		rfcParamMap.put("partNo", paramMap.get("pPartNo"));			//PartsNo
 
 		RfcResponse rfcResponse = partsInfoService.getAlternativeList(rfcParamMap);
-		DataList dataList = rfcResponse.getTable("T_MODEL");
 
-		return dataList;
+		return rfcResponse.getTable("T_MODEL");
 	}
 }

@@ -1,8 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.order.display.web;
 
-import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,13 +25,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/display")
+@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/display/order")
 public class OrderDisplayController extends PartsDomesticGeneralController
 {
 	@Autowired
 	private OrderDisplayService orderDisplayService;
 
-	@RequestMapping("/order_list")
+	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth()));
@@ -45,19 +43,25 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/order_list/data")
+	@RequestMapping("/list/data")
 	@ResponseBody
 	public Object listData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("orderType", paramMap.get("pOrderType"));//Order Type
-		rfcParamMap.put("orderNo", paramMap.get("pOrderNo"));//Order No.
-		rfcParamMap.put("poNo", paramMap.get("pPoNo"));//Purchase Order No.
-		rfcParamMap.put("orderPartNo", paramMap.get("pOrderPartNo"));//Order Part No.
-		rfcParamMap.put("status", paramMap.get("pStatus"));//Status
-		rfcParamMap.putDate("fromDate", CmStringUtils.defaultIfEmpty(paramMap.get("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth()));
-		rfcParamMap.putDate("toDate", CmStringUtils.defaultIfEmpty(paramMap.get("pToDate"), CmDateFormatUtils.today()));
-		rfcParamMap.put("docType", CmStringUtils.defaultString(paramMap.get("pDocType"), "C"));
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"orderType", "pOrderType"},
+				{"orderNo", "pOrderNo"},
+				{"poNo", "pPoNo"},
+				{"orderPartNo", "pOrderPartNo"},
+				{"status", "pStatus"},
+				{"docType", "pDocType"}
+			})
+			.addDate(new Object[][] {
+				{"fromDate", CmStringUtils.defaultIfEmpty(paramMap.get("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth())},
+				{"toDate", CmStringUtils.defaultIfEmpty(paramMap.get("pToDate"), CmDateFormatUtils.today())}
+			});
 
 		RfcResponse rfcResponse = orderDisplayService.getList(rfcParamMap);
 
@@ -72,7 +76,7 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 		return dataList;
 	}
 
-	@RequestMapping("/order_view")
+	@RequestMapping("/view")
 	public Object view(@RequestParam Map<String, Object> paramMap, Model model, WebRequest webRequest)
 	{
 		model.addAttribute("erpUserInfo", getErpUserInfo());
@@ -82,7 +86,7 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/order_view_popup")
+	@RequestMapping("/popup/view")
 	public Object viewPopup(@RequestParam Map<String, Object> paramMap, Model model, WebRequest webRequest)
 	{
 		model.addAttribute("erpUserInfo", getErpUserInfo());
@@ -92,15 +96,17 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/order_view/data")
+	@RequestMapping("/view/data")
 	@ResponseBody
 	public Object viewData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("orderNo", paramMap.get("orderNo"));
-		rfcParamMap.put("docType", paramMap.get("pDocType"));
 
-		RfcResponse rfcResponse = orderDisplayService.getDetail(rfcParamMap);
+		rfcParamMap.with(paramMap)
+			.addByKey("orderNo", "orderNo")
+			.add("docType", "C");
+
+		RfcResponse rfcResponse = orderDisplayService.getView(rfcParamMap);
 
 		DataMap generalMap = rfcResponse.getStructure("LS_GENERAL");
 		DataMap mainHeadResult = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");
@@ -123,8 +129,8 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 		return resultMap;
 	}
 
-	@RequestMapping("/pdf_download")
-	public void pdfDownload(@RequestParam Map<String, Object> paramMap, HttpServletResponse httpServletResponse) throws FileNotFoundException
+	@RequestMapping("/download/confirm_sheet")
+	public void downloadConfirmSheet(@RequestParam Map<String, Object> paramMap, HttpServletResponse httpServletResponse) throws FileNotFoundException
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.putAll(paramMap);
@@ -133,55 +139,28 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 
 		String fileName = null;
 		String orderNo = rfcParamMap.getString("orderNo");
+		String mode = rfcParamMap.getString("mode");
 
-		switch (rfcParamMap.getString("mode"))
+		if ("BT06".equals(mode))
 		{
-			case "BT06": fileName = orderNo + "_Quotation.pdf";
-			case "BT07": fileName = orderNo + "_ProformaInvoice.pdf";
-			case "BT08": fileName = orderNo + "_Inquiry.pdf";
-			case "Y006": fileName = orderNo + "_Order.pdf";
+			fileName = "Quotation_" + orderNo + ".pdf";
+		}
+		else if ("BT07".equals(mode))
+		{
+			fileName = "ProformaInvoice_" + orderNo + ".pdf";
+		}
+		else if ("BT08".equals(mode))
+		{
+			fileName = "Inquiry_" + orderNo + ".pdf";
+		}
+		else if ("Y006".equals(mode))
+		{
+			fileName = "Order_" + orderNo + ".pdf";
 		}
 
-		if (CmStringUtils.isEmpty(fileName))
+		if (CmStringUtils.isNotEmpty(fileName))
 		{
-			throw new FileNotFoundException();
-		}
-
-		BufferedOutputStream bufferOutputStream = null;
-
-		try
-		{
-			httpServletResponse.setContentType("application/octet-stream; charset=UTF-8");
-			httpServletResponse.setHeader("Content-Disposition","attachment; filename=" +  fileName + ";");
-			httpServletResponse.setHeader("Content-Transfer", "binary");
-
-			bufferOutputStream = new BufferedOutputStream (httpServletResponse.getOutputStream());
-
-			for (int i=0, size=dataList.size(); i<size; i++)
-			{
-				DataMap dataMap = (DataMap)dataList.get(i);
-
-				bufferOutputStream.write((byte[])dataMap.get("LINE"));
-			}
-
-			bufferOutputStream.flush();
-			bufferOutputStream.close();
-			bufferOutputStream = null;
-		}
-		catch (IOException e)
-		{
-			try
-			{
-				if (bufferOutputStream != null)
-				{
-					bufferOutputStream.close();
-					bufferOutputStream = null;
-				}
-			}
-			catch (IOException e1)
-			{
-				e1.printStackTrace();
-			}
+			downloadByRfc(httpServletResponse, dataList, "LINE", fileName);
 		}
 	}
 }

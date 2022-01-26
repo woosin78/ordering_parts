@@ -22,64 +22,97 @@ public class OrderDisplayService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDERLIST");
 
-		rfcRequest.addField("I_LANGU", paramMap.getLang());
-		rfcRequest.addField("I_BGTYP", "P");
-		rfcRequest.addField("I_USERID", paramMap.getUsername());
-		rfcRequest.addStructure("LS_SEARCH", "KUNNR", paramMap.getCustomerNo());
-		rfcRequest.addStructure("LS_SEARCH", "VKORG", paramMap.getSalesOrg());
-		rfcRequest.addStructure("LS_SEARCH", "SPART", paramMap.getDivision());
-		rfcRequest.addStructure("LS_SEARCH", "KVGR5", paramMap.getCustomerGrp5());
-		rfcRequest.addStructure("LS_SEARCH", "VBTYP", paramMap.getString("docType"));
-		rfcRequest.addStructure("LS_SEARCH", "AUART", paramMap.getString("orderType"));
-		rfcRequest.addStructure("LS_SEARCH", "VBELN", paramMap.getString("orderNo"));
-		rfcRequest.addStructure("LS_SEARCH", "BSTKD", paramMap.getString("poNo"));
-		rfcRequest.addStructure("LS_SEARCH", "MATNR", paramMap.getString("orderPartNo"));
-		rfcRequest.addStructure("LS_SEARCH", "RFGSK", paramMap.getString("status"));
-		rfcRequest.addStructure("LS_SEARCH", "FRDATE", paramMap.getString("fromDate"));
-		rfcRequest.addStructure("LS_SEARCH", "TODATE", paramMap.getString("toDate"));
-
-		rfcRequest.addOutputParameter("LT_SEARCH");
+		rfcRequest
+			.field().with(paramMap)
+			.add(new Object[][] {
+				{"I_BGTYP", "P"},
+				{"I_LANGU", paramMap.getLang()},
+				{"I_USERID", paramMap.getUsername()}
+			})
+			.and()
+			.structure("LS_SEARCH").with(paramMap)
+				.add(new Object[][] {
+					{"KUNNR", paramMap.getCustomerNo()},
+					{"VKORG", paramMap.getSalesOrg()},
+					{"SPART", paramMap.getDivision()},
+					{"KVGR5", paramMap.getCustomerGrp5()}
+				})
+				.addByKey(new Object[][] {
+					{"VBTYP", "docType"},
+					{"AUART", "orderType"},
+					{"VBELN", "orderNo"},
+					{"BSTKD", "poNo"},
+					{"MATNR", "orderPartNo"},
+					{"FRDATE", "fromDate"},
+					{"TODATE", "toDate"}
+				})
+			.and()
+			.output("LT_SEARCH");
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
 	@Cacheable(value = CacheConfig.ORDER_DISPLAY_DETAIL, key = "#paramMap", unless="#result == null")
-	public RfcResponse getDetail(ErpDataMap paramMap)
+	public RfcResponse getView(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDER_LOAD");
 
-		rfcRequest.addField("I_LANGU", paramMap.getLang());
-		rfcRequest.addField("I_BGTYP", "P");
-		rfcRequest.addField("I_USERID", paramMap.getUsername());
-		rfcRequest.addField("LV_REF_ORD", paramMap.getString("orderNo"));
-		rfcRequest.addStructure("LS_IMPORT_PORTAL", "DOC_CATEGORY", paramMap.getString("docType", "C"));
-		rfcRequest.addStructure("LS_IMPORT_PORTAL", "COMPLAINT", "N");
-		rfcRequest.addStructure("LS_IMPORT_PORTAL", "DOC_MODE", "C");
+		rfcRequest
+			.field().with(paramMap)
+				.add(new Object[][] {
+					{"I_BGTYP", "P"},
+					{"I_LANGU", paramMap.getLang()},
+					{"I_USERID", paramMap.getUsername()},
+				})
+				.addByKey("LV_REF_ORD", "orderNo")
+			.structure("LS_IMPORT_PORTAL")
+				.add(new Object[][] {
+					{"DOC_CATEGORY", paramMap.getString("docType", "C")},
+					{"COMPLAINT", "N"},
+					{"DOC_MODE", "C"}
+				});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
 	public DataList getDownload(ErpDataMap paramMap)
 	{
-		RfcRequest rfcRequest = new RfcRequest();
-
 		if (paramMap.isEquals("mode", "Y006"))
 		{
-			rfcRequest.setFunctionName("ZSS_PARA_DIV_EP_SD_DOC_PRNT_V");
-			rfcRequest.addField("KSCHL", paramMap.getString("mode"));
-			rfcRequest.addField("LS_VBELN", paramMap.getString("orderNo"));
-			rfcRequest.addStructure("CTL_OPTION", "LANGU", "EN");
-			rfcRequest.addStructure("CTL_OPTION", "PDF_VIEW", "X");
+			RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SD_DOC_PRNT_V");
+
+			rfcRequest
+				.field().with(paramMap)
+					.addByKey(new Object[][] {
+						{"KSCHL", "mode"},
+						{"LS_VBELN", "orderNo"}
+					})
+				.structure("CTL_OPTION")
+					.add(new Object[][] {
+						{"LANGU", "EN"},
+						{"PDF_VIEW", "X"}
+					})
+				.and()
+				.output("T_PDF");
 
 			return simpleRfcTemplate.response(rfcRequest).getTable("T_PDF");
 		}
 		else
 		{
-			rfcRequest.setFunctionName("ZSS_PARA_DIV_EP_COMPLAIN_PRINT");
-			rfcRequest.addField("I_USERID", paramMap.getUsername());
-			rfcRequest.addField("I_LANGU", paramMap.getLang());
-			rfcRequest.addField("ID", paramMap.getString("mode"));
-			rfcRequest.addField("LV_REF_ORD", paramMap.getString("orderNo"));
+			RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_COMPLAIN_PRINT");
+
+			rfcRequest
+				.field().with(paramMap)
+					.add(new Object[][] {
+						{"I_USERID", paramMap.getUsername()},
+						{"I_LANGU", paramMap.getLang()}
+					})
+					.addByKey(new Object[][] {
+						{"ID", "mode"},
+						{"LV_REF_ORD", "orderNo"}
+					})
+					.and()
+					.output("LT_TAB");
 
 			return simpleRfcTemplate.response(rfcRequest).getTable("LT_TAB");
 		}
