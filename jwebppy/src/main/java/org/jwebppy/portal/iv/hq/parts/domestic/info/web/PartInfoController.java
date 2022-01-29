@@ -51,14 +51,9 @@ public class PartInfoController extends PartsDomesticGeneralController
 		RfcResponse rfcResponse = partsInfoService.getPartsStandardM(rfcParamMap);
 		DataList dataList = rfcResponse.getTable("T_RESULT");
 
-		for (int i=0, size=dataList.size(); i<size; i++)
-		{
-			Map dataMap = (Map<String, Object>)dataList.get(i);
+		reCalculatePriceByCurrency(dataList, new String[] { "LPRICE_NETPR" }, null, null, 1.25);
 
-			dataMap.put("LPRICE_NETPR", Double.parseDouble(CmStringUtils.trimToEmpty(dataMap.get("LPRICE"))) * 1.25);
-		}
-
-		makePriceByCurrency(dataList, new String[] { "LPRICE_NETPR", "LPRICE" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
+		reCalculatePriceByCurrency(dataList, new String[] { "LPRICE_NETPR", "LPRICE" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.qtyFormat(new String[] { "OPENQ", "EXP_AVQ" })
@@ -111,8 +106,12 @@ public class PartInfoController extends PartsDomesticGeneralController
 		}
 
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partNo", paramMap.get("pPartNo"));			//PartsNo
-		rfcParamMap.put("partDesc", paramMap.get("pPartDesc"));	//PartsNoDesc
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"partNo", "pPartNo"},
+				{"partDesc", "pPartDesc"}
+			});
 
 		RfcResponse rfcResponse = partsInfoService.getPartList(rfcParamMap);
 
@@ -131,8 +130,12 @@ public class PartInfoController extends PartsDomesticGeneralController
 	public Object subItemListData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partNo", paramMap.get("pPartNo"));
-		rfcParamMap.put("partDesc", paramMap.get("pPartDesc"));
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"partNo", "pPartNo"},
+				{"partDesc", "pPartDesc"}
+			});
 
 		RfcResponse rfcResponse = partsInfoService.getSubItemList(rfcParamMap);
 
@@ -152,8 +155,12 @@ public class PartInfoController extends PartsDomesticGeneralController
 	public Object appliedModelListData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partNo", paramMap.get("pPartNo"));
-		rfcParamMap.put("productType", paramMap.get("pProductType"));
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"partNo", "pPartNo"},
+				{"productType", "pProductType"}
+			});
 
 		RfcResponse rfcResponse = partsInfoService.getAppliedModelList(rfcParamMap);
 

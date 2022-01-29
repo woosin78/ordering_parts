@@ -128,7 +128,7 @@
 						let isNew = (JpUtilsString.isEmpty($("#FORM_lang input[name=lSeq]").val())) ? true : false;
 						
 						//include 한 페이지에 구현되어 있음
-						doAfterSavingLang(isNew, data.RESULT);
+						doAfterSavingLang(isNew, data.RESULT, $("#FORM_lang select[name=basename]").val());
 					}
 					catch (e) {};
 					

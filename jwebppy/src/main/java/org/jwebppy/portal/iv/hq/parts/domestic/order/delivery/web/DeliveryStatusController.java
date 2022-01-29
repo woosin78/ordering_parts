@@ -62,7 +62,7 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_LIST");
 
 		//KRW, JPY 는 가격에 100을 곱해줌
-		makePriceByCurrency(dataList, new String[] { "NETPR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
+		reCalculatePriceByCurrency(dataList, new String[] { "NETPR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.integerFormat("TKNUM")
@@ -109,7 +109,7 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_DETAIL");
 
 		//KRW, JPY 는 가격에 100을 곱해줌
-		makePriceByCurrency(dataList, new String[] { "NETPR", "NETWR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
+		reCalculatePriceByCurrency(dataList, new String[] { "NETPR", "NETWR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.integerFormat(new String[] { "TKNUM", "EXIDV" })

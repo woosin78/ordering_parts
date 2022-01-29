@@ -1,9 +1,12 @@
 package org.jwebppy.portal.iv.hq.parts.common.web;
 
+import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
@@ -79,24 +82,49 @@ public class PartsGeneralController extends HqGeneralController
 		return null;
 	}
 
-	//KRW, JPY 는 가격에 100을 곱해 줌
-	protected void makePriceByCurrency(List<Map<String, Object>> list, String[] keys, String currencyKey, String[] targetCurrencies, double value)
+	protected void reCalculatePriceByCurrency(Object target, String[] keys, String currencyKey, String[] targetCurrencies, double value)
 	{
-		for (Map<String, Object> map: list)
+		if (target instanceof List)
 		{
-			String currency = (String)map.get(currencyKey);
+			List<Map<String, Object>> list = (List<Map<String, Object>>)target;
 
-			if (ArrayUtils.contains(targetCurrencies, currency))
+			if (CollectionUtils.isNotEmpty(list))
 			{
-				for (int i=0, length=keys.length; i<length; i++)
+				for (Map<String, Object> map: list)
 				{
-					if (CmStringUtils.isNotEmpty(map.get(keys[i])))
+					calculateByCurrency(map, keys, currencyKey, targetCurrencies, value);
+				}
+			}
+
+		}
+		else if (target instanceof Map)
+		{
+			calculateByCurrency((Map<String, Object>)target, keys, currencyKey, targetCurrencies, value);
+		}
+	}
+
+	private void calculateByCurrency(Map<String, Object> map, String[] keys, String currencyKey, String[] targetCurrencies, double value)
+	{
+		if (MapUtils.isNotEmpty(map))
+		{
+			if (CmStringUtils.isEmpty(currencyKey) || ArrayUtils.contains(targetCurrencies, CmStringUtils.trimToEmpty(map.get(currencyKey))))
+			{
+				Iterator it = map.keySet().iterator();
+
+				while (it.hasNext())
+				{
+					String key = (String)it.next();
+
+					if (ArrayUtils.contains(keys, key))
 					{
-						try
+						if (CmStringUtils.isNotEmpty(map.get(key)))
 						{
-							map.put(keys[i], Double.parseDouble(map.get(keys[i]).toString()) * value);
+							try
+							{
+								map.put(key, new BigDecimal(map.get(key).toString()).multiply(new BigDecimal(value)));
+							}
+							catch (NumberFormatException e) {}
 						}
-						catch (NumberFormatException e) {}
 					}
 				}
 			}

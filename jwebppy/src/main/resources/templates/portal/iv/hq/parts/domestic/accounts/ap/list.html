@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQPD_T_AP_LIST}"></div>
+		<div class="block-button-area">
+			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button>
+		</div>
+	</div>
+	<div class="split-row"></div>
+	
+	<div class="condition-area">
+		<table class="condition">
+			<thead>
+		        <tr>
+		            <th th:text="#{HQPD_L_ORDER_LIMIT}"></th>
+		            <th th:text="#{HQPD_L_BALANCE}"></th>                        
+		            <th th:text="#{HQPD_L_THIS_MONTH_DEPOSIT_AMT}"></th>
+		            <th th:text="#{HQPD_L_ORDER_AMT_IN_PROGRESS}"></th>
+		            <th th:text="#{HQPD_L_DISPOSABLE_SECURITY_AMT}"></th>
+		        </tr>
+		     </thead>
+		     <tbody>
+				<tr>
+					<td id="SUMMARY_1" class="right">0</td>
+					<td id="SUMMARY_2" class="right">0</td>
+					<td id="SUMMARY_3" class="right">0</td>
+					<td id="SUMMARY_4" class="right">0</td>
+					<td id="SUMMARY_5" class="right">0</td>
+				</tr>
+			</tbody>        
+		</table>
+		<div class="split-row-compact"></div>
+		<div class="condition-normal-sub-title text-alert" th:text="#{HQPD_T_AP_LIST_INFO1}"></div>
+		<div class="condition-normal-sub-title text-alert" th:text="#{HQPD_T_AP_LIST_INFO2}"></div>
+	</div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">		
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+	<script type="application/javascript">
+	$(function(){
+		$tableObj = $("#TBL_grid").DataTable({
+			select: true,   			// row 선택 기능 켬
+			ordering: true, 			// 정렬 기능 켬
+			scrollY: 100,
+			//fixedColumns: { leftColumns: 8 },
+			columns : [
+				{data: "CRDAT", title: "[[#{HQPD_L_PURCHASE_DATE}]]"},				
+				{data: "ENDAT", title: "[[#{HQPD_L_PAYMENT_DUE_DATE}]]"},
+				{data: "TLAMT", title: "[[#{HQPD_L_BILLING_AMT}]]", className: "right"},
+				{data: "RETAMT", title: "[[#{HQPD_L_RETURN_AMT}]]", className: "right"},
+				{data: "CHAMT", title: "[[#{HQPD_L_EXPECTED_PAYMENT_AMT}]]", className: "right"},
+				{data: "TOTAL", title: "[[#{HQPD_L_DEPOSIT_AMT}]]", className: "right"},
+				{data: "ARREAR", title: "[[#{HQPD_L_BALANCE}]]", className: "right"}
+			],
+			ajax: {
+				url: "/portal/iv/hq/parts/domestic/accounts/ap/schedule/list/data",
+				data: function(p)
+				{
+				},
+				dataSrc: function(response) 
+				{				
+					let data = response.RESULT;
+					
+					let list = data.list;
+					let summary = data.summary;
+					
+					$("#SUMMARY_1").text(summary.CREDAMT);
+					$("#SUMMARY_2").text(summary.DUEAMT);
+					$("#SUMMARY_3").text(summary.CURAMT);
+					$("#SUMMARY_4").text(summary.PROAMT);
+					$("#SUMMARY_5").text(summary.BALAMT);
+					
+					let length = list.length;
+					
+					for (let i=0; i < length; i++)
+					{
+						list[i].CRDAT = JpUtilsString.defaultString(list[i].CRDAT, "[[#{HQPD_L_ORDER_IN_PROGRESS}]]");
+					};
+					
+					$("#totalRows").html(length + " row(s).");
+					
+					return list;
+				}			
+			},
+			initComplete:function(settings, json) 
+			{			
+				ProgressBar.hide();
+			}
+		});
+		
+		// Datatable grid 초기 설정 셋업
+		initGridTable($tableObj);
+		
+		// Search 버튼 클릭
+		$("#BTN_search").on("click", function(){		
+			doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+		});
+
+		function doSearch()
+		{
+			$tableObj.ajax.reload();
+		}	
+	});
+	
+	</script>	
+</th:block>

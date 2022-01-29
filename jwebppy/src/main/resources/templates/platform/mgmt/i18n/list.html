@@ -123,14 +123,22 @@
 		langTable.load();
 	};	
 	
-	function doAfterSavingLang(isNew, lSeq)
+	function doAfterSavingLang(isNew, lSeq, basename)
 	{
+		let pageNumber = $("#FORM_search input[name=pageNumber]:hidden").val(); 
+		
 		if (isNew)
 		{
+			if (JpUtilsString.isNotEmpty(basename))
+			{
+				$("#FORM_search select[name=basename]").val(basename);	
+			};
+			
 			$("#query").val("");
+			pageNumber = "1";
 		};
 		
-		doSearch();
+		doSearch(pageNumber);
 	};	
 	
 	function doAfterDeletingLang()

@@ -93,15 +93,15 @@
 			//fixedColumns: { leftColumns: 5 },
 			columns : [				
 				{data: "VBELN", 		title: "[[#{HQPD_L_ORDER_NO}]]", className:"link"},	// Order No.
-				{data: "SO_ITEM", 		title: "[[#{HQPD_L_ITEM_ROWS}]]"}, // Item Rows	
+				{data: "SO_ITEM", 		title: "[[#{HQPD_L_ITEM_ROWS}]]", className: "right"}, // Item Rows	
 				{data: "KONDA_T", 		title: "[[#{HQPD_L_ORDER_TYPE}]]"},	// Order Type	
-				{data: "SO_QTY", 		title: "[[#{HQPD_L_ORDER_QTY}]]"}, // Order Qty				
-				{data: "PI_QTY", 		title: "[[#{HQPD_L_PACKED_QTY}]]"}, // Packed Qty	
-				{data: "SH_QTY", 		title: "[[#{HQPD_L_SHIPMENT_COMPLETE_QTY}]]"},	// S.Completion Qty	
-				{data: "IN_QTY", 		title: "[[#{HQPD_L_INVOICE_QTY}]]"}, // Invoice Qty			
-				{data: "BO_AMT", 		title: "[[#{HQPD_L_BACKORDER_QTY}]]"}, // B/O Quantity
+				{data: "SO_QTY", 		title: "[[#{HQPD_L_ORDER_QTY}]]", className: "right"}, // Order Qty				
+				{data: "PI_QTY", 		title: "[[#{HQPD_L_PACKED_QTY}]]", className: "right"}, // Packed Qty	
+				{data: "SH_QTY", 		title: "[[#{HQPD_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},	// S.Completion Qty	
+				{data: "IN_QTY", 		title: "[[#{HQPD_L_INVOICE_QTY}]]", className: "right"}, // Invoice Qty			
+				{data: "BO_AMT", 		title: "[[#{HQPD_L_BACKORDER_QTY}]]", className: "right"}, // B/O Quantity
 				{data: "VSBED_T", 		title: "[[#{HQPD_L_SHIPPING_CONDITION}]]"},	// Shipping Condition		
-				{data: "WAERK", 		title: "[[#{HQPD_L_CURRENCY}]]"}, // Curr.
+				{data: "WAERK", 		title: "[[#{HQPD_L_CURR}]]"}, // Curr.
 				{data: "BSTKD", 		title: "[[#{HQPD_L_PO_NO}]]"} // P.O No.
 			],
 			ajax: {

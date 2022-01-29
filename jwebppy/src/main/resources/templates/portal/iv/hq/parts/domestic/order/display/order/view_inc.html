@@ -82,8 +82,6 @@
 //고정된 맵 데이터 사용. 페이지 생성시 데이터 넘겨서 그리드 만드는 방식
 
 $(function(){
-	let customerType = "[[${erpUserInfo.get("TYPE")}]]";
-	
 	$.ajax({
 		url: "/portal/iv/hq/parts/domestic/order/display/order/view/data",		
 		data: {"orderNo": "[[${orderNo}]]"},
@@ -122,8 +120,8 @@ $(function(){
 	    			{data: "MATERIAL_ENT", title: "[[#{HQPD_L_ORDER_PART_NO}]]"},//Order Part No.
 	    			{data: "MATERIAL", title: "[[#{HQPD_L_SUPPLY_PART_NO}]]"},//Supply Part No
 	    			{data: "MATERIAL_TEXT", title: "[[#{HQPD_L_DESCRIPTION}]]"},//Description
-	    			{data: "REQ_QTY", title: "[[#{HQPD_L_REQ_QTY}]]"},//Req Qty
-	    			{data: "LOT_QTY", title: "[[#{HQPD_L_SALES_LOT}]]"},//Sales Lot
+	    			{data: "REQ_QTY", title: "[[#{HQPD_L_REQ_QTY}]]", className: "right"},//Req Qty
+	    			{data: "LOT_QTY", title: "[[#{HQPD_L_SALES_LOT}]]", className: "right"},//Sales Lot
 	    			{data: "UOM", title: "[[#{HQPD_L_UOM}]]"},//UoM
 	    			{data: "NET_PRICE", title: "[[#{HQPD_L_NET_PRICE}]]", className: "right"},//Net Price
 	    			{data: "NET_VALUE", title: "[[#{HQPD_L_NET_VALUE}]]", className: "right"},//Net Value

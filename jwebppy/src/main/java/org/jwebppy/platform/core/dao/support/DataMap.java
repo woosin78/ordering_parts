@@ -47,6 +47,11 @@ public class DataMap implements IDataMap, Serializable
 		return map.isEmpty();
 	}
 
+	public boolean isNotEmpty()
+	{
+		return !isEmpty();
+	}
+
 	@Override
 	public boolean containsKey(Object key)
 	{
@@ -293,8 +298,9 @@ public class DataMap implements IDataMap, Serializable
 
     	return CmStringUtils.isEmpty(getString(key));
     }
-    
-    public boolean isNotEmptyValue(Object key)
+
+    @Override
+	public boolean isNotEmptyValue(Object key)
     {
     	return !isEmptyValue(key);
     }

@@ -35,7 +35,7 @@ public class JCoMapRowMapper extends MapRowMapper
                     value = jCoField.getString();
                 }
 
-                if (value != null)
+                //if (value != null)
                 {
                     rowMap.put(fieldName, value);
                 }

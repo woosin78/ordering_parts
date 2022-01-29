@@ -358,6 +358,17 @@ input {
 	margin: 0px 0px 5px 0px; 
 }
 
+.condition-sub-title{
+	font-weight: bold;
+	font-size:14px;
+	margin: 0px 0px 5px 0px; 
+}
+
+.condition-normal-sub-title{
+	font-size:14px;
+	margin: 0px 0px 5px 0px; 
+}
+
 .input-area {
 	display: inline-block;
 	min-width:200px;
@@ -706,6 +717,12 @@ select::-ms-expand {
 img.required {
 	border: none;
 	margin-left:3px;
+}
+
+
+/*--- Text style ------------------*/
+.text-alert {
+	color: red;
 }
 
 /* 클릭시 border 애니메이션

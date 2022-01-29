@@ -6,7 +6,7 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{	HQPD_T_DELIVERY_STATUS_DETAIL}"></div><!-- Delivery Status Detail -->
+		<div class="block-title" th:text="#{HQPD_T_DELIVERY_STATUS_DETAIL}"></div><!-- Delivery Status Detail -->
 		<div class="block-button-area">
 			<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button><!-- Download -->
 			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
@@ -20,7 +20,7 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_SHIPMENT__PERIOD}"></th><!-- Shipment Doc. Create Date Period-->
+				<th th:text="#{HQPD_L_SHIPMENT_DOC_CREATE_DATE}"></th><!-- Shipment Doc. Create Date Period-->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -98,13 +98,13 @@
 				{data: "MATNR_SO", title: "[[#{HQPD_L_ORDER_PART_NO}]]"},//Order Parts No.
 				{data: "MATNR_SH", title: "[[#{HQPD_L_SUPPLY_PART_NO}]]"},//Supply Parts No.
 				{data: "MAKTX", title: "[[#{HQPD_L_DESCRIPTION}]]"},//Description
-				{data: "LFIMG", title: "[[#{HQPD_L_QTY}]]"},//Qty
+				{data: "LFIMG", title: "[[#{HQPD_L_QTY}]]", className: "right"},//Qty
 				{data: "NETPR", title: "[[#{HQPD_L_UNIT_PRICE}]]", className: "right"},//Unit Price
 				{data: "NETWR", title: "[[#{HQPD_L_AMOUNT}]]", className: "right"},//Amount
 				{data: "HERKL", title: "[[#{HQPD_L_ORIGIN}]]"},//Origin
 				{data: "VBELN2", title: "[[#{HQPD_L_SALES_DOC_NO}]]"},//Sales Doc. No.
 				{data: "ZFOBDT", title: "[[#{HQPD_L_ONBOARD_DATE}]]"},//Onboard Date
-				{data: "KWERT", title: "[[#{HQPD_L_FREIGHT_FEE}]]"},//Freight Fee
+				{data: "KWERT", title: "[[#{HQPD_L_FREIGHT_FEE}]]", className: "right"},//Freight Fee
 				{data: "BSTKD", title: "[[#{HQPD_L_PO_NO}]]"}//P.O. No.
 			],
 			ajax: {

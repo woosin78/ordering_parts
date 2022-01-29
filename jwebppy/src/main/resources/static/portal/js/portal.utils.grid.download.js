@@ -11,7 +11,8 @@ var GridFileDownload = function(target)
 		ProgressBar.show("Downloading");
 		
 		let options = {
-				data:  { fileName: _this.fileName, data: JSON.stringify(_this.getGridData()) },
+				httpMethod: "POST",
+				data:  { fileName: _this.fileName, data: JSON.stringify(_this.getGridData()), "_csrf": $("meta[name=_csrf]").attr("content") },				
 				successCallback: function(url)
 				{
 					ProgressBar.hide();

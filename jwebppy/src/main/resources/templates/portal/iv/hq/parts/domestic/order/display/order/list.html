@@ -86,8 +86,6 @@
 	
 <script>
 $(function(){
-	let customerType = "[[${erpUserInfo.get("TYPE")}]]";
-	
 	$("input:radio[name=pDocType][value='[[${pDocType}]]']").prop("checked", true);
 	
 	//주문유형 가져오기
@@ -108,9 +106,9 @@ $(function(){
 			{data: "VTEXT2", title: "[[#{HQPD_L_SHIPPING_CONDITION}]]"},//Shipping Condition
 			{data: "BSTKD", title: "[[#{HQPD_L_PO_NO}]]"},//P.O. No.
 			{data: "ERDAT2", title: "[[#{HQPD_L_ORDER_DATE}]]"},//Create Date // 데이터 오른쪽 정렬.
-			{data: "COUNT", title: "[[#{HQPD_L_ITEM_ROWS}]]"},//Item Rows
+			{data: "COUNT", title: "[[#{HQPD_L_ITEM_ROWS}]]", className: "right"},//Item Rows
 			{data: "T_NETWR", title: "[[#{HQPD_L_ORDER_AMOUNT}]]", className: "right"},//Order Amt.
-			{data: "WAERK", title: "[[#{HQPD_L_CURRENCY}]]"}//Curr.
+			{data: "WAERK", title: "[[#{HQPD_L_CURR}]]"}//Curr.
 		],
 		/*
 		columnDefs: [

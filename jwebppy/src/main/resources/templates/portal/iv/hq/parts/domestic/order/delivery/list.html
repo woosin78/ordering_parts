@@ -19,7 +19,7 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_SHIPMENT__PERIOD}"></th><!-- Shipment Doc. Create Date Period-->
+				<th th:text="#{HQPD_L_SHIPMENT_DOC_CREATE_DATE}"></th><!-- Shipment Doc. Create Date Period-->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -93,18 +93,18 @@
 			ordering: true,// 정렬 기능 켬
 			scrollY: 100,
 			columns : [
-				{data: "TKNUM", title: "[[#{HQPD_L_SHIPMENT_NO}]]", className: "link"},//Shipment No.				
-				{data: "COUNT1", title: "[[#{HQPD_L_HU_ITEMS}]]"},//H.U. Items				
-				{data: "COUNT2", title: "[[#{HQPD_L_TOTAL_ITEMS}]]"},//Tot. Items
-				{data: "NETWR", title: "[[#{HQPD_L_TOTAL_AMOUNT}]]", className: "right"},//Tot. Amt. 
-				{data: "WAERK", title: "[[#{HQPD_L_CURRENCY}]]"},//Curr.
-				{data: "BRGEW", title: "[[#{HQPD_L_GROSS_WEIGHT}]]"},//Gross Weight
-				{data: "GEWEI_MAX", title: "[[#{HQPD_L_UOM}]]"},//UoM
-				{data: "ZFOBDT", title: "[[#{HQPD_L_ONBOARD_DATE}]]"},//Onboard Date
-				{data: "BEZEI20", title: "[[#{HQPD_L_DESTINATION}]]"},//Destination
-				{data: "BEZEI", title: "[[#{HQPD_L_SHIPPING_TYPE}]]"},//Shipping Type
-				{data: "NAME2", title: "[[#{HQPD_L_FORWARDER}]]"},//Forwarder
-				{data: "ZFCIVNO", title: "[[#{HQPD_L_INVOICE_NO}]]"}//Invoice
+				{data: "TKNUM", title: "[[#{HQPD_L_SHIPMENT_NO}]]", className: "link"},				
+				{data: "COUNT1", title: "[[#{HQPD_L_HU_ITEMS}]]"},
+				{data: "COUNT2", title: "[[#{HQPD_L_ITEM_ROWS}]]", className: "right"},
+				{data: "NETWR", title: "[[#{HQPD_L_TOTAL_AMOUNT}]]", className: "right"}, 
+				{data: "WAERK", title: "[[#{HQPD_L_CURR}]]"},
+				{data: "BRGEW", title: "[[#{HQPD_L_GROSS_WEIGHT}]]", className: "right"},
+				{data: "GEWEI_MAX", title: "[[#{HQPD_L_UOM}]]"},
+				{data: "ZFOBDT", title: "[[#{HQPD_L_ONBOARD_DATE}]]"},
+				{data: "BEZEI20", title: "[[#{HQPD_L_DESTINATION}]]"},
+				{data: "BEZEI", title: "[[#{HQPD_L_SHIPPING_TYPE}]]"},
+				{data: "NAME2", title: "[[#{HQPD_L_FORWARDER}]]"},
+				{data: "ZFCIVNO", title: "[[#{HQPD_L_INVOICE_NO}]]"}
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/order/delivery/list/data",

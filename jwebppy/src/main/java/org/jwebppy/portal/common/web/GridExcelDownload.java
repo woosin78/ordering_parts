@@ -14,6 +14,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
@@ -25,13 +26,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/portal/iv/download/grid")
 public class GridExcelDownload extends PortalGeneralController
 {
-	@RequestMapping("/excel")
+	@PostMapping("/excel")
 	public void excel(WebRequest webRequest, HttpServletResponse httpServletResponse) throws JsonParseException, JsonMappingException, IOException
 	{
 		String fileName = CmStringUtils.defaultString(webRequest.getParameter("fileName"), CmDateFormatUtils.now()) + ".xlsx";
 		String data = webRequest.getParameter("data");
 
-		ObjectMapper objectMapper =new ObjectMapper();
+		ObjectMapper objectMapper = new ObjectMapper();
 		Map<String, List<Object>> jsonMap = objectMapper.readValue(data, HashMap.class);
 
 		List<Object> headerList = jsonMap.get("header");

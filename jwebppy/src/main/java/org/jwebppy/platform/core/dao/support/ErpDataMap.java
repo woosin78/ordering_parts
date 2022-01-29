@@ -172,7 +172,7 @@ public class ErpDataMap extends DataMap implements Serializable
 			{
 				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
 				{
-					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]))
+					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]) && MapUtils.isNotEmpty(this.map))
 					{
 						addDateToMap((String)field[0], this.map.get(field[1]));
 					}

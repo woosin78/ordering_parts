@@ -36,7 +36,6 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 	{
 		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth()));
 		model.addAttribute("pToDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pToDate"), CmDateFormatUtils.today()));
-		model.addAttribute("erpUserInfo", getErpUserInfo());
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -79,8 +78,6 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 	@RequestMapping("/view")
 	public Object view(@RequestParam Map<String, Object> paramMap, Model model, WebRequest webRequest)
 	{
-		model.addAttribute("erpUserInfo", getErpUserInfo());
-
 		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
@@ -89,8 +86,6 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 	@RequestMapping("/popup/view")
 	public Object viewPopup(@RequestParam Map<String, Object> paramMap, Model model, WebRequest webRequest)
 	{
-		model.addAttribute("erpUserInfo", getErpUserInfo());
-
 		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
