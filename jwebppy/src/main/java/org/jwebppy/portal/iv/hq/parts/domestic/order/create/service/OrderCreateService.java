@@ -50,7 +50,7 @@ public class OrderCreateService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_GET_USERINFO");
 
-		rfcRequest.addField("I_LANG", paramMap.getLang());
+		rfcRequest.addField("I_LANG", paramMap.getLangForSap());
 		rfcRequest.addField("I_BGTYP", "P");
 		rfcRequest.addField("I_USERID", paramMap.getUsername());
 		rfcRequest.addField("LV_AUART", paramMap.getString("AUART"));
@@ -69,7 +69,7 @@ public class OrderCreateService
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_GET_ORDERTYPE2");
 
 		rfcRequest.addField("I_BGTYP", "P");
-		rfcRequest.addField("I_LANGU", paramMap.getLang());
+		rfcRequest.addField("I_LANGU", paramMap.getLangForSap());
 		rfcRequest.addField("I_STATUS", "X");
 		rfcRequest.addField("I_USERID", paramMap.getUsername());
 		rfcRequest.addField("I_VBTYP", docType);
@@ -97,7 +97,7 @@ public class OrderCreateService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SHIPTOPARTY");
 
-		rfcRequest.addField("ILANGU", paramMap.getLang());
+		rfcRequest.addField("ILANGU", paramMap.getLangForSap());
 		rfcRequest.addField("I_BGTYP", "P");
 		rfcRequest.addField("I_USERID", paramMap.getUsername());
 
@@ -130,7 +130,7 @@ public class OrderCreateService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SHIPPINGINFO2");
 
-		rfcRequest.addField("I_LANG", paramMap.getLang());
+		rfcRequest.addField("I_LANG", paramMap.getLangForSap());
 		rfcRequest.addField("I_BGTYP", "P");
 		rfcRequest.addField("I_USERID", paramMap.getUsername());
 		rfcRequest.addField("I_AUART", paramMap.getString("orderType"));

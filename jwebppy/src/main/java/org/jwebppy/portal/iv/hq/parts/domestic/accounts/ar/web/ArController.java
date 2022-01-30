@@ -49,7 +49,9 @@ public class ArController extends PartsDomesticGeneralController
 				{"toPoNo", "pToPoNo"},
 				{"fromInvoiceNo", "pFromInvoiceNo"},
 				{"toInvoiceNo", "pToInvoiceNo"},
-				{"partNo", "pPartNo"},
+				{"partNo", "pPartNo"}
+			})
+			.addDateByKey(new Object[][] {
 				{"fromDate", "pFromDate"},
 				{"toDate", "pToDate"}
 			});
@@ -58,11 +60,11 @@ public class ArController extends PartsDomesticGeneralController
 
 		DataList dataList = rfcResponse.getTable("T_AP_INVOICE_DETAIL");
 
-		reCalculatePriceByCurrency(dataList, new String[] { "TLAMT", "RETAMT" }, "WAERS", new String[] { "", "" }, 100);
+		reCalculatePriceByCurrency(dataList, new String[] { "NETPR", "WRBTR" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.qtyFormat("MENGE")
-			.decimalFormat(new String[] { "TLAMT", "RETAMT" })
+			.decimalFormat(new String[] { "NETPR", "WRBTR" })
 			.dateFormat("BLDAT");
 
 		return dataList;

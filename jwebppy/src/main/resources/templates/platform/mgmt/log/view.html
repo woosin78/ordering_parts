@@ -44,7 +44,18 @@ $(document).ready(function() {
 			tab: {
 				path: "/platform/mgmt/log/view/layout",
 				alwaysRefresh: true,
-				isLoadFirstTab: true
+				isLoadFirstTab: true,
+				onLoaded: function(tabPath, parameterArray, historyEvent)
+				{
+					$(".ui.table").each(function(index, element) {
+						let SHOW_SCROLL_HEIGHT = 400;
+						
+						if ($(element).height() > SHOW_SCROLL_HEIGHT)
+						{
+							$(element).height(SHOW_SCROLL_HEIGHT);
+						};
+					});
+				}
 			}
 	};
 
@@ -68,7 +79,6 @@ $(document).ready(function() {
 	});
 	
 	$("#BTN_sendMailWithLink").on("click", function() {
-		
 		let html = $("#FORM_search div[data-tab=parameter]").html(); 
 		
 		$.ajax({
@@ -80,5 +90,12 @@ $(document).ready(function() {
 });
 
 </script>
+<style>
+/* Sticky Table */
+.ui.table thead tr:first-child > th {
+     position: sticky !important;
+     top: 0;     
+};
+</style>
 </th:block>
 </html>

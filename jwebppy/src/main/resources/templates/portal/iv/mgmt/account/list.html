@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{DIVEU_TXT_ACCOUNT_MGMT}"></div>
+		<div class="block-button-area">
+			<button id="BTN_resetPassword" th:text="#{HQPD_B_RESET_PASSWORD}" type="button"></button>
+			<button id="BTN_create" th:text="#{HQPD_B_CREATE}" type="button"></button>
+			<button id="BTN_delete" th:text="#{HQPD_B_DELETE}" type="button"></button>
+			<button id="BTN_search" th:text="#{HQPD_B_SEARCH}" type="button"></button>
+		</div>
+	</div>
+	
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search" onsubmit="return false;">
+	<table class="condition">
+		<tbody>
+			<tr>
+				<th style="width:200px">[[#{HQPD_L_USERNAME}]]</th>
+				<td><input type="text" id="pUsername" name="pUsername" class="custom-ui" autofocus></td>
+				<th style="width:200px">[[#{HQPD_L_DEALER_CODE}]]</th>
+				<td><input type="text" id="pDealerCode" name="pDealerCode" class="custom-ui" autofocus></td>				
+			</tr>		
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>	
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+<script type="application/javascript">
+
+//화면중 일부 area 를 채우는 그리드 예제. 상위 div #sample-grid-area 영역을 100% 채움.
+//컬럼 width 자동. scroller 자동.
+//고정된 맵 데이터 사용. 페이지 생성시 데이터 넘겨서 그리드 만드는 방식
+
+$(function(){
+
+	$tableObj = $("#TBL_grid").DataTable({
+		select: {
+			selector: 'td:not(.noselect)'	// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true, 
+		serverSide: false,
+		scrollY: 100,
+		columns : [
+			{// 컬럼에 checkbox 설정
+				name: "chk",				
+				className:"center noselect skip-download",// row selection 기능 막음.
+				orderable: false,// checkbox 는 정렬 불가
+				data: "U_SEQ",
+				title:"<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)' onclick='allChecked(this)'><label></label>",
+				render: function(data, type, row)
+				{
+					return '<input type="checkbox" class="custom-ui check-all" name="uSeq" value="' + row.U_SEQ + '"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
+				}
+			},
+			{data: "BNAME", title: "[[#{HQPD_L_USERNAME}]]"},//Username
+			{data: "LASTNAME", title: "[[#{HQPD_L_LAST_NAME}]]"},//Last Name
+			{data: "FIRSTNAME", title: "[[#{HQPD_L_FIRST_NAME}]]"},//First Name
+			{data: "EMAIL", title: "[[#{HQPD_L_EMAIL}]]"},//Email
+			{data: "KUNNR", title: "[[#{HQPD_L_DEALER_CODE}]]"},//Dealer Code
+			{data: "NAME1", title: "[[#{HQPD_L_DEALER_NAME}]]"}//Dealer name
+		],
+		ajax: {
+			url: "/portal/iv/mgmt/account/list/data",
+			data: function(p)
+			{
+				// ajax로 넘길 파라미터
+				p.pUsername = $("#pUsername").val();
+				p.pDealerCode = $("#pDealerCode").val();
+			},
+			dataSrc: function(response)
+			{
+				let result = response.RESULT;
+				
+				let accountList = [];
+				
+				for (let i=0, length=result.length; i<length; i++)
+				{
+					if ($.trim(result[i].BNAME) == "")
+					{
+						continue;
+					}
+					
+					accountList.push(result[i]);
+				};
+				
+				return accountList;
+			}
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+	
+	$("#BTN_search").on("click", function() {
+		doSearch();
+	});
+	
+	//Input text 엔터 키 입력
+	$("#FORM_search input:text").on("keydown", function(event) {
+		if (event.keyCode == 13)
+		{
+			doSearch();
+		};
+	});	
+
+	$("#BTN_resetPassword").on("click", function() {
+		$.ajax({
+			url: "/portal/iv/mgmt/account/reset/password",
+			method: "post",
+			data: {"uSeqs" : getCheckedUSeqs().join(",")},
+			beforeSend: function(jqXHR, settings)
+			{
+				ProgressBar.show();
+			},			
+		    success: function(response, textStatus, jqXHR)
+		    {
+		    	if (CmStringUtils.isNotEmpty(response.RESULT))
+		    	{
+		    		alert("[[#{HQPD_M_COMPLETE_RESET_PASSWORD}]]".replace("{0}", response.RESULT));
+		    	};
+		    },
+		    complete: function(jqXHR, textStatus)
+	    	{
+	    		ProgressBar.hide();
+	    	}
+		});
+	});	
+	
+	$("#BTN_create").on("click", function() {
+		Popup.open("/portal/iv/mgmt/account/write", 650, 420);
+	});
+	
+	$("#BTN_delete").on("click", function() {
+		
+		let uSeqs = getCheckedUSeqs();
+		
+		if (uSeqs.length > 0)
+		{
+			if (confirm("[[#{HQPD_M_CONFIRM_DELETE_ACCOUNT}]]"))
+			{
+				$.ajax({
+					url: "/portal/iv/mgmt/account/delete",
+					method: "post",
+					data: {"uSeqs" : uSeqs.join(",")},
+					beforeSend: function(jqXHR, settings)
+					{
+						ProgressBar.show();
+					},			
+				    success: function(response, textStatus, jqXHR)
+				    {
+				    	doSearch();
+				    },
+				    complete: function(jqXHR, textStatus)
+			    	{
+			    		ProgressBar.hide();
+			    	}
+				});
+			};			
+		};
+	});
+	
+	function getCheckedUSeqs()
+	{
+		let tds = $tableObj.columns(0).nodes()[0];
+		let uSeqs = []; 
+		
+		for (let i=0, length=tds.length; i<length; i++)
+		{
+			let $td = $(tds[i]);
+			
+			if ($td.find("input:checkbox").is(":checked"))
+			{
+				let row = $tableObj.row($td);
+				uSeqs.push(row.data().U_SEQ);
+			};
+		};
+		
+		return uSeqs;
+	};
+
+});
+
+function doSearch()
+{
+	if (CmStringUtils.isEmpty($("#pUsername").val()) && CmStringUtils.isEmpty($("#pDealerCode").val()))
+	{
+		alert("[[#{HQPD_M_EMPTY_QUERY}]]");
+		$("#pUsername").focus();
+		return;
+	};
+	
+	$tableObj.ajax.reload();
+}
+</script>	
+</th:block>

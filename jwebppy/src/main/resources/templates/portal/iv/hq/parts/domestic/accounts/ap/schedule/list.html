@@ -16,15 +16,14 @@
 	
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
-		<table class="condition">
+		<table class="condition table-fixed">
 			<tbody>
 				<tr>
 					<th th:text="#{HQPD_L_PERIOD}"></th><!-- Period -->
 					<td>
 						<div class="input-area">
 							<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
-							<div class="split"></div>
-							<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">
+							<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">
 						</div>		
 					</td>			
 				</tr>				
@@ -35,7 +34,7 @@
 	<div class="split-row"></div>
 	
 	<div class="condition-area">
-		<table class="condition">
+		<table class="condition table-fixed">
 			<thead>
 		        <tr>
 		            <th th:text="#{HQPD_L_AP_SCHEDULE_001}"></th>
@@ -47,11 +46,11 @@
 		     </thead>
 		     <tbody>
 				<tr>
-					<td id="SUMMARY_1" class="right">0</td>
-					<td id="SUMMARY_2" class="right">0</td>
-					<td id="SUMMARY_3" class="right">0</td>
-					<td id="SUMMARY_4" class="right">0</td>
-					<td id="SUMMARY_5" class="right">0</td>
+					<td id="SUMMARY_1" class="right"></td>
+					<td id="SUMMARY_2" class="right"></td>
+					<td id="SUMMARY_3" class="right"></td>
+					<td id="SUMMARY_4" class="right"></td>
+					<td id="SUMMARY_5" class="right"></td>
 				</tr>
 			</tbody>        
 		</table>
@@ -112,14 +111,6 @@
 						
 						list[i].SALEDT = list[i].SALEDT.substr(0, 7);
 						
-						/*
-						<%if(debtMap.get("BLART").equals("DA") || debtMap.get("BLART").equals("DZ") ){%>정상
-						<%}else if(debtMap.get("BLART").equals("B1") || debtMap.get("BLART").equals("KD")){%>상계
-						<%}else if(debtMap.get("BLART").equals("RV")){%>반납
-						<%}else if(debtMap.get("BLART").equals("")){%>연체
-						<%}%>						
-						*/
-						
 						if (JpUtilsString.equals(blart, "DA") || JpUtilsString.equals(blart, "DZ"))//정상
 						{
 							gubun = "[[#{HQPD_L_AP_SCHEDULE_001}]]";
@@ -140,7 +131,7 @@
 						list[i].GUBUN = gubun;
 					};
 					
-					$("#totalRows").html(length + " row(s).");
+					$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");
 					
 					return list;
 				}			

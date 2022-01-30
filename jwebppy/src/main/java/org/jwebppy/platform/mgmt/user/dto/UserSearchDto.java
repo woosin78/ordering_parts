@@ -1,5 +1,7 @@
 package org.jwebppy.platform.mgmt.user.dto;
 
+import java.util.List;
+
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
@@ -24,6 +26,7 @@ public class UserSearchDto extends GeneralDto implements IPagination
 	private String query;
 	private Integer cSeq;
 	private Integer ugSeq;
+	private List<String> usernames;
 
 	public UserSearchDto() {}
 

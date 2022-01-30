@@ -47,7 +47,7 @@
 
 	<insert id="insertUserAccount" parameterType="UserAccountEntity">
 		insert into pltf_user_account (u_seq, username, password, fg_account_locked, fg_password_locked, fg_no_use_password, from_valid, to_valid, cp_seq, reg_username, reg_date) values (
-			#{uSeq}, #{username}, #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{credentialsPolicy.cpSeq}, #{regUsername}, #{regDate}
+			#{uSeq}, upper(#{username}), #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{credentialsPolicy.cpSeq}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -167,7 +167,7 @@
 				and u_seq=#{uSeq}
 			</if>
 			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
-				and username=#{username}
+				and username=upper(#{username})
 			</if>
 		</where>
 	</select>
@@ -221,7 +221,7 @@
 		<where>
 			<trim prefix="(" suffix=")" prefixOverrides="or">
 				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
-					upper(a.username) like concat('%', upper(trim(#{query})), '%')
+					a.username like concat('%', upper(trim(#{query})), '%')
 					or upper(a.last_name) like concat('%', upper(trim(#{query})), '%')
 					or upper(a.first_name) like concat('%', upper(trim(#{query})), '%')
 					or upper(b.email) like concat('%', upper(trim(#{query})), '%')
@@ -232,15 +232,21 @@
 				</if>
 			</trim>
 			
-			<trim prefixOverrides="and">
-				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
-					and upper(a.username) like concat('%', upper(trim(#{username})), '%')
-				</if>			
-			</trim>
-			
-			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(ugSeq)">
-				 and a.ug_seq=#{ugSeq}
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
+				a.username like concat('%', upper(trim(#{username})), '%')
 			</if>
+			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(usernames)">
+				<foreach collection="usernames" item="username" open="(" close=")" separator="or">
+					a.username=upper(#{username})
+				</foreach>
+			</if>
+			
+			<trim prefix="and">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(ugSeq)">
+					 a.ug_seq=#{ugSeq}
+				</if>
+			</trim>
 		</where>
 		
 		<include refid="PaginationMapper.footer"/>

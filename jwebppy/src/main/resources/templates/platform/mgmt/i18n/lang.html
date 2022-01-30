@@ -50,6 +50,13 @@
 			$("#FORM_lang input[name=lSeq]").val("");
 			langModal.reload();
 		});
+		
+		$("#FORM_lang input:text").on("keydown", function(event) {
+			if (event.keyCode == 13)
+			{
+				$("#BTN_saveLang").trigger("click");
+			};
+		});			
 	};
 	
 	//Add custom rules in the form validation

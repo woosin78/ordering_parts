@@ -17,17 +17,6 @@ let JpUiTable = function(table)
 	
 	this.attachEvent = function()
 	{
-		/*
-		this.table.find("tbody tr td a[data-key]").on("click", function(event) {
-			
-			_this.changeRowStatus(this);
-			
-			if (JpUtilsObject.isNotNull(_this.settings.onClickDataKey))
-			{
-				_this.settings.onClickDataKey(this, $(this).attr("data-key"), $(this).closest("tr"));
-			};
-        });
-        */
 		this.table.find("tbody tr td a[data-key]").on("click", function(event) {
 			
 			_this.changeRowStatus(this);
@@ -187,6 +176,11 @@ let JpUiTable = function(table)
 		this.table.html(new JpUiRender().render(data));
 		
 		this.initAfterRendering();
+		
+		if (JpUtilsObject.isNotNull(this.settings.onLoad))
+		{
+			this.settings.onLoad();
+		};
 		
 		this.table.show();		
 	};

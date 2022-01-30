@@ -15,23 +15,21 @@
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
 	
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQPD_L_PO_NO}"></th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="pFromPoNo" name="pFromPoNo" class="custom-ui" th:value="${pFromPoNo}">
-						<div class="split"></div>
-						<input type="text" id="pToPoNo" name="pToPoNo" class="custom-ui" th:value="${pToPoNo}">
+						<input type="text" id="pFromPoNo" name="pFromPoNo" class="custom-ui-scope" th:value="${pFromPoNo}">
+						<input type="text" id="pToPoNo" name="pToPoNo" class="custom-ui-scope" th:value="${pToPoNo}">
 					</div>			
 				</td>
 				<th th:text="#{HQPD_L_AR_INVOICE_NO}"></th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="pFromInvoiceNo" name="pFromInvoiceNo" class="custom-ui" th:value="${pFromInvoiceNo}">
-						<div class="split"></div>
-						<input type="text" id="pToInvoiceNo" name="pToInvoiceNo" class="custom-ui" th:value="${pToInvoiceNo}">
+						<input type="text" id="pFromInvoiceNo" name="pFromInvoiceNo" class="custom-ui-scope" th:value="${pFromInvoiceNo}">
+						<input type="text" id="pToInvoiceNo" name="pToInvoiceNo" class="custom-ui-scope" th:value="${pToInvoiceNo}">
 					</div>			
 				</td>				
 			</tr>
@@ -46,8 +44,7 @@
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
-						<div class="split"></div>
-						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">					
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">					
 					</div>
 				</td>
 			</tr>			
@@ -86,12 +83,12 @@
 				{data: "MAKTX", title: "[[#{HQPD_L_PART_DESCRIPTION}]]"},
 				{data: "MENGE", title: "[[#{HQPD_L_QTY}]]", className: "right"},
 				{data: "BSTME", title: "[[#{HQPD_L_UOM}]]"},
-				{data: "MENGE", title: "[[#{HQPD_L_NET_VALUE}]]", className: "right"},
-				{data: "BSTME", title: "[[#{HQPD_L_NET_PRICE}]]", className: "right"},
-				{data: "NETPR", title: "[[#{HQPD_L_CURR}]]"}
+				{data: "NETPR", title: "[[#{HQPD_L_NET_VALUE}]]", className: "right"},
+				{data: "WRBTR", title: "[[#{HQPD_L_NET_PRICE}]]", className: "right"},
+				{data: "WAERS", title: "[[#{HQPD_L_CURR}]]"}
 			],
 			ajax: {
-				url: "/portal/iv/hq/parts/domestic/accounts/ap/view/data",
+				url: "/portal/iv/hq/parts/domestic/accounts/ar/list/data",
 				data: function(p)
 				{
 					p.pFromPoNo = $("#pFromPoNo").val();
@@ -106,7 +103,7 @@
 				{				
 					let data = response.RESULT;
 					
-					$("#totalRows").html(data.length+" row(s).");
+					$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
 					
 					return data;
 				}			

@@ -17,11 +17,11 @@
 	</div>
 	
 	<div class="condition-area">
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQPD_L_ORDER_TYPE}"></th><!-- Order Type -->
-				<td id="KONDA_TEXT"></td>
+				<td id="KONDA_TEXT" style="width:250px;"></td>
 				<th th:text="#{HQPD_L_SHIP_TO_PARTY}"></th><!-- Ship To Party -->
 				<td id="KUNAG_NAME"></td>
 			</tr>
@@ -29,17 +29,36 @@
 				<th th:text="#{HQPD_L_PO_NO}"></th><!-- Customer P.O. Number -->
 				<td id="BSTNK"></td>
 				<th th:text="#{HQPD_L_SHIPPING_INFO}"></th><!-- Shipping Info -->
-				<td id="VSBED_TX"></td>
+				<td>
+					<table class="table-inner table-fixed">
+						<thead>
+							<tr>
+								<th th:text="#{HQPD_L_SHIPPING_CONDITION}">Shipping Condition</th>
+								<th th:text="#{HQPD_L_ROUTE}">Route</th>
+								<th th:text="#{HQPD_L_PAYMENT_TERMS}">Payment terms</th>
+								<th th:text="#{HQPD_L_INCOTERMS1}">Incoterms1</th>
+								<th th:text="#{HQPD_L_INCOTERMS2}">Incoterms2</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td id="VSBED_TX"></td>
+								<td id="ROUTE_TX"></td>								
+								<td id="ZTERM_TX"></td>
+								<td id="INCO1"></td>
+								<td id="INCO2"></td>
+							</tr>
+						</tbody>
+					</table>				
+				</td>
 			</tr>
 			<tr>
 				<th th:text="#{HQPD_L_RDD}"></th><!-- Request Delivery Date -->
-				<td id="VDATU"></td>
-				<th th:text="#{HQPD_L_COMPLETE_DELIVERY}"></th><!-- Complete Delivery -->
-				<td id="COMPLETE_DELIVERY"></td>
+				<td id="VDATU" colspan="3"></td>
 			</tr>
 			<tr>
 				<th th:text="#{HQPD_L_REMARKS}"></th><!-- Remarks -->				
-				<td colspan="3" id="remark"></td>
+				<td colspan="3" id="REMARK"></td>
 			</tr>
 		</tbody>
 	</table>
@@ -94,18 +113,31 @@ $(function(){
 	    {
 	    	let result = response.RESULT;
 	    	
-	    	let first = result.first;
+	    	let generalZterm = result.generalZterm;
 	    	let mainHeadResult = result.mainHeadResult;
-	    	let general = result.general;
+	    	let general = result.general;	    	
 	    	let item = result.item;
 	    	
+	    	$.each(item, function(key, value) {
+	    		this.VBELN = "[[${orderNo}]]";
+	    	});
+	    	
+	    	let ztermTx = "";
+	    	if (generalZterm != null && generalZterm.length > 0)
+	    	{
+	    		ztermTx = generalZterm[0].TEXT;
+	    	};
+	    	
 	    	$("#KONDA_TEXT").html(mainHeadResult.KONDA_TEXT);
-	    	$("#KUNAG_NAME").html(mainHeadResult.KUNAG_NAME);
+	    	$("#KUNAG_NAME").html(mainHeadResult.KUNAG_NAME + " " + mainHeadResult.KUNAG_STREET);
 	    	$("#BSTNK").html(general.BSTNK);
 	    	$("#VSBED_TX").html(general.VSBED_TX);
+	    	$("#ROUTE_TX").html(general.ROUTE_TX);
+	    	$("#ZTERM_TX").html(ztermTx);
+	    	$("#INCO1").html(general.INCO1);
+	    	$("#INCO2").html(general.INCO2);
 	    	$("#VDATU").html(general.VDATU);
-	    	$("#COMPLETE_DELIVERY").html( (general.COMPLETE_DELIVERY == "X") ? "Y" : "N" );
-	    	$("#remark").html(result.remark);
+	    	$("#REMARK").html(result.remark);
 	    	$("#NETWR").html(mainHeadResult.NETWR + " " + mainHeadResult.WAERK);
 	    	$("#CREDIT").html(mainHeadResult.CREDIT + " " + mainHeadResult.CREDIT_WAERK);
 	    	$("#TOTAL_WEIGHT").html(mainHeadResult.TOTAL_WEIGHT + " " + mainHeadResult.GEWEI);
@@ -124,19 +156,9 @@ $(function(){
 	    			{data: "MATERIAL_TEXT", title: "[[#{HQPD_L_DESCRIPTION}]]"},//Description
 	    			{data: "REQ_QTY", title: "[[#{HQPD_L_REQ_QTY}]]", className: "right"},//Req Qty
 	    			{data: "KBETR", title: "[[#{HQPD_L_LIST_PRICE}]]", className: "right"},//List Price
-	    			{data: "NET_PRICE", title: "[[#{HQPD_L_NET_PRICE}]]", className: "right"},//Net Price
-	    			{data: "NET_VALUE", title: "[[#{HQPD_L_NET_VALUE}]]", className: "right"},//Net Value
+	    			{data: "NET_PRICE", title: "[[#{HQPD_L_NET_PRICE}]]", className: "right"},//Net price
+	    			{data: "NET_VALUE", title: "[[#{HQPD_L_NET_VALUE}]]", className: "right"},//Net value
 	    			{data: "AVAILABILITY", title: "[[#{HQPD_L_AVAILABILITY}]]"}//Available
-	    		],
-	    		columnDefs: [
-	    			{ className: "left", targets: "_all" },
-	    			{
-	    				targets: 0,
-	    				render: function (data, type, row)
-	    				{
-	    					return "[[${orderNo}]]";
-	    				}
-	    			}
 	    		],
 	    		data: item,
 	    		initComplete: function() {

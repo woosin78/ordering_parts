@@ -92,11 +92,11 @@ public class QuotDisplayController extends PartsDomesticGeneralController
 		RfcResponse rfcResponse = orderDisplayService.getView(rfcParamMap);
 
 		DataMap generalMap = rfcResponse.getStructure("LS_GENERAL");
-		DataMap mainHeadResult = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");
+		DataMap mainHeadResultMap = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");
 		DataList itemList = rfcResponse.getTable("LT_ITEM");
 
 		FormatBuilder.with(generalMap).dateFormat("VDATU");
-		FormatBuilder.with(mainHeadResult).decimalFormat(new String[] {"NETWR", "CREDIT", "TOTAL_WEIGHT"});
+		FormatBuilder.with(mainHeadResultMap).decimalFormat(new String[] {"NETWR", "CREDIT", "TOTAL_WEIGHT"});
 		FormatBuilder.with(itemList)
 			.decimalFormat(new String[] {"KBETR", "NET_PRICE", "NET_VALUE"})
 			.qtyFormat("REQ_QTY");
@@ -105,8 +105,9 @@ public class QuotDisplayController extends PartsDomesticGeneralController
 		resultMap.put("remark", rfcResponse.getString("LV_REMARK"));
 		resultMap.put("nettx", rfcResponse.getString("P_NETTX"));
 		resultMap.put("first", rfcResponse.getStructure("LS_FIRST"));
+		resultMap.put("generalZterm", rfcResponse.getTable("LT_GERNERAL_ZTERM"));
 		resultMap.put("general", generalMap);
-		resultMap.put("mainHeadResult", mainHeadResult);
+		resultMap.put("mainHeadResult", mainHeadResultMap);
 		resultMap.put("item", itemList);
 
 		return resultMap;

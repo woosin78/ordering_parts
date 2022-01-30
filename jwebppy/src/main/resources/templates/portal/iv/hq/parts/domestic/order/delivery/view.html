@@ -17,23 +17,21 @@
 	<form id="FORM_search" name="FORM_search">
 	<input type="hidden" name="pShipmentNo" th:value="${pShipmentNo}" />
 	
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQPD_L_SHIPMENT_DOC_CREATE_DATE}"></th><!-- Shipment Doc. Create Date Period-->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
-						<div class="split"></div>
-						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">					
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">					
 					</div>
 				</td>
 				<th th:text="#{HQPD_L_ONBOARD_DATE}"></th><!-- Onboard Date Period -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromOnboardDate" name="pFromOnboardDate" class="custom-ui-calendar" th:value="${pOnboardFromDate}">
-						<div class="split"></div>
-						<input type="text" id="pToOnboardDate" name="pToOnboardDate" class="custom-ui-calendar" th:value="${pToOnboardDate}">					
+						<input type="text" id="pToOnboardDate" name="pToOnboardDate" class="custom-ui-calendar to" th:value="${pToOnboardDate}">					
 					</div>
 				</td>
 			</tr>			
@@ -52,7 +50,7 @@
 				</td>			
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_PARTS_NO}"></th>
+				<th th:text="#{HQPD_L_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
@@ -100,7 +98,7 @@
 				{data: "MAKTX", title: "[[#{HQPD_L_DESCRIPTION}]]"},//Description
 				{data: "LFIMG", title: "[[#{HQPD_L_QTY}]]", className: "right"},//Qty
 				{data: "NETPR", title: "[[#{HQPD_L_UNIT_PRICE}]]", className: "right"},//Unit Price
-				{data: "NETWR", title: "[[#{HQPD_L_AMOUNT}]]", className: "right"},//Amount
+				{data: "NETWR", title: "[[#{HQPD_L_TOTAL_AMOUNT}]]", className: "right"},//Amount
 				{data: "HERKL", title: "[[#{HQPD_L_ORIGIN}]]"},//Origin
 				{data: "VBELN2", title: "[[#{HQPD_L_SALES_DOC_NO}]]"},//Sales Doc. No.
 				{data: "ZFOBDT", title: "[[#{HQPD_L_ONBOARD_DATE}]]"},//Onboard Date
@@ -124,7 +122,7 @@
 				{				
 					let data = response.RESULT;
 					
-					$("#totalRows").html(data.length+" row(s).");
+					$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
 					
 					return data;
 				}			

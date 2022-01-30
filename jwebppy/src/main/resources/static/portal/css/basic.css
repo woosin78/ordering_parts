@@ -247,7 +247,6 @@ input {
 }
 
 /*--- 여백 과 flex ------------------*/
-
 .split {
 	display: inline-block;
 	height: 10px;
@@ -315,6 +314,13 @@ input {
 .table-fixed {
 	table-layout: fixed;
 	/* border-radius: 5px; */
+}
+.table-inner {
+	padding: 0px;
+	margin: 0px;
+	border-spacing: 0px;
+	border-top: 1px solid #cfcfcf;
+	border-bottom: 1px solid #cfcfcf;
 }
 .condition th, .condition td{
 	padding: 3px 15px;
@@ -622,13 +628,13 @@ input.custom-ui[type="radio"]:disabled + label:before {
   transition-duration: 0;
   filter: brightness(1);
 }
-
 input.custom-ui[type="text"]{
 	padding-left: 6px;
 	padding-right: 6px;
 	border: 1px solid #ddd;
 	width: 100%;
 	width: -webkit-fill-available;
+	/* float: left; */
 }
 input.custom-ui[type="text"]:read-only{
 	background-color: #cccccc;
@@ -655,6 +661,15 @@ input.custom-ui-calendar{
 	border: 1px solid #ddd;
 	cursor: pointer;
 	width: 120px;	
+}
+input.custom-ui-calendar.to{
+	margin-left:6px;
+}
+input.custom-ui-scope{
+	padding-left: 6px;
+	padding-right: 6px;
+	border: 1px solid #ddd;
+	width: 40%;
 }
 textarea.custom-ui{
 	padding-left: 6px;
@@ -694,10 +709,6 @@ select::-ms-expand {
 	background-position: -4px -4px;
 }
 
-.btn-popup+input.custom-ui[type=text]{
-	width: calc(100% - 28px)
-}
-
 .btn-popup2{
 	float: right;
 	color: #888;
@@ -714,11 +725,14 @@ select::-ms-expand {
 	position:absolute;
 }
 
+.btn-popup+input.custom-ui[type=text]{
+	width: calc(100% - 28px)
+}
+
 img.required {
 	border: none;
 	margin-left:3px;
 }
-
 
 /*--- Text style ------------------*/
 .text-alert {

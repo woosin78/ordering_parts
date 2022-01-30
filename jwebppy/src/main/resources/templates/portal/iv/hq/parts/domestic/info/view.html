@@ -109,12 +109,10 @@
 		<tr>
 			<th th:text="#{HQPD_L_BULLETIN}"></th><!-- Bulletin -->
 			<td id="BULLETIN"></td>
-			<th th:text="#{HQPD_L_KIT_AVAILABILITY}"></th><!-- KIT Availability -->
-			<td id="EXP_AVQ"></td>
-		</tr>
-		<tr>
 			<th th:text="#{HQPD_L_AM_DEV_PART}"></th><!-- AM Development Part -->
-			<td id="AM_PART_NO" colspan="3"></td>		
+			<td id="AM_PART_NO"></td>			
+			<!-- th th:text="#{HQPD_L_KIT_AVAILABILITY}"></th><!-- KIT Availability -->
+			<!-- td id="EXP_AVQ"></td -->
 		</tr>		
 	</tbody>
 </table>	
@@ -123,7 +121,7 @@
 <div class="split-row"></div>
 <div class="condition-area">
 	<div class="condition-title" th:text="#{HQPD_L_SUPPLY_PART_PRICE_INFO}"></div>
-	<table class="condition">
+	<table class="condition table-fixed">
 		<thead>
 	        <tr>
 	            <th th:text="#{HQPD_L_UOM}"></th><!-- UoM -->

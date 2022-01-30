@@ -20,7 +20,7 @@
 	<input type="hidden" id="poNo" name="poNo"/>
 	<input type="hidden" id="orderDate" name="orderDate"/>
 	<input type="hidden" id="fgDownload" name="fgDownload"/>
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQPD_L_ORDER_NO}"></th>
@@ -45,8 +45,7 @@
 				<td colspan="3">
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
-						<div class="split"></div>
-						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">
 					</div>
 				</td>					
 			</tr>		
@@ -92,17 +91,18 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 5 },
 			columns : [				
-				{data: "VBELN", 		title: "[[#{HQPD_L_ORDER_NO}]]", className:"link"},	// Order No.
-				{data: "SO_ITEM", 		title: "[[#{HQPD_L_ITEM_ROWS}]]", className: "right"}, // Item Rows	
-				{data: "KONDA_T", 		title: "[[#{HQPD_L_ORDER_TYPE}]]"},	// Order Type	
-				{data: "SO_QTY", 		title: "[[#{HQPD_L_ORDER_QTY}]]", className: "right"}, // Order Qty				
-				{data: "PI_QTY", 		title: "[[#{HQPD_L_PACKED_QTY}]]", className: "right"}, // Packed Qty	
-				{data: "SH_QTY", 		title: "[[#{HQPD_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},	// S.Completion Qty	
-				{data: "IN_QTY", 		title: "[[#{HQPD_L_INVOICE_QTY}]]", className: "right"}, // Invoice Qty			
-				{data: "BO_AMT", 		title: "[[#{HQPD_L_BACKORDER_QTY}]]", className: "right"}, // B/O Quantity
-				{data: "VSBED_T", 		title: "[[#{HQPD_L_SHIPPING_CONDITION}]]"},	// Shipping Condition		
-				{data: "WAERK", 		title: "[[#{HQPD_L_CURR}]]"}, // Curr.
-				{data: "BSTKD", 		title: "[[#{HQPD_L_PO_NO}]]"} // P.O No.
+				{data: "VBELN", 		title: "[[#{HQPD_L_ORDER_NO}]]", className:"link"},
+				{data: "SO_ITEM", 		title: "[[#{HQPD_L_ORDER_ITEM_ROWS}]]", className: "right"},	
+				{data: "KONDA_T", 		title: "[[#{HQPD_L_ORDER_TYPE}]]"},	
+				{data: "SO_QTY", 		title: "[[#{HQPD_L_ORDER_QTY}]]", className: "right"},				
+				{data: "RE_QTY", 		title: "[[#{HQPD_L_RESERVED_QTY}]]", className: "right"},
+				{data: "PI_QTY", 		title: "[[#{HQPD_L_PACKED_QTY}]]", className: "right"},	
+				{data: "IN_QTY", 		title: "[[#{HQPD_L_INVOICE_QTY}]]", className: "right"},
+				{data: "SH_QTY", 		title: "[[#{HQPD_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},
+				{data: "BO_AMT", 		title: "[[#{HQPD_L_BACKORDER_QTY}]]", className: "right"},
+				{data: "VSBED_T", 		title: "[[#{HQPD_L_SHIPPING_CONDITION}]]"},		
+				{data: "WAERK", 		title: "[[#{HQPD_L_CURR}]]"},
+				{data: "BSTKD", 		title: "[[#{HQPD_L_PO_NO}]]"}
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/order/status/list/data",
@@ -125,7 +125,7 @@
 						data[i].BO_AMT = Number(data[i].SO_QTY) - Number(data[i].SH_QTY);						
 					};
 					
-					$("#totalRows").html(data.length + " row(s).");
+					$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
 	
 					return data;
 				}

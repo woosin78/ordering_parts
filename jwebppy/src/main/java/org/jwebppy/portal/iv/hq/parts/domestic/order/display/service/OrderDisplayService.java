@@ -26,7 +26,7 @@ public class OrderDisplayService
 			.field().with(paramMap)
 			.add(new Object[][] {
 				{"I_BGTYP", "P"},
-				{"I_LANGU", paramMap.getLang()},
+				{"I_LANGU", paramMap.getLangForSap()},
 				{"I_USERID", paramMap.getUsername()}
 			})
 			.and()
@@ -61,7 +61,7 @@ public class OrderDisplayService
 			.field().with(paramMap)
 				.add(new Object[][] {
 					{"I_BGTYP", "P"},
-					{"I_LANGU", paramMap.getLang()},
+					{"I_LANGU", paramMap.getLangForSap()},
 					{"I_USERID", paramMap.getUsername()},
 				})
 				.addByKey("LV_REF_ORD", "orderNo")
@@ -105,7 +105,7 @@ public class OrderDisplayService
 				.field().with(paramMap)
 					.add(new Object[][] {
 						{"I_USERID", paramMap.getUsername()},
-						{"I_LANGU", paramMap.getLang()}
+						{"I_LANGU", paramMap.getLangForSap()}
 					})
 					.addByKey(new Object[][] {
 						{"ID", "mode"},

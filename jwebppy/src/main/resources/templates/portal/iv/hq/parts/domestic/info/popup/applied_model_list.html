@@ -16,7 +16,7 @@
 <div class="condition-area">
 <form id="FORM_search" name="FORM_search" onsubmit="return false;">
 <input type="hidden" name="FLAG" id="FLAG" value="S"><!-- Sub Item List의 로딩시 Search를 위한 flag-->
-<table class="condition">
+<table class="condition table-fixed">
 	<tbody>
 		<tr>
 			<th th:text="#{HQPD_L_PART_NO}"></th><!--Part No.  -->
@@ -83,7 +83,7 @@ $(function(){
 					data[i].SEQ = i+1;
 				}
 				
-				$("#totalRows").html(data.length+" row(s).");
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
 				
 				return data;
 			}

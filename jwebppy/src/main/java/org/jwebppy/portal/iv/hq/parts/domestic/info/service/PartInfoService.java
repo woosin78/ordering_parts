@@ -25,7 +25,7 @@ public class PartInfoService
 			.field().with(paramMap)
 				.add(new Object[][] {
 					{"I_BGTYP", "P"},//상수
-					{"I_LANGU", paramMap.getLang()},
+					{"I_LANGU", paramMap.getLangForSap()},
 					{"I_USERID", paramMap.getUsername()},
 					{"I_MATNR", "partNo"}
 				});
@@ -40,7 +40,7 @@ public class PartInfoService
 		rfcRequest.with(paramMap)
 			.field(new Object[][] {
 				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.getLang()},
+				{"I_LANGU", paramMap.getLangForSap()},
 				{"I_USERID", paramMap.getUsername()},
 				{"I_KVGR5", paramMap.getCustomerGrp5()},
 				{"I_REQTY", "reqQty"}
@@ -60,7 +60,7 @@ public class PartInfoService
 		rfcRequest.with(paramMap)
 			.field(new Object[][] {
 				{"I_BGTYP", "P"},//상수
-				{"ILANGU", paramMap.getLang()},
+				{"ILANGU", paramMap.getLangForSap()},
 				{"I_USERID", paramMap.getUsername()},
 				{"MAKTX", "partDesc"},
 				{"MATNR", "partNo"}
@@ -76,7 +76,7 @@ public class PartInfoService
 		rfcRequest.with(paramMap)
 			.field(new Object[][] {
 				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.getLang()},
+				{"I_LANGU", paramMap.getLangForSap()},
 				{"I_USERID", paramMap.getUsername()},
 				{"I_MATNR", "partNo"}
 			});
@@ -91,7 +91,7 @@ public class PartInfoService
 		rfcRequest.with(paramMap)
 			.field(new Object[][] {
 				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.getLang()},
+				{"I_LANGU", paramMap.getLangForSap()},
 				{"I_USERID", paramMap.getUsername()},
 				{"I_KVGR5", "productType"},
 				{"I_MATNR", "partNo"},
@@ -108,7 +108,7 @@ public class PartInfoService
 		rfcRequest.with(paramMap)
 			.field(new Object[][] {
 				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.getLang()},
+				{"I_LANGU", paramMap.getLangForSap()},
 				{"I_USERID", paramMap.getUsername()},
 				{"I_MATNR", "partNo"}
 			});
@@ -124,7 +124,7 @@ public class PartInfoService
 		rfcRequest
 			.field(new Object[][] {
 				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.getLang()},
+				{"I_LANGU", paramMap.getLangForSap()},
 				{"I_USERID", paramMap.getUsername()}
 			})
 			.and()

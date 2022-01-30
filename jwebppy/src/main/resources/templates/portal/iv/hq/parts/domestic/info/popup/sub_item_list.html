@@ -19,7 +19,7 @@
 	</div>	
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search" onsubmit="return false;">
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQPD_L_PART_NO}"></th><!--Part No  -->
@@ -101,7 +101,7 @@
 						data[i].AVA_FLAG = "";
 					}
 					
-					$("#totalRows").html(data.length + " row(s).");
+					$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
 					
 					return data;
 				}

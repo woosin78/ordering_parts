@@ -69,6 +69,24 @@ public class ErpDataMap extends DataMap implements Serializable
 		return getString("LANG");
 	}
 
+	public String getLangForSap()
+	{
+		String lang = getString("LANG");
+
+		if (CmStringUtils.equalsIgnoreCase(lang, "ko"))
+		{
+			return "3";
+		}
+		else if (CmStringUtils.equalsAnyIgnoreCase(lang, "zh", "CN"))
+		{
+			return "1";
+		}
+		else
+		{
+			return "E";
+		}
+	}
+
 	public ErpDataMap with(Map map)
 	{
 		this.map = map;

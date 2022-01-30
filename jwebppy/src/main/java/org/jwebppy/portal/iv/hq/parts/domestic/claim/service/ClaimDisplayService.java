@@ -24,7 +24,7 @@ public class ClaimDisplayService extends PortalGeneralService
 			.field()
 				.add(new Object[][] {
 					{"I_BGTYP", "P"},//상수
-					{"I_LANGU", paramMap.getLang()},
+					{"I_LANGU", paramMap.getLangForSap()},
 					{"I_USERID", paramMap.getUsername()},
 					{"COMPLAINT", "Y"}//상수
 				})
@@ -52,7 +52,7 @@ public class ClaimDisplayService extends PortalGeneralService
 			.field()
 				.add(new Object[][] {
 					{"I_BGTYP", "P"},//상수
-					{"I_LANGU", paramMap.getLang()},
+					{"I_LANGU", paramMap.getLangForSap()},
 					{"I_USERID", paramMap.getUsername()},
 					{"LV_REF_ORD", paramMap.get("orderNo")}
 				})
@@ -70,7 +70,7 @@ public class ClaimDisplayService extends PortalGeneralService
 		rfcRequest
 			.field()
 				.add(new Object[][] {
-					{"I_LANG", paramMap.getLang()},
+					{"I_LANG", paramMap.getLangForSap()},
 					{"LS_ZZCMPCD", paramMap.get("reason1")}
 				})
 			.and()

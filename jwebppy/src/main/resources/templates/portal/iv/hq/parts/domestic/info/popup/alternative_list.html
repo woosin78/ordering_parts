@@ -14,7 +14,7 @@
 </div>	
 <div class="condition-area">
 <form id="FORM_search" name="FORM_search">
-<table class="condition">
+<table class="condition table-fixed">
 	<tbody>
 		<tr>
 			<th th:text="#{DIVUK_LB_0042}"></th><!--Part No.  -->
@@ -72,7 +72,7 @@ $(function(){
 			}
 		}
 	}).on("draw.dt", function() {
-		$("#totalRows").html(totalRows+" row(s).");
+		$("#totalRows").html(JpUtilsNumber.addComma(totalRows) + " row(s).");
 		ProgressBar.hide();
 	});		
 	

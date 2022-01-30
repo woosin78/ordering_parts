@@ -21,7 +21,7 @@ public class DeliveryStatusService
 			field().with(paramMap)
 				.add(new Object[][] {
 					{"I_USERID", paramMap.getUsername()},
-					{"I_LANGU", paramMap.getLang()}
+					{"I_LANGU", paramMap.getLangForSap()}
 				})
 				.addByKey(new Object[][] {
 					{"I_FDATE", "fromDate"},
@@ -47,7 +47,7 @@ public class DeliveryStatusService
 		field().with(paramMap)
 			.add(new Object[][] {
 				{"I_USERID", paramMap.getUsername()},
-				{"I_LANGU", paramMap.getLang()}
+				{"I_LANGU", paramMap.getLangForSap()}
 			})
 			.addByKey(new Object[][] {
 				{"I_FDATE", "fromDate"},

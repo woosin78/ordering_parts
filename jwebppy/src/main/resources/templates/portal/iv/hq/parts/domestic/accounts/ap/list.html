@@ -14,7 +14,7 @@
 	<div class="split-row"></div>
 	
 	<div class="condition-area">
-		<table class="condition">
+		<table class="condition table-fixed">
 			<thead>
 		        <tr>
 		            <th th:text="#{HQPD_L_ORDER_LIMIT}"></th>
@@ -26,11 +26,11 @@
 		     </thead>
 		     <tbody>
 				<tr>
-					<td id="SUMMARY_1" class="right">0</td>
-					<td id="SUMMARY_2" class="right">0</td>
-					<td id="SUMMARY_3" class="right">0</td>
-					<td id="SUMMARY_4" class="right">0</td>
-					<td id="SUMMARY_5" class="right">0</td>
+					<td id="SUMMARY_1" class="right"></td>
+					<td id="SUMMARY_2" class="right"></td>
+					<td id="SUMMARY_3" class="right"></td>
+					<td id="SUMMARY_4" class="right"></td>
+					<td id="SUMMARY_5" class="right"></td>
 				</tr>
 			</tbody>        
 		</table>
@@ -67,7 +67,7 @@
 				{data: "ARREAR", title: "[[#{HQPD_L_BALANCE}]]", className: "right"}
 			],
 			ajax: {
-				url: "/portal/iv/hq/parts/domestic/accounts/ap/schedule/list/data",
+				url: "/portal/iv/hq/parts/domestic/accounts/ap/list/data",
 				data: function(p)
 				{
 				},
@@ -91,7 +91,7 @@
 						list[i].CRDAT = JpUtilsString.defaultString(list[i].CRDAT, "[[#{HQPD_L_ORDER_IN_PROGRESS}]]");
 					};
 					
-					$("#totalRows").html(length + " row(s).");
+					$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");
 					
 					return list;
 				}			
