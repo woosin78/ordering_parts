@@ -22,9 +22,12 @@ public class RfcRequest extends AbstractDaoRequest
 	private String connectorName;
 	private String functionName;
 
-	private final Map<String, Map<String, Object>> valueMap = new HashMap<>();
+	private final Map<String, Map<String, Object>> PARAM_MAP = new HashMap<>();
 
-	private final String FIELD_KEY = "FIELD";
+	private final String DEFAULT_FIELD_KEY = "_FIELD";
+	private final String DEFAULT_STRUCTURE_KEY = "_STRUCTURE";
+	private final String DEFAULT_TABLE_KEY = "_TABLE";
+
 	private boolean isOnField = false;
 	private String structureName;
 	private String tableName;
@@ -46,15 +49,15 @@ public class RfcRequest extends AbstractDaoRequest
 	{
 		if (isOnField)
 		{
-			valueMap.put(FIELD_KEY, paramMap);
+			PARAM_MAP.put(DEFAULT_FIELD_KEY, paramMap);
 		}
 		else if (CmStringUtils.isNotEmpty(structureName))
 		{
-			valueMap.put(structureName, paramMap);
+			PARAM_MAP.put(structureName, paramMap);
 		}
 		else if (CmStringUtils.isNotEmpty(tableName))
 		{
-			valueMap.put(tableName, paramMap);
+			PARAM_MAP.put(tableName, paramMap);
 		}
 
 		return this;
@@ -95,11 +98,21 @@ public class RfcRequest extends AbstractDaoRequest
 		return this;
 	}
 
+	public RfcRequest structure()
+	{
+		return structure(DEFAULT_STRUCTURE_KEY);
+	}
+
 	public RfcRequest structure(String structureName)
 	{
 		this.structureName = structureName;
 
 		return this;
+	}
+
+	public RfcRequest table()
+	{
+		return table(DEFAULT_TABLE_KEY);
 	}
 
 	public RfcRequest table(String tableName)
@@ -242,31 +255,57 @@ public class RfcRequest extends AbstractDaoRequest
 	{
 		if (CmStringUtils.isNotEmpty(tableName))
 		{
-			Map<String, Object> tableValueMap = valueMap.get(tableName);
+			Map valueMap = PARAM_MAP.get(tableName);
 
-			if (MapUtils.isNotEmpty(tableValueMap))
+			if (MapUtils.isNotEmpty(valueMap))
 			{
-				Map<String, Object> rowMap = new HashMap<>();
-				rowMap.put(to, tableValueMap.get(from));
+				Object value = valueMap.get(from);
 
-				List<Map<String, Object>> tableList = new LinkedList<>();
-				tableList.add(rowMap);
+				if (value instanceof Map)
+				{
+					Map<String, Object> tableValueMap = (Map)value;
 
-				addTable(tableName, tableList);
+					if (MapUtils.isNotEmpty(tableValueMap))
+					{
+						Map<String, Object> rowMap = new HashMap<>();
+						rowMap.put(to, tableValueMap.get(from));
+
+						List<Map<String, Object>> tableList = new LinkedList<>();
+						tableList.add(rowMap);
+
+						addTable(to, tableList);
+					}
+				}
+				else if (value instanceof List)
+				{
+					addTable(to, (List)value);
+				}
 			}
 		}
 		else if (CmStringUtils.isNotEmpty(structureName))
 		{
-			Map<String, Object> structureValueMap = valueMap.get(structureName);
-
-			if (MapUtils.isNotEmpty(structureValueMap))
+			if (DEFAULT_STRUCTURE_KEY.equals(structureName))
 			{
-				addStructure(this.structureName, to, structureValueMap.get(from));
+				Map strucureMap = PARAM_MAP.get(structureName);
+
+				if (MapUtils.isNotEmpty(strucureMap))
+				{
+					addStructure(to, strucureMap.get(from));
+				}
+			}
+			else
+			{
+				Map strucureMap = PARAM_MAP.get(structureName);
+
+				if (MapUtils.isNotEmpty(strucureMap))
+				{
+					addStructure(structureName, to, PARAM_MAP.get(structureName).get(from));
+				}
 			}
 		}
 		else if (isOnField)
 		{
-			Map<String, Object> fieldValueMap = valueMap.get(FIELD_KEY);
+			Map<String, Object> fieldValueMap = PARAM_MAP.get(DEFAULT_FIELD_KEY);
 
 			if (MapUtils.isNotEmpty(fieldValueMap))
 			{

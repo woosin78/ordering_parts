@@ -10,8 +10,8 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.hq.common.HqCommonVo;
-import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/create")
+@RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/order/create")
 public class OrderCreateController extends PartsDomesticGeneralController
 {
 	@Autowired

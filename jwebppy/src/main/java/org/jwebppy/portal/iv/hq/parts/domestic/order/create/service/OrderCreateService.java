@@ -282,7 +282,7 @@ public class OrderCreateService
 					PartsErpUserContext erpUserContext = (PartsErpUserContext)UserAuthenticationUtils.getUserDetails().getErpUserContext();
 
 					OnetimeAddressDto onetimeAddress = new OnetimeAddressDto();
-					onetimeAddress.setCorp(erpUserContext.getCorpName());
+					onetimeAddress.setCorp(erpUserContext.getCorp());
 					onetimeAddress.setOaSeq(order.getOaSeq());
 					onetimeAddress.setFgUse(PartsCommonVo.YES);
 					onetimeAddress.setRegUsername(UserAuthenticationUtils.getUsername());

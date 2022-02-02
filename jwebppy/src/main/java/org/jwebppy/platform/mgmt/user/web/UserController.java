@@ -247,7 +247,7 @@ public class UserController extends UserGeneralController
 	@ResponseBody
 	public Object delete(@RequestParam("uSeq") List<Integer> uSeqs)
 	{
-		return userService.delete(uSeqs);
+		return userService.deleteUser(uSeqs);
 	}
 
 	@PostMapping("/{command}")
@@ -318,17 +318,15 @@ public class UserController extends UserGeneralController
 		return timezones;
 	}
 
-	@GetMapping("/credentials/valid_check")
+	@GetMapping("/check/valid_credentials")
 	@ResponseBody
-	public Object validCheck(@ModelAttribute CredentialsPolicySearchDto credentialsPolicySearch)
+	public Object checkValidCredentials(@ModelAttribute CredentialsPolicySearchDto credentialsPolicySearch)
 	{
 		String value = CmStringUtils.trimToEmpty(credentialsPolicySearch.getValue());
 
 		if (CredentialsPolicyType.U.equals(credentialsPolicySearch.getType()))
 		{
-			UserDto user = userService.getUserByUsername(value.toUpperCase());
-
-			if (user != null)
+			if (userService.isExistByUsername(value.toUpperCase()))
 			{
 				Map<String, Object> resultMap = new HashMap<>();
 				resultMap.put("TYPE", credentialsPolicySearch.getType());
@@ -351,7 +349,7 @@ public class UserController extends UserGeneralController
 		return userService.createUserByCopy(paramMap);
 	}
 
-	@GetMapping("/expired_password/check")
+	@GetMapping("/check/expired_password")
 	@ResponseBody
 	public Object checkPasswordExpiration()
 	{

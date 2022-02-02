@@ -81,7 +81,7 @@ $(document).ready(function() {
 	$("#BTN_sendMailWithLink").on("click", function() {
 		let html = $("#FORM_search div[data-tab=parameter]").html(); 
 		
-		$.ajax({
+		JpUtilsAjax.get({
 			url: "/platform/mgmt/log/view/download",
 			type: "post",
 			data: { html : html, dlSeq: "[[${dataAccessLog.dlSeq}]]" }

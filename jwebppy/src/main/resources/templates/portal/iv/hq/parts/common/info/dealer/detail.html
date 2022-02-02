@@ -8,7 +8,7 @@
 	<div class="block-title">Dealer Info.</div>
 </div>	
 <div class="condition-area">
-<table class="condition table-fixed">
+<table class="condition">
 		<tr>
 			<th style="width: 150px;">Customer Code</th>
 			<td id="CUSTOMER_CODE"></td>
@@ -25,7 +25,7 @@
 	<div class="block-title">Basic Info.</div>
 </div>
 <div class="condition-area">
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tr>
 			<th style="width: 150px;">Tax Number</th>
 			<td id="STCD4"></td>
@@ -58,7 +58,7 @@
 		</tr>									
 	</table>
 	<div class="split-row"></div>
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tr>
 			<th style="width: 150px;">Postal code/City</th>
 			<td><span id="POST_CODE1"></span>
@@ -119,7 +119,7 @@
 	<div class="block-title">Sales Info.</div>
 </div>
 <div class="condition-area">
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tr>
 			<th style="width: 150px;">Branch</th>
 			<td id="VKGRP_T"></td>
@@ -171,7 +171,7 @@
 	</table>
 </div>
 <script>
-$.ajax({
+JpUtilsAjax.get({
 	url: "/portal/scm/parts/common/info/dealer/detail/data",
     success: function(data, textStatus, jqXHR) 
     {

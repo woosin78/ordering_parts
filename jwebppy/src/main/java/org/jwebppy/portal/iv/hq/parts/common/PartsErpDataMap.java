@@ -20,9 +20,4 @@ public class PartsErpDataMap extends ErpDataMap
 	{
 		return getString("KVGR5");
 	}
-
-	public String getCustomerType()
-	{
-		return getString("TYPE");
-	}
 }

@@ -129,7 +129,7 @@ public class CmDateFormatUtils
 
 	public static String theFirstDateMonth(ZonedDateTime zonedDateTime)
 	{
-		return theFirstDateMonth(CmDateTimeUtils.now(), getDateFormat());
+		return theFirstDateMonth(zonedDateTime, getDateFormat());
 	}
 
 	public static String theFirstDateThisMonth(String format)

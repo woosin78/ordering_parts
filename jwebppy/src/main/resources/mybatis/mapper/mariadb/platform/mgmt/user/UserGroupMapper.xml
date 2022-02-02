@@ -13,6 +13,7 @@
 		<result property="country" column="country" />
 		<result property="timezone" column="timezone" />
 		<result property="langKind" column="lang_kind" />
+		<result property="defLang" column="def_lang" />
 		<result property="fgDelete" column="fg_delete" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
@@ -23,8 +24,8 @@
 	</resultMap>
 	
 	<insert id="insert" parameterType="UserGroupEntity" useGeneratedKeys="true" keyProperty="ugSeq">
-		insert into pltf_user_group (name, description, scr_seq, date_format1, time_format1, date_format2, time_format2, country, timezone, lang_kind, fg_delete, reg_username, reg_date) values (
-			#{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat1}, #{timeFormat1}, #{dateFormat2}, #{timeFormat2}, #{country}, #{timezone}, #{langKind}, 'N', #{regUsername}, #{regDate}
+		insert into pltf_user_group (name, description, scr_seq, date_format1, time_format1, date_format2, time_format2, country, timezone, lang_kind, def_lang, fg_delete, reg_username, reg_date) values (
+			#{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat1}, #{timeFormat1}, #{dateFormat2}, #{timeFormat2}, #{country}, #{timezone}, #{langKind}, #{defLang}, 'N', #{regUsername}, #{regDate}
 		) 
 	</insert>
 
@@ -40,6 +41,7 @@
 			country=#{country},
 			timezone=#{timezone},
 			lang_kind=#{langKind},
+			def_lang=#{defLang},
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where

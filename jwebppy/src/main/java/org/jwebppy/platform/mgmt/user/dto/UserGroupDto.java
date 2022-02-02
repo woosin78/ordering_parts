@@ -2,6 +2,7 @@ package org.jwebppy.platform.mgmt.user.dto;
 
 import java.util.Locale;
 
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
@@ -31,6 +32,7 @@ public class UserGroupDto extends GeneralDto implements IPagination
 	private String country;
 	private String timezone;
 	private String langKind;
+	private String defLang;
 	private int userCount;
 
 	public UserGroupDto() {}
@@ -55,6 +57,24 @@ public class UserGroupDto extends GeneralDto implements IPagination
 		return country;
 	}
 
+	public String getDisplayLangKind()
+	{
+		StringBuilder allowableLanguages = new StringBuilder();
+		String[] langKinds = CmStringUtils.split(langKind, PlatformConfigVo.DELIMITER);
+
+		for (int i=0, length=langKinds.length; i<length; i++)
+		{
+			allowableLanguages.append(new Locale(langKinds[i]).getDisplayLanguage());
+
+			if (i < length-1)
+			{
+				allowableLanguages.append(", ");
+			}
+		}
+
+		return allowableLanguages.toString();
+	}
+
 	public String getDisplayTimezone()
 	{
 		if (CmStringUtils.isNotEmpty(timezone))
@@ -65,5 +85,15 @@ public class UserGroupDto extends GeneralDto implements IPagination
 		}
 
 		return timezone;
+	}
+
+	public String getDisplayDefLang()
+	{
+		if (CmStringUtils.isNotEmpty(defLang))
+		{
+			return new Locale(defLang).getDisplayLanguage();
+		}
+
+		return null;
 	}
 }

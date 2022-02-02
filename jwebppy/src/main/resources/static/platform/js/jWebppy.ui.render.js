@@ -137,7 +137,7 @@ let JpUiRender = function()
 				content.push("<div class=\"field" + (isRequired ? " required" : "") + "\">");
 				closeTags.push("</div>");
 
-				if (typeFormElement != "CHECKBOX")
+				if (typeFormElement != "CHECKBOX" && typeFormElement != "RADIO")
 				{
 					if (element.label != null)
 					{
@@ -164,9 +164,14 @@ let JpUiRender = function()
 				closeTags.push("</div></div>");
 			};
 			
-			if (typeFormElement == "CHECKBOX")
+			if (typeFormElement == "CHECKBOX" || typeFormElement == "RADIO")
 			{
-				content.push("<div class=\"ui checkbox");
+				content.push("<div class=\"ui checkbox ");
+				
+				if (typeFormElement == "RADIO")
+				{
+					content.push(" radio ")
+				};
 				
 				if (dataKey != "")
 				{
@@ -188,7 +193,7 @@ let JpUiRender = function()
     		
     		content.push(">");
 	    	
-			if (typeFormElement == "CHECKBOX")
+			if (typeFormElement == "CHECKBOX" || typeFormElement == "RADIO")
 			{
 				if (element.label != null)
 				{

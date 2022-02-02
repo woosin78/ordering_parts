@@ -194,7 +194,7 @@ $(document).ready(function() {
 		if (JpUtilsString.isNotEmpty(value))
 		{
 			JpUtilsAjax.get({
-				url: "/platform/mgmt/user/credentials/valid_check",
+				url: "/platform/mgmt/user/check/valid_credentials",
 				data: { value: value, type: type, cpSeq: $("#FORM_modify select[name=cpSeq]").val() },
 				global: false,
 				async: false,

@@ -26,6 +26,7 @@ public class UserGroupEntity extends GeneralDto implements IPagination
 	private String country;
 	private String timezone;
 	private String langKind;
+	private String defLang;
 	private int userCount;
 
 	public UserGroupEntity() {}

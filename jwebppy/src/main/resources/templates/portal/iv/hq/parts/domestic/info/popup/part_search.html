@@ -6,17 +6,17 @@
 	
 <th:block layout:fragment="content">	
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_PART_NO}"></div><!-- Part No. -->
+		<div class="block-title" th:text="#{HQP_T_PART_NO}"></div><!-- Part No. -->
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 		</div>	
 	</div>	
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_PART_NO}"></th><!-- Part No.  -->
+				<th th:text="#{HQP_L_PART_NO}"></th><!-- Part No.  -->
 				<td>			
 					<div class="input-area">			
 						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}" style="text-transform: uppercase;">
@@ -24,7 +24,7 @@
 				</td>
 			</tr>
 			<tr>			
-				<th th:text="#{HQPD_L_DESCRIPTION}"></th><!--Description  -->
+				<th th:text="#{HQP_L_DESCRIPTION}"></th><!--Description  -->
 				<td>
 					<div class="input-area">			
 						<input type="text" id="pPartDesc" name="pPartDesc" class="custom-ui" th:value="${pPartDesc}">
@@ -81,8 +81,8 @@
 						return '<input type="radio" name="RAD_MATNR" id="RAD_MATNR" class="custom-ui" value="' + row.MATNR + '" onclick="clickParts(this)"><label for="RAD_MATNR"></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "MATNR", data: "MATNR", title: "[[#{HQPD_L_PART_NO}]]"},		//Part No. 
-				{name: "MAKTX", data: "MAKTX", title: "[[#{HQPD_L_DESCRIPTION}]]"}	//Description	
+				{name: "MATNR", data: "MATNR", title: "[[#{HQP_L_PART_NO}]]"},		//Part No. 
+				{name: "MAKTX", data: "MAKTX", title: "[[#{HQP_L_DESCRIPTION}]]"}	//Description	
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/info/popup/part_search/data",

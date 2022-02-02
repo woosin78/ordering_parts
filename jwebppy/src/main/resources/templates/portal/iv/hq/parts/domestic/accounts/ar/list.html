@@ -6,26 +6,26 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_AR_DETAIL}"></div>
+		<div class="block-title" th:text="#{HQP_T_AR_DETAIL}"></div>
 		<div class="block-button-area">
-			<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button>
-			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button>
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
 		</div>
 	</div>
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
 	
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_PO_NO}"></th>
+				<th th:text="#{HQP_L_PO_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromPoNo" name="pFromPoNo" class="custom-ui-scope" th:value="${pFromPoNo}">
 						<input type="text" id="pToPoNo" name="pToPoNo" class="custom-ui-scope" th:value="${pToPoNo}">
 					</div>			
 				</td>
-				<th th:text="#{HQPD_L_AR_INVOICE_NO}"></th>
+				<th th:text="#{HQP_L_AR_INVOICE_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromInvoiceNo" name="pFromInvoiceNo" class="custom-ui-scope" th:value="${pFromInvoiceNo}">
@@ -34,13 +34,13 @@
 				</td>				
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_PART_NO}"></th>
+				<th th:text="#{HQP_L_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
 					</div>
 				</td>
-				<th th:text="#{HQPD_L_IV_PURCHASE_DATE}"></th>
+				<th th:text="#{HQP_L_IV_PURCHASE_DATE}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -75,17 +75,17 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 8 },
 			columns : [
-				{data: "EBELN", title: "[[#{HQPD_L_PO_NO}]]"},				
-				{data: "SVCMAN_NAME", title: "[[#{HQPD_L_IV_BUYER}]]"},
-				{data: "EBELP", title: "[[#{HQPD_L_LINE_ITEM}]]"},
-				{data: "BLDAT", title: "[[#{HQPD_L_IV_PURCHASE_DATE}]]"},
-				{data: "MATNR", title: "[[#{HQPD_L_PART_NO}]]"},
-				{data: "MAKTX", title: "[[#{HQPD_L_PART_DESCRIPTION}]]"},
-				{data: "MENGE", title: "[[#{HQPD_L_QTY}]]", className: "right"},
-				{data: "BSTME", title: "[[#{HQPD_L_UOM}]]"},
-				{data: "NETPR", title: "[[#{HQPD_L_NET_VALUE}]]", className: "right"},
-				{data: "WRBTR", title: "[[#{HQPD_L_NET_PRICE}]]", className: "right"},
-				{data: "WAERS", title: "[[#{HQPD_L_CURR}]]"}
+				{data: "EBELN", title: "[[#{HQP_L_PO_NO}]]"},				
+				{data: "SVCMAN_NAME", title: "[[#{HQP_L_IV_BUYER}]]"},
+				{data: "EBELP", title: "[[#{HQP_L_LINE_ITEM}]]"},
+				{data: "BLDAT", title: "[[#{HQP_L_IV_PURCHASE_DATE}]]"},
+				{data: "MATNR", title: "[[#{HQP_L_PART_NO}]]"},
+				{data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"},
+				{data: "MENGE", title: "[[#{HQP_L_QTY}]]", className: "right"},
+				{data: "BSTME", title: "[[#{HQP_L_UOM}]]"},
+				{data: "NETPR", title: "[[#{HQP_L_NET_VALUE}]]", className: "right"},
+				{data: "WRBTR", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},
+				{data: "WAERS", title: "[[#{HQP_L_CURR}]]"}
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/accounts/ar/list/data",

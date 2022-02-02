@@ -7,9 +7,9 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
-import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.accounts.ar.service.ArService;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/accounts/ar")
+@RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/accounts/ar")
 public class ArController extends PartsDomesticGeneralController
 {
 	@Autowired
@@ -60,7 +60,7 @@ public class ArController extends PartsDomesticGeneralController
 
 		DataList dataList = rfcResponse.getTable("T_AP_INVOICE_DETAIL");
 
-		reCalculatePriceByCurrency(dataList, new String[] { "NETPR", "WRBTR" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
+		calcPriceByCurrency(dataList, new String[] { "NETPR", "WRBTR" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.qtyFormat("MENGE")

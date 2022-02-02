@@ -38,6 +38,9 @@ public class PlatformConfigVo
 	public static final String[] CREDENTIAL_SPECIAL = {"!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "-", "+", "="};
 	public static final int CREDENTIAL_MAX_LENGTH = 20;
 
+	//초기 비밀번호
+	public static final String INITIAL_PASSWORD = "init99PW!";
+
 	/*
 	 * 인가
 	 */

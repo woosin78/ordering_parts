@@ -1,13 +1,14 @@
 package org.jwebppy.portal.iv.hq.parts.common.web;
 
+import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/portal/scm/parts/common/info/dealer")
+@RequestMapping(PartsCommonVo.REQUEST_PATH)
 public class DealerInfoController extends PartsGeneralController
 {
-//	@Autowired
+//	@Resource
 //	private DealerInfoService dealerInfoService;
 //
 //	@RequestMapping("/detail")

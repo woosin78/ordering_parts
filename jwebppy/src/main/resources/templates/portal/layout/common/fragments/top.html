@@ -62,7 +62,7 @@ function makeGmb()
 	//Make GNB
 	let menu = [];
 
-	$.ajax({
+	JpUtilsAjax.get({
 		url: "/platform/mgmt/gnb/menu",
 		success: function(data, textStatus, jqXHR)
 		{
@@ -135,13 +135,13 @@ function makeGmb()
 	});
 	
 	//Get last login information
-	$.ajax({
+	JpUtilsAjax.get({
 		url: "/platform/mgmt/user/login/history/last_login_info",		
 	    success: function(response, textStatus, jqXHR) 
 	    {
 	    	let data = response.RESULT;
 	    	
-	    	if (data != null && $.trim(data.regDate) != "")
+	    	if (data != null && JpUtilsString.isNotEmpty(data.regDate))
 	    	{
 	    		$("#lastLoginTime").html(data.regDate + "/" + data.ip);
 	    	}

@@ -37,6 +37,11 @@ $(document).ready(function() {
 		{
 			$("#FORM_write").html(new JpUiRender().render(data)).find(".ui.dropdown").dropdown({ minCharacters: 2, fullTextSearch: true });
 			
+			if ([[${userGroup.userCount}]] > 0)
+			{
+				$("#FORM_write input[name=name]").attr("readonly", true);
+			};
+			
 			$("select[name=country]").closest(".ui.dropdown").dropdown({
 				onChange: function(value, text, $choice)
 				{

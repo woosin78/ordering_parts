@@ -12,7 +12,4 @@ import lombok.ToString;
 public class PartsErpUserContext extends ErpUserContext
 {
 	private static final long serialVersionUID = -2865664308679960779L;
-
-	private String custGrp5;
-	private String custType;
 }

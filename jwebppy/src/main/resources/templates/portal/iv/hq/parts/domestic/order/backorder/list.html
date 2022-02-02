@@ -8,36 +8,36 @@
 	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
 	
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_BACKORDER_LIST}"></div><!-- Backorder List -->
+		<div class="block-title" th:text="#{HQP_T_BACKORDER_LIST}"></div><!-- Backorder List -->
 		<div class="block-button-area">
-			<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button><!-- Download -->
-			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button><!-- Download -->
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 		</div>
 	</div>
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_ORDER_NO}"></th>
+				<th th:text="#{HQP_L_ORDER_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
 					</div>			
 				</td>
-				<th th:text="#{HQPD_L_ORDER_TYPE}"></th>
+				<th th:text="#{HQP_L_ORDER_TYPE}"></th>
 				<td>
 					<div class="input-area order-type"></div>
 				</td>			
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_ORDER_PART_NO}"></th>
+				<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
 					</div>		
 				</td>
-				<th th:text="#{HQPD_L_ORDER_DATE}"></th><!-- Period -->
+				<th th:text="#{HQP_L_ORDER_DATE}"></th><!-- Period -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -46,7 +46,7 @@
 				</td>
 			</tr>		
 			<tr>
-				<th th:text="#{HQPD_L_PO_NO}"></th>
+				<th th:text="#{HQP_L_PO_NO}"></th>
 				<td colspan="3">
 					<div class="input-area">
 						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
@@ -85,19 +85,19 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 8 },
 			columns : [
-				{data: "KONDA_T", 		title: "[[#{HQPD_L_ORDER_TYPE}]]"},	//Order<br>Type				
-				{data: "AUDAT", 		title: "[[#{HQPD_L_ORDER_DATE}]]"},	//Order Date				
-				{data: "VBELN", 		title: "[[#{HQPD_L_ORDER_NO}]]"}, //Order No.
-				{data: "POSNR", 		title: "[[#{HQPD_L_LINE_ITEM}]]"}, //Line Item 
-				{data: "MATNR_SO", 		title: "[[#{HQPD_L_ORDER_PART_NO}]]"}, //Order Part No.
-				{data: "MATNR_SH", 		title: "[[#{HQPD_L_SUPPLY_PART_NO}]]"}, //Supply Part No
-				{data: "MAKTX", 		title: "[[#{HQPD_L_DESCRIPTION}]]"}, //Description
-				{data: "KWMENG_SO", 	title: "[[#{HQPD_L_ORDER_QTY}]]", className: "right"}, //Order Qty
-				{data: "KWMENG_SH", 	title: "[[#{HQPD_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"}, //S.Completion Qty
-				{data: "KWMENG", 		title: "[[#{HQPD_L_BACKORDER_QTY}]]", className: "right"}, //B/O Quantity
-				{data: "VRKME", 		title: "[[#{HQPD_L_UOM}]]"}, //UoM,
-				{data: "PRETD",			title: "[[#{HQPD_L_ETD}]]"}, //ETD Comment
-				{data: "BSTKD", 		title: "[[#{HQPD_L_PO_NO}]]"}	//P.O. No.
+				{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},	//Order<br>Type				
+				{data: "AUDAT", 		title: "[[#{HQP_L_ORDER_DATE}]]"},	//Order Date				
+				{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]"}, //Order No.
+				{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"}, //Line Item 
+				{data: "MATNR_SO", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"}, //Order Part No.
+				{data: "MATNR_SH", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"}, //Supply Part No
+				{data: "MAKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"}, //Description
+				{data: "KWMENG_SO", 	title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"}, //Order Qty
+				{data: "KWMENG_SH", 	title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"}, //S.Completion Qty
+				{data: "KWMENG", 		title: "[[#{HQP_L_BACKORDER_QTY}]]", className: "right"}, //B/O Quantity
+				{data: "VRKME", 		title: "[[#{HQP_L_UOM}]]"}, //UoM,
+				{data: "PRETD",			title: "[[#{HQP_L_ETD}]]"}, //ETD Comment
+				{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"}	//P.O. No.
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/order/backorder/list/data",

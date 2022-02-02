@@ -21,9 +21,6 @@ public class UserGroupService extends GeneralService
 	@Autowired
 	private UserGroupMapper userGroupMapper;
 
-	@Autowired
-	private UserService userService;
-
 	public int save(UserGroupDto userGroup)
 	{
 		if (userGroup.getUgSeq() == null)
@@ -73,6 +70,21 @@ public class UserGroupService extends GeneralService
 	public UserGroupDto getUserGroup(Integer ugSeq)
 	{
 		return CmModelMapperUtils.mapToDto(UserGroupObjectMapper.INSTANCE, userGroupMapper.findUserGroup(ugSeq));
+	}
+
+	public UserGroupDto getUserGroupByName(String name)
+	{
+		UserGroupSearchDto userGroupSearch = new UserGroupSearchDto();
+		userGroupSearch.setName(name);
+
+		List<UserGroupDto> userGroups = getUserGroups(userGroupSearch);
+
+		if (CollectionUtils.isNotEmpty(userGroups))
+		{
+			return userGroups.get(0);
+		}
+
+		return null;
 	}
 
 	public List<UserGroupDto> getUserGroups(UserGroupSearchDto userGroupSearch)

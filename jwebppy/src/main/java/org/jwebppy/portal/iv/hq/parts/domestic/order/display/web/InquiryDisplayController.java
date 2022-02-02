@@ -9,8 +9,8 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
-import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.display.service.OrderDisplayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/display/inquiry")
+@RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/order/display/inquiry")
 public class InquiryDisplayController extends PartsDomesticGeneralController
 {
 	@Autowired

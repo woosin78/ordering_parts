@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
@@ -218,7 +219,7 @@ public class UserService extends GeneralService
 		return 0;
 	}
 
-	public int delete(List<Integer> uSeqs)
+	public int deleteUser(List<Integer> uSeqs)
 	{
 		if (CollectionUtils.isNotEmpty(uSeqs))
 		{
@@ -286,6 +287,27 @@ public class UserService extends GeneralService
 		}
 	}
 
+	public int resetPassword(List<Integer> uSeqs)
+	{
+		if (CollectionUtils.isNotEmpty(uSeqs))
+		{
+			for (Integer uSeq: uSeqs)
+			{
+				UserDto user = getUser(uSeq);
+
+				UserAccountDto userAccount = user.getUserAccount();
+				userAccount.setPassword(PlatformConfigVo.INITIAL_PASSWORD);
+				userAccount.setFgPasswordLocked(PlatformCommonVo.YES);
+
+				modifyUserAccount(userAccount);
+			}
+
+			return 1;
+		}
+
+		return 0;
+	}
+
 	public UserDto getUserByUsername(String username)
 	{
 		return getUser(new UserSearchDto(username));
@@ -309,5 +331,17 @@ public class UserService extends GeneralService
 	public List<UserDto> getUsersInCItem(UserSearchDto userSearch)
 	{
 		return CmModelMapperUtils.mapToDto(UserObjectMapper.INSTANCE, userMapper.findUsersInCItem(userSearch));
+	}
+
+	public boolean isExistByUsername(String username)
+	{
+		UserDto user = getUserByUsername(username);
+
+		if (user == null)
+		{
+			return false;
+		}
+
+		return true;
 	}
 }

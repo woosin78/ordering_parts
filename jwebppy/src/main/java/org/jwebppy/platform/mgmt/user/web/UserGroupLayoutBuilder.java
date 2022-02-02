@@ -9,16 +9,19 @@ import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Document;
+import org.jwebppy.platform.core.web.ui.dom.Element;
 import org.jwebppy.platform.core.web.ui.dom.Label;
 import org.jwebppy.platform.core.web.ui.dom.Link;
 import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
 import org.jwebppy.platform.core.web.ui.dom.form.Input;
 import org.jwebppy.platform.core.web.ui.dom.form.InputHidden;
+import org.jwebppy.platform.core.web.ui.dom.form.Radio;
 import org.jwebppy.platform.core.web.ui.dom.form.Select;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
 import org.jwebppy.platform.core.web.ui.dom.table.Thead;
 import org.jwebppy.platform.core.web.ui.dom.table.Tr;
+import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangKindType;
@@ -32,12 +35,13 @@ public class UserGroupLayoutBuilder
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
-		thTr.addTextTh("Name", "three wide");
+		thTr.addTextTh("Name", "two wide");
 		thTr.addTextTh("Description", "three wide");
 		thTr.addTextTh("Date Format<br/>(Back-End / Front-End)", "two wide");
 		thTr.addTextTh("Time Format<br/>(Back-End / Front-End)", "two wide");
-		thTr.addTextTh("Country", "two wide");
+		thTr.addTextTh("Country", "one wide");
 		thTr.addTextTh("Timezone", "two wide");
+		thTr.addTextTh("Language<br/>(Allowable / Default)", "two wide");
 		thTr.addTextTh("Users", "one wide");
 
 		Thead thead = new Thead();
@@ -66,6 +70,7 @@ public class UserGroupLayoutBuilder
 			tbTr.addTextTd(userGroup.getTimeFormat2() + " / " + userGroup.getTimeFormat2());
 			tbTr.addTextTd(userGroup.getDisplayCountry());
 			tbTr.addTextTd(userGroup.getDisplayTimezone());
+			tbTr.addTextTd(userGroup.getDisplayLangKind() + " / " + userGroup.getDisplayDefLang());
 			tbTr.addTextTd(userCount);
 
 			tbody.addTr(tbTr);
@@ -110,7 +115,8 @@ public class UserGroupLayoutBuilder
 		document.addDefaultLabelText("Time Format (Front-End)", userGroup.getTimeFormat2());
 		document.addDefaultLabelText("Country", userGroup.getDisplayCountry());
 		document.addDefaultLabelText("Timezone", userGroup.getDisplayTimezone());
-		document.addDefaultLabelText("Language", langKind);
+		document.addDefaultLabelText("Allowable Language", langKind);
+		document.addDefaultLabelText("Default Language", userGroup.getDisplayDefLang());
 		document.addDefaultLabelText("SAP Connection Resource", loSapConnResource);
 		document.addDefaultLabelText("Users", userGroup.getUserCount());
 		document.addDefaultLabelText("Reg. Username", userGroup.getRegUsername());
@@ -124,12 +130,25 @@ public class UserGroupLayoutBuilder
 
 	public static Document write(UserGroupDto userGroup, List<SapConnResourceDto> sapConnResources)
 	{
+		Document document = new Document();
+
 		InputHidden loUgSeq = new InputHidden("ugSeq", userGroup.getUgSeq());
 		loUgSeq.setId("ugSeq");
 
-		Input loName = new Input("name", userGroup.getName());
-		loName.setRequired(true);
-		loName.setLabel("Name");
+		Element loName = null;
+
+		if (userGroup.getUserCount() > 0)
+		{
+			document.add(PlatformLayoutBuildUtils.defaultLabelText("Name", userGroup.getName()));
+
+			loName = new InputHidden("name", userGroup.getName());
+		}
+		else
+		{
+			loName = new Input("name", userGroup.getName());
+			loName.setRequired(true);
+			loName.setLabel("Name");
+		}
 
 		Input loDescription = new Input("description", userGroup.getDescription());
 		loDescription.setLabel("Description");
@@ -185,9 +204,9 @@ public class UserGroupLayoutBuilder
 			loSapConnResource.addOption(sapConnResource.getScrSeq(), sapConnResource.getName());
 		}
 
-		Div loFields = new Div();
-		loFields.setClass("inline fields");
-		loFields.addElement(new Label("Language"));
+		Div loLangKindFields = new Div();
+		loLangKindFields.setClass("inline fields");
+		loLangKindFields.addElement(new Label("Allowable Language"));
 
 		for (LangKindType langKindType: LangKindType.values())
 		{
@@ -201,10 +220,28 @@ public class UserGroupLayoutBuilder
 				loLangKind.checked();
 			}
 
-			loFields.addElement(loLangKind);
+			loLangKindFields.addElement(loLangKind);
 		}
 
-		Document document = new Document();
+		Div loDefLangFields = new Div();
+		loDefLangFields.setClass("inline fields");
+		loDefLangFields.addElement(new Label("Default Language"));
+
+		for (LangKindType langKindType: LangKindType.values())
+		{
+			String lanauge = langKindType.name();
+
+			Radio loDefLang = new Radio("defLang", lanauge);
+			loDefLang.setLabel(langKindType.getType());
+
+			if (CmStringUtils.contains(userGroup.getDefLang(), lanauge))
+			{
+				loDefLang.checked();
+			}
+
+			loDefLangFields.addElement(loDefLang);
+		}
+
 		document.addElement(loUgSeq);
 		document.addElement(loName);
 		document.addElement(loDescription);
@@ -215,7 +252,8 @@ public class UserGroupLayoutBuilder
 		document.addElement(loCountry);
 		document.addElement(loTimezone);
 		document.addElement(loSapConnResource);
-		document.addElement(loFields);
+		document.addElement(loLangKindFields);
+		document.addElement(loDefLangFields);
 
 		return document;
 	}

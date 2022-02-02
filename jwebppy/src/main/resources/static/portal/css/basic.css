@@ -458,7 +458,6 @@ input {
 .center {text-align: center;}
 .right {text-align: right;}
 
-
 /*td.link {text-decoration: underline; color: #4183C4; cursor: pointer;}*/
 td.link {text-decoration: underline; color: cursor: pointer;}
 td.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
@@ -635,6 +634,9 @@ input.custom-ui[type="text"]{
 	width: 100%;
 	width: -webkit-fill-available;
 	/* float: left; */
+}
+input.custom-ui[type="text"].uppercase{
+	text-transform: uppercase; 
 }
 input.custom-ui[type="text"]:read-only{
 	background-color: #cccccc;

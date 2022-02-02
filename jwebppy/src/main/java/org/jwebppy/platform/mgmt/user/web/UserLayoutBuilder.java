@@ -88,7 +88,7 @@ public class UserLayoutBuilder
 		elementMap.put("Organization", user.getOrganization());
 		elementMap.put("Position", user.getPosition());
 		elementMap.put("Department", user.getDepartment());
-		elementMap.put("User Group", user.getUserGroup().getName());
+		elementMap.put("User Group", user.getUserGroup().getName() + " (" + user.getUserGroup().getDescription() + ")");
 		elementMap.put("Language", user.getDisplayLanguage());
 		elementMap.put("Reg.Username", user.getRegUsername());
 		elementMap.put("Reg.Date", user.getDisplayRegDate());

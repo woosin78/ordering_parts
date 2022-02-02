@@ -1,31 +1,20 @@
 package org.jwebppy.portal.iv.hq.parts.common.service;
 
-import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
-import org.jwebppy.platform.core.util.CmStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.portal.iv.hq.common.service.HqGeneralService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PartsGeneralService
+public class PartsGeneralService extends HqGeneralService
 {
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	public RfcResponse getErpUserInfo(String username)
 	{
-		if (CmStringUtils.isNotEmpty(username))
-		{
-			RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_GET_USER_PARAM");
+		return super.getErpUserInfo(username, "7", "P");
+	}
 
-			rfcRequest.addField("I_USERID", CmStringUtils.upperCase(username));
-			rfcRequest.addField("I_BGCON", "7");
-			rfcRequest.addField("I_BGTYP", "P");
-
-			return simpleRfcTemplate.response(rfcRequest);
-		}
-
-		return null;
+	public RfcResponse getErpUserInfo()
+	{
+		return this.getErpUserInfo(UserAuthenticationUtils.getUsername());
 	}
 }

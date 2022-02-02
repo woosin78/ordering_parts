@@ -6,24 +6,25 @@
 
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVEU_TXT_ACCOUNT_MGMT}"></div>
+		<div class="block-title" th:text="#{HQP_T_ACCOUNT_LIST}"></div>
 		<div class="block-button-area">
-			<button id="BTN_resetPassword" th:text="#{HQPD_B_RESET_PASSWORD}" type="button"></button>
-			<button id="BTN_create" th:text="#{HQPD_B_CREATE}" type="button"></button>
-			<button id="BTN_delete" th:text="#{HQPD_B_DELETE}" type="button"></button>
-			<button id="BTN_search" th:text="#{HQPD_B_SEARCH}" type="button"></button>
+			<button id="BTN_resetPassword" th:text="#{HQP_B_RESET_PASSWORD}" type="button"></button>
+			<button id="BTN_create" th:text="#{HQP_B_CREATE}" type="button"></button>
+			<button id="BTN_delete" th:text="#{HQP_B_DELETE}" type="button"></button>
+			<button id="BTN_search" th:text="#{HQP_B_SEARCH}" type="button"></button>
 		</div>
 	</div>
 	
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search" onsubmit="return false;">
+	<input type="hidden" id="bizType" name="bizType" value="HQDOP" />
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th style="width:200px">[[#{HQPD_L_USERNAME}]]</th>
-				<td><input type="text" id="pUsername" name="pUsername" class="custom-ui" autofocus></td>
-				<th style="width:200px">[[#{HQPD_L_DEALER_CODE}]]</th>
-				<td><input type="text" id="pDealerCode" name="pDealerCode" class="custom-ui" autofocus></td>				
+				<th style="width:200px">[[#{HQP_L_USERNAME}]]</th>
+				<td><input type="text" id="pUsername" name="pUsername" class="custom-ui uppercase"/></td>
+				<th style="width:200px">[[#{HQP_L_DEALER_CODE}]]</th>
+				<td><input type="text" id="pDealerCode" name="pDealerCode" class="custom-ui"/></td>				
 			</tr>		
 		</tbody>
 	</table>
@@ -69,38 +70,26 @@ $(function(){
 					return '<input type="checkbox" class="custom-ui check-all" name="uSeq" value="' + row.U_SEQ + '"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},
-			{data: "BNAME", title: "[[#{HQPD_L_USERNAME}]]"},//Username
-			{data: "LASTNAME", title: "[[#{HQPD_L_LAST_NAME}]]"},//Last Name
-			{data: "FIRSTNAME", title: "[[#{HQPD_L_FIRST_NAME}]]"},//First Name
-			{data: "EMAIL", title: "[[#{HQPD_L_EMAIL}]]"},//Email
-			{data: "KUNNR", title: "[[#{HQPD_L_DEALER_CODE}]]"},//Dealer Code
-			{data: "NAME1", title: "[[#{HQPD_L_DEALER_NAME}]]"}//Dealer name
+			{data: "BNAME", title: "[[#{HQP_L_USERNAME}]]"},//Username
+			{data: "LASTNAME", title: "[[#{HQP_L_LAST_NAME}]]"},//Last Name
+			{data: "FIRSTNAME", title: "[[#{HQP_L_FIRST_NAME}]]"},//First Name
+			{data: "KUNNR", title: "[[#{HQP_L_DEALER_CODE}]]"},//Dealer Code
+			{data: "NAME1", title: "[[#{HQP_L_DEALER_NAME}]]"},//Dealer name
+			{data: "VKORG", title: "[[#{HQP_L_SALES_ORG}]]"},//Sales Org.
+			{data: "VTWEG", title: "[[#{HQP_L_DIST_CHANNEL}]]"}//Dist.Chl.
 		],
 		ajax: {
 			url: "/portal/iv/mgmt/account/list/data",
 			data: function(p)
 			{
 				// ajax로 넘길 파라미터
+				p.bizType = $("#bizType").val();
 				p.pUsername = $("#pUsername").val();
 				p.pDealerCode = $("#pDealerCode").val();
 			},
 			dataSrc: function(response)
-			{
-				let result = response.RESULT;
-				
-				let accountList = [];
-				
-				for (let i=0, length=result.length; i<length; i++)
-				{
-					if ($.trim(result[i].BNAME) == "")
-					{
-						continue;
-					}
-					
-					accountList.push(result[i]);
-				};
-				
-				return accountList;
+			{				
+				return response.RESULT;
 			}
 		},
 		initComplete:function(settings, json) 
@@ -125,9 +114,8 @@ $(function(){
 	});	
 
 	$("#BTN_resetPassword").on("click", function() {
-		$.ajax({
+		JpUtilsAjax.post({
 			url: "/portal/iv/mgmt/account/reset/password",
-			method: "post",
 			data: {"uSeqs" : getCheckedUSeqs().join(",")},
 			beforeSend: function(jqXHR, settings)
 			{
@@ -135,9 +123,9 @@ $(function(){
 			},			
 		    success: function(response, textStatus, jqXHR)
 		    {
-		    	if (CmStringUtils.isNotEmpty(response.RESULT))
+		    	if (JpUtilsString.isNotEmpty(response.RESULT))
 		    	{
-		    		alert("[[#{HQPD_M_COMPLETE_RESET_PASSWORD}]]".replace("{0}", response.RESULT));
+		    		alert("[[#{HQP_M_COMPLETE_RESET_PASSWORD}]]".replace("{0}", response.RESULT));
 		    	};
 		    },
 		    complete: function(jqXHR, textStatus)
@@ -157,11 +145,10 @@ $(function(){
 		
 		if (uSeqs.length > 0)
 		{
-			if (confirm("[[#{HQPD_M_CONFIRM_DELETE_ACCOUNT}]]"))
+			if (confirm("[[#{HQP_M_CONFIRM_DELETE_ACCOUNT}]]"))
 			{
-				$.ajax({
+				JpUtilsAjax.post({
 					url: "/portal/iv/mgmt/account/delete",
-					method: "post",
 					data: {"uSeqs" : uSeqs.join(",")},
 					beforeSend: function(jqXHR, settings)
 					{
@@ -198,14 +185,13 @@ $(function(){
 		
 		return uSeqs;
 	};
-
 });
 
 function doSearch()
 {
-	if (CmStringUtils.isEmpty($("#pUsername").val()) && CmStringUtils.isEmpty($("#pDealerCode").val()))
+	if (JpUtilsString.isEmpty($("#pUsername").val()) && JpUtilsString.isEmpty($("#pDealerCode").val()))
 	{
-		alert("[[#{HQPD_M_EMPTY_QUERY}]]");
+		alert("[[#{HQP_M_EMPTY_QUERY}]]");
 		$("#pUsername").focus();
 		return;
 	};

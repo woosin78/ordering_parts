@@ -6,35 +6,35 @@
 	<script th:src="@{/portal/js/portal.utils.grid.download.js}"></script>
 
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_ORDER_DETAIL}"></div>
+		<div class="block-title" th:text="#{HQP_T_ORDER_DETAIL}"></div>
 		<div id="BTN_search" class="block-button-area">
-			<button id="BTN_pdfDownload" type="button" th:text="#{HQPD_B_PDF_DOWNLOAD}"></button><!-- PDF Download -->
-			<button id="BTN_back" type="button" th:text="#{HQPD_B_BACK}"></button><!-- Back -->
+			<button id="BTN_pdfDownload" type="button" th:text="#{HQP_B_PDF_DOWNLOAD}"></button><!-- PDF Download -->
+			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}"></button><!-- Back -->
 		</div>
 	</div>
 	
 	<div class="condition-area">
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_ORDER_TYPE}"></th>
+				<th th:text="#{HQP_L_ORDER_TYPE}"></th>
 				<td id="KONDA_TEXT" style="width:250px;"></td>
-				<th th:text="#{HQPD_L_SHIP_TO_PARTY}">
+				<th th:text="#{HQP_L_SHIP_TO_PARTY}">
 				<td id="KUNAG_NAME"></td>
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_PO_NO}"></th>
+				<th th:text="#{HQP_L_PO_NO}"></th>
 				<td id="BSTNK"></td>
-				<th th:text="#{HQPD_L_SHIPPING_INFO}"></th>
+				<th th:text="#{HQP_L_SHIPPING_INFO}"></th>
 				<td>
 					<table class="table-inner table-fixed">
 						<thead>
 							<tr>
-								<th th:text="#{HQPD_L_SHIPPING_CONDITION}">Shipping Condition</th>
-								<th th:text="#{HQPD_L_ROUTE}">Route</th>
-								<th th:text="#{HQPD_L_PAYMENT_TERMS}">Payment terms</th>
-								<th th:text="#{HQPD_L_INCOTERMS1}">Incoterms1</th>
-								<th th:text="#{HQPD_L_INCOTERMS2}">Incoterms2</th>
+								<th th:text="#{HQP_L_SHIPPING_CONDITION}">Shipping Condition</th>
+								<th th:text="#{HQP_L_ROUTE}">Route</th>
+								<th th:text="#{HQP_L_PAYMENT_TERMS}">Payment terms</th>
+								<th th:text="#{HQP_L_INCOTERMS1}">Incoterms1</th>
+								<th th:text="#{HQP_L_INCOTERMS2}">Incoterms2</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -50,11 +50,11 @@
 				</td>
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_RDD}"></th>
+				<th th:text="#{HQP_L_RDD}"></th>
 				<td id="VDATU" colspan="3"></td>
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_REMARKS}"></th>				
+				<th th:text="#{HQP_L_REMARKS}"></th>				
 				<td colspan="3" id="REMARK"></td>
 			</tr>
 		</tbody>
@@ -64,18 +64,18 @@
 	
 	<div class="grid-info">
 		<div class="block-button-area">
-			<button id="BTN_download" th:text="#{HQPD_B_DOWNLOAD}"></button>
+			<button id="BTN_download" th:text="#{HQP_B_DOWNLOAD}"></button>
 		</div>	
 		<div class="grid-total">
-			<span th:text="#{HQPD_T_TOTAL_AMOUNT}"></span>
+			<span th:text="#{HQP_T_TOTAL_AMOUNT}"></span>
 			<div class="split"></div>
 			<span class="total-number" id="NETWR"></span>
 			<div class="split2"></div>
-			<span th:text="#{HQPD_T_CREDIT}"></span>
+			<span th:text="#{HQP_T_CREDIT}"></span>
 			<div class="split"></div>
 			<span class="total-number" id="CREDIT"></span>
 			<div class="split2"></div>
-			<span th:text="#{HQPD_T_ESTIMATE_WEIGHT}"></span>
+			<span th:text="#{HQP_T_ESTIMATE_WEIGHT}"></span>
 			<div class="split"></div>
 			<span class="total-number" id="TOTAL_WEIGHT"></span>
 		</div>
@@ -107,7 +107,7 @@ if (opener)
 //고정된 맵 데이터 사용. 페이지 생성시 데이터 넘겨서 그리드 만드는 방식
 
 $(function(){
-	$.ajax({
+	JpUtilsAjax.get({
 		url: "/portal/iv/hq/parts/domestic/order/display/order/view/data",		
 		data: {"orderNo": "[[${orderNo}]]"},
 	    success: function(response, textStatus, jqXHR) 
@@ -150,17 +150,17 @@ $(function(){
 	    		ordering: true,// 정렬 기능 켬
 	    		scrollY: 100,
 	    		columns : [
-	    			{data: "VBELN", title: "[[#{HQPD_L_ORDER_NO}]]"},//Order No.
-	    			{data: "ITEM", title: "[[#{HQPD_L_LINE_ITEM}]]"},//Item
-	    			{data: "MATERIAL_ENT", title: "[[#{HQPD_L_ORDER_PART_NO}]]"},//Order Part No.
-	    			{data: "MATERIAL", title: "[[#{HQPD_L_SUPPLY_PART_NO}]]"},//Supply Part No
-	    			{data: "MATERIAL_TEXT", title: "[[#{HQPD_L_DESCRIPTION}]]"},//Description
-	    			{data: "REQ_QTY", title: "[[#{HQPD_L_REQ_QTY}]]", className: "right"},//Req Qty
-	    			{data: "LOT_QTY", title: "[[#{HQPD_L_SALES_LOT}]]", className: "right"},//Sales Lot
-	    			{data: "UOM", title: "[[#{HQPD_L_UOM}]]"},//UoM
-	    			{data: "NET_PRICE", title: "[[#{HQPD_L_NET_PRICE}]]", className: "right"},//Net price
-	    			{data: "NET_VALUE", title: "[[#{HQPD_L_NET_VALUE}]]", className: "right"},//Net value	    			
-	    			{data: "AVAILABILITY", title: "[[#{HQPD_L_AVAILABILITY}]]"}//Available
+	    			{data: "VBELN", title: "[[#{HQP_L_ORDER_NO}]]"},//Order No.
+	    			{data: "ITEM", title: "[[#{HQP_L_LINE_ITEM}]]"},//Item
+	    			{data: "MATERIAL_ENT", title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Order Part No.
+	    			{data: "MATERIAL", title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},//Supply Part No
+	    			{data: "MATERIAL_TEXT", title: "[[#{HQP_L_DESCRIPTION}]]"},//Description
+	    			{data: "REQ_QTY", title: "[[#{HQP_L_REQ_QTY}]]", className: "right"},//Req Qty
+	    			{data: "LOT_QTY", title: "[[#{HQP_L_SALES_LOT}]]", className: "right"},//Sales Lot
+	    			{data: "UOM", title: "[[#{HQP_L_UOM}]]"},//UoM
+	    			{data: "NET_PRICE", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},//Net price
+	    			{data: "NET_VALUE", title: "[[#{HQP_L_NET_VALUE}]]", className: "right"},//Net value	    			
+	    			{data: "AVAILABILITY", title: "[[#{HQP_L_AVAILABILITY}]]"}//Available
 	    		],
 	    		columnDefs: [
 	    			{ className: "left", targets: "_all" }

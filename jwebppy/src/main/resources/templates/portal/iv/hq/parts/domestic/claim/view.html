@@ -6,22 +6,22 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_CLAIM_DISPLAY}"></div>
+		<div class="block-title" th:text="#{HQP_T_CLAIM_DISPLAY}"></div>
 		<div class="block-button-area">
-			<button id="BTN_print" type="button" th:text="#{HQPD_B_PRINT}"></button><!-- Print -->
-			<button id="BTN_back" type="button" th:text="#{HQPD_B_BACK}"></button><!-- Back -->
+			<button id="BTN_print" type="button" th:text="#{HQP_B_PRINT}"></button><!-- Print -->
+			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}"></button><!-- Back -->
 		</div>		
 	</div>
 	
 	<div class="condition-area">
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_CLAIM_NO}"></th><!--Claim No  -->
+				<th th:text="#{HQP_L_CLAIM_NO}"></th><!--Claim No  -->
 				<td><span th:text="${orderNo}"></span></td>
-				<th th:text="#{HQPD_L_DOC_DATE}"></th><!--Doc date  -->
+				<th th:text="#{HQP_L_CLAIM_DOC_CREATE_DATE}"></th><!--Doc date  -->
 				<td><span th:text="${docDate}"></span></td>
-				<th th:text="#{HQPD_L_ITEM_ROWS}"></th><!--Item Rows  -->
+				<th th:text="#{HQP_L_ITEM_ROWS}"></th><!--Item Rows  -->
 				<td id="ITEM_COUNT"></td>				
 			</tr>
 		</tbody>
@@ -59,7 +59,7 @@
 	<script type="application/javascript">
 	let $tableObj;
 	
-	$.ajax({
+	JpUtilsAjax.get({
 		url: "/portal/iv/hq/parts/domestic/claim/view/data",
 		data: { "pOrderNo": "[[${orderNo}]]", "pDocType": "[[${docType}]]" },		
 	    success: function(data, textStatus, jqXHR) 
@@ -91,21 +91,21 @@
 						}
 					}
 					
-					for (let j2=0, length2=reason2List.length; j2<length2; j2++)
+					for (let k=0, length2=reason2List.length; k<length2; k++)
 					{
-						if (itemList[i].REASON == reason2List[j2].VALUE)
+						if (itemList[i].REASON == reason2List[k].VALUE)
 						{
-							itemList[i].TEXT2 = reason2List[j2].TEXT;							
+							itemList[i].TEXT2 = reason2List[k].TEXT;							
 						}
 					}				
 					
-					for (let f=0, length3=fileList.length; f<length3; f++)
+					for (let l=0, length3=fileList.length; l<length3; l++)
 					{
-						if (itemList[i].ITEM == fileList[f].DOCU_ITEM)
+						if (itemList[i].ITEM == fileList[l].DOCU_ITEM)
 						{												
-							itemList[i].FILE_NAME = fileList[f].FILE_NAME;
-							itemList[i].INT_NO = fileList[f].INT_NO;
-							itemList[i].DOCU_ITEM = fileList[f].DOCU_ITEM;						
+							itemList[i].FILE_NAME = fileList[l].FILE_NAME;
+							itemList[i].INT_NO = fileList[l].INT_NO;
+							itemList[i].DOCU_ITEM = fileList[l].DOCU_ITEM;						
 						}
 					}									
 				}	
@@ -116,15 +116,15 @@
 	    		ordering: true,// 정렬 기능 켬
 	    		scrollY: 100,
 	    		columns : [
-	    			{data: "REF_ORD", 		title: "[[#{HQPD_L_REFERENCE_NO}]]"	},	// Reference No
-	    			{data: "MATERIAL", 		title: "[[#{HQPD_L_PART_NO}]]"	},	// Part No
-	    			{data: "QTY", 			title: "[[#{HQPD_L_QTY}]]"	},	// Qty	
-	    			{data: "TEXT", 			title: "[[#{HQPD_L_REASON1}]]"	},	// Reason1
-	    			{data: "TEXT2", 		title: "[[#{HQPD_L_REASON2}]]"	},	// Reason2																										
-	    			{data: "COMPLAINT_DESC",title: "[[#{HQPD_L_TEXT}]]"	},	// Text
-	    			{data: "RCOMMENT", 		title: "[[#{HQPD_L_REPLY}]]"	},	// Reply
-	    			{data: "FILE_NAME", 	title: "[[#{HQPD_L_FILE}]]", className:'link'}, // File	
-	    			{data: "ZZDEALDT", 		title: "[[#{HQPD_L_ORIGIN_DOC_DATE}]]"}, // Origin Doc. Date
+	    			{data: "REF_ORD", 		title: "[[#{HQP_L_REFERENCE_NO}]]"},// Reference No
+	    			{data: "MATERIAL", 		title: "[[#{HQP_L_PART_NO}]]"},// Part No
+	    			{data: "QTY", 			title: "[[#{HQP_L_QTY}]]"},// Qty	
+	    			{data: "TEXT", 			title: "[[#{HQP_L_REASON1}]]"},// Reason1
+	    			{data: "TEXT2", 		title: "[[#{HQP_L_REASON2}]]"},// Reason2																										
+	    			{data: "COMPLAINT_DESC",title: "[[#{HQP_L_ADDITIONAL_TEXT}]]"},// Text
+	    			{data: "RCOMMENT", 		title: "[[#{HQP_L_COMMENT}]]"},// Comment
+	    			{data: "FILE_NAME", 	title: "[[#{HQP_L_ATTACHED_FILE}]]", className:'link'}, // Attached File	
+	    			{data: "ZZDEALDT", 		title: "[[#{HQP_L_ORIGIN_DOC_DATE}]]"}, // Origin Doc. Date
 	    			{data: "INT_NO", 		title: "INT_NO(Hidden)"},
 	    			{data: "DOCU_ITEM",		title: "DOCU_ITEM(Hidden)"}    			
 	    		],  	

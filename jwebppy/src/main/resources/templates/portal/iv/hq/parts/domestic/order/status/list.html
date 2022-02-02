@@ -7,11 +7,11 @@
 	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
 
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_ORDER_STATUS}"></div><!-- Order Status -->	
+		<div class="block-title" th:text="#{HQP_T_ORDER_STATUS}"></div><!-- Order Status -->	
 		<div class="block-button-area">		
-			<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button><!-- Download -->
-			<button id="BTN_totalDownload" type="button" th:text="#{HQPD_B_TOTAL_DOWNLOAD}"></button><!-- Total Download -->
-			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button><!-- Download -->
+			<button id="BTN_totalDownload" type="button" th:text="#{HQP_B_TOTAL_DOWNLOAD}"></button><!-- Total Download -->
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 		</div>
 	</div>
 	<div class="condition-area">
@@ -20,28 +20,28 @@
 	<input type="hidden" id="poNo" name="poNo"/>
 	<input type="hidden" id="orderDate" name="orderDate"/>
 	<input type="hidden" id="fgDownload" name="fgDownload"/>
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_ORDER_NO}"></th>
+				<th th:text="#{HQP_L_ORDER_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
 					</div>			
 				</td>
-				<th th:text="#{HQPD_L_ORDER_TYPE}"></th>
+				<th th:text="#{HQP_L_ORDER_TYPE}"></th>
 				<td>
 					<div class="input-area order-type"></div>			
 				</td>			
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_ORDER_PART_NO}"></th>
+				<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
 					</div>
 				</td>
-				<th th:text="#{HQPD_L_ORDER_DATE}"></th>
+				<th th:text="#{HQP_L_ORDER_DATE}"></th>
 				<td colspan="3">
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -50,7 +50,7 @@
 				</td>					
 			</tr>		
 			<tr>
-				<th th:text="#{HQPD_L_PO_NO}"></th>
+				<th th:text="#{HQP_L_PO_NO}"></th>
 				<td colspan="3">
 					<div class="input-area">
 						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
@@ -91,18 +91,18 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 5 },
 			columns : [				
-				{data: "VBELN", 		title: "[[#{HQPD_L_ORDER_NO}]]", className:"link"},
-				{data: "SO_ITEM", 		title: "[[#{HQPD_L_ORDER_ITEM_ROWS}]]", className: "right"},	
-				{data: "KONDA_T", 		title: "[[#{HQPD_L_ORDER_TYPE}]]"},	
-				{data: "SO_QTY", 		title: "[[#{HQPD_L_ORDER_QTY}]]", className: "right"},				
-				{data: "RE_QTY", 		title: "[[#{HQPD_L_RESERVED_QTY}]]", className: "right"},
-				{data: "PI_QTY", 		title: "[[#{HQPD_L_PACKED_QTY}]]", className: "right"},	
-				{data: "IN_QTY", 		title: "[[#{HQPD_L_INVOICE_QTY}]]", className: "right"},
-				{data: "SH_QTY", 		title: "[[#{HQPD_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},
-				{data: "BO_AMT", 		title: "[[#{HQPD_L_BACKORDER_QTY}]]", className: "right"},
-				{data: "VSBED_T", 		title: "[[#{HQPD_L_SHIPPING_CONDITION}]]"},		
-				{data: "WAERK", 		title: "[[#{HQPD_L_CURR}]]"},
-				{data: "BSTKD", 		title: "[[#{HQPD_L_PO_NO}]]"}
+				{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]", className:"link"},
+				{data: "SO_ITEM", 		title: "[[#{HQP_L_ORDER_ITEM_ROWS}]]", className: "right"},	
+				{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},	
+				{data: "SO_QTY", 		title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},				
+				{data: "RE_QTY", 		title: "[[#{HQP_L_RESERVED_QTY}]]", className: "right"},
+				{data: "PI_QTY", 		title: "[[#{HQP_L_PACKED_QTY}]]", className: "right"},	
+				{data: "IN_QTY", 		title: "[[#{HQP_L_INVOICE_QTY}]]", className: "right"},
+				{data: "SH_QTY", 		title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},
+				{data: "BO_AMT", 		title: "[[#{HQP_L_BACKORDER_QTY}]]", className: "right"},
+				{data: "VSBED_T", 		title: "[[#{HQP_L_SHIPPING_CONDITION}]]"},		
+				{data: "WAERK", 		title: "[[#{HQP_L_CURR}]]"},
+				{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"}
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/order/status/list/data",

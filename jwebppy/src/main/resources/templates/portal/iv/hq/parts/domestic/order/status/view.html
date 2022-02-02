@@ -5,22 +5,22 @@
 	layout:decorate="~{portal/layout/common/index}">
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_ORDER_STATUS_DETAIL}"></div><!-- Order Status Detail -->
+		<div class="block-title" th:text="#{HQP_T_ORDER_STATUS_DETAIL}"></div><!-- Order Status Detail -->
 		<div id="BTN_search" class="block-button-area">
-			<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button><!-- Download -->
-			<button id="BTN_back" type="button" th:text="#{HQPD_B_BACK}"></button><!-- Back -->
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button><!-- Download -->
+			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}"></button><!-- Back -->
 		</div>
 	</div>
 	<input type="hidden" id="orderNo" name="orderNo" th:value="${orderNo}">	
 	<div class="condition-area">
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_ORDER_NO}"></th><!-- Order No. -->
+				<th th:text="#{HQP_L_ORDER_NO}"></th><!-- Order No. -->
 	 			<td><span th:text="${orderNo}"></span></td>
-				<th th:text="#{HQPD_L_PO_NO}"></th><!-- P.O No. -->
+				<th th:text="#{HQP_L_PO_NO}"></th><!-- P.O No. -->
 	 			<td><span th:text="${poNo}"></span></td>
-				<th th:text="#{HQPD_L_ORDER_DATE}"></th><!-- Order Date -->
+				<th th:text="#{HQP_L_ORDER_DATE}"></th><!-- Order Date -->
 	 			<td><span th:text="${orderDate}"></span></td> 			
 			</tr>
 		</tbody>
@@ -50,18 +50,18 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 5 },
 			columns : [
-				{data: "POSNR", 		title: "[[#{HQPD_L_LINE_ITEM}]]"},// Item No
-				{data: "KONDA_T", 		title: "[[#{HQPD_L_ORDER_TYPE}]]"},// Order Type
-				{data: "MATNR_SO", 		title: "[[#{HQPD_L_ORDER_PART_NO}]]"},// Order Part No.
-				{data: "MATNR_SH", 		title: "[[#{HQPD_L_SUPPLY_PART_NO}]]"},// Supply Part No
-				{data: "MAKTX", 		title: "[[#{HQPD_L_DESCRIPTION}]]"},// Description
-				{data: "SO_QTY", 		title: "[[#{HQPD_L_ORDER_QTY}]]", className: "right"},// Order Qty
-				{data: "RE_QTY", 		title: "[[#{HQPD_L_RESERVED_QTY}]]", className: "right"},// Reserved Qty
-				{data: "PI_QTY", 		title: "[[#{HQPD_L_PACKED_QTY}]]", className: "right"},// Packed Qty
-				{data: "IN_QTY", 		title: "[[#{HQPD_L_INVOICE_QTY}]]", className: "right"},// Invoiced Qty
-				{data: "SH_QTY", 		title: "[[#{HQPD_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},// S.Completion Qty
-				{data: "BO_QTY", 		title: "[[#{HQPD_L_BACKORDER_QTY}]]", className: "right"},// B/O Qty
-				{data: "LST_ETD", 		title: "[[#{HQPD_L_UPDATED_ETD}]]"}// Updated ETD
+				{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},// Item No
+				{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},// Order Type
+				{data: "MATNR_SO", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},// Order Part No.
+				{data: "MATNR_SH", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},// Supply Part No
+				{data: "MAKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"},// Description
+				{data: "SO_QTY", 		title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},// Order Qty
+				{data: "RE_QTY", 		title: "[[#{HQP_L_RESERVED_QTY}]]", className: "right"},// Reserved Qty
+				{data: "PI_QTY", 		title: "[[#{HQP_L_PACKED_QTY}]]", className: "right"},// Packed Qty
+				{data: "IN_QTY", 		title: "[[#{HQP_L_INVOICE_QTY}]]", className: "right"},// Invoiced Qty
+				{data: "SH_QTY", 		title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},// S.Completion Qty
+				{data: "BO_QTY", 		title: "[[#{HQP_L_BACKORDER_QTY}]]", className: "right"},// B/O Qty
+				{data: "LST_ETD", 		title: "[[#{HQP_L_UPDATED_ETD}]]"}// Updated ETD
 			],		
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/order/status/view/data",

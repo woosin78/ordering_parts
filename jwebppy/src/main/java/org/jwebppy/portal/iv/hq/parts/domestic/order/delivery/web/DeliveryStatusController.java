@@ -7,8 +7,8 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
-import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.delivery.service.DeliveryStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/order/delivery")
+@RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/order/delivery")
 public class DeliveryStatusController extends PartsDomesticGeneralController
 {
 	@Autowired
@@ -62,7 +62,7 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_LIST");
 
 		//KRW, JPY 는 가격에 100을 곱해줌
-		reCalculatePriceByCurrency(dataList, new String[] { "NETPR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
+		calcPriceByCurrency(dataList, new String[] { "NETPR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.integerFormat("TKNUM")
@@ -81,6 +81,11 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 
 		addAllAttributeFromRequest(model, webRequest);
 
+		if (CmStringUtils.isNotEmpty(webRequest.getParameter("shipmentNo")))
+		{
+			model.addAttribute("pShipmentNo", webRequest.getParameter("shipmentNo"));
+		}
+
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -92,7 +97,7 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 
 		rfcParamMap.with(paramMap)
 			.addByKey(new Object[][] {
-				{"shipmentNo", "pShipmentNo2"},
+				{"shipmentNo", "pShipmentNo"},
 				{"orderNo", "pOrderNo"},
 				{"partsNo", "pPartsNo"},
 				{"poNo", "pPoNo"}
@@ -109,7 +114,7 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_DETAIL");
 
 		//KRW, JPY 는 가격에 100을 곱해줌
-		reCalculatePriceByCurrency(dataList, new String[] { "NETPR", "NETWR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
+		calcPriceByCurrency(dataList, new String[] { "NETPR", "NETWR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.integerFormat(new String[] { "TKNUM", "EXIDV" })

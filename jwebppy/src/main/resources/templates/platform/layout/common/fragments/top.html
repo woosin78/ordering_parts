@@ -92,7 +92,8 @@ function makeGmb()
 			};			
 			
 			//Get last login information
-			$.ajax({
+			
+			JpUtilsAjax.get({
 				url: "/platform/mgmt/user/login/history/last_login_info",		
 			    success: function(response, textStatus, jqXHR) 
 			    {
@@ -154,7 +155,7 @@ function logout()
 function checkExpiredPassword()
 {
 	JpUtilsAjax.get({
-		url: "/platform/mgmt/user/expired_password/check",
+		url: "/platform/mgmt/user/check/expired_password",
 		global: false,
 		success: function(data, textStatus, jqXHR)
 		{

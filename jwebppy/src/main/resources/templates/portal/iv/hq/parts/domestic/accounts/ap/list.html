@@ -6,22 +6,22 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_AP_LIST}"></div>
+		<div class="block-title" th:text="#{HQP_T_AP_LIST}"></div>
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
 		</div>
 	</div>
 	<div class="split-row"></div>
 	
 	<div class="condition-area">
-		<table class="condition table-fixed">
+		<table class="condition">
 			<thead>
 		        <tr>
-		            <th th:text="#{HQPD_L_ORDER_LIMIT}"></th>
-		            <th th:text="#{HQPD_L_BALANCE}"></th>                        
-		            <th th:text="#{HQPD_L_THIS_MONTH_DEPOSIT_AMT}"></th>
-		            <th th:text="#{HQPD_L_ORDER_AMT_IN_PROGRESS}"></th>
-		            <th th:text="#{HQPD_L_DISPOSABLE_SECURITY_AMT}"></th>
+		            <th th:text="#{HQP_L_ORDER_LIMIT}"></th>
+		            <th th:text="#{HQP_L_BALANCE}"></th>                        
+		            <th th:text="#{HQP_L_THIS_MONTH_DEPOSIT_AMT}"></th>
+		            <th th:text="#{HQP_L_ORDER_AMT_IN_PROGRESS}"></th>
+		            <th th:text="#{HQP_L_DISPOSABLE_SECURITY_AMT}"></th>
 		        </tr>
 		     </thead>
 		     <tbody>
@@ -35,8 +35,8 @@
 			</tbody>        
 		</table>
 		<div class="split-row-compact"></div>
-		<div class="condition-normal-sub-title text-alert" th:text="#{HQPD_T_AP_LIST_INFO1}"></div>
-		<div class="condition-normal-sub-title text-alert" th:text="#{HQPD_T_AP_LIST_INFO2}"></div>
+		<div class="condition-normal-sub-title text-alert" th:text="#{HQP_T_AP_LIST_INFO1}"></div>
+		<div class="condition-normal-sub-title text-alert" th:text="#{HQP_T_AP_LIST_INFO2}"></div>
 	</div>
 	
 	<div class="grid-info">
@@ -58,13 +58,13 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 8 },
 			columns : [
-				{data: "CRDAT", title: "[[#{HQPD_L_PURCHASE_DATE}]]"},				
-				{data: "ENDAT", title: "[[#{HQPD_L_PAYMENT_DUE_DATE}]]"},
-				{data: "TLAMT", title: "[[#{HQPD_L_BILLING_AMT}]]", className: "right"},
-				{data: "RETAMT", title: "[[#{HQPD_L_RETURN_AMT}]]", className: "right"},
-				{data: "CHAMT", title: "[[#{HQPD_L_EXPECTED_PAYMENT_AMT}]]", className: "right"},
-				{data: "TOTAL", title: "[[#{HQPD_L_DEPOSIT_AMT}]]", className: "right"},
-				{data: "ARREAR", title: "[[#{HQPD_L_BALANCE}]]", className: "right"}
+				{data: "CRDAT", title: "[[#{HQP_L_PURCHASE_DATE}]]"},				
+				{data: "ENDAT", title: "[[#{HQP_L_PAYMENT_DUE_DATE}]]"},
+				{data: "TLAMT", title: "[[#{HQP_L_BILLING_AMT}]]", className: "right"},
+				{data: "RETAMT", title: "[[#{HQP_L_RETURN_AMT}]]", className: "right"},
+				{data: "CHAMT", title: "[[#{HQP_L_EXPECTED_PAYMENT_AMT}]]", className: "right"},
+				{data: "TOTAL", title: "[[#{HQP_L_DEPOSIT_AMT}]]", className: "right"},
+				{data: "ARREAR", title: "[[#{HQP_L_BALANCE}]]", className: "right"}
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/accounts/ap/list/data",
@@ -88,7 +88,7 @@
 					
 					for (let i=0; i < length; i++)
 					{
-						list[i].CRDAT = JpUtilsString.defaultString(list[i].CRDAT, "[[#{HQPD_L_ORDER_IN_PROGRESS}]]");
+						list[i].CRDAT = JpUtilsString.defaultString(list[i].CRDAT, "[[#{HQP_L_ORDER_IN_PROGRESS}]]");
 					};
 					
 					$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");

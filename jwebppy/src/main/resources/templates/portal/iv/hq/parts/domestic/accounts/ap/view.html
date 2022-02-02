@@ -6,25 +6,25 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_L_AP_DETAIL}"></div>
+		<div class="block-title" th:text="#{HQP_L_AP_DETAIL}"></div>
 		<div class="block-button-area">
-			<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button>
-			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button>
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
 		</div>
 	</div>
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
 	
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_SHIPMENT_NO}"></th>
+				<th th:text="#{HQP_L_SHIPMENT_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pShipmentNo" name="pShipmentNo" class="custom-ui" th:value="${pShipmentNo}">
 					</div>			
 				</td>
-				<th th:text="#{HQPD_L_PART_NO}"></th>
+				<th th:text="#{HQP_L_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
@@ -32,14 +32,14 @@
 				</td>				
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_COMMERCIAL_INVOICE_NO}"></th>
+				<th th:text="#{HQP_L_COMMERCIAL_INVOICE_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromInvoiceNo" name="pFromInvoiceNo" class="custom-ui-scope" th:value="${pFromInvoiceNo}">
 						<input type="text" id="pToInvoiceNo" name="pToInvoiceNo" class="custom-ui-scope" th:value="${pToInvoiceNo}">
 					</div>
 				</td>
-				<th th:text="#{HQPD_L_BILLING_DATE}"></th>
+				<th th:text="#{HQP_L_BILLING_DATE}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -74,29 +74,29 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 8 },
 			columns : [
-				{data: "TKNUM2", title: "[[#{HQPD_L_SHIPMENT_NO}]]"},				
-				{data: "EXIDV", title: "[[#{HQPD_L_HU_NO}]]"},
-				{data: "VEPOS", title: "[[#{HQPD_L_DIV_SEQ}]]"},
-				{data: "VBELN", title: "[[#{HQPD_L_BILLING_NO}]]"},
-				{data: "POSNR", title: "[[#{HQPD_L_BILLING_LINE_ITEM}]]"},				
-				{data: "FKDAT", title: "[[#{HQPD_L_BILLING_DATE}]]"},
-				{data: "BSTKD", title: "[[#{HQPD_L_PO_NO}]]"},
-				{data: "MATNR_OP", title: "[[#{HQPD_L_ORDER_PART_NO}]]"},
-				{data: "MATNR_SP", title: "[[#{HQPD_L_SHIPPED_PART_NO}]]"},
-				{data: "MAKTX", title: "[[#{HQPD_L_PART_DESC}]]"},
-				{data: "AUART_T", title: "[[#{HQPD_L_ORDER_TYPE}]]"},
-				{data: "VBELN_VA", title: "[[#{HQPD_L_ORDER_NO}]]"},
-				{data: "POSNR_VA", title: "[[#{HQPD_L_ORDER_ITEM_ROWS}]]"},				
-				{data: "FKIMG", title: "[[#{HQPD_L_ORDER_QTY}]]", className: "right"},
-				{data: "VRKME", title: "[[#{HQPD_L_UOM}]]"},
-				{data: "NETPR", title: "[[#{HQPD_L_AP_UNIT_PRICE}]]", className: "right"},
-				{data: "NETWR", title: "[[#{HQPD_L_AP_AMT}]]", className: "right"},
-				{data: "WAERK", title: "[[#{HQPD_L_CURR}]]"},
-				{data: "HERKL", title: "[[#{HQPD_L_ORIGIN}]]"},
-				{data: "VBELN_VL", title: "[[#{HQPD_L_AP_DELIVERY_NO}]]"},
-				{data: "POSNR_VL", title: "[[#{HQPD_L_DIV_SEQ}]]"},
-				{data: "MWSBP", title: "[[#{HQPD_L_TAX_AMT}]]", className: "right"},
-				{data: "VENUM", title: "[[#{HQPD_L_INTERAL_HU_NO}]]"}
+				{data: "TKNUM2", title: "[[#{HQP_L_SHIPMENT_NO}]]"},				
+				{data: "EXIDV", title: "[[#{HQP_L_HU_NO}]]"},
+				{data: "VEPOS", title: "[[#{HQP_L_DIV_SEQ}]]"},
+				{data: "VBELN", title: "[[#{HQP_L_BILLING_NO}]]"},
+				{data: "POSNR", title: "[[#{HQP_L_BILLING_LINE_ITEM}]]"},				
+				{data: "FKDAT", title: "[[#{HQP_L_BILLING_DATE}]]"},
+				{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},
+				{data: "MATNR_OP", title: "[[#{HQP_L_ORDER_PART_NO}]]"},
+				{data: "MATNR_SP", title: "[[#{HQP_L_SHIPPED_PART_NO}]]"},
+				{data: "MAKTX", title: "[[#{HQP_L_PART_DESC}]]"},
+				{data: "AUART_T", title: "[[#{HQP_L_ORDER_TYPE}]]"},
+				{data: "VBELN_VA", title: "[[#{HQP_L_ORDER_NO}]]"},
+				{data: "POSNR_VA", title: "[[#{HQP_L_LINE_ITEM}]]"},				
+				{data: "FKIMG", title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},
+				{data: "VRKME", title: "[[#{HQP_L_UOM}]]"},
+				{data: "NETPR", title: "[[#{HQP_L_AP_UNIT_PRICE}]]", className: "right"},
+				{data: "NETWR", title: "[[#{HQP_L_AP_AMT}]]", className: "right"},
+				{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},
+				{data: "HERKL", title: "[[#{HQP_L_ORIGIN}]]"},
+				{data: "VBELN_VL", title: "[[#{HQP_L_AP_DELIVERY_NO}]]"},
+				{data: "POSNR_VL", title: "[[#{HQP_L_DIV_SEQ}]]"},
+				{data: "MWSBP", title: "[[#{HQP_L_TAX_AMT}]]", className: "right"},
+				{data: "VENUM", title: "[[#{HQP_L_INTERAL_HU_NO}]]"}
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/accounts/ap/view/data",

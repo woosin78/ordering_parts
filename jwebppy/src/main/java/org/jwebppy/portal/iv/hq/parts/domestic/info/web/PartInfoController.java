@@ -7,8 +7,8 @@ import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
-import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.info.service.PartInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/info")
+@RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/info")
 public class PartInfoController extends PartsDomesticGeneralController
 {
 	@Autowired
@@ -51,9 +51,9 @@ public class PartInfoController extends PartsDomesticGeneralController
 		RfcResponse rfcResponse = partsInfoService.getPartsStandardM(rfcParamMap);
 		DataList dataList = rfcResponse.getTable("T_RESULT");
 
-		reCalculatePriceByCurrency(dataList, new String[] { "LPRICE_NETPR" }, null, null, 1.25);
+		calcPriceByCurrency(dataList, new String[] { "LPRICE_NETPR" }, null, null, 1.25);
 
-		reCalculatePriceByCurrency(dataList, new String[] { "LPRICE_NETPR", "LPRICE" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
+		calcPriceByCurrency(dataList, new String[] { "LPRICE_NETPR", "LPRICE" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
 
 		FormatBuilder.with(dataList)
 			.qtyFormat(new String[] { "OPENQ", "EXP_AVQ" })

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/popup/index}">
+
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_L_ACCOUNT_CREATE}"></div>
+		<div class="block-button-area">
+			<button id="BTN_save" type="button" th:text="#{HQP_B_SAVE}"></button>
+		</div>
+	</div>
+	
+	<div class="condition-area">
+	<form id="FORM_write" name="FORM_write">
+	<table class="condition">
+		<tbody>
+			<tr>
+				<th><div th:text="#{HQP_L_USER_TYPE}"></div><img src="/portal/img/icon_required.png" class="required" /></th>
+				<td>
+					<div class="input-area">
+						<input type="radio" class="custom-ui" name="userType" value="D" checked /><label th:text="#{HQP_L_DEALER}"></label>
+						&nbsp;&nbsp;
+						<input type="radio" class="custom-ui" name="userType" value="I" /><label th:text="#{HQP_L_INTERNAL_USER}"></label>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th><div th:text="#{HQP_L_DEALER_CODE}"></div><img src="/portal/img/icon_required.png" class="required" /></th>
+				<td><div class="input-area"><input type="text" id="dealerCode" name="dealerCode" class="custom-ui" autofocus="autofocus"/></div></td>
+			</tr>
+			<tr>
+				<th><div th:text="#{HQP_L_USERNAME}"></div><img src="/portal/img/icon_required.png" class="required" /></th>
+				<td>
+					<div class="input-area"><input type="text" id="username" name="username" class="custom-ui" style="text-transform: uppercase;"/></div>
+				
+					<p class="internalUserUsernameRule" style="display:none;" th:text="#{HQP_T_INTERNAL_USER_USERNAME_POLICY}"></p>									
+					<p class="dealerUsernameRule" th:text="#{HQP_T_DEALER_USERNAME_POLICY}"></p>
+					<p class="dealerUsernameRule" th:text="#{HQP_T_VALID_USERNAME_POLICY}"></p>
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_LAST_NAME}"></th>
+				<td><div class="input-area"><input type="text" id="lastName" name="lastName" class="custom-ui"/></div></td>
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_FIRST_NAME}"></th>
+				<td><div class="input-area"><input type="text" id="firstName" name="firstName" class="custom-ui"/></div></td>
+			</tr>
+		</tbody>
+	</table>
+	</form>
+	</div>
+	
+<script>
+$(function(){
+	ProgressBar.hide();
+	
+	$("#FORM_write input:text").on("focus", function() {
+		this.select();
+	});
+	
+	$("input:radio[name=userType]").on("click", function() {
+		let userType = $(this).val();
+		
+		if (userType == "I")
+		{
+			$("#dealerCode").prop("readonly", true).val("");
+		}
+		else
+		{
+			$("#dealerCode").prop("readonly", false);
+		};
+		
+		showUsernameRule(userType);
+	});
+	
+	function showUsernameRule(userType)
+	{
+		if (userType == "I")
+		{
+			$(".internalUserUsernameRule").show();
+			$(".dealerUsernameRule").hide();
+		}
+		else
+		{
+			$(".internalUserUsernameRule").hide();
+			$(".dealerUsernameRule").show();
+		};		
+	};
+		
+	$("#BTN_save").on("click", function() {
+		if ($("input:radio[name=userType]:checked").val() == "D")
+		{
+			if (JpUtilsString.isEmpty($("#dealerCode").val()))
+			{
+				alert("[[#{HQP_M_EMPTY_DEALER_CODE}]]");
+				$("#dealerCode").focus();
+				return false;
+			};			
+		};
+		
+		if (JpUtilsString.isEmpty($("#username").val()))
+		{
+			alert("[[#{HQP_M_EMPTY_USERNAME}]]");
+			$("#username").focus();
+			return false;			
+		};
+		
+		JpUtilsAjax.get({
+			url: "/platform/mgmt/user/check/valid_credentials",
+			data: { type: "U", name: "CP_IVHQ", value: $("#username").val().toUpperCase() },
+		    success: function(response, textStatus, jqXHR)
+		    {
+		    	let result = response.RESULT;
+		    	
+				let message = "";
+
+				$.each(result.MESSAGE, function (index, value) {
+					message += value + "\n";
+				});
+				
+				if (JpUtilsString.isEmpty(message))
+				{
+					submit();
+				}
+				else
+				{
+					alert(message);	
+				};
+		    }			
+		});
+	});
+	
+	function submit()
+	{
+		let options = {
+				url: "/portal/iv/mgmt/account/save",
+				data: $("#FORM_write").serialize(),
+				beforeSend: function(jqXHR, settings)
+				{
+					ProgressBar.show();
+				},			
+			    success: function(response, textStatus, jqXHR)
+			    {
+			    	let result = response.RESULT;
+			    	
+			    	if (result == -4)
+			    	{
+			    		alert("[[#{HQP_M_EMPTY_USERNAME}]]");
+			    		$("#username").select();
+			    	}
+			    	else if (result == -3)
+			    	{
+			    		alert("[[#{HQP_M_VALID_USERNAME_POLICY}]]");
+			    		$("#username").select();
+			    	}
+			    	else if (result == -2)
+			    	{
+			    		alert("[[#{HQP_M_EXIST_USERNAME}]]".replace("{0}", $("#username").val()));
+			    		$("#username").select();
+			    	}
+			    	else if (result == -1)
+			    	{
+			    		alert("[[#{HQP_M_NOT_EXIST_DEALER}]]".replace("{0}", $("#dealerCode").val()));
+			    		$("#dealerCode").select();
+			    	}
+			    	else
+			    	{
+			    		let message1 = "[[#{HQP_M_CREATED_NEW_ACCOUNT}]]";
+			    		let message2 = "[[#{HQP_M_INITIAL_PASSWORD}]]";
+			    		
+			    		if (result == "I")
+			    		{
+			    			alert(message1);
+			    		}
+			    		else
+			    		{
+			    			alert(message1 + " " + message2.replace("{0}", result.password));	
+			    		};
+			    		
+			    		$("#pUsername", opener.document).val(result.username);		    		
+			    		
+			    		opener.doSearch();
+			    		window.close();
+			    	};
+			    },
+			    complete: function(jqXHR, textStatus)
+			    {
+			    	ProgressBar.hide();
+			    }
+		};
+		
+		JpUtilsAjax.post(options);
+	};
+});
+</script>	
+</th:block>

@@ -6,27 +6,27 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_DELIVERY_STATUS}"></div><!-- Delivery Status -->
+		<div class="block-title" th:text="#{HQP_T_DELIVERY_STATUS}"></div><!-- Delivery Status -->
 		<div class="block-button-area">
-			<button id="BTN_download" type="button" th:text="#{HQPD_B_DOWNLOAD}"></button><!-- Download -->
-			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button><!-- Download -->
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 		</div>
 	</div>
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
-	<input type="hidden" id="pShipmentNo2" name="pShipmentNo2" value=""/><!-- for detail page -->
+	<input type="hidden" id="shipmentNo" name="shipmentNo" value=""/><!-- for detail page -->
 	
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_SHIPMENT_DOC_CREATE_DATE}"></th><!-- Shipment Doc. Create Date Period-->
+				<th th:text="#{HQP_L_SHIPMENT_DOC_CREATE_DATE}"></th><!-- Shipment Doc. Create Date Period-->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
 						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">					
 					</div>
 				</td>
-				<th th:text="#{HQPD_L_ONBOARD_DATE}"></th><!-- Onboard Date Period -->
+				<th th:text="#{HQP_L_ONBOARD_DATE}"></th><!-- Onboard Date Period -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromOnboardDate" name="pFromOnboardDate" class="custom-ui-calendar" th:value="${pOnboardFromDate}">
@@ -35,13 +35,13 @@
 				</td>
 			</tr>			
 			<tr>
-				<th th:text="#{HQPD_L_SHIPMENT_NO}"></th>
+				<th th:text="#{HQP_L_SHIPMENT_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pShipmentNo" name="pShipmentNo" class="custom-ui" th:value="${pShipmentNo}">
 					</div>			
 				</td>			
-				<th th:text="#{HQPD_L_ORDER_NO}"></th>
+				<th th:text="#{HQP_L_ORDER_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
@@ -49,13 +49,13 @@
 				</td>			
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_PART_NO}"></th>
+				<th th:text="#{HQP_L_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
 					</div>			
 				</td>			
-				<th th:text="#{HQPD_L_PO_NO}"></th>
+				<th th:text="#{HQP_L_PO_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
@@ -91,18 +91,18 @@
 			ordering: true,// 정렬 기능 켬
 			scrollY: 100,
 			columns : [
-				{data: "TKNUM", title: "[[#{HQPD_L_SHIPMENT_NO}]]", className: "link"},				
-				{data: "COUNT1", title: "[[#{HQPD_L_HU_ITEMS}]]"},
-				{data: "COUNT2", title: "[[#{HQPD_L_ITEM_ROWS}]]", className: "right"},
-				{data: "NETWR", title: "[[#{HQPD_L_TOTAL_AMOUNT}]]", className: "right"}, 
-				{data: "WAERK", title: "[[#{HQPD_L_CURR}]]"},
-				{data: "BRGEW", title: "[[#{HQPD_L_GROSS_WEIGHT}]]", className: "right"},
-				{data: "GEWEI_MAX", title: "[[#{HQPD_L_UOM}]]"},
-				{data: "ZFOBDT", title: "[[#{HQPD_L_ONBOARD_DATE}]]"},
-				{data: "BEZEI20", title: "[[#{HQPD_L_DESTINATION}]]"},
-				{data: "BEZEI", title: "[[#{HQPD_L_SHIPPING_TYPE}]]"},
-				{data: "NAME2", title: "[[#{HQPD_L_FORWARDER}]]"},
-				{data: "ZFCIVNO", title: "[[#{HQPD_L_COMMERCIAL_INVOICE_NO}]]"}
+				{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]", className: "link"},				
+				{data: "COUNT1", title: "[[#{HQP_L_HU_ITEMS}]]"},
+				{data: "COUNT2", title: "[[#{HQP_L_ITEM_ROWS}]]", className: "right"},
+				{data: "NETWR", title: "[[#{HQP_L_TOTAL_AMOUNT}]]", className: "right"}, 
+				{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},
+				{data: "BRGEW", title: "[[#{HQP_L_GROSS_WEIGHT}]]", className: "right"},
+				{data: "GEWEI_MAX", title: "[[#{HQP_L_UOM}]]"},
+				{data: "ZFOBDT", title: "[[#{HQP_L_ONBOARD_DATE}]]"},
+				{data: "BEZEI20", title: "[[#{HQP_L_DESTINATION}]]"},
+				{data: "BEZEI", title: "[[#{HQP_L_SHIPPING_TYPE}]]"},
+				{data: "NAME2", title: "[[#{HQP_L_FORWARDER}]]"},
+				{data: "ZFCIVNO", title: "[[#{HQP_L_COMMERCIAL_INVOICE_NO}]]"}
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/order/delivery/list/data",
@@ -164,7 +164,8 @@
 			
 			let rowData = tblGrid.row(this).data();
 			
-			$("#pShipmentNo2").val(rowData.TKNUM);			
+			//$("#pShipmentNo2").val(rowData.TKNUM);			
+			$("#shipmentNo").val(rowData.TKNUM);
 			$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/delivery/view").submit();
 		});		
 	});

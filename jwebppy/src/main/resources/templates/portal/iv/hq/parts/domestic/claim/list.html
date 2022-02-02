@@ -6,9 +6,9 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_CLAIM_DISPLAY}"></div>
+		<div class="block-title" th:text="#{HQP_T_CLAIM_DISPLAY}"></div>
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->		
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->		
 		</div>
 	</div>	
 	<div class="condition-area">
@@ -16,16 +16,16 @@
 	<input type="hidden" id="orderNo" name="orderNo">
 	<input type="hidden" id="docDate" name="docDate">
 	<input type="hidden" id="docType" name="docType">	
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{HQPD_L_COMPLAINT_NO}"></th><!-- Complaint No. -->
+				<th th:text="#{HQP_L_COMPLAINT_NO}"></th><!-- Complaint No. -->
 				<td> 
 					<div class="input-area">
 						<input type="text" id="pComplaintNo" name="pComplaintNo" class="custom-ui" th:value="${pComplaintNo}">
 					</div>							
 				</td>
-				<th th:text="#{HQPD_L_REFERENCE_NO}"></th><!--Reference No.  -->
+				<th th:text="#{HQP_L_REFERENCE_NO}"></th><!--Reference No.  -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pReferenceNo" name="pReferenceNo" class="custom-ui" th:value="${pReferenceNo}">
@@ -33,13 +33,13 @@
 				</td>			
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_PART_NO}"></th><!-- Part No. -->
+				<th th:text="#{HQP_L_PART_NO}"></th><!-- Part No. -->
 				<td> 		
 					<div class="input-area">
 						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
 					</div>					
 				</td>
-				<th th:text="#{HQPD_L_PERIOD}"></th><!-- Period -->
+				<th th:text="#{HQP_L_PERIOD}"></th><!-- Period -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -78,16 +78,16 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 3 },
 			columns : [
-				{data: "VBELN", 		title: "[[#{HQPD_L_CLAIM_NO}]]", className:"link"},//Claim No.
-				{data: "POSNR", 		title: "[[#{HQPD_L_LINE_ITEM}]]"},// Line Item.
-				{data: "TEXT", 			title: "[[#{HQPD_L_CLAIM_REASON}]]"},// Reason
-				{data: "ERDAT", 		title: "[[#{HQPD_L_CLAIM_DOC_CREATE_DATE}]]"},// Doc. Date
-				{data: "VBELN2", 		title: "[[#{HQPD_L_SALES_DOC_NO}]]", className: "link"},// Sales Doc. No.
-				{data: "T_NETWR", 		title: "[[#{HQPD_L_TOTAL_AMOUNT}]]", className: "right"},// Total Amount
-				{data: "WAERK", 		title: "[[#{HQPD_L_CURR}]]"},// Curr.
-				{data: "RFGSK_TX_T", 	title: "[[#{HQPD_L_PROCESS_RESULT}]]"},// Process Result						
-				{data: "RFGSK_TX_T1", 	title: "[[#{HQPD_L_RETURN_RESULT}]]"},// Return Status			
-				{data: "VBELN3", 		title: "[[#{HQPD_L_FINAL_DOC}]]"}// Final Document		
+				{data: "VBELN", 		title: "[[#{HQP_L_CLAIM_NO}]]", className:"link"},//Claim No.
+				{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},// Line Item.
+				{data: "TEXT", 			title: "[[#{HQP_L_CLAIM_REASON}]]"},// Reason
+				{data: "ERDAT", 		title: "[[#{HQP_L_CLAIM_DOC_CREATE_DATE}]]"},// Doc. Date
+				{data: "VBELN2", 		title: "[[#{HQP_L_SALES_DOC_NO}]]", className: "link"},// Sales Doc. No.
+				{data: "T_NETWR", 		title: "[[#{HQP_L_TOTAL_AMOUNT}]]", className: "right"},// Total Amount
+				{data: "WAERK", 		title: "[[#{HQP_L_CURR}]]"},// Curr.
+				{data: "RFGSK_TX_T", 	title: "[[#{HQP_L_PROCESS_RESULT}]]"},// Process Result						
+				{data: "RFGSK_TX_T1", 	title: "[[#{HQP_L_RETURN_RESULT}]]"},// Return Status			
+				{data: "VBELN3", 		title: "[[#{HQP_L_FINAL_DOC}]]"}// Final Document		
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/claim/list/data",

@@ -30,9 +30,9 @@ public class PartsGeneralController extends HqGeneralController
 		PartsErpUserContext erpUserContext = (PartsErpUserContext)UserAuthenticationUtils.getUserDetails().getErpUserContext();
 		String lang = CmStringUtils.defaultString(UserAuthenticationUtils.getUserDetails().getLanguage(), Locale.ENGLISH).toUpperCase();
 
-		if (erpUserContext == null || CmStringUtils.isEmpty(erpUserContext.getCorpName()))
+		if (erpUserContext == null)
 		{
-	        RfcResponse response = partsGeneralService.getErpUserInfo(getUsername());
+	        RfcResponse response = partsGeneralService.getErpUserInfo();
 	        DataList userList = response.getTable("T_USER");
 
 	        if (CollectionUtils.isNotEmpty(userList))
@@ -40,8 +40,6 @@ public class PartsGeneralController extends HqGeneralController
 	    		erpUserContext = new PartsErpUserContext();
 
 	    		DataMap userMap = (DataMap)userList.get(0);
-
-	    		userMap.put("TYPE", response.getString("O_TYPE"));
 
 	    		erpUserContext.setCorp(userMap.getString("BUKRS"));
 	    		erpUserContext.setUsername(userMap.getString("BNAME").toUpperCase());
@@ -51,7 +49,6 @@ public class PartsGeneralController extends HqGeneralController
 	    		erpUserContext.setDistChl(userMap.getString("VTWEG"));
 	    		erpUserContext.setDivision(userMap.getString("SPART"));
 	    		erpUserContext.setCustGrp5(userMap.getString("KVGR5"));
-	    		erpUserContext.setCustType(userMap.getString("TYPE"));
 
 	    		UserAuthenticationUtils.getUserDetails().setErpUserContext(erpUserContext);
 
@@ -73,7 +70,6 @@ public class PartsGeneralController extends HqGeneralController
 			erpDataMap.put("VTWEG", erpUserContext.getDistChl());
 			erpDataMap.put("SPART", erpUserContext.getDivision());
 			erpDataMap.put("KVGR5", erpUserContext.getCustGrp5());
-			erpDataMap.put("TYPE", erpUserContext.getCustType());
 			erpDataMap.put("LANG", lang);
 
 			return erpDataMap;
@@ -82,7 +78,7 @@ public class PartsGeneralController extends HqGeneralController
 		return null;
 	}
 
-	protected void reCalculatePriceByCurrency(Object target, String[] keys, String currencyKey, String[] targetCurrencies, double value)
+	protected void calcPriceByCurrency(Object target, String[] keys, String currKey, String[] targets, double value)
 	{
 		if (target instanceof List)
 		{
@@ -92,28 +88,28 @@ public class PartsGeneralController extends HqGeneralController
 			{
 				for (Map<String, Object> map: list)
 				{
-					calculateByCurrency(map, keys, currencyKey, targetCurrencies, value);
+					calcValueByCurrency(map, keys, currKey, targets, value);
 				}
 			}
 
 		}
 		else if (target instanceof Map)
 		{
-			calculateByCurrency((Map<String, Object>)target, keys, currencyKey, targetCurrencies, value);
+			calcValueByCurrency((Map<String, Object>)target, keys, currKey, targets, value);
 		}
 	}
 
-	private void calculateByCurrency(Map<String, Object> map, String[] keys, String currencyKey, String[] targetCurrencies, double value)
+	protected void calcValueByCurrency(Map<String, Object> map, String[] keys, String currKey, String[] targets, double value)
 	{
 		if (MapUtils.isNotEmpty(map))
 		{
-			if (CmStringUtils.isEmpty(currencyKey) || ArrayUtils.contains(targetCurrencies, CmStringUtils.trimToEmpty(map.get(currencyKey))))
+			if (CmStringUtils.isEmpty(currKey) || ArrayUtils.contains(targets, CmStringUtils.trimToEmpty(map.get(currKey))))
 			{
-				Iterator it = map.keySet().iterator();
+				Iterator<String> it = map.keySet().iterator();
 
 				while (it.hasNext())
 				{
-					String key = (String)it.next();
+					String key = it.next();
 
 					if (ArrayUtils.contains(keys, key))
 					{

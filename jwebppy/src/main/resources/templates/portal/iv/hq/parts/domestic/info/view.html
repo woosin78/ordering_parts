@@ -15,18 +15,18 @@
 </style>
 
 <div class="block-header">
-	<div class="block-title" th:text="#{HQPD_T_PARTS_INFO}"></div><!-- Parts Info. -->
+	<div class="block-title" th:text="#{HQP_T_PARTS_INFO}"></div><!-- Parts Info. -->
 	<div class="block-button-area">
-		<button id="BTN_calc" type="button" th:text="#{HQPD_B_CALCULATE}"></button><!-- Calculate -->
-		<button id="BTN_search" type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
+		<button id="BTN_calc" type="button" th:text="#{HQP_B_CALCULATE}"></button><!-- Calculate -->
+		<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 	</div>	
 </div>	
 <div class="condition-area">
 <form id="FORM_search" name="FORM_search" onsubmit="return false;">
-<table class="condition table-fixed">
+<table class="condition">
 	<tbody>
 		<tr>
-			<th style="width:15%" th:text="#{HQPD_L_PART_NO}"></th><!-- Part No. -->
+			<th style="width:15%" th:text="#{HQP_L_PART_NO}"></th><!-- Part No. -->
 			<td colspan="3">
 				<div class="input-area">
 					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" style="text-transform: uppercase;">
@@ -40,18 +40,18 @@
 </div>
 <div class="split-row"></div>
 <div class="condition-area">
-<table class="condition table-fixed">
+<table class="condition">
 	<tbody>
 		<tr>
-			<th style="width:15%" th:text="#{HQPD_L_DESCRIPTION}"></th><!-- Description -->
+			<th style="width:15%" th:text="#{HQP_L_DESCRIPTION}"></th><!-- Description -->
 			<td id="MAKTX"></td>
-			<th style="width:15%" th:text="#{HQPD_L_STOCK}"></th><!-- Stock -->
+			<th style="width:15%" th:text="#{HQP_L_STOCK}"></th><!-- Stock -->
 			<td id="STOCK"></td>			
 		</tr>		
 		<tr>
-			<th th:text="#{HQPD_L_SERVICEABLE}"></th><!-- Serviceable -->
+			<th th:text="#{HQP_L_SERVICEABLE}"></th><!-- Serviceable -->
 			<td id="SVRCD"></td>
-			<th th:text="#{HQPD_L_NOT_SERVICE_REASON}"></th><!-- Not Service Reason -->
+			<th th:text="#{HQP_L_NOT_SERVICE_REASON}"></th><!-- Not Service Reason -->
 			<td>
 				<span id="NOT_SERVICE_REASON"></span>
 				
@@ -61,9 +61,9 @@
 			</td>
 		</tr>		
 		<tr>
-			<th th:text="#{HQPD_L_SALES_LOT}"></th><!-- Sales Lot  -->
+			<th th:text="#{HQP_L_SALES_LOT}"></th><!-- Sales Lot  -->
 			<td id="AUMNG"></td>
-			<th th:text="#{HQPD_L_MODEL}"></th><!-- Model -->
+			<th th:text="#{HQP_L_MODEL}"></th><!-- Model -->
 			<td>						
 				<div id="AREA_model" style="display:none;">			
 				<span id="M_MATNR" class="custom-ui"></span>
@@ -72,46 +72,46 @@
 			</td>			
 		</tr>			
 		<tr>
-			<th th:text="#{HQPD_L_PRODUCT_HIERARCHY}"></th><!-- Product Hierarchy -->
+			<th th:text="#{HQP_L_PRODUCT_HIERARCHY}"></th><!-- Product Hierarchy -->
 			<td id="PRODH_T"></td>
-			<th th:text="#{HQPD_L_OPEN_QTY}"></th><!-- Open Qty -->
+			<th th:text="#{HQP_L_OPEN_QTY}"></th><!-- Open Qty -->
 			<td id="KWMENG"></td>			
 		</tr>	
 		<tr>
-			<th th:text="#{HQPD_L_NET_WEIGHT}"></th><!-- Net Weight -->
+			<th th:text="#{HQP_L_NET_WEIGHT}"></th><!-- Net Weight -->
 			<td id="NTGEW"></td>
-			<th th:text="#{HQPD_L_PURCHASE_LEAD_TIME}"></th><!-- Purchase Lead Time -->
+			<th th:text="#{HQP_L_PURCHASE_LEAD_TIME}"></th><!-- Purchase Lead Time -->
 			<td id="PLIFZ"></td>			
 		</tr>
 		<tr>
-			<th th:text="#{HQPD_L_GROSS_WEIGHT}"></th><!-- Gross Weight -->
+			<th th:text="#{HQP_L_GROSS_WEIGHT}"></th><!-- Gross Weight -->
 			<td id="BRGEW"></td>
-			<th th:text="#{HQPD_L_DIRECT_DELIVERY}"></th><!-- Direct Delivery -->
+			<th th:text="#{HQP_L_DIRECT_DELIVERY}"></th><!-- Direct Delivery -->
 			<td id="C_MTPOS"></td>			
 		</tr>
 		<tr>
-			<th th:text="#{HQPD_L_PRICE_APPLIED_DATE}"></th><!-- Price Applied Date -->
+			<th th:text="#{HQP_L_PRICE_APPLIED_DATE}"></th><!-- Price Applied Date -->
 			<td id="DATAB"></td>
-			<th th:text="#{HQPD_L_STOCK_LOCATION}"></th><!-- Stock Location -->
+			<th th:text="#{HQP_L_STOCK_LOCATION}"></th><!-- Stock Location -->
 			<td id="LADGR"></td>			
 		</tr>	
 		<tr>
-			<th th:text="#{HQPD_L_SUPPLY_PART_NO}"></th><!-- Supply Part No. -->
+			<th th:text="#{HQP_L_SUPPLY_PART_NO}"></th><!-- Supply Part No. -->
 			<td>				
 				<div id="AREA_substitution" style="display:none;">			
 				<span id="REPNR" class="custom-ui"></span>
 				<button id="BTN_substitution" class="btn-popup2" type="button" onclick="showMoreInfoPopup(this);"></button>
 				</div>
 			</td>
-			<th th:text="#{HQPD_L_STOCK_OF_SUPPLY_PART}"></th><!-- Stock of Supply Parts -->
+			<th th:text="#{HQP_L_STOCK_OF_SUPPLY_PART}"></th><!-- Stock of Supply Parts -->
 			<td id="STOCKP"></td>			
 		</tr>
 		<tr>
-			<th th:text="#{HQPD_L_BULLETIN}"></th><!-- Bulletin -->
+			<th th:text="#{HQP_L_BULLETIN}"></th><!-- Bulletin -->
 			<td id="BULLETIN"></td>
-			<th th:text="#{HQPD_L_AM_DEV_PART}"></th><!-- AM Development Part -->
+			<th th:text="#{HQP_L_AM_DEV_PART}"></th><!-- AM Development Part -->
 			<td id="AM_PART_NO"></td>			
-			<!-- th th:text="#{HQPD_L_KIT_AVAILABILITY}"></th><!-- KIT Availability -->
+			<!-- th th:text="#{HQP_L_KIT_AVAILABILITY}"></th><!-- KIT Availability -->
 			<!-- td id="EXP_AVQ"></td -->
 		</tr>		
 	</tbody>
@@ -120,13 +120,13 @@
 
 <div class="split-row"></div>
 <div class="condition-area">
-	<div class="condition-title" th:text="#{HQPD_L_SUPPLY_PART_PRICE_INFO}"></div>
-	<table class="condition table-fixed">
+	<div class="condition-title" th:text="#{HQP_L_SUPPLY_PART_PRICE_INFO}"></div>
+	<table class="condition">
 		<thead>
 	        <tr>
-	            <th th:text="#{HQPD_L_UOM}"></th><!-- UoM -->
-	            <th th:text="#{HQPD_L_LIST_PRICE}"></th><!--List Price  -->                        
-	            <th th:text="#{HQPD_L_STOCK_ORDER_LIST_PRICE}"></th><!--List Price (Stock Order)  -->
+	            <th th:text="#{HQP_L_UOM}"></th><!-- UoM -->
+	            <th th:text="#{HQP_L_LIST_PRICE}"></th><!--List Price  -->                        
+	            <th th:text="#{HQP_L_STOCK_ORDER_LIST_PRICE}"></th><!--List Price (Stock Order)  -->
 	        </tr>
 	     </thead>
 	     <tbody>
@@ -147,13 +147,13 @@ function doSearch()
 {
 	if (JpUtilsString.isEmpty($("#pPartNo").val()))
 	{
-		alert("[[#{HQPD_M_EMPTY_PART_NO}]]");
+		alert("[[#{HQP_M_EMPTY_PART_NO}]]");
 		return;
 	}	
 	
 	$("#pPartNo").val($("#pPartNo").val().toUpperCase());
 	
-	$.ajax({
+	JpUtilsAjax.get({
 		url: "/portal/iv/hq/parts/domestic/info/view/data",		
 		data: {	"pPartNo": $("#pPartNo").val() },
 		beforeSend: function(jqXHR, settings)
@@ -167,7 +167,7 @@ function doSearch()
 	    	
 	    	if (items.length == 0)
 	    	{
-	    		alert("[[#{HQPD_M_EMPTY_RESULT}]]");
+	    		alert("[[#{HQP_M_EMPTY_RESULT}]]");
 	    		document.location.reload();
 	    	};	    	
 	    	
@@ -306,7 +306,7 @@ $("#pPartNo").on("keydown", function(event) {
 
 $("#pPartNo").autocomplete({	
 	source: function(request, response) {
-		$.ajax({
+		JpUtilsAjax.get({
 			url: "/portal/iv/hq/parts/domestic/info/autocompete/data",
 			data: {	"pPartNo": $("#pPartNo").val() },			
 			success: function(data, textStatus, jqXHR)

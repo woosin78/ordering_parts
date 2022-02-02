@@ -20,17 +20,11 @@ public class ErpUserContext implements Serializable
 	private String salesOrg;
 	private String distChl;
 	private String division;
-
-	public String getCorpName()
-	{
-		if (corp != null)
-		{
-			if ("1600".equals(corp))
-			{
-				return "DBKR";
-			}
-		}
-
-		return null;
-	}
+	private String plant;
+	private String workCenter;
+	private String custGrp1;
+	private String custGrp2;
+	private String custGrp3;
+	private String custGrp4;
+	private String custGrp5;
 }

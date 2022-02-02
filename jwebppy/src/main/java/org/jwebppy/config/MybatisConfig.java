@@ -6,7 +6,6 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.JdbcType;
 import org.jwebppy.platform.core.interceptor.JdbcStatementInterceptor;
-import org.jwebppy.platform.core.support.CmBeanNameGenerator;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
@@ -19,7 +18,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 @Configuration
-@MapperScan(basePackages = "org.jwebppy", nameGenerator = CmBeanNameGenerator.class, annotationClass = org.apache.ibatis.annotations.Mapper.class)
+//@MapperScan(basePackages = "org.jwebppy", nameGenerator = CmBeanNameGenerator.class, annotationClass = org.apache.ibatis.annotations.Mapper.class)
+@MapperScan(basePackages = "org.jwebppy", annotationClass = org.apache.ibatis.annotations.Mapper.class)
 public class MybatisConfig
 {
 	private Logger logger = LoggerFactory.getLogger(MybatisConfig.class);

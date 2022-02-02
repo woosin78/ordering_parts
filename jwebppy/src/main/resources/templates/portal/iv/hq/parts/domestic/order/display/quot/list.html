@@ -7,9 +7,9 @@
 <th:block layout:fragment="content">
 
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQPD_T_QUOTATION_LIST}"></div>
+		<div class="block-title" th:text="#{HQP_T_QUOTATION_LIST}"></div>
 		<div id="BTN_search" class="block-button-area">
-			<button type="button" th:text="#{HQPD_B_SEARCH}"></button><!-- Search -->
+			<button type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 		</div>
 	</div>
 	
@@ -17,34 +17,34 @@
 	<form id="FORM_search" name="FORM_search">
 	<input type="hidden" id="orderNo" name="orderNo"/>
 	<input type="hidden" id="status" name="status"/>
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
 				<th colspan="4">
 					<div class="input-area">
 						<input type="radio" class="custom-ui" name="pDocType" value="C"/>
-						<label th:text="#{HQPD_L_ORDER}"></label>
+						<label th:text="#{HQP_L_ORDER}"></label>
 						
 						&nbsp;&nbsp;
 						
 						<input type="radio" class="custom-ui" name="pDocType" value="A"/>
-						<label th:text="#{HQPD_L_INQUIRY}"></label>
+						<label th:text="#{HQP_L_INQUIRY}"></label>
 						
 						&nbsp;&nbsp;
 						
 						<input type="radio" class="custom-ui" name="pDocType" value="B" checked/>
-						<label th:text="#{HQPD_L_QUOTATION}"></label>
+						<label th:text="#{HQP_L_QUOTATION}"></label>
 					</div>
 				</th>
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_QUOTATION_NO}"></th>
+				<th th:text="#{HQP_L_QUOTATION_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
 					</div>
 				</td>
-				<th th:text="#{HQPD_L_ORDER_DATE}"></th>
+				<th th:text="#{HQP_L_ORDER_DATE}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -53,25 +53,25 @@
 				</td>				
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_ORDER_PART_NO}"></th>
+				<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
 					</div>
 				</td>
-				<th th:text="#{HQPD_L_STATUS}"></th>
+				<th th:text="#{HQP_L_STATUS}"></th>
 				<td>
 					<div class="input-area">
 						<select class="custom-ui" id="pStatus" name="pStatus">
 							<option value="X"></option>
-							<option value="O" th:text="#{HQPD_L_OPEN}"></option>
-							<option value="C" th:text="#{HQPD_L_CLOSE}"></option>
+							<option value="O" th:text="#{HQP_L_OPEN}"></option>
+							<option value="C" th:text="#{HQP_L_CLOSE}"></option>
 						</select>
 					</div>	
 				</td>				
 			</tr>
 			<tr>
-				<th th:text="#{HQPD_L_PO_NO}"></th>
+				<th th:text="#{HQP_L_PO_NO}"></th>
 				<td colspan="3">
 					<div class="input-area">
 						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
@@ -115,14 +115,14 @@ $(function(){
 		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
 		columns : [
-			{data: "VBELN", title: "[[#{HQPD_L_QUOTATION_NO}]]", className: "link"},//Inuqiry No.
-			{data: "BSTKD", title: "[[#{HQPD_L_PO_NO}]]"},//P.O. No.
-			{data: "VBELN2", title: "[[#{HQPD_L_SALES_DOC_NO}]]", className: "link"},//Sales Doc. No.
-			{data: "ERDAT2", title: "[[#{HQPD_L_QUOTATION_DATE}]]"},//Create Date
-			{data: "COUNT", title: "[[#{HQPD_L_ORDER_ITEM_ROWS}]]", className: "right"},//Line Item
-			{data: "T_NETWR", title: "[[#{HQPD_L_ORDER_AMOUNT}]]", className: "right"},//Order Amt.
-			{data: "WAERK", title: "[[#{HQPD_L_CURR}]]"},//Curr.
-			{data: "RFGSK_TX", title: "[[#{	HQPD_L_STATUS}]]"}//Open Status
+			{data: "VBELN", title: "[[#{HQP_L_QUOTATION_NO}]]", className: "link"},//Inuqiry No.
+			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
+			{data: "VBELN2", title: "[[#{HQP_L_SALES_DOC_NO}]]", className: "link"},//Sales Doc. No.
+			{data: "ERDAT2", title: "[[#{HQP_L_QUOTATION_DATE}]]"},//Create Date
+			{data: "COUNT", title: "[[#{HQP_L_ORDER_ITEM_ROWS}]]", className: "right"},//Line Item
+			{data: "T_NETWR", title: "[[#{HQP_L_ORDER_AMOUNT}]]", className: "right"},//Order Amt.
+			{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},//Curr.
+			{data: "RFGSK_TX", title: "[[#{	HQP_L_STATUS}]]"}//Open Status
 		],
 		/*
 		columnDefs: [

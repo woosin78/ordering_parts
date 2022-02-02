@@ -8,4 +8,6 @@ public class PortalCommonVo extends PlatformCommonVo
 
 	//문자열 구분자
 	public static final String DELIMITER = PortalConfigVo.DELIMITER;
+
+	public static final String INITIAL_PASSWORD = "init99PW!";
 }

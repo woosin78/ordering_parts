@@ -9,9 +9,9 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
-import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.accounts.ap.schedule.service.ApScheduleService;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsCommonVo.DOMESTIC_REQUEST_PATH + "/accounts/ap/schedule")
+@RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/accounts/ap/schedule")
 public class ApScheduleController extends PartsDomesticGeneralController
 {
 	@Autowired
@@ -71,13 +71,13 @@ public class ApScheduleController extends PartsDomesticGeneralController
 			summaryMap.put("SUMMARY_4", dataMap.getDecimal("BNAMT"));//반납
 			summaryMap.put("SUMMARY_5", dataMap.getDecimal("DAAMT").add(dataMap.getDecimal("B1AMT")).add(dataMap.getDecimal("APAMT")).add(dataMap.getDecimal("BNAMT")));//합계
 
-			reCalculatePriceByCurrency(summaryMap, new String[] { "SUMMARY_1", "SUMMARY_2", "SUMMARY_3", "SUMMARY_4", "SUMMARY_5" }, null, null, -1);
+			calcPriceByCurrency(summaryMap, new String[] { "SUMMARY_1", "SUMMARY_2", "SUMMARY_3", "SUMMARY_4", "SUMMARY_5" }, null, null, -1);
 
 			FormatBuilder.with(summaryMap)
 				.decimalFormat(new String[] { "SUMMARY_1", "SUMMARY_2", "SUMMARY_3", "SUMMARY_4", "SUMMARY_5" });
 		}
 
-		reCalculatePriceByCurrency(dataList, new String[] { "TOTAL" }, null, null, -100);
+		calcPriceByCurrency(dataList, new String[] { "TOTAL" }, null, null, -100);
 
 		FormatBuilder.with(dataList)
 			.decimalFormat(new String[] { "TOTAL" })
