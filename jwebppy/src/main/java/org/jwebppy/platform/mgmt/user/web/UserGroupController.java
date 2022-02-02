@@ -6,14 +6,18 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.conn_resource.service.SapConnResourceService;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupSearchDto;
+import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
 import org.jwebppy.platform.mgmt.user.service.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +34,9 @@ import org.springframework.web.context.request.WebRequest;
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/user_group")
 public class UserGroupController extends MgmtGeneralController
 {
+	@Autowired
+	private CredentialsPolicyService credentialsPolicyService;
+
 	@Autowired
 	private SapConnResourceService sapConnResourceService;
 
@@ -89,14 +96,18 @@ public class UserGroupController extends MgmtGeneralController
 			userGroup = userGroupService.getUserGroup(ugSeq);
 		}
 
-		return UserGroupLayoutBuilder.write(userGroup, sapConnResourceService.getAvailableSapConnResources());
+		CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
+		credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
+
+		return UserGroupLayoutBuilder.write(userGroup, sapConnResourceService.getAvailableSapConnResources(), credentialsPolicyService.getCredentialPolicies(credentialsPolicySearch));
 	}
 
 	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@ModelAttribute UserGroupDto userGroup, @ModelAttribute SapConnResourceDto sapConnResource, @RequestParam List<String> langKind)
+	public Object save(@ModelAttribute UserGroupDto userGroup, @ModelAttribute SapConnResourceDto sapConnResource, @ModelAttribute CredentialsPolicyDto credentialsPolicy, @RequestParam List<String> langKind)
 	{
 		userGroup.setSapConnResource(sapConnResource);
+		userGroup.setCredentialsPolicy(credentialsPolicy);
 		userGroup.setLangKind(CmStringUtils.arrayToString(langKind));
 
 		return userGroupService.save(userGroup);

@@ -25,6 +25,7 @@ import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangKindType;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 
 import com.ibm.icu.util.TimeZone;
@@ -36,13 +37,13 @@ public class UserGroupLayoutBuilder
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
 		thTr.addTextTh("Name", "two wide");
-		thTr.addTextTh("Description", "three wide");
+		thTr.addTextTh("Description", "two wide");
 		thTr.addTextTh("Date Format<br/>(Back-End / Front-End)", "two wide");
 		thTr.addTextTh("Time Format<br/>(Back-End / Front-End)", "two wide");
 		thTr.addTextTh("Country", "one wide");
 		thTr.addTextTh("Timezone", "two wide");
 		thTr.addTextTh("Language<br/>(Allowable / Default)", "two wide");
-		thTr.addTextTh("Users", "one wide");
+		thTr.addTextTh("Credentials Policy", "two wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -64,6 +65,8 @@ public class UserGroupLayoutBuilder
 				tbTr.addEmptyTd();
 			}
 
+			CredentialsPolicyDto credentialsPolicy = userGroup.getCredentialsPolicy();
+
 			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
 			tbTr.addTextTd(userGroup.getDescription());
 			tbTr.addTextTd(userGroup.getDateFormat1() + " / " + userGroup.getDateFormat2());
@@ -71,7 +74,7 @@ public class UserGroupLayoutBuilder
 			tbTr.addTextTd(userGroup.getDisplayCountry());
 			tbTr.addTextTd(userGroup.getDisplayTimezone());
 			tbTr.addTextTd(userGroup.getDisplayLangKind() + " / " + userGroup.getDisplayDefLang());
-			tbTr.addTextTd(userCount);
+			tbTr.addDataKeyLinkTd(credentialsPolicy.getName(), credentialsPolicy.getCpSeq());
 
 			tbody.addTr(tbTr);
 		}
@@ -86,9 +89,15 @@ public class UserGroupLayoutBuilder
 	{
 		SapConnResourceDto sapConnResource = userGroup.getSapConnResource();
 
-		Link loSapConnResource = new Link(sapConnResource.getName());
+		Link loSapConnResource = new Link(sapConnResource.getName() + " - " + sapConnResource.getDescription());
 		loSapConnResource.setClass("sap-conn-resource");
 		loSapConnResource.setKey(sapConnResource.getScrSeq());
+
+		CredentialsPolicyDto credentialsPolicy = userGroup.getCredentialsPolicy();
+
+		Link loCredentialsPolicy = new Link(credentialsPolicy.getName() + " - " + credentialsPolicy.getDescription());
+		loCredentialsPolicy.setClass("credentials-policy");
+		loCredentialsPolicy.setKey(credentialsPolicy.getCpSeq());
 
 		StringBuilder langKind = new StringBuilder();
 		String[] langKinds = CmStringUtils.split(userGroup.getLangKind(), PlatformConfigVo.DELIMITER);
@@ -115,7 +124,8 @@ public class UserGroupLayoutBuilder
 		document.addDefaultLabelText("Time Format (Front-End)", userGroup.getTimeFormat2());
 		document.addDefaultLabelText("Country", userGroup.getDisplayCountry());
 		document.addDefaultLabelText("Timezone", userGroup.getDisplayTimezone());
-		document.addDefaultLabelText("Allowable Language", langKind);
+		document.addDefaultLabelText("Credentials Policy", loCredentialsPolicy);
+		document.addDefaultLabelText("Allowable Languages", langKind);
 		document.addDefaultLabelText("Default Language", userGroup.getDisplayDefLang());
 		document.addDefaultLabelText("SAP Connection Resource", loSapConnResource);
 		document.addDefaultLabelText("Users", userGroup.getUserCount());
@@ -128,7 +138,7 @@ public class UserGroupLayoutBuilder
 		return document;
 	}
 
-	public static Document write(UserGroupDto userGroup, List<SapConnResourceDto> sapConnResources)
+	public static Document write(UserGroupDto userGroup, List<SapConnResourceDto> sapConnResources, List<CredentialsPolicyDto> credentialPolicies)
 	{
 		Document document = new Document();
 
@@ -195,6 +205,22 @@ public class UserGroupLayoutBuilder
 			loTimezone.addOption(id, id + ", " + TimeZone.getTimeZone(id).getDisplayName());
 		}
 
+		Select loCredentialPolicy = new Select("cpSeq");
+		loCredentialPolicy.setLabel("Credential Policy");
+		loCredentialPolicy.setRequired(true);
+
+		CredentialsPolicyDto credentialsPolicy = userGroup.getCredentialsPolicy();
+
+		if (credentialsPolicy != null)
+		{
+			loCredentialPolicy.setValue(credentialsPolicy.getCpSeq());
+		}
+
+		for (CredentialsPolicyDto credentialPolicy: ListUtils.emptyIfNull(credentialPolicies))
+		{
+			loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getName());
+		}
+
 		Select loSapConnResource = new Select("scrSeq");
 		loSapConnResource.setLabel("SAP Connection Resource");
 		loSapConnResource.setValue(userGroup.getSapConnResource().getScrSeq());
@@ -251,9 +277,10 @@ public class UserGroupLayoutBuilder
 		document.addElement(loTimeFormat2);
 		document.addElement(loCountry);
 		document.addElement(loTimezone);
-		document.addElement(loSapConnResource);
+		document.addElement(loCredentialPolicy);
 		document.addElement(loLangKindFields);
 		document.addElement(loDefLangFields);
+		document.addElement(loSapConnResource);
 
 		return document;
 	}

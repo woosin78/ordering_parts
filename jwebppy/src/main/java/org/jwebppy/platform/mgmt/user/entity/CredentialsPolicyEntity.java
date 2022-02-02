@@ -15,7 +15,6 @@ public class CredentialsPolicyEntity extends GeneralEntity implements IPaginatio
 	private static final long serialVersionUID = -5712552286897710540L;
 
 	private Integer cpSeq;
-	private UserGroupEntity userGroup;
 	private String name;
 	private String description;
 	private String uMinLength;

@@ -12,7 +12,6 @@ import org.jwebppy.platform.core.web.ui.dom.table.Thead;
 import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
-import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 
 public class CredentialsPolicyLayoutBuilder
 {
@@ -21,10 +20,9 @@ public class CredentialsPolicyLayoutBuilder
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
 		thTr.addTextTh("Name", "four wide");
-		thTr.addTextTh("Description", "six wide");
+		thTr.addTextTh("Description", "nine wide");
 		thTr.addTextTh("Use", "one wide");
 		thTr.addTextTh("Default", "one wide");
-		thTr.addTextTh("User Group", "three wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -34,7 +32,6 @@ public class CredentialsPolicyLayoutBuilder
 
 		for (CredentialsPolicyDto credentialsPolicy: credentialsPolicies)
 		{
-			UserGroupDto userGroup = credentialsPolicy.getUserGroup();
 			String fgDefault = credentialsPolicy.getFgDefault();
 
 			Tr tbTr = new Tr();
@@ -52,7 +49,6 @@ public class CredentialsPolicyLayoutBuilder
 			tbTr.addTextTd(credentialsPolicy.getDescription());
 			tbTr.addTextTd(credentialsPolicy.getFgUse());
 			tbTr.addTextTd(fgDefault);
-			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
 
 			tbody.addTr(tbTr);
 		}

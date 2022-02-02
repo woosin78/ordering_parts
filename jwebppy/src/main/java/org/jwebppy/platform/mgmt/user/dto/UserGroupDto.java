@@ -33,6 +33,7 @@ public class UserGroupDto extends GeneralDto implements IPagination
 	private String timezone;
 	private String langKind;
 	private String defLang;
+	private CredentialsPolicyDto credentialsPolicy;
 	private int userCount;
 
 	public UserGroupDto() {}

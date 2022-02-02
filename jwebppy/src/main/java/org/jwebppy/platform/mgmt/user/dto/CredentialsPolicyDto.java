@@ -16,7 +16,6 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private static final long serialVersionUID = 2897067694360373935L;
 
 	private Integer cpSeq;
-	private UserGroupDto userGroup;
 	private String name;
 	private String description;
 	private String uMinLength;
@@ -50,15 +49,5 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	public CredentialsPolicyDto(Integer cpSeq)
 	{
 		this.cpSeq = cpSeq;
-	}
-
-	public UserGroupDto getUserGroup()
-	{
-		if (userGroup == null)
-		{
-			return new UserGroupDto();
-		}
-
-		return userGroup;
 	}
 }

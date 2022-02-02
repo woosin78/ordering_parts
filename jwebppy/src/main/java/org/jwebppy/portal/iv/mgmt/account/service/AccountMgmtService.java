@@ -149,6 +149,7 @@ public class AccountMgmtService
 		userAccount.setUSeq(uSeq);
 		userAccount.setUsername(username);
 		userAccount.setFgAccountLocked(PlatformCommonVo.NO);
+		userAccount.setCredentialsPolicy(userGroup.getCredentialsPolicy());
 
 		//내부사용자는 AD 를 사용하기 때문에 비밀번호 설정이 필요하지 않음
 		if ("I".equals(userType))

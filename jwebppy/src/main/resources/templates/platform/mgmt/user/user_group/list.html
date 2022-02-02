@@ -60,9 +60,9 @@ $(document).ready(function() {
 				{
 					url = "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key);
 				}
-				else if (columnIndex == 6)
+				else if (columnIndex == 8)
 				{
-					url = "/platform/mgmt/conn_resource/view?scrSeq=" + JpUtilsString.trimToEmpty(key);
+					url = "/platform/mgmt/user/credentials/policy/write?cpSeq=" + JpUtilsString.trimToEmpty(key);
 				}
 				
 				if (JpUtilsString.isNotEmpty(url))

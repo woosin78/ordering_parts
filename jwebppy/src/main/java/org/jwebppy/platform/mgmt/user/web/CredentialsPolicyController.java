@@ -8,7 +8,6 @@ import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
-import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
 import org.jwebppy.platform.mgmt.user.service.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,8 +70,6 @@ public class CredentialsPolicyController extends UserGeneralController
 	@ResponseBody
 	public Object save(@ModelAttribute CredentialsPolicyDto inCredentialsPolicy, WebRequest webRequest)
 	{
-		inCredentialsPolicy.setUserGroup(new UserGroupDto(Integer.valueOf(webRequest.getParameter("ugSeq"))));
-
 		return credentialsPolicyService.save(inCredentialsPolicy);
 	}
 

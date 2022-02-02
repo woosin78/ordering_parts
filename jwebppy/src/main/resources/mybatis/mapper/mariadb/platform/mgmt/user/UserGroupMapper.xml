@@ -20,12 +20,13 @@
 		<result property="modUsername" column="mod_username" />
 		<result property="modDate" column="mod_date" />
 		<association property="sapConnResource" foreignColumn="scr_seq" column="scr_seq" javaType="SapConnResourceEntity" select="org.jwebppy.platform.mgmt.conn_resource.mapper.SapConnResourceMapper.findSapConnResource" />
+		<association property="credentialsPolicy" foreignColumn="cp_seq" column="cp_seq" javaType="CredentialsPolicyEntity" select="org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyMapper.findCredentialsPolicy" />
 		<association property="userCount" column="ug_seq" javaType="Integer" select="findCountUser" />
 	</resultMap>
 	
 	<insert id="insert" parameterType="UserGroupEntity" useGeneratedKeys="true" keyProperty="ugSeq">
-		insert into pltf_user_group (name, description, scr_seq, date_format1, time_format1, date_format2, time_format2, country, timezone, lang_kind, def_lang, fg_delete, reg_username, reg_date) values (
-			#{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat1}, #{timeFormat1}, #{dateFormat2}, #{timeFormat2}, #{country}, #{timezone}, #{langKind}, #{defLang}, 'N', #{regUsername}, #{regDate}
+		insert into pltf_user_group (name, description, scr_seq, date_format1, time_format1, date_format2, time_format2, country, timezone, lang_kind, def_lang, cp_seq, fg_delete, reg_username, reg_date) values (
+			#{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat1}, #{timeFormat1}, #{dateFormat2}, #{timeFormat2}, #{country}, #{timezone}, #{langKind}, #{defLang}, #{credentialsPolicy.cpSeq}, 'N', #{regUsername}, #{regDate}
 		) 
 	</insert>
 
@@ -42,6 +43,7 @@
 			timezone=#{timezone},
 			lang_kind=#{langKind},
 			def_lang=#{defLang},
+			cp_seq=#{credentialsPolicy.cpSeq},
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where

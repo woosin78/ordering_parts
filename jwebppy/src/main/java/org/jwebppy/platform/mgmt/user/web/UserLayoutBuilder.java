@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
@@ -213,19 +214,16 @@ public class UserLayoutBuilder
 		loCredentialPolicy.setLabel("Credential Policy");
 		loCredentialPolicy.setRequired(true);
 
-		if (CollectionUtils.isNotEmpty(credentialPolicies))
-		{
-			for (CredentialsPolicyDto credentialPolicy: credentialPolicies)
-			{
-				loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getName());
-			}
-		}
-
 		CredentialsPolicyDto credentialsPolicy = userAccount.getCredentialsPolicy();
 
 		if (credentialsPolicy != null)
 		{
 			loCredentialPolicy.setValue(credentialsPolicy.getCpSeq());
+		}
+
+		for (CredentialsPolicyDto credentialPolicy: ListUtils.emptyIfNull(credentialPolicies))
+		{
+			loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getName());
 		}
 
 		Document document = new Document();
