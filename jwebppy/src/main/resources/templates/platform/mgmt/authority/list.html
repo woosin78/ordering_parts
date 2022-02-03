@@ -287,13 +287,18 @@ $(document).ready(function() {
 						if (tabPath == "user")
 						{
 							$("#FORM_modifyAuthority div[data-tab=user] a").on("click", function() {
-								JpUiPopup.open({
-									url: "/platform/mgmt/user/list?uSeq=" + $(this).attr("data-key"),
-									width: screen.availWidth * 0.7,
-									height: screen.availHeight * 0.7,
-									fgCenter: "Y"
-								});
 								
+								let dataKeyName = JpUtilsString.trimToEmpty($(this).attr("data-key-name"));
+								let dataKey = JpUtilsString.trimToEmpty($(this).attr("data-key"));
+								
+								if (dataKeyName == "uSeq")
+								{
+									showUser(dataKey);	
+								}
+								else
+								{
+									showUserGroup(dataKey);
+								};
 							});
 						};
 					};
@@ -303,8 +308,6 @@ $(document).ready(function() {
 				}
 			}
 	};
-
-	//viewAuthorityTab.render();
 
 	$("#BTN_create").on("click", function() {
 		showCreateAuthorityArea();		

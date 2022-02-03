@@ -58,19 +58,12 @@ $(document).ready(function() {
 				
 				if (columnIndex == 1)
 				{
-					url = "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key);
+					showUserGroup(key);
 				}
 				else if (columnIndex == 8)
 				{
-					url = "/platform/mgmt/user/credentials/policy/write?cpSeq=" + JpUtilsString.trimToEmpty(key);
+					showCredentialsPolicy(key);
 				}
-				
-				if (JpUtilsString.isNotEmpty(url))
-				{
-					JpUiPopup.open({
-						url: url
-					});
-				};
 			}
 	};
 

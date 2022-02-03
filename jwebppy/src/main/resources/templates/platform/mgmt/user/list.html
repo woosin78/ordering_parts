@@ -158,9 +158,7 @@ $(document).ready(function() {
 				}
 				else if (columnIndex == 7)
 				{
-					JpUiPopup.open({
-						url: "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key)
-					});					
+					showUserGroup(key);
 				};
 			},
 			editColumns: function(trIndex, tr, tdIndex, td, text)

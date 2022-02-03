@@ -84,5 +84,34 @@ $("#BTN_moveToTop").click(function() {
 	$("html, body").animate({ scrollTop : 0 }, 400);
 	return false;
 });
+
+/*
+ * 공통 함수
+ */
+//User
+function showUser(key)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/user/list?uSeq=" + key,
+		width: screen.availWidth * 0.7,
+		height: screen.availHeight * 0.7
+	});
+};
+ 
+//User Group
+function showUserGroup(key)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key)
+	});
+};
+ 
+//Security Policy
+function showCredentialsPolicy(key)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/user/credentials/policy/write?cpSeq=" + JpUtilsString.trimToEmpty(key)
+	});	
+};
 </script>
 <!-- bottom end -->

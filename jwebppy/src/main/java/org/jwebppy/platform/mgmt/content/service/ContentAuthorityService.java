@@ -81,7 +81,7 @@ public class ContentAuthorityService extends GeneralService
 		{
 			CItemSearchDto cItemSearch = new CItemSearchDto();
 			cItemSearch.setName(cItemUserRl.getName());
-			cItemSearch.setType(CItemType.R);
+			cItemSearch.setTypes(new CItemType[] { CItemType.R, CItemType.G  } );
 
 			List<CItemEntity> cItems = contentMapper.findCItems(cItemSearch);
 

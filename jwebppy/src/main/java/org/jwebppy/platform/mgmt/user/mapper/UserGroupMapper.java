@@ -15,6 +15,7 @@ public interface UserGroupMapper
 	public int update(UserGroupEntity userGroup);
 	public int updateFgDelete(UserGroupEntity userGroup);
 	public UserGroupEntity findUserGroup(Integer ugSeq);
+	public UserGroupEntity findUserGroupByName(String name);
 	public List<UserGroupEntity> findUserGroups(UserGroupSearchDto userGroupSearch);
 	public List<UserGroupEntity> findfindPageUserGroups(UserGroupSearchDto userGroupSearch);
 }

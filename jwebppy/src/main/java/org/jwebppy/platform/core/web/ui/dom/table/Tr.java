@@ -71,6 +71,19 @@ public class Tr extends Element
 		addElement(td);
 	}
 
+	public void addDataKeyLinkTd(Object text, Object key, String keyName)
+	{
+		Element link = new Element("a", text);
+		link.addAttribute("href", "#");
+		link.addAttribute("data-key", key);
+		link.addAttribute("data-key-name", keyName);
+
+		Element td = new Td();
+		td.addElement(link);
+
+		addElement(td);
+	}
+
 	public void addDataKeyCheckboxTd(String name, Object key)
 	{
 		Element checkbox = new Checkbox(name, key);

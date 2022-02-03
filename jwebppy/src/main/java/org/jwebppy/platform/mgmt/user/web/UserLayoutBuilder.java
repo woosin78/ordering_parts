@@ -89,7 +89,7 @@ public class UserLayoutBuilder
 		elementMap.put("Organization", user.getOrganization());
 		elementMap.put("Position", user.getPosition());
 		elementMap.put("Department", user.getDepartment());
-		elementMap.put("User Group", user.getUserGroup().getName() + " (" + user.getUserGroup().getDescription() + ")");
+		elementMap.put("User Group", user.getUserGroup().getName() + " - " + user.getUserGroup().getDescription());
 		elementMap.put("Language", user.getDisplayLanguage());
 		elementMap.put("Reg.Username", user.getRegUsername());
 		elementMap.put("Reg.Date", user.getDisplayRegDate());
@@ -172,7 +172,7 @@ public class UserLayoutBuilder
 		elementMap.put("No Use Password", userAccount.getFgNoUsePassword());
 		elementMap.put("Valid From", userAccount.getDisplayFromValid());
 		elementMap.put("Valid To", userAccount.getDisplayToValid());
-		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getName() : "");
+		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getName() + " - " + credentialPolicy.getDescription() : "");
 		elementMap.put("Reg.Username", userAccount.getRegUsername());
 		elementMap.put("Reg.Date", userAccount.getDisplayRegDate());
 		elementMap.put("Mod.Username", userAccount.getModUsername());

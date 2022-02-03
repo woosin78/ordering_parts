@@ -111,6 +111,7 @@ public class AccountMgmtController extends IvGeneralController
 
 			Map<String, Object> returnMap = new HashMap<>();
 			returnMap.put("uSeq", user.getUSeq());
+			returnMap.put("userType", rfcParamMap.get("userType"));
 			returnMap.put("username", user.getUserAccount().getUsername());
 
 			if (rfcParamMap.isEquals("userType", "D"))

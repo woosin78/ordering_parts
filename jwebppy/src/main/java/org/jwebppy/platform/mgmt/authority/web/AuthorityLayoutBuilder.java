@@ -136,9 +136,8 @@ public class AuthorityLayoutBuilder
 		thTr.addTextTh("Status", "one wide");
 		thTr.addTextTh("Username", "two wide");
 		thTr.addTextTh("Name", "three wide");
-		thTr.addTextTh("E-mail", "three wide");
-		thTr.addTextTh("Company", "three wide");
-		thTr.addTextTh("Department", "two wide");
+		thTr.addTextTh("E-mail", "four wide");
+		thTr.addTextTh("Company", "four wide");
 		thTr.addTextTh("User Group", "two wide");
 
 		Thead thead = new Thead();
@@ -163,12 +162,11 @@ public class AuthorityLayoutBuilder
 				}
 
 				tbTr.addTextTd(status);
-				tbTr.addDataKeyLinkTd(userAccount.getUsername(), user.getUSeq());
+				tbTr.addDataKeyLinkTd(userAccount.getUsername(), user.getUSeq(), "uSeq");
 				tbTr.addTextTd(user.getName());
 				tbTr.addTextTd(userContactInfo.getEmail());
 				tbTr.addTextTd(user.getCompany());
-				tbTr.addTextTd(user.getDepartment());
-				tbTr.addTextTd(user.getUserGroup().getName());
+				tbTr.addDataKeyLinkTd(user.getUserGroup().getName(), user.getUserGroup().getUgSeq(), "ugSeq");
 
 				tbody.addTr(tbTr);
 			}

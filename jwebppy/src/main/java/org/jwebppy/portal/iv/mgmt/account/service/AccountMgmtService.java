@@ -75,8 +75,8 @@ public class AccountMgmtService
 
 		rfcRequest
 			.field().with(rfcParamMap)
-				.add(new Object[][] {
-					{"I_SELECT", "A"},
+				.add("I_SELECT", "A")
+				.addByKey(new Object[][] {
 					{"I_BNAME", "username"},
 					{"I_VKORG", "salesOrg"},
 					{"I_VTWEG", "distChl"},
@@ -154,6 +154,7 @@ public class AccountMgmtService
 		//내부사용자는 AD 를 사용하기 때문에 비밀번호 설정이 필요하지 않음
 		if ("I".equals(userType))
 		{
+			userAccount.setPassword(IvCommonVo.INITIAL_PASSWORD);
 			userAccount.setFgNoUsePassword(IvCommonVo.YES);
 			userAccount.setFgPasswordLocked(IvCommonVo.NO);
 		}
@@ -198,7 +199,7 @@ public class AccountMgmtService
 	protected String getUserGroupName(String bizType)
 	{
 		Map<String, String> userGroupMap = new HashMap<>();
-		userGroupMap.put("HQDOP", "CP_IVHQ");
+		userGroupMap.put("HQDOP", "UG_IVHQ");
 
 		return userGroupMap.get(bizType);
 	}
@@ -221,8 +222,8 @@ public class AccountMgmtService
 
 		mappingCodeMap.put("EUDOP_I", "0001075204");//유럽부품
 		mappingCodeMap.put("UKDOP_I", "0001074837");//영국부품
-		mappingCodeMap.put("HQDOP_I", "");//본사내수부품
-		mappingCodeMap.put("HQEXP_I", "");//본사수출부품
+		mappingCodeMap.put("HQDOP_I", "0001031876");//본사내수부품
+		mappingCodeMap.put("HQEXP_I", "0001040174");//본사수출부품
 
 		return mappingCodeMap.get(bizType + "_" + userType);
 	}
@@ -242,8 +243,8 @@ public class AccountMgmtService
 		authorityMap.put("UKDOP_D", new String[] { "UK_SS_DEALER" });//Dealer
 
 		//본사내수부품
-		authorityMap.put("HQDOP_I", new String[] { "UK_SS_DEALER", "UK_SS_ADMIN" });//Internal User
-		authorityMap.put("HQDOP_D", new String[] { "UK_SS_DEALER" });//Dealer
+		authorityMap.put("HQDOP_I", new String[] { "DP_IVDO_PARTS_DEALER", "DP_ACCOUNTS_MANAGER" });//Internal User
+		authorityMap.put("HQDOP_D", new String[] { "DP_IVDO_PARTS_DEALER" });//Dealer
 
 		//본사수출부품
 		authorityMap.put("HQEXP_I", new String[] { "UK_SS_DEALER", "UK_SS_ADMIN" });//Internal User

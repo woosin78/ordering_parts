@@ -14,6 +14,7 @@
 	
 	<div class="condition-area">
 	<form id="FORM_write" name="FORM_write">
+	<input type="hidden" name="bizType" value="HQDOP" />
 	<table class="condition">
 		<tbody>
 			<tr>
@@ -108,29 +109,38 @@ $(function(){
 			return false;			
 		};
 		
-		JpUtilsAjax.get({
-			url: "/platform/mgmt/user/check/valid_credentials",
-			data: { type: "U", name: "CP_IVHQ", value: $("#username").val().toUpperCase() },
-		    success: function(response, textStatus, jqXHR)
-		    {
-		    	let result = response.RESULT;
-		    	
-				let message = "";
+		let form = new JpUiForm($("#FORM_write"));
+		
+		if (JpUtilsString.equals(form.val("userType"), "D"))
+		{
+			JpUtilsAjax.get({
+				url: "/platform/mgmt/user/check/valid_credentials",
+				data: { type: "U", name: "CP_IVHQ", value: form.val("#username").toUpperCase() },
+			    success: function(response, textStatus, jqXHR)
+			    {
+			    	let result = response.RESULT;
+			    	
+					let message = "";
 
-				$.each(result.MESSAGE, function (index, value) {
-					message += value + "\n";
-				});
-				
-				if (JpUtilsString.isEmpty(message))
-				{
-					submit();
-				}
-				else
-				{
-					alert(message);	
-				};
-		    }			
-		});
+					$.each(result.MESSAGE, function (index, value) {
+						message += value + "\n";
+					});
+					
+					if (JpUtilsString.isEmpty(message))
+					{
+						submit();
+					}
+					else
+					{
+						alert(message);	
+					};
+			    }			
+			});			
+		}
+		else
+		{
+			submit();
+		};
 	});
 	
 	function submit()
@@ -140,6 +150,7 @@ $(function(){
 				data: $("#FORM_write").serialize(),
 				beforeSend: function(jqXHR, settings)
 				{
+					$("#username").val($("#username").val().toUpperCase());
 					ProgressBar.show();
 				},			
 			    success: function(response, textStatus, jqXHR)
@@ -171,7 +182,7 @@ $(function(){
 			    		let message1 = "[[#{HQP_M_CREATED_NEW_ACCOUNT}]]";
 			    		let message2 = "[[#{HQP_M_INITIAL_PASSWORD}]]";
 			    		
-			    		if (result == "I")
+			    		if (result.userType == "I")
 			    		{
 			    			alert(message1);
 			    		}

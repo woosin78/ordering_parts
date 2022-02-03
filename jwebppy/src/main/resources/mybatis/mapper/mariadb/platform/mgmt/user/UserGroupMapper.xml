@@ -86,6 +86,17 @@
 		fg_delete='N'
 		and ug_seq=#{ugSeq}
 	</select>
+	
+	<select id="findUserGroupByName" resultMap="userGroupEntityMap">
+		select 
+		*
+		from
+		pltf_user_group
+		where
+		fg_delete='N'
+		and name=#{name}
+		
+	</select>	
 
 	<select id="findUserGroups" resultMap="userGroupEntityMap">
 		select 

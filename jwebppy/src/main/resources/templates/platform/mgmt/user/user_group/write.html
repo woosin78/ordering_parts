@@ -143,7 +143,10 @@ $(document).ready(function() {
 					}
 					else
 					{
-						opener.doSearch();
+						if (opener != null)
+						{
+							opener.doSearch();
+						};
 					};
 					
 					goBack();

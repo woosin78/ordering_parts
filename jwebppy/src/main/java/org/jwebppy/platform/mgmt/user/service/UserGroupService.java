@@ -74,17 +74,7 @@ public class UserGroupService extends GeneralService
 
 	public UserGroupDto getUserGroupByName(String name)
 	{
-		UserGroupSearchDto userGroupSearch = new UserGroupSearchDto();
-		userGroupSearch.setName(name);
-
-		List<UserGroupDto> userGroups = getUserGroups(userGroupSearch);
-
-		if (CollectionUtils.isNotEmpty(userGroups))
-		{
-			return userGroups.get(0);
-		}
-
-		return null;
+		return CmModelMapperUtils.mapToDto(UserGroupObjectMapper.INSTANCE, userGroupMapper.findUserGroupByName(name));
 	}
 
 	public List<UserGroupDto> getUserGroups(UserGroupSearchDto userGroupSearch)
