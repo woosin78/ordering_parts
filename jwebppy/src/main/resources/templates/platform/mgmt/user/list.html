@@ -15,6 +15,14 @@
 <input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
 <div class="ui grey attached segment">
 	<div class="fields">
+		<div class="six wide field">
+			<select name="ugSeq" class="ui search dropdown">
+				<option value="">User Group</option>
+				<option th:each="userGroup : ${userGroups}" th:value="${userGroup.ugSeq}" th:text="${userGroup.description}"></option>
+			</select>
+		</div>
+	</div>
+	<div class="fields">
 		<div class="twelve wide field">
 			<div class="ui icon input">
 				<input type="text" id="query" name="query" placeholder="Search"> <i class="search icon"></i>
@@ -169,7 +177,7 @@ $(document).ready(function() {
 					{
 						return "<i class='lock icon'></i>";
 					}
-					else
+					else if (text == "N")
 					{
 						return "<i class='lock open icon'></i>";
 					};

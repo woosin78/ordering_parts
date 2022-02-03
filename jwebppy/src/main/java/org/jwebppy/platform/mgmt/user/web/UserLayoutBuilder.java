@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
@@ -60,9 +61,16 @@ public class UserLayoutBuilder
 				UserAccountDto userAccount = user.getUserAccount();
 				UserContactInfoDto userContactInfo = user.getUserContactInfo();
 
+				String fgAccountLocked = "";
+
+				if (ObjectUtils.isNotEmpty(userAccount.getUSeq()))
+				{
+					fgAccountLocked = userAccount.getFgAccountLocked();
+				}
+
 				Tr tbTr = new Tr();
 				tbTr.addDataKeyCheckboxTd("uSeq", user.getUSeq());
-				tbTr.addTextTd(userAccount.getFgAccountLocked());
+				tbTr.addTextTd(fgAccountLocked);
 				tbTr.addTextTd(userAccount.getUsername());
 				tbTr.addDataKeyLinkTd(user.getName(), user.getUSeq());
 				tbTr.addTextTd(userContactInfo.getEmail());

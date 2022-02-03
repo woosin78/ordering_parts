@@ -37,6 +37,7 @@ public class CItemDto extends GeneralDto implements IPagination
 	private Integer lSeq;
 	private List<Integer> seqs;
 	private int depth;
+	private int userCount;
 	private int subItemCount;
 	private List<CItemDto> subCItems;
 	private String name2;

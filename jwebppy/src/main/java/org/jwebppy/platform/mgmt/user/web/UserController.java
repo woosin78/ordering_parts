@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
@@ -81,6 +82,8 @@ public class UserController extends UserGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
+		model.addAttribute("userGroups", userGroupService.getUserGroups(null));
+
 		setDefaultAttribute(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
@@ -92,7 +95,7 @@ public class UserController extends UserGeneralController
 	{
 		PageableList<UserDto> pageableList = null;
 
-		if (CmStringUtils.isEmpty(userSearch.getQuery()) && userSearch.getUSeq() == null)
+		if (CmStringUtils.isEmpty(userSearch.getQuery()) && ObjectUtils.isEmpty(userSearch.getUSeq()) && ObjectUtils.isEmpty(userSearch.getUgSeq()))
 		{
 			pageableList = new PageableList<>();
 		}

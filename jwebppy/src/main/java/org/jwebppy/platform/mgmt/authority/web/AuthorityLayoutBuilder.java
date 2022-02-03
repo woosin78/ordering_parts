@@ -32,10 +32,9 @@ public class AuthorityLayoutBuilder
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
 		thTr.addTextTh("Type", "one wide");
-		thTr.addTextTh("Name", "two wide");
-		thTr.addTextTh("Description", "four wide");
-		thTr.addTextTh("Valid From", "two wide");
-		thTr.addTextTh("Valid To", "two wide");
+		thTr.addTextTh("Name", "four wide");
+		thTr.addTextTh("Description", "five wide");
+		thTr.addTextTh("Users", "one wide");
 		thTr.addTextTh("Reg.Date", "two wide");
 		thTr.addTextTh("Reg.Username", "two wide");
 
@@ -61,8 +60,7 @@ public class AuthorityLayoutBuilder
 			tbTr.addTextTd(cItem.getType().getType());
 			tbTr.addDataKeyLinkTd(cItem.getName(), cItem.getCSeq());
 			tbTr.addTextTd(cItem.getDescription());
-			tbTr.addTextTd(cItem.getDisplayFromValid());
-			tbTr.addTextTd(cItem.getDisplayToValid());
+			tbTr.addTextTd(cItem.getUserCount());
 			tbTr.addTextTd(cItem.getDisplayRegDate());
 			tbTr.addTextTd(cItem.getRegUsername());
 

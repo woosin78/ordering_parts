@@ -105,6 +105,7 @@
 		pltf_user_group
 		where
 		fg_delete='N'
+		order by ug_seq
 	</select>
 	
 	<select id="findfindPageUserGroups" resultMap="userGroupEntityMap">

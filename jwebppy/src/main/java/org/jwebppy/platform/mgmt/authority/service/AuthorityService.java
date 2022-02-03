@@ -25,13 +25,11 @@ public class AuthorityService
 	public List<CItemDto> getCItemAuthorities(CItemSearchDto cItemSearch)
 	{
 		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, authorityMapper.findCItemAuthorities(cItemSearch));
-		//return CmModelMapperUtils.mapAll(authorityMapper.findCItemAuthorities(cItemSearch), CItemDto.class);
 	}
 
 	public List<CItemDto> getSubRoles(CItemSearchDto cItemSearch)
 	{
 		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, authorityMapper.findSubRoles(cItemSearch));
-		//return CmModelMapperUtils.mapAll(authorityMapper.findSubRoles(cItemSearch), CItemDto.class);
 	}
 
 	//현재 가지고 있는 권한을 모두 삭제 한 후 부여
