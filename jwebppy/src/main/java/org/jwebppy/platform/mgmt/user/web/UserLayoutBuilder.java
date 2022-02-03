@@ -42,9 +42,9 @@ public class UserLayoutBuilder
 		thTr.addCheckAllTh();
 		thTr.addTextTh("Status", "one wide");
 		thTr.addTextTh("Username", "two wide");
-		thTr.addTextTh("Name", "two wide");
+		thTr.addTextTh("Name", "three wide");
 		thTr.addTextTh("E-mail", "three wide");
-		thTr.addTextTh("Company", "three wide");
+		thTr.addTextTh("Company", "two wide");
 		thTr.addTextTh("Department", "two wide");
 		thTr.addTextTh("User Group", "two wide");
 
@@ -76,7 +76,7 @@ public class UserLayoutBuilder
 				tbTr.addTextTd(userContactInfo.getEmail());
 				tbTr.addTextTd(user.getCompany());
 				tbTr.addTextTd(user.getDepartment());
-				tbTr.addDataKeyLinkTd(user.getUserGroup().getName(), user.getUserGroup().getUgSeq());
+				tbTr.addDataKeyLinkTd(user.getUserGroup().getName() + " - " + user.getUserGroup().getDescription(), user.getUserGroup().getUgSeq());
 
 				tbody.addTr(tbTr);
 			}

@@ -18,7 +18,7 @@
 		<div class="six wide field">
 			<select name="ugSeq" class="ui search dropdown">
 				<option value="">User Group</option>
-				<option th:each="userGroup : ${userGroups}" th:value="${userGroup.ugSeq}" th:text="${userGroup.description}"></option>
+				<option th:each="userGroup : ${userGroups}" th:value="${userGroup.ugSeq}" th:text="|${userGroup.name} - ${userGroup.description}|"></option>
 			</select>
 		</div>
 	</div>
@@ -30,7 +30,7 @@
 		</div>
 		<div class="four wide field">
 			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>
-			<div class="ui button" onclick="document.location.reload()"><i class="redo icon"></i> Reset</div>
+			<div id="BTN_reset" class="ui button"><i class="redo icon"></i> Reset</div>
 		</div>
 	</div>
 </div>
@@ -602,6 +602,9 @@ $(document).ready(function() {
 	};
 
 	$("#BTN_create").on("click", function() {
+		//계정 생성 후 목록에 생성 된 계정을 조회 시켜 주기 위해 생성 버튼 클릭 시 검색 조건은 모두 reset 함
+		resetSearchForm();
+
 		showCreateUserArea();
 	});
 
@@ -692,7 +695,7 @@ $(document).ready(function() {
 					if (JpUtilsObject.isNotNull(uSeq))
 					{
 						//신규 생성한 계정이 조회되도록 함
-						$("#FORM_search")[0].reset();
+						resetSearchForm();
 						setSeq(uSeq);
 
 						doSearch();
@@ -804,6 +807,17 @@ $(document).ready(function() {
 
 		usersTable.load();
 	};
+	
+	function resetSearchForm()
+	{
+		$("#FORM_search")[0].reset();
+	};
+	
+	function doReset()
+	{
+		resetSearchForm();
+		doSearch("1");
+	};	
 
 	function hideUserDetailsArea()
 	{
@@ -844,6 +858,8 @@ $(document).ready(function() {
 		doSearch();
 	});
 
+	$("#BTN_reset").on("click", doReset);	
+	
 	$(".BTN_save").on("click", doSave);
 
 	function doSave()
