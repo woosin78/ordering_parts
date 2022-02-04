@@ -117,7 +117,7 @@ public class PartsGeneralController extends HqGeneralController
 						{
 							try
 							{
-								map.put(key, new BigDecimal(map.get(key).toString()).multiply(new BigDecimal(value)));
+								map.put(key, new BigDecimal(CmStringUtils.defaultIfEmpty(map.get(key), "0")).multiply(new BigDecimal(value)));
 							}
 							catch (NumberFormatException e) {}
 						}

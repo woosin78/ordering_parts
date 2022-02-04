@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 
 <th:block layout:fragment="content">
 	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
@@ -443,9 +443,9 @@
 		Popup.open("/portal/scm/parts/domestic/info/parts_number_popup_list?pPartsNo=" + $(obj).siblings("input[name=materialNo]").val(), 700, 600);
 	};
 	
-	function setPartsNo(partsNo)
+	function setParsNo(partNo)
 	{
-		$(obj).siblings("input[name=materialNo]").val(partsNo);
+		$(obj).siblings("input[name=materialNo]").val(partNo);
 		//$(targetToChange).val(partsNo);
 	};
 	

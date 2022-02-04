@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
@@ -13,7 +13,7 @@
 			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}" th:if="${not #strings.isEmpty(shipmentNo)}"></button><!-- Back -->
 		</div>
 	</div>
-	<div class="condition-area">
+	<div class="condition-area table-fixed">
 	<form id="FORM_search" name="FORM_search">
 	
 	<table class="condition">

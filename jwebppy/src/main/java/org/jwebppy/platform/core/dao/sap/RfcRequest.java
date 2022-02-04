@@ -83,6 +83,8 @@ public class RfcRequest extends AbstractDaoRequest
 	{
 		if (ArrayUtils.isNotEmpty(fields))
 		{
+			isOnField = true;
+
 			for (Object[] field: fields)
 			{
 				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
@@ -279,6 +281,10 @@ public class RfcRequest extends AbstractDaoRequest
 				else if (value instanceof List)
 				{
 					addTable(to, (List)value);
+				}
+				else
+				{
+					addToRequest(to, value);
 				}
 			}
 		}

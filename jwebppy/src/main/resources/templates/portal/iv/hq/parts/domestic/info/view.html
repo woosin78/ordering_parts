@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 
 <th:block layout:fragment="content">
 
@@ -23,14 +23,14 @@
 </div>	
 <div class="condition-area">
 <form id="FORM_search" name="FORM_search" onsubmit="return false;">
-<table class="condition">
+<table class="condition table-fixed">
 	<tbody>
 		<tr>
 			<th style="width:15%" th:text="#{HQP_L_PART_NO}"></th><!-- Part No. -->
 			<td colspan="3">
 				<div class="input-area">
-					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" style="text-transform: uppercase;">
-					<button class="btn-popup2" type="button" onclick="showSearchPartsPopup();"></button>					
+					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" style="text-transform: uppercase;" autofocus />
+					<button class="btn-popup2" type="button" onclick="_showPartSearch($('#pPartNo').val());"></button>					
 				</div>
 			</td>
 		</tr>		
@@ -40,7 +40,7 @@
 </div>
 <div class="split-row"></div>
 <div class="condition-area">
-<table class="condition">
+<table class="condition table-fixed">
 	<tbody>
 		<tr>
 			<th style="width:15%" th:text="#{HQP_L_DESCRIPTION}"></th><!-- Description -->
@@ -67,7 +67,7 @@
 			<td>						
 				<div id="AREA_model" style="display:none;">			
 				<span id="M_MATNR" class="custom-ui"></span>
-				<button id="BTN_model" class="btn-popup2" type="button" onclick="showMoreInfoPopup(this);"></button>
+				<button class="btn-popup2" type="button" onclick="_showAppliedModelList($('#pPartNo').val());"></button>
 				</div>								
 			</td>			
 		</tr>			
@@ -100,7 +100,7 @@
 			<td>				
 				<div id="AREA_substitution" style="display:none;">			
 				<span id="REPNR" class="custom-ui"></span>
-				<button id="BTN_substitution" class="btn-popup2" type="button" onclick="showMoreInfoPopup(this);"></button>
+				<button class="btn-popup2" type="button" onclick="_showSubPartList($('#pPartNo').val());"></button>
 				</div>
 			</td>
 			<th th:text="#{HQP_L_STOCK_OF_SUPPLY_PART}"></th><!-- Stock of Supply Parts -->
@@ -126,14 +126,14 @@
 	        <tr>
 	            <th th:text="#{HQP_L_UOM}"></th><!-- UoM -->
 	            <th th:text="#{HQP_L_LIST_PRICE}"></th><!--List Price  -->                        
-	            <th th:text="#{HQP_L_STOCK_ORDER_LIST_PRICE}"></th><!--List Price (Stock Order)  -->
+	            <th th:text="#{HQP_L_STOCK_ORDER_NET_PRICE}"></th><!--Stock Order (Stock Order)  -->
 	        </tr>
 	     </thead>
 	     <tbody>
 			<tr style="height:33px;">
 				<td id="MEINS"></td>
 				<td id="LPRICE_NETPR"></td>
-				<td id="YUSO"></td>						
+				<td id="YUSO" class="hidden"></td>						
 			</tr>
 		</tbody>        
 	</table>	
@@ -141,6 +141,10 @@
 <script>
 $(window).load(function() {
 	ProgressBar.hide();
+});
+
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
 });
 
 function doSearch()
@@ -151,13 +155,14 @@ function doSearch()
 		return;
 	}	
 	
-	$("#pPartNo").val($("#pPartNo").val().toUpperCase());
-	
 	JpUtilsAjax.get({
 		url: "/portal/iv/hq/parts/domestic/info/view/data",		
 		data: {	"pPartNo": $("#pPartNo").val() },
 		beforeSend: function(jqXHR, settings)
 		{
+			$("#pPartNo").val($("#pPartNo").val().toUpperCase());
+			$("#YUSO").hide();
+			
 			ProgressBar.show();
 		},
 	 	success: function(data, textStatus, jqXHR) 
@@ -274,11 +279,12 @@ function doSearch()
 			
 			//UoM
 			$("#MEINS").html(JpUtilsString.trimToEmpty(items[0].MEINS));
-			$("#LPRICE_NETPR").html(JpUtilsString.trimToEmpty(items[0].LPRICE_NETPR) + " " + items[0].WAERS);
 			
-			$("#BTN_calc").on("click", function() {
-				$("#YUSO").html(JpUtilsString.trimToEmpty(items[0].LPRICE) + " " + items[0].WAERS);	
-			});			
+			//List Price
+			$("#LPRICE_NETPR").html(JpUtilsString.defaultString(items[0].LPRICE2, "0") + " " + items[0].WAERS);
+			
+			//List Price(Stock)
+			$("#YUSO").html(JpUtilsString.defaultString(items[0].LPRICE, "0") + " " + items[0].WAERS);
     	},
     	complete: function(jqXHR, textStatus)
     	{
@@ -286,6 +292,10 @@ function doSearch()
     	}
 	});				
 }
+
+$("#BTN_calc").on("click", function() {
+	$("#YUSO").toggle();
+});	
 
 //Search 버튼 클릭
 $("#BTN_search").on("click", function(){
@@ -304,83 +314,33 @@ $("#pPartNo").on("keydown", function(event) {
 	};
 });
 
-$("#pPartNo").autocomplete({	
-	source: function(request, response) {
-		JpUtilsAjax.get({
-			url: "/portal/iv/hq/parts/domestic/info/autocompete/data",
-			data: {	"pPartNo": $("#pPartNo").val() },			
-			success: function(data, textStatus, jqXHR)
-			{
-				let result = data.RESULT;
-				
-				response(
-						$.map(result.items, function(item) {
-							if (JpUtilsString.isNotEmpty(item.MATERIAL_TEXT))
-							{
-								return {
-									label: item.MATERIAL + " | " + item.MATERIAL_TEXT,
-									value: item.MATERIAL
-								}								
-							};
-						})
-				);
-			}
-		});
-	},
-	delay: 500,
-	minLength: 4
-});
-
-/*
- * code(parts)변경 popup
- */ 	
-function showSearchPartsPopup()
-{
-	let param = "pPartNo=" + $("#pPartNo").val();
-	Popup.open("/portal/iv/hq/parts/domestic/info/popup/part_search?" + param, 700, 600);
-};
-
 /**
  * 이미지 클릭시 대체품, Models applied by part, Controlling part 
  * 리스트 popup띄움
  */	
 function showMoreInfoPopup(obj)
 {
-	let id = obj.id;
-	let width = 900;
-	let height = 520;
-	let url;
-	let param = "?pPartNo=" + $("#pPartNo").val();
-	
 	if ($.trim($("#pPartNo").val()).length > 0)
 	{
-		if ("BTN_substitution" == id)
-		{
-			url = "/portal/iv/hq/parts/domestic/info/sub_item_popup_list";	
-		}
-		else if ("BTN_model" == id)
-		{
-			url = "/portal/iv/hq/parts/domestic/info/applied_model_popup_list";
-			width = 800;			
-		}
-		else if ("BTN_notServiceReason" == id)
-		{
-			url = "/portal/iv/hq/parts/domestic/info/alternative_popup_list";
-			width = 700;
-		}
-		
-		Popup.open(url + param, width, height);
+		Popup.open("/portal/iv/hq/parts/domestic/info/popup/alternative_list?pPartNo=" + $("#pPartNo").val(), 700, 500);
 	}
 	else
 	{
-		  //display error message
-		  $("#pPartNo").focus();	
-	}	
+		$("#pPartNo").focus();	
+	};
 }
 
-function setPartsNo(partsNo)
+//showPartSearch() callback 함수
+function _callbackPartSearch(partNo)
 {
-	$("#pPartNo").val(partsNo);
+	$("#pPartNo").val(partNo);
+	doSearch();
+};
+
+//_showSubPartList() callback 함수
+function _callbackSubPartList(partNo)
+{
+	$("#pPartNo").val(partNo);
 	doSearch();
 };
 </script>

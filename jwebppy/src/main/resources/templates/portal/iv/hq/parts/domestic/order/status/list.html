@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 <th:block layout:fragment="content">
 	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
 
@@ -20,7 +20,7 @@
 	<input type="hidden" id="poNo" name="poNo"/>
 	<input type="hidden" id="orderDate" name="orderDate"/>
 	<input type="hidden" id="fgDownload" name="fgDownload"/>
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQP_L_ORDER_NO}"></th>
@@ -42,7 +42,7 @@
 					</div>
 				</td>
 				<th th:text="#{HQP_L_ORDER_DATE}"></th>
-				<td colspan="3">
+				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
 						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">

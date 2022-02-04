@@ -17,38 +17,22 @@ public class PartInfoService
 	@Autowired
 	private SimpleRfcTemplate simpleRfcTemplate;
 
-	public RfcResponse getItemSubList(ErpDataMap paramMap)
+	public RfcResponse getPartInfo(PartsErpDataMap paramMap)
 	{
-		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ITEM_SUB_LIST");
+		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_PARTS_STANDARD");
 
 		rfcRequest
-			.field().with(paramMap)
+			.field()
 				.add(new Object[][] {
 					{"I_BGTYP", "P"},//상수
 					{"I_LANGU", paramMap.getLangForSap()},
 					{"I_USERID", paramMap.getUsername()},
-					{"I_MATNR", "partNo"}
-				});
-
-		return simpleRfcTemplate.response(rfcRequest);
-	}
-
-	public RfcResponse getPartsStandardM(PartsErpDataMap paramMap)
-	{
-		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_PARTS_STANDARD");
-
-		rfcRequest.with(paramMap)
-			.field(new Object[][] {
-				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.getLangForSap()},
-				{"I_USERID", paramMap.getUsername()},
-				{"I_KVGR5", paramMap.getCustomerGrp5()},
-				{"I_REQTY", "reqQty"}
+					{"I_KVGR5", paramMap.getCustomerGrp5()},
+					{"I_REQTY", paramMap.getString("reqQty")}
 			})
 			.and()
 			.table("T_MATNR")
-				.add("MATNR", "partNo");
-
+				.add("MATNR", paramMap.getString("partNo").toUpperCase());
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -57,14 +41,14 @@ public class PartInfoService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_MARA");
 
-		rfcRequest.with(paramMap)
+		rfcRequest
 			.field(new Object[][] {
-				{"I_BGTYP", "P"},//상수
-				{"ILANGU", paramMap.getLangForSap()},
-				{"I_USERID", paramMap.getUsername()},
-				{"MAKTX", "partDesc"},
-				{"MATNR", "partNo"}
-			});
+					{"I_BGTYP", "P"},//상수
+					{"ILANGU", paramMap.getLangForSap()},
+					{"I_USERID", paramMap.getUsername()},
+					{"MATNR", paramMap.getString("partNo").toUpperCase()},
+					{"MAKTX", paramMap.getString("partDesc")}
+				});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -73,13 +57,14 @@ public class PartInfoService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ITEM_SUB_LIST");
 
-		rfcRequest.with(paramMap)
-			.field(new Object[][] {
-				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.getLangForSap()},
-				{"I_USERID", paramMap.getUsername()},
-				{"I_MATNR", "partNo"}
-			});
+		rfcRequest
+			.field()
+				.add(new Object[][] {
+					{"I_BGTYP", "P"},//상수
+					{"I_LANGU", paramMap.getLangForSap()},
+					{"I_USERID", paramMap.getUsername()},
+					{"I_MATNR", paramMap.getString("partNo").toUpperCase()}
+				});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -88,15 +73,18 @@ public class PartInfoService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_APP_MODEL_LIST");
 
-		rfcRequest.with(paramMap)
-			.field(new Object[][] {
-				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.getLangForSap()},
-				{"I_USERID", paramMap.getUsername()},
-				{"I_KVGR5", "productType"},
-				{"I_MATNR", "partNo"},
-				{"I_MVGR3", "productType"}
-			});
+		rfcRequest
+			.field().with(paramMap)
+				.add(new Object[][] {
+					{"I_BGTYP", "P"},//상수
+					{"I_LANGU", paramMap.getLangForSap()},
+					{"I_USERID", paramMap.getUsername()},
+					{"I_MATNR", paramMap.getString("partNo").toUpperCase()}
+				})
+				.addByKey(new Object[][] {
+					{"I_KVGR5", "productType"},
+					{"I_MVGR3", "productType"}
+				});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -105,19 +93,19 @@ public class PartInfoService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_MULTI_SUBST");
 
-		rfcRequest.with(paramMap)
+		rfcRequest
 			.field(new Object[][] {
 				{"I_BGTYP", "P"},//상수
 				{"I_LANGU", paramMap.getLangForSap()},
 				{"I_USERID", paramMap.getUsername()},
-				{"I_MATNR", "partNo"}
+				{"I_MATNR", paramMap.getString("partNo").toUpperCase()}
 			});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
 	@Cacheable(value = CacheConfig.PARTS_INFO_AUTOCOMPLETE, key = "#paramMap", unless="#result == null")
-	public DataList getSimplePartsInfo(ErpDataMap paramMap)
+	public DataList getSimplePartInfo(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY2");
 

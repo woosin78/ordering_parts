@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index}">
+	layout:decorate="~{portal/layout/iv/hq/parts/popup/index}">
 
 <th:block layout:fragment="content">
 <div class="block-header">
@@ -23,7 +23,7 @@
 			<td>
 				<div class="input-area">
 					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" th:value="${pPartNo}" style="text-transform: uppercase;">
-					<button class="btn-popup2" type="button" onclick="showSearchPartsPopup();"></button>					
+					<button class="btn-popup2" type="button" onclick="_showPartSearch($('#pPartNo').val());"></button>					
 				</div>				
 			</td>
 		</tr>
@@ -45,43 +45,28 @@
 </div>
 
 <script>
-let $tableObj;
-let totalRows = 0;
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});
 
+let $tableObj;
 $(function(){	
 	$tableObj = $("#TBL_grid").DataTable({
 		select: true,   			
 		ordering: true, 
 		scrollY: 100,
 		columns : [					
-			{data: "SEQ", 		title: "[[#{HQP_L_SEQ}]]"	},	//Seq.
-			{data: "MAKTX", 	title: "[[#{HQP_L_MODEL}]]"	},	//Model
-			{data: "MATNR", 	title: "MATNR"	},	
-			{data: "MDESC", 	title: "MDESC"	},	
-			{data: "MVGR3", 	title: "MVGR3"	},	
-			{data: "SPART", 	title: "SPART"	}			
-		],
-		columnDefs: [
-			{ 
-				"targets": [ 2,3,4,5 ],
-                "visible": false,				
-			}			
+			{data: "MAKTX", title: "[[#{HQP_L_MODEL}]]"	}	//Model
 		],
 		ajax: {
-			url: "/portal/scm/parts/domestic/info/applied_model_popup_list/data",
+			url: "/portal/iv/hq/parts/domestic/info/applied_model_list/data",
 			data: function(p)
 			{				
 				p.pPartNo = $("#pPartNo").val();
-				//p.pProductType = $("#pProductType").val();
 			},
 			dataSrc: function(response) 
 			{				
 				let data = response.RESULT;
-				
-				for (let i=0, length=data.length; i<length; i++)
-				{
-					data[i].SEQ = i+1;
-				}
 				
 				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
 				
@@ -95,53 +80,33 @@ $(function(){
 	
 	// Datatable grid 초기 설정 셋업
 	initGridTable($tableObj);		
-	
-	// Search 버튼 클릭
-	$("#BTN_search").on("click", function(){
+});
+
+$("#BTN_search").on("click", function(){
+	doSearch();
+});
+
+$("#pPartNo").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
 		doSearch();
-	});
-	
-	//Input text 엔터 키 입력
-	$("#pPartNo").on("keydown", function(event) {
-		
-		$(this).val($(this).val().toUpperCase());
-		
-		if (event.keyCode == 13)
-		{
-			doSearch();
-		};
-	});
-	
-	$("#BTN_download").on("click", function(){		
-		let gridFileDownload = new GridFileDownload($tableObj);
-		gridFileDownload.fileName = "models_applied_by_parts";
-		gridFileDownload.excelDownload();				
-	});		
-});	
+	};
+});
 
 function doSearch()
 {
-	if ($.trim($("#pPartNo").val()) == "")
-	{
-		alert("Please input the Part No.");
-		return;
-	}
-	
 	$tableObj.ajax.reload();
-}
-
-/*
- * code(parts)변경 popup	 
- */ 	
- function showSearchPartsPopup()
- {
- 	let param = "pPartNo=" + $("#pPartNo").val();
- 	Popup.open("/portal/scm/parts/domestic/info/parts_number_popup_list?" + param, 700, 600);		
- }
-
-function setPartsNo(partsNo)
-{
-	$("#pPartNo").val(partsNo);
 };
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Applied_Models_by_Part");
+});
+
+//showPartSearch() callback 함수
+ function _callbackPartSearch(partNo)
+ {
+ 	$("#pPartNo").val(partNo);
+ 	doSearch();
+ };
 </script>	
 </th:block>

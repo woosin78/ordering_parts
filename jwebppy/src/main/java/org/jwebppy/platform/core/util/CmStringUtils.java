@@ -129,4 +129,14 @@ public class CmStringUtils extends StringUtils
 
 		return null;
 	}
+
+	public static String upperCase(Object str)
+	{
+		return upperCase((String)str);
+	}
+
+	public static String lowerCase(Object str)
+	{
+		return lowerCase((String)str);
+	}
 }

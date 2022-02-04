@@ -740,6 +740,12 @@ img.required {
 .text-alert {
 	color: red;
 }
+.hidden {
+	display: none;
+}
+.visible {
+	display: block;
+}
 
 /* 클릭시 border 애니메이션
 @-moz-keyframes borderscale {
