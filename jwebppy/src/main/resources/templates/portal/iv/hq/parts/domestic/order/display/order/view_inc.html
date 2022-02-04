@@ -95,7 +95,6 @@
 	</form>
 	
 <script>
-
 //팝업으로 열릴경우 Back 버튼 제거
 if (opener)
 {
@@ -175,19 +174,17 @@ $(function(){
 	    	initGridTable($tableObj);	
 	    }
 	});
+});
 
-	$("#BTN_pdfDownload").on("click", function() {
-		document.location.href = "/portal/iv/hq/parts/domestic/order/display/order/download/confirm_sheet?orderNo=[[${orderNo}]]&mode=Y006";
-	});
+$("#BTN_pdfDownload").on("click", function() {
+	document.location.href = "/portal/iv/hq/parts/domestic/order/display/order/download/confirm_sheet?orderNo=[[${orderNo}]]&mode=Y006";
+});
 
-	$("#BTN_back").on("click", function() {
-		$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/display/order/list").submit();
-	});
+$("#BTN_back").on("click", function() {
+	$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/display/order/list").submit();
+});
 
-	$("#BTN_download").on("click", function() {
-		let gridFileDownload = new GridFileDownload($tableObj);
-		gridFileDownload.fileName = "Order_List";
-		gridFileDownload.excelDownload();
-	});
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Order_List");
 });
 </script>	

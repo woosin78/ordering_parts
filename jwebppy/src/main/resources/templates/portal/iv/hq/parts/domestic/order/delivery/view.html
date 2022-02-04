@@ -79,90 +79,91 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
-	<script type="application/javascript">
-	$(function(){
-		Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
-		Calendar.makeBeetweenCalendar($("#pFromOnboardDate"), "[[${pFromOnboardDate}]]", $("#pToOnboardDate"), "[[${pToOnboardDate}]]");
-			
-		$tableObj = $("#TBL_grid").DataTable({
-			select: true,   			// row 선택 기능 켬
-			ordering: true, 			// 정렬 기능 켬
-			scrollY: 100,
-			//fixedColumns: { leftColumns: 8 },
-			columns : [
-				{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]"},//Shipment No.				
-				{data: "EXIDV", title: "[[#{HQP_L_HU_NO}]]"},//H.U. No.
-				{data: "MATNR_SO", title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Order Parts No.
-				{data: "MATNR_SH", title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},//Supply Parts No.
-				{data: "MAKTX", title: "[[#{HQP_L_DESCRIPTION}]]"},//Description
-				{data: "LFIMG", title: "[[#{HQP_L_QTY}]]", className: "right"},//Qty
-				{data: "NETPR", title: "[[#{HQP_L_UNIT_PRICE}]]", className: "right"},//Unit Price
-				{data: "NETWR", title: "[[#{HQP_L_TOTAL_AMOUNT}]]", className: "right"},//Amount
-				{data: "HERKL", title: "[[#{HQP_L_ORIGIN}]]"},//Origin
-				{data: "VBELN2", title: "[[#{HQP_L_SALES_DOC_NO}]]"},//Sales Doc. No.
-				{data: "ZFOBDT", title: "[[#{HQP_L_ONBOARD_DATE}]]"},//Onboard Date
-				{data: "KWERT", title: "[[#{HQP_L_FREIGHT_FEE}]]", className: "right"},//Freight Fee
-				{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"}//P.O. No.
-			],
-			ajax: {
-				url: "/portal/iv/hq/parts/domestic/order/delivery/view/data",
-				data: function(p)
-				{
-					p.pFromDate = $("#pFromDate").val();
-					p.pToDate = $("#pToDate").val();
-					p.pFromOnboardDate = $("#pFromOnboardDate").val();
-					p.pToOnboardDate = $("#pToOnboardDate").val();
-					p.pShipmentNo = $("#pShipmentNo").val();
-					p.pOrderNo = $("#pOrderNo").val();
-					p.pPartNo = $("#pPartNo").val();
-					p.pPoNo = $("#pPoNo").val();
-				},
-				dataSrc: function(response) 
-				{				
-					let data = response.RESULT;
-					
-					$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
-					
-					return data;
-				}			
-			},
-			initComplete:function(settings, json) 
-			{			
-				ProgressBar.hide();
-			}
-		});
+<script>
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});	
+
+$(function(){
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	Calendar.makeBeetweenCalendar($("#pFromOnboardDate"), "[[${pFromOnboardDate}]]", $("#pToOnboardDate"), "[[${pToOnboardDate}]]");
 		
-		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);
-		
-		// Search 버튼 클릭
-		$("#BTN_search").on("click", function(){		
-			doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
-		});
-		
-		//Input text 엔터 키 입력
-		$("#FORM_search input:text").on("keydown", function(event) {
-			if (event.keyCode == 13)
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: { leftColumns: 8 },
+		columns : [
+			{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]"},//Shipment No.				
+			{data: "EXIDV", title: "[[#{HQP_L_HU_NO}]]"},//H.U. No.
+			{data: "MATNR_SO", title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Order Parts No.
+			{data: "MATNR_SH", title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},//Supply Parts No.
+			{data: "MAKTX", title: "[[#{HQP_L_DESCRIPTION}]]"},//Description
+			{data: "LFIMG", title: "[[#{HQP_L_QTY}]]", className: "right"},//Qty
+			{data: "NETPR", title: "[[#{HQP_L_UNIT_PRICE}]]", className: "right"},//Unit Price
+			{data: "NETWR", title: "[[#{HQP_L_TOTAL_AMOUNT}]]", className: "right"},//Amount
+			{data: "HERKL", title: "[[#{HQP_L_ORIGIN}]]"},//Origin
+			{data: "VBELN2", title: "[[#{HQP_L_SALES_DOC_NO}]]"},//Sales Doc. No.
+			{data: "ZFOBDT", title: "[[#{HQP_L_ONBOARD_DATE}]]"},//Onboard Date
+			{data: "KWERT", title: "[[#{HQP_L_FREIGHT_FEE}]]", className: "right"},//Freight Fee
+			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"}//P.O. No.
+		],
+		ajax: {
+			url: "/portal/iv/hq/parts/domestic/order/delivery/view/data",
+			data: function(p)
 			{
-				doSearch();
-			};
-		});
-		
-		$("#BTN_back").on("click", function() {
-			$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/delivery/list").submit();
-		});		
-			
-		$("#BTN_download").on("click", function() {
-			let gridFileDownload = new GridFileDownload($tableObj);
-			gridFileDownload.fileName = "Delivery_Status_Detail";
-			gridFileDownload.excelDownload();
-		});
-		
-		function doSearch()
-		{
-			$tableObj.ajax.reload();
-		}	
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+				p.pFromOnboardDate = $("#pFromOnboardDate").val();
+				p.pToOnboardDate = $("#pToOnboardDate").val();
+				p.pShipmentNo = $("#pShipmentNo").val();
+				p.pOrderNo = $("#pOrderNo").val();
+				p.pPartNo = $("#pPartNo").val();
+				p.pPoNo = $("#pPoNo").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				
+				return data;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
 	});
 	
-	</script>	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+// Search 버튼 클릭
+$("#BTN_search").on("click", function(){		
+	doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+});
+
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_back").on("click", function() {
+	$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/delivery/list").submit();
+});		
+	
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Delivery_Status_Detail");
+});
+</script>	
 </th:block>

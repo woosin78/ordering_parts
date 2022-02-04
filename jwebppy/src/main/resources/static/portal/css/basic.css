@@ -888,3 +888,10 @@ input.custom-ui[type="radio"]:checked + label:before {
 .dropzone-click-zone {
 	cursor: pointer;
 }
+
+/*--- Autocomplete ------------------*/
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+    background: #B2E4D7 !important;
+    font-weight: bold !important;
+    color: #000 !important;
+} 

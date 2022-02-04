@@ -84,8 +84,8 @@ $(function(){
 					return '<input type="radio" name="KEY" value="' + row.MATNR + '" class="custom-ui"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},
-			{name: "MATNR", data: "MATNR", title: "[[#{HQP_L_PART_NO}]]"},		//Part No. 
-			{name: "MAKTX", data: "MAKTX", title: "[[#{HQP_L_DESCRIPTION}]]"}	//Description	
+			{name: "MATNR", data: "MATNR", title: "[[#{HQP_L_PART_NO}]]"},//Part No. 
+			{name: "MAKTX", data: "MAKTX", title: "[[#{HQP_L_DESCRIPTION}]]"}//Description	
 		],
 		ajax: {
 			url: "/portal/iv/hq/parts/domestic/info/part_search/data",
@@ -141,6 +141,16 @@ $(function(){
 
 $("#BTN_search").on("click", function(){		
 	doSearch(); 
+});
+
+$("#pPartNo").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		if ($.trim($("#pPartNo").val()) != "")
+		{
+			doSearch();	
+		};
+	};
 });
 
 function doSearch()

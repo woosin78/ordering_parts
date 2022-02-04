@@ -79,96 +79,95 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
-	<script type="application/javascript">
-	$(function(){
-		Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
-		Calendar.makeBeetweenCalendar($("#pFromOnboardDate"), "[[${pFromOnboardDate}]]", $("#pToOnboardDate"), "[[${pToOnboardDate}]]");
-			
-		$tableObj = $("#TBL_grid").DataTable({
-			select: {
-				selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
-		    },
-			ordering: true,// 정렬 기능 켬
-			scrollY: 100,
-			columns : [
-				{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]", className: "link"},				
-				{data: "COUNT1", title: "[[#{HQP_L_HU_ITEMS}]]"},
-				{data: "COUNT2", title: "[[#{HQP_L_ITEM_ROWS}]]", className: "right"},
-				{data: "NETWR", title: "[[#{HQP_L_TOTAL_AMOUNT}]]", className: "right"}, 
-				{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},
-				{data: "BRGEW", title: "[[#{HQP_L_GROSS_WEIGHT}]]", className: "right"},
-				{data: "GEWEI_MAX", title: "[[#{HQP_L_UOM}]]"},
-				{data: "ZFOBDT", title: "[[#{HQP_L_ONBOARD_DATE}]]"},
-				{data: "BEZEI20", title: "[[#{HQP_L_DESTINATION}]]"},
-				{data: "BEZEI", title: "[[#{HQP_L_SHIPPING_TYPE}]]"},
-				{data: "NAME2", title: "[[#{HQP_L_FORWARDER}]]"},
-				{data: "ZFCIVNO", title: "[[#{HQP_L_COMMERCIAL_INVOICE_NO}]]"}
-			],
-			ajax: {
-				url: "/portal/iv/hq/parts/domestic/order/delivery/list/data",
-				data: function(p)
-				{
-					p.pFromDate = $("#pFromDate").val();
-					p.pToDate = $("#pToDate").val();
-					p.pFromOnboardDate = $("#pFromOnboardDate").val();
-					p.pToOnboardDate = $("#pToOnboardDate").val();
-					p.pShipmentNo = $("#pShipmentNo").val();
-					p.pOrderNo = $("#pOrderNo").val();
-					p.pPartNo = $("#pPartNo").val();
-					p.pPoNo = $("#pPoNo").val();
-				},
-				dataSrc: function(response) 
-				{				
-					let data = response.RESULT;
-					
-					$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
-					
-					return data;
-				}			
-			},
-			initComplete:function(settings, json) 
-			{			
-				ProgressBar.hide();
-			}
-		});
+<script>
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});
+
+let $tableObj;
+$(function(){
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	Calendar.makeBeetweenCalendar($("#pFromOnboardDate"), "[[${pFromOnboardDate}]]", $("#pToOnboardDate"), "[[${pToOnboardDate}]]");
 		
-		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);
-		
-		// Search 버튼 클릭
-		$("#BTN_search").on("click", function(){		
-			doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
-		});
-		
-		//Input text 엔터 키 입력
-		$("#FORM_search input:text").on("keydown", function(event) {
-			if (event.keyCode == 13)
+	$tableObj = $("#TBL_grid").DataTable({
+		select: {
+			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true,// 정렬 기능 켬
+		scrollY: 100,
+		columns : [
+			{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]", className: "link"},				
+			{data: "COUNT1", title: "[[#{HQP_L_HU_ITEMS}]]"},
+			{data: "COUNT2", title: "[[#{HQP_L_ITEM_ROWS}]]", className: "right"},
+			{data: "NETWR", title: "[[#{HQP_L_TOTAL_AMOUNT}]]", className: "right"}, 
+			{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},
+			{data: "BRGEW", title: "[[#{HQP_L_GROSS_WEIGHT}]]", className: "right"},
+			{data: "GEWEI_MAX", title: "[[#{HQP_L_UOM}]]"},
+			{data: "ZFOBDT", title: "[[#{HQP_L_ONBOARD_DATE}]]"},
+			{data: "BEZEI20", title: "[[#{HQP_L_DESTINATION}]]"},
+			{data: "BEZEI", title: "[[#{HQP_L_SHIPPING_TYPE}]]"},
+			{data: "NAME2", title: "[[#{HQP_L_FORWARDER}]]"},
+			{data: "ZFCIVNO", title: "[[#{HQP_L_COMMERCIAL_INVOICE_NO}]]"}
+		],
+		ajax: {
+			url: "/portal/iv/hq/parts/domestic/order/delivery/list/data",
+			data: function(p)
 			{
-				doSearch();
-			};
-		});	
-			
-		$("#BTN_download").on("click", function() {
-			let gridFileDownload = new GridFileDownload($tableObj);
-			gridFileDownload.fileName = "delivery_status_list";
-			gridFileDownload.excelDownload();
-		});
-		
-		function doSearch()
-		{
-			$tableObj.ajax.reload();
-		};
-		
-		$("#TBL_grid tbody").on("click", "td:first-child", function (e){				
-		    let tblGrid = $("#TBL_grid").DataTable();	    
-			
-			let rowData = tblGrid.row(this).data();
-			
-			//$("#pShipmentNo2").val(rowData.TKNUM);			
-			$("#shipmentNo").val(rowData.TKNUM);
-			$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/delivery/view").submit();
-		});		
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+				p.pFromOnboardDate = $("#pFromOnboardDate").val();
+				p.pToOnboardDate = $("#pToOnboardDate").val();
+				p.pShipmentNo = $("#pShipmentNo").val();
+				p.pOrderNo = $("#pOrderNo").val();
+				p.pPartNo = $("#pPartNo").val();
+				p.pPoNo = $("#pPoNo").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				
+				return data;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
 	});
 	
-	</script>	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+	
+	$("#TBL_grid tbody").on("click", "td:first-child", function (e){				
+		let rowData = $tableObj.row(this).data();
+		
+		//$("#pShipmentNo2").val(rowData.TKNUM);			
+		$("#shipmentNo").val(rowData.TKNUM);
+		$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/delivery/view").submit();
+	});
+});
+// Search 버튼 클릭
+$("#BTN_search").on("click", function(){		
+	doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+});
+
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});	
+	
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Delivery_Status_List");
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+</script>	
 </th:block>

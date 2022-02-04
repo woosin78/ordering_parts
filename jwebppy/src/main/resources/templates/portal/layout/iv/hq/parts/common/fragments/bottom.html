@@ -66,6 +66,12 @@ function _showAppliedModelList(partNo)
 	Popup.open("/portal/iv/hq/parts/domestic/info/popup/applied_model_list?pPartNo=" + partNo, 600, 500);
 };
 
+//서비스불가사유 - MUL
+function _showNotServiableReason(partNo)
+{
+	Popup.open("/portal/iv/hq/parts/domestic/info/popup/alternative_list?pPartNo=" + partNo, 800, 500);
+};
+
 //Download Grid
 function _gridDownload(grid, fileName)
 {

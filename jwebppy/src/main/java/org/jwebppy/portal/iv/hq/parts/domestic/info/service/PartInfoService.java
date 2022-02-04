@@ -27,7 +27,7 @@ public class PartInfoService
 					{"I_BGTYP", "P"},//상수
 					{"I_LANGU", paramMap.getLangForSap()},
 					{"I_USERID", paramMap.getUsername()},
-					{"I_KVGR5", paramMap.getCustomerGrp5()},
+					{"I_KVGR5", "20"},
 					{"I_REQTY", paramMap.getString("reqQty")}
 			})
 			.and()

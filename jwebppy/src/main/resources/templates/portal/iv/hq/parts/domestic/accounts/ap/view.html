@@ -64,93 +64,93 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
-	<script type="application/javascript">
-	$(function(){
-		Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
-			
-		$tableObj = $("#TBL_grid").DataTable({
-			select: true,   			// row 선택 기능 켬
-			ordering: true, 			// 정렬 기능 켬
-			scrollY: 100,
-			//fixedColumns: { leftColumns: 8 },
-			columns : [
-				{data: "TKNUM2", title: "[[#{HQP_L_SHIPMENT_NO}]]"},				
-				{data: "EXIDV", title: "[[#{HQP_L_HU_NO}]]"},
-				{data: "VEPOS", title: "[[#{HQP_L_DIV_SEQ}]]"},
-				{data: "VBELN", title: "[[#{HQP_L_BILLING_NO}]]"},
-				{data: "POSNR", title: "[[#{HQP_L_BILLING_LINE_ITEM}]]"},				
-				{data: "FKDAT", title: "[[#{HQP_L_BILLING_DATE}]]"},
-				{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},
-				{data: "MATNR_OP", title: "[[#{HQP_L_ORDER_PART_NO}]]"},
-				{data: "MATNR_SP", title: "[[#{HQP_L_SHIPPED_PART_NO}]]"},
-				{data: "MAKTX", title: "[[#{HQP_L_PART_DESC}]]"},
-				{data: "AUART_T", title: "[[#{HQP_L_ORDER_TYPE}]]"},
-				{data: "VBELN_VA", title: "[[#{HQP_L_ORDER_NO}]]"},
-				{data: "POSNR_VA", title: "[[#{HQP_L_LINE_ITEM}]]"},				
-				{data: "FKIMG", title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},
-				{data: "VRKME", title: "[[#{HQP_L_UOM}]]"},
-				{data: "NETPR", title: "[[#{HQP_L_AP_UNIT_PRICE}]]", className: "right"},
-				{data: "NETWR", title: "[[#{HQP_L_AP_AMT}]]", className: "right"},
-				{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},
-				{data: "HERKL", title: "[[#{HQP_L_ORIGIN}]]"},
-				{data: "VBELN_VL", title: "[[#{HQP_L_AP_DELIVERY_NO}]]"},
-				{data: "POSNR_VL", title: "[[#{HQP_L_DIV_SEQ}]]"},
-				{data: "MWSBP", title: "[[#{HQP_L_TAX_AMT}]]", className: "right"},
-				{data: "VENUM", title: "[[#{HQP_L_INTERAL_HU_NO}]]"}
-			],
-			ajax: {
-				url: "/portal/iv/hq/parts/domestic/accounts/ap/view/data",
-				data: function(p)
-				{
-					p.pShipmentNo = $("#pShipmentNo").val();
-					p.pPartNo = $("#pPartNo").val();
-					p.pFromOnboardDate = $("#pFromInvoiceNo").val();
-					p.pToOnboardDate = $("#pToInvoiceNo").val();
-					p.pFromDate = $("#pFromDate").val();
-					p.pToDate = $("#pToDate").val();
-				},
-				dataSrc: function(response) 
-				{				
-					let data = response.RESULT;
-					
-					$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
-					
-					return data;
-				}			
-			},
-			initComplete:function(settings, json) 
-			{			
-				ProgressBar.hide();
-			}
-		});
+<script>
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});	
+
+let $tableObj;
+$(function(){
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 		
-		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);
-		
-		// Search 버튼 클릭
-		$("#BTN_search").on("click", function(){		
-			doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
-		});
-		
-		//Input text 엔터 키 입력
-		$("#FORM_search input:text").on("keydown", function(event) {
-			if (event.keyCode == 13)
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: { leftColumns: 8 },
+		columns : [
+			{data: "TKNUM2", title: "[[#{HQP_L_SHIPMENT_NO}]]"},				
+			{data: "EXIDV", title: "[[#{HQP_L_HU_NO}]]"},
+			{data: "VEPOS", title: "[[#{HQP_L_DIV_SEQ}]]"},
+			{data: "VBELN", title: "[[#{HQP_L_BILLING_NO}]]"},
+			{data: "POSNR", title: "[[#{HQP_L_BILLING_LINE_ITEM}]]"},				
+			{data: "FKDAT", title: "[[#{HQP_L_BILLING_DATE}]]"},
+			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},
+			{data: "MATNR_OP", title: "[[#{HQP_L_ORDER_PART_NO}]]"},
+			{data: "MATNR_SP", title: "[[#{HQP_L_SHIPPED_PART_NO}]]"},
+			{data: "MAKTX", title: "[[#{HQP_L_PART_DESC}]]"},
+			{data: "AUART_T", title: "[[#{HQP_L_ORDER_TYPE}]]"},
+			{data: "VBELN_VA", title: "[[#{HQP_L_ORDER_NO}]]"},
+			{data: "POSNR_VA", title: "[[#{HQP_L_LINE_ITEM}]]"},				
+			{data: "FKIMG", title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},
+			{data: "VRKME", title: "[[#{HQP_L_UOM}]]"},
+			{data: "NETPR", title: "[[#{HQP_L_AP_UNIT_PRICE}]]", className: "right"},
+			{data: "NETWR", title: "[[#{HQP_L_AP_AMT}]]", className: "right"},
+			{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},
+			{data: "HERKL", title: "[[#{HQP_L_ORIGIN}]]"},
+			{data: "VBELN_VL", title: "[[#{HQP_L_AP_DELIVERY_NO}]]"},
+			{data: "POSNR_VL", title: "[[#{HQP_L_DIV_SEQ}]]"},
+			{data: "MWSBP", title: "[[#{HQP_L_TAX_AMT}]]", className: "right"},
+			{data: "VENUM", title: "[[#{HQP_L_INTERAL_HU_NO}]]"}
+		],
+		ajax: {
+			url: "/portal/iv/hq/parts/domestic/accounts/ap/view/data",
+			data: function(p)
 			{
-				doSearch();
-			};
-		});
-		
-		$("#BTN_download").on("click", function() {
-			let gridFileDownload = new GridFileDownload($tableObj);
-			gridFileDownload.fileName = "AP_List_Detail";
-			gridFileDownload.excelDownload();
-		});
-		
-		function doSearch()
-		{
-			$tableObj.ajax.reload();
-		}	
+				p.pShipmentNo = $("#pShipmentNo").val();
+				p.pPartNo = $("#pPartNo").val();
+				p.pFromOnboardDate = $("#pFromInvoiceNo").val();
+				p.pToOnboardDate = $("#pToInvoiceNo").val();
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				
+				return data;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
 	});
 	
-	</script>	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+$("#BTN_search").on("click", function(){		
+	doSearch(); 
+});
+
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "AP_List_Detail");
+});
+</script>	
 </th:block>

@@ -67,100 +67,96 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
-	<script type="application/javascript">
-	$(function(){
-		
-		Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
-		
-		$tableObj = $("#TBL_grid").DataTable({
-			select: true,   			// row 선택 기능 켬
-			ordering: true, 			// 정렬 기능 켬
-			scrollY: 100,
-			//fixedColumns: { leftColumns: 8 },
-			columns : [
-				{data: "SALEDT", title: "[[#{HQP_L_AP_SCHEDULE_006}]]"},//매입월		
-				{data: "BUDAT", title: "[[#{HQP_L_AP_SCHEDULE_007}]]"},//입금일자
-				{data: "GUBUN", title: "[[#{HQP_L_AP_SCHEDULE_008}]]"},//구분
-				{data: "TOTAL", title: "[[#{HQP_L_AP_SCHEDULE_009}]]", className: "right"}//금액
-			],
-			ajax: {
-				url: "/portal/iv/hq/parts/domestic/accounts/ap/schedule/list/data",
-				data: function(p)
+<script>
+$(function(){
+	
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: { leftColumns: 8 },
+		columns : [
+			{data: "SALEDT", title: "[[#{HQP_L_AP_SCHEDULE_006}]]"},//매입월		
+			{data: "BUDAT", title: "[[#{HQP_L_AP_SCHEDULE_007}]]"},//입금일자
+			{data: "GUBUN", title: "[[#{HQP_L_AP_SCHEDULE_008}]]"},//구분
+			{data: "TOTAL", title: "[[#{HQP_L_AP_SCHEDULE_009}]]", className: "right"}//금액
+		],
+		ajax: {
+			url: "/portal/iv/hq/parts/domestic/accounts/ap/schedule/list/data",
+			data: function(p)
+			{
+				p.pFromDate 	= $("#pFromDate").val();
+				p.pToDate		= $("#pToDate").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				let list = data.list;
+				let length = list.length;
+				let summary = data.summary;
+				
+				$("#SUMMARY_1").text(summary.SUMMARY_1);
+				$("#SUMMARY_2").text(summary.SUMMARY_2);
+				$("#SUMMARY_3").text(summary.SUMMARY_3);
+				$("#SUMMARY_4").text(summary.SUMMARY_4);
+				$("#SUMMARY_5").text(summary.SUMMARY_5);
+				
+				for (let i=0; i<length; i++)
 				{
-					p.pFromDate 	= $("#pFromDate").val();
-					p.pToDate		= $("#pToDate").val();
-				},
-				dataSrc: function(response) 
-				{				
-					let data = response.RESULT;
+					let blart = list[i].BLART;
+					let gubun = "";
 					
-					let list = data.list;
-					let length = list.length;
-					let summary = data.summary;
+					list[i].SALEDT = list[i].SALEDT.substr(0, 7);
 					
-					$("#SUMMARY_1").text(summary.SUMMARY_1);
-					$("#SUMMARY_2").text(summary.SUMMARY_2);
-					$("#SUMMARY_3").text(summary.SUMMARY_3);
-					$("#SUMMARY_4").text(summary.SUMMARY_4);
-					$("#SUMMARY_5").text(summary.SUMMARY_5);
-					
-					for (let i=0; i<length; i++)
+					if (JpUtilsString.equals(blart, "DA") || JpUtilsString.equals(blart, "DZ"))//정상
 					{
-						let blart = list[i].BLART;
-						let gubun = "";
-						
-						list[i].SALEDT = list[i].SALEDT.substr(0, 7);
-						
-						if (JpUtilsString.equals(blart, "DA") || JpUtilsString.equals(blart, "DZ"))//정상
-						{
-							gubun = "[[#{HQP_L_AP_SCHEDULE_001}]]";
-						}
-						else if (JpUtilsString.equals(blart, "B1") || JpUtilsString.equals(blart, "KD"))//상계
-						{
-							gubun = "[[#{HQP_L_AP_SCHEDULE_002}]]";
-						}
-						else if (JpUtilsString.equals(blart, "RV"))//반납
-						{
-							gubun = "[[#{HQP_L_AP_SCHEDULE_004}]]";
-						}
-						else if (JpUtilsString.isEmpty(blart))//연체
-						{
-							gubun = "[[#{HQP_L_AP_SCHEDULE_003}]]";
-						};
-						
-						list[i].GUBUN = gubun;
+						gubun = "[[#{HQP_L_AP_SCHEDULE_001}]]";
+					}
+					else if (JpUtilsString.equals(blart, "B1") || JpUtilsString.equals(blart, "KD"))//상계
+					{
+						gubun = "[[#{HQP_L_AP_SCHEDULE_002}]]";
+					}
+					else if (JpUtilsString.equals(blart, "RV"))//반납
+					{
+						gubun = "[[#{HQP_L_AP_SCHEDULE_004}]]";
+					}
+					else if (JpUtilsString.isEmpty(blart))//연체
+					{
+						gubun = "[[#{HQP_L_AP_SCHEDULE_003}]]";
 					};
 					
-					$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");
-					
-					return list;
-				}			
-			},
-			initComplete:function(settings, json) 
-			{			
-				ProgressBar.hide();
-			}
-		});
-		
-		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);
-		
-		// Search 버튼 클릭
-		$("#BTN_search").on("click", function(){		
-			doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
-		});
-
-		function doSearch()
-		{
-			$tableObj.ajax.reload();
-		};
-		
-		$("#BTN_download").on("click", function(){
-			let gridFileDownload = new GridFileDownload($tableObj);
-			gridFileDownload.fileName = "Receipt_Result";
-			gridFileDownload.excelDownload();		
-		});		
+					list[i].GUBUN = gubun;
+				};
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");
+				
+				return list;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
 	});
 	
-	</script>	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+$("#BTN_search").on("click", function(){		
+	doSearch(); 
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Receipt_Result");
+});
+</script>	
 </th:block>

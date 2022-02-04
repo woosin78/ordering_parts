@@ -65,82 +65,83 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
-	<script type="application/javascript">
-	$(function(){
-		Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
-			
-		$tableObj = $("#TBL_grid").DataTable({
-			select: true,   			// row 선택 기능 켬
-			ordering: true, 			// 정렬 기능 켬
-			scrollY: 100,
-			//fixedColumns: { leftColumns: 8 },
-			columns : [
-				{data: "EBELN", title: "[[#{HQP_L_PO_NO}]]"},				
-				{data: "SVCMAN_NAME", title: "[[#{HQP_L_IV_BUYER}]]"},
-				{data: "EBELP", title: "[[#{HQP_L_LINE_ITEM}]]"},
-				{data: "BLDAT", title: "[[#{HQP_L_IV_PURCHASE_DATE}]]"},
-				{data: "MATNR", title: "[[#{HQP_L_PART_NO}]]"},
-				{data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"},
-				{data: "MENGE", title: "[[#{HQP_L_QTY}]]", className: "right"},
-				{data: "BSTME", title: "[[#{HQP_L_UOM}]]"},
-				{data: "NETPR", title: "[[#{HQP_L_NET_VALUE}]]", className: "right"},
-				{data: "WRBTR", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},
-				{data: "WAERS", title: "[[#{HQP_L_CURR}]]"}
-			],
-			ajax: {
-				url: "/portal/iv/hq/parts/domestic/accounts/ar/list/data",
-				data: function(p)
-				{
-					p.pFromPoNo = $("#pFromPoNo").val();
-					p.pToPoNo = $("#pToPoNo").val();
-					p.pFromInvoiceNo = $("#pFromInvoiceNo").val();
-					p.pToInvoiceNo = $("#pToInvoiceNo").val();
-					p.pPartNo = $("#pPartNo").val();
-					p.pFromDate = $("#pFromDate").val();
-					p.pToDate = $("#pToDate").val();
-				},
-				dataSrc: function(response) 
-				{				
-					let data = response.RESULT;
-					
-					$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
-					
-					return data;
-				}			
-			},
-			initComplete:function(settings, json) 
-			{			
-				ProgressBar.hide();
-			}
-		});
+<script>
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});	
+
+let $tableObj;
+$(function(){
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 		
-		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);
-		
-		// Search 버튼 클릭
-		$("#BTN_search").on("click", function(){		
-			doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
-		});
-		
-		//Input text 엔터 키 입력
-		$("#FORM_search input:text").on("keydown", function(event) {
-			if (event.keyCode == 13)
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: { leftColumns: 8 },
+		columns : [
+			{data: "EBELN", title: "[[#{HQP_L_PO_NO}]]"},				
+			{data: "SVCMAN_NAME", title: "[[#{HQP_L_IV_BUYER}]]"},
+			{data: "EBELP", title: "[[#{HQP_L_LINE_ITEM}]]"},
+			{data: "BLDAT", title: "[[#{HQP_L_IV_PURCHASE_DATE}]]"},
+			{data: "MATNR", title: "[[#{HQP_L_PART_NO}]]"},
+			{data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"},
+			{data: "MENGE", title: "[[#{HQP_L_QTY}]]", className: "right"},
+			{data: "BSTME", title: "[[#{HQP_L_UOM}]]"},
+			{data: "NETPR", title: "[[#{HQP_L_NET_VALUE}]]", className: "right"},
+			{data: "WRBTR", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},
+			{data: "WAERS", title: "[[#{HQP_L_CURR}]]"}
+		],
+		ajax: {
+			url: "/portal/iv/hq/parts/domestic/accounts/ar/list/data",
+			data: function(p)
 			{
-				doSearch();
-			};
-		});
-		
-		$("#BTN_download").on("click", function() {
-			let gridFileDownload = new GridFileDownload($tableObj);
-			gridFileDownload.fileName = "AR_List_Detail";
-			gridFileDownload.excelDownload();
-		});
-		
-		function doSearch()
-		{
-			$tableObj.ajax.reload();
-		}	
+				p.pFromPoNo = $("#pFromPoNo").val();
+				p.pToPoNo = $("#pToPoNo").val();
+				p.pFromInvoiceNo = $("#pFromInvoiceNo").val();
+				p.pToInvoiceNo = $("#pToInvoiceNo").val();
+				p.pPartNo = $("#pPartNo").val();
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				
+				return data;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
 	});
 	
-	</script>	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+$("#BTN_search").on("click", function(){		
+	doSearch(); 
+});
+
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "AR_List_Detail");
+});
+</script>	
 </th:block>

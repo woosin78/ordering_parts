@@ -13,7 +13,7 @@
 	</div>
 	<input type="hidden" id="orderNo" name="orderNo" th:value="${orderNo}">	
 	<div class="condition-area">
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQP_L_ORDER_NO}"></th><!-- Order No. -->
@@ -38,88 +38,88 @@
 	<input type="hidden" id="pToDate" name="pToDate" th:value="${pToDate}">
 	<input type="hidden" id="pOrderPartNo" name="pOrderPartNo" th:value="${pOrderPartNo}">
 	</form> 							
-	<script>		
-	$(function(){
-		let initCompleted = false;
-		
-		$tableObj = $("#TBL_grid").DataTable({
-			select: {
-				selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
-		    },
-			ordering: true,// 정렬 기능 켬
-			scrollY: 100,
-			//fixedColumns: { leftColumns: 5 },
-			columns : [
-				{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},// Item No
-				{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},// Order Type
-				{data: "MATNR_SO", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},// Order Part No.
-				{data: "MATNR_SH", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},// Supply Part No
-				{data: "MAKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"},// Description
-				{data: "SO_QTY", 		title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},// Order Qty
-				{data: "RE_QTY", 		title: "[[#{HQP_L_RESERVED_QTY}]]", className: "right"},// Reserved Qty
-				{data: "PI_QTY", 		title: "[[#{HQP_L_PACKED_QTY}]]", className: "right"},// Packed Qty
-				{data: "IN_QTY", 		title: "[[#{HQP_L_INVOICE_QTY}]]", className: "right"},// Invoiced Qty
-				{data: "SH_QTY", 		title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},// S.Completion Qty
-				{data: "BO_QTY", 		title: "[[#{HQP_L_BACKORDER_QTY}]]", className: "right"},// B/O Qty
-				{data: "LST_ETD", 		title: "[[#{HQP_L_UPDATED_ETD}]]"}// Updated ETD
-			],		
-			ajax: {
-				url: "/portal/iv/hq/parts/domestic/order/status/view/data",
-				data: function(p)
-				{
-					p.orderNo = $("#orderNo").val();
-				},
-				dataSrc: function(response) 
-				{				
-					let data = response.RESULT;
-					
-					for (let i=0, length=data.length; i<length; i++)
-					{
-						data[i].BO_QTY = Number(data[i].SO_QTY) - Number(data[i].SH_QTY);
-						
-						let etd = $.trim(data[i].LST_ETD);
-						if (etd != "")
-						{						
-							data[i].LST_ETD = etd;
-						}
-						else
-						{
-							data[i].LST_ETD = "0000-00-00";
-						}
-					};
-					
-					return data;
-				}
-			},
-			initComplete:function(settings, json) 
+
+<script>
+let $tableObj;
+$(function(){
+	let initCompleted = false;
+	
+	$tableObj = $("#TBL_grid").DataTable({
+		select: {
+			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true,// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: { leftColumns: 5 },
+		columns : [
+			{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},// Item No
+			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},// Order Type
+			{data: "MATNR_SO", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},// Order Part No.
+			{data: "MATNR_SH", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},// Supply Part No
+			{data: "MAKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"},// Description
+			{data: "SO_QTY", 		title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},// Order Qty
+			{data: "RE_QTY", 		title: "[[#{HQP_L_RESERVED_QTY}]]", className: "right"},// Reserved Qty
+			{data: "PI_QTY", 		title: "[[#{HQP_L_PACKED_QTY}]]", className: "right"},// Packed Qty
+			{data: "IN_QTY", 		title: "[[#{HQP_L_INVOICE_QTY}]]", className: "right"},// Invoiced Qty
+			{data: "SH_QTY", 		title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},// S.Completion Qty
+			{data: "BO_QTY", 		title: "[[#{HQP_L_BACKORDER_QTY}]]", className: "right"},// B/O Qty
+			{data: "LST_ETD", 		title: "[[#{HQP_L_UPDATED_ETD}]]"}// Updated ETD
+		],		
+		ajax: {
+			url: "/portal/iv/hq/parts/domestic/order/status/view/data",
+			data: function(p)
 			{
-				initCompleted = true;
-				
-				ProgressBar.hide();
+				p.orderNo = $("#orderNo").val();
 			},
-			"drawCallback": function( settings ) {
-				if (initCompleted && "[[${fgDownload}]]" == "Y")
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				for (let i=0, length=data.length; i<length; i++)
 				{
-					alert($("#orderNo").val());
-					$("#BTN_download").trigger("click");
-					parent.ProgressBar.hide();
+					data[i].BO_QTY = Number(data[i].SO_QTY) - Number(data[i].SH_QTY);
+					
+					let etd = $.trim(data[i].LST_ETD);
+					if (etd != "")
+					{						
+						data[i].LST_ETD = etd;
+					}
+					else
+					{
+						data[i].LST_ETD = "0000-00-00";
+					}
 				};
+				
+				return data;
 			}
-		});
-		
-		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);	
-	
-		$("#BTN_back").on("click", function() {
-			$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/status/list").submit();
-		});
-	
-		$("#BTN_download").on("click", function() {
-			let gridFileDownload = new GridFileDownload($tableObj);
-			gridFileDownload.fileName = "Order_Status_Detail";
-			gridFileDownload.excelDownload();
-		});
+		},
+		initComplete:function(settings, json) 
+		{
+			initCompleted = true;
+			
+			ProgressBar.hide();
+		},
+		"drawCallback": function( settings ) {
+			if (initCompleted && "[[${fgDownload}]]" == "Y")
+			{
+				alert($("#orderNo").val());
+				$("#BTN_download").trigger("click");
+				parent.ProgressBar.hide();
+			};
+		}
 	});
-	</script>	
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);	
+});
+
+$("#BTN_back").on("click", function() {
+	$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/status/list").submit();
+});
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Order_Status_Detail");
+});
+</script>	
 </th:block>		
 		

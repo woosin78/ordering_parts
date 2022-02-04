@@ -1,9 +1,9 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.info.web;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
@@ -51,26 +51,63 @@ public class PartInfoController extends PartsDomesticGeneralController
 		rfcParamMap.put("partNo", pPartNo);//PartsNo
 
 		RfcResponse rfcResponse = partsInfoService.getPartInfo(rfcParamMap);
-		DataList dataList = rfcResponse.getTable("T_RESULT");
+		DataList resultList = rfcResponse.getTable("T_RESULT");
 
-		for (int i=0, size=dataList.size(); i<size; i++)
+		if (CollectionUtils.isNotEmpty(resultList))
 		{
-			DataMap dataMap = (DataMap)dataList.get(i);
+			DataMap partMap = (DataMap)resultList.get(0);
+			DataList scaleList = rfcResponse.getTable("T_SCALES");
+			double kbetr = partMap.getDouble("KBETR");//Condition Percentage
 
-			dataMap.put("LPRICE2", new BigDecimal(CmStringUtils.defaultIfEmpty(dataMap.get("LPRICE"), "0")).multiply(new BigDecimal("1.25")));
+			if (CollectionUtils.isEmpty(scaleList))
+			{
+				DataMap scaleMap = new DataMap();
+				scaleMap.put("OPENQ", "0");
+				scaleMap.put("LPRICE", partMap.getString("LPRICE"));
+				scaleMap.put("FINAL_LPRICE", partMap.getString("LPRICE"));
+				scaleMap.put("MEINS", partMap.getString("MEINS"));
+				scaleMap.put("WAERS", partMap.getString("WAERS"));
+
+				scaleList.add(scaleMap);
+			}
+			else
+			{
+				for (int i=0, size=scaleList.size(); i<size; i++)
+				{
+					DataMap scaleMap = (DataMap)scaleList.get(i);
+
+					scaleMap.put("FINAL_LPRICE", scaleMap.getString("LPRICE"));
+					scaleMap.put("MEINS", partMap.getString("MEINS"));
+					scaleMap.put("WAERS", partMap.getString("WAERS"));
+				}
+			}
+
+			if (kbetr == 0)
+			{
+				calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, 1.25);
+			}
+			else
+			{
+				calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, (1 + kbetr * 0.01));
+			}
+
+			FormatBuilder.with(scaleList)
+				.qtyFormat(new String[] {"OPENQ"})
+				.decimalFormat(new String[] {"LPRICE", "FINAL_LPRICE"});
+
+			FormatBuilder.with(resultList)
+				.qtyFormat(new String[] {"OPENQ", "EXP_AVQ"})
+				.decimalFormat(new String[] {"NTGEW", "BRGEW", "PLIFZ"})
+				.dateFormat("DATAB");
+
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("scaleList", scaleList);
+			resultMap.put("partInfo", partMap);
+
+			return resultMap;
 		}
 
-		calcPriceByCurrency(dataList, new String[] { "LPRICE2", "LPRICE" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
-
-		FormatBuilder.with(dataList)
-			.qtyFormat(new String[] { "OPENQ", "EXP_AVQ" })
-			.decimalFormat(new String[] { "NTGEW", "BRGEW", "PLIFZ", "LPRICE2", "LPRICE" })
-			.dateFormat("DATAB");
-
-		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put("items", dataList);
-
-		return resultMap;
+		return EMPTY_RETURN_VALUE;
 	}
 
 	@RequestMapping("/autocompete/data")
@@ -196,11 +233,10 @@ public class PartInfoController extends PartsDomesticGeneralController
 	public Object alternativeListData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-
 		rfcParamMap.put("partNo", paramMap.get("pPartNo"));//PartsNo
 
 		RfcResponse rfcResponse = partsInfoService.getAlternativeList(rfcParamMap);
 
-		return rfcResponse.getTable("T_MODEL");
+		return rfcResponse.getTable("T_MATNR");
 	}
 }
