@@ -43,7 +43,6 @@ public class PortalSecurityConfig extends WebSecurityConfigurerAdapter
 			.antMatcher(PortalConfigVo.CONTEXT_PATH + "/**")
 			.authorizeRequests()
 				.antMatchers(permitAllRequests).permitAll()
-				//.antMatchers(PortalConfigVo.CONTEXT_PATH + "/**").hasRole(PortalConfigVo.ROLE_PLTF_ADMIN)
 				.anyRequest().authenticated()
 			.and()
 			.headers()
@@ -103,14 +102,6 @@ public class PortalSecurityConfig extends WebSecurityConfigurerAdapter
 
 		return logoutSuccessHandler;
 	}
-
-	/*
-	@Bean
-	public PortalAuthenticationManager portalAuthenticationManager()
-	{
-	    return new PortalAuthenticationManager();
-	}
-	*/
 
 	@Bean(name = "portalAuthenticationFilter")
     public PortalAuthenticationFilter authenticationFilter() throws Exception

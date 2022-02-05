@@ -1,6 +1,5 @@
 package org.jwebppy.platform.core.interceptor;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -229,7 +228,7 @@ public class RfcExecutionAspect
 
 		if (parameterValue.getValue() != null)
 		{
-			dataAccessLogParameterDetails = new ArrayList<>();
+			dataAccessLogParameterDetails = new LinkedList<>();
 
 			DataAccessLogParameterDetailDto dataAccessLogParameterDetail = new DataAccessLogParameterDetailDto();
 			dataAccessLogParameterDetail.setLineNo(0);

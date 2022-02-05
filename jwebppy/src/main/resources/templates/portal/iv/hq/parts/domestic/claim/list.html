@@ -16,7 +16,7 @@
 	<input type="hidden" id="orderNo" name="orderNo">
 	<input type="hidden" id="docDate" name="docDate">
 	<input type="hidden" id="docType" name="docType">	
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQP_L_COMPLAINT_NO}"></th><!-- Complaint No. -->
@@ -80,7 +80,7 @@ $(function(){
 	    },
 		ordering: true, 
 		scrollY: 100,
-		//fixedColumns: { leftColumns: 3 },
+		//fixedColumns: {leftColumns: 3},
 		columns : [
 			{data: "VBELN", 		title: "[[#{HQP_L_CLAIM_NO}]]", className:"link"},//Claim No.
 			{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},// Line Item.

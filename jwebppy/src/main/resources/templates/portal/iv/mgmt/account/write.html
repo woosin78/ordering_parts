@@ -115,7 +115,7 @@ $(function(){
 		{
 			JpUtilsAjax.get({
 				url: "/platform/mgmt/user/check/valid_credentials",
-				data: { type: "U", name: "CP_IVHQ", value: form.val("#username").toUpperCase() },
+				data: {type: "U", name: "CP_IVHQ", value: form.val("#username").toUpperCase()},
 			    success: function(response, textStatus, jqXHR)
 			    {
 			    	let result = response.RESULT;

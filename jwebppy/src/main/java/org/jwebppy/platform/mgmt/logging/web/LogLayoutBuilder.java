@@ -332,7 +332,7 @@ public class LogLayoutBuilder
 					tbody.addTr(tbTr);
 
 					Table table = new Table();
-					table.setStyle("overflow-x: auto; display: block; white-space: nowrap;");
+					table.setStyle("overflow: auto; display: block; white-space: nowrap;");
 					table.addThead(thead);
 					table.addTbody(tbody);
 

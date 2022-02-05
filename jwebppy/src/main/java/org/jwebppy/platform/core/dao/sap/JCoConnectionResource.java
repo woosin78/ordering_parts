@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.jwebppy.config.JCoConfig;
+import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +109,7 @@ public class JCoConnectionResource
 
                 if (CmStringUtils.isNotEmpty(jCoConnectionInfo.getPassword()))
                 {
-                    properties.setProperty(DestinationDataProvider.JCO_PASSWD, jCoConnectionInfo.getPassword());
+                    properties.setProperty(DestinationDataProvider.JCO_PASSWD, AES256Cipher.getInstance().decode(jCoConnectionInfo.getPassword()));
                 }
 
                 properties.setProperty(DestinationDataProvider.JCO_LANG, CmStringUtils.defaultString(jCoConnectionInfo.getLanguage(), "EN"));
@@ -125,7 +126,10 @@ public class JCoConnectionResource
 
                 sapDestinationDataProvider.setDestinationProperties(entry.getKey(), properties);
 
-                logger.info("[" + entry.getKey() + "] SAP resource has been loaded ");
+                Properties properties2 = (Properties)properties.clone();
+                properties2.remove(DestinationDataProvider.JCO_PASSWD);
+
+                logger.info("[" + entry.getKey() + "] SAP resource has been loaded." + properties2);
             }
 
             Environment.registerDestinationDataProvider(sapDestinationDataProvider);

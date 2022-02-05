@@ -47,14 +47,6 @@ $(document).ready(function() {
 				isLoadFirstTab: true,
 				onLoaded: function(tabPath, parameterArray, historyEvent)
 				{
-					$(".ui.table").each(function(index, element) {
-						let SHOW_SCROLL_HEIGHT = 400;
-						
-						if ($(element).height() > SHOW_SCROLL_HEIGHT)
-						{
-							$(element).height(SHOW_SCROLL_HEIGHT);
-						};
-					});
 				}
 			}
 	};

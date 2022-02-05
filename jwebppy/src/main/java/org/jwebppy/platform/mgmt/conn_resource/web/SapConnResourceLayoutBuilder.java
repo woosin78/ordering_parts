@@ -177,15 +177,15 @@ public class SapConnResourceLayoutBuilder
 		Element loFgUseUserLang = new Checkbox("fgUseUserLang", PlatformCommonVo.YES, sapConnResource.getFgUseUserLang());
 		loFgUseUserLang.setLabel("Use User Language");
 
-		Element loFgUse = new Checkbox("fgUse", PlatformCommonVo.YES, sapConnResource.getFgUse());
-		loFgUse.setLabel("Use");
+//		Element loFgUse = new Checkbox("fgUse", PlatformCommonVo.YES, sapConnResource.getFgUse());
+//		loFgUse.setLabel("Use");
 
 		document.addElement(loClient);
 		document.addElement(loUsername);
 		document.addElement(loPassword);
 		document.addElement(loLanguage);
 		document.addElement(loFgUseUserLang);
-		document.addElement(loFgUse);
+//		document.addElement(loFgUse);
 
 		return document;
 	}

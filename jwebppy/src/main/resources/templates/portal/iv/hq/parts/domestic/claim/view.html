@@ -61,7 +61,7 @@ let $tableObj;
 
 JpUtilsAjax.get({
 	url: "/portal/iv/hq/parts/domestic/claim/view/data",
-	data: { "pOrderNo": "[[${orderNo}]]", "pDocType": "[[${docType}]]" },		
+	data: {"pOrderNo": "[[${orderNo}]]", "pDocType": "[[${docType}]]"},		
     success: function(data, textStatus, jqXHR) 
     {
 		let itemList = data.RESULT.itemList;

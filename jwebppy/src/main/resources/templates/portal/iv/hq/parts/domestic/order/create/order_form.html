@@ -74,28 +74,35 @@
 				</th>
 			</tr>
 			<tr>
-				<th th:text="#{HQP_L_ORDER_TYPE}"></th><!-- Order Type -->
+				<th th:text="#{HQP_L_ORDER_TYPE}" ></th><!-- Order Type -->
 				<td>
 					<div class="input-area order-type"></div>
 				</td>
-				<th th:text="#{HQP_L_SHIP_TO_PARTY}"></th><!-- Ship To Party -->
-				<td>
+				<th><!-- Ship To Party -->
+					<span th:text="#{HQP_L_SHIP_TO_PARTY}"></span><div class="split3"></div>
 					<div><button id="BTN_shipToParty" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button></div>
+				</th>
+				<td>
 					<div id="AREA_shipToAddress"></div>					
 				</td>
 			</tr>
 			<tr>
 				<th>
+					<!-- Customer P.O. Number -->
 					<div th:text="#{HQP_L_PO_NO}"></div><img src="/portal/img/icon_required.png" class="required" />
-				</th><!-- Customer P.O. Number -->
+				</th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="poNo" name="poNo" class="custom-ui"/>
 					</div>
 				</td>
-				<th th:text="#{HQP_L_SHIPPING_INFO}"></th><!-- Shipping Info -->
+				<th>
+					<!-- Shipping Info -->
+					<span th:text="#{HQP_L_SHIPPING_INFO}"></span><div class="split3"></div>
+					<div><button id="BTN_shippingInfo" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button></div>
+				</th>
 				<td>
-					<div><button id="BTN_shippingInfo" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button></div><span id="AREA_shippingCondition"></span>
+					<span id="AREA_shippingCondition"></span>
 				</td>
 			</tr>
 			<tr>
@@ -666,7 +673,7 @@
 		    },
 			ordering: true,
 			scrollY: 100,
-			//fixedColumns: { leftColumns: 5 },
+			//fixedColumns: {leftColumns: 5},
 			columns: [
 				{// 컬럼에 checkbox 설정
 					name: "chk",
@@ -813,8 +820,11 @@
 	
 					return normalOrderItems;
 				}
-			}
+			}			
 		});
+		
+		// Datatable grid 초기 설정 셋업
+		initGridTable($tableObj);
 		
 		// Datatable onload event
 		$("#TBL_grid").on("draw.dt", function () {
@@ -822,7 +832,7 @@
 			$("#simulationFrom").val("");
 			
 			// Datatable grid 초기 설정 셋업
-			initGridTable($tableObj, true);
+			//initGridTable($tableObj, true);
 	
 			ProgressBar.hide();
 		});
