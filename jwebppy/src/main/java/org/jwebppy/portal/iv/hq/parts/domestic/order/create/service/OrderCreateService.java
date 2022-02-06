@@ -1,12 +1,10 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.order.create.service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -20,16 +18,11 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
-import org.jwebppy.portal.iv.hq.parts.common.PartsErpUserContext;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OnetimeAddressDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryHeaderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.entity.OnetimeAddressEntity;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.entity.OrderHistoryHeaderEntity;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.mapper.OnetimeAddressObjectMapper;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.mapper.OrderCreateMapper;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.mapper.OrderHistoryHeaderObjectMapper;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.mapper.OrderHistoryItemObjectMapper;
@@ -50,12 +43,18 @@ public class OrderCreateService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_GET_USERINFO");
 
-		rfcRequest.addField("I_LANG", paramMap.getLangForSap());
-		rfcRequest.addField("I_BGTYP", "P");
-		rfcRequest.addField("I_USERID", paramMap.getUsername());
-		rfcRequest.addField("LV_AUART", paramMap.getString("AUART"));
-		rfcRequest.addField("LV_KONDA", paramMap.getString("KONDA"));
-		rfcRequest.addField("LV_VBTYP", paramMap.getString("VBTYP"));
+		rfcRequest.
+			field().with(paramMap)
+				.add(new Object[][] {
+					{"I_BGTYP", "P"},
+					{"I_LANG", paramMap.getLangForSap()},
+					{"I_USERID", paramMap.getUsername()},
+				})
+				.addByKey(new Object[][] {
+					{"LV_AUART", "orderType"},
+					{"LV_KONDA", "priceGroup"},
+					{"LV_VBTYP", "docType"}
+				});
 
 		RfcResponse rfcResponse = simpleRfcTemplate.response(rfcRequest);
 
@@ -97,47 +96,65 @@ public class OrderCreateService
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SHIPTOPARTY");
 
-		rfcRequest.addField("ILANGU", paramMap.getLangForSap());
-		rfcRequest.addField("I_BGTYP", "P");
-		rfcRequest.addField("I_USERID", paramMap.getUsername());
+		rfcRequest.
+			field().with(paramMap)
+				.add(new Object[][] {
+					{"I_BGTYP", "P"},
+					{"ILANGU", paramMap.getLangForSap()},
+					{"I_USERID", paramMap.getUsername()}
+				});
 
 		DataList dataList = simpleRfcTemplate.response(rfcRequest).getTable("ZSVV0004");
 
-		if (paramMap.isEmptyValue("customerNo") && paramMap.isEmptyValue("customerName"))
-		{
-			return dataList;
-		}
+		DataList shiptoPartyList = new DataList();
 
+		ListIterator it = dataList.listIterator();
 		String customerNo = paramMap.getString("customerNo");
 		String customerName = paramMap.getString("customerName");
 
-		DataList tmpDataList = new DataList();
-
-		for (int i=0, size=dataList.size(); i<size; i++)
+		while (it.hasNext())
 		{
-			DataMap dataMap = (DataMap)dataList.get(i);
+			Map dataMap = (Map)it.next();
+			boolean isOk = true;
 
-			if (CmStringUtils.containsIgnoreCaseAndEmpty(dataMap.getString("KUNN2"), customerNo) || CmStringUtils.containsIgnoreCaseAndEmpty(dataMap.getString("NAME1"), customerName))
+			if (CmStringUtils.isNotEmpty(customerNo))
 			{
-				tmpDataList.add(dataMap);
+				if (!CmStringUtils.containsIgnoreCaseAndEmpty((String)dataMap.get("KUNN2"), customerNo))
+				{
+					isOk = false;
+				}
+			}
+
+			if (CmStringUtils.isNotEmpty(customerName))
+			{
+				if (!CmStringUtils.containsIgnoreCaseAndEmpty((String)dataMap.get("NAME1"), customerName))
+				{
+					isOk = false;
+				}
+			}
+
+			if (isOk)
+			{
+				shiptoPartyList.add(dataMap);
 			}
 		}
 
-		return tmpDataList;
+		return shiptoPartyList;
 	}
 
 	public DataList getShippingInfo(ErpDataMap paramMap)
 	{
-		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SHIPPINGINFO2");
+		RfcRequest rfcRequest = new RfcRequest("Z_EP_SHIPPINGINFO");
 
-		rfcRequest.addField("I_LANG", paramMap.getLangForSap());
-		rfcRequest.addField("I_BGTYP", "P");
-		rfcRequest.addField("I_USERID", paramMap.getUsername());
-		rfcRequest.addField("I_AUART", paramMap.getString("orderType"));
-		rfcRequest.addField("I_KONDA", paramMap.getString("priceGroup"));
-		rfcRequest.addField("I_KUNNR", paramMap.getCustomerNo());
+		rfcRequest
+			.field(new Object[][] {
+					{"I_BGTYP", "P"},
+					{"I_LANG", paramMap.getLangForSap()},
+					{"I_USERID", paramMap.getUsername()},
+					{"I_KUNNR", paramMap.getCustomerNo()}
+				});
 
-		return simpleRfcTemplate.response(rfcRequest).getTable("LT_0063");
+		return simpleRfcTemplate.response(rfcRequest).getTable("ZSST9100");
 	}
 
 	public Integer checkDuplicatedOrder(OrderDto order, Integer ohhSeq)
@@ -175,7 +192,7 @@ public class OrderCreateService
 			generalMap.put("INCO1", order.getIncoterms1());
 			generalMap.put("INCO2", order.getIncoterms2());
 			generalMap.put("VSBED", order.getShippingCondition());
-			generalMap.put("VDATU", CmStringUtils.trimToEmpty(order.getRdd()).replaceAll("\\.", ""));
+			generalMap.put("VDATU", CmDateFormatUtils.stripDateFormat(order.getRdd()));
 			generalMap.put("BSTNK", order.getPoNo());
 			generalMap.put("COMPLETE_DELIVERY", order.getCompleDelivery());
 
@@ -201,7 +218,7 @@ public class OrderCreateService
 
 			rfcRequest.addTable("LT_GERNERAL_ZTERM", generalTerms);
 
-			/* LS_EP_ONETIME */
+			/* LS_EP_ONETIME
 			if (order.getOaSeq() != null)
 			{
 				OnetimeAddressEntity onetimeAddress = orderCreateMapper.findOnetimeAddressByOaSeq(order.getOaSeq());
@@ -223,6 +240,7 @@ public class OrderCreateService
 					rfcRequest.addStructure("LS_EP_ONETIME", onetimeAddressMap);
 				}
 			}
+			*/
 
 			/* LT_ITEM */
 			List<Map<String, Object>> items = new LinkedList<>();
@@ -276,20 +294,6 @@ public class OrderCreateService
 
 			if (orderNo.length() > 5)
 			{
-				//Onetime Address 로 주문 했을 경우
-				if (order.getOaSeq() != null)
-				{
-					PartsErpUserContext erpUserContext = (PartsErpUserContext)UserAuthenticationUtils.getUserDetails().getErpUserContext();
-
-					OnetimeAddressDto onetimeAddress = new OnetimeAddressDto();
-					onetimeAddress.setCorp(erpUserContext.getCorp());
-					onetimeAddress.setOaSeq(order.getOaSeq());
-					onetimeAddress.setFgUse(PartsCommonVo.YES);
-					onetimeAddress.setRegUsername(UserAuthenticationUtils.getUsername());
-
-					modifyFgUseOfOnetimeAddress(onetimeAddress);
-				}
-
 				modifySuccessOrderHistoryHeader(ohhSeq, orderNo);
 			}
 			else
@@ -319,8 +323,12 @@ public class OrderCreateService
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_SS_BAPI_SALESDOCUMENT_COPY");
 
-		rfcRequest.addField("DOCUMENTTYPE", paramMap.getString("orderType"));
-		rfcRequest.addField("SALESDOCUMENT", paramMap.getString("orderNo"));
+		rfcRequest.
+			field().with(paramMap)
+				.addByKey(new Object[][] {
+					{"DOCUMENTTYPE", "orderType"},
+					{"SALESDOCUMENT", "orderNo"}
+				});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -351,79 +359,6 @@ public class OrderCreateService
 		}
 
 		return null;
-	}
-
-	public List<OnetimeAddressDto> getOnetimeAddresses(OnetimeAddressDto onetimeAddress)
-	{
-		return CmModelMapperUtils.mapToDto(OnetimeAddressObjectMapper.INSTANCE, orderCreateMapper.findAllOnetimeAddresses(onetimeAddress));
-	}
-
-	public String getPostalCode(ErpDataMap erpParamMap)
-	{
-		RfcRequest rfcRequest = new RfcRequest("ZSS_SEND_DIV_TZONE_TO_PORTAL");
-
-		rfcRequest.addField("LAND1", erpParamMap.get("country"));
-		rfcRequest.addField("POST_CODE1", erpParamMap.getString("postalCode").toUpperCase());
-
-		RfcResponse rfcResponse = simpleRfcTemplate.response(rfcRequest);
-
-		return rfcResponse.getString("ZONE1");
-	}
-
-	public String getTransportZone(ErpDataMap erpParamMap)
-	{
-		RfcRequest rfcRequest = new RfcRequest("ZSS_SEND_DIV_LAND_TO_PORTAL");
-
-		RfcResponse rfcResponse = simpleRfcTemplate.response(rfcRequest);
-
-		String country = erpParamMap.getString("country");
-		String transportZone = erpParamMap.getString("transportZone");
-
-		for (Object data : rfcResponse.getTable("GT_TZONE"))
-		{
-			DataMap dataMap = new DataMap(data);
-
-			if (dataMap.isEquals("LAND1", country) && dataMap.isEquals("ZONE1", transportZone))
-			{
-				return dataMap.getString("VTEXT");
-			}
-		}
-
-		return null;
-	}
-
-	public boolean isDuplicatedOnetimeAddress(OnetimeAddressDto onetimeAddress)
-	{
-		if (CollectionUtils.isEmpty(orderCreateMapper.findAllSameOnetimeAddresses(onetimeAddress)))
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	public List<OnetimeAddressDto> getOnetimeAddressesForDuplicationCheck(OnetimeAddressDto onetimeAddress)
-	{
-		return CmModelMapperUtils.mapToDto(OnetimeAddressObjectMapper.INSTANCE, orderCreateMapper.findAllSameOnetimeAddresses(onetimeAddress));
-	}
-
-	public Integer saveOnetimeAddress(OnetimeAddressDto onetimeAddress)
-	{
-		OnetimeAddressEntity onetimeAddressEntity = CmModelMapperUtils.mapToEntity(OnetimeAddressObjectMapper.INSTANCE, onetimeAddress);
-
-		orderCreateMapper.insertOnetimeAddress(onetimeAddressEntity);
-
-		return onetimeAddressEntity.getOaSeq();
-	}
-
-	public int modifyFgUseOfOnetimeAddress(OnetimeAddressDto onetimeAddress)
-	{
-		return orderCreateMapper.updateFgUseOfOnetimeAddress(CmModelMapperUtils.mapToEntity(OnetimeAddressObjectMapper.INSTANCE, onetimeAddress));
-	}
-
-	public int deleteOnetimeAddress(OnetimeAddressDto onetimeAddress)
-	{
-		return orderCreateMapper.updateFgDeleteOfOnetimeAddress(CmModelMapperUtils.mapToEntity(OnetimeAddressObjectMapper.INSTANCE, onetimeAddress));
 	}
 
 	public List<OrderHistoryHeaderDto> getOrderHistoryList(String regUsername, Integer ohhSeq)
@@ -482,13 +417,5 @@ public class OrderCreateService
 		orderHistoryHeader.setErrorMsg(errorMsg);
 
 		return orderCreateMapper.updateFailOrderHistoryHeader(orderHistoryHeader);
-	}
-
-	public static void main(String[] args)
-	{
-		long startTime = 1597054475358L;
-		LocalDateTime localDateTime = Instant.ofEpochMilli(startTime).atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-		System.out.println(CmDateFormatUtils.format(localDateTime));
 	}
 }

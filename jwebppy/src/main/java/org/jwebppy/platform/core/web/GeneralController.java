@@ -23,7 +23,7 @@ public abstract class GeneralController
 	private Environment environment;
 
 	public final static String DEFAULT_VIEW_URL = "DUMMY";
-	public final static String EMPTY_RETURN_VALUE = "NULL";
+	public final static String EMPTY_RETURN_VALUE = null;
 
 	protected Integer getUSeq()
 	{

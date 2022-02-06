@@ -12,22 +12,72 @@ import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 
-public class BwParsingUtils
+public class BwParseHelper
 {
-	public static final String NAME_KEY = "VAR_NAME_";
-	public static final String VALUE_KEY = "VAR_VALUE_EXT_";
-	public static final String LOW_VALUE_KEY = "VAR_VALUE_LOW_EXT_";
-	public static final String HIGH_VALUE_KEY = "VAR_VALUE_HIGH_EXT_";
+	public final String NAME_KEY = "VAR_NAME_";
+	public final String VALUE_KEY = "VAR_VALUE_EXT_";
+	public final String LOW_VALUE_KEY = "VAR_VALUE_LOW_EXT_";
+	public final String HIGH_VALUE_KEY = "VAR_VALUE_HIGH_EXT_";
 
-	public static final String O_KEY = "VAR_OPERATOR_";
-	public static final String O_EQUAL = "EQ";
-	public static final String O_BETWEEN = "BT";
-	public static final String O_LESSTHAN = "LT";
-	public static final String O_LESSTHAN_OR_EQUAL = "LE";
-	public static final String O_GREATTHAN = "GT";
-	public static final String O_GREATTHAN_OR_EQUAL = "GE";
+	public final String O_KEY = "VAR_OPERATOR_";
+	public final String O_EQUAL = "EQ";
+	public final String O_BETWEEN = "BT";
+	public final String O_LESSTHAN = "LT";
+	public final String O_LESSTHAN_OR_EQUAL = "LE";
+	public final String O_GREATTHAN = "GT";
+	public final String O_GREATTHAN_OR_EQUAL = "GE";
 
-	public static Map<String, Object> parse(RfcResponse rfcResponse)
+	int seq = 1;
+
+	public List<Map<String, Object>> range(String name, Object value)
+	{
+		List<Map<String, Object>> list = new ArrayList<>();
+
+		Map<String, Object> rowMap1 = new HashMap<>();
+		rowMap1.put("NAME", NAME_KEY + seq);
+		rowMap1.put("VALUE", name);
+		list.add(rowMap1);
+
+		Map<String, Object> rowMap2 = new HashMap<>();
+		rowMap2.put("NAME", LOW_VALUE_KEY + seq);
+		rowMap2.put("VALUE", value);
+		list.add(rowMap2);
+
+		Map<String, Object> rowMap3 = new HashMap<>();
+		rowMap3.put("NAME", HIGH_VALUE_KEY + seq);
+		rowMap3.put("VALUE", value);
+		list.add(rowMap3);
+
+		Map<String, Object> rowMap4 = new HashMap<>();
+		rowMap4.put("NAME", O_KEY + seq);
+		rowMap4.put("VALUE", O_EQUAL);
+		list.add(rowMap4);
+
+		seq++;
+
+		return list;
+	}
+
+	public List<Map<String, Object>> single(String name, Object value)
+	{
+		List<Map<String, Object>> list = new ArrayList<>();
+
+		Map<String, Object> rowMap1 = new HashMap<>();
+		rowMap1.put("NAME", NAME_KEY + seq);
+		rowMap1.put("VALUE", name);
+		list.add(rowMap1);
+
+		Map<String, Object> rowMap2 = new HashMap<>();
+		rowMap2.put("NAME", VALUE_KEY + seq);
+		rowMap2.put("VALUE", value);
+		list.add(rowMap2);
+
+		seq++;
+
+		return list;
+	}
+
+	public Map<String, Object> parse(RfcResponse rfcResponse)
 	{
 		Map<String, Object> resultMap = new HashMap<>();
 
@@ -38,7 +88,7 @@ public class BwParsingUtils
 		return resultMap;
 	}
 
-	private static Map<String, Object>[] column(RfcResponse rfcResponse)
+	private Map<String, Object>[] column(RfcResponse rfcResponse)
 	{
 		DataList dataList = rfcResponse.getTable("E_T_AXIS_DATA_COLUMNS");
 
@@ -59,7 +109,7 @@ public class BwParsingUtils
 		return null;
 	}
 
-	private static Map<String, Object>[][] data(RfcResponse rfcResponse)
+	private Map<String, Object>[][] data(RfcResponse rfcResponse)
 	{
 		DataList axisList = rfcResponse.getTable("E_T_AXIS_DATA_ROWS");
 
@@ -91,7 +141,7 @@ public class BwParsingUtils
 		return null;
 	}
 
-	private static Map<String, Object>[] axis(RfcResponse rfcResponse)
+	private Map<String, Object>[] axis(RfcResponse rfcResponse)
 	{
 		DataList axisList = rfcResponse.getTable("E_T_AXIS_DATA_ROWS");
 
@@ -112,49 +162,5 @@ public class BwParsingUtils
 		}
 
 		return null;
-	}
-
-	public static List<Map<String, Object>> range(int seq, String name, Object value)
-	{
-		List<Map<String, Object>> list = new ArrayList<>();
-
-		Map<String, Object> rowMap1 = new HashMap<>();
-		rowMap1.put("NAME", NAME_KEY + seq);
-		rowMap1.put("VALUE", name);
-		list.add(rowMap1);
-
-		Map<String, Object> rowMap2 = new HashMap<>();
-		rowMap2.put("NAME", LOW_VALUE_KEY + seq);
-		rowMap2.put("VALUE", value);
-		list.add(rowMap2);
-
-		Map<String, Object> rowMap3 = new HashMap<>();
-		rowMap3.put("NAME", HIGH_VALUE_KEY + seq);
-		rowMap3.put("VALUE", value);
-		list.add(rowMap3);
-
-		Map<String, Object> rowMap4 = new HashMap<>();
-		rowMap4.put("NAME", O_KEY + seq);
-		rowMap4.put("VALUE", O_EQUAL);
-		list.add(rowMap4);
-
-		return list;
-	}
-
-	public static List<Map<String, Object>> single(int seq, String name, Object value)
-	{
-		List<Map<String, Object>> list = new ArrayList<>();
-
-		Map<String, Object> rowMap1 = new HashMap<>();
-		rowMap1.put("NAME", NAME_KEY + seq);
-		rowMap1.put("VALUE", name);
-		list.add(rowMap1);
-
-		Map<String, Object> rowMap2 = new HashMap<>();
-		rowMap2.put("NAME", VALUE_KEY + seq);
-		rowMap2.put("VALUE", value);
-		list.add(rowMap2);
-
-		return list;
 	}
 }

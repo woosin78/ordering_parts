@@ -1,12 +1,17 @@
 package org.jwebppy.platform.core.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 
+import org.apache.commons.validator.GenericValidator;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
+import org.jwebppy.portal.common.PortalCommonVo;
 
 public class CmDateFormatUtils
 {
@@ -218,5 +223,29 @@ public class CmDateFormatUtils
 		}
 
 		return platformUserDetails.getTimezone();
+	}
+
+	public static String stripDateFormat(String date)
+	{
+		if (CmStringUtils.isNotEmpty(date))
+		{
+			String format = CmDateFormatUtils.getDateFormat();
+
+			if (GenericValidator.isDate(date, format, true))
+			{
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+
+				try
+				{
+					return new SimpleDateFormat(PortalCommonVo.DEFAULT_DATE_FORMAT_YYYYMMDD).format(new Date(simpleDateFormat.parse(date).getTime()));
+				}
+				catch (ParseException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return null;
 	}
 }

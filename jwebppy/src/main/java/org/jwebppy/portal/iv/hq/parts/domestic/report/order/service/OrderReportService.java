@@ -5,7 +5,7 @@ import java.util.Map;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.jwebppy.portal.iv.common.utils.BwParsingUtils;
+import org.jwebppy.portal.iv.common.utils.BwParseHelper;
 import org.jwebppy.portal.iv.hq.parts.common.service.PartsGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class OrderReportService extends PartsGeneralService
 	{
 		RfcRequest rfcRequest = new RfcRequest("IV_BPP", "RS_VC_GET_QUERY_VIEW_DATA_FLAT");
 
-		int seq = 1;
+		BwParseHelper bwParseHelper = new BwParseHelper();
 
         rfcRequest
         	.field()
@@ -29,11 +29,11 @@ public class OrderReportService extends PartsGeneralService
         		})
         	.and()
         	.table("I_T_PARAMETER")
-        		.add(BwParsingUtils.range(seq++, "0SALEORG", paramMap.getSalesOrg()))
-        		.add(BwParsingUtils.range(seq++, "ZC_OO001", paramMap.getDistChannel()))
-        		.add(BwParsingUtils.single(seq++, "ZC_SM002", paramMap.getString("year")))
-        		.add(BwParsingUtils.single(seq++, "ZC_SO044", paramMap.getCustomerNo()));
+        		.add(bwParseHelper.range("0SALEORG", paramMap.getSalesOrg()))
+        		.add(bwParseHelper.range("ZC_OO001", paramMap.getDistChannel()))
+        		.add(bwParseHelper.single("ZC_SM002", paramMap.getString("year")))
+        		.add(bwParseHelper.single("ZC_SO044", paramMap.getCustomerNo()));
 
-		return BwParsingUtils.parse(simpleRfcTemplate.response(rfcRequest));
+		return bwParseHelper.parse(simpleRfcTemplate.response(rfcRequest));
 	}
 }

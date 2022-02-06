@@ -1,17 +1,12 @@
 package org.jwebppy.platform.core.dao.support;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.validator.GenericValidator;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.portal.common.PortalCommonVo;
 
 public class ErpDataMap extends DataMap implements Serializable
 {
@@ -205,25 +200,7 @@ public class ErpDataMap extends DataMap implements Serializable
 	{
 		if (value instanceof CharSequence)
 		{
-			if (CmStringUtils.isNotEmpty(value))
-			{
-				String strValue = (String)value;
-				String format = CmDateFormatUtils.getDateFormat();
-
-				if (GenericValidator.isDate(strValue, format, true))
-				{
-					SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-
-					try
-					{
-						this.put(key, new SimpleDateFormat(PortalCommonVo.DEFAULT_DATE_FORMAT_YYYYMMDD).format(new Date(simpleDateFormat.parse(strValue).getTime())));
-					}
-					catch (ParseException e)
-					{
-						e.printStackTrace();
-					}
-				}
-			}
+			this.put(key, CmDateFormatUtils.stripDateFormat((String)value));
 		}
 	}
 

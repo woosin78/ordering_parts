@@ -5,8 +5,6 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 
 <th:block layout:fragment="content">
-	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
-
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_T_ORDER_LIST}"></div>
 		<div id="BTN_search" class="block-button-area">
@@ -46,9 +44,7 @@
 				</td>
 				<th th:text="#{HQP_L_ORDER_TYPE}"></th>
 				<td>
-					<div class="input-area order-type">
-						<!-- select class="custom-ui" id="pOrderType" name="pOrderType"></select -->
-					</div>				
+					<div class="input-area order-type"></div>
 				</td>
 			</tr>		
 			<tr>

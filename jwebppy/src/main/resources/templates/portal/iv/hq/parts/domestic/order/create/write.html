@@ -5,10 +5,6 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 
 <th:block layout:fragment="content">
-	<script th:src="@{/portal/js/portal.utils.order.js}"></script>
-	<script th:src="@{/portal/js/dropzone/dropzone.min.js}"></script>
-	<link rel="stylesheet" type="text/css" class="ui" th:href="@{/portal/css/dropzone/dropzone.min.css}">
-
 	<!-- Modal for upload simulation -->	
 	<div class="dropzone-dimmer dimmer"></div>		
 	<div class="dropzone-area">
@@ -35,17 +31,25 @@
 	<div class="condition-area">
 	<form id="FORM_order">
 	<input type="hidden" id="soldToNo" name="soldToNo"/><!-- KUNNR -->
+	
+	<!-- Ship to Party. -->
 	<input type="hidden" id="shipToNo" name="shipToNo"/><!-- KUNAG -->
 	<input type="hidden" id="shipToName" name="shipToName"/><!-- KUNAG_NAME -->
 	<input type="hidden" id="shipToStreet" name="shipToStreet"/><!-- KUNAG_STREET -->
+	<input type="hidden" id="transferZone" name="transferZone"/><!-- TZONE -->
 	<input type="hidden" id="priceGroup" name="priceGroup"/><!-- KONDA -->
-	<input type="hidden" id="incoterms1" name="incoterms1"/><!-- INCO1 -->
-	<input type="hidden" id="incoterms2" name="incoterms2"/><!-- INCO2 -->
-	<input type="hidden" id="paymentTerms" name="paymentTerms"/><!-- ZTERM -->
-	<input type="hidden" id="shippingCondition" name="shippingCondition"/><!-- VSBED -->
-	<input type="hidden" id="shippingConditionName" name="shippingConditionName"/><!-- VSBED_TEXT -->
-	<input type="hidden" id="allowableNetValue" name="allowableNetValue"/><!-- ZZORAMT -->
-	<input type="hidden" id="currency" name="currency"/><!-- WAERS -->
+	
+	<!-- Shipping Info. -->
+	<input type="hidden" id="shippingCondition" name="shippingCondition"/>
+	<input type="hidden" id="shippingConditionName" name="shippingConditionName"/>
+	<input type="hidden" id="route" name="route"/>
+	<input type="hidden" id="routeName" name="routeName"/>	
+	<input type="hidden" id="paymentTerms" name="paymentTerms"/>
+	<input type="hidden" id="paymentTermsName" name="paymentTermsName"/>
+	<input type="hidden" id="incoterms1" name="incoterms1"/>
+	<input type="hidden" id="incoterms2" name="incoterms2"/>
+
+	<input type="hidden" id="currency" name="currency"/>
 	<input type="hidden" id="fileName" name="fileName"/><!-- Uploaded file name in excel format -->
 	<input type="hidden" id="lineNo" name="lineNo"/>
 	<input type="hidden" id="materialNo" name="materialNo"/>
@@ -57,8 +61,6 @@
 	<input type="hidden" id="message" name="message"/>
 	<input type="hidden" id="pricingInfo" name="pricingInfo"/>
 	<input type="hidden" id="simulationFrom" name="simulationFrom"/>	
-	<input type="hidden" id="tmpShippingCondition" name="tmpShippingCondition"/><!-- Shipping Condition 변경 시 이전 값을 저장해 두기 위한 용도 -->
-	<input type="hidden" id="tmpShippingConditionName" name="tmpShippingConditionName"/><!-- Shipping Condition 변경 시 이전 값을 저장해 두기 위한 용도 -->
 	
 	<table class="condition">
 		<tbody>
@@ -74,11 +76,11 @@
 				</th>
 			</tr>
 			<tr>
-				<th th:text="#{HQP_L_ORDER_TYPE}" ></th><!-- Order Type -->
+				<th th:text="#{HQP_L_ORDER_TYPE}"></th><!-- Order Type -->
 				<td>
 					<div class="input-area order-type"></div>
 				</td>
-				<th><!-- Ship To Party -->
+				<th>
 					<span th:text="#{HQP_L_SHIP_TO_PARTY}"></span><div class="split3"></div>
 					<div><button id="BTN_shipToParty" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button></div>
 				</th>
@@ -88,40 +90,45 @@
 			</tr>
 			<tr>
 				<th>
-					<!-- Customer P.O. Number -->
 					<div th:text="#{HQP_L_PO_NO}"></div><img src="/portal/img/icon_required.png" class="required" />
 				</th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="poNo" name="poNo" class="custom-ui"/>
+						<input type="text" id="poNo" name="poNo" class="custom-ui" readonly th:value="${poNo}"/>
 					</div>
 				</td>
-				<th>
-					<!-- Shipping Info -->
+				<th rowspan="2">
 					<span th:text="#{HQP_L_SHIPPING_INFO}"></span><div class="split3"></div>
 					<div><button id="BTN_shippingInfo" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button></div>
 				</th>
-				<td>
-					<span id="AREA_shippingCondition"></span>
+				<td rowspan="2">
+					<table class="table-inner table-fixed shippin-info">
+						<thead>
+							<tr>
+								<th th:text="#{HQP_L_SHIPPING_CONDITION}"></th>
+								<th th:text="#{HQP_L_ROUTE}"></th>
+								<th th:text="#{HQP_L_PAYMENT_TERMS}"></th>
+								<th th:text="#{HQP_L_INCOTERMS1}"></th>
+								<th th:text="#{HQP_L_INCOTERMS2}"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="shipping-condition"></td>
+								<td class="route"></td>								
+								<td class="payment-terms"></td>
+								<td class="incoterms1"></td>
+								<td class="incoterms2"></td>
+							</tr>
+						</tbody>
+					</table>					
 				</td>
 			</tr>
 			<tr>
-				<th th:text="#{HQP_L_RDD}"></th><!-- Request Delivery Date -->
+				<th th:text="#{HQP_L_RDD}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="rdd" name="rdd" class="custom-ui" readonly />
-					</div>
-				</td>
-				<th th:text="#{HQP_L_COMPLETE_DELIVERY}"></th><!-- Complete Delivery -->
-				<td>
-					<div class="input-area">
-						<input type="radio" class="custom-ui" id=compleDelivery1 name="compleDelivery" value="X"/>
-						<label for="compleDelivery1" th:text="#{HQP_L_YES}"></label>
-
-						<div class="split2"></div>
-
-						<input type="radio" class="custom-ui" id="compleDelivery2" name="compleDelivery" value="" checked/>
-						<label for="compleDelivery2" th:text="#{HQP_L_NO}"></label>
 					</div>
 				</td>
 			</tr>
@@ -175,7 +182,7 @@
 	<script>
 	$("input:radio[name=docType][value='[[${docType}]]']").prop("checked", true);
 	
-	var errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
+	let errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
 	
 	let UploadModal = {};
 	UploadModal.show = function() {
@@ -260,53 +267,6 @@
 	};
 	orderComponent.makeOrderType($(".order-type"), "orderType", null, false, "docType=" + $("input:radio[name=docType]:checked").val());
 	
-	function changeOrderType()
-	{
-		JpUtilsAjax.get({
-			url: "/portal/iv/hq/parts/domestic/order/create/header_info",
-			data: "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&docType=" + orderComponent.getSelectedDocType(),
-		    success: function(response, textStatus, jqXHR)
-		    {
-		    	let result = response.RESULT;
-	
-		    	/* Change shipping condition info. */
-		    	changeShippingInfo(result.VSBED, result.VSBED_TEXT);
-	
-		    	$("#paymentTermsName").val(result.ZTERM_TEXT);
-		    	$("#allowableNetValue").val(Number(result.ZZORAMT));
-	
-		    	$("#priceGroup").val(orderComponent.getSelectedPriceGroup());
-		    	
-		    	resetDoneSimulationHistory();
-		    }
-		});
-	};
-	
-	function changeShipToParty(shipToNo, shipToName, shipToStreet)
-	{
-		$("#shipToNo").val(shipToNo);
-		$("#shipToName").val(shipToName);
-		$("#shipToStreet").val(shipToStreet);
-	
-		$("#AREA_shipToAddress").html(shipToName + " " + shipToStreet);
-		
-		resetDoneSimulationHistory();
-	};
-	
-	function changeShippingInfo(shippingCondition, shippingConditionName)
-	{
-		//기존 정보 백업
-		$("#tmpShippingCondition").val($("#shippingCondition").val());
-		$("#tmpShippingConditionName").val($("#shippingConditionName").val());
-		
-		$("#shippingCondition").val(shippingCondition);
-		$("#shippingConditionName").val(shippingConditionName);
-	
-		$("#AREA_shippingCondition").html(shippingConditionName);
-		
-		resetDoneSimulationHistory();
-	};
-	
 	function setDefaultHeaderInfo()
 	{
 		JpUtilsAjax.get({
@@ -320,14 +280,102 @@
 		    	$("#incoterms2").val(result.INCO2);
 		    	$("#currency").val(result.WAERS);
 		    	$("#paymentTerms").val(result.ZTERM);
-		    	$("#allowableNetValue").val(Number(Number(result.ZZORAMT)));
 		    	
-		    	let shipToNo = (result.KUNAG == null || result.KUNAG == "") ? result.KUNNR : result.KUNAG;
-		    	changeShipToParty(shipToNo, result.KUNAG_NAME, result.KUNAG_STREET);
+		    	let shipToNo = (JpUtilsString.isEmpty(result.KUNAG)) ? result.KUNNR : result.KUNAG;
+		    	
+		    	setShipToParty({
+		    		shipToNo: shipToNo,
+		    		shipToName: result.KUNAG_NAME,
+		    		shipToAddress: result.KUNAG_STREET
+		    	});
 	
 		    	changeOrderType();
 		    }
 		});
+	};	
+	
+	function changeOrderType()
+	{
+		JpUtilsAjax.get({
+			url: "/portal/iv/hq/parts/domestic/order/create/header_info",
+			data: "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&docType=" + orderComponent.getSelectedDocType(),
+		    success: function(response, textStatus, jqXHR)
+		    {
+		    	let result = response.RESULT;
+	
+		    	/* Change shipping condition info. */
+		    	setShippingInfo({
+		    		shippingCondition: result.VSBED,
+		    		shippingConditionName: result.VSBED_TEXT,
+		    		route: result.ROUTE,
+		    		routeName: result.ROUTE_TEXT,
+		    		paymentTerms: result.ZTERM,
+		    		paymentTermsName: result.ZTERM_TEXT,
+		    		incoterms1: result.INCO1,
+		    		incoterms2: result.INCO2
+		    	});
+	
+		    	$("#priceGroup").val(orderComponent.getSelectedPriceGroup());
+		    	
+		    	resetDoneSimulation();
+		    }
+		});
+	};
+	
+	function _callbackShipToParty(result)
+	{
+		setShipToParty(result);
+	};
+	
+	function setShipToParty(result)
+	{
+		$("#shipToNo").val(result.shipToNo);
+		$("#shipToName").val(result.shipToName);
+		$("#shipToStreet").val(result.shipToStreet);
+		$("#transferZone").val(result.transferZone);
+	
+		let shipToAddress = [];
+		
+		shipToAddress.push(result.shipToName);
+		
+		if (JpUtilsString.isNotEmpty(result.shipToStreet))
+		{
+			shipToAddress.push(result.shipToStreet);
+		};
+		
+		if (JpUtilsString.isNotEmpty(result.transferZone))
+		{
+			shipToAddress.push(result.transferZone);
+		};
+		
+		$("#AREA_shipToAddress").html(shipToAddress.join(", "));
+		
+		resetDoneSimulation();
+	};	
+	
+	function _callbackShippingInfo(result)
+	{
+		setShippingInfo(result);
+		
+		doSimulation();
+	};
+	
+	function setShippingInfo(result)
+	{
+		$("#shippingCondition").val(result.shippingCondition);
+		$("#shippingConditionName").val(result.shippingConditionName);
+		$("#route").val(result.route);
+		$("#routeName").val(result.routeName);
+		$("#paymentTerms").val(result.paymentTerms);
+		$("#paymentTermsName").val(result.paymentTermsName);
+		$("#incoterms1").val(result.incoterms1);
+		$("#incoterms2").val(result.incoterms2);
+	
+		$(".shipping-condition").html(result.shippingConditionName);
+		$(".route").html(result.routeName);
+		$(".payment-terms").html(result.paymentTermsName);
+		$(".incoterms1").html(result.incoterms1);
+		$(".incoterms2").html(result.incoterms2);		
 	};
 	
 	function doSimulationByEnter(obj)
@@ -395,7 +443,7 @@
 		{
 			if ($("#shippingCondition").val() == "")
 			{
-				alert("[[#{DIVEU_M_0068}]]");
+				alert("[[#{HQP_L_EMPTY_SHIPPING_INFO}]]");
 				return;
 			};
 			
@@ -406,19 +454,19 @@
 	
 			if (materialNo.length == 0 || orderQties.length == 0)
 			{
-				alert("[[#{DIVEU_M_0001}]]");
+				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING	}]]");
 				return;
 			};
 	
 			if (materialNos.length != orderQties.length)
 			{
-				alert("[[#{DIVEU_M_0001}]]");
+				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING	}]]");
 				return;
 			};
 		};
 		
 		//시뮬레이션 실행 내역 초기화
-		resetDoneSimulationHistory();
+		resetDoneSimulation();
 	
 		$tableObj.ajax.reload();
 		
@@ -426,7 +474,7 @@
 		ProgressBar.show();	
 	};
 	
-	function resetDoneSimulationHistory()
+	function resetDoneSimulation()
 	{
 		$("#rdd").val("");
 		$("#BTN_priceInfo").val("");
@@ -461,7 +509,7 @@
 	});
 	
 	$("#BTN_shipToParty").on("click", function(event) {
-		Popup.open("/portal/iv/hq/parts/domestic/order/create/ship_to_party_list");
+		Popup.open("/portal/iv/hq/parts/domestic/order/create/popup/ship_to_party", 1100, 600);
 	});
 	
 	$("#BTN_onetimeAddress").on("click", function() {
@@ -471,7 +519,7 @@
 	$("#BTN_shippingInfo").on("click", function(event) {
 		let param = "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&customerNo=" + $("#soldToNo").val();
 	
-		Popup.open("/portal/iv/hq/parts/domestic/order/create/shipping_info_list?" + param, 700, 500);
+		Popup.open("/portal/iv/hq/parts/domestic/order/create/popup/shipping_info?" + param, 1000, 500);
 	});
 	
 	$("#BTN_addRow").on("click", function() {
@@ -584,11 +632,11 @@
 		
 		if ($("#docType1").is(":checked"))
 		{
-			confirmMsg = confirmMsg.replace("{0}", "[[#{HQP_T_ORDER}]]");
+			confirmMsg = JpUtilsString.replaceAll(confirmMsg, "{0}", "[[#{HQP_T_ORDER}]]");
 		}
 		else
 		{
-			confirmMsg = confirmMsg.replace("{0}", "[[#{HQP_T_INQUIRY}]]");
+			confirmMsg = JpUtilsString.replaceAll(confirmMsg, "{0}", "[[#{HQP_T_INQUIRY}]]");
 		};
 		
 		if (!confirm(confirmMsg))
@@ -621,18 +669,22 @@
 		    	
 		    	if (orderNo != "")
 		    	{
-		    		let url = "order_detail";
-		    		let message = "[[#{HQP_M_CREATE_ORDER_RESULT}]]".replace("{0}", orderNo);
+		    		let path = "order";
+		    		let message = JpUtilsString.replaceAll("[[#{HQP_M_CREATE_ORDER_RESULT}]]", "{1}", orderNo);
 
 		    		if ($("#docType2").is(":checked"))
 		    		{
-		    			url = "inquiry_list";
-		    			"[[#{HQP_M_CREATE_INQUIRY_RESULT}]]".replace("{0}", orderNo);
-		    		};		    		
+		    			path = "inquiry";
+		    			message = JpUtilsString.replaceAll(message, "{0}", "[[#{HQP_T_INQUIRY}]]");
+		    		}
+		    		else
+		    		{
+		    			message = JpUtilsString.replaceAll(message, "{0}", "[[#{HQP_T_ORDER}]]");
+		    		};
 		    		
 		    		alert(message);
 
-		    		document.location.href = "/portal/scm/parts/domestic/order/display/" + url + "?orderNo=" + orderNo;
+		    		document.location.href = "/portal/iv/hq/parts/domestic/order/display/" + path + "/view?orderNo=" + orderNo;
 		    	}
 		    	else
 		    	{
@@ -701,7 +753,7 @@
 					className:"center noselect",
 					render: function(data, type, row)
 					{
-						return '<button class="btn-popup" type="button" onclick="showSearchPartsPopup(this)"></button><input type="text" name="materialNo" class="custom-ui" value="' + row.materialNo + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
+						return '<button class="btn-popup" type="button"></button><input type="text" name="materialNo" class="custom-ui" value="' + row.materialNo + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
 				{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{HQP_L_SUPPLY_PART_NO}]]", width: 200},//Supply Part No
@@ -833,6 +885,14 @@
 			
 			// Datatable grid 초기 설정 셋업
 			//initGridTable($tableObj, true);
+			
+			$("#AREA_grid .btn-popup").on("click", function(event) {
+				_showPartSearch($(this).siblings("input[name=materialNo]").val());
+			});
+			
+			$.each($("#AREA_grid input[name=materialNo]"), function(index, item) {
+				_setPartAutocomplete(item);	
+			});
 	
 			ProgressBar.hide();
 		});

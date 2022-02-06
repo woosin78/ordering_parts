@@ -122,3 +122,10 @@ JpUtilsString.lengthAsByte = function(str)
 	
 	return totalLength;
 };
+
+JpUtilsString.replaceAll = function(str, from, to)
+{
+	let regex = new RegExp("\\" + from, "gi");
+	
+	return JpUtilsString.trimToEmpty(str).replace(regex, to);
+};

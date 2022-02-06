@@ -20,9 +20,12 @@ public class IvGeneralService extends PortalGeneralService
 		{
 			RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_GET_USER_PARAM");
 
-			rfcRequest.addField("I_USERID", CmStringUtils.upperCase(username));
-			rfcRequest.addField("I_BGCON", corpCode);
-			rfcRequest.addField("I_BGTYP", moduleCode);
+			rfcRequest.
+				field(new Object[][] {
+					{"I_USERID", CmStringUtils.upperCase(username)},
+					{"I_BGCON", corpCode},
+					{"I_BGTYP", moduleCode}
+				});
 
 			return simpleRfcTemplate.response(rfcRequest);
 		}

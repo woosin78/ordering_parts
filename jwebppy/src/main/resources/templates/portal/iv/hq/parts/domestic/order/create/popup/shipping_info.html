@@ -6,7 +6,7 @@
 
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{DCP_T_SHIPPING_INFO}"></div>
+		<div class="block-title" th:text="#{HQP_T_SHIPPING_INFO}"></div>
 	</div>
 	
 	<div id="AREA_grid" class="flex-grow grid-area">
@@ -14,13 +14,10 @@
 	</div>		
 	
 <script>
-
 //화면중 일부 area 를 채우는 그리드 예제. 상위 div #sample-grid-area 영역을 100% 채움.
 //컬럼 width 자동. scroller 자동.
 //고정된 맵 데이터 사용. 페이지 생성시 데이터 넘겨서 그리드 만드는 방식
-
 $(function(){
-	
 	$tableObj = $("#TBL_grid").DataTable({
 		select: true,   			// row 선택 기능 켬
 		ordering: true, 			// 정렬 기능 켬
@@ -35,12 +32,15 @@ $(function(){
 				{
 					return '<input type="radio" name="chk" class="custom-ui"><label></label>';
 				}
-			},		
-			{data: "VSBED", title: "[[#{HQP_L_SHIPPING_CONDITION}]]"},//Shipping Condition
-			{data: "VSBED_TX", title: "[[#{HQP_L_DESCRIPTION}]]"}//Description
+			},
+			{data: "VSBED_TX", title: "[[#{HQP_L_SHIPPING_CONDITION}]]"},
+			{data: "ROUTE", title: "[[#{HQP_L_ROUTE}]]"},
+			{data: "ZTERM_TX", title: "[[#{HQP_L_PAYMENT_TERMS}]]"},
+			{data: "INCO1", title: "[[#{HQP_L_INCOTERMS1}]]"},
+			{data: "INCO2", title: "[[#{HQP_L_INCOTERMS2}]]"}
 		],
 		ajax: {
-			url: "/portal/scm/parts/domestic/order/create/shipping_info_list/data",
+			url: "/portal/iv/hq/parts/domestic/order/create/shipping_info/data",
 			data: function(p)
 			{
 				// ajax로 넘길 파라미터
@@ -59,15 +59,24 @@ $(function(){
 		}
 	});
 	
-	$("#TBL_grid").on("draw.dt", function () {
-		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);		
-	});
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);	
 	
 	$("#TBL_grid tbody").on("click", "td", function() {
-		var row = $tableObj.row(this).data();
+		let row = $tableObj.row(this).data();
 		
-		opener.changeShippingInfo(row.VSBED, row.VSBED_TX);		
+		let result = {
+				shippingCondition: row.VSBED,
+				shippingConditionName: row.VSBED_TX,
+				route: row.ROUTE,
+				routeName: row.ROUTE_TX,
+				incoterms1: row.INCO1,
+				incoterms2: row.INCO2,
+				paymentTerms: row.ZTERM,
+				paymentTermsName: row.ZTERM_TX
+		};
+		
+		opener._callbackShippingInfo(result);		
 		
 		window.close();
 	});

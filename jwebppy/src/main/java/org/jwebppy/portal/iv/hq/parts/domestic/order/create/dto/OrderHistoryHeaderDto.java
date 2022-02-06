@@ -39,6 +39,7 @@ public class OrderHistoryHeaderDto extends PartsGeneralDto
 
 	public void setHeader(OrderDto order)
 	{
+		this.corp = order.getCorp();
 		this.docType = order.getDocType();
 		this.orderType = order.getOrderType();
 		this.soldToNo = order.getSoldToNo();

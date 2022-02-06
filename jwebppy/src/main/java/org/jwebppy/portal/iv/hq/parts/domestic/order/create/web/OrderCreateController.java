@@ -8,7 +8,10 @@ import java.util.Map;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.hq.common.HqCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
@@ -33,11 +36,13 @@ public class OrderCreateController extends PartsDomesticGeneralController
 	@Autowired
 	private OrderCreateService orderCreateService;
 
-	@RequestMapping("/order_form")
+	@RequestMapping("/write")
 	public String orderForm(Model model, WebRequest webRequest)
 	{
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+
 		model.addAttribute("docType", CmStringUtils.defaultIfEmpty(webRequest.getParameter("docType"), "C"));
-		model.addAttribute("erpUserInfo", getErpUserInfo());
+		model.addAttribute("poNo", CmStringUtils.stripStart(rfcParamMap.getCustomerNo(), "0") + CmDateFormatUtils.format(CmDateTimeUtils.now(), PortalCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -49,9 +54,7 @@ public class OrderCreateController extends PartsDomesticGeneralController
 	public Object headerInfo(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("AUART", paramMap.get("orderType"));
-		rfcParamMap.put("KONDA", paramMap.get("priceGroup"));
-		rfcParamMap.put("VBTYP", paramMap.get("docType"));
+		rfcParamMap.putAll(paramMap);
 
 		return orderCreateService.getHeaderInfo(rfcParamMap);
 	}
@@ -105,6 +108,8 @@ public class OrderCreateController extends PartsDomesticGeneralController
 			order.setSalesOrg(userInfoMap.getSalesOrg());
 			order.setDistChannel(userInfoMap.getDistChannel());
 			order.setDivision(userInfoMap.getDivision());
+			order.setSoldToNo(userInfoMap.getCustomerNo());
+			order.setSoldToName(userInfoMap.getCustomerName());
 
 			List<OrderItemDto> orderItems = new LinkedList<>();
 
@@ -146,38 +151,42 @@ public class OrderCreateController extends PartsDomesticGeneralController
 		return null;
 	}
 
-	@RequestMapping("/ship_to_party_list")
-	public Object shipToPartyList(@RequestParam Map<String, Object> paramMap)
+	@RequestMapping("/popup/ship_to_party")
+	public Object shipToParty(@RequestParam Map<String, Object> paramMap)
 	{
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/ship_to_party_list/data")
+	@RequestMapping("/ship_to_party/data")
 	@ResponseBody
-	public Object shipToPartyListData(@RequestParam Map<String, Object> paramMap)
+	public Object shipToPartyData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("customerNo", paramMap.get("pCustomerNo"));
-		rfcParamMap.put("customerName", paramMap.get("pCustomerName"));
+
+		rfcParamMap.with(paramMap)
+			.addByKey(new Object[][] {
+				{"customerNo", "pCustomerNo"},
+				{"customerName", "pCustomerName"}
+			});
 
 		return orderCreateService.getShipToParty(rfcParamMap);
 	}
 
-	@RequestMapping("/shipping_info_list")
-	public Object shippingInfoList(Model model, WebRequest webRequest)
+	@RequestMapping("/popup/shipping_info")
+	public Object shippingInfo(Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/shipping_info_list/data")
+	@RequestMapping("/shipping_info/data")
 	@ResponseBody
-	public Object shippingInfoListData(@RequestParam Map<String, Object> paramMap)
+	public Object shippingInfoData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("orderType", paramMap.get("orderType"));
-		rfcParamMap.put("priceGroup", paramMap.get("priceGroup"));
+
+		rfcParamMap.putAll(paramMap);
 		rfcParamMap.put("customerNo", rfcParamMap.getCustomerNo());
 
 		return orderCreateService.getShippingInfo(rfcParamMap);
@@ -213,7 +222,7 @@ public class OrderCreateController extends PartsDomesticGeneralController
 		return resultMap;
 	}
 
-	@RequestMapping("/error_report")
+	@RequestMapping("/popup/error_report")
 	public String errorReport()
 	{
 		return DEFAULT_VIEW_URL;

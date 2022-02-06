@@ -21,15 +21,15 @@
 		<tbody>
 			<tr>
 				<th th:text="#{HQP_L_ORDER_TYPE}"></th><!-- Order Type -->
-				<td id="KONDA_TEXT" style="width:250px;"></td>
+				<td id="KONDA_TEXT"></td>
 				<th th:text="#{HQP_L_SHIP_TO_PARTY}"></th><!-- Ship To Party -->
 				<td id="KUNAG_NAME"></td>
 			</tr>
 			<tr>
 				<th th:text="#{HQP_L_PO_NO}"></th><!-- Customer P.O. Number -->
 				<td id="BSTNK"></td>
-				<th th:text="#{HQP_L_SHIPPING_INFO}"></th><!-- Shipping Info -->
-				<td>
+				<th th:text="#{HQP_L_SHIPPING_INFO}" rowspan="2"></th><!-- Shipping Info -->
+				<td rowspan="2">
 					<table class="table-inner table-fixed">
 						<thead>
 							<tr>
@@ -54,7 +54,7 @@
 			</tr>
 			<tr>
 				<th th:text="#{HQP_L_RDD}"></th><!-- Request Delivery Date -->
-				<td id="VDATU" colspan="3"></td>
+				<td id="VDATU"></td>
 			</tr>
 			<tr>
 				<th th:text="#{HQP_L_REMARKS}"></th><!-- Remarks -->				
