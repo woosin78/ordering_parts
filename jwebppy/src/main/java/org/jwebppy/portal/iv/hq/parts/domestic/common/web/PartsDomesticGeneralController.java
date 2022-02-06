@@ -4,5 +4,4 @@ import org.jwebppy.portal.iv.hq.parts.common.web.PartsGeneralController;
 
 public class PartsDomesticGeneralController extends PartsGeneralController
 {
-
 }

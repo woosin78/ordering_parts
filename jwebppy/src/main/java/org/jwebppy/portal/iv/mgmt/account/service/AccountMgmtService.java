@@ -208,10 +208,10 @@ public class AccountMgmtService
 	{
 		Map<String, String[]> salesAreaMap = new HashMap<>();
 
-		salesAreaMap.put("EUDOP", new String[] { "7816", "10", "60" });//EUDOP
-		salesAreaMap.put("UKDOP", new String[] { "7216", "10", "60" });//UKDOP
-		salesAreaMap.put("HQDOP", new String[] { "F116", "10", "60" });//HQDOP
-		salesAreaMap.put("HQEXP", new String[] { "F116", "20", "60" });//HQEXP
+		salesAreaMap.put("EUDOP", new String[] {"7816", "10", "60"});//EUDOP
+		salesAreaMap.put("UKDOP", new String[] {"7216", "10", "60"});//UKDOP
+		salesAreaMap.put("HQDOP", new String[] {"F116", "10", "60"});//HQDOP
+		salesAreaMap.put("HQEXP", new String[] {"F116", "20", "60"});//HQEXP
 
 		return salesAreaMap.get(bizType);
 	}
@@ -233,22 +233,22 @@ public class AccountMgmtService
 		Map<String, String[]> authorityMap = new HashMap<>();
 
 		//유럽부품
-		authorityMap.put("EUDOP_I", new String[] { "EU_SS_DEALER", "EU_SS_ADMIN" });//Internal User
-		authorityMap.put("EUDOP_D", new String[] { "EU_SS_DEALER" });//Dealer
-		authorityMap.put("EUDOP_S", new String[] { "EU_SS_DEALER", "EU_SS_ADMIN" });//Sub Dealer
-		authorityMap.put("EUDOP_R", new String[] { "EU_SS_DEALER", "EU_SS_ADMIN" });//Read-Only Dealer
+		authorityMap.put("EUDOP_I", new String[] {"EU_SS_DEALER", "EU_SS_ADMIN"});//Internal User
+		authorityMap.put("EUDOP_D", new String[] {"EU_SS_DEALER"});//Dealer
+		authorityMap.put("EUDOP_S", new String[] {"EU_SS_DEALER", "EU_SS_ADMIN"});//Sub Dealer
+		authorityMap.put("EUDOP_R", new String[] {"EU_SS_DEALER", "EU_SS_ADMIN"});//Read-Only Dealer
 
 		//영국부품
-		authorityMap.put("UKDOP_I", new String[] { "UK_SS_DEALER", "UK_SS_ADMIN" });//Internal User
-		authorityMap.put("UKDOP_D", new String[] { "UK_SS_DEALER" });//Dealer
+		authorityMap.put("UKDOP_I", new String[] {"UK_SS_DEALER", "UK_SS_ADMIN"});//Internal User
+		authorityMap.put("UKDOP_D", new String[] {"UK_SS_DEALER"});//Dealer
 
 		//본사내수부품
-		authorityMap.put("HQDOP_I", new String[] { "DP_IVDO_PARTS_DEALER", "DP_ACCOUNTS_MANAGER" });//Internal User
-		authorityMap.put("HQDOP_D", new String[] { "DP_IVDO_PARTS_DEALER" });//Dealer
+		authorityMap.put("HQDOP_I", new String[] {"DP_IVDO_PARTS_DEALER", "DP_ACCOUNTS_MANAGER"});//Internal User
+		authorityMap.put("HQDOP_D", new String[] {"DP_IVDO_PARTS_DEALER"});//Dealer
 
 		//본사수출부품
-		authorityMap.put("HQEXP_I", new String[] { "UK_SS_DEALER", "UK_SS_ADMIN" });//Internal User
-		authorityMap.put("HQEXP_D", new String[] { "UK_SS_DEALER" });//Dealer
+		authorityMap.put("HQEXP_I", new String[] {"UK_SS_DEALER", "UK_SS_ADMIN"});//Internal User
+		authorityMap.put("HQEXP_D", new String[] {"UK_SS_DEALER"});//Dealer
 
 		return authorityMap.get(bizType + "_" + userType);
 	}

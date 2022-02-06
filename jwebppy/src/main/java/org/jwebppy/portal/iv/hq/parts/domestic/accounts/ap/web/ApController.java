@@ -9,6 +9,7 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
+import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.accounts.ap.service.ApService;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
@@ -52,16 +53,16 @@ public class ApController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_LIST");
 		Map summaryMap = (Map)rfcResponse.getResultMap().get("LS_9188");
 
-		calcPriceByCurrency(dataList, new String[] { "TLAMT", "RETAMT", "CHAMT", "TOTAL", "ARREAR" }, null, null, 100);
-		calcPriceByCurrency(dataList, new String[] { "TOTAL" }, null, null, -1);
-		calcPriceByCurrency(summaryMap, new String[] { "CREDAMT", "DUEAMT", "CURAMT", "PROAMT", "BALAMT" }, null, null, 100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"TLAMT", "RETAMT", "CHAMT", "TOTAL", "ARREAR"}, null, null, 100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"TOTAL"}, null, null, -1);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(summaryMap, new String[] {"CREDAMT", "DUEAMT", "CURAMT", "PROAMT", "BALAMT"}, null, null, 100);
 
 		FormatBuilder.with(dataList)
-			.decimalFormat(new String[] { "TLAMT", "RETAMT", "CHAMT", "TOTAL", "ARREAR" })
-			.dateFormat(new String[] { "CRDAT", "ENDAT" });
+			.decimalFormat(new String[] {"TLAMT", "RETAMT", "CHAMT", "TOTAL", "ARREAR"})
+			.dateFormat(new String[] {"CRDAT", "ENDAT"});
 
 		FormatBuilder.with(summaryMap)
-			.decimalFormat(new String[] { "CREDAMT", "DUEAMT", "CURAMT", "PROAMT", "BALAMT" });
+			.decimalFormat(new String[] {"CREDAMT", "DUEAMT", "CURAMT", "PROAMT", "BALAMT"});
 
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("summary", summaryMap);
@@ -104,7 +105,7 @@ public class ApController extends PartsDomesticGeneralController
 
 		DataList dataList = rfcResponse.getTable("T_INVOICE_DETAIL");
 
-		calcPriceByCurrency(dataList, new String[] { "NETPR", "NETWR", "MWSBP" }, null, null, 100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"NETPR", "NETWR", "MWSBP"}, null, null, 100);
 
 		FormatBuilder.with(dataList)
 			.integerFormat("VEPOS")

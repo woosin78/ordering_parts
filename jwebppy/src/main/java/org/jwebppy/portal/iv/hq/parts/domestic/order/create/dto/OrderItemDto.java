@@ -32,6 +32,8 @@ public class OrderItemDto extends PartsGeneralDto
 	private String netValue;//NET_VALUE
 	private String listPrice;//LIST
 	private String uom;//UOM
+	private String amDevPart;//AM Dev. Part
+	private String boQty;//B/O Qty.
 	private String stockDiv;
 	private String stockDiveu;
 	private String stockDivuk;

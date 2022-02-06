@@ -7,6 +7,7 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
+import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.accounts.ar.service.ArService;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
@@ -60,11 +61,11 @@ public class ArController extends PartsDomesticGeneralController
 
 		DataList dataList = rfcResponse.getTable("T_AP_INVOICE_DETAIL");
 
-		calcPriceByCurrency(dataList, new String[] { "NETPR", "WRBTR" }, "WAERS", new String[] { "KRW", "JPY" }, 100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"NETPR", "WRBTR"}, "WAERS", new String[] {"KRW", "JPY"}, 100);
 
 		FormatBuilder.with(dataList)
 			.qtyFormat("MENGE")
-			.decimalFormat(new String[] { "NETPR", "WRBTR" })
+			.decimalFormat(new String[] {"NETPR", "WRBTR"})
 			.dateFormat("BLDAT");
 
 		return dataList;

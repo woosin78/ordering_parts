@@ -61,8 +61,8 @@ public class BackorderController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_BACKORDER_LIST");
 
 		FormatBuilder.with(dataList)
-			.dateFormat(new String[] { "AUDAT", "PRETD" })
-			.qtyFormat(new String[] { "KWMENG_SO", "KWMENG_SH", "KWMENG" })
+			.dateFormat(new String[] {"AUDAT", "PRETD"})
+			.qtyFormat(new String[] {"KWMENG_SO", "KWMENG_SH", "KWMENG"})
 			.decimalFormat("NETWR");
 
 		return dataList;

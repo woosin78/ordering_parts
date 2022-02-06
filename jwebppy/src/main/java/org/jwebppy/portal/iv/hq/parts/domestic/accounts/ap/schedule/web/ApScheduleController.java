@@ -9,6 +9,7 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
+import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.accounts.ap.schedule.service.ApScheduleService;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
@@ -71,17 +72,17 @@ public class ApScheduleController extends PartsDomesticGeneralController
 			summaryMap.put("SUMMARY_4", dataMap.getDecimal("BNAMT"));//반납
 			summaryMap.put("SUMMARY_5", dataMap.getDecimal("DAAMT").add(dataMap.getDecimal("B1AMT")).add(dataMap.getDecimal("APAMT")).add(dataMap.getDecimal("BNAMT")));//합계
 
-			calcPriceByCurrency(summaryMap, new String[] { "SUMMARY_1", "SUMMARY_2", "SUMMARY_3", "SUMMARY_4", "SUMMARY_5" }, null, null, -1);
+			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(summaryMap, new String[] {"SUMMARY_1", "SUMMARY_2", "SUMMARY_3", "SUMMARY_4", "SUMMARY_5"}, null, null, -1);
 
 			FormatBuilder.with(summaryMap)
-				.decimalFormat(new String[] { "SUMMARY_1", "SUMMARY_2", "SUMMARY_3", "SUMMARY_4", "SUMMARY_5" });
+				.decimalFormat(new String[] {"SUMMARY_1", "SUMMARY_2", "SUMMARY_3", "SUMMARY_4", "SUMMARY_5"});
 		}
 
-		calcPriceByCurrency(dataList, new String[] { "TOTAL" }, null, null, -100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"TOTAL"}, null, null, -100);
 
 		FormatBuilder.with(dataList)
-			.decimalFormat(new String[] { "TOTAL" })
-			.dateFormat(new String[] { "SALEDT", "BUDAT" });
+			.decimalFormat(new String[] {"TOTAL"})
+			.dateFormat(new String[] {"SALEDT", "BUDAT"});
 
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("summary", summaryMap);

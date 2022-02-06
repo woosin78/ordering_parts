@@ -7,6 +7,7 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
+import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
@@ -62,12 +63,12 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_LIST");
 
 		//KRW, JPY 는 가격에 100을 곱해줌
-		calcPriceByCurrency(dataList, new String[] { "NETPR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"NETPR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
 
 		FormatBuilder.with(dataList)
 			.integerFormat("TKNUM")
-			.qtyFormat(new String[] { "COUNT1", "COUNT2" })
-			.decimalFormat(new String[] { "NETWR", "BRGEW" })
+			.qtyFormat(new String[] {"COUNT1", "COUNT2"})
+			.decimalFormat(new String[] {"NETWR", "BRGEW"})
 			.dateFormat("ZFOBDT");
 
 		return dataList;
@@ -114,12 +115,12 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_DETAIL");
 
 		//KRW, JPY 는 가격에 100을 곱해줌
-		calcPriceByCurrency(dataList, new String[] { "NETPR", "NETWR" }, "WAERK", new String[] { "KRW", "JPY" }, 100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"NETPR", "NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
 
 		FormatBuilder.with(dataList)
-			.integerFormat(new String[] { "TKNUM", "EXIDV" })
+			.integerFormat(new String[] {"TKNUM", "EXIDV"})
 			.qtyFormat("LFIMG")
-			.decimalFormat(new String[] { "NETPR", "NETWR", "KWERT" })
+			.decimalFormat(new String[] {"NETPR", "NETWR", "KWERT"})
 			.dateFormat("ZFOBDT");
 
 		return dataList;

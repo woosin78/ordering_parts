@@ -9,6 +9,7 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
+import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
@@ -82,14 +83,14 @@ public class PartInfoController extends PartsDomesticGeneralController
 				}
 			}
 
-			if (kbetr == 0)
+			double rate = 1.25;
+
+			if (kbetr > 0)
 			{
-				calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, 1.25);
+				rate = 1 + kbetr * 0.01;
 			}
-			else
-			{
-				calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, (1 + kbetr * 0.01));
-			}
+
+			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, rate);
 
 			FormatBuilder.with(scaleList)
 				.qtyFormat(new String[] {"OPENQ"})

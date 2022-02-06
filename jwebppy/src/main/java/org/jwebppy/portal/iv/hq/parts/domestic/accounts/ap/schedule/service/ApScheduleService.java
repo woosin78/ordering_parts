@@ -36,7 +36,7 @@ public class ApScheduleService
 			.and()
 			.table("I_BUDAT")
 				.add(budatMap)
-			.output(new String[] { "LS_9189", "I_LIST" });
+			.output(new String[] {"LS_9189", "I_LIST"});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}

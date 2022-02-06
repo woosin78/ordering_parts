@@ -43,7 +43,7 @@ public class ApService
 			.and()
 			.table("I_BUDAT")
 				.add(budatMap)
-			.output(new String[] { "LS_9188", "T_LIST" });
+			.output(new String[] {"LS_9188", "T_LIST"});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}

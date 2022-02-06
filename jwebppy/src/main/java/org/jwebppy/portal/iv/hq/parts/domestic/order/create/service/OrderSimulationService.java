@@ -20,6 +20,7 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.core.util.Formatter;
+import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.PricingResultDto;
@@ -104,7 +105,7 @@ public class OrderSimulationService
 			rfcRequest.addStructure("LS_GENERAL", general);
 			rfcRequest.addStructure("LS_MAIN_HEAD", mainHead);
 			rfcRequest.addStructure("LS_ERROR_IGNORE", errorIgnore);
-			rfcRequest.addStructure("LS_OPTION", "STOCK", "X");//각 PDC 별 재고 정보 가져오기
+			rfcRequest.addStructure("LS_OPTION", "STOCK", "");//각 PDC 별 재고 정보 가져오기
 
 			Map<String, String> divMap = new HashMap<>();
 			divMap.put("WERKS", "F160");
@@ -271,8 +272,10 @@ public class OrderSimulationService
 
 		if (CollectionUtils.isNotEmpty(items))
 		{
+			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
+
 			FormatBuilder.with(items)
-				.integerFormat(new String[] {"QTY", "LOT_QTY", "MIN_QTY"})
+				.qtyFormat(new String[] {"QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY"})
 				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"});
 
 			List<OrderItemDto> normalOrderItems = new LinkedList<>();
@@ -314,7 +317,8 @@ public class OrderSimulationService
 				orderItem.setVendor(dataMap.getString("LIFNR"));
 				orderItem.setPlant(dataMap.getString("PLANT"));
 				orderItem.setStockDiv(dataMap.getString("DIV"));
-				orderItem.setStockDiveu(dataMap.getString("DIEUFL"));
+				orderItem.setAmDevPart(dataMap.getString("AM_PART_NO"));
+				orderItem.setBoQty(dataMap.getString("ZBOQTY"));
 
 				normalOrderItems.add(orderItem);
 			}

@@ -59,7 +59,7 @@ public class OrderStatusController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_HEADER");
 
 		FormatBuilder.with(dataList)
-			.qtyFormat(new String[] { "SO_ITEM", "SO_QTY", "PI_QTY", "SH_QTY", "IN_QTY", "BO_AMT" })
+			.qtyFormat(new String[] {"SO_ITEM", "SO_QTY", "PI_QTY", "SH_QTY", "IN_QTY", "BO_AMT"})
 			.dateFormat("ERDAT");
 
 		return dataList;
@@ -84,7 +84,7 @@ public class OrderStatusController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_DETAIL");
 
 		FormatBuilder.with(dataList)
-			.dateFormat(new String[] { "AUDAT", "ERDAT", "FST_ETD", "LST_ETD" });
+			.dateFormat(new String[] {"AUDAT", "ERDAT", "FST_ETD", "LST_ETD"});
 
 		return dataList;
 	}

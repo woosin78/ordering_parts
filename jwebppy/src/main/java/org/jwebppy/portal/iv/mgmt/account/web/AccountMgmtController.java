@@ -147,10 +147,10 @@ public class AccountMgmtController extends IvGeneralController
 	{
 		Map<String, String[]> salesAreaMap = new HashMap<>();
 
-		salesAreaMap.put("EUDOP", new String[] { "7816", "10", "60" });//EUDOP
-		salesAreaMap.put("UKDOP", new String[] { "7216", "10", "60" });//UKDOP
-		salesAreaMap.put("HQDOP", new String[] { "F116", "10", "60" });//HQDOP
-		salesAreaMap.put("HQEXP", new String[] { "F116", "20", "60" });//HQEXP
+		salesAreaMap.put("EUDOP", new String[] {"7816", "10", "60"});//EUDOP
+		salesAreaMap.put("UKDOP", new String[] {"7216", "10", "60"});//UKDOP
+		salesAreaMap.put("HQDOP", new String[] {"F116", "10", "60"});//HQDOP
+		salesAreaMap.put("HQEXP", new String[] {"F116", "20", "60"});//HQEXP
 
 		return salesAreaMap.get(bizType);
 	}
