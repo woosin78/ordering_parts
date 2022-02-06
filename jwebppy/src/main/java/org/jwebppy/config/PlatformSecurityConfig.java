@@ -35,9 +35,10 @@ public class PlatformSecurityConfig extends WebSecurityConfigurerAdapter
 	};
 
 	private final String[] commonRequests = {
-			PlatformConfigVo.CONTEXT_PATH + "/mgmt/gnb/menu", //GNB 메뉴
-			PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/login/history/last_login_info", //최종로그인정보 제공
-			PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/check/valid_credentials" //아이디,비밀번호 유효성 체크
+			PlatformConfigVo.CONTEXT_PATH + "/mgmt/gnb/menu",//GNB 메뉴
+			PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/login/history/last_login_info",//최종로그인정보 제공
+			PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/check/valid_credentials",//아이디,비밀번호 유효성 체크
+			PlatformConfigVo.CONTEXT_PATH + "/common/sso/**"//SSO
 	};
 
 	@Override
