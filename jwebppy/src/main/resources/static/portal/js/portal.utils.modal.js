@@ -2,7 +2,7 @@ let Modal = {};
 
 Modal.show = function(title, width, height, content, isAllowToClose) {
 	//기존에 오픈된 modal 삭제
-	$(".modal-block").remove();	
+	$(".modal-block, .modal-dimmer").remove();	
 	
 	let html = [];
 	html.push("<div class='modal-dimmer dimmer'></div>");
@@ -19,10 +19,10 @@ Modal.show = function(title, width, height, content, isAllowToClose) {
 	};
 	
 	html.push("		</div>");
-	html.push("		<div>" + content + "</div>");
+	html.push("		<div class='modal-content'>" + content + "</div>");
 	html.push("	</div>");
 	html.push("	</div>");
-	html.push("</div>");	
+	html.push("</div>");
 	
 	$("body").append(html.join(""));
 	
@@ -49,28 +49,35 @@ Modal.show = function(title, width, height, content, isAllowToClose) {
 		$(".modal-dimmer, .modal-block").hide();
 	});
 	
+	Modal.dimmerResize();
+	
 	$(window).resize(function() {
 		Modal.resize(width, height);
+		Modal.dimmerResize();
 	});
 
 	$(window).scroll(function() {
-		let width = $(window).width() + ($(document).width() - window.innerWidth) + $.position.scrollbarWidth();
-		
-		if (width > screen.availWidth)
-		{
-			width = screen.availWidth;
-		};
-		
-		$(".modal-dimmer").css({
-			"width": width,
-			"height": "100%"
-		});
+		Modal.dimmerResize();
+	});
+};
+
+Modal.dimmerResize = function() {
+	let width = $(window).width() + ($(document).width() - window.innerWidth) + $.position.scrollbarWidth();
+	
+	if (width > screen.availWidth)
+	{
+		width = screen.availWidth;
+	};
+	
+	$(".modal-dimmer").css({
+		"width": width,
+		"height": $(document).height()
 	});
 };
 
 Modal.resize = function(width, height) {	
 	let left = ($(window).innerWidth() - width) * 0.5;
-	let top = ($(window).innerHeight() - height) * 0.5;
+	let top = ($(window).innerHeight() - height) * 0.5 + $(window).scrollTop();
 	
 	$(".modal-block").css({
 		"left": left,

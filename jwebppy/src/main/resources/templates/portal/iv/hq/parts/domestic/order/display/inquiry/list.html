@@ -217,9 +217,9 @@ $(function(){
 	});
 	
 	$("#TBL_grid tbody").on("click", "td:nth-child(3)", function () {
-		let data = $tableObj.row($(this)).data();		
+		let orderNo = $tableObj.row($(this)).data().VBELN2;		
 		
-		Popup.open("/portal/iv/hq/parts/domestic/order/display/order/popup/view?orderNo=" + data.VBELN2 + "&pOrderNo=" + data.VBELN2, 1280, 720);
+		Popup.open("/portal/iv/hq/parts/domestic/order/display/order/popup/view?orderNo=" + orderNo + "&pOrderNo=" + orderNo, 1280, 720);
 	});		
 });
 </script>	

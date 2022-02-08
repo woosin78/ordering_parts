@@ -182,9 +182,9 @@ $(function(){
 	$("#TBL_grid tbody").on("click", "td:first-child", function () {
 		let orderNo = $tableObj.cell(this).data();
 		
-		if (orderNo != null)
+		if (JpUtilsString.isNotEmpty(orderNo))
 		{
-			$("#orderNo").val($tableObj.cell(this).data());
+			$("#orderNo").val(orderNo);
 			$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/display/order/view").submit();
 		};
 	});

@@ -105,7 +105,7 @@ function dataTableResizeWithoutScrollY($dataTable, $parent){
 	
 	$parent.append(bottom);
 
-	$dataTable.fixedColumns().relayout();
+	//$dataTable.fixedColumns().relayout();
 }
 
 /* 

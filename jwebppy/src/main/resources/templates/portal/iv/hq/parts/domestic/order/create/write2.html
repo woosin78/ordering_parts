@@ -5,6 +5,30 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 
 <th:block layout:fragment="content">
+
+<style>
+.thumbnail {
+	width:100px;
+	height:100px;
+	/* border: 1px solid #ccc; */
+	cursor: pointer;
+}
+.thumbnail-no-image {
+	width:100px;
+	height:100px;
+	/* border: 1px solid #ccc; */
+}
+.bold {
+	font-weight: bold;
+}
+.orange {
+	color: #e36f12;
+}
+.blue {
+	color: #4d76dc;
+}
+</style>
+
 	<!-- Modal for upload simulation -->	
 	<div class="dropzone-dimmer dimmer"></div>		
 	<div class="dropzone-area">
@@ -22,161 +46,179 @@
 
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_T_ORDER_CREATE}"></div>
-		<div class="block-button-area">
-			<button id="BTN_create" type="button" th:text="#{HQP_B_CREATE}"></button>
-			<button id="BTN_shoppingCart" type="button" th:text="#{HQP_B_SHOPPING_CART}"></button>
-		</div>
+		<div class="block-button-area"></div>
 	</div>
 
-	<div class="condition-area">
-	<form id="FORM_order">
-	<input type="hidden" id="soldToNo" name="soldToNo"/><!-- KUNNR -->
-	
-	<!-- Ship to Party. -->
-	<input type="hidden" id="shipToNo" name="shipToNo"/><!-- KUNAG -->
-	<input type="hidden" id="shipToName" name="shipToName"/><!-- KUNAG_NAME -->
-	<input type="hidden" id="shipToStreet" name="shipToStreet"/><!-- KUNAG_STREET -->
-	<input type="hidden" id="transferZone" name="transferZone"/><!-- TZONE -->
-	<input type="hidden" id="priceGroup" name="priceGroup"/><!-- KONDA -->
-	
-	<!-- Shipping Info. -->
-	<input type="hidden" id="shippingCondition" name="shippingCondition"/>
-	<input type="hidden" id="shippingConditionName" name="shippingConditionName"/>
-	<input type="hidden" id="route" name="route"/>
-	<input type="hidden" id="routeName" name="routeName"/>	
-	<input type="hidden" id="paymentTerms" name="paymentTerms"/>
-	<input type="hidden" id="paymentTermsName" name="paymentTermsName"/>
-	<input type="hidden" id="incoterms1" name="incoterms1"/>
-	<input type="hidden" id="incoterms2" name="incoterms2"/>
-
-	<input type="hidden" id="currency" name="currency"/>
-	<input type="hidden" id="fileName" name="fileName"/><!-- Uploaded file name in excel format -->
-	<input type="hidden" id="lineNo" name="lineNo"/>
-	<input type="hidden" id="materialNo" name="materialNo"/>
-	<input type="hidden" id="orderQty" name="orderQty"/>
-	<input type="hidden" id="lotQty" name="lotQty"/>
-	<input type="hidden" id="uom" name="uom"/>
-	<input type="hidden" id="availability" name="availability"/>
-	<input type="hidden" id="blockReason" name="blockReason"/>
-	<input type="hidden" id="message" name="message"/>
-	<input type="hidden" id="pricingInfo" name="pricingInfo"/>
-	<input type="hidden" id="simulationFrom" name="simulationFrom"/>	
-	
-	<table class="condition">
-		<tbody>
-			<tr>
-				<th colspan="4">
-					<div class="input-area">
-						<input type="radio" class="custom-ui" id="docType1" name="docType" value="C" checked />
-						<label th:text="#{HQP_L_ORDER}"></label>
-						&nbsp;&nbsp;
-						<input type="radio" class="custom-ui" id="docType2" name="docType" value="A" />
-						<label th:text="#{HQP_L_INQUIRY}"></label>
-					</div>
-				</th>
-			</tr>
-			<tr>
-				<th th:text="#{HQP_L_ORDER_TYPE}"></th><!-- Order Type -->
-				<td>
-					<div class="input-area order-type"></div>
-				</td>
-				<th>
-					<span th:text="#{HQP_L_SHIP_TO_PARTY}"></span><div class="split3"></div>
-					<div><button id="BTN_shipToParty" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button></div>
-				</th>
-				<td>
-					<div id="AREA_shipToAddress"></div>					
-				</td>
-			</tr>
-			<tr>
-				<th>
-					<div th:text="#{HQP_L_PO_NO}"></div><img src="/portal/img/icon_required.png" class="required" />
-				</th>
-				<td>
-					<div class="input-area">
-						<input type="text" id="poNo" name="poNo" class="custom-ui" readonly th:value="${poNo}"/>
-					</div>
-				</td>
-				<th rowspan="2">
-					<span th:text="#{HQP_L_SHIPPING_INFO}"></span><div class="split3"></div>
-					<div><button id="BTN_shippingInfo" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button></div>
-				</th>
-				<td rowspan="2">
-					<table class="table-inner table-fixed shippin-info">
-						<thead>
-							<tr>
-								<th th:text="#{HQP_L_SHIPPING_CONDITION}"></th>
-								<th th:text="#{HQP_L_ROUTE}"></th>
-								<th th:text="#{HQP_L_PAYMENT_TERMS}"></th>
-								<th th:text="#{HQP_L_INCOTERMS1}"></th>
-								<th th:text="#{HQP_L_INCOTERMS2}"></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="shipping-condition"></td>
-								<td class="route"></td>								
-								<td class="payment-terms"></td>
-								<td class="incoterms1"></td>
-								<td class="incoterms2"></td>
-							</tr>
-						</tbody>
-					</table>					
-				</td>
-			</tr>
-			<tr>
-				<th th:text="#{HQP_L_RDD}"></th>
-				<td>
-					<div class="input-area">
-						<input type="text" id="rdd" name="rdd" class="custom-ui" readonly />
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<th th:text="#{HQP_L_REMARKS}"></th><!-- Remarks -->
-				<td colspan="3">
-					<input type="text" id="remark" name="remark" class="custom-ui"/>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-	</form>
-	</div>
-	<div class="split-row"></div>
-
-	<div class="grid-info">
-		<div class="block-button-area">
-			<button id="BTN_addRow" type="button">[[#{HQP_B_ADD}]]</button>
-			<div class="split"></div>
-			<button id="BTN_deleteRow" type="button">[[#{HQP_B_DELETE}]]</button>
-			<div class="split"></div>
-			<button id="BTN_simulation" type="button">[[#{HQP_B_SIMULATION}]]</button>
-			<div class="split"></div>
-			<button id="BTN_upload" type="button">[[#{HQP_B_UPLOAD}]]</button>
-			<div class="split"></div>
-			<button id="BTN_download" type="button">[[#{HQP_B_DOWNLOAD}]]</button>
-			<div class="split"></div>
-			<button id="BTN_priceInfo" type="button">[[#{HQP_B_PRICE_INFO}]]</button>
-			<div class="split"></div>
-			<button id="BTN_errorReport" type="button">[[#{HQP_B_ERROR_REPORT}]]</button>			
+	<div style="margin:0;">
+		<div style="width:50%; float: left; margin: 0; padding: 0;">
+			<div id="AREA_grid" class="flex-grow grid-area" style="margin-right: 0">
+				<table id="TBL_grid" class="order-part-info stripe compact"></table>
+			</div>
 		</div>
-		<div class="grid-total">
-			<span th:text="#{HQP_T_TOTAL_AMOUNT}"></span>
-			<div class="split"></div>
-			<span class="total-number" id="totalAmount"></span>
-			<div class="split2"></div>
-			<span th:text="#{HQP_T_CREDIT}"></span>
-			<div class="split"></div>
-			<span class="total-number" id="credit"></span>
-			<div class="split2"></div>
-			<span th:text="#{HQP_T_ESTIMATE_WEIGHT}"></span>
-			<div class="split"></div>
-			<span class="total-number" id="totalWeight"></span>
+		<div style="width:49%; float: right; position: sticky; top: 0px;">
+			<div class="split-row"></div>
+			<div class="grid-info" style="float: right;">
+				<div class="block-button-area">
+					<button id="BTN_create" type="button" th:text="#{HQP_B_CREATE}"></button>
+					<button id="BTN_shoppingCart" type="button" th:text="#{HQP_B_SHOPPING_CART}"></button>				
+				</div>
+			</div>
+			<div class="split-row"></div><div class="split-row"></div>
+			<div class="grid-info">
+				<div class="grid-total">
+					<span th:text="#{HQP_T_TOTAL_AMOUNT}"></span>
+					<div class="split"></div>
+					<span class="total-number" id="totalAmount"></span>
+					<div class="split2"></div>
+					<span th:text="#{HQP_T_CREDIT}"></span>
+					<div class="split"></div>
+					<span class="total-number" id="credit"></span>
+					<div class="split2"></div>
+					<span th:text="#{HQP_T_ESTIMATE_WEIGHT}"></span>
+					<div class="split"></div>
+					<span class="total-number" id="totalWeight"></span>
+				</div>
+			</div>		
+			<div class="condition-area">
+				<form id="FORM_order">
+				<input type="hidden" id="soldToNo" name="soldToNo"/><!-- KUNNR -->
+				
+				<!-- Ship to Party. -->
+				<input type="hidden" id="shipToNo" name="shipToNo"/><!-- KUNAG -->
+				<input type="hidden" id="shipToName" name="shipToName"/><!-- KUNAG_NAME -->
+				<input type="hidden" id="shipToStreet" name="shipToStreet"/><!-- KUNAG_STREET -->
+				<input type="hidden" id="transferZone" name="transferZone"/><!-- TZONE -->
+				<input type="hidden" id="priceGroup" name="priceGroup"/><!-- KONDA -->
+				
+				<!-- Shipping Info. -->
+				<input type="hidden" id="shippingCondition" name="shippingCondition"/>
+				<input type="hidden" id="shippingConditionName" name="shippingConditionName"/>
+				<input type="hidden" id="route" name="route"/>
+				<input type="hidden" id="routeName" name="routeName"/>	
+				<input type="hidden" id="paymentTerms" name="paymentTerms"/>
+				<input type="hidden" id="paymentTermsName" name="paymentTermsName"/>
+				<input type="hidden" id="incoterms1" name="incoterms1"/>
+				<input type="hidden" id="incoterms2" name="incoterms2"/>
+			
+				<input type="hidden" id="currency" name="currency"/>
+				<input type="hidden" id="fileName" name="fileName"/><!-- Uploaded file name in excel format -->
+				<input type="hidden" id="lineNo" name="lineNo"/>
+				<input type="hidden" id="materialNo" name="materialNo"/>
+				<input type="hidden" id="orderQty" name="orderQty"/>
+				<input type="hidden" id="lotQty" name="lotQty"/>
+				<input type="hidden" id="uom" name="uom"/>
+				<input type="hidden" id="availability" name="availability"/>
+				<input type="hidden" id="blockReason" name="blockReason"/>
+				<input type="hidden" id="message" name="message"/>
+				<input type="hidden" id="pricingInfo" name="pricingInfo"/>
+				<input type="hidden" id="simulationFrom" name="simulationFrom"/>	
+				
+				<table class="condition">
+					<tbody>
+						<tr>
+							<th colspan="2">
+								<div class="input-area">
+									<input type="radio" class="custom-ui" id="docType1" name="docType" value="C" checked />
+									<label th:text="#{HQP_L_ORDER}"></label>
+									&nbsp;&nbsp;
+									<input type="radio" class="custom-ui" id="docType2" name="docType" value="A" />
+									<label th:text="#{HQP_L_INQUIRY}"></label>
+								</div>
+							</th>
+						</tr>
+						<tr>
+							<th th:text="#{HQP_L_ORDER_TYPE}"></th><!-- Order Type -->
+							<td>
+								<div class="input-area order-type"></div>
+							</td>
+						</tr>
+						<tr>
+							<th th:text="#{HQP_L_PO_NO}"></th>
+							<td>
+								<div class="input-area">
+									<input type="text" id="poNo" name="poNo" class="custom-ui" readonly th:value="${poNo}"/>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th th:text="#{HQP_L_SHIP_TO_PARTY}"></th>
+							<td>
+								<button id="BTN_shipToParty" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button>
+								<div id="AREA_shipToAddress"></div>
+							</td>
+						</tr>
+						<tr>
+							<th th:text="#{HQP_L_SHIPPING_INFO}"></th>
+							<td>
+								<button id="BTN_shippingInfo" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button>
+								<div class="split-row-more-compact"></div>
+								<table class="table-inner table-fixed">
+									<thead>
+										<tr>
+											<th th:text="#{HQP_L_SHIPPING_CONDITION}"></th>
+											<th th:text="#{HQP_L_ROUTE}"></th>
+											<th th:text="#{HQP_L_INCOTERMS1}"></th>
+											<th th:text="#{HQP_L_INCOTERMS2}"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="shipping-condition"></td>
+											<td class="route"></td>								
+											<td class="incoterms1"></td>
+											<td class="incoterms2"></td>
+										</tr>
+									</tbody>
+									<thead>
+										<tr>
+											<th th:text="#{HQP_L_PAYMENT_TERMS}" colspan="4"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="payment-terms" colspan="4"></td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>					
+						<tr>
+							<th th:text="#{HQP_L_RDD}"></th>
+							<td>
+								<div class="input-area">
+									<input type="text" id="rdd" name="rdd" class="custom-ui" readonly />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th th:text="#{HQP_L_REMARKS}"></th><!-- Remarks -->
+							<td>
+								<input type="text" id="remark" name="remark" class="custom-ui"/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</form>
+				<div class="split-row-compact"></div>
+				<div class="block-button-area">
+					<button id="BTN_simulation" type="button">[[#{HQP_B_SIMULATION}]]</button>
+					<div class="split"></div>
+					<button id="BTN_upload" type="button">[[#{HQP_B_UPLOAD}]]</button>
+					<div class="split"></div>
+					<button id="BTN_priceInfo" type="button">[[#{HQP_B_PRICE_INFO}]]</button>
+					<div class="split"></div>
+					<button id="BTN_errorReport" type="button">[[#{HQP_B_ERROR_REPORT}]]</button>			
+				</div>
+				<div class="split-row-compact"></div>
+				<div class="block-button-area">
+					<button id="BTN_addRow" type="button">[[#{HQP_B_ADD}]]</button>
+					<div class="split"></div>
+					<button id="BTN_deleteRow" type="button">[[#{HQP_B_DELETE}]]</button>
+					<div class="split"></div>
+					<button id="BTN_download" type="button">[[#{HQP_B_DOWNLOAD}]]</button>
+				</div>				
+			</div>
 		</div>
-	</div>
-
-	<div id="AREA_grid" class="flex-grow grid-area">
-		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
 	<script>
@@ -189,7 +231,7 @@
 		let width = 480;
 		let height = 250;
 		let left = ($(window).innerWidth() - width) * 0.5;
-		let top = ($(window).innerHeight() - height) * 0.5;
+		let top = ($(window).innerHeight() - height) * 0.5 + $(window).scrollTop();;
 	
 		$(".dropzone-area").css({
 			"width": width,
@@ -721,7 +763,7 @@
 				{// 컬럼에 checkbox 설정
 					name: "chk",
 					className:"center noselect skip-download",// row selection 기능 막음.
-					orderable: false,// checkbox 는 정렬 불가
+					orderable: false,// checkbox 는 정렬 불가					
 					title:"<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)' onclick='allChecked(this)'><label></label>",
 					render: function(data, type, row)
 					{
@@ -734,39 +776,57 @@
 						return "<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)'><label></label>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "lineNo", data: "lineNo", title: "[[#{HQP_L_ITEM}]]"},//Item
 				{
-					name: "materialNo",
-					data: "materialNo",
-					title: "[[#{HQP_L_ORDER_PART_NO}]]",				
-					width: 200,
+					title: "[[#{HQP_L_THUMBNAIL}]]",
 					orderable: false,
-					className:"center noselect",
+					className:"noselect",
 					render: function(data, type, row)
 					{
-						return '<button class="btn-popup" type="button"></button><input type="text" name="materialNo" class="custom-ui" value="' + row.materialNo + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
+						let thumbnail = "";
+						let supplyMaterialNo = row.supplyMaterialNo;
+						
+						if (JpUtilsString.isNotEmpty(supplyMaterialNo))
+						{
+							thumbnail = "<img src='http://gpes.doosan-iv.com/common/imageResize.jsp?p_imgurl=/djvu/jpg/IV/" + supplyMaterialNo.substr(0, 1) + "/&p_file=" + supplyMaterialNo + "&p_sub=_thumb' class='thumbnail' materialNo='" + row.supplyMaterialNo + "'>";
+						};
+						 
+						return thumbnail;
+					}
+				},				
+				{
+					title: "[[#{HQP_L_ORDER_PART_NO}]]",
+					orderable: false,
+					className:"noselect",
+					render: function(data, type, row)
+					{
+						let partInfo = [];
+						
+						partInfo.push("<div style='line-height: 23px;'>");
+						partInfo.push("<span class='bold'>[[#{HQP_L_ITEM}]]: " + row.lineNo + "</span></br>");
+						partInfo.push("[[#{HQP_L_ORDER_PART_NO}]]: <input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)' style='width:200px'><br/>");
+						partInfo.push("[[#{HQP_L_REQ_QTY}]]: <input type='text' class='custom-ui' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'><br/>");// FixedColumns 사용시엔 syncInput 호출 필요함.
+						
+						if (JpUtilsString.isNotEmpty(row.materialNo))
+						{
+							partInfo.push("<span class='blue'>[[#{HQP_L_SUPPLY_PART_NO}]]: " + JpUtilsString.trimToEmpty(row.supplyMaterialNo) + "</span><br/>");
+							partInfo.push("<span class='orange'>[[#{HQP_L_DESCRIPTION}]]: " + JpUtilsString.trimToEmpty(row.description) + "</span><br/>");
+							partInfo.push("[[#{HQP_L_SALES_LOT}]]: " + JpUtilsString.trimToEmpty(row.lotQty) + JpUtilsString.trimToEmpty(row.uom) + "<br/>");
+							partInfo.push("[[#{HQP_L_AM_DEV_PART}]]: " + JpUtilsString.trimToEmpty(row.amDevPart) + "<br/>");
+							partInfo.push("[[#{HQP_L_AVAILABILITY}]]: " + JpUtilsString.trimToEmpty(row.availability) + "<br/>");							
+						};
+						
+						partInfo.push("</div>");
+						
+						return partInfo.join("");
 					}
 				},
-				{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{HQP_L_SUPPLY_PART_NO}]]", width: 200},//Supply Part No
-				{name: "description", data: "description", title: "[[#{HQP_L_DESCRIPTION}]]"},//Description
-				{
-					name: "orderQty",
-					data: "orderQty",
-					title: "[[#{HQP_L_REQ_QTY}]]",
-					orderable: false,
-					className: "center noselect",
-					render: function(data, type, row)
-					{
-						return '<input type="text" class="custom-ui" name="orderQty" style="width:70px" value="' + row.orderQty + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onkeyup="doSimulationByEnter(this)" onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
-					}
-				},//Req Qty
-				{name: "lotQty", data: "lotQty", title: "[[#{HQP_L_SALES_LOT}]]"},//Sales Lot
-				{name: "uom", data: "uom", title: "[[#{HQP_L_UOM}]]"},//UoM
-				{name: "boQty", data: "boQty", title: "[[#{HQP_L_BACKORDER_QTY}]]"},//B/O Qty.
-				{name: "amDevPart", data: "amDevPart", title: "[[#{HQP_L_AM_DEV_PART}]]"},//AM Dev. No
-				{name: "netPrice", data: "netPrice", title: "[[#{HQP_L_NET_PRICE}]]"},//Net Price
-				{name: "netValue", data: "netValue", title: "[[#{HQP_L_NET_VALUE}]]"},//Net Value
-				{name: "availability", data: "availability", title: "[[#{HQP_L_AVAILABILITY}]]"},//Availability
+				{name: "netPrice", data: "netPrice", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},//Net Price
+				{name: "netValue", data: "netValue", title: "[[#{HQP_L_NET_VALUE}]]", className: "right bold"}//Net Value
+			],
+			"columnDefs": [
+				{"width": "80px", "targets": 0},
+				{"width": "110px", "targets": 1},
+				{"width": "150px", "targets": [3,4]},
 			],
 			ajax: {
 				url: "/portal/iv/hq/parts/domestic/order/create/simulation",
@@ -868,9 +928,6 @@
 			}			
 		});
 		
-		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);
-		
 		// Datatable onload event
 		$("#TBL_grid").on("draw.dt", function () {
 			$("#fileName").val("");
@@ -886,6 +943,20 @@
 			$.each($("#AREA_grid input[name=materialNo]"), function(index, item) {
 				_setPartAutocomplete(item);	
 			});
+			
+			$(".thumbnail").on("click", function() {
+				let img = "<img src='" + $(this).attr("src") + "' style='width:700px; height:500px;'/>";
+				
+				Modal.show($(this).attr("materialNo"), 740, 590, img, true);
+				
+			}).on("error", function() {
+				$(this).attr("src", "/portal/img/no-data.png")
+					.off("click")
+					.css({"cursor": "default"});
+			});
+			
+			// Datatable grid 초기 설정 셋업
+			initGridTable($tableObj, true);
 	
 			ProgressBar.hide();
 		});

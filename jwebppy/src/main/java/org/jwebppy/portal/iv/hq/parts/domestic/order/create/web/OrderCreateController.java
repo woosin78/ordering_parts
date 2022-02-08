@@ -37,7 +37,20 @@ public class OrderCreateController extends PartsDomesticGeneralController
 	private OrderCreateService orderCreateService;
 
 	@RequestMapping("/write")
-	public String orderForm(Model model, WebRequest webRequest)
+	public String write(Model model, WebRequest webRequest)
+	{
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+
+		model.addAttribute("docType", CmStringUtils.defaultIfEmpty(webRequest.getParameter("docType"), "C"));
+		model.addAttribute("poNo", CmStringUtils.stripStart(rfcParamMap.getCustomerNo(), "0") + CmDateFormatUtils.format(CmDateTimeUtils.now(), PortalCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
+
+		addAllAttributeFromRequest(model, webRequest);
+
+		return DEFAULT_VIEW_URL;
+	}
+
+	@RequestMapping("/write2")
+	public String write2(Model model, WebRequest webRequest)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 

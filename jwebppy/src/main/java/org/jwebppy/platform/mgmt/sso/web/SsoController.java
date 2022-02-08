@@ -1,17 +1,18 @@
-package org.jwebppy.platform.mgmt.common.sso.web;
+package org.jwebppy.platform.mgmt.sso.web;
 
 import java.net.URLEncoder;
 
 import org.jwebppy.platform.common.web.PlatformGeneralController;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.mgmt.sso.uitils.StringEncrypter;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/common/sso")
+@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso")
 public class SsoController extends PlatformGeneralController
 {
 	@RequestMapping("/gpes")

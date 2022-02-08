@@ -1,4 +1,4 @@
-package org.jwebppy.platform.mgmt.common.sso.web;
+package org.jwebppy.platform.mgmt.sso.uitils;
 
 import java.security.MessageDigest;
 
