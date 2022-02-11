@@ -2,12 +2,14 @@ package org.jwebppy.portal.iv.hq.parts.domestic.report.order.service;
 
 import java.util.Map;
 
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.portal.iv.common.utils.BwParseHelper;
 import org.jwebppy.portal.iv.hq.parts.common.service.PartsGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +18,7 @@ public class OrderReportService extends PartsGeneralService
 	@Autowired
 	private SimpleRfcTemplate simpleRfcTemplate;
 
+	@Cacheable(value = CacheConfig.BUSINESS_TOOLS, key = "#paramMap", unless="#result == null")
 	public Map<String, Object> getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("IV_BPP", "RS_VC_GET_QUERY_VIEW_DATA_FLAT");

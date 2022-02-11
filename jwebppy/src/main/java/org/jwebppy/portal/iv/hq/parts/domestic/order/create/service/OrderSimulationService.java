@@ -20,7 +20,6 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.core.util.Formatter;
-import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.PricingResultDto;
@@ -110,12 +109,8 @@ public class OrderSimulationService
 			Map<String, String> divMap = new HashMap<>();
 			divMap.put("WERKS", "F160");
 
-			Map<String, String> diveuMap = new HashMap<>();
-			diveuMap.put("WERKS", "7860");
-
 			List<Map<String, String>> plants = new ArrayList<>();
 			plants.add(divMap);
-			plants.add(diveuMap);
 
 			rfcRequest.addTable("LT_STOCK", plants);
 
@@ -199,8 +194,11 @@ public class OrderSimulationService
 	{
 		Map<String, IDataList> itemMap = new HashMap<>();
 		itemMap.put("NON_EXIST", rfcResponse.getTable("LT_NON_EXIST"));
-		itemMap.put("WRONG_DIVISION", rfcResponse.getTable("LT_WRONG_DIVISION"));
+		//itemMap.put("WRONG_DIVISION", rfcResponse.getTable("LT_WRONG_DIVISION"));
 		itemMap.put("NON_PURCHASE", rfcResponse.getTable("LT_NON_PURCHASE"));
+		itemMap.put("NON_PRICE", rfcResponse.getTable("LT_NON_PRICE"));
+		//itemMap.put("WRONG_ITEM", rfcResponse.getTable("LT_WRONG_ITEM"));//Sales Lot 오류
+		itemMap.put("HAZARD_MATNR", rfcResponse.getTable("LT_HAZARD_MATNR"));
 
 		Iterator<Entry<String, IDataList>> iterator = itemMap.entrySet().iterator();
 		while (iterator.hasNext())
@@ -272,10 +270,10 @@ public class OrderSimulationService
 
 		if (CollectionUtils.isNotEmpty(items))
 		{
-			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
+			//PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
 
 			FormatBuilder.with(items)
-				.qtyFormat(new String[] {"QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY"})
+				.qtyFormat(new String[] {"REQ_QTY", "QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY"})
 				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"});
 
 			List<OrderItemDto> normalOrderItems = new LinkedList<>();
@@ -299,12 +297,14 @@ public class OrderSimulationService
 				}
 
 				OrderItemDto orderItem = new OrderItemDto();
+
 				orderItem.setLineNo(dataMap.getString("ITEM"));
 				orderItem.setHigherLineNo(dataMap.getString("HILV"));
 				orderItem.setMaterialNo(CmStringUtils.defaultIfEmpty(dataMap.getString("MATERIAL_ENT"), dataMap.getString("MATERIAL")));
 				orderItem.setSupplyMaterialNo(dataMap.getString("MATERIAL"));
 				orderItem.setDescription(dataMap.getString("MATERIAL_TEXT"));
-				orderItem.setOrderQty(dataMap.getString("QTY"));
+				orderItem.setOrderQty(dataMap.getString("REQ_QTY"));
+				orderItem.setSupplyQty(dataMap.getString("QTY"));
 				orderItem.setAvailability(dataMap.getString("AVAILABILITY"));
 				orderItem.setMinOrderQty(Integer.toString(minQty));
 				orderItem.setLotQty(Integer.toString(lotQty));
@@ -312,7 +312,6 @@ public class OrderSimulationService
 				orderItem.setNetPrice(dataMap.getString("NET_PRICE"));
 				orderItem.setNetValue(dataMap.getString("NET_VALUE"));
 				orderItem.setListPrice(dataMap.getString("NETPR"));
-				orderItem.setCostCode(dataMap.getString("KONDM"));
 				orderItem.setMessage(dataMap.getString("MSG"));
 				orderItem.setVendor(dataMap.getString("LIFNR"));
 				orderItem.setPlant(dataMap.getString("PLANT"));
@@ -323,7 +322,8 @@ public class OrderSimulationService
 				normalOrderItems.add(orderItem);
 			}
 
-			simulationResult.setNormalOrderItems(normalOrderItems);
+			simulationResult.setNormalOrderItems(simulationResult.makeCompactNormalOrderItems(normalOrderItems));
+			//simulationResult.setNormalOrderItems(normalOrderItems);
 		}
 	}
 }

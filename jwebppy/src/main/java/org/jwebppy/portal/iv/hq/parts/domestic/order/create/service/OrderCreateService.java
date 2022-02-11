@@ -1,6 +1,5 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.order.create.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,15 +62,16 @@ public class OrderCreateService
 
 	public DataList getOrderType(ErpDataMap paramMap)
 	{
-		String docType = CmStringUtils.defaultString(paramMap.get("pDocType"), CmStringUtils.defaultString(paramMap.get("docType"), "C"));
-
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_GET_ORDERTYPE2");
 
-		rfcRequest.addField("I_BGTYP", "P");
-		rfcRequest.addField("I_LANGU", paramMap.getLangForSap());
-		rfcRequest.addField("I_STATUS", "X");
-		rfcRequest.addField("I_USERID", paramMap.getUsername());
-		rfcRequest.addField("I_VBTYP", docType);
+		rfcRequest.
+			field(new Object[][] {
+				{"I_BGTYP", "P"},
+				{"I_STATUS", "X"},
+				{"I_VBTYP", CmStringUtils.defaultString(paramMap.get("pDocType"), CmStringUtils.defaultString(paramMap.get("docType"), "C"))},
+				{"I_LANGU", paramMap.getLangForSap()},
+				{"I_USERID", paramMap.getUsername()}
+			});
 
 		DataList dataList = simpleRfcTemplate.response(rfcRequest).getTable("T_ZSSV0002");
 
@@ -181,13 +181,50 @@ public class OrderCreateService
 		{
 			RfcRequest rfcRequest = new RfcRequest();
 
+			rfcRequest.
+				field()
+					.add(new Object[][] {
+						{"LV_AUART", order.getOrderType()},
+						{"LV_REMARK", order.getRemark()},
+						{"I_USERID", order.getUsername()},
+						{"I_LANGU", order.getLanguage()},
+						{"I_BGTYP", "P"}
+					})
+				.and()
+				.structure("LS_GENERAL")
+					.add(new Object[][] {
+						{"INCO1", order.getIncoterms1()},
+						{"INCO2", order.getIncoterms2()},
+						{"VSBED", order.getShippingCondition()},
+						{"VDATU", CmDateFormatUtils.stripDateFormat(order.getRdd())},
+						{"BSTNK", order.getPoNo()},
+						{"COMPLETE_DELIVERY", order.getCompleDelivery()}
+					})
+				.and()
+				.structure("LS_MAIN_HEAD")
+					.add(new Object[][] {
+						{"KUNNR", order.getSoldToNo()},
+						{"KUNNR_NAME", order.getSoldToName()},
+						{"KUNAG", order.getShipToNo()},
+						{"KUNAG_NAME", order.getShipToName()},
+						{"KONDA", order.getPriceGroup()},
+						{"KVGR5", "20"}
+					})
+				.and()
+				.table("LT_GERNERAL_ZTERM")
+					.add("ZTERM", order.getPaymentTerms());
+
+
+			/*
 			rfcRequest.addField("LV_AUART", order.getOrderType());
 			rfcRequest.addField("LV_REMARK", order.getRemark());
 			rfcRequest.addField("I_USERID", order.getUsername());
 			rfcRequest.addField("I_LANGU", order.getLanguage());
 			rfcRequest.addField("I_BGTYP", "P");
+			*/
 
 			/* LS_GENERAL */
+			/*
 			Map<String, Object> generalMap = new HashMap<>();
 			generalMap.put("INCO1", order.getIncoterms1());
 			generalMap.put("INCO2", order.getIncoterms2());
@@ -197,8 +234,10 @@ public class OrderCreateService
 			generalMap.put("COMPLETE_DELIVERY", order.getCompleDelivery());
 
 			rfcRequest.addStructure("LS_GENERAL", generalMap);
+			*/
 
 			/* LS_MAIN_HEAD*/
+			/*
 			Map<String, Object> mainHeadMap = new HashMap<>();
 			mainHeadMap.put("KUNNR", order.getSoldToNo());
 			mainHeadMap.put("KUNNR_NAME", order.getSoldToName());
@@ -208,8 +247,10 @@ public class OrderCreateService
 			mainHeadMap.put("KVGR5", "20");
 
 			rfcRequest.addStructure("LS_MAIN_HEAD", mainHeadMap);
+			*/
 
 			/* LT_GERNERAL_ZTERM */
+			/*
 			Map<String, Object> termMap = new HashMap<>();
 			termMap.put("ZTERM", order.getPaymentTerms());
 
@@ -217,29 +258,6 @@ public class OrderCreateService
 			generalTerms.add(termMap);
 
 			rfcRequest.addTable("LT_GERNERAL_ZTERM", generalTerms);
-
-			/* LS_EP_ONETIME
-			if (order.getOaSeq() != null)
-			{
-				OnetimeAddressEntity onetimeAddress = orderCreateMapper.findOnetimeAddressByOaSeq(order.getOaSeq());
-
-				if (onetimeAddress == null)
-				{
-					return null;
-				}
-				else
-				{
-					Map<String, Object> onetimeAddressMap = new HashMap<>();
-					onetimeAddressMap.put("NAME", onetimeAddress.getName());
-					onetimeAddressMap.put("CITY", onetimeAddress.getCity());
-					onetimeAddressMap.put("STREET", onetimeAddress.getStreet());
-					onetimeAddressMap.put("COUNTRY", onetimeAddress.getCountry());
-					onetimeAddressMap.put("POSTL_CODE", onetimeAddress.getPostalCode());
-					onetimeAddressMap.put("TRANSPZONE", onetimeAddress.getTransportZone());
-
-					rfcRequest.addStructure("LS_EP_ONETIME", onetimeAddressMap);
-				}
-			}
 			*/
 
 			/* LT_ITEM */

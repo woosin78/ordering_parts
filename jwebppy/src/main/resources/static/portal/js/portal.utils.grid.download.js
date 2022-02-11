@@ -36,7 +36,7 @@ var GridFileDownload = function(target)
 			
 			if (!$(this).hasClass("skip-download"))
 			{
-				header.push($(_this.target.columns(index).header()).html());	
+				header.push($(_this.target.columns(index).header()).html());
 			}
 		});
 		

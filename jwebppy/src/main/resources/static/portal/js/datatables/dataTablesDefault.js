@@ -43,6 +43,12 @@ $(function(){
 	});
 });
 
+/*
+ * datatable 에서 발생된 exception 을 throw 하기 위함
+ * try catch 로 exception 처리를 위해 필요
+ */
+$.fn.dataTable.ext.errMode = "throw";
+
 /* 
 $dataTable을 $parent 높이에 맞춤. window.resize에 사용. 
 prevHeight 는 생략 가능
@@ -61,7 +67,7 @@ function dataTableResize($dataTable, $parent, prevHeight){
 		// 그리드 풋터 빼주기
 		height -= $parent.find(".dataTables_paginate").outerHeight() || 0;
 		$parent.find(".dataTables_scrollBody").css({"maxHeight": height + "px"});
-		$dataTable.fixedColumns().relayout();
+		//$dataTable.fixedColumns().relayout();
 		//$dataTable.draw();
 	}
 	

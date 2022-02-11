@@ -23,6 +23,7 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
@@ -43,6 +44,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/order/create")
 public class OrderSimulationController extends PartsDomesticGeneralController
 {
+	private final int DEFAULT_ROW_COUNT = 10;
+
 	@Autowired
 	private Environment environment;
 
@@ -127,14 +130,15 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 			{
 				List<OrderItemDto> orderItems = new LinkedList<>();
 
-				String[] materialNos = order.getMaterialNo().split("\\^");
-				String[] orderQtyies = order.getOrderQty().split("\\^");
+				String[] materialNos = order.getMaterialNo().split("\\" + PortalCommonVo.DELIMITER);
+				String[] orderQtyies = order.getOrderQty().split("\\" + PortalCommonVo.DELIMITER);
 
 				for (int i=0, length=materialNos.length; i<length; i++)
 				{
 					if (CmStringUtils.isNotEmpty(materialNos[i]))
 					{
 						OrderItemDto orderItem = new OrderItemDto();
+
 						orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 						orderItem.setMaterialNo(materialNos[i]);
 						orderItem.setOrderQty(orderQtyies[i]);
@@ -369,8 +373,6 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 
 	protected void makeOrderItemForm(SimulationResultDto simulationResult)
 	{
-		int DEFAULT_ROW_COUNT = 20;
-
 		List<OrderItemDto> normalOrderItems = simulationResult.getNormalOrderItems();
 		int size = normalOrderItems.size();
 		int lineNo = 1;

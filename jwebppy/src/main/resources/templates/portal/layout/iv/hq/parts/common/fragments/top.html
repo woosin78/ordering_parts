@@ -57,6 +57,30 @@
 <form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}" style="display:none;"></form>
 
 <script>
+$(document).ready(function() {
+	makeGmb();
+	
+	$("#IMG_doobizPlus").on("click", function() {
+		goHome()
+	});
+	
+	$(".header li.openNewWindow").on("click", function() {
+		window.open("/portal/forward/entry_point", "");
+	});
+	
+	$(".header li.dealerInfo").on("click", function() {
+		clickDealerInfo();	    		
+	});
+	
+	$(".header li.username").on("click", function() {
+		clickUserInfo();
+	});
+	
+	$(".header .logout-button").on("click", function() {
+		clickLogout();	    		
+	});	
+});
+
 function makeGmb()
 {
 	//Make GNB
@@ -201,25 +225,5 @@ function clickLogout()
 {
 	$("#FORM_logout").submit();
 };
-
-$(document).ready(function() {
-	makeGmb();
-	
-	$(".header li.openNewWindow").on("click", function() {
-		window.open("/portal/forward/entry_point", "");
-	});
-	
-	$(".header li.dealerInfo").on("click", function() {
-		clickDealerInfo();	    		
-	});
-	
-	$(".header li.username").on("click", function() {
-		clickUserInfo();
-	});
-	
-	$(".header .logout-button").on("click", function() {
-		clickLogout();	    		
-	});	
-});
 </script>
 <!-- header.jsp end -->

@@ -88,7 +88,7 @@ public class RfcTemplate extends AbstractDaoTemplate
 
             resultMap.put("RESULT", extractData(jCoFunction, rfcRequest.getOutputParameterMap()));
         }
-        catch (JCoException e)
+        catch (Exception e)
         {
         	if (!stopWatch.isStopped())
         	{
@@ -115,7 +115,7 @@ public class RfcTemplate extends AbstractDaoTemplate
         return jCoDestination.getRepository().getFunction(functionName);
     }
 
-    private void setParameter(JCoFunction jCoFunction, Map parameterMap)
+    private void setParameter(JCoFunction jCoFunction, Map parameterMap) throws JCoException
     {
         if (!CollectionUtils.isEmpty(parameterMap))
         {

@@ -3,11 +3,13 @@ package org.jwebppy.portal.iv.hq.parts.domestic.accounts.ap.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,6 +18,7 @@ public class ApService
 	@Autowired
 	private SimpleRfcTemplate simpleRfcTemplate;
 
+	@Cacheable(value = CacheConfig.AP_LIST, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_CLEARED_AR_BY_DAY2");
@@ -48,6 +51,7 @@ public class ApService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
+	@Cacheable(value = CacheConfig.AP_DETAIL, key = "#paramMap", unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_SS_INVOICE_DETAIL_LIST");

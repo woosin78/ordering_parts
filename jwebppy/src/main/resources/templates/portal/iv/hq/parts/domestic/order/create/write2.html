@@ -7,7 +7,7 @@
 <th:block layout:fragment="content">
 
 <style>
-.thumbnail {
+.thumbnail-loaded {
 	width:100px;
 	height:100px;
 	/* border: 1px solid #ccc; */
@@ -56,14 +56,12 @@
 			</div>
 		</div>
 		<div style="width:49%; float: right; position: sticky; top: 0px;">
-			<div class="split-row"></div>
 			<div class="grid-info" style="float: right;">
 				<div class="block-button-area">
 					<button id="BTN_create" type="button" th:text="#{HQP_B_CREATE}"></button>
 					<button id="BTN_shoppingCart" type="button" th:text="#{HQP_B_SHOPPING_CART}"></button>				
 				</div>
 			</div>
-			<div class="split-row"></div><div class="split-row"></div>
 			<div class="grid-info">
 				<div class="grid-total">
 					<span th:text="#{HQP_T_TOTAL_AMOUNT}"></span>
@@ -193,7 +191,9 @@
 						<tr>
 							<th th:text="#{HQP_L_REMARKS}"></th><!-- Remarks -->
 							<td>
-								<input type="text" id="remark" name="remark" class="custom-ui"/>
+								<div class="input-area">
+									<input type="text" id="remark" name="remark" class="custom-ui"/>
+								</div>
 							</td>
 						</tr>
 					</tbody>
@@ -222,9 +222,17 @@
 	</div>
 	
 	<script>
+	$(document).ready(function() {
+		/*
+		$(".thumbnail").lazyload({
+			placeholder: "/portal/img/common/loading.gif" 
+		});
+		*/
+	});	
+
 	$("input:radio[name=docType][value='[[${docType}]]']").prop("checked", true);
 	
-	let errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
+	var errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
 	
 	let UploadModal = {};
 	UploadModal.show = function() {
@@ -638,7 +646,7 @@
 	});
 	
 	$("#BTN_errorReport").on("click", function() {
-		Popup.open("/portal/iv/hq/parts/domestic/order/create/error_report", 1200, 400);
+		Popup.open("/portal/iv/hq/parts/domestic/order/create/popup/error_report", 1200, 400);
 	});
 	
 	$("#BTN_create").on("click", function() {
@@ -787,7 +795,7 @@
 						
 						if (JpUtilsString.isNotEmpty(supplyMaterialNo))
 						{
-							thumbnail = "<img src='http://gpes.doosan-iv.com/common/imageResize.jsp?p_imgurl=/djvu/jpg/IV/" + supplyMaterialNo.substr(0, 1) + "/&p_file=" + supplyMaterialNo + "&p_sub=_thumb' class='thumbnail' materialNo='" + row.supplyMaterialNo + "'>";
+							thumbnail = "<img class='thumbnail' data-original='http://gpes.doosan-iv.com/common/imageResize.jsp?p_imgurl=/djvu/jpg/IV/" + supplyMaterialNo.substr(0, 1) + "/&p_file=" + supplyMaterialNo + "&p_sub=_thumb' materialNo='" + row.supplyMaterialNo + "' >";
 						};
 						 
 						return thumbnail;
@@ -808,7 +816,15 @@
 						
 						if (JpUtilsString.isNotEmpty(row.materialNo))
 						{
-							partInfo.push("<span class='blue'>[[#{HQP_L_SUPPLY_PART_NO}]]: " + JpUtilsString.trimToEmpty(row.supplyMaterialNo) + "</span><br/>");
+							partInfo.push("<span ");
+							
+							if (row.subCount > 0)
+							{
+								partInfo.push("class='blue' ");
+							};
+							
+							partInfo.push(">[[#{HQP_L_SUPPLY_PART_NO}]]: " + JpUtilsString.trimToEmpty(row.supplyMaterialNo) + "</span><br/>");
+							
 							partInfo.push("<span class='orange'>[[#{HQP_L_DESCRIPTION}]]: " + JpUtilsString.trimToEmpty(row.description) + "</span><br/>");
 							partInfo.push("[[#{HQP_L_SALES_LOT}]]: " + JpUtilsString.trimToEmpty(row.lotQty) + JpUtilsString.trimToEmpty(row.uom) + "<br/>");
 							partInfo.push("[[#{HQP_L_AM_DEV_PART}]]: " + JpUtilsString.trimToEmpty(row.amDevPart) + "<br/>");
@@ -823,7 +839,7 @@
 				{name: "netPrice", data: "netPrice", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},//Net Price
 				{name: "netValue", data: "netValue", title: "[[#{HQP_L_NET_VALUE}]]", className: "right bold"}//Net Value
 			],
-			"columnDefs": [
+			columnDefs: [
 				{"width": "80px", "targets": 0},
 				{"width": "110px", "targets": 1},
 				{"width": "150px", "targets": [3,4]},
@@ -924,17 +940,27 @@
 					};
 	
 					return normalOrderItems;
+				},
+				error: function (xhr, error, code) {
+					if (JpUtilsString.isNotEmpty($("#fileName").val()))
+					{
+						alert("[[#{HQP_M_ORDER_INVALID_EXCEL_FORMAT}]]");
+						reload();	
+					};
 				}
 			}			
 		});
+		
+		function reload()
+		{
+			$("#fileName").val("");
+			$tableObj.ajax.reload();
+		};
 		
 		// Datatable onload event
 		$("#TBL_grid").on("draw.dt", function () {
 			$("#fileName").val("");
 			$("#simulationFrom").val("");
-			
-			// Datatable grid 초기 설정 셋업
-			//initGridTable($tableObj, true);
 			
 			$("#AREA_grid .btn-popup").on("click", function(event) {
 				_showPartSearch($(this).siblings("input[name=materialNo]").val());
@@ -948,16 +974,16 @@
 				let img = "<img src='" + $(this).attr("src") + "' style='width:700px; height:500px;'/>";
 				
 				Modal.show($(this).attr("materialNo"), 740, 590, img, true);
-				
-			}).on("error", function() {
-				$(this).attr("src", "/portal/img/no-data.png")
-					.off("click")
-					.css({"cursor": "default"});
+			}).lazyload({
+				load: function()
+				{
+					$(this).addClass("thumbnail-loaded");
+				}
 			});
 			
 			// Datatable grid 초기 설정 셋업
 			initGridTable($tableObj, true);
-	
+			
 			ProgressBar.hide();
 		});
 	});

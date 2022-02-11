@@ -182,7 +182,7 @@
 	<script>
 	$("input:radio[name=docType][value='[[${docType}]]']").prop("checked", true);
 	
-	let errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
+	var errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
 	
 	let UploadModal = {};
 	UploadModal.show = function() {
@@ -596,7 +596,7 @@
 	});
 	
 	$("#BTN_errorReport").on("click", function() {
-		Popup.open("/portal/iv/hq/parts/domestic/order/create/error_report", 1200, 400);
+		Popup.open("/portal/iv/hq/parts/domestic/order/create/popup/error_report", 1200, 400);
 	});
 	
 	$("#BTN_create").on("click", function() {
@@ -864,9 +864,22 @@
 					};
 	
 					return normalOrderItems;
-				}
+				},
+				error: function (xhr, error, code) {
+					if (JpUtilsString.isNotEmpty($("#fileName").val()))
+					{
+						alert("[[#{HQP_M_ORDER_INVALID_EXCEL_FORMAT}]]");
+						reload();	
+					};
+				}				
 			}			
 		});
+		
+		function reload()
+		{
+			$("#fileName").val("");
+			$tableObj.ajax.reload();
+		};		
 		
 		// Datatable grid 초기 설정 셋업
 		initGridTable($tableObj);

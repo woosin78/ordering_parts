@@ -18,25 +18,23 @@ public class OrderItemDto extends PartsGeneralDto
 	private String higherLineNo;//Higher-level item in bill of material structures
 	private String materialNo;
 	private String materialName;
-	private String supplyMaterialNo;
 	private String description;
+	private String supplyMaterialNo;
 	private String plant;
 	private String vendor;//LIFNR
-	private String originOrderQty;
-	private String orderQty;
+	private String orderQty;//주문 시 딜러가 입력 한 수량
+	private String supplyQty;//공급 수량 - SAP 시뮬레이션 후 반환되는 수량
 	private String availability;
 	private String minOrderQty;
 	private String lotQty;
-	private String costCode;
-	private String netPrice;//NET_PRICE
-	private String netValue;//NET_VALUE
-	private String listPrice;//LIST
-	private String uom;//UOM
-	private String amDevPart;//AM Dev. Part
-	private String boQty;//B/O Qty.
+	private String netPrice;
+	private String netValue;
+	private String listPrice;
+	private String uom;
+	private String amDevPart;
+	private String boQty;
 	private String stockDiv;
-	private String stockDiveu;
-	private String stockDivuk;
+	private int subCount;//대체품 수
 	private String message;
 	private String errorType;
 	private String errorCode;
@@ -60,5 +58,10 @@ public class OrderItemDto extends PartsGeneralDto
 		}
 
 		return null;
+	}
+
+	public void incSubCount()
+	{
+		subCount++;
 	}
 }
