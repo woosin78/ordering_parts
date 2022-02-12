@@ -25,7 +25,7 @@
 <script>
 let INDEX_URL = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).INDEX_URL}]]";
 
-$(window).load(function() {
+$(window).on("load", function() {
 	showLoginBox();
 	
 	let loginFailType = JpUtilsString.trimToEmpty("[[${#request.getAttribute(T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_FAIL_TYPE)}]]");

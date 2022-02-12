@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/gnb")
-public class GnbController extends MgmtGeneralController
+@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/gmb")
+public class GmbController extends MgmtGeneralController
 {
 	@Autowired
 	private ContentAuthorityService contentAuthorityService;

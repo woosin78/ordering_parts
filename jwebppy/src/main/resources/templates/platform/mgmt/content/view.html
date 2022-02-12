@@ -74,212 +74,254 @@
 <th:block th:replace="/platform/mgmt/i18n/lang :: addLang"></th:block>
 <!-- End add language -->
 <script>
-	$(document).ready(function() {
-		JpUiDimmer.show();
+$(document).ready(function() {
+	JpUiDimmer.show();
+	
+	$("#collapse").checkbox({
+		onChecked: function() {
+			tree.collapseAll(false);
+		},
+		onUnchecked: function() {
+			tree.collapseAll(true);
+		}
+	});
+});
+
+let viewItemTab = new JpUiTab($("#TAB_viewItem"));
+
+viewItemTab.settings = {
+		ajax: {
+			beforeSend: function(settings)
+			{
+				if (viewItemTab.tabPath != "general" && JpUtilsString.isEmpty(getSeq()))
+				{
+					JpUiDimmer.alert("Please register the general information first.", function() {
+						viewItemTab.changePath("/platform/mgmt/content/write/layout");
+						changeTab();
+					});
+					
+					return false;
+				};					
+				
+				settings.data = $("#FORM_modify").serialize();					
+				return settings;
+			}
+		},
+		tab: {
+			path: "/platform/mgmt/content/layout",
+			form: $("#FORM_modify"),
+			onLoaded: function(tabPath, parameterArray, historyEvent)
+			{
+				if (tabPath == "general")
+				{
+					if (isOnForm())
+					{
+						JpUiCalendar.datetimeCalendar($("#fromValid"), $("#toValid"));
+						
+						$("#FORM_modify select[name=component]").on("change", function() {
+							JpUtilsAjax.get({
+								url: "/platform/mgmt/content/component/entry_points?component=" + $(this).val(),
+								global: false,
+								success: function(data, textStatus, jqXHR)
+								{
+									let options = [];
+									options.push("<option value=''></option>");
+									
+								    data.RESULT.forEach(function(element, index) {
+								    	options.push("<option value='" + element.url + "' data-key='" + element.url + "'>" + element.url + "</option>");
+								    });
+								    
+								    $("#FORM_modify select[name=entryPoint]").html(options.join(""));
+								}
+							});								
+						});
+						
+						//Add custom rules in the form validation
+						$.fn.form.settings.rules.checkDuplicatedName = function(value)
+						{
+							if (JpUtilsString.isNotEmpty(value))
+							{
+								let isValid = false;
+								
+								JpUtilsAjax.get({
+									url: "/platform/mgmt/content/valid_check/name",
+									data: { cSeq: getSeq(), value: value },
+									global: false,
+									async: false,
+									success: function(data, textStatus, jqXHR)
+									{
+										if (data.RESULT == "duplicated")
+										{
+											isValid = false;
+										}
+										else
+										{
+											isValid = true;
+										};
+									}
+								});
+
+								return isValid;
+							};
+
+							return false;
+						};
+						
+						let formValidCheck = {
+								inline: true,
+								fields: {
+									"Item Type": {
+										identifier: "type",
+										rules: [
+											{
+												type: "empty",
+												prompt: "Please enter {name}."
+											}
+										]
+									},
+									Name: {
+										identifier: "name",
+										rules: [
+											{
+												type: "empty",
+												prompt: "Please enter {name}."
+											},
+											{
+												type: "checkDuplicatedName",
+												prompt: "The {name} is not available. Please enter another name."
+											}												
+										]
+									},
+									"Valid From": {
+										identifier: "fromValid",
+										rules: [
+											{
+												type: "empty",
+												prompt: "Please enter {name}."
+											}
+										]
+									},
+									"Valid To": {
+										identifier: "toValid",
+										rules: [
+											{
+												type: "empty",
+												prompt: "Please enter {name}."
+											}
+										]
+									},
+									Sort: {
+										identifier: "sort",
+										rules: [
+											{
+												type: "empty",
+												prompt: "Please enter {name}."
+											},
+											{
+									            type   : "integer",
+									            prompt : "Please enter a valid number."								
+											}
+										]
+									}
+								},
+								keyboardShortcuts: false
+							};
+						
+						$("#FORM_modify").form(formValidCheck);					
+					};
+				}
+				else
+				{
+					$("#FORM_modify select[name=basename]").on("change", function() {
+						changeTab("language");
+					});
+				}
+				
+				changeButtonStatus();
+				viewItemTab.changePath("/platform/mgmt/content/layout");
+			}
+		}
+};
+
+let tree = new JpUiTree($("#TREE_items"));
+tree.icons = {FOLDER: "folder", FOLDER_OPEN: "folder open", PAGE: "file", MENU: "table", ROLE: "user"};
+tree.onLoad = function()
+{
+	if (JpUtilsString.isEmpty(getSeq()))
+	{
+		let root = tree.getRoot();
+		setSeq(root.KEY, root.P_KEY);
+	};
+	
+	viewItemTab.render();
+	
+	JpUiDimmer.hide();
+};
+tree.viewDetail = function(key, pKey, target)
+{
+	$(".ui.tab[data-tab=general], .ui.tab[data-tab=language]").empty();
+	
+	setSeq(key, pKey);
+	viewItemTab.changeTab("general");
+};
+tree.createItem = function(key, pKey)
+{
+	initSeq();
+
+	$("#FORM_modify input[name='pSeq']").val(key);
+
+	viewItemTab.changePath("/platform/mgmt/content/write/layout");
+	changeTab();
+};
+tree.deleteItem = function(key, pKey)
+{
+	JpUiDimmer.confirm("Do you want to delete?", function() {
+		setSeq(key, pKey);
 		
-		$("#collapse").checkbox({
-			onChecked: function() {
-				tree.collapseAll(false);
-			},
-			onUnchecked: function() {
-				tree.collapseAll(true);
+		JpUtilsAjax.post({
+			url: "/platform/mgmt/content/delete",
+			data: $("#FORM_modify").serialize(),
+			success: function(data, textStatus, jqXHR)
+			{
+				initSeq();
+				
+				tree.refresh();
+				changeTab();
 			}
 		});
 	});
+};
+tree.pasteItem = function(key, pKey)
+{
+	let previousCommand = tree.getPreviousCommand();
+	let url;
 	
-	let viewItemTab = new JpUiTab($("#TAB_viewItem"));
-	
-	viewItemTab.settings = {
-			ajax: {
-				beforeSend: function(settings)
-				{
-					if (viewItemTab.tabPath != "general" && JpUtilsString.isEmpty(getSeq()))
-					{
-						JpUiDimmer.alert("Please register the general information first.", function() {
-							viewItemTab.changePath("/platform/mgmt/content/write/layout");
-							changeTab();
-						});
-						
-						return false;
-					};					
-					
-					settings.data = $("#FORM_modify").serialize();					
-					return settings;
-				}
-			},
-			tab: {
-				path: "/platform/mgmt/content/layout",
-				form: $("#FORM_modify"),
-				onLoaded: function(tabPath, parameterArray, historyEvent)
-				{
-					if (tabPath == "general")
-					{
-						if (isOnForm())
-						{
-							JpUiCalendar.datetimeCalendar($("#fromValid"), $("#toValid"));
-							
-							$("#FORM_modify select[name=component]").on("change", function() {
-								JpUtilsAjax.get({
-									url: "/platform/mgmt/content/component/entry_points?component=" + $(this).val(),
-									global: false,
-									success: function(data, textStatus, jqXHR)
-									{
-										let options = [];
-										options.push("<option value=''></option>");
-										
-									    data.RESULT.forEach(function(element, index) {
-									    	options.push("<option value='" + element.url + "' data-key='" + element.url + "'>" + element.url + "</option>");
-									    });
-									    
-									    $("#FORM_modify select[name=entryPoint]").html(options.join(""));
-									}
-								});								
-							});
-							
-							//Add custom rules in the form validation
-							$.fn.form.settings.rules.checkDuplicatedName = function(value)
-							{
-								if (JpUtilsString.isNotEmpty(value))
-								{
-									let isValid = false;
-									
-									JpUtilsAjax.get({
-										url: "/platform/mgmt/content/valid_check/name",
-										data: { cSeq: getSeq(), value: value },
-										global: false,
-										async: false,
-										success: function(data, textStatus, jqXHR)
-										{
-											if (data.RESULT == "duplicated")
-											{
-												isValid = false;
-											}
-											else
-											{
-												isValid = true;
-											};
-										}
-									});
-
-									return isValid;
-								};
-
-								return false;
-							};
-							
-							let formValidCheck = {
-									inline: true,
-									fields: {
-										"Item Type": {
-											identifier: "type",
-											rules: [
-												{
-													type: "empty",
-													prompt: "Please enter {name}."
-												}
-											]
-										},
-										Name: {
-											identifier: "name",
-											rules: [
-												{
-													type: "empty",
-													prompt: "Please enter {name}."
-												},
-												{
-													type: "checkDuplicatedName",
-													prompt: "The {name} is not available. Please enter another name."
-												}												
-											]
-										},
-										"Valid From": {
-											identifier: "fromValid",
-											rules: [
-												{
-													type: "empty",
-													prompt: "Please enter {name}."
-												}
-											]
-										},
-										"Valid To": {
-											identifier: "toValid",
-											rules: [
-												{
-													type: "empty",
-													prompt: "Please enter {name}."
-												}
-											]
-										},
-										Sort: {
-											identifier: "sort",
-											rules: [
-												{
-													type: "empty",
-													prompt: "Please enter {name}."
-												},
-												{
-										            type   : "integer",
-										            prompt : "Please enter a valid number."								
-												}
-											]
-										}
-									},
-									keyboardShortcuts: false
-								};
-							
-							$("#FORM_modify").form(formValidCheck);					
-						};
-					}
-					else
-					{
-						$("#FORM_modify select[name=basename]").on("change", function() {
-							changeTab("language");
-						});
-					}
-					
-					changeButtonStatus();
-					viewItemTab.changePath("/platform/mgmt/content/layout");
-				}
-			}
-	};
-	
-	let tree = new JpUiTree($("#TREE_items"));
-	tree.icons = {FOLDER: "folder", FOLDER_OPEN: "folder open", PAGE: "file", MENU: "table", ROLE: "user"};
-	tree.onLoad = function()
+	if (previousCommand.COMMAND == "COPY")
 	{
-		if (JpUtilsString.isEmpty(getSeq()))
+		url = "/platform/mgmt/content/copy";
+		
+		if (tree.isSubItems())
 		{
-			let root = tree.getRoot();
-			setSeq(root.KEY, root.P_KEY);
+			JpUiDimmer.confirm("Do you want to copy including the sub items?", function() {
+				doPaste("/platform/mgmt/content/copy_with_sub_items");
+			});
 		};
-		
-		viewItemTab.render();
-		
-		JpUiDimmer.hide();
-	};
-	tree.viewDetail = function(key, pKey, target)
+	}
+	else if (previousCommand.COMMAND == "CUT")
 	{
-		$(".ui.tab[data-tab=general], .ui.tab[data-tab=language]").empty();
-		
-		setSeq(key, pKey);
-		viewItemTab.changeTab("general");
+		doPaste("/platform/mgmt/content/move");
 	};
-	tree.createItem = function(key, pKey)
-	{
-		initSeq();
 	
-		$("#FORM_modify input[name='pSeq']").val(key);
-	
-		viewItemTab.changePath("/platform/mgmt/content/write/layout");
-		changeTab();
-	};
-	tree.deleteItem = function(key, pKey)
+	function doPaste(url)
 	{
-		JpUiDimmer.confirm("Do you want to delete?", function() {
-			setSeq(key, pKey);
+		if (JpUtilsString.isNotEmpty(url))
+		{
+			let command = tree.getCommand();
+			
+			setSeq(previousCommand.KEY, key);
 			
 			JpUtilsAjax.post({
-				url: "/platform/mgmt/content/delete",
+				url: url,
 				data: $("#FORM_modify").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -289,193 +331,151 @@
 					changeTab();
 				}
 			});
-		});
-	};
-	tree.pasteItem = function(key, pKey)
-	{
-		let previousCommand = tree.getPreviousCommand();
-		let url;
-		
-		if (previousCommand.COMMAND == "COPY")
-		{
-			url = "/platform/mgmt/content/copy";
-			
-			if (tree.isSubItems())
-			{
-				JpUiDimmer.confirm("Do you want to copy including the sub items?", function() {
-					doPaste("/platform/mgmt/content/copy_with_sub_items");
-				});
-			};
-		}
-		else if (previousCommand.COMMAND == "CUT")
-		{
-			doPaste("/platform/mgmt/content/move");
-		};
-		
-		function doPaste(url)
-		{
-			if (JpUtilsString.isNotEmpty(url))
-			{
-				let command = tree.getCommand();
-				
-				setSeq(previousCommand.KEY, key);
-				
-				JpUtilsAjax.post({
-					url: url,
-					data: $("#FORM_modify").serialize(),
-					success: function(data, textStatus, jqXHR)
-					{
-						initSeq();
-						
-						tree.refresh();
-						changeTab();
-					}
-				});
-			};			
-		};
-	};	
-	tree.setUrl("/platform/mgmt/content/tree");
-	tree.render();
-	
-	$(".BTN_modify").on("click", function() {
-		viewItemTab.changePath("/platform/mgmt/content/write/layout");
-		changeTab();
-	});
-	
-	$(".BTN_save").on("click", function() {
-		if ($("#FORM_modify").form("validate form"))
-		{
-			JpUtilsAjax.post({
-				url: "/platform/mgmt/content/save",
-				data: $("#FORM_modify").serialize(),
-				success: function(data, textStatus, jqXHR)
-				{
-					if (JpUtilsString.isEmpty(getSeq()))
-					{
-						if (JpUtilsObject.isNotNull(data.RESULT))
-						{
-							setSeq(data.RESULT, getPSeq());
-						};
-					}					
-					
-					changeTab();
-					tree.refresh();
-				}
-			});
-		};
-	});
-	
-	function setSeq(seq, pSeq)
-	{
-		$("#FORM_modify input[name=cSeq]").val(JpUtilsString.trimToEmpty(seq));
-		$("#FORM_modify input[name=pSeq]").val(JpUtilsString.trimToEmpty(pSeq));
-	};
-	
-	function getSeq()
-	{
-		return $("#FORM_modify input[name=cSeq]").val(); 
-	};
-	
-	function getPSeq()
-	{
-		return $("#FORM_modify input[name=pSeq]").val(); 
-	};
-	
-	function initSeq()
-	{
-		$("#FORM_modify input[name=cSeq], [name=pSeq]").val("");
-	};	
-	
-	$(".BTN_cancel").on("click", function() {
-		changeTab();
-	});	
-	
-	function changeButtonStatus()
-	{
-		$(".AREA_moveToModify, .AREA_modify, .AREA_moveToViewLang").css("display", "none");
-		
-		if (viewItemTab.tabPath == "general")
-		{
-			if (!isRoot())
-			{
-				if (isOnForm())
-				{
-					$(".AREA_modify").css("display", "block");
-				}
-				else
-				{
-					$(".AREA_moveToModify").css("display", "block");
-				};					
-			};
-		}
-		else
-		{
-			$(".AREA_moveToViewLang").css("display", "block");
 		};			
 	};
-	
-	function changeTab(tabPath)
+};	
+tree.setUrl("/platform/mgmt/content/tree");
+tree.render();
+
+$(".BTN_modify").on("click", function() {
+	viewItemTab.changePath("/platform/mgmt/content/write/layout");
+	changeTab();
+});
+
+$(".BTN_save").on("click", function() {
+	if ($("#FORM_modify").form("validate form"))
 	{
-		changeButtonStatus();
-	
-		viewItemTab.changeTab(JpUtilsString.defaultString(tabPath, "general"));
-	};
-	
-	function isOnForm()
-	{
-		return (viewItemTab.getPath().indexOf("write") > -1) ? true : false;
-	};	
-	
-	function isRoot()
-	{
-		if (getPSeq() == "")
-		{
-			return true;
-		};
-		
-		return false;
-	};
-	
-	$(".BTN_translation").on("click", function() {
-		JpUtilsAjax.get({
-			url: "/platform/mgmt/content/lang",
-			data: $("#FORM_modify").serialize(),
-			global: false,
-			success: function(data, textStatus, jqXHR)
-			{
-				if (data.RESULT != null)
-				{
-					viewLang("CONTENT", data.RESULT.lseq, data.RESULT.messageCode, data.RESULT.basename);
-				}
-				else
-				{
-					viewLang("CONTENT");
-				};
-			}
-		});
-	});
-	
-	function doAfterSavingLang(isNew, lSeq)
-	{
-		$("#FORM_updateLang input[name=cSeq]").val(getSeq());
-		$("#FORM_updateLang input[name=lSeq]").val(lSeq);
-		
 		JpUtilsAjax.post({
-			url: "/platform/mgmt/content/lang/save",
-			data: $("#FORM_updateLang").serialize(),
+			url: "/platform/mgmt/content/save",
+			data: $("#FORM_modify").serialize(),
 			success: function(data, textStatus, jqXHR)
 			{
-				changeTab("language");
+				if (JpUtilsString.isEmpty(getSeq()))
+				{
+					if (JpUtilsObject.isNotNull(data.RESULT))
+					{
+						setSeq(data.RESULT, getPSeq());
+					};
+				}					
+				
+				changeTab();
 				tree.refresh();
 			}
 		});
 	};
+});
+
+function setSeq(seq, pSeq)
+{
+	$("#FORM_modify input[name=cSeq]").val(JpUtilsString.trimToEmpty(seq));
+	$("#FORM_modify input[name=pSeq]").val(JpUtilsString.trimToEmpty(pSeq));
+};
+
+function getSeq()
+{
+	return $("#FORM_modify input[name=cSeq]").val(); 
+};
+
+function getPSeq()
+{
+	return $("#FORM_modify input[name=pSeq]").val(); 
+};
+
+function initSeq()
+{
+	$("#FORM_modify input[name=cSeq], [name=pSeq]").val("");
+};	
+
+$(".BTN_cancel").on("click", function() {
+	changeTab();
+});	
+
+function changeButtonStatus()
+{
+	$(".AREA_moveToModify, .AREA_modify, .AREA_moveToViewLang").css("display", "none");
 	
-	function doAfterDeletingLang()
+	if (viewItemTab.tabPath == "general")
 	{
-		changeTab("language");
-		tree.refresh();
+		if (!isRoot())
+		{
+			if (isOnForm())
+			{
+				$(".AREA_modify").css("display", "block");
+			}
+			else
+			{
+				$(".AREA_moveToModify").css("display", "block");
+			};					
+		};
+	}
+	else
+	{
+		$(".AREA_moveToViewLang").css("display", "block");
+	};			
+};
+
+function changeTab(tabPath)
+{
+	changeButtonStatus();
+
+	viewItemTab.changeTab(JpUtilsString.defaultString(tabPath, "general"));
+};
+
+function isOnForm()
+{
+	return (viewItemTab.getPath().indexOf("write") > -1) ? true : false;
+};	
+
+function isRoot()
+{
+	if (getPSeq() == "")
+	{
+		return true;
 	};
+	
+	return false;
+};
+
+$(".BTN_translation").on("click", function() {
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/content/lang",
+		data: $("#FORM_modify").serialize(),
+		global: false,
+		success: function(data, textStatus, jqXHR)
+		{
+			if (data.RESULT != null)
+			{
+				viewLang("CONTENT", data.RESULT.lseq, data.RESULT.messageCode, data.RESULT.basename);
+			}
+			else
+			{
+				viewLang("CONTENT");
+			};
+		}
+	});
+});
+
+function doAfterSavingLang(isNew, lSeq)
+{
+	$("#FORM_updateLang input[name=cSeq]").val(getSeq());
+	$("#FORM_updateLang input[name=lSeq]").val(lSeq);
+	
+	JpUtilsAjax.post({
+		url: "/platform/mgmt/content/lang/save",
+		data: $("#FORM_updateLang").serialize(),
+		success: function(data, textStatus, jqXHR)
+		{
+			changeTab("language");
+			tree.refresh();
+		}
+	});
+};
+
+function doAfterDeletingLang()
+{
+	changeTab("language");
+	tree.refresh();
+};
 </script>
 
 </th:block>

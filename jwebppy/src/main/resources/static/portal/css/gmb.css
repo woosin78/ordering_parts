@@ -1,0 +1,99 @@
+/*--- 메인메뉴 ------------------*/
+.gmb-wrap {
+	 width: 100%;
+	 height: 50px;
+	 margin: 0 auto;
+	 padding: 0;
+}
+.gmb-container {
+	width: 100%;
+	position: fixed;
+	z-index: 20;
+}
+.gmb-menu-area {
+	/*display: inline-block;*/
+	overflow-y: hidden;
+	margin: 0 40px 0 40px;
+	padding: 0;
+	background: #003081;
+	width: auto;
+	height: 50px;
+	text-align: center;
+	border-radius: 5px;
+	background: rgba(0, 48, 130, 0.8);
+}
+.gmb-menu-list {
+	overflow-y: hidden;
+	white-space: nowrap;
+	line-height: 50px;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	background-color : #003082;
+}
+
+.gmb-menu-list li{
+	width: 11%;
+	color: #fff;
+	font-size: 16px;
+	font-weight: bold;
+	display: inline-table;
+	cursor: pointer;	
+}
+.gmb-menu-list li:hover{
+	background: #7887b1;
+}
+.mainmenu-arrowbutton {
+	width:32px;
+	height:32px;
+	vertical-align:middle;	
+}
+
+/*--- 서브메뉴 ------------------*/
+.mainmenu-sub-area {
+	backdrop-filter: blur(6px);
+	overflow-y: hidden;
+	/* position: fixed; */
+	top: 0px;
+ 	background: rgba(0, 48, 129, 0.80);
+	height: 40px;	
+	width: auto;
+ 	/*width: -webkit-fill-available;*/
+	text-align: center;
+	padding: 0;
+	border-radius: 5px;
+	margin: 0 40px 0 40px;
+}
+.gmb-menu-sub-list {
+	overflow-y: hidden;
+	white-space: nowrap;
+	line-height: 40px;
+	width: 100%;
+	margin: 0;
+	display: inline-block;
+	padding: 0;
+}
+.gmb-menu-sub-list li{
+	width: 11%;
+	font-size: 14px;
+	font-weight: normal;
+	display: inline-table;
+	cursor: pointer;
+	line-height: 2;
+	color: #b2e4d7;	
+}
+.gmb-menu-sub-list li:hover{
+	text-decoration: underline;
+	color: #fff;
+}
+.gmb-menu-sub-list li:hover{
+	/*background: #7887b1;*/
+}
+.mainmenu-sub-list li:hover{
+	text-decoration: underline;
+	color: #fff;
+}
+.mainmenu-sub-list li:hover{
+	/*background: #7887b1;*/
+}

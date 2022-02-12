@@ -114,13 +114,11 @@ input {
 	display: inline;
 	vertical-align: middle;
 }
-.logo {
+.logo-doosan {
 	position:relative;
-	width:86px;
-	height:40px;
 	vertical-align: middle;
 }
-.doobizplus {
+.logo-doobizplus {
 	margin-left: 20px;
 	cursor: pointer;
 	/*
@@ -165,38 +163,51 @@ input {
 }
 
 /*--- 메인메뉴 ------------------*/
-.mainmenu-area {
-	display: inline-block;
+.gmb-wrap {
+	 width: 100%;
+	 height: 50px;
+	 margin: 0 auto;
+	 padding: 0;
+}
+.gmb-area {
+	width: 100%;
+	position: fixed;
+	z-index: 20;
+}
+.gmb-menu-area {
+	/*display: inline-block;*/
 	overflow-y: hidden;
 	margin: 0 40px 0 40px;
-	position: relative;
-	background: #003081;
-	height: 50px;
-	width: auto;
-	text-align: center;
 	padding: 0;
+	/*position: fixed;*/
+	background: #003081;
+	width: auto;
+	height: 50px;
+	text-align: center;
 	border-radius: 5px;
+	background: rgba(0, 48, 130, 0.8);
 }
-.mainmenu-list {
+.gmb-menu-list {
 	overflow-y: hidden;
 	white-space: nowrap;
 	line-height: 50px;
 	width: 100%;
 	margin: 0;
-	display: inline-block;
 	padding: 0;
+	display: inline-block;
+	background-color : #003082;
 }
 
-.mainmenu-list li{
+.gmb-menu-list li{
 	width: 11%;
 	color: #fff;
 	font-size: 16px;
 	font-weight: bold;
 	display: inline-table;
-	cursor: pointer;
+	cursor: pointer;	
 }
 
-.mainmenu-list li:hover{
+.gmb-menu-list li:hover{
 	background: #7887b1;
 }
 
@@ -206,32 +217,32 @@ input {
 	vertical-align:middle;	
 }
 
-
 /*--- 서브메뉴 ------------------*/
 .mainmenu-sub-area {
-	/*display: inline-block;*/
+	backdrop-filter: blur(6px);
 	overflow-y: hidden;
-	margin: 0 40px 0 40px;
-	position: absolute;
- 	background: #003081;
-	height: 40px;
-	top:113px;
- 	width: -webkit-fill-available; 
+	/* position: fixed; */
+	top: 0px;
+ 	background: rgba(0, 48, 129, 0.80);
+	height: 40px;	
+	width: auto;
+ 	/*width: -webkit-fill-available;*/
 	text-align: center;
 	padding: 0;
 	border-radius: 5px;
+	margin: 0 40px 0 40px;
 }
-.mainmenu-sub-list {
+.gmb-menu-sub-list {
 	overflow-y: hidden;
 	white-space: nowrap;
 	line-height: 40px;
 	width: 100%;
 	margin: 0;
 	display: inline-block;
-	padding: 0;	
+	padding: 0;
 }
 
-.mainmenu-sub-list li{
+.gmb-menu-sub-list li{
 	width: 11%;
 	font-size: 14px;
 	font-weight: normal;
@@ -241,9 +252,13 @@ input {
 	color: #b2e4d7;	
 }
 
-.mainmenu-sub-list li:hover{
+.gmb-menu-sub-list li:hover{
 	text-decoration: underline;
 	color: #fff;
+}
+
+.gmb-menu-sub-list li:hover{
+	/*background: #7887b1;*/
 }
 
 /*--- 여백 과 flex ------------------*/
@@ -906,4 +921,34 @@ input.custom-ui[type="radio"]:checked + label:before {
     background: #B2E4D7 !important;
     font-weight: bold !important;
     color: #000 !important;
-} 
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  /*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 100;
+  top: 100%;
+  left: 50%;
+  margin-left: -125px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}

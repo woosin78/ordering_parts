@@ -179,6 +179,24 @@ public class OrderCreateService
 	{
 		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
 		{
+			/* LT_ITEM */
+			List<Map<String, Object>> items = new LinkedList<>();
+
+			for (OrderItemDto orderItem : order.getOrderItems())
+			{
+				Map<String, Object> itemMap = new HashMap<>();
+				itemMap.put("ITEM", orderItem.getLineNo());
+				itemMap.put("MATERIAL", orderItem.getMaterialNo());
+				itemMap.put("QTY", orderItem.getOrderQty());
+				itemMap.put("REQ_QTY", orderItem.getOrderQty());
+				itemMap.put("LOT_QTY", orderItem.getLotQty());
+				itemMap.put("UOM", orderItem.getUom());
+				itemMap.put("AVAILABILITY", orderItem.getAvailability());
+				itemMap.put("CCHECK", "1");
+
+				items.add(itemMap);
+			}
+
 			RfcRequest rfcRequest = new RfcRequest();
 
 			rfcRequest.
@@ -212,73 +230,10 @@ public class OrderCreateService
 					})
 				.and()
 				.table("LT_GERNERAL_ZTERM")
-					.add("ZTERM", order.getPaymentTerms());
-
-
-			/*
-			rfcRequest.addField("LV_AUART", order.getOrderType());
-			rfcRequest.addField("LV_REMARK", order.getRemark());
-			rfcRequest.addField("I_USERID", order.getUsername());
-			rfcRequest.addField("I_LANGU", order.getLanguage());
-			rfcRequest.addField("I_BGTYP", "P");
-			*/
-
-			/* LS_GENERAL */
-			/*
-			Map<String, Object> generalMap = new HashMap<>();
-			generalMap.put("INCO1", order.getIncoterms1());
-			generalMap.put("INCO2", order.getIncoterms2());
-			generalMap.put("VSBED", order.getShippingCondition());
-			generalMap.put("VDATU", CmDateFormatUtils.stripDateFormat(order.getRdd()));
-			generalMap.put("BSTNK", order.getPoNo());
-			generalMap.put("COMPLETE_DELIVERY", order.getCompleDelivery());
-
-			rfcRequest.addStructure("LS_GENERAL", generalMap);
-			*/
-
-			/* LS_MAIN_HEAD*/
-			/*
-			Map<String, Object> mainHeadMap = new HashMap<>();
-			mainHeadMap.put("KUNNR", order.getSoldToNo());
-			mainHeadMap.put("KUNNR_NAME", order.getSoldToName());
-			mainHeadMap.put("KUNAG", order.getShipToNo());
-			mainHeadMap.put("KUNAG_NAME", order.getShipToName());
-			mainHeadMap.put("KONDA", order.getPriceGroup());
-			mainHeadMap.put("KVGR5", "20");
-
-			rfcRequest.addStructure("LS_MAIN_HEAD", mainHeadMap);
-			*/
-
-			/* LT_GERNERAL_ZTERM */
-			/*
-			Map<String, Object> termMap = new HashMap<>();
-			termMap.put("ZTERM", order.getPaymentTerms());
-
-			List<Map<String, Object>> generalTerms = new ArrayList<>();
-			generalTerms.add(termMap);
-
-			rfcRequest.addTable("LT_GERNERAL_ZTERM", generalTerms);
-			*/
-
-			/* LT_ITEM */
-			List<Map<String, Object>> items = new LinkedList<>();
-
-			for (OrderItemDto orderItem : order.getOrderItems())
-			{
-				Map<String, Object> itemMap = new HashMap<>();
-				itemMap.put("ITEM", orderItem.getLineNo());
-				itemMap.put("MATERIAL", orderItem.getMaterialNo());
-				itemMap.put("QTY", orderItem.getOrderQty());
-				itemMap.put("REQ_QTY", orderItem.getOrderQty());
-				itemMap.put("LOT_QTY", orderItem.getLotQty());
-				itemMap.put("UOM", orderItem.getUom());
-				itemMap.put("AVAILABILITY", orderItem.getAvailability());
-				itemMap.put("CCHECK", "1");
-
-				items.add(itemMap);
-			}
-
-			rfcRequest.addTable("LT_ITEM", items);
+					.add("ZTERM", order.getPaymentTerms())
+				.and()
+				.table("LT_ITEM")
+					.add(items);
 
 			//Order History 저장
 			Integer ohhSeq = saveOrderHistory(order);

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org">
+<body></body>
+<script>
+function preLoading()
+{
+	let urls = [
+		"/portal/iv/hq/parts/domestic/order/display/order/list/data",
+		"/portal/iv/hq/parts/domestic/order/backorder/list/data",
+		"/portal/iv/hq/parts/domestic/order/status/list/data",
+		"/portal/iv/hq/parts/domestic/order/delivery/list/data",
+		"/portal/iv/hq/parts/domestic/order/delivery/view/data",
+		"/portal/iv/hq/parts/domestic/claim/list/data",
+		"/portal/iv/hq/parts/domestic/accounts/ap/schedule/list/data",
+		"/portal/iv/hq/parts/domestic/accounts/ar/list/data",
+		"/portal/iv/hq/parts/domestic/report/order/list/data"
+	];
+	
+	for (let i=0, length=urls.length; i<length; i++)
+	{
+		document.write("<iframe src='" + urls[i] + "'/>");
+	};
+};
+
+preLoading();
+</script>
+</html>

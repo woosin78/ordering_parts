@@ -75,7 +75,7 @@ public class CacheConfig
 		redisCacheConfigurationMap.put(LANG, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(TTL_24_HOURS)));
 		redisCacheConfigurationMap.put(CITEM, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(TTL_24_HOURS)));
 		redisCacheConfigurationMap.put(USER, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(TTL_5_MINUTES)));
-		redisCacheConfigurationMap.put(CUSTOMER, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(TTL_5_MINUTES)));
+		redisCacheConfigurationMap.put(CUSTOMER, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(TTL_10_MINUTES)));
 		redisCacheConfigurationMap.put(ORDER_TYPE, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(TTL_24_HOURS)));
 		redisCacheConfigurationMap.put(ORDER_DISPLAY, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(TTL_24_HOURS)));
 		redisCacheConfigurationMap.put(ORDER_DISPLAY_DETAIL, RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(TTL_24_HOURS)));

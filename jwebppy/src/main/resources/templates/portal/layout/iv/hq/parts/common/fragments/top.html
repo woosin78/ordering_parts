@@ -1,74 +1,50 @@
-<!-- header.jsp begin -->
-<style>
-/* Tooltip container */
-.tooltip {
-	position: relative;
-	display: inline-block;
-	/*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-}
-
-/* Tooltip text */
-.tooltip .tooltiptext {
-	visibility: hidden;
-	width: 300px;
-	background-color: black;
-	color: #fff;
-	text-align: center;
-	padding: 5px 0;
-	border-radius: 6px;
-	
-	/* Position the tooltip text - see examples below! */
-	position: absolute;
-	z-index: 1;
-	top: 100%;
-	left: 50%;
-	margin-left: -125px;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-	visibility: visible;
-}
-</style>
 <div class="header">
 	<div class="logo-area">
-		<img class="logo" th:src="@{/portal/img/logo.png}" alt="DOOSAN" /><img id="IMG_doobizPlus" class="doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
+		<img class="logo-doosan" th:src="@{/portal/img/main/logo2.png}" alt="DOOSAN" /><img class="logo-doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
 	</div>	
 	<div class="info-area">
 		<ul class="info-list">
 			<li class="username" sec:authentication="name"></li>
 			<li>|</li>
-			<li class="openNewWindow" th:text="#{PTL_T_NEW_WINDOW}"></li>
+			<li class="new-window" th:text="#{PTL_T_NEW_WINDOW}"></li>
 			<li>|</li>
-			<li class="dealerInfo" th:text="#{PTL_T_DEALER_INFO}"></li>
+			<li class="dealer-info" th:text="#{PTL_T_DEALER_INFO}"></li>
 			<li>|</li>		
-			<li class="tooltip"><span th:text="#{PTL_T_LAST_LOGIN_INFO}"></span><span id="lastLoginTime" class="tooltiptext"></span></li>
+			<li class="tooltip"><span th:text="#{PTL_T_LAST_LOGIN_INFO}"></span><span class="last-login-time tooltiptext"></span></li>
 		</ul>
 		<div class="split"></div>
 		<button class="logout-button" th:text="#{PTL_B_LOGOUT}"></button>
 	</div>
 </div>
 
-<div class="ui menu topMenu" style="background-color: #003081; margin-left:39px; margin-right: 40px;"></div>
+<div class="gmb-wrap">
+	<div class="gmb-container">
+		<div class="gmb-menu-area">
+			<ul class="gmb-menu-list" style="display:none;"></ul>					
+			<ul class="gmb-menu-sub-list"></ul>
+		</div>
+	</div>
+</div>
 
-<div class="split-row"></div>
+<div class="split-row"></div><div class="split-row"></div>
 
 <!-- Logout -->
 <form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}" style="display:none;"></form>
 
 <script>
 $(document).ready(function() {
+	//상단 메뉴 생성 공통함수
 	makeGmb();
 	
-	$("#IMG_doobizPlus").on("click", function() {
+	$(".header .logo-doobizplus").on("click", function() {
 		goHome()
 	});
 	
-	$(".header li.openNewWindow").on("click", function() {
+	$(".header li.new-window").on("click", function() {
 		window.open("/portal/forward/entry_point", "");
 	});
 	
-	$(".header li.dealerInfo").on("click", function() {
+	$(".header li.dealer-info").on("click", function() {
 		clickDealerInfo();	    		
 	});
 	
@@ -78,84 +54,6 @@ $(document).ready(function() {
 	
 	$(".header .logout-button").on("click", function() {
 		clickLogout();	    		
-	});	
-});
-
-function makeGmb()
-{
-	//Make GNB
-	let menu = [];
-
-	JpUtilsAjax.get({
-		url: "/platform/mgmt/gnb/menu",
-		success: function(data, textStatus, jqXHR)
-		{
-		    data.RESULT.forEach(function(element, index) {
-		    	let length = (element.SUB_ITEMS != null) ? element.SUB_ITEMS.length : 0;
-		    	
-		    	if (length > 0)
-		    	{
-			    	menu.push("<div class='ui dropdown item'>");
-			    	makeItems(element);
-			    	menu.push("</div>");		    		
-		    	};
-		    });
-		    
-		    $(".ui.menu.topMenu").html(menu.join(""));
-		    
-		    $("span.text.R").css({"color": "#fff", "font-weight": "bold", "font-size": "16px"});
-		    $("i.dropdown.icon.R").css("color", "#fff");
-
-		    /* 메뉴명 길이에 따라서 width 를 자동 조절함 */
-		    let maxLength = 0;
-		    $(".ui.menu.topMenu span.text").each(function(index, element) {
-				let length = $(this).html().length;
-				
-				if (length > maxLength)
-				{
-					maxLength = length;
-				};
-		    });
-		    
-		    $(".ui.menu.topMenu span.text").css("width", maxLength * 9);
-		    /* 메뉴명 길이에 따라서 너비를 자동 조절함 */
-		    
-			$(".ui.menu.topMenu .ui.dropdown").dropdown({
-				allowCategorySelection: true
-			});
-			
-			$(".ui.menu.topMenu span.text").on("click", function() {
-				if (!$(this).hasClass("R"))
-				{
-					moveToLink(this);	
-				};
-			});
-			
-			$(".ui.menu.topMenu span.text[url]").parent("div.item").on("click", function() {
-				moveToLink($(this).find("span.text[url]"));
-			});
-			
-			function moveToLink(menu)
-			{
-				let url = $(menu).attr("url");
-				
-				if (JpUtilsString.isEmpty(url))
-				{
-					let subElements = $(menu).parent().find("span.text[url]");
-					
-					for (let i=0, length=subElements.length; i<length; i++)
-					{
-						if (JpUtilsString.isNotEmpty($(subElements[i]).attr("url")))
-						{
-							url = $(subElements[i]).attr("url");
-							break;
-						};
-					};
-				};
-				
-				document.location.href = url;
-			};
-		}
 	});
 	
 	//Get last login information
@@ -167,44 +65,15 @@ function makeGmb()
 	    	
 	    	if (data != null && JpUtilsString.isNotEmpty(data.regDate))
 	    	{
-	    		$("#lastLoginTime").html(data.regDate + "/" + data.ip);
+	    		$(".last-login-time").html(data.regDate + "/" + data.ip);
 	    	}
 	    	else
 	    	{
-	    		$("#lastLoginTime").html("-/-");
-	    	};	    	
+	    		$(".last-login-time").html("-/-");
+	    	};
 	    }	
 	});	
-	
-	let makeItems = function (cItem)
-	{
-		let length = (cItem.SUB_ITEMS != null) ? cItem.SUB_ITEMS.length : 0;
-		
-		menu.push("<span class='text " + cItem.TYPE + "'");
-		
-		if (length == 0)
-		{
-			menu.push(" url='" + cItem.URL + "'");	
-		};
-		
-		menu.push(">" + cItem.NAME + "</span>");
-		
-		if (length > 0)
-		{
-			menu.push(" <i class='dropdown icon " + cItem.TYPE + "'></i>");
-			menu.push("<div class='menu'>");
-
-			for (let i=0; i<length; i++)
-			{
-				menu.push("<div class='item'>");
-				makeItems(cItem.SUB_ITEMS[i]);
-				menu.push("</div>");
-			};
-			
-			menu.push("</div>");
-		}
-	};
-};
+});
 
 function goHome()
 {
