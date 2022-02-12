@@ -8,7 +8,7 @@
 	<div class="block-title">Dealer Info.</div>
 </div>	
 <div class="condition-area">
-<table class="condition">
+<table class="condition table-fixed">
 		<tr>
 			<th style="width: 150px;">Customer Code</th>
 			<td id="CUSTOMER_CODE"></td>
@@ -20,12 +20,12 @@
 		</tr>		
 </table>
 </div>
-<div class="split-row"></div>
+<div class="split-row"></div><div class="split-row"></div><div class="split-row"></div>
 <div class="block-header">
 	<div class="block-title">Basic Info.</div>
 </div>
 <div class="condition-area">
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tr>
 			<th style="width: 150px;">Tax Number</th>
 			<td id="STCD4"></td>
@@ -58,7 +58,7 @@
 		</tr>									
 	</table>
 	<div class="split-row"></div>
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tr>
 			<th style="width: 150px;">Postal code/City</th>
 			<td><span id="POST_CODE1"></span>
@@ -114,12 +114,12 @@
 		</tr>																	
 	</table>		
 </div>	
-<div class="split-row"></div>
+<div class="split-row"></div><div class="split-row"></div><div class="split-row"></div>
 <div class="block-header">
 	<div class="block-title">Sales Info.</div>
 </div>
 <div class="condition-area">
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tr>
 			<th style="width: 150px;">Branch</th>
 			<td id="VKGRP_T"></td>
@@ -172,7 +172,7 @@
 </div>
 <script>
 JpUtilsAjax.get({
-	url: "/portal/scm/parts/common/info/dealer/detail/data",
+	url: "[[${BASE_PATH}]]/dealer_info/view/data",
     success: function(data, textStatus, jqXHR) 
     {
     	var result = data.RESULT;		    	
@@ -184,7 +184,7 @@ JpUtilsAjax.get({
 		$("#STCD4").html(result.STCD4);
 		$("#KUNNR").html(result.KUNNR);
 		$("#STCD1").html(result.STCD1);
-		$("#ERDAT").html(JpUtilsDateFormat.dateFormat(result.ERDAT));
+		$("#ERDAT").html(result.ERDAT);
 		$("#VKORG_T").html(result.VKORG_T);
 		$("#VTWEG_T").html(result.VTWEG_T);
 		$("#SPART_T").html(result.SPART_T);

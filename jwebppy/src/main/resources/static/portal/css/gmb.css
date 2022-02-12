@@ -7,8 +7,9 @@
 }
 .gmb-container {
 	width: 100%;
-	position: fixed;
+	position: absolute;
 	z-index: 20;
+	min-width: 1300px;
 }
 .gmb-menu-area {
 	/*display: inline-block;*/

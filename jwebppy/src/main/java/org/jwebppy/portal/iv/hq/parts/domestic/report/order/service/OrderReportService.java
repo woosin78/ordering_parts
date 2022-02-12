@@ -4,20 +4,15 @@ import java.util.Map;
 
 import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.portal.iv.common.utils.BwParseHelper;
-import org.jwebppy.portal.iv.hq.parts.common.service.PartsGeneralService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderReportService extends PartsGeneralService
+public class OrderReportService extends PartsDomesticGeneralService
 {
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	@Cacheable(value = CacheConfig.BUSINESS_TOOLS, key = "#paramMap", unless="#result == null")
 	public Map<String, Object> getList(ErpDataMap paramMap)
 	{

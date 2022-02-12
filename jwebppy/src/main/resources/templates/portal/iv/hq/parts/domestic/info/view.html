@@ -142,7 +142,7 @@ function doSearch()
 	}	
 	
 	JpUtilsAjax.get({
-		url: "/portal/iv/hq/parts/domestic/info/view/data",		
+		url: "[[${BASE_PATH}]]/info/view/data",		
 		data: {	"pPartNo": $("#pPartNo").val() },
 		beforeSend: function(jqXHR, settings)
 		{

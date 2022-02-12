@@ -72,7 +72,7 @@ $(function(){
 			{name: "AVA_FLAG", 	data: "AVA_FLAG", 	title: "[[#{HQP_L_AVAILABILITY}]]"	}	// Availability
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/info/sub_part_list/data",
+			url: "[[${BASE_PATH}]]/info/sub_part_list/data",
 			data: function(p)
 			{				
 				p.pPartNo = $("#pPartNo").val();

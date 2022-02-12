@@ -58,7 +58,7 @@ $(function(){
 			{data: "AQTY", 		title: "[[#{HQP_L_QTY}]]"}//Qty
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/info/alternative_list/data",
+			url: "[[${BASE_PATH}]]/info/alternative_list/data",
 			data: function(p)
 			{				
 				p.pPartNo = $("#pPartNo").val();

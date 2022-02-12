@@ -51,25 +51,25 @@ $(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
 //품번 검색
 function _showPartSearch(partNo)
 {
-	Popup.open("/portal/iv/hq/parts/domestic/info/popup/part_search?pPartNo=" + partNo, 700, 600);
+	Popup.open("[[${BASE_PATH}]]/info/popup/part_search?pPartNo=" + partNo, 700, 600);
 };
 
 //대체품 조회
 function _showSubPartList(partNo)
 {
-	Popup.open("/portal/iv/hq/parts/domestic/info/popup/sub_part_list?pPartNo=" + partNo, 900, 500);
+	Popup.open("[[${BASE_PATH}]]/info/popup/sub_part_list?pPartNo=" + partNo, 900, 500);
 };
 
 //부품 별 적용 모델
 function _showAppliedModelList(partNo)
 {
-	Popup.open("/portal/iv/hq/parts/domestic/info/popup/applied_model_list?pPartNo=" + partNo, 600, 500);
+	Popup.open("[[${BASE_PATH}]]/info/popup/applied_model_list?pPartNo=" + partNo, 600, 500);
 };
 
 //서비스불가사유 - MUL
 function _showNotServiableReason(partNo)
 {
-	Popup.open("/portal/iv/hq/parts/domestic/info/popup/alternative_list?pPartNo=" + partNo, 800, 500);
+	Popup.open("[[${BASE_PATH}]]/info/popup/alternative_list?pPartNo=" + partNo, 800, 500);
 };
 
 //Download Grid
@@ -87,7 +87,7 @@ function _setPartAutocomplete(target)
 	$(target).autocomplete({
 		source: function(request, response) {
 			JpUtilsAjax.get({
-				url: "/portal/iv/hq/parts/domestic/info/autocompete/data",
+				url: "[[${BASE_PATH}]]/info/autocompete/data",
 				data: {	"pPartNo": $(target).val() },
 				success: function(data, textStatus, jqXHR)
 				{

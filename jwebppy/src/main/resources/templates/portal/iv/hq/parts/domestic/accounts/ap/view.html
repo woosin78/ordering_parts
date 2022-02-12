@@ -104,7 +104,7 @@ $(function(){
 			{data: "VENUM", title: "[[#{HQP_L_INTERAL_HU_NO}]]"}
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/accounts/ap/view/data",
+			url: "[[${BASE_PATH}]]/accounts/ap/view/data",
 			data: function(p)
 			{
 				p.pShipmentNo = $("#pShipmentNo").val();

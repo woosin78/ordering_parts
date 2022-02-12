@@ -93,7 +93,7 @@ $(function(){
 			{data: "WAERS", title: "[[#{HQP_L_CURR}]]"}
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/accounts/ar/list/data",
+			url: "[[${BASE_PATH}]]/accounts/ar/list/data",
 			data: function(p)
 			{
 				p.pFromPoNo = $("#pFromPoNo").val();

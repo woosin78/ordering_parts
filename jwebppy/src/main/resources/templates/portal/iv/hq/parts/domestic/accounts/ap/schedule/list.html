@@ -84,7 +84,7 @@ $(function(){
 			{data: "TOTAL", title: "[[#{HQP_L_AP_SCHEDULE_009}]]", className: "right"}//금액
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/accounts/ap/schedule/list/data",
+			url: "[[${BASE_PATH}]]/accounts/ap/schedule/list/data",
 			data: function(p)
 			{
 				p.pFromDate 	= $("#pFromDate").val();

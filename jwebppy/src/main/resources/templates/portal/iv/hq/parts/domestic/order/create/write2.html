@@ -262,7 +262,7 @@
 	};
 	
 	$(".dropzone-click-zone").dropzone({
-		url: "/portal/iv/hq/parts/domestic/order/create/simulation/upload",
+		url: "[[${BASE_PATH}]]/order/create/simulation/upload",
 		maxFilesize: 5, //MB
 		acceptedFiles: ".xls,.xlsx",
 		accept: function(file, done)
@@ -320,7 +320,7 @@
 	function setDefaultHeaderInfo()
 	{
 		JpUtilsAjax.get({
-			url: "/portal/iv/hq/parts/domestic/order/create/header_info",
+			url: "[[${BASE_PATH}]]/order/create/header_info",
 		    success: function(response, textStatus, jqXHR)
 		    {
 		    	let result = response.RESULT;
@@ -347,7 +347,7 @@
 	function changeOrderType()
 	{
 		JpUtilsAjax.get({
-			url: "/portal/iv/hq/parts/domestic/order/create/header_info",
+			url: "[[${BASE_PATH}]]/order/create/header_info",
 			data: "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&docType=" + orderComponent.getSelectedDocType(),
 		    success: function(response, textStatus, jqXHR)
 		    {
@@ -546,21 +546,21 @@
 	};
 	
 	$("#docType1, #docType2").on("click", function() {
-		document.location.href = "/portal/iv/hq/parts/domestic/order/create/write?docType=" + $(this).val();
+		document.location.href = "[[${BASE_PATH}]]/order/create/write?docType=" + $(this).val();
 	});
 	
 	$("#BTN_shipToParty").on("click", function(event) {
-		Popup.open("/portal/iv/hq/parts/domestic/order/create/popup/ship_to_party", 1100, 600);
+		Popup.open("[[${BASE_PATH}]]/order/create/popup/ship_to_party", 1100, 600);
 	});
 	
 	$("#BTN_onetimeAddress").on("click", function() {
-		Popup.open("/portal/iv/hq/parts/domestic/order/create/onetime_address_list", 1200, 600);
+		Popup.open("[[${BASE_PATH}]]/order/create/onetime_address_list", 1200, 600);
 	});	
 	
 	$("#BTN_shippingInfo").on("click", function(event) {
 		let param = "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&customerNo=" + $("#soldToNo").val();
 	
-		Popup.open("/portal/iv/hq/parts/domestic/order/create/popup/shipping_info?" + param, 1000, 500);
+		Popup.open("[[${BASE_PATH}]]/order/create/popup/shipping_info?" + param, 1000, 500);
 	});
 	
 	$("#BTN_addRow").on("click", function() {
@@ -646,7 +646,7 @@
 	});
 	
 	$("#BTN_errorReport").on("click", function() {
-		Popup.open("/portal/iv/hq/parts/domestic/order/create/popup/error_report", 1200, 400);
+		Popup.open("[[${BASE_PATH}]]/order/create/popup/error_report", 1200, 400);
 	});
 	
 	$("#BTN_create").on("click", function() {
@@ -695,7 +695,7 @@
 		$("#availability").val(itemParameter.availabilities.join("^"));
 	
 		JpUtilsAjax.post({
-			url: "/portal/iv/hq/parts/domestic/order/create/save",
+			url: "[[${BASE_PATH}]]/order/create/save",
 			method: "POST",
 			data: $("#FORM_order").serialize(),
 			beforeSend: function(jqXHR, settings)
@@ -725,7 +725,7 @@
 		    		
 		    		alert(message);
 
-		    		document.location.href = "/portal/iv/hq/parts/domestic/order/display/" + path + "/view?orderNo=" + orderNo;
+		    		document.location.href = "[[${BASE_PATH}]]/order/display/" + path + "/view?orderNo=" + orderNo;
 		    	}
 		    	else
 		    	{
@@ -845,7 +845,7 @@
 				{"width": "150px", "targets": [3,4]},
 			],
 			ajax: {
-				url: "/portal/iv/hq/parts/domestic/order/create/simulation",
+				url: "[[${BASE_PATH}]]/order/create/simulation",
 				type: "POST",
 				beforeSend: function(request)
 				{

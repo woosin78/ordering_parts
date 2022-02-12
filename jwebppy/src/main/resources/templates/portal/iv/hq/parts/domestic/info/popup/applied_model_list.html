@@ -59,7 +59,7 @@ $(function(){
 			{data: "MAKTX", title: "[[#{HQP_L_MODEL}]]"	}	//Model
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/info/applied_model_list/data",
+			url: "[[${BASE_PATH}]]/info/applied_model_list/data",
 			data: function(p)
 			{				
 				p.pPartNo = $("#pPartNo").val();

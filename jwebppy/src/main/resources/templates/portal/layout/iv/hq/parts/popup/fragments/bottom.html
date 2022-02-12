@@ -3,8 +3,8 @@
 	<div class="footer">
 		<div class="split-row-compact"></div>
 		<div class="logo-area">
-			<img class="footer-logo" th:src="@{/portal/img/logo-s.png}">
-			<div class="split"></div>
+			<!-- img class="footer-logo" th:src="@{/portal/img/logo-s.png}">
+			<div class="split"></div -->
 			<div class="copyright" th:text="#{PTL_T_COPY_RIGHT}"></div>
 		</div>
 		<div class="split-row-compact"></div>
@@ -19,25 +19,25 @@
 //품번 검색
 function _showPartSearch(partNo)
 {
-	Popup.open("/portal/iv/hq/parts/domestic/info/popup/part_search?pPartNo=" + partNo, 700, 600);
+	Popup.open("[[${BASE_PATH}]]/info/popup/part_search?pPartNo=" + partNo, 700, 600);
 };
 
 //대체품 조회
 function _showSubPartList(partNo)
 {
-	Popup.open("/portal/iv/hq/parts/domestic/info/popup/sub_part_list?pPartNo=" + partNo, 900, 500);
+	Popup.open("[[${BASE_PATH}]]/info/popup/sub_part_list?pPartNo=" + partNo, 900, 500);
 };
 
 //부품 별 적용 모델
 function _showAppliedModelList(partNo)
 {
-	Popup.open("/portal/iv/hq/parts/domestic/info/popup/applied_model_list?pPartNo=" + partNo, 600, 500);
+	Popup.open("[[${BASE_PATH}]]/info/popup/applied_model_list?pPartNo=" + partNo, 600, 500);
 };
 
 //서비스불가사유 - MUL
 function _showNotServiableReason(partNo)
 {
-	Popup.open("/portal/iv/hq/parts/domestic/info/popup/alternative_list?pPartNo=" + partNo, 800, 500);
+	Popup.open("[[${BASE_PATH}]]/info/popup/alternative_list?pPartNo=" + partNo, 800, 500);
 };
 
 //Download Grid
@@ -55,7 +55,7 @@ function _setPartAutocomplete(target)
 	$(target).autocomplete({
 		source: function(request, response) {
 			JpUtilsAjax.get({
-				url: "/portal/iv/hq/parts/domestic/info/autocompete/data",
+				url: "[[${BASE_PATH}]]/info/autocompete/data",
 				data: {	"pPartNo": $(target).val() },
 				success: function(data, textStatus, jqXHR)
 				{

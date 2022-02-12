@@ -103,7 +103,7 @@ $(function(){
 			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"}	//P.O. No.
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/order/backorder/list/data",
+			url: "[[${BASE_PATH}]]/order/backorder/list/data",
 			data: function(p)
 			{
 				p.pOrderNo 		= $("#pOrderNo").val();

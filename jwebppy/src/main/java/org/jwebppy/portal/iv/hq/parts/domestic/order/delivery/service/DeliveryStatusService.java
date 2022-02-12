@@ -3,18 +3,14 @@ package org.jwebppy.portal.iv.hq.parts.domestic.order.delivery.service;
 import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DeliveryStatusService
+public class DeliveryStatusService extends PartsDomesticGeneralService
 {
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	@Cacheable(value = CacheConfig.DELIVERY_STATUS, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{

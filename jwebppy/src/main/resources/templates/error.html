@@ -1,50 +1,54 @@
-<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<title th:text="#{PLTF_T_0006}"></title>
-		<!-- Meta -->
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<!-- CSS -->
-		<link rel="stylesheet" type="text/css" href="/portal/css/basic.css">
-		<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-		<!-- JavaScript -->
-		<script src="/portal/js/jquery/jquery.min.js"></script>
-		<script src="/portal/js/datatables/jqueryDefault.js"></script>
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title th:text="#{PTL_T_DOOBIZ_PLUS}"></title>
+	<!-- Meta -->
+	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/meta"></th:block>
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/basic.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/gmb.css}">
+	
+	<!-- JavaScript -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
+	<script th:src="@{/portal/js/portal.ui.gmb.js}"></script>
+	<style>
+		.gomain-button {
+			padding: 5px 15px;
+			background-color: #003081;
+			color: #fff;
+			border: none;
+			border-radius: 20px;
+			width: 250px;
+			height: 40px;
+			cursor: pointer;
+			outline: none;
+			font-size: 18px;
+			vertical-align: middle;
+		}
 		
-		<style>
-			.gomain-button {
-				padding: 5px 15px;
-				background-color: #003081;
-				color: #fff;
-				border: none;
-				border-radius: 20px;
-				width: 250px;
-				height: 40px;
-				cursor: pointer;
-				outline: none;
-				font-size: 18px;
-				vertical-align: middle;
-			}
-			
-			.gomain-button span {
-				color: #fff;
-				font-size: 18px;
-				vertical-align: middle;
-			}
-			
-			.logo {
-				cursor: pointer
-			}
-		</style>		
-	</head>
+		.gomain-button span {
+			color: #fff;
+			font-size: 18px;
+			vertical-align: middle;
+		}
+		
+		.logo {
+			cursor: pointer
+		}
+	</style>		
+</head>
 <body>
+
 <!-- Start Top -->
 <!-- header.jsp begin -->
 <div class="header">
 	<div class="logo-area">
-		<img class="logo" th:src="@{/portal/img/logo.png}" alt="DOOSAN"><!-- img id="IMG_doobizPlus" class="doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" -->
+		<img class="logo-doosan" th:src="@{/portal/img/main/logo2.png}" /><img class="logo-doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
 	</div>	
 	<div class="info-area">
 		<ul class="info-list">
@@ -58,60 +62,51 @@
 		<button class="logout-button" th:text="#{HQP_B_LOGOUT}"></button>
 	</div>
 </div>
-<div style="width:100%;height:5px;opacity:0;"></div>
-<div class="mainmenu-area" id="DIV_mainmenuArea">
-	<ul id="UL_mainmenuList" class="mainmenu-list">
-		<li> </li>
-		<li> </li>
-		<li> </li>
-		<li> </li>
-		<li> </li>
-		<li> </li>
-	</ul>
+<div class="gmb-wrap">
+	<div class="gmb-container">
+		<div class="gmb-menu-area">
+			<ul class="gmb-menu-list" style="display:none;"></ul>					
+			<ul class="gmb-menu-sub-list"></ul>
+		</div>
+	</div>
 </div>
 <div class="split-row"></div>
 <div style="width: 100%; margin:0 auto; text-align: center;">
 	<div style="margin-top:138px;">
 		<img src="/portal/img/popup/alert.png">
 	</div>
-	<div style="margin-top: 20px;" th:if="${status == 401 || status == 403}" th:text="#{HQP_M_SESSION_EXPIRED}"></div>
-	<div style="margin-top: 20px;" th:unless="${status == 401 || status == 403}" th:text="#{HQP_M_ERROR}"></div>
+	<div th:switch="${status}">
+		<div th:case="${401}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
+		<div th:case="${403}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
+		<div th:case="${404}" th:text="#{HQP_T_PAGE_NOT_FOUND}"></div>
+		<div th:case="*" th:text="#{HQP_T_ERROR}"></div>
+	</div>
 	<div style="width:auto; height:220px; background-color: #f9f9f9; margin: 40px 40px 0 40px;">
 		<div style="height: 30px;"></div>
-		<button id="BTN_goMain" class="gomain-button"><span th:text="#{HQP_B_GO_MAIN}"></span> <img src="/portal/img/common/arrow_right.png"></button>
+		<button class="gomain-button"><span th:text="#{HQP_B_GO_MAIN}"></span> <img src="/portal/img/common/arrow_right.png"></button>
 	</div>
 </div>
-
-<!-- End Content -->
-
-<!-- bottom.html begin -->
 <div class="footer-area">	
 	<div class="footer">
 		<div class="split-row-compact"></div>
 		<div class="logo-area">
-			<img class="footer-logo" th:src="@{/portal/img/logo-s.png}">
-			<div class="split"></div>
-			<div class="copyright" th:text="#{PLTF_T_COPYLEFT}"></div>
-		</div>
-		<div>
-			<button>Language</button>
+			<div class="copyright" th:text="#{PTL_T_COPY_RIGHT}"></div>
 		</div>
 		<div class="split-row-compact"></div>
 	</div>
 </div>
-<!-- bottom.html end -->
-<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
-<!-- Start common javascript -->
+
+<!-- Logout -->
+<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}" style="display:none;"></form>
+
 <script>
-$("#BTN_goMain, .logo").on("click", function() {
-	document.location.href = "[[@{${T(org.jwebppy.portal.common.PortalConfigVo).INDEX_URL}}]]";
-});
-
-
 $(".logout-button").on("click", function() {
 	$("#FORM_logout").submit();
 });
+
+$(".logo-doobizplus, .gomain-button").on("click", function() {
+	document.location.href = "/portal/forward/entry_point";
+});
 </script>
-<!-- End common javascript -->
 </body>
 </html>

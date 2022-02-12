@@ -197,7 +197,7 @@ $(function(){
 	});	
 
 	$("#BTN_goOrder").on("click", function() {
-		document.location.href = "[[${BASE_PATH}]]/order/create/write";
+		document.location.href = "/portal/corp/eu/scm/parts/order/create/order_form";
 	});
 	
 	//Get last login information
@@ -231,7 +231,7 @@ function clickUserInfo()
 
 function clickDealerInfo()
 {
-	Popup.open("[[${BASE_PATH}]]/dealer_info/view", 1100, 800);
+	Popup.open("/portal/scm/parts/common/info/dealer/detail", 1024, 700);
 };
 
 function clickLogout()

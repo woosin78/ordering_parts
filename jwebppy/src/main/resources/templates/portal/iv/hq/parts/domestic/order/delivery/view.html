@@ -109,7 +109,7 @@ $(function(){
 			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"}//P.O. No.
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/order/delivery/view/data",
+			url: "[[${BASE_PATH}]]/order/delivery/view/data",
 			data: function(p)
 			{
 				p.pFromDate = $("#pFromDate").val();
@@ -159,7 +159,7 @@ function doSearch()
 };
 
 $("#BTN_back").on("click", function() {
-	$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/delivery/list").submit();
+	$("#FORM_search").attr("action", "[[${BASE_PATH}]]/order/delivery/list").submit();
 });		
 	
 $("#BTN_download").on("click", function() {

@@ -70,7 +70,7 @@ html, body {
 	background: #ffffff;
 	display: flex;
 	flex-flow: column;
-	min-width: 1300px;
+	min-width: 500px;
 	overflow-x: auto;
 }
 

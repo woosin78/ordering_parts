@@ -168,7 +168,7 @@ $(document).ready(function() {
 	function load()
 	{
 		JpUtilsAjax.get({
-			url: "/portal/iv/hq/parts/domestic/report/order/list/data",
+			url: "[[${BASE_PATH}]]/report/order/list/data",
 			data: {"pYear": $("#pYear").val()},
 			beforeSend: function(jqXHR, settings) {
 				ProgressBar.show();

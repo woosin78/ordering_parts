@@ -88,7 +88,7 @@ $(function(){
 			{name: "MAKTX", data: "MAKTX", title: "[[#{HQP_L_DESCRIPTION}]]"}//Description	
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/info/part_search/data",
+			url: "[[${BASE_PATH}]]/info/part_search/data",
 			data: function(p)
 			{				
 				p.pPartNo = $("#pPartNo").val();

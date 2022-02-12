@@ -94,7 +94,7 @@ $(function(){
 			{data: "VBELN3", 		title: "[[#{HQP_L_FINAL_DOC}]]"}// Final Document		
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/claim/list/data",
+			url: "[[${BASE_PATH}]]/claim/list/data",
 			data: function(p)
 			{
 				p.pComplaintNo 	= $("#pComplaintNo").val();
@@ -167,7 +167,7 @@ $(function(){
 				$("#orderNo").val(orderNo);			
 				$("#docDate").val(rowData.ERDAT);
 				$("#docType").val("A");
-				$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/claim/view").submit();
+				$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/view").submit();
 			}
 		}
 		else if (index == 4)
@@ -176,7 +176,7 @@ $(function(){
 			
 			if (JpUtilsString.isNotEmpty(soNo))
 			{
-				Popup.open("/portal/iv/hq/parts/domestic/order/display/order/popup/view?orderNo=" + soNo);
+				Popup.open("[[${BASE_PATH}]]/order/display/order/popup/view?orderNo=" + soNo);
 			};
 		};
 	});			

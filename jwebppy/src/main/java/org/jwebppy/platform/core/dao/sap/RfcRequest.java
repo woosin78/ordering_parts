@@ -74,6 +74,8 @@ public class RfcRequest extends AbstractDaoRequest
 
 	public RfcRequest field(String name, Object value)
 	{
+		isOnField = true;
+
 		addToRequest(name, value);
 
 		return this;

@@ -66,7 +66,7 @@ $(function(){
 			{data: "LST_ETD", 		title: "[[#{HQP_L_UPDATED_ETD}]]"}// Updated ETD
 		],		
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/order/status/view/data",
+			url: "[[${BASE_PATH}]]/order/status/view/data",
 			data: function(p)
 			{
 				p.orderNo = $("#orderNo").val();
@@ -114,7 +114,7 @@ $(function(){
 });
 
 $("#BTN_back").on("click", function() {
-	$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/status/list").submit();
+	$("#FORM_search").attr("action", "[[${BASE_PATH}]]/order/status/list").submit();
 });
 
 $("#BTN_download").on("click", function() {

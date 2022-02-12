@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
@@ -17,6 +16,7 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryHeaderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryItemDto;
@@ -30,13 +30,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class OrderCreateService
+public class OrderCreateService extends PartsDomesticGeneralService
 {
 	@Autowired
 	private OrderCreateMapper orderCreateMapper;
-
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
 
 	public DataMap getHeaderInfo(ErpDataMap paramMap)
 	{

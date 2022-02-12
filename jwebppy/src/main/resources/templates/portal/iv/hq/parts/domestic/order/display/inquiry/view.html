@@ -88,7 +88,7 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
-	<form id="FORM_search" name="FORM_search" action="/portal/iv/hq/parts/domestic/order/display/inquiry/list">
+	<form id="FORM_search" name="FORM_search" action="[[${BASE_PATH}]]/order/display/inquiry/list">
 		<input type="hidden" name="pDocType" th:value="${pDocType}">
 		<input type="hidden" name="pOrderType" th:value="${pOrderType}">
 		<input type="hidden" name="pOrderNo" th:value="${pOrderNo}">
@@ -106,7 +106,7 @@
 
 $(function(){
 	JpUtilsAjax.get({
-		url: "/portal/iv/hq/parts/domestic/order/display/inquiry/view/data",		
+		url: "[[${BASE_PATH}]]/order/display/inquiry/view/data",		
 		data: {"orderNo": "[[${orderNo}]]", "docType": "[[${pDocType}]]"},
 	    success: function(response, textStatus, jqXHR) 
 	    {
@@ -172,7 +172,7 @@ $(function(){
 });
 
 $("#BTN_pdfDownload").on("click", function() {
-	document.location.href = "/portal/iv/hq/parts/domestic/order/display/order/download/confirm_sheet?orderNo=[[${orderNo}]]&mode=BT08";
+	document.location.href = "[[${BASE_PATH}]]/order/display/order/download/confirm_sheet?orderNo=[[${orderNo}]]&mode=BT08";
 });	
 
 $("#BTN_back").on("click", function() {
@@ -180,7 +180,7 @@ $("#BTN_back").on("click", function() {
 });
 
 $("#BTN_transfer").on("click", function() {
-	Popup.open("/portal/iv/hq/parts/domestic/order/create/transfer_to_order", 500, 200);
+	Popup.open("[[${BASE_PATH}]]/order/create/transfer_to_order", 500, 200);
 });
 
 $("#BTN_download").on("click", function() {
@@ -190,7 +190,7 @@ $("#BTN_download").on("click", function() {
 function doTransferOrder(orderType)
 {
 	JpUtilsAjax.post({
-		url: "/portal/iv/hq/parts/domestic/order/create/transfer_to_order/save",
+		url: "[[${BASE_PATH}]]/order/create/transfer_to_order/save",
 		method: "POST",
 		data: {"orderNo": "[[${orderNo}]]", "orderType": orderType},
 		beforeSend: function(jqXHR, settings)
@@ -208,7 +208,7 @@ function doTransferOrder(orderType)
 	    		
 	    		alert(message);
 	    		
-	    		document.location.href = "/portal/iv/hq/parts/domestic/order/display/order/view?orderNo=" + orderNo;
+	    		document.location.href = "[[${BASE_PATH}]]/order/display/order/view?orderNo=" + orderNo;
 	    	}
 	    	else
 	    	{

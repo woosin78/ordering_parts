@@ -110,7 +110,7 @@ $(function(){
 			{data: "ZFCIVNO", title: "[[#{HQP_L_COMMERCIAL_INVOICE_NO}]]"}
 		],
 		ajax: {
-			url: "/portal/iv/hq/parts/domestic/order/delivery/list/data",
+			url: "[[${BASE_PATH}]]/order/delivery/list/data",
 			data: function(p)
 			{
 				p.pFromDate = $("#pFromDate").val();
@@ -145,7 +145,7 @@ $(function(){
 		
 		//$("#pShipmentNo2").val(rowData.TKNUM);			
 		$("#shipmentNo").val(rowData.TKNUM);
-		$("#FORM_search").attr("action", "/portal/iv/hq/parts/domestic/order/delivery/view").submit();
+		$("#FORM_search").attr("action", "[[${BASE_PATH}]]/order/delivery/view").submit();
 	});
 });
 // Search 버튼 클릭
