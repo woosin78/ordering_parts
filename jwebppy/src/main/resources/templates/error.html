@@ -43,46 +43,36 @@
 	</style>		
 </head>
 <body>
-
-<!-- Start Top -->
-<!-- header.jsp begin -->
-<div class="gmb-area">
 <div class="header">
 	<div class="logo-area">
-		<img class="logo-doosan" th:src="@{/portal/img/main/logo2.png}" /><img class="logo-doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
+		<img class="logo-doosan" th:src="@{/portal/img/main/logo2.png}" alt="DOOSAN" /><img class="logo-doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
 	</div>	
 	<div class="info-area">
 		<ul class="info-list">
-			<li> </li>
-			<li> </li>
-			<li> </li>			
-			<li> </li>
-			<li> </li>
 		</ul>
 		<div class="split"></div>
-		<button class="logout-button" th:text="#{HQP_B_LOGOUT}"></button>
+		<button class="logout-button" th:if="${status != 401}" th:text="#{PTL_B_LOGOUT}"></button>
 	</div>
 </div>
 <div class="gmb-wrap">
 	<div class="gmb-container">
 		<div class="gmb-menu-area">
-			<ul class="gmb-menu-list" style="display:none;"></ul>					
+			<ul class="gmb-menu-list"></ul>					
 			<ul class="gmb-menu-sub-list"></ul>
 		</div>
 	</div>
 </div>
-</div>
-<div style="width: 100%; margin:0 auto; text-align: center;">
-	<div style="margin-top:138px;">
+<div style="width: auto; margin:0 auto; text-align: center;">
+	<div style="width: auto; margin-top:138px;">
 		<img src="/portal/img/popup/alert.png">
+		<th:block th:switch="${status}">
+			<div th:case="${401}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
+			<div th:case="${403}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
+			<div th:case="${404}" th:text="#{HQP_T_PAGE_NOT_FOUND}"></div>
+			<div th:case="*" th:text="#{HQP_T_ERROR}"></div>
+		</th:block>
 	</div>
-	<div th:switch="${status}">
-		<div th:case="${401}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
-		<div th:case="${403}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
-		<div th:case="${404}" th:text="#{HQP_T_PAGE_NOT_FOUND}"></div>
-		<div th:case="*" th:text="#{HQP_T_ERROR}"></div>
-	</div>
-	<div style="width:auto; height:220px; background-color: #f9f9f9; margin: 40px 40px 0 40px;">
+	<div style="width:auto; height:220px;">
 		<div style="height: 30px;"></div>
 		<button class="gomain-button"><span th:text="#{HQP_B_GO_MAIN}"></span> <img src="/portal/img/common/arrow_right.png"></button>
 	</div>
@@ -91,9 +81,10 @@
 	<div class="footer">
 		<div class="split-row-compact"></div>
 		<div class="logo-area">
+			<!-- img class="footer-logo" th:src="@{/portal/img/logo-s.png}" alt="Doosan"/>
+			<div class="split"></div -->
 			<div class="copyright" th:text="#{PTL_T_COPY_RIGHT}"></div>
 		</div>
-		<div class="split-row-compact"></div>
 	</div>
 </div>
 

@@ -770,7 +770,6 @@
 			columns: [
 				{// 컬럼에 checkbox 설정
 					name: "chk",
-					className:"center noselect skip-download",// row selection 기능 막음.
 					orderable: false,// checkbox 는 정렬 불가					
 					title:"<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)' onclick='allChecked(this)'><label></label>",
 					render: function(data, type, row)
@@ -787,7 +786,6 @@
 				{
 					title: "[[#{HQP_L_THUMBNAIL}]]",
 					orderable: false,
-					className:"noselect",
 					render: function(data, type, row)
 					{
 						let thumbnail = "";
@@ -804,7 +802,6 @@
 				{
 					title: "[[#{HQP_L_ORDER_PART_NO}]]",
 					orderable: false,
-					className:"noselect",
 					render: function(data, type, row)
 					{
 						let partInfo = [];
@@ -812,7 +809,7 @@
 						partInfo.push("<div style='line-height: 23px;'>");
 						partInfo.push("<span class='bold'>[[#{HQP_L_ITEM}]]: " + row.lineNo + "</span></br>");
 						partInfo.push("[[#{HQP_L_ORDER_PART_NO}]]: <input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)' style='width:200px'><br/>");
-						partInfo.push("[[#{HQP_L_REQ_QTY}]]: <input type='text' class='custom-ui' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'><br/>");// FixedColumns 사용시엔 syncInput 호출 필요함.
+						partInfo.push("[[#{HQP_L_REQ_QTY}]]: <input type='number' min='1' class='custom-ui' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'><br/>");// FixedColumns 사용시엔 syncInput 호출 필요함.
 						
 						if (JpUtilsString.isNotEmpty(row.materialNo))
 						{
@@ -836,13 +833,13 @@
 						return partInfo.join("");
 					}
 				},
-				{name: "netPrice", data: "netPrice", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},//Net Price
-				{name: "netValue", data: "netValue", title: "[[#{HQP_L_NET_VALUE}]]", className: "right bold"}//Net Value
+				{name: "netPrice", data: "netPrice", title: "[[#{HQP_L_NET_PRICE}]]"},//Net Price
+				{name: "netValue", data: "netValue", title: "[[#{HQP_L_NET_VALUE}]]"}//Net Value
 			],
 			columnDefs: [
-				{"width": "80px", "targets": 0},
-				{"width": "110px", "targets": 1},
-				{"width": "150px", "targets": [3,4]},
+				{width: "80px", targets: 0, className: "skip-download dt-body-center"},
+				{width: "110px", targets: 1},
+				{width: "150px", targets: [3, 4], className: "dt-body-center"},
 			],
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/create/simulation",
@@ -982,7 +979,7 @@
 			});
 			
 			// Datatable grid 초기 설정 셋업
-			initGridTable($tableObj, true);
+			initGridTable($tableObj, true);			
 			
 			ProgressBar.hide();
 		});

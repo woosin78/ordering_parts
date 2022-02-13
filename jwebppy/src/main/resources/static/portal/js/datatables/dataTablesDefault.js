@@ -91,6 +91,7 @@ function dataTableResizeWithoutScrollY($dataTable, $parent){
 		"maxHeight": maxHeight + "px"
 	});
 	
+	/*
 	$(".footer-area").remove();
 	
 	let bottom = "";
@@ -98,9 +99,7 @@ function dataTableResizeWithoutScrollY($dataTable, $parent){
 	bottom += "	<div class='footer2'>";
 	bottom += "		<div class='split-row-compact'></div>";
 	bottom += "		<div class='logo-area'>";
-	bottom += "			<img class='footer-logo' src='/portal/img/logo-s.png'>";
-	bottom += "			<div class='split'></div>";
-	bottom += "			<div class='copylight' th:text='#{DIVEU_TXT_0067}'></div>";
+	bottom += "			<div class='copylight' th:text='#{PTL_T_COPY_RIGHT}'></div>";
 	bottom += "		</div>";
 	bottom += "		<div>";
 	bottom += "			<button>Language</button>";
@@ -110,6 +109,7 @@ function dataTableResizeWithoutScrollY($dataTable, $parent){
 	bottom += "</div>";	
 	
 	$parent.append(bottom);
+	*/
 
 	//$dataTable.fixedColumns().relayout();
 }

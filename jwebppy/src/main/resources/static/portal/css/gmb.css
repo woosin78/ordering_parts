@@ -7,7 +7,7 @@
 }
 .gmb-container {
 	width: 100%;
-	position: absolute;
+	top: 0px;
 	z-index: 20;
 	min-width: 1300px;
 }
@@ -22,6 +22,8 @@
 	text-align: center;
 	border-radius: 5px;
 	background: rgba(0, 48, 130, 0.8);
+	position: relative;
+	z-index: 9999;
 }
 .gmb-menu-list {
 	overflow-y: hidden;
@@ -52,20 +54,6 @@
 }
 
 /*--- 서브메뉴 ------------------*/
-.mainmenu-sub-area {
-	backdrop-filter: blur(6px);
-	overflow-y: hidden;
-	/* position: fixed; */
-	top: 0px;
- 	background: rgba(0, 48, 129, 0.80);
-	height: 40px;	
-	width: auto;
- 	/*width: -webkit-fill-available;*/
-	text-align: center;
-	padding: 0;
-	border-radius: 5px;
-	margin: 0 40px 0 40px;
-}
 .gmb-menu-sub-list {
 	overflow-y: hidden;
 	white-space: nowrap;
@@ -82,7 +70,7 @@
 	display: inline-table;
 	cursor: pointer;
 	line-height: 2;
-	color: #b2e4d7;	
+	color: #b2e4d7;
 }
 .gmb-menu-sub-list li:hover{
 	text-decoration: underline;

@@ -61,7 +61,7 @@ function makeGmb()
 	    	});
 	    	
 	    	$("div").on("mouseover", function(event) {
-	    		if (!$(this).hasClass("gmb-menu-area") && !$(this).hasClass("gmb-menu-area"))
+	    		if (!$(this).hasClass("gmb-menu-area"))
 	    		{
 	    			$(".gmb-menu-area").css("height", 50);
 	    		};

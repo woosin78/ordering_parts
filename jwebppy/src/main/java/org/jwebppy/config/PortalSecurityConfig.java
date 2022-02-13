@@ -50,6 +50,7 @@ public class PortalSecurityConfig extends WebSecurityConfigurerAdapter
 			.and()
 			.sessionManagement()//세션고정보호. request 시 마다 cookie 의 jsessionid 값을 변경함
 				.sessionFixation().changeSessionId()
+				.maximumSessions(1).and().invalidSessionUrl(PortalConfigVo.ERROR_PAGE_URL)
 			.and()
 			.logout()
 				.logoutUrl(PortalConfigVo.FORM_LOGOUT_PROCESSING_URL)

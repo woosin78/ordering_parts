@@ -167,7 +167,7 @@
 	</div>
 	<!-- Logout -->
 	<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>	
-	<iframe src="[[${BASE_PATH}]]/preload" style="display:none;"></iframe>
+	<iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe>
 <script>
 $(window).on("load", function() {
 	ProgressBar.hide();

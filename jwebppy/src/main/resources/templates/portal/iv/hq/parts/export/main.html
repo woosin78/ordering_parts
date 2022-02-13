@@ -166,7 +166,7 @@
 		</div>
 	</div>
 	<form id="FORM_logout" method="post" th:action="@{/platform/security/authentication/logout}"></form>
-	<iframe src="[[${BASE_PATH}]]/preload" style="display:none;"></iframe>
+	<iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe>
 <script>
 $(window).on("load", function() {
 	ProgressBar.hide();
