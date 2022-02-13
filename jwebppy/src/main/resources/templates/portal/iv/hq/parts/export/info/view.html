@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+
+<th:block layout:fragment="content">
+<div class="block-header">
+	<div class="block-title" th:text="#{HQP_T_PARTS_INFO}"></div><!-- Parts Info. -->
+	<div class="block-button-area">
+		<button id="BTN_calc" type="button" th:text="#{HQP_B_CALCULATE}"></button><!-- Calculate -->
+		<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
+	</div>	
+</div>	
+<div class="condition-area">
+<form id="FORM_search" name="FORM_search" onsubmit="return false;">
+<table class="condition table-fixed">
+	<tbody>
+		<tr>
+			<th style="width:15%" th:text="#{HQP_L_PART_NO}"></th><!-- Part No. -->
+			<td colspan="3">
+				<div class="input-area">
+					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" style="text-transform: uppercase;" autofocus />
+					<button class="btn-popup2" type="button" onclick="_showPartSearch($('#pPartNo').val());"></button>					
+				</div>
+			</td>
+		</tr>		
+	</tbody>
+</table>
+</form>	
+</div>
+<div class="split-row"></div>
+<div class="condition-area">
+<table class="condition table-fixed">
+	<tbody>
+		<tr>
+			<th style="width:15%" th:text="#{HQP_L_DESCRIPTION}"></th><!-- Description -->
+			<td id="MAKTX"></td>
+			<th style="width:15%" th:text="#{HQP_L_STOCK}"></th><!-- Stock -->
+			<td id="STOCK"></td>			
+		</tr>		
+		<tr>
+			<th th:text="#{HQP_L_SERVICEABLE}"></th><!-- Serviceable -->
+			<td id="SVRCD"></td>
+			<th th:text="#{HQP_L_NOT_SERVICE_REASON}"></th><!-- Not Service Reason -->
+			<td>
+				<span id="NOT_SERVICE_REASON"></span>
+				
+				<span id="AREA_notServiceReason" style="display:none;">
+					<button class="btn-popup2" type="button" onclick="_showNotServiableReason($('#pPartNo').val());"></button>
+				</span>
+			</td>
+		</tr>		
+		<tr>
+			<th th:text="#{HQP_L_SALES_LOT}"></th><!-- Sales Lot  -->
+			<td id="AUMNG"></td>
+			<th th:text="#{HQP_L_MODEL}"></th><!-- Model -->
+			<td>						
+				<div id="AREA_model" style="display:none;">			
+				<span id="M_MATNR" class="custom-ui"></span>
+				<button class="btn-popup2" type="button" onclick="_showAppliedModelList($('#pPartNo').val());"></button>
+				</div>								
+			</td>			
+		</tr>			
+		<tr>
+			<th th:text="#{HQP_L_PRODUCT_HIERARCHY}"></th><!-- Product Hierarchy -->
+			<td id="PRODH_T"></td>
+			<th th:text="#{HQP_L_OPEN_QTY}"></th><!-- Open Qty -->
+			<td id="KWMENG"></td>			
+		</tr>	
+		<tr>
+			<th th:text="#{HQP_L_NET_WEIGHT}"></th><!-- Net Weight -->
+			<td id="NTGEW"></td>
+			<th th:text="#{HQP_L_PURCHASE_LEAD_TIME}"></th><!-- Purchase Lead Time -->
+			<td id="PLIFZ"></td>			
+		</tr>
+		<tr>
+			<th th:text="#{HQP_L_GROSS_WEIGHT}"></th><!-- Gross Weight -->
+			<td id="BRGEW"></td>
+			<th th:text="#{HQP_L_DIRECT_DELIVERY}"></th><!-- Direct Delivery -->
+			<td id="C_MTPOS"></td>			
+		</tr>
+		<tr>
+			<th th:text="#{HQP_L_PRICE_APPLIED_DATE}"></th><!-- Price Applied Date -->
+			<td id="DATAB"></td>
+			<th th:text="#{HQP_L_STOCK_LOCATION}"></th><!-- Stock Location -->
+			<td id="LADGR"></td>			
+		</tr>	
+		<tr>
+			<th th:text="#{HQP_L_SUPPLY_PART_NO}"></th><!-- Supply Part No. -->
+			<td>				
+				<div id="AREA_substitution" style="display:none;">			
+				<span id="REPNR" class="custom-ui"></span>
+				<button class="btn-popup2" type="button" onclick="_showSubPartList($('#pPartNo').val());"></button>
+				</div>
+			</td>
+			<th th:text="#{HQP_L_STOCK_OF_SUPPLY_PART}"></th><!-- Stock of Supply Parts -->
+			<td id="STOCKP"></td>			
+		</tr>
+		<tr>
+			<th th:text="#{HQP_L_BULLETIN}"></th><!-- Bulletin -->
+			<td id="BULLETIN"></td>
+			<th th:text="#{HQP_L_AM_DEV_PART}"></th><!-- AM Development Part -->
+			<td id="AM_PART_NO"></td>			
+			<!-- th th:text="#{HQP_L_KIT_AVAILABILITY}"></th><!-- KIT Availability -->
+			<!-- td id="EXP_AVQ"></td -->
+		</tr>		
+	</tbody>
+</table>	
+</div>
+
+<div class="split-row"></div>
+<div class="condition-area">
+	<div class="condition-title" th:text="#{HQP_L_SUPPLY_PART_PRICE_INFO}"></div>
+	<table class="condition table_fixed">
+		<thead>
+	        <tr>
+	        	<th th:text="#{HQP_L_ORDER_SCALE_QTY}" class="center"></th><!-- Scale Quantity -->
+	            <th th:text="#{HQP_L_UOM}" class="center"></th><!-- UoM -->
+	            <th th:text="#{HQP_L_LIST_PRICE}" class="center"></th><!--List Price  -->                        
+	            <th th:text="#{HQP_L_STOCK_ORDER_NET_PRICE}" class="center"></th><!--Stock Order (Stock Order)  -->
+	        </tr>
+	     </thead>
+	     <tbody class="scale-list"></tbody>
+	</table>	
+</div>	
+<script>
+$(window).on("load", function() {
+	ProgressBar.hide();
+});
+
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});
+
+function doSearch()
+{
+	if (JpUtilsString.isEmpty($("#pPartNo").val()))
+	{
+		alert("[[#{HQP_M_EMPTY_PART_NO}]]");
+		return;
+	}	
+	
+	JpUtilsAjax.get({
+		url: "[[${BASE_PATH}]]/info/view/data",		
+		data: {	"pPartNo": $("#pPartNo").val() },
+		beforeSend: function(jqXHR, settings)
+		{
+			$("#pPartNo").val($("#pPartNo").val().toUpperCase());
+			$("#YUSO").hide();
+			
+			ProgressBar.show();
+		},
+	 	success: function(data, textStatus, jqXHR) 
+    	{
+	    	let result = data.RESULT;	    	
+	    	let partInfo = result.partInfo;
+	    	
+	    	if (JpUtilsObject.isNull(partInfo))
+	    	{
+	    		alert("[[#{HQP_M_EMPTY_RESULT}]]");
+	    		document.location.reload();
+	    	};
+	    	
+	    	let uom = partInfo.MEINS;
+	    	let currency = partInfo.WAERS;
+	    	
+			$("#MAKTX").html(partInfo.MAKTX);// Part No Desc
+			$("#STOCK").html(partInfo.STOCK);// Stock
+			$("#SVRCD").html(partInfo.SVRCD);// Serviceable
+			
+			// Not Service Reason
+			let notcd = JpUtilsString.trimToEmpty(partInfo.NOTCD);
+			$("#NOT_SERVICE_REASON").html("");
+			
+			if (JpUtilsString.isNotEmpty(notcd))
+			{
+				if (notcd == "MUL")
+				{
+					$("#AREA_notServiceReason").show();
+				}
+				else
+				{
+					$("#AREA_notServiceReason").hide();
+				};
+				
+				$("#NOT_SERVICE_REASON").html(notcd + ":" + partInfo.NOTCD_T);
+			};
+			
+			//Sales Lot
+			$("#AUMNG").html(partInfo.AUMNG + " " + uom);
+
+			// Model
+			let model = JpUtilsString.trimToEmpty(partInfo.MDLNM);
+			$("#M_MATNR").html("");
+			$("#AREA_model").hide();
+
+			if (JpUtilsString.isNotEmpty(model))
+			{
+				$("#M_MATNR").html(model);
+				$("#AREA_model").show();
+			};
+			
+			// Product Hierarchy
+			$("#PRODH_T").html(partInfo.PRODH_T + " [" + partInfo.PRODH + "]");
+			
+			// Open Qty
+			let openQty = JpUtilsString.trimToEmpty(partInfo.OPENQ);
+			$("#KWMENG").html("");			
+			
+			if (JpUtilsString.isNotEmpty(openQty))
+			{
+				$("#KWMENG").html(openQty + " " + uom);	
+			};
+			
+			// Net Weight
+			$("#NTGEW").html(partInfo.NTGEW + " " + partInfo.GEWEI);
+
+			// Purchase Lead Time
+			$("#PLIFZ").html(partInfo.PLIFZ);			
+			
+			// Gross Weight
+			$("#BRGEW").html(partInfo.BRGEW + " " + partInfo.GEWEI);			
+			
+			//Direct Delivery
+			$("#C_MTPOS").html(partInfo.C_MTPOS);
+			
+			//Price Applied Date
+			$("#DATAB").html(partInfo.DATAB);
+			
+			//Stock Location
+			$("#LADGR").html(partInfo.LADGR);
+
+			//Supply Part No.
+			let supplyPartsNo = JpUtilsString.trimToEmpty(partInfo.SUPNR);
+			$("#REPNR").html("");
+			$("#AREA_substitution").hide();
+
+			if (JpUtilsString.isNotEmpty(supplyPartsNo))
+			{
+				$("#REPNR").html(supplyPartsNo);
+				$("#AREA_substitution").show();
+			};
+			
+			//Stock of Supply Part
+			let leadMes = $.trim(partInfo.LEAD_MES);
+			if (leadMes != "")
+			{
+				$("#STOCKP").html(partInfo.STOCKP + " " + leadMes);
+			}
+			else
+			{
+				$("#STOCKP").html(partInfo.STOCKP);
+			};
+			
+			//Bulletin
+			$("#BULLETIN").html("");
+			if (JpUtilsString.equals(partInfo.BULLETIN, "X"))
+			{
+				$("#BULLETIN").html("Y");
+			};
+			
+			//AM Development Part
+			$("#AM_PART_NO").html(JpUtilsString.trimToEmpty(partInfo.AM_PART_NO));
+			
+			//KIT Availability
+			$("#EXP_AVQ").html(JpUtilsString.trimToEmpty(partInfo.EXP_AVQ));
+			
+			/*
+			 * Scale List
+			 */
+			let scale = "";
+			$.each(result.scaleList.reverse(), function(index, item) {
+				scale += "<tr>";
+				scale += "	<td>" + item.OPENQ + "</td>";
+				scale += "	<td>" + item.MEINS + "</td>";
+				scale += "	<td>" + item.FINAL_LPRICE + " " + currency + "</td>";
+				scale += "	<td><span class='hidden LPRICE'>" + item.LPRICE + " " + currency + "</span></td>";
+				scale += "</tr>";
+			});
+			
+			$(".scale-list").html(scale);
+    	},
+    	complete: function(jqXHR, textStatus)
+    	{
+    		ProgressBar.hide();
+    	}
+	});				
+}
+
+$("#BTN_calc").on("click", function() {
+	$(".scale-list .LPRICE").toggle();
+});	
+
+//Search 버튼 클릭
+$("#BTN_search").on("click", function(){
+	doSearch(); 
+});
+
+$("#pPartNo").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		if ($.trim($("#pPartNo").val()) != "")
+		{
+			doSearch();	
+		};
+	};
+});
+
+//showPartSearch() callback 함수
+function _callbackPartSearch(partNo)
+{
+	$("#pPartNo").val(partNo);
+	doSearch();
+};
+
+//_showSubPartList() callback 함수
+function _callbackSubPartList(partNo)
+{
+	$("#pPartNo").val(partNo);
+	doSearch();
+};
+</script>
+</th:block>								

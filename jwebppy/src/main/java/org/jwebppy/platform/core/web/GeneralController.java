@@ -3,7 +3,9 @@ package org.jwebppy.platform.core.web;
 import java.beans.PropertyEditorSupport;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
@@ -23,7 +25,7 @@ public abstract class GeneralController
 	private Environment environment;
 
 	public final static String DEFAULT_VIEW_URL = "DUMMY";
-	public final static String EMPTY_RETURN_VALUE = null;
+	public final static List<?> EMPTY_RETURN_VALUE = Collections.EMPTY_LIST;
 
 	protected Integer getUSeq()
 	{
