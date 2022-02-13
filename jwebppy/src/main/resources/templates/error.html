@@ -37,7 +37,7 @@
 			vertical-align: middle;
 		}
 		
-		.logo {
+		.logo-doosan {
 			cursor: pointer
 		}
 	</style>		
@@ -46,6 +46,7 @@
 
 <!-- Start Top -->
 <!-- header.jsp begin -->
+<div class="gmb-area">
 <div class="header">
 	<div class="logo-area">
 		<img class="logo-doosan" th:src="@{/portal/img/main/logo2.png}" /><img class="logo-doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
@@ -70,7 +71,7 @@
 		</div>
 	</div>
 </div>
-<div class="split-row"></div>
+</div>
 <div style="width: 100%; margin:0 auto; text-align: center;">
 	<div style="margin-top:138px;">
 		<img src="/portal/img/popup/alert.png">
@@ -100,6 +101,13 @@
 <form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}" style="display:none;"></form>
 
 <script>
+$(window).on("load", function() {
+	if (opener != null)
+	{
+		window.resizeTo(1320, 650);	
+	};
+});
+
 $(".logout-button").on("click", function() {
 	$("#FORM_logout").submit();
 });

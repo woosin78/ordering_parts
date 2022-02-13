@@ -86,12 +86,16 @@ $(function(){
 			{data: "BLDAT", title: "[[#{HQP_L_IV_PURCHASE_DATE}]]"},
 			{data: "MATNR", title: "[[#{HQP_L_PART_NO}]]"},
 			{data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"},
-			{data: "MENGE", title: "[[#{HQP_L_QTY}]]", className: "right"},
+			{data: "MENGE", title: "[[#{HQP_L_QTY}]]"},
 			{data: "BSTME", title: "[[#{HQP_L_UOM}]]"},
-			{data: "NETPR", title: "[[#{HQP_L_NET_VALUE}]]", className: "right"},
-			{data: "WRBTR", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},
+			{data: "NETPR", title: "[[#{HQP_L_NET_VALUE}]]"},
+			{data: "WRBTR", title: "[[#{HQP_L_NET_PRICE}]]"},
 			{data: "WAERS", title: "[[#{HQP_L_CURR}]]"}
 		],
+		columnDefs: [
+			{targets: [0, 2, 3, 6, 7, 10], className: "dt-body-center"},
+			{targets: [8, 9], className: "dt-body-right"}
+		],		
 		ajax: {
 			url: "[[${BASE_PATH}]]/accounts/ar/list/data",
 			data: function(p)

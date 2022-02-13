@@ -364,6 +364,9 @@ input {
 	min-width: 100px;
 	padding: 6px 15px;
 }
+.condition th.center {
+	text-align: center;
+}
 .condition th span, .condition th div, .condition th p {
 	color: #003081;
 	float:left;
@@ -371,7 +374,9 @@ input {
 .condition tr:first-child th, .condition tr:first-child td{
     border-top:none; 
 }
-
+.condition td.wp15{
+	width: 15%;
+}
 /* condition 테이블 모서리 라운드 처리*/
 
 .condition tr:first-child th:first-child, .condition tr:first-child td:first-child {

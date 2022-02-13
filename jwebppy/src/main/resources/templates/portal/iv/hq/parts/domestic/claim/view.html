@@ -123,16 +123,15 @@ JpUtilsAjax.get({
     			{data: "TEXT2", 		title: "[[#{HQP_L_REASON2}]]"},// Reason2																										
     			{data: "COMPLAINT_DESC",title: "[[#{HQP_L_ADDITIONAL_TEXT}]]"},// Text
     			{data: "RCOMMENT", 		title: "[[#{HQP_L_COMMENT}]]"},// Comment
-    			{data: "FILE_NAME", 	title: "[[#{HQP_L_ATTACHED_FILE}]]", className:'link'}, // Attached File	
-    			{data: "ZZDEALDT", 		title: "[[#{HQP_L_ORIGIN_DOC_DATE}]]"}, // Origin Doc. Date
+    			{data: "FILE_NAME", 	title: "[[#{HQP_L_ATTACHED_FILE}]]"},// Attached File	
+    			{data: "ZZDEALDT", 		title: "[[#{HQP_L_ORIGIN_DOC_DATE}]]"},// Origin Doc. Date
     			{data: "INT_NO", 		title: "INT_NO(Hidden)"},
     			{data: "DOCU_ITEM",		title: "DOCU_ITEM(Hidden)"}    			
     		],  	
     		columnDefs: [
-    			{ 
-    				"targets": [ 9, 10 ],
-                    "visible": false,				
-    			}			
+    			{targets: [7], className: "link"},
+    			{targets: [0, 2, 8], className: "dt-body-center"},
+    			{targets: [9, 10], visible: false}
     		],	    		    		
     		data: itemList,
     		initComplete:function(settings, json) 

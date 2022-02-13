@@ -96,18 +96,22 @@ $(function(){
 		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
 		columns : [
-			{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]", className: "link"},				
+			{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]"},				
 			{data: "COUNT1", title: "[[#{HQP_L_HU_ITEMS}]]"},
-			{data: "COUNT2", title: "[[#{HQP_L_ITEM_ROWS}]]", className: "right"},
-			{data: "NETWR", title: "[[#{HQP_L_TOTAL_AMOUNT}]]", className: "right"}, 
+			{data: "COUNT2", title: "[[#{HQP_L_ITEM_ROWS}]]"},
+			{data: "NETWR", title: "[[#{HQP_L_TOTAL_AMOUNT}]]"}, 
 			{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},
-			{data: "BRGEW", title: "[[#{HQP_L_GROSS_WEIGHT}]]", className: "right"},
+			{data: "BRGEW", title: "[[#{HQP_L_GROSS_WEIGHT}]]"},
 			{data: "GEWEI_MAX", title: "[[#{HQP_L_UOM}]]"},
 			{data: "ZFOBDT", title: "[[#{HQP_L_ONBOARD_DATE}]]"},
 			{data: "BEZEI20", title: "[[#{HQP_L_DESTINATION}]]"},
 			{data: "BEZEI", title: "[[#{HQP_L_SHIPPING_TYPE}]]"},
-			{data: "NAME2", title: "[[#{HQP_L_FORWARDER}]]"},
-			{data: "ZFCIVNO", title: "[[#{HQP_L_COMMERCIAL_INVOICE_NO}]]"}
+			{data: "NAME2", title: "[[#{HQP_L_FORWARDER}]]"}
+		],
+		columnDefs: [
+			{targets: [0], className: "link dt-body-center"},
+			{targets: [1, 2, 4, 5, 6, 7], className: "dt-body-center"},
+			{targets: [3], className: "dt-body-right"}
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/delivery/list/data",

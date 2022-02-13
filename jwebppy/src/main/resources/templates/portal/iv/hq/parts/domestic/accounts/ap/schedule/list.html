@@ -37,11 +37,11 @@
 		<table class="condition">
 			<thead>
 		        <tr>
-		            <th th:text="#{HQP_L_AP_SCHEDULE_001}"></th>
-		            <th th:text="#{HQP_L_AP_SCHEDULE_002}"></th>                        
-		            <th th:text="#{HQP_L_AP_SCHEDULE_003}"></th>
-		            <th th:text="#{HQP_L_AP_SCHEDULE_004}"></th>
-		            <th th:text="#{HQP_L_AP_SCHEDULE_005}"></th>
+		            <th th:text="#{HQP_L_AP_SCHEDULE_001}" class="center"></th>
+		            <th th:text="#{HQP_L_AP_SCHEDULE_002}" class="center"></th>                        
+		            <th th:text="#{HQP_L_AP_SCHEDULE_003}" class="center"></th>
+		            <th th:text="#{HQP_L_AP_SCHEDULE_004}" class="center"></th>
+		            <th th:text="#{HQP_L_AP_SCHEDULE_005}" class="center"></th>
 		        </tr>
 		     </thead>
 		     <tbody>
@@ -81,7 +81,11 @@ $(function(){
 			{data: "SALEDT", title: "[[#{HQP_L_AP_SCHEDULE_006}]]"},//매입월		
 			{data: "BUDAT", title: "[[#{HQP_L_AP_SCHEDULE_007}]]"},//입금일자
 			{data: "GUBUN", title: "[[#{HQP_L_AP_SCHEDULE_008}]]"},//구분
-			{data: "TOTAL", title: "[[#{HQP_L_AP_SCHEDULE_009}]]", className: "right"}//금액
+			{data: "TOTAL", title: "[[#{HQP_L_AP_SCHEDULE_009}]]"}//금액
+		],
+		columnDefs: [
+			{targets: [0, 1], className: "dt-body-center"},
+			{targets: [3], className: "dt-body-right"}
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/accounts/ap/schedule/list/data",

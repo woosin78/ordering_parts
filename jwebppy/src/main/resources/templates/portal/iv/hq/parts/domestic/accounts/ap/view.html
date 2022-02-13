@@ -92,17 +92,21 @@ $(function(){
 			{data: "AUART_T", title: "[[#{HQP_L_ORDER_TYPE}]]"},
 			{data: "VBELN_VA", title: "[[#{HQP_L_ORDER_NO}]]"},
 			{data: "POSNR_VA", title: "[[#{HQP_L_LINE_ITEM}]]"},				
-			{data: "FKIMG", title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},
+			{data: "FKIMG", title: "[[#{HQP_L_ORDER_QTY}]]"},
 			{data: "VRKME", title: "[[#{HQP_L_UOM}]]"},
-			{data: "NETPR", title: "[[#{HQP_L_AP_UNIT_PRICE}]]", className: "right"},
-			{data: "NETWR", title: "[[#{HQP_L_AP_AMT}]]", className: "right"},
+			{data: "NETPR", title: "[[#{HQP_L_AP_UNIT_PRICE}]]"},
+			{data: "NETWR", title: "[[#{HQP_L_AP_AMT}]]"},
 			{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},
 			{data: "HERKL", title: "[[#{HQP_L_ORIGIN}]]"},
 			{data: "VBELN_VL", title: "[[#{HQP_L_AP_DELIVERY_NO}]]"},
 			{data: "POSNR_VL", title: "[[#{HQP_L_DIV_SEQ}]]"},
-			{data: "MWSBP", title: "[[#{HQP_L_TAX_AMT}]]", className: "right"},
+			{data: "MWSBP", title: "[[#{HQP_L_TAX_AMT}]]"},
 			{data: "VENUM", title: "[[#{HQP_L_INTERAL_HU_NO}]]"}
 		],
+		columnDefs: [
+			{targets: [0, 1, 2, 4, 5, 6, 11, 12, 13, 14, 17, 18, 19, 20, 21], className: "dt-body-center"},
+			{targets: [15, 16, 21], className: "dt-body-right"}
+		],			
 		ajax: {
 			url: "[[${BASE_PATH}]]/accounts/ap/view/data",
 			data: function(p)

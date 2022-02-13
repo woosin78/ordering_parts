@@ -94,18 +94,22 @@ $(function(){
 		scrollY: 100,
 		//fixedColumns: {leftColumns: 5},
 		columns : [				
-			{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]", className:"link"},
-			{data: "SO_ITEM", 		title: "[[#{HQP_L_ORDER_ITEM_ROWS}]]", className: "right"},	
+			{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]"},
+			{data: "SO_ITEM", 		title: "[[#{HQP_L_ORDER_ITEM_ROWS}]]"},	
 			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},	
-			{data: "SO_QTY", 		title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},				
-			{data: "RE_QTY", 		title: "[[#{HQP_L_RESERVED_QTY}]]", className: "right"},
-			{data: "PI_QTY", 		title: "[[#{HQP_L_PACKED_QTY}]]", className: "right"},	
-			{data: "IN_QTY", 		title: "[[#{HQP_L_INVOICE_QTY}]]", className: "right"},
-			{data: "SH_QTY", 		title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},
-			{data: "BO_AMT", 		title: "[[#{HQP_L_BACKORDER_QTY}]]", className: "right"},
+			{data: "SO_QTY", 		title: "[[#{HQP_L_ORDER_QTY}]]"},				
+			{data: "RE_QTY", 		title: "[[#{HQP_L_RESERVED_QTY}]]"},
+			{data: "PI_QTY", 		title: "[[#{HQP_L_PACKED_QTY}]]"},	
+			{data: "IN_QTY", 		title: "[[#{HQP_L_INVOICE_QTY}]]"},
+			{data: "SH_QTY", 		title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]"},
+			{data: "BO_AMT", 		title: "[[#{HQP_L_BACKORDER_QTY}]]"},
 			{data: "VSBED_T", 		title: "[[#{HQP_L_SHIPPING_CONDITION}]]"},		
 			{data: "WAERK", 		title: "[[#{HQP_L_CURR}]]"},
 			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"}
+		],
+		columnDefs: [
+			{targets: [0], className: "link dt-body-center"},
+			{targets: [1, 3, 4, 5, 6, 7, 8, 10, 11], className: "dt-body-center"}
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/status/list/data",

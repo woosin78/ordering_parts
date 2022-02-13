@@ -88,20 +88,23 @@ $(function(){
 		scrollY: 100,
 		//fixedColumns: {leftColumns: 8},
 		columns : [
-			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},	//Order<br>Type				
-			{data: "AUDAT", 		title: "[[#{HQP_L_ORDER_DATE}]]"},	//Order Date				
-			{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]"}, //Order No.
-			{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"}, //Line Item 
-			{data: "MATNR_SO", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"}, //Order Part No.
-			{data: "MATNR_SH", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"}, //Supply Part No
-			{data: "MAKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"}, //Description
-			{data: "KWMENG_SO", 	title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"}, //Order Qty
-			{data: "KWMENG_SH", 	title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"}, //S.Completion Qty
-			{data: "KWMENG", 		title: "[[#{HQP_L_BACKORDER_QTY}]]", className: "right"}, //B/O Quantity
-			{data: "VRKME", 		title: "[[#{HQP_L_UOM}]]"}, //UoM,
-			{data: "PRETD",			title: "[[#{HQP_L_ETD}]]"}, //ETD Comment
-			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"}	//P.O. No.
+			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},//Order<br>Type				
+			{data: "AUDAT", 		title: "[[#{HQP_L_ORDER_DATE}]]"},//Order Date				
+			{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]"},//Order No.
+			{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},//Line Item 
+			{data: "MATNR_SO", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Order Part No.
+			{data: "MATNR_SH", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},//Supply Part No
+			{data: "MAKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"},//Description
+			{data: "KWMENG_SO", 	title: "[[#{HQP_L_ORDER_QTY}]]"},//Order Qty
+			{data: "KWMENG_SH", 	title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]"},//S.Completion Qty
+			{data: "KWMENG", 		title: "[[#{HQP_L_BACKORDER_QTY}]]"},//B/O Quantity
+			{data: "VRKME", 		title: "[[#{HQP_L_UOM}]]"},//UoM,
+			{data: "PRETD",			title: "[[#{HQP_L_ETD}]]"},//ETD Comment
+			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"}//P.O. No.
 		],
+		columnDefs: [
+			{targets: [1, 2, 3, 7, 8, 9, 10, 11, 12], className: "dt-body-center"}
+		],		
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/backorder/list/data",
 			data: function(p)

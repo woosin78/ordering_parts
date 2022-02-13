@@ -57,14 +57,17 @@ $(function(){
 			{data: "MATNR_SO", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},// Order Part No.
 			{data: "MATNR_SH", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},// Supply Part No
 			{data: "MAKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"},// Description
-			{data: "SO_QTY", 		title: "[[#{HQP_L_ORDER_QTY}]]", className: "right"},// Order Qty
-			{data: "RE_QTY", 		title: "[[#{HQP_L_RESERVED_QTY}]]", className: "right"},// Reserved Qty
-			{data: "PI_QTY", 		title: "[[#{HQP_L_PACKED_QTY}]]", className: "right"},// Packed Qty
-			{data: "IN_QTY", 		title: "[[#{HQP_L_INVOICE_QTY}]]", className: "right"},// Invoiced Qty
-			{data: "SH_QTY", 		title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]", className: "right"},// S.Completion Qty
-			{data: "BO_QTY", 		title: "[[#{HQP_L_BACKORDER_QTY}]]", className: "right"},// B/O Qty
+			{data: "SO_QTY", 		title: "[[#{HQP_L_ORDER_QTY}]]"},// Order Qty
+			{data: "RE_QTY", 		title: "[[#{HQP_L_RESERVED_QTY}]]"},// Reserved Qty
+			{data: "PI_QTY", 		title: "[[#{HQP_L_PACKED_QTY}]]"},// Packed Qty
+			{data: "IN_QTY", 		title: "[[#{HQP_L_INVOICE_QTY}]]"},// Invoiced Qty
+			{data: "SH_QTY", 		title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]"},// S.Completion Qty
+			{data: "BO_QTY", 		title: "[[#{HQP_L_BACKORDER_QTY}]]"},// B/O Qty
 			{data: "LST_ETD", 		title: "[[#{HQP_L_UPDATED_ETD}]]"}// Updated ETD
-		],		
+		],
+		columnDefs: [
+			{targets: [0, 5, 6, 7, 8, 9, 10, 11], className: "dt-body-center"}
+		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/status/view/data",
 			data: function(p)

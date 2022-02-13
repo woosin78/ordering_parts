@@ -18,7 +18,7 @@
 		<tbody>
 			<tr>
 				<th th:text="#{HQP_L_ORDER_TYPE}"></th>
-				<td id="KONDA_TEXT"></td>
+				<td id="KONDA_TEXT" class="wp15"></td>
 				<th th:text="#{HQP_L_SHIP_TO_PARTY}">
 				<td id="KUNAG_NAME"></td>
 			</tr>
@@ -154,18 +154,17 @@ $(function(){
 	    			{data: "MATERIAL_ENT", title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Order Part No.
 	    			{data: "MATERIAL", title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},//Supply Part No
 	    			{data: "MATERIAL_TEXT", title: "[[#{HQP_L_DESCRIPTION}]]"},//Description
-	    			{data: "REQ_QTY", title: "[[#{HQP_L_REQ_QTY}]]", className: "right"},//Req Qty
-	    			{data: "LOT_QTY", title: "[[#{HQP_L_SALES_LOT}]]", className: "right"},//Sales Lot
+	    			{data: "REQ_QTY", title: "[[#{HQP_L_REQ_QTY}]]"},//Req Qty
+	    			{data: "LOT_QTY", title: "[[#{HQP_L_SALES_LOT}]]"},//Sales Lot
 	    			{data: "UOM", title: "[[#{HQP_L_UOM}]]"},//UoM
-	    			{data: "NET_PRICE", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},//Net price
-	    			{data: "NET_VALUE", title: "[[#{HQP_L_NET_VALUE}]]", className: "right"},//Net value	    			
+	    			{data: "NET_PRICE", title: "[[#{HQP_L_NET_PRICE}]]"},//Net price
+	    			{data: "NET_VALUE", title: "[[#{HQP_L_NET_VALUE}]]"},//Net value	    			
 	    			{data: "AVAILABILITY", title: "[[#{HQP_L_AVAILABILITY}]]"}//Available
 	    		],
-	    		/*
 	    		columnDefs: [
-	    			{className: "left", targets: "_all"}
+	    			{targets: [0, 1, 5, 6, 7, 10], className: "dt-body-center"},
+	    			{targets: [8, 9], className: "dt-body-right"},
 	    		],
-	    		*/
 	    		data: item,
 	    		initComplete: function() {
 	    			ProgressBar.hide();

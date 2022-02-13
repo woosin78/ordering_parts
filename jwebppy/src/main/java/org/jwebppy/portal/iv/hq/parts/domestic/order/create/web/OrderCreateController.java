@@ -205,7 +205,7 @@ public class OrderCreateController extends PartsDomesticGeneralController
 		return orderCreateService.getShippingInfo(rfcParamMap);
 	}
 
-	@RequestMapping("/transfer_to_order")
+	@RequestMapping("/popup/transfer_to_order")
 	public Object transferOrder(@RequestParam Map<String, Object> paramMap)
 	{
 		return DEFAULT_VIEW_URL;
