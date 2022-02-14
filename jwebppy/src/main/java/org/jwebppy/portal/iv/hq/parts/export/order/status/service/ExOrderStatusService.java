@@ -1,4 +1,4 @@
-package org.jwebppy.portal.iv.hq.parts.export.status.service;
+package org.jwebppy.portal.iv.hq.parts.export.order.status.service;
 
 import java.util.HashMap;
 import java.util.LinkedList;

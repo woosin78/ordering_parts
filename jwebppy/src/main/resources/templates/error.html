@@ -7,15 +7,18 @@
 <head>
 	<title th:text="#{PTL_T_DOOBIZ_PLUS}"></title>
 	<!-- Meta -->
-	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/meta"></th:block>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="-1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/basic.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/gmb.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/gnb.css}">
 	
 	<!-- JavaScript -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-	<script th:src="@{/portal/js/portal.ui.gmb.js}"></script>
+	<script th:src="@{/portal/js/portal.ui.gnb.js}"></script>
 	<style>
 		.gomain-button {
 			padding: 5px 15px;
@@ -54,11 +57,11 @@
 		<button class="logout-button" th:if="${status != 401}" th:text="#{PTL_B_LOGOUT}"></button>
 	</div>
 </div>
-<div class="gmb-wrap">
-	<div class="gmb-container">
-		<div class="gmb-menu-area">
-			<ul class="gmb-menu-list"></ul>					
-			<ul class="gmb-menu-sub-list"></ul>
+<div class="gnb-wrap">
+	<div class="gnb-container">
+		<div class="gnb-menu-area">
+			<ul class="gnb-menu-list"></ul>					
+			<ul class="gnb-menu-sub-list"></ul>
 		</div>
 	</div>
 </div>

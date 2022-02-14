@@ -837,9 +837,9 @@
 				{name: "netValue", data: "netValue", title: "[[#{HQP_L_NET_VALUE}]]"}//Net Value
 			],
 			columnDefs: [
-				{width: "80px", targets: 0, className: "skip-download dt-body-center"},
-				{width: "110px", targets: 1},
-				{width: "150px", targets: [3, 4], className: "dt-body-center"},
+				{targets: 0, className: "skip-download dt-body-center"},
+				{targets: 1},
+				{targets: [3, 4], className: "dt-body-center"},
 			],
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/create/simulation",

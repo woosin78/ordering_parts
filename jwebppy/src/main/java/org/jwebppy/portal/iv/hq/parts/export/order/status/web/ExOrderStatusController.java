@@ -1,4 +1,4 @@
-package org.jwebppy.portal.iv.hq.parts.export.status.web;
+package org.jwebppy.portal.iv.hq.parts.export.order.status.web;
 
 import java.util.Map;
 

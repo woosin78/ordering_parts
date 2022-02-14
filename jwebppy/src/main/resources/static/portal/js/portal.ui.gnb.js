@@ -3,7 +3,7 @@ let level2 = {};
 function makeGmb()
 {
 	JpUtilsAjax.get({
-		url: "/platform/mgmt/gmb/menu",
+		url: "/platform/mgmt/gnb/menu",
 		success: function(data, textStatus, jqXHR)
 		{
 			let items = data.RESULT;
@@ -30,16 +30,23 @@ function makeGmb()
 	    		};
 	    	};
 	    	
-	    	$(".gmb-menu-list").html(level1.join(""));
-	    	$(".gmb-menu-list li").css("width", Math.floor(100 / level1.length).toString() + "%");
-	    	$(".gmb-menu-list").show();
+	    	$(".gnb-menu-list").html(level1.join(""));
+	    	$(".gnb-menu-list li").css("width", Math.floor(100 / level1.length).toString() + "%");
+	    	$(".gnb-menu-list").show();
 	    	
-	    	$(".gmb-menu-list > li").on("mouseover", function() {
+	    	$(".gnb-menu-list > li").on("click", function() {
+	    		if (JpUtilsString.isNotEmpty($(this).attr("data-url")))
+	    		{
+	    			document.location.href = $(this).attr("data-url");
+	    		};
+	    	});
+	    	
+	    	$(".gnb-menu-list > li").on("mouseover", function() {
 	    		if (JpUtilsString.isNotEmpty($(this).attr("data-key")))
 	    		{
 	    			if (level2[$(this).attr("data-key")].length > 0)
 	    			{
-	    				$(".gmb-menu-area").css("height", 100);
+	    				$(".gnb-menu-area").css("height", 100);
 	    				
 	    				let submenu = [];
 	    				
@@ -47,23 +54,23 @@ function makeGmb()
 	    					submenu.push("<li data-url='" + item.URL + "'>" + item.NAME + "</li>");
 	    				});
 	    				
-	    				$(".gmb-menu-sub-list").html(submenu.join("")).show();
+	    				$(".gnb-menu-sub-list").html(submenu.join("")).show();
 	    			}
 	    			else
 	    			{
-	    				$(".gmb-menu-area").css("height", 50);
+	    				$(".gnb-menu-area").css("height", 50);
 	    			};
 	    			
-	    			$(".gmb-menu-sub-list > li").not(".mainmenu-seperator").on("click", function() {
+	    			$(".gnb-menu-sub-list > li").not(".mainmenu-seperator").on("click", function() {
 	    				document.location.href = $(this).attr("data-url");
 	    			});
 	    		};
 	    	});
 	    	
 	    	$("div").on("mouseover", function(event) {
-	    		if (!$(this).hasClass("gmb-menu-area"))
+	    		if (!$(this).hasClass("gnb-menu-area"))
 	    		{
-	    			$(".gmb-menu-area").css("height", 50);
+	    			$(".gnb-menu-area").css("height", 50);
 	    		};
 	    		
 	    		return false;
