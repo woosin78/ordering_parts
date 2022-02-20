@@ -10,7 +10,7 @@ import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.common.web.PartsExportGeneralController;
-import org.jwebppy.portal.iv.hq.parts.export.order.status.service.ExOrderStatusService;
+import org.jwebppy.portal.iv.hq.parts.export.order.status.service.ExOrderStatusSummaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,17 +20,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsExportCommonVo.REQUEST_PATH + "/order/status")
-public class ExOrderStatusController extends PartsExportGeneralController
+@RequestMapping(PartsExportCommonVo.REQUEST_PATH + "/order/status/summary")
+public class ExOrderStatusSummaryController extends PartsExportGeneralController
 {
 	@Autowired
-	private ExOrderStatusService orderStatusService;
+	private ExOrderStatusSummaryService orderStatusSummaryService;
 
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth()));
 		model.addAttribute("pToDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pToDate"), CmDateFormatUtils.today()));
+		model.addAttribute("pStatus", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pStatus"), "0"));
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -46,45 +47,22 @@ public class ExOrderStatusController extends PartsExportGeneralController
 		rfcParamMap.with(paramMap)
 			.addByKey(new Object[][] {
 				{"orderNo", "pOrderNo"},
-				{"orderType", "pOrderType"},
 				{"poNo", "pPoNo"},
-				{"orderPartNo", "pOrderPartNo"}
+				{"orderPartNo", "pOrderPartNo"},
+				{"status", "pStatus"}
 			})
 			.addDate(new Object[][] {
 				{"fromDate", CmStringUtils.defaultIfEmpty(paramMap.get("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth())},
 				{"toDate", CmStringUtils.defaultIfEmpty(paramMap.get("pToDate"), CmDateFormatUtils.today())}
 			});
 
-		RfcResponse rfcResponse = orderStatusService.getList(rfcParamMap);
-		DataList dataList = rfcResponse.getTable("T_HEADER");
+		RfcResponse rfcResponse = orderStatusSummaryService.getList(rfcParamMap);
 
-		FormatBuilder.with(dataList)
-			.qtyFormat(new String[] {"SO_ITEM", "SO_QTY", "PI_QTY", "SH_QTY", "IN_QTY", "BO_AMT"})
-			.dateFormat("ERDAT");
-
-		return dataList;
-	}
-
-	@RequestMapping("/view")
-	public Object view(@RequestParam Map<String, Object> paramMap, Model model, WebRequest webRequest)
-	{
-		addAllAttributeFromRequest(model, webRequest);
-
-		return DEFAULT_VIEW_URL;
-	}
-
-	@RequestMapping("/view/data")
-	@ResponseBody
-	public Object viewData(@RequestParam Map<String, Object> paramMap)
-	{
-		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("orderNo", paramMap.get("orderNo"));
-
-		RfcResponse rfcResponse = orderStatusService.getView(rfcParamMap);
 		DataList dataList = rfcResponse.getTable("T_DETAIL");
 
 		FormatBuilder.with(dataList)
-			.dateFormat(new String[] {"AUDAT", "ERDAT", "FST_ETD", "LST_ETD"});
+			.qtyFormat(new String[] {"MENGE", "LFIMG_DL"})
+			.dateFormat("ZFOBDT", "AUDAT");
 
 		return dataList;
 	}

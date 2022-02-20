@@ -29,7 +29,7 @@
 
 	<insert id="insertDataAccessLog" parameterType="DataAccessLogEntity">
 		insert into pltf_dacs_log (dl_seq, type, command, class_name, method_name, destination, start_time, elapsed, request_id, session_id, error, timezone, reg_username, reg_date) values (
-			#{dlSeq}, #{type}, #{command}, #{className}, #{methodName}, #{destination}, #{startTime}, #{elapsed}, #{requestId}, #{sessionId}, #{error}, #{timezone}, #{regUsername}, #{regDate}
+			#{dlSeq}, #{type}, #{command}, #{className}, #{methodName}, #{destination}, -1, -1, #{requestId}, #{sessionId}, #{error}, #{timezone}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -43,6 +43,16 @@
 		insert into pltf_dacs_log_param_detail (dlp_seq, line_no, name, value) values (
 			#{dlpSeq}, #{lineNo}, #{name}, #{value}
 		)
+	</insert>
+
+	<insert id="updateDataAccessLog" parameterType="DataAccessLogEntity">
+		update pltf_dacs_log set
+			destination=#{destination},
+			start_time=#{startTime},
+			elapsed=#{elapsed},
+			error=#{error}
+		where
+		dl_seq=#{dlSeq}
 	</insert>
 
 	<select id="findLog" parameterType="String" resultMap="dataAccessLogMap">

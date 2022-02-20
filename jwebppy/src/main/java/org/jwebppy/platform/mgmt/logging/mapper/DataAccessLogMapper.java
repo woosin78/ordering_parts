@@ -22,6 +22,7 @@ public interface DataAccessLogMapper
 	public void insertDataAccessResultLog(DataAccessResultLogEntity dataAccessResultLog);
 	public void insertDataAccessResultLogParameter(DataAccessResultLogParameterEntity dataAccessResultLogParameter);
 	public void insertDataAccessResultLogParameterDetail(DataAccessResultLogParameterDetailEntity dataAccessResultLogParameterDetail);
+	public void updateDataAccessLog(DataAccessLogEntity dataAccessLog);
 	public List<DataAccessLogEntity> findPageableLogs(DataAccessLogSearchDto dataAccessLogSearcg);
 	public DataAccessLogEntity findLog(String dlSeq);
 }

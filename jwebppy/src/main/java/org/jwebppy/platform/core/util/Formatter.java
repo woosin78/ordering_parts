@@ -158,9 +158,14 @@ public class Formatter {
 			return "";
 		}
 
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(strFormat);
-
-		return simpleDateFormat.format(date);
+		try
+		{
+			return new SimpleDateFormat(strFormat).format(date);
+		}
+		catch (IllegalArgumentException e)
+		{
+			return "";
+		}
 	}
 
 	/**

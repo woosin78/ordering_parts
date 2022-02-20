@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_INVOICE_STATUS_DETAIL}"></div>
+		<div id="BTN_search" class="block-button-area">
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button>
+			<button id="BTN_packingInfo" type="button" th:text="#{HQP_B_PACKING_INFO}"></button>
+			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}"></button><!-- Back -->
+		</div>
+	</div>	
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	<form id="FORM_search" name="FORM_search">
+		<input type="hidden" id="invoiceNo" name="invoiceNo" th:value="${invoiceNo}" />
+		<input type="hidden" name="pFromDate" th:value="${pFromDate}" />
+		<input type="hidden" name="pToDate" th:value="${pToDate}" />
+		<input type="hidden" name="pInvoiceNo" th:value="${pInvoiceNo}" />
+		<input type="hidden" id="pPoNo" name="pPoNo" th:value="${pPoNo}" />
+		<input type="hidden" id="pOrderPartNo" name="pOrderPartNo" th:value="${pOrderPartNo}" />
+	</form>	
+<script>
+$(document).ready(function() {
+	_setPartAutocomplete($("#pOrderPartNo"));
+});
+
+let $tableObj;
+$(function(){
+	$tableObj = $("#TBL_grid").DataTable({
+		select: {
+			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true,// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: {leftColumns: 5},
+		columns : [
+			{data: "ZFCIVNO", 		title: "[[#{HQP_L_INVOICE_NO}]]"},
+			{data: "TKNUM", 		title: "[[#{HQP_L_SHIPMENT_NO}]]"},
+			{data: "MATNR_SO", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},
+			{data: "MATNR_SH", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},
+			{data: "MAKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"},
+			{data: "LFIMG", 		title: "[[#{HQP_L_QTY}]]"},
+			{data: "NETPR", 		title: "[[#{HQP_L_UNIT_PRICE}]]"},
+			{data: "MEINS", 		title: "[[#{HQP_L_UOM}]]"},
+			{data: "NTGEW", 		title: "[[#{HQP_L_NET_WEIGHT}]]"},
+			{data: "BRGEW", 		title: "[[#{HQP_L_GROSS_WEIGHT}]]"},
+			{data: "HERKL", 		title: "[[#{HQP_L_ORIGIN}]]"},
+			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"},
+			{data: "ZFMBLNO", 		title: "[[#{HQP_L_MASTER_BL_NO}]]"},
+			{data: "ZFHBLNO", 		title: "[[#{HQP_L_HOUSE_BL_NO}]]"},
+			{data: "ZFOBDT", 		title: "[[#{HQP_L_ONBOARD_DATE}]]"},
+			{data: "NETWR", 		title: "[[#{HQP_L_AMOUNT}]]"}
+		],
+		columnDefs: [
+			{targets: [0, 1, 5, 7, 8, 9, 10, 12, 13, 14], className: "dt-body-center"},
+			{targets: [6, 15], className: "dt-body-right"}
+		],
+		ajax: {
+			url: "[[${BASE_PATH}]]/invoice/view/data",
+			data: function(p)
+			{
+				p.invoiceNo = $("#invoiceNo").val();
+				p.pPoNo = $("#pPoNo").val();
+				p.pOrderPartNo = $("#pOrderPartNo").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+
+				return data;
+			}
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+$("#BTN_back").on("click", function() {
+	$("#FORM_search").attr("action", "[[${BASE_PATH}]]/invoice/list").submit();
+});
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Invoice_Status_Detail");	
+});
+</script>
+</th:block>

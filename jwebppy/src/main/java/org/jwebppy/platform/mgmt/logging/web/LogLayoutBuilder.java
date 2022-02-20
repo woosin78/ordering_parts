@@ -56,9 +56,20 @@ public class LogLayoutBuilder
 			tbTr.addDataKeyLinkTd(dataAccessLog.getCommand(), dataAccessLog.getDlSeq());
 			tbTr.addTextTd(dataAccessLog.getClassName());
 			tbTr.addTextTd(dataAccessLog.getMethodName());
-			tbTr.addTextTd(CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
-			tbTr.addTextTd(dataAccessLog.getStartTimeToDate());
-			tbTr.addTextTd(dataAccessLog.getFinishTimeToDate());
+
+			if (dataAccessLog.getElapsedTime() > 0)
+			{
+				tbTr.addTextTd(CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
+				tbTr.addTextTd(dataAccessLog.getStartTimeToDate());
+				tbTr.addTextTd(dataAccessLog.getFinishTimeToDate());
+			}
+			else
+			{
+				tbTr.addTextTd("");
+				tbTr.addTextTd("");
+				tbTr.addTextTd("");
+			}
+
 			tbTr.addTextTd(dataAccessLog.getRegUsername());
 
 			if (dataAccessLog.getError() != null)
@@ -144,10 +155,10 @@ public class LogLayoutBuilder
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Type", dataAccessLog.getType().getType());
 		elementMap.put("Command", dataAccessLog.getCommand());
-		//elementMap.put("Destination", dataAccessLog.getDestination());
+		elementMap.put("Connection Info.", dataAccessLog.getDestination());
 		elementMap.put("Reg. Date", CmDateFormatUtils.format(dataAccessLog.getRegDate()));
 		elementMap.put("Reg. Username", dataAccessLog.getRegUsername());
-		elementMap.put("Elapsed(sec)", CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###"));
+		elementMap.put("Elapsed", (dataAccessLog.getElapsedTime() > 0) ? CmNumberUtils.round(dataAccessLog.getElapsedTime(), "#.###") : "");
 
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
 		document.addElement(Div.hiddenDivider());

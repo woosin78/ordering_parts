@@ -63,7 +63,6 @@ public class MapFormatOperation implements FormatOperation
 	@Override
 	public void dateFormat(String key, String format)
 	{
-
 		Object value = map.get(key);
 
 		if (value != null)

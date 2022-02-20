@@ -69,6 +69,11 @@ public class DataAccessLogService extends GeneralService
 		}
 	}
 
+	public void modifyDataAccessLog(DataAccessLogDto dataAccessLog)
+	{
+		dataAccessLogMapper.updateDataAccessLog(CmModelMapperUtils.mapToEntity(DataAccessLogObjectMapper.INSTANCE, dataAccessLog));
+	}
+
 	public List<DataAccessLogDto> getPageableLogs(DataAccessLogSearchDto dataAccessLogSearch)
 	{
 		return CmModelMapperUtils.mapToDto(DataAccessLogObjectMapper.INSTANCE, dataAccessLogMapper.findPageableLogs(dataAccessLogSearch));

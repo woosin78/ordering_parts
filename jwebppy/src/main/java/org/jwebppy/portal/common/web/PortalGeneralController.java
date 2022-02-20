@@ -33,6 +33,7 @@ public class PortalGeneralController extends GeneralController
 			response.setContentType("application/octet-stream; charset=UTF-8");
 			response.setHeader("Content-Disposition","attachment; filename=" +  fileName + ";");
 			response.setHeader("Content-Transfer", "binary");
+			response.setHeader("Set-Cookie", "fileDownload=true; path=/");//$.fileDownload callback 처리를 위해 추가되어야 함
 
 			bufferOutputStream = new BufferedOutputStream (response.getOutputStream());
 

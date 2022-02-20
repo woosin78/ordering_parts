@@ -7,12 +7,12 @@
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_T_INVOICE_STATUS}"></div><!-- Invoice Status -->	
 		<div class="block-button-area">		
-			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button><!-- Download -->
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 		</div>
 	</div>
 	<div class="condition-area">
-	<form id="FORM_search" name="FORM_search">	
+	<form id="FORM_search" name="FORM_search">
+	<input type="hidden" name="invoiceNo" />
 	<table class="condition">
 		<tbody>
 			<tr>
@@ -52,6 +52,19 @@
 	</div>
 	<div class="split-row"></div>
 	<div class="grid-info">
+		<div class="block-button-area download">
+			<button type="button" mode="LT">[[#{HQP_B_DOWNLOAD}]]</button>
+			<div class="split"></div>
+			<button type="button" mode="CI">[[#{HQP_B_INVOICE}]]</button>
+			<div class="split"></div>
+			<button type="button" mode="PL">[[#{HQP_B_PACKING_LIST}]]</button>			
+			<div class="split"></div>
+			<button type="button" mode="DL">[[#{HQP_B_PARTS_LIST}]]</button>			
+			<div class="split"></div>
+			<button type="button" mode="EDI">[[#{HQP_B_EDI_FILE}]]</button>
+			<div class="split"></div>
+			<button type="button" mode="BL">[[#{HQP_B_BL_COPY}]]</button>
+		</div>	
 		<div class="grid-total">
 			<div class="split"></div>
 			<span class="total-number" id="totalRows"></span>
@@ -61,6 +74,7 @@
 	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
+	<form id="FORM_download"></form>
 <script>
 $(document).ready(function() {
 	_setPartAutocomplete($("#pOrderPartNo"));
@@ -84,7 +98,7 @@ $(function(){
 				title:"<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)' onclick='allChecked(this)'><label></label>",
 				render: function(data, type, row)
 				{
-					return "<input type='checkbox' class='custom-ui check-all' value='" + row.ZFCIVNO + "' onchange='syncInput(this)'><label></label>";// FixedColumns 사용시엔 syncInput 호출 필요함.
+					return "<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)'><label></label>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},			
 			{data: "ZFCIVNO", 		title: "[[#{HQP_L_INVOICE_NO}]]"},
@@ -137,8 +151,11 @@ $(function(){
 	// Datatable grid 초기 설정 셋업
 	initGridTable($tableObj);
 	
-	$("#TBL_grid tbody").on("click", "td:first-child", function (e){				
+	$("#TBL_grid tbody").on("click", "td:nth-child(2)", function (e){				
 		let rowData = $tableObj.row(this).data();
+		
+		$("#FORM_search input[name=invoiceNo]").val(rowData.ZFCIVNO);
+		$("#FORM_search").attr("action", "[[${BASE_PATH}]]/invoice/view").submit();
 	});
 });
 
@@ -160,8 +177,53 @@ function doSearch()
 	$tableObj.ajax.reload();
 };
 
-$("#BTN_download").on("click", function() {
-	_gridDownload($tableObj, "Invoice_Status");
+$(".block-button-area.download button").on("click", function() {
+	let mode = $(this).attr("mode");
+	
+	if (mode == "LT")
+	{
+		_gridDownload($tableObj, "Invoice_Status");	
+	}
+	else
+	{
+		if (mode == "BL")
+		{
+			if ($($tableObj.columns(0).nodes()[0]).find("input:checkbox:checked").length > 1)
+			{
+				alert("[[#{HQP_M_ALLOW_DOWNLOAD_ONLY_ONE}]]");
+				return;
+			};
+		};
+		
+		$("#FORM_download").empty();
+		
+		let key = [];
+		
+		$.each($($tableObj.columns(0).nodes()[0]).find("input:checkbox:checked"), function(index, element) {
+			let data = $tableObj.row(index).data();
+			
+			key.push("<input type='hidden' name='invoiceNo' value='" +  data.ZFCIVNO  + "' />");
+			key.push("<input type='hidden' name='shipmentNo' value='" +  data.ZFDONO  + "' />");
+		});
+
+		$("#FORM_download")
+			.append("<input type='hidden' name='mode' value='" +  mode  + "' />")
+			.append("<input type='hidden' name='fromDate' value='" +  $("#pFromDate").val()  + "' />")
+			.append("<input type='hidden' name='toDate' value='" +  $("#pToDate").val()  + "' />")
+			.append(key.join(""));
+		
+		ProgressBar.show();
+		
+		$.fileDownload("[[${BASE_PATH}]]/invoice/download/" + mode, {
+			data:$("#FORM_download").serialize(),
+			successCallback: function () {
+				ProgressBar.hide();
+			},
+			failCallback: function() {
+				ProgressBar.hide();
+			}
+		});		
+	};
 });
-</script>	
+</script>
 </th:block>

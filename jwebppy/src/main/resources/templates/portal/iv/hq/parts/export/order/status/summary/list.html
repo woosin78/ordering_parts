@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_ORDER_STATUS_SUMMARY_ETD}"></div>	
+		<div class="block-button-area">		
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
+		</div>
+	</div>
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">	
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th th:text="#{HQP_L_ORDER_DATE}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">
+					</div>
+				</td>
+				<th th:text="#{HQP_L_ORDER_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
+					</div>			
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
+					</div>
+				</td>
+				<th th:text="#{HQP_L_PO_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+					</div>			
+				</td>				
+			</tr>		
+			<tr>
+				<th th:text="#{HQP_L_STATUS}"></th>
+				<td colspan="3">
+					<div class="input-area">
+						<select id="pStatus" name="pStatus" class="custom-ui" th:value="${pStatus}">
+							<option th:selected="${pStatus} == '0'" value="0"></option>
+							<option th:selected="${pStatus} == '1'" value="1">Open</option>
+							<option th:selected="${pStatus} == '2'" value="2">Complete</option>
+						</select>
+					</div>
+				</td>
+			</tr>		
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	<iframe id="IFM_download" name="IFM_download" style="display:none;"></iframe>
+<script>
+$(document).ready(function() {
+	_setPartAutocomplete($("#pOrderPartNo"));
+});
+
+let $tableObj;
+$(function(){
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+			
+	$tableObj = $("#TBL_grid").DataTable({
+		select: {
+			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true,// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: {leftColumns: 5},
+		columns : [
+			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"},
+			{data: "MATWA", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},
+			{data: "MENGE", 		title: "[[#{HQP_L_ORDER_QTY}]]"},
+			{data: "MATNR", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},
+			{data: "ARKTX", 		title: "[[#{HQP_L_DESCIPTION}]]"},
+			{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]"},
+			{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},
+			{data: "SUBSEQ", 		title: "[[#{HQP_L_SUB_SEQ}]]"},
+			{data: "LFIMG_DL", 		title: "[[#{HQP_L_AVAILABLE_QTY}]]"},
+			{data: "VRKME", 		title: "[[#{HQP_L_UOM}]]"},
+			{data: "STATUS", 		title: "[[#{HQP_L_STATUS}]]"},
+			{data: "ZFCIVNO", 		title: "[[#{HQP_L_INVOICE_NO}]]"},
+			{data: "ZFMBLNO", 		title: "[[#{HQP_L_MASTER_BL_NO}]]"},
+			{data: "ZFHBLNO", 		title: "[[#{HQP_L_HOUSE_BL_NO}]]"},
+			{data: "ZFOBDT", 		title: "[[#{HQP_L_ONBOARD_DATE}]]"},
+			{data: "ZFBLNO", 		title: "[[#{HQP_L_BL_NO}]]"},
+			{data: "AUDAT", 		title: "[[#{HQP_L_ORDER_DATE}]]"}
+		],
+		columnDefs: [
+			//{targets: [0], className: "link dt-body-center"},
+			//{targets: [1, 3, 4, 5, 6, 7, 8, 10, 11], className: "dt-body-center"}
+		],
+		ajax: {
+			url: "[[${BASE_PATH}]]/order/status/summary/list/data",
+			data: function(p)
+			{
+				p.pOrderNo = $("#pOrderNo").val();
+				p.pPoNo = $("#pPoNo").val();				
+				p.pOrderPartNo = $("#pOrderPartNo").val();
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+				p.pStatus = $("#pStatus").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+			    
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+
+				return data;
+			}
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+// Search 버튼 클릭
+$("#BTN_search").on("click", function(){		
+	doSearch(); 
+});
+
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Order_Status_Summary");
+});
+</script>	
+</th:block>

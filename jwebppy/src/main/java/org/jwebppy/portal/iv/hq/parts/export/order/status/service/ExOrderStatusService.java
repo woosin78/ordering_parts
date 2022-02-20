@@ -29,7 +29,7 @@ public class ExOrderStatusService extends PartsExportGeneralService
 
 		if (paramMap.isNotEmptyValue("orderNo") || paramMap.isNotEmptyValue("poNo"))
 		{
-        	fromDate = "20080101";
+			fromDate = "19700101";
         	toDate = CmDateFormatUtils.unlimitDate(PortalCommonVo.DEFAULT_DATE_FORMAT_YYYYMMDD);
 		}
 
@@ -71,7 +71,7 @@ public class ExOrderStatusService extends PartsExportGeneralService
 						{"I_BGTYP", "P"},
 						{"I_USERID", paramMap.getUsername()},
 						{"I_DROP", "0"},
-						{"I_FDATE", "20080101"},
+						{"I_FDATE", "19700101"},
 						{"I_TDATE", CmDateFormatUtils.unlimitDate(PortalCommonVo.DEFAULT_DATE_FORMAT_YYYYMMDD)},
 						{"I_STATUS", "0"}
 					});

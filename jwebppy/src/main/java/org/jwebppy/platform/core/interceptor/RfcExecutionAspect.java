@@ -52,10 +52,13 @@ public class RfcExecutionAspect
     public Object onAround(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable
     {
 		RfcResponse result = null;
+		String dlSeq = null;
 
 		try
 		{
 			setSapConnector(proceedingJoinPoint);
+
+			dlSeq = writeLog(proceedingJoinPoint);
 
 			result = (RfcResponse)proceedingJoinPoint.proceed();
 		}
@@ -65,7 +68,8 @@ public class RfcExecutionAspect
 		}
 		finally
 		{
-	    	result.setDlSeq(writeLog(proceedingJoinPoint, result));
+	    	result.setDlSeq(dlSeq);
+	    	writeResultLog(dlSeq, result);
 		}
 
 		return result;
@@ -129,7 +133,7 @@ public class RfcExecutionAspect
 		return stackTrace;
     }
 
-    private String writeLog(ProceedingJoinPoint proceedingJoinPoint, RfcResponse rfcResponse)
+    private String writeLog(ProceedingJoinPoint proceedingJoinPoint)
     {
     	Object[] args = proceedingJoinPoint.getArgs();
     	RfcRequest rfcRequest = (RfcRequest)args[0];
@@ -154,6 +158,9 @@ public class RfcExecutionAspect
 			dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
 		}
 
+		dataAccessLogService.writeLog(dataAccessLog);
+
+		/*
 		if (rfcResponse != null)
 		{
 			dataAccessLog.setDestination(rfcResponse.getDestination());
@@ -165,6 +172,27 @@ public class RfcExecutionAspect
 		dataAccessLogService.writeLog(dataAccessLog);
 
 		dataAccessResultLogService.writeLog(dlSeq, rfcResponse);
+		*/
+
+		return dlSeq;
+    }
+
+    private String writeResultLog(String dlSeq, RfcResponse rfcResponse)
+    {
+		if (rfcResponse != null)
+		{
+			DataAccessLogDto dataAccessLog = new DataAccessLogDto();
+
+			dataAccessLog.setDlSeq(dlSeq);
+			dataAccessLog.setDestination(rfcResponse.getDestination());
+			dataAccessLog.setStartTime(rfcResponse.getStartTime());
+			dataAccessLog.setElapsed(rfcResponse.getElapsed());
+			dataAccessLog.setError(rfcResponse.getErrorMsg());
+
+			dataAccessLogService.modifyDataAccessLog(dataAccessLog);
+
+			dataAccessResultLogService.writeLog(dlSeq, rfcResponse);
+		}
 
 		return dlSeq;
     }
