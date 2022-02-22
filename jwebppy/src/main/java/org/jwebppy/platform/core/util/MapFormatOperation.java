@@ -1,6 +1,5 @@
 package org.jwebppy.platform.core.util;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
@@ -87,7 +86,7 @@ public class MapFormatOperation implements FormatOperation
 
 	@Override
 	public void decimalFormat(String key) {
-		map.put(key, Formatter.getDefDecimalFormat(map.get(key)));
+		map.put(key, Formatter.fixedPoint(Formatter.getDefDecimalFormat(map.get(key))));
 	}
 
 	@Override
@@ -99,20 +98,7 @@ public class MapFormatOperation implements FormatOperation
 
 	@Override
 	public void decimalFormat(String key, String format) {
-
-		Object value = map.get(key);
-
-		if (value != null)
-		{
-			if (value instanceof BigDecimal)
-			{
-				map.put(key, Formatter.getDecimalFormat((BigDecimal)value, format));
-			}
-			else
-			{
-				map.put(key, Formatter.getDecimalFormat(value.toString(), format));
-			}
-		}
+		map.put(key, Formatter.fixedPoint(Formatter.getDecimalFormat(map.get(key).toString(), format)));
 	}
 
 	@Override
@@ -273,6 +259,18 @@ public class MapFormatOperation implements FormatOperation
 	public void getDateFormat(String[] keys) {
 		for (int i=0; i < keys.length; i++) {
 			getDateFormat(keys[i]);
+		}
+	}
+
+	@Override
+	public void weightFormat(String key) {
+		map.put(key, Formatter.fixedPoint(Formatter.getDecimalFormat(map.get(key).toString(), Formatter.defaultWeightFormat)));
+	}
+
+	@Override
+	public void weightFormat(String[] keys) {
+		for (int i=0; i < keys.length; i++) {
+			weightFormat(keys[i]);
 		}
 	}
 }

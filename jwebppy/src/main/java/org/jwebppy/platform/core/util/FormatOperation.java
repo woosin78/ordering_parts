@@ -75,4 +75,8 @@ public interface FormatOperation
 	public void getDateFormat(String key);
 
 	public void getDateFormat(String[] key);
+
+	public void weightFormat(String key);
+
+	public void weightFormat(String[] key);
 }

@@ -17,7 +17,7 @@ public class ExOrderStatusSummaryService extends PartsExportGeneralService
         	.field().with(paramMap)
         		.add(new Object[][] {
         			{"I_USERID", paramMap.getUsername()},
-        			{"I_UPLOAD", "X"}
+        			{"I_UPLOAD", ""}
         		})
         		.addByKey(new Object[][] {
         			{"I_VBELN", "orderNo"},

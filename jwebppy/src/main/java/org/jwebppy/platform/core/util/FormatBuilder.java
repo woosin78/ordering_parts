@@ -241,4 +241,14 @@ public class FormatBuilder
 		formatOperation.getDateFormat(key);
 		return this;
 	}
+
+	public FormatBuilder weightFormat(String key){
+		formatOperation.weightFormat(key);
+		return this;
+	}
+
+	public FormatBuilder weightFormat(String[] key){
+		formatOperation.weightFormat(key);
+		return this;
+	}
 }

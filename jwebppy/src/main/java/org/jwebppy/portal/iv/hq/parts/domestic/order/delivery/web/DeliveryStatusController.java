@@ -66,9 +66,10 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"NETPR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
 
 		FormatBuilder.with(dataList)
-			.integerFormat("TKNUM")
+			.decimalFormat("NETWR")
+			.weightFormat("BRGEW")
 			.qtyFormat(new String[] {"COUNT1", "COUNT2"})
-			.decimalFormat(new String[] {"NETWR", "BRGEW"})
+			.integerFormat("TKNUM")
 			.dateFormat("ZFOBDT");
 
 		return dataList;
@@ -118,9 +119,9 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"NETPR", "NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
 
 		FormatBuilder.with(dataList)
-			.integerFormat(new String[] {"TKNUM", "EXIDV"})
-			.qtyFormat("LFIMG")
 			.decimalFormat(new String[] {"NETPR", "NETWR", "KWERT"})
+			.qtyFormat("LFIMG")
+			.integerFormat(new String[] {"TKNUM", "EXIDV"})
 			.dateFormat("ZFOBDT");
 
 		return dataList;

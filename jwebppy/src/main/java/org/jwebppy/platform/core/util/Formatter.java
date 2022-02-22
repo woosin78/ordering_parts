@@ -9,7 +9,8 @@ import java.util.Date;
 
 public class Formatter {
 	static final String defaultDateFormat = CmDateFormatUtils.getDateFormat();
-	static final String defaultCurrencyFormat = "#,###.##";
+	static final String defaultCurrencyFormat = "#,###.00";
+	static final String defaultWeightFormat = "#,###.000";
 
 	/**
 	 * 현재(오늘)날짜 가져오기.<br>

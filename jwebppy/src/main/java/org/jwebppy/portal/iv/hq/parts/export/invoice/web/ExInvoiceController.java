@@ -72,7 +72,8 @@ public class ExInvoiceController extends PartsExportGeneralController
 		DataList dataList = rfcResponse.getTable("T_DETAIL");
 
 		FormatBuilder.with(dataList)
-			.decimalFormat(new String[] {"NETWR", "VOLUM", "BRGEW", "T_NETWR"})
+			.decimalFormat(new String[] {"NETWR", "T_NETWR"})
+			.weightFormat(new String[] {"VOLUM", "BRGEW"})
 			.qtyFormat(new String[] {"LFIMG", "COUNT1"})
 			.dateFormat(new String[] {"ZFOBDT", "ZFETA"});
 
@@ -104,7 +105,8 @@ public class ExInvoiceController extends PartsExportGeneralController
 		DataList dataList = rfcResponse.getTable("T_DETAIL");
 
 		FormatBuilder.with(dataList)
-			.decimalFormat(new String[] {"NETPR", "NETWR", "NTGEW", "BRGEW"})
+			.decimalFormat(new String[] {"NETPR", "NETWR"})
+			.weightFormat(new String[] {"NTGEW", "BRGEW"})
 			.deleteFrontZero("TKNUM")
 			.dateFormat("ZFOBDT");
 

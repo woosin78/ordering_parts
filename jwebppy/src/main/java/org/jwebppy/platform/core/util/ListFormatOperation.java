@@ -250,4 +250,14 @@ public class ListFormatOperation implements FormatOperation
 	public void integerFormat(String[] keys) {
 		applyEach("integerFormat", new Class[] { String[].class }, new Object[] { keys });
 	}
+
+	@Override
+	public void weightFormat(String key) {
+		applyEach("weightFormat", new Class[] { String[].class }, new Object[] { key });
+	}
+
+	@Override
+	public void weightFormat(String[] keys) {
+		applyEach("weightFormat", new Class[] { String[].class }, new Object[] { keys });
+	}
 }

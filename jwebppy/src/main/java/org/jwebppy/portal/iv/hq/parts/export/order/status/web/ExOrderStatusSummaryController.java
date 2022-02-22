@@ -62,7 +62,7 @@ public class ExOrderStatusSummaryController extends PartsExportGeneralController
 
 		FormatBuilder.with(dataList)
 			.qtyFormat(new String[] {"MENGE", "LFIMG_DL"})
-			.dateFormat("ZFOBDT", "AUDAT");
+			.dateFormat(new String[] {"ZFOBDT", "AUDAT"});
 
 		return dataList;
 	}

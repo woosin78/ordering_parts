@@ -23,26 +23,26 @@
 						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">
 					</div>
 				</td>
-				<th th:text="#{HQP_L_ORDER_NO}"></th>
+				<th th:text="#{HQP_L_PO_NO}"></th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
 					</div>			
 				</td>
 			</tr>
 			<tr>
+				<th th:text="#{HQP_L_ORDER_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
+					</div>
+				</td>			
 				<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
 					</div>
 				</td>
-				<th th:text="#{HQP_L_PO_NO}"></th>
-				<td>
-					<div class="input-area">
-						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
-					</div>			
-				</td>				
 			</tr>		
 			<tr>
 				<th th:text="#{HQP_L_STATUS}"></th>
@@ -90,10 +90,10 @@ $(function(){
 		//fixedColumns: {leftColumns: 5},
 		columns : [
 			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"},
-			{data: "MATWA", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},
+			{data: "MATWA", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},			
+			{data: "MATNR", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},			
+			{data: "ARKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"},
 			{data: "MENGE", 		title: "[[#{HQP_L_ORDER_QTY}]]"},
-			{data: "MATNR", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},
-			{data: "ARKTX", 		title: "[[#{HQP_L_DESCIPTION}]]"},
 			{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]"},
 			{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},
 			{data: "SUBSEQ", 		title: "[[#{HQP_L_SUB_SEQ}]]"},
@@ -108,8 +108,7 @@ $(function(){
 			{data: "AUDAT", 		title: "[[#{HQP_L_ORDER_DATE}]]"}
 		],
 		columnDefs: [
-			//{targets: [0], className: "link dt-body-center"},
-			//{targets: [1, 3, 4, 5, 6, 7, 8, 10, 11], className: "dt-body-center"}
+			{targets: [4, 5, 6, 7, 8, 9, 11, 12, 13, 14, 15, 16], className: "dt-body-center"}
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/status/summary/list/data",
