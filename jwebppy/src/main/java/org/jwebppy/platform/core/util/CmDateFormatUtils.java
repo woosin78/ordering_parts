@@ -87,6 +87,11 @@ public class CmDateFormatUtils
 		return format(CmDateTimeUtils.now(zoneId), getDateFormat());
 	}
 
+	public static String plusDays(long days)
+	{
+		return plusDays(getTimezone(), days);
+	}
+
 	public static String plusDays(String zoneId, long days)
 	{
 		return format(CmDateTimeUtils.now(zoneId).plusDays(days), null);
@@ -95,6 +100,11 @@ public class CmDateFormatUtils
 	public static String plusDays(String zoneId, int days, String format)
 	{
 		return format(CmDateTimeUtils.now(zoneId).plusDays(days), format);
+	}
+
+	public static String plusWeeks(long weeks)
+	{
+		return plusWeeks(getTimezone(), weeks);
 	}
 
 	public static String plusWeeks(String zoneId, long weeks)
@@ -107,6 +117,11 @@ public class CmDateFormatUtils
 		return format(CmDateTimeUtils.now(zoneId).plusWeeks(weeks), format);
 	}
 
+	public static String plusMonths(long months)
+	{
+		return plusMonths(getTimezone(), months);
+	}
+
 	public static String plusMonths(String zoneId, long months)
 	{
 		return format(CmDateTimeUtils.now(zoneId).plusMonths(months), null);
@@ -115,6 +130,11 @@ public class CmDateFormatUtils
 	public static String plusMonths(String zoneId, long months, String format)
 	{
 		return format(CmDateTimeUtils.now(zoneId).plusMonths(months), format);
+	}
+
+	public static String plusYears(long years)
+	{
+		return plusYears(getTimezone(), years);
 	}
 
 	public static String plusYears(String zoneId, long years)

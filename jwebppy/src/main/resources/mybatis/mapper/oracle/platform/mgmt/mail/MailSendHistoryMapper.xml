@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.mgmt.mail.mapper.MailSendHistoryMapper">
+	<insert id="insert" parameterType="MailSendHistoryEntity" useGeneratedKeys="true" keyProperty="mshSeq">
+		<selectKey keyProperty="mshSeq" resultType="Integer" order="BEFORE">
+			select pltf_msh_seq.nextval from dual
+		</selectKey>
+
+		insert into pltf_mail_send_history (msh_seq, subject, text, sender, attachment, reg_username, reg_date) values (
+			#{mshSeq}, #{subject}, #{text}, #{sender}, #{attachment}, #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+	<update id="updateResult" parameterType="MailSendHistoryEntity">
+		update pltf_mail_send_history set
+			error=#{error},
+			complete_date=#{completeDate}
+		where
+			msh_seq=#{mshSeq}
+	</update>	
+</mapper>

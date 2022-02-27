@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.common.web.PlatformGeneralController;
+import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.common.PortalConfigVo;
 import org.springframework.security.core.Authentication;
@@ -25,5 +26,13 @@ public class IndexContoller extends PlatformGeneralController
 		}
 
 		return new RedirectView(PortalConfigVo.FORM_LOGIN_PAGE_URL);
+	}
+
+	public static void main(String[] args)
+	{
+		System.err.println(AES256Cipher.getInstance().encode("divdp"));
+		System.err.println(AES256Cipher.getInstance().encode("1111"));
+
+
 	}
 }

@@ -126,8 +126,10 @@
 </div>
 
 <script>
+let usersTable;
 $(document).ready(function() {
-	let usersTable = new JpUiTable($("#TBL_users"));
+	usersTable = new JpUiTable($("#TBL_users"));
+
 	usersTable.settings = {
 			ajax: {
 				url: "/platform/mgmt/user/list/layout",
@@ -800,14 +802,6 @@ $(document).ready(function() {
 		return usersTable.getCheckedCount();
 	};
 
-	function doSearch(pageNumber)
-	{
-		$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
-		$("#rowPerPage").val("10");
-
-		usersTable.load();
-	};
-	
 	function resetSearchForm()
 	{
 		$("#FORM_search")[0].reset();
@@ -952,6 +946,14 @@ $(document).ready(function() {
 
 	doSearch();
 });
+
+function doSearch(pageNumber)
+{
+	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
+	$("#rowPerPage").val("10");
+
+	usersTable.load();
+};
 
 </script>
 

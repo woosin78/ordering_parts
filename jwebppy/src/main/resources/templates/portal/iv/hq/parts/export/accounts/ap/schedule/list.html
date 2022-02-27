@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_AP_SCHEDULE}"></div>
+		<div class="block-button-area">
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
+		</div>
+	</div>
+	<div class="grid-info">
+		<div class="block-button-area">
+			<span class="total-number" id="totalAmount"></span>
+		</div>
+		<div class="grid-total">
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+	<form id="FORM_search" name="FORM_search"></form>
+	
+<script>
+let $tableObj;
+$(function(){
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: {leftColumns: 8},
+		columns : [
+			{data: "FAEDT", title: "[[#{HQP_L_DUE_DATE}]]"},			
+			{data: "WRBTR", title: "[[#{HQP_L_AP_AMOUNT}]]"},				
+			{data: "WRBTR3", title: "[[#{HQP_L_OVERDUE_INTEREST}]]"},
+			{data: "WRSHB", title: "[[#{HQP_L_SUB_TOTAL}]]"}
+		],
+		columnDefs: [
+			{targets: [0, 2], className: "dt-body-center"},
+			{targets: [1, 3], className: "dt-body-right"}
+		],		
+		ajax: {
+			url: "[[${BASE_PATH}]]/accounts/ap/schedule/list/data",
+			data: function(p)
+			{
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				let apList = data.apList;				
+				let length = (apList.length > 0) ? apList.length : 0;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");
+				
+				$("#totalAmount").html("[[#{HQP_L_TOTAL_AMOUNT}]]: " + data.totalAmount);
+				
+				return apList;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+$("#BTN_search").on("click", function(){		
+	doSearch(); 
+});
+
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "AP_Schedule");
+});
+</script>	
+</th:block>

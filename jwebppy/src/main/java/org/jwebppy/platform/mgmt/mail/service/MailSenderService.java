@@ -50,13 +50,13 @@ public class MailSenderService extends MgmtGeneralService
 	{
 		MailSendHistoryEntity mailSendHistory = save(mailSender);
 
-		String from = mailSender.getFrom();
+		String sender = mailSender.getSender();
 		List<String> to = mailSender.getTo();
 		String subject = mailSender.getSubject();
 
 		Set<String> toSet = new HashSet<>();
 
-		if (CmStringUtils.isNotEmpty(from) && CollectionUtils.isNotEmpty(to) && CmStringUtils.isNotEmpty(subject))
+		if (CmStringUtils.isNotEmpty(sender) && CollectionUtils.isNotEmpty(to) && CmStringUtils.isNotEmpty(subject))
 		{
 			try
 			{
@@ -73,7 +73,7 @@ public class MailSenderService extends MgmtGeneralService
 					MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
 					mimeMessageHelper.setSubject(subject);
-					mimeMessageHelper.setFrom(from, mailSender.getSender());
+					mimeMessageHelper.setFrom(sender, mailSender.getSender());
 
 					if (CollectionUtils.isNotEmpty(mailSender.getAttachments()))
 					{
@@ -133,7 +133,7 @@ public class MailSenderService extends MgmtGeneralService
 
 		mailSendHistory.setSubject(mailSender.getSubject());
 		mailSendHistory.setText(mailSender.getText());
-		mailSendHistory.setFrom(mailSender.getFrom());
+		mailSendHistory.setSender(mailSender.getSender());
 
 		if (CollectionUtils.isNotEmpty(mailSender.getAttachments()))
 		{

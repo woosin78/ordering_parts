@@ -69,43 +69,43 @@
 			<property name="orderBy" value="reg_date desc"/>
 		</include>		
 
-			select
-			a.*
-			from
-			pltf_dacs_log a
+		select
+		a.*
+		from
+		pltf_dacs_log a
+		
+		<where>
+			<choose>
+				<when test="fromDate != null and toDate != null">
+					a.start_time <![CDATA[>]]> #{fromDateToMs} and a.start_time <![CDATA[<=]]> #{toDateToMs}
+				</when>
+				<when test="fromDate != null">
+					a.start_time <![CDATA[>]]> #{fromDateToMs}
+				</when>
+				<when test="toDate != null">
+					a.start_time <![CDATA[<=]]> #{toDateToMs}
+				</when>			
+			</choose>			
+		
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+				and a.type=#{type}
+			</if>
 			
-			<where>
-				<choose>
-					<when test="fromDate != null and toDate != null">
-						a.start_time <![CDATA[>]]> #{fromDateToMs} and a.start_time <![CDATA[<=]]> #{toDateToMs}
-					</when>
-					<when test="fromDate != null">
-						a.start_time <![CDATA[>]]> #{fromDateToMs}
-					</when>
-					<when test="toDate != null">
-						a.start_time <![CDATA[<=]]> #{toDateToMs}
-					</when>			
-				</choose>			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(command)">
+				and upper(a.command) like concat('%', upper(#{command}), '%')
+			</if>				
 			
-				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
-					and a.type=#{type}
-				</if>
-				
-				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(command)">
-					and upper(a.command) like concat('%', upper(#{command}), '%')
-				</if>				
-				
-				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(regUsername)">
-					and upper(a.reg_username) like concat('%', upper(#{regUsername}), '%')
-				</if>				
-				
-				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
-					and (
-						upper(a.class_name) like concat('%', upper(#{query}), '%') or
-						upper(a.method_name) like concat('%', upper(#{query}), '%')
-					)
-				</if>			
-			</where>
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(regUsername)">
+				and upper(a.reg_username) like concat('%', upper(#{regUsername}), '%')
+			</if>				
+			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
+				and (
+					upper(a.class_name) like concat('%', upper(#{query}), '%') or
+					upper(a.method_name) like concat('%', upper(#{query}), '%')
+				)
+			</if>			
+		</where>
 
 		<include refid="PaginationMapper.footer"/>
 	</select>

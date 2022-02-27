@@ -145,7 +145,11 @@ $(document).ready(function() {
 					{
 						if (opener != null)
 						{
-							opener.doSearch();
+							try
+							{
+								opener.doSearch();	
+							}
+							catch (e) {}
 						};
 					};
 					

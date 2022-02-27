@@ -439,7 +439,7 @@ function isRoot()
 $(".BTN_translation").on("click", function() {
 	JpUtilsAjax.get({
 		url: "/platform/mgmt/content/lang",
-		data: $("#FORM_modify").serialize(),
+		data: {cSeq: $("#FORM_modify input[name=cSeq]").val() , pSeq: $("#FORM_modify input[name=pSeq]").val(), basename: "[[${T(org.jwebppy.platform.core.PlatformConfigVo).DEFAULT_BASENAME}]]"},
 		global: false,
 		success: function(data, textStatus, jqXHR)
 		{

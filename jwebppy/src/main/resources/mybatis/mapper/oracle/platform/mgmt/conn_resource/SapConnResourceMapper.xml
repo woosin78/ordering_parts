@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.mgmt.conn_resource.mapper.SapConnResourceMapper">
+	<insert id="insert" parameterType="SapConnResourceEntity" useGeneratedKeys="true" keyProperty="scrSeq">
+		<selectKey keyProperty="scrSeq" resultType="Integer" order="BEFORE">
+			select pltf_scr_seq.nextval from dual
+		</selectKey>	
+	
+		insert into pltf_sap_conn_resource (scr_seq, type, name, description, app_server, instance_no, system_id, router_string, msg_server, router, grp_server, client, username, password, pool_capacity, peak_limit, language, fg_use_user_lang, fg_use, fg_delete, reg_username, reg_date) values (
+			#{scrSeq}, #{type}, #{name}, #{description}, #{appServer}, #{instanceNo}, #{systemId}, #{routerString}, #{msgServer}, #{router}, #{grpServer}, #{client}, #{username}, #{password}, #{poolCapacity}, #{peakLimit}, #{language}, #{fgUseUserLang}, 'N', 'N', #{regUsername}, #{regDate}
+		) 
+	</insert>
+
+	<update id="update" parameterType="SapConnResourceEntity">
+		update pltf_sap_conn_resource set
+			type=#{type},
+			name=#{name},
+			description=#{description},
+			app_server=#{appServer},
+			instance_no=#{instanceNo},
+			system_id=#{systemId},
+			router_string=#{routerString},
+			msg_server=#{msgServer},
+			router=#{router},
+			grp_server=#{grpServer},
+			client=#{client},
+			username=#{username},
+			password=#{password},
+			pool_capacity=#{poolCapacity},
+			peak_limit=#{peakLimit},
+			language=#{language},
+			fg_use_user_lang=#{fgUseUserLang},
+			fg_use=#{fgUse},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			scr_seq=#{scrSeq}
+	</update>
+	
+	<update id="updateFgDelete">
+		update pltf_sap_conn_resource set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}			
+		where
+			scr_seq=#{scrSeq}
+	</update>
+	
+	<update id="updateFgUse">
+		update pltf_sap_conn_resource set
+			fg_use=#{fgUse},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}			
+		where
+			scr_seq=#{scrSeq}			
+	</update>	
+	
+	<select id="findSapConnResource" resultType="SapConnResourceEntity">
+		select
+		a.*
+		from
+		pltf_sap_conn_resource a
+		where
+		a.fg_delete='N'
+		and scr_seq=#{scrSeq}
+	</select>
+	
+	<select id="findPageSapConnResources" parameterType="SapConnResourceSearchDto" resultType="SapConnResourceEntity">
+		<include refid="PaginationMapper.header"/>
+
+		select
+		a.*
+		from
+		pltf_sap_conn_resource a
+		where
+		a.fg_delete='N'
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
+			and (
+				upper(a.name) like '%'||upper(trim(#{query}))||'%'
+				or upper(a.description) like '%'||upper(trim(#{query}))||'%'
+			)
+		</if>
+		
+		order by a.scr_seq desc
+		
+		<include refid="PaginationMapper.footer"/>
+	</select>		
+	
+	<select id="findAvailableSapConnResources" resultType="SapConnResourceEntity">
+		select
+		a.*
+		from
+		pltf_sap_conn_resource a
+		where
+		a.fg_delete='N'
+		and a.fg_use='Y'
+		order by a.scr_seq
+	</select>
+	
+</mapper>

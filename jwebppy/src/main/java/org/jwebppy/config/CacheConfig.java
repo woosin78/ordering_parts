@@ -13,12 +13,9 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.session.data.redis.config.ConfigureRedisAction;
-import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 @Configuration
 @EnableCaching
-@EnableRedisHttpSession
 public class CacheConfig
 {
 	public static final String LANG = "Language";
@@ -51,12 +48,6 @@ public class CacheConfig
 	public static final int TTL_20_MINUTES = 20*60;
 	public static final int TTL_1_HOUR = 10*60*60;
 	public static final int TTL_24_HOURS = 24*60*60;
-
-	@Bean
-	public ConfigureRedisAction configureRedisAction()
-	{
-	    return ConfigureRedisAction.NO_OP;
-	}
 
 	/*
 	 * This function should be active in case of Spring Cache with Redis

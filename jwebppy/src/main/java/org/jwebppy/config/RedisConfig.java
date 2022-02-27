@@ -1,14 +1,15 @@
 package org.jwebppy.config;
 
-//@Configuration
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.session.data.redis.config.ConfigureRedisAction;
+
+@Configuration
 public class RedisConfig
 {
-	/*
-	 * This function should be active in case of Spring Session with Redis
 	@Bean
 	public ConfigureRedisAction configureRedisAction()
 	{
 	    return ConfigureRedisAction.NO_OP;
 	}
-	*/
 }

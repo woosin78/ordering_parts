@@ -12,13 +12,12 @@
 	<meta http-equiv="Expires" content="-1" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/basic.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/gnb.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/basic.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">
 	
 	<!-- JavaScript -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-	<script th:src="@{/portal/js/portal.ui.gnb.js}"></script>
 	<style>
 		.gomain-button {
 			padding: 5px 15px;
@@ -54,7 +53,7 @@
 		<ul class="info-list">
 		</ul>
 		<div class="split"></div>
-		<button class="logout-button" th:if="${status != 401}" th:text="#{PTL_B_LOGOUT}"></button>
+		<button class="logout-button" th:if="${status != 401 and status != 403 and status != 999}" th:text="#{PTL_B_LOGOUT}"></button>
 	</div>
 </div>
 <div class="gnb-wrap">
@@ -69,7 +68,7 @@
 	<div style="width: auto; margin-top:138px;">
 		<img src="/portal/img/popup/alert.png">
 		<th:block th:switch="${status}">
-			<div th:case="${401}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>			
+			<div th:case="${401}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
 			<div th:case="${403}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
 			<div th:case="${999}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
 			<div th:case="${404}" th:text="#{HQP_T_PAGE_NOT_FOUND}"></div>

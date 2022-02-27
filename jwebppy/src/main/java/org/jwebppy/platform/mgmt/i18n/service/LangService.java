@@ -212,6 +212,7 @@ public class LangService extends MgmtGeneralService
 
 	public List<String> getBasenames()
 	{
+		/*
 		List<LangKindEntity> langKinds = langMapper.findLangKinds(null);
 
 		if (CollectionUtils.isNotEmpty(langKinds))
@@ -232,6 +233,14 @@ public class LangService extends MgmtGeneralService
 		}
 
 		return null;
+		*/
+		List<String> basements = new ArrayList<>();
+
+		basements.add("PLTF");
+		basements.add("PLT");
+		basements.add("HQP");
+
+		return basements;
 	}
 
 	public String getDefaultLang(String basename)

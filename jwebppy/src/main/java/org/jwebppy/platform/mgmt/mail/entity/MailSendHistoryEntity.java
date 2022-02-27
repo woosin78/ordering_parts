@@ -18,7 +18,7 @@ public class MailSendHistoryEntity extends GeneralEntity
 	private Integer mshSeq;
 	private String subject;
 	private String text;
-	private String from;
+	private String sender;
 	private String attachment;
 	private LocalDateTime reserveDate;
 	private String error;

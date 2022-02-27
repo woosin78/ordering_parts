@@ -23,7 +23,6 @@ public class MailSenderDto extends GeneralDto implements IPagination
 	private String text;
 	private String sender;
 	private String fgHtmlText;
-	private String from;
 	private List<String> to;
 	private List<String> cc;
 	private List<String> bcc;
