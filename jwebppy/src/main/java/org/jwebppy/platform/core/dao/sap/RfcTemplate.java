@@ -306,16 +306,7 @@ public class RfcTemplate extends AbstractDaoTemplate
 
                         type = jCoMetaData.getType(j);
 
-                        if (type == AbapType.FIELD)//scalar
-                        {
-                            value = jCoParameterList[i].getValue(name);
-
-                            if (value != null)
-                            {
-                                resultMap.put(name, value);
-                            }
-                        }
-                        else if (type == AbapType.STRUCTURE)//structure
+                        if (type == AbapType.STRUCTURE)//structure
                         {
                             jCoStructure = jCoParameterList[i].getStructure(name);
 
@@ -358,6 +349,15 @@ public class RfcTemplate extends AbstractDaoTemplate
                             if (!tableList.isEmpty())
                             {
                                 resultMap.put(name, tableList);
+                            }
+                        }
+                        else
+                        {
+                            value = jCoParameterList[i].getValue(name);
+
+                            if (value != null)
+                            {
+                                resultMap.put(name, value);
                             }
                         }
                     }

@@ -389,6 +389,10 @@ input {
 	font-size:16px;
 }
 
+.grid-total-row{
+	background-color: #f8f28f !important;
+}
+
 /* dataTables 데이터 좌우 정렬을 위한 클래스 */
 .center {text-align: center;}
 .right {text-align: right;}

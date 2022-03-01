@@ -3,6 +3,7 @@ package org.jwebppy.platform.core.web.ui.pagination;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +28,7 @@ public class PageableList<T> implements IPagination
 
 	public void setList(List<T> list)
 	{
-		this.list = list;
+		this.list = ListUtils.emptyIfNull(list);
 		setPagination();
 	}
 

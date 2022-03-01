@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+
+<th:block layout:fragment="content">
+<script th:src="@{/editor_html5/js/xfe_main.js}"></script>
+
+<div class="block-header">
+	<div class="block-title" th:text="#{HQP_T_NOTICE}"></div>
+	<div class="block-button-area">
+		<button id="BTN_save" type="button" th:text="#{HQP_B_SAVE}"></button>
+		<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}"></button>
+	</div>	
+</div>	
+<div class="condition-area">
+<form id="FORM_write" method="post" th:action="|${BASE_PATH}/board/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
+<input type="hidden" name="bSeq" th:value="${bSeq}"/>
+<input type="hidden" name="bcSeq" th:value="${bcSeq}"/>
+<input type="hidden" name="textContent" id="textContent"/>
+<input type="hidden" name="htmlContent" id="htmlContent"/>
+<table class="condition table-fixed">
+	<tbody>
+		<tr>
+			<th><span th:text="#{HQP_L_TITLE}"></span><img src="/portal/img/icon_required.png" class="required" /></th>
+			<td>
+				<input type="text" name="title" class="custom-ui" autofocus="autofocus"/>
+			</td>
+		</tr>
+		<tr>
+			<th><span th:text="#{HQP_L_CONTENT}"></span><img src="/portal/img/icon_required.png" class="required" /></th>
+			<td id="xfe_ex"></td>
+		</tr>
+	</tbody>
+</table>
+</form>
+</div>
+<form id="FORM_search" th:action="|${BASE_PATH}/board/list|" th:object="${boardContentSearch}">
+<input type="hidden" name="bSeq" th:value="${bSeq}"/>
+<input type="hidden" name="title" th:value="${title}"/>
+<input type="hidden" name="writer" th:value="${writer}"/>
+<input type="hidden" name="fromRegDate" th:value="fromRegDate"/>
+<input type="hidden" name="toRegDate" th:value="toRegDate"/>
+<input type="hidden" name="pageNumber" th:value="${pageNumber}"/>
+<input type="hidden" name="rowPerPage" th:value="${rowPerPage}"/>
+</form>
+<script>
+$(window).on("load", function() {
+	ProgressBar.hide();
+});
+
+$("#BTN_back").on("click", function() {
+	$("#FORM_search").submit();
+});
+
+$("#BTN_save").on("click", function() {
+	if (JpUtilsString.isEmpty($("#FORM_write input[name=title]").val()))
+	{
+		alert("[[#{HQP_M_EMPTY_TITLE}]]");
+		$("#title").focus();
+		return;
+	};
+
+	if (JpUtilsString.isEmpty(xfe.getTextValue()))
+	{
+		alert("[[#{HQP_M_EMPTY_CONTENT}]]");
+		return;
+	};
+
+	$("#textContent").val(xfe.getTextValue());
+	$("#htmlContent").val(xfe.getBodyValue());	
+	
+	let options = {
+			enctype: "multipart/form-data",
+			url: "[[${BASE_PATH}]]/board/save",
+			data: new FormData($("#FORM_write")[0]),
+			global: false,
+			processData: false,
+			contentType: false,
+			cache: false,
+			success: function(data, textStatus, jqXHR) {
+				$("#BTN_back").trigger("click");
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("[[#{HQP_M_FAIL_SAVE}]]");
+			}
+	};
+	
+	JpUtilsAjax.post(options);
+});
+
+let xfe;
+$(function(){
+	/*
+	 * 에디터 생성.
+	 * 
+	 * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
+	 * width : 에디터의 너비
+	 * height : 에디터의 높이
+	 * onLoad : 에디터 초기 로드 이벤트				 
+	 */	
+	xfe = new XFE({
+		basePath: "[[@{/editor_html5}]]",
+		width: "100%",
+		height: "500px",
+		onLoad: function() {
+			
+		},
+		language: "english",
+		initFontFamily: "Arial"		
+	});
+		
+	xfe.render("xfe_ex");	
+});
+</script>
+</th:block>								

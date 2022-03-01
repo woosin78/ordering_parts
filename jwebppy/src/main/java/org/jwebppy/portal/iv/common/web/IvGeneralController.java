@@ -11,9 +11,12 @@ import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.common.web.PortalGeneralController;
+import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.service.IvGeneralService;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpUserContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.context.request.WebRequest;
 
 public class IvGeneralController extends PortalGeneralController
 {
@@ -79,5 +82,13 @@ public class IvGeneralController extends PortalGeneralController
 		}
 
 		return null;
+	}
+
+	@Override
+	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
+	{
+		super.addAllAttributeFromRequest(model, webRequest);
+
+		model.addAttribute("BASE_PATH", IvCommonVo.REQUEST_PATH);
 	}
 }

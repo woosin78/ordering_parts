@@ -73,9 +73,6 @@ public class ExApScheduleController extends PartsExportGeneralController
 				.decimalFormat(new String[] {"WRBTR", "WRBTR3", "WRSHB"})
 				.dateFormat("FAEDT");
 
-			System.err.println(rfcResponse.toString());
-			System.err.println(rfcResponse.getString("O_WRSHB"));
-
 			Map<String, Object> resultMap = new HashMap<>();
 			resultMap.put("apList", dataList);
 			resultMap.put("totalAmount", Formatter.fixedPoint(Formatter.getDefDecimalFormat(rfcResponse.getString("O_WRSHB"))));

@@ -10,8 +10,8 @@ public class PartsDomesticGeneralController extends PartsGeneralController
 	@Override
 	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
 	{
-		model.addAttribute("BASE_PATH", PartsDomesticCommonVo.REQUEST_PATH);
-
 		super.addAllAttributeFromRequest(model, webRequest);
+
+		model.addAttribute("BASE_PATH", PartsDomesticCommonVo.REQUEST_PATH);
 	}
 }

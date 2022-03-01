@@ -29,7 +29,6 @@ public class DataAccessResultLogService extends GeneralService
 	@Autowired
 	private DataAccessResultLogMapper dataAccessResultLogMapper;
 
-	//@Async("threadPoolTaskExecutor")
 	public void writeLog(String dlSeq, RfcResponse rfcResponse)
 	{
 		if (rfcResponse != null)

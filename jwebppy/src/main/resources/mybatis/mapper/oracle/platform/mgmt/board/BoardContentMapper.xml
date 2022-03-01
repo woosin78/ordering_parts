@@ -29,7 +29,7 @@
 		</selectKey>	
 	
 		insert into pltf_board_content (bc_seq, b_seq, p_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, fg_delete, reg_username, reg_date) values (
-			#{bcSeq}, #{bSeq}, ifnull(#{pSeq}, #{bcSeq}), 0, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, 'N', #{regUsername}, #{regDate}
+			#{bcSeq}, #{bSeq}, nvl(#{pSeq}, #{bcSeq}), 0, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, 'N', #{regUsername}, #{regDate}
 		)
 	</insert>
 	

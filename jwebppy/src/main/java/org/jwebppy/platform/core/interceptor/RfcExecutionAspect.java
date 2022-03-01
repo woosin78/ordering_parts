@@ -33,6 +33,7 @@ import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -160,23 +161,10 @@ public class RfcExecutionAspect
 
 		dataAccessLogService.writeLog(dataAccessLog);
 
-		/*
-		if (rfcResponse != null)
-		{
-			dataAccessLog.setDestination(rfcResponse.getDestination());
-			dataAccessLog.setStartTime(rfcResponse.getStartTime());
-			dataAccessLog.setElapsed(rfcResponse.getElapsed());
-			dataAccessLog.setError(rfcResponse.getErrorMsg());
-		}
-
-		dataAccessLogService.writeLog(dataAccessLog);
-
-		dataAccessResultLogService.writeLog(dlSeq, rfcResponse);
-		*/
-
 		return dlSeq;
     }
 
+	@Async("threadPoolTaskExecutor")
     private String writeResultLog(String dlSeq, RfcResponse rfcResponse)
     {
 		if (rfcResponse != null)

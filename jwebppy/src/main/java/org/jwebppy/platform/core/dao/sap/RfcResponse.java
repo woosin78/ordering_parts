@@ -71,7 +71,7 @@ public class RfcResponse extends AbstractDaoResponse implements Serializable
 
     public String getString(String name)
     {
-    	return (String)getObject(name);
+    	return getObject(name).toString();
     }
 
     public DataMap getStructure(String name)

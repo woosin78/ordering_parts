@@ -10,8 +10,8 @@ public class PartsExportGeneralController extends PartsGeneralController
 	@Override
 	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
 	{
-		model.addAttribute("BASE_PATH", PartsExportCommonVo.REQUEST_PATH);
-
 		super.addAllAttributeFromRequest(model, webRequest);
+
+		model.addAttribute("BASE_PATH", PartsExportCommonVo.REQUEST_PATH);
 	}
 }
