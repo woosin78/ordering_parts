@@ -1,8 +1,9 @@
 package org.jwebppy.portal.iv.upload.dto;
 
-import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.Formatter;
+import org.jwebppy.portal.common.PortalConfigVo;
 import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
 
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class EpUploadFileListDto extends IvGeneralDto
 	private String originName;
 	private String savedName;
 	private String extension;
-	private long size;
+	private long fileSize;
 
 	public String getFullOriginName()
 	{
@@ -33,7 +34,7 @@ public class EpUploadFileListDto extends IvGeneralDto
 	{
 		try
 		{
-			return AES256Cipher.getInstance().encode(CmDateFormatUtils.now() + PlatformConfigVo.DELIMITER + uflSeq);
+			return AES256Cipher.getInstance().encode(CmDateFormatUtils.now() + PortalConfigVo.DELIMITER + uflSeq);
 		}
 		catch (Exception e)
 		{
@@ -41,5 +42,27 @@ public class EpUploadFileListDto extends IvGeneralDto
 		}
 
 		return null;
+	}
+
+	public String getDisplayFileSize()
+	{
+		double KB = 1024;
+		double MB = Math.pow(KB, 2);
+		double GB = Math.pow(KB, 3);
+
+		if (fileSize > GB)
+		{
+			return Formatter.getDefDecimalFormat(fileSize / GB) + "GB";
+		}
+		else if (fileSize > MB)
+		{
+			return Formatter.getDefDecimalFormat(fileSize / MB) + "MB";
+		}
+		else if (fileSize > KB)
+		{
+			return Formatter.getDefDecimalFormat(fileSize / KB) + "KB";
+		}
+
+		return Formatter.getDefDecimalFormat(fileSize) + "B";
 	}
 }

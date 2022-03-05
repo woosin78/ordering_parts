@@ -1,4 +1,4 @@
-var OrderComponent = function(target)
+let OrderComponent = function(target)
 {
 	this.orderTypes = [];
 	this.target = (target != null) ? $(target) : null;

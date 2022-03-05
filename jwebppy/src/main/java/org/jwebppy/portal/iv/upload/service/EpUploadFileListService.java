@@ -11,6 +11,7 @@ import org.apache.tomcat.util.http.fileupload.InvalidFileNameException;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.portal.iv.common.service.IvGeneralService;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileListDto;
@@ -76,12 +77,13 @@ public class EpUploadFileListService extends IvGeneralService
 				multipartFile.transferTo(new File(rootPath + File.separator + path + File.separator + savedName));
 
 				EpUploadFileListDto uploadFileList = new EpUploadFileListDto();
+				uploadFileList.setUflSeq(UidGenerateUtils.generate());
 				uploadFileList.setUfSeq(ufSeq);
 				uploadFileList.setTSeq(tSeq);
 				uploadFileList.setOriginName(FilenameUtils.getBaseName(originFilename));
 				uploadFileList.setSavedName(FilenameUtils.getBaseName(savedName));
 				uploadFileList.setExtension(FilenameUtils.getExtension(originFilename).toLowerCase());
-				uploadFileList.setSize(multipartFile.getSize());
+				uploadFileList.setFileSize(multipartFile.getSize());
 				uploadFileList.setFgDelete(PlatformCommonVo.NO);
 
 				uploadFileListMapper.insert(CmModelMapperUtils.mapToEntity(EpUploadFileListObjectMapper.INSTANCE, uploadFileList));

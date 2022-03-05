@@ -3,13 +3,13 @@
 
 <mapper namespace="org.jwebppy.portal.iv.upload.mapper.EpUploadFileListMapper">
 	<insert id="insert" parameterType="EpUploadFileListEntity">
-		insert into pltf_upload_file_list (ufl_seq, uf_seq, t_seq, origin_name, saved_name, extension, size, fg_delete, reg_username, reg_date) values (
-			#{uflSeq}, #{ufSeq}, #{tSeq}, #{originName}, #{savedName}, #{extension}, #{size}, #{fgDelete}, #{regUsername}, #{regDate}
+		insert into ep_upload_file_list (ufl_seq, uf_seq, t_seq, origin_name, saved_name, extension, file_size, fg_delete, reg_username, reg_date) values (
+			#{uflSeq}, #{ufSeq}, #{tSeq}, #{originName}, #{savedName}, #{extension}, #{fileSize}, 'N', #{regUsername}, #{regDate}
 		)
 	</insert>
 	
 	<update id="delete" parameterType="EpUploadFileListEntity">
-		update pltf_upload_file_list set
+		update ep_upload_file_list set
 			fg_delete='Y',
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
@@ -21,7 +21,7 @@
 		select
 		a.*
 		from
-		pltf_upload_file_list a
+		ep_upload_file_list a
 		where
 		a.ufl_seq=#{uflSeq}
 		and a.fg_delete='N'
@@ -31,10 +31,11 @@
 		select
 		a.*
 		from
-		pltf_upload_file_list a
+		ep_upload_file_list a
 		where
 		a.uf_seq=#{ufSeq}
 		and a.t_seq=#{tSeq}
 		and a.fg_delete='N'
-	</select>	
+	</select>
+	
 </mapper>

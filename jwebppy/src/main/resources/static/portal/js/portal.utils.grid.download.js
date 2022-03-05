@@ -1,4 +1,4 @@
-var GridFileDownload = function(target)
+let GridFileDownload = function(target)
 {
 	this.target = target;
 	this.url = "/portal/iv/download/grid/excel";

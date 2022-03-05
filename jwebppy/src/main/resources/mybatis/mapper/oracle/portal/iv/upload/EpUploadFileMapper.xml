@@ -7,9 +7,10 @@
 		select
 		a.*
 		from
-		pltf_upload_file a
+		ep_upload_file a
 		where
-		a.uf_seq=#{ufSeq}		
+		a.uf_seq=#{ufSeq}
+		and a.fg_delete='N'
 	</select>
-	
+
 </mapper>

@@ -99,6 +99,9 @@ input {
 	box-sizing: border-box;
 }
 
+a.link {text-decoration: underline; color: #000; cursor: pointer;}
+a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
+
 /*--- header(최상단) 영역  ------------------*/
 
 .header {

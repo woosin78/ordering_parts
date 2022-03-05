@@ -81,7 +81,7 @@ public class UploadFileListService extends GeneralService
 				uploadFileList.setOriginName(FilenameUtils.getBaseName(originFilename));
 				uploadFileList.setSavedName(FilenameUtils.getBaseName(savedName));
 				uploadFileList.setExtension(FilenameUtils.getExtension(originFilename).toLowerCase());
-				uploadFileList.setSize(multipartFile.getSize());
+				uploadFileList.setFileSize(multipartFile.getSize());
 				uploadFileList.setFgDelete(PlatformCommonVo.NO);
 
 				uploadFileListMapper.insert(CmModelMapperUtils.mapToEntity(UploadFileListObjectMapper.INSTANCE, uploadFileList));

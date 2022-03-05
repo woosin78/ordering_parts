@@ -14,24 +14,36 @@
 		<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}"></button>
 	</div>	
 </div>	
-<div class="condition-area">
-<form id="FORM_write" method="post" th:action="|${BASE_PATH}/board/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
+<div id="boardViwer" class="condition-area">
+<form id="FORM_write" method="post" th:action="|${BASE_PATH}/board/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;" th:object="${boardContent}">
 <input type="hidden" name="bSeq" th:value="${bSeq}"/>
-<input type="hidden" name="bcSeq" th:value="${bcSeq}"/>
-<input type="hidden" name="textContent" id="textContent"/>
-<input type="hidden" name="htmlContent" id="htmlContent"/>
+<input type="hidden" name="bcSeq" th:value="${boardContent?.bcSeq}"/>
+<input type="hidden" name="textContent" id="textContent" th:value="${boardContent?.textContent}"/>
+<input type="hidden" name="htmlContent" id="htmlContent" th:value="${boardContent?.htmlContent}"/>
+<input type="file" id="files" name="files" multiple style="display:none;"/>
 <table class="condition table-fixed">
 	<tbody>
 		<tr>
 			<th><span th:text="#{HQP_L_TITLE}"></span><img src="/portal/img/icon_required.png" class="required" /></th>
 			<td>
-				<input type="text" name="title" class="custom-ui" autofocus="autofocus"/>
+				<input type="text" name="title" class="custom-ui" autofocus="autofocus" th:value="${boardContent?.title}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><span th:text="#{HQP_L_CONTENT}"></span><img src="/portal/img/icon_required.png" class="required" /></th>
-			<td id="xfe_ex"></td>
+			<td><div id="xfe"></div></td>
 		</tr>
+		<tr>
+			<th th:text="#{HQP_L_ATTACHMENT}"/>
+			<td>
+				<div class="split-row-more-compact"></div>
+				<button id="BTN_searchFile" type="button" th:text="#{HQP_B_FILE}" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
+				<div class="split-row-more-compact"></div>
+				<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+				<div class="split-row-more-compact"></div>
+				<div id="attachedFiles" style="width:100%; display: block; overflow-y: auto;"></div>
+			</td>
+		</tr>		
 	</tbody>
 </table>
 </form>
@@ -40,15 +52,46 @@
 <input type="hidden" name="bSeq" th:value="${bSeq}"/>
 <input type="hidden" name="title" th:value="${title}"/>
 <input type="hidden" name="writer" th:value="${writer}"/>
-<input type="hidden" name="fromRegDate" th:value="fromRegDate"/>
-<input type="hidden" name="toRegDate" th:value="toRegDate"/>
+<input type="hidden" name="fromRegDate" th:value="${fromRegDate}"/>
+<input type="hidden" name="toRegDate" th:value="${toRegDate}"/>
 <input type="hidden" name="pageNumber" th:value="${pageNumber}"/>
-<input type="hidden" name="rowPerPage" th:value="${rowPerPage}"/>
 </form>
 <script>
 $(window).on("load", function() {
 	ProgressBar.hide();
+	
+	initBoardViwer($("#boardViwer"), $("#xfe"));
 });
+
+function initBoardViwer($area, $content)
+{
+	installBoardViewResizer($area, $content);
+	
+	$(window).on("resize", $.debounce(100, function(e){
+		installBoardViewResizer($area, $content);
+	}));
+};
+
+function installBoardViewResizer($area, $content)
+{
+	let height = 0;
+	
+	$.each($("body").children(":not(script)").not($area), function(index, element) {
+		if (!$(element).is(":visible"))
+		{
+			return true;
+		};
+		
+		//console.log($(element).prop("tagName") + ":" + $(element).prop("class") + ":" + $(element).outerHeight(true));
+		height += $(element).outerHeight(true);
+	});
+	
+	let bodyHeight = $("body").height();
+	let h1 = $area.outerHeight(true) - $content.outerHeight(true);//게시글 영역 외 height
+	
+	$content.height(bodyHeight - height - h1);
+	xfe.setHeight($content.height() + "px");
+};
 
 $("#BTN_back").on("click", function() {
 	$("#FORM_search").submit();
@@ -90,28 +133,158 @@ $("#BTN_save").on("click", function() {
 	JpUtilsAjax.post(options);
 });
 
-let xfe;
-$(function(){
-	/*
-	 * 에디터 생성.
-	 * 
-	 * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
-	 * width : 에디터의 너비
-	 * height : 에디터의 높이
-	 * onLoad : 에디터 초기 로드 이벤트				 
-	 */	
-	xfe = new XFE({
-		basePath: "[[@{/editor_html5}]]",
-		width: "100%",
-		height: "500px",
-		onLoad: function() {
-			
-		},
-		language: "english",
-		initFontFamily: "Arial"		
-	});
-		
-	xfe.render("xfe_ex");	
+/*
+ * 에디터 생성.
+ * 
+ * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
+ * width : 에디터의 너비
+ * height : 에디터의 높이
+ * onLoad : 에디터 초기 로드 이벤트				 
+ */
+let xfe = new XFE({
+	basePath: "[[@{/editor_html5}]]",
+	width: "100%",
+	height: "100%",
+	onLoad: function() {
+		xfe.setBodyValue($("#htmlContent").val());
+	},
+	language: "english",
+	initFontFamily: "Arial"
 });
+	
+xfe.render("xfe");
+
+if (JpUtilsString.isNotEmpty($("#bcSeq").val()))
+{
+	JpUtilsAjax.get({
+		url: "/portal/iv/board/view/data",
+		data: { bcSeq: $("#bcSeq").val() },
+		success: function(data, textStatus, jqXHR) {
+			let result = data.RESULT;
+			
+			$("#bcSeq").val(result.bcSeq);
+			$("#title").val(result.title);
+			$("#htmlContent").val(result.htmlContent);
+			$("#textContent").val(result.textContent);
+			
+			//JpUiCalendar.setDate($("#fromView"), result.fromView);
+			//JpUiCalendar.setDate($("#toView"), result.toView);
+		}
+	});
+	
+	let ufSeq = "[[${board.ufSeq}]]";
+	
+	if (JpUtilsString.isNotEmpty(ufSeq))
+	{
+		JpUtilsAjax.get({
+			url: "/portal/iv/upload/list/data",
+			data: { ufSeq: ufSeq, tSeq: $("#bcSeq").val() },
+			success: function(data, textStatus, jqXHR) {
+				let result = data.RESULT;
+				
+				if (JpUtilsObject.isNotNull(result))
+				{
+					$.each(result, function(i, item) {
+						addFile(item.fullOriginName, item.size, item.uflSeq)	
+					});
+
+					$("#FORM_write .ui.checkbox").checkbox();
+				};
+			}	
+		});				
+	};
+};
+
+$("#BTN_searchFile").on("click", function() {
+	$("#files").trigger("click");
+});	
+
+$("#files").on("change", function() {
+	for (let i=0, length=this.files.length; i<length; i++)
+	{
+		addFile(this.files[i].name, this.files[i].size);
+	};
+	
+	$("#FORM_write .ui.checkbox").checkbox();
+});
+
+$("#BTN_deleteFile").on("click", function(event) {
+	let files = Array.from($("#files")[0].files);
+	
+	$.each($("#FORM_write input[name=uflSeq]"), function(i, item) {
+		if ($(this).is(":checked"))
+		{
+			let fileName = $(this).attr("fileName");
+			
+			for (let j=0, length=files.length; j<length; j++)
+			{
+				if (files[j] == null)
+				{
+					continue;
+				}
+				
+				if (JpUtilsString.equals(files[j].name, fileName))
+				{
+					files.splice(j, 1, null);
+				};
+			};		
+			
+			if (JpUtilsString.isNotEmpty($(this).val()))
+			{
+				$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
+			};
+			
+			$(this).closest("div").remove();
+		};
+	});
+	
+	$(window).trigger("resize");
+});	
+
+function addFile(name, size, uflSeq)
+{
+	let html = [];
+	
+	html.push("<div>");
+	html.push("<input name='uflSeq' type='checkbox' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' class='custom-ui' fileName='" + JpUtilsString.trimToEmpty(name) + "'/><label>" + name + "</label>");
+	html.push("<div class='split2'></div><span>" + getSize(size) + "</span>");
+	html.push("</div>");
+	
+	$("#attachedFiles").append(html.join(""));
+	
+	$(window).trigger("resize");
+};
+
+function getSize(size)
+{
+	let KB = 1024;
+	let MB = Math.pow(1024, 2);
+	let GB = Math.pow(1024, 3);
+	
+	let result = [];
+
+	if (size > GB)
+	{
+		result.push((size / GB).toFixed(2));
+		result.push("GB");
+	}
+	else if (size > MB)
+	{
+		result.push((size / MB).toFixed(2));
+		result.push("MB");
+	}
+	else if (size > KB)
+	{
+		result.push((size / KB).toFixed(2));
+		result.push("KB");
+	}
+	else
+	{
+		result.push(size);
+		result.push("B");
+	};
+	
+	return result.join("");
+};
 </script>
 </th:block>								

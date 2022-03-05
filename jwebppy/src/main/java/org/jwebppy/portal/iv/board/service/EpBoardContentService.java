@@ -55,7 +55,7 @@ public class EpBoardContentService extends IvGeneralService
 			return null;
 		}
 
-		boardContent.setBcSeq(UidGenerateUtils.generate());
+		boardContent.setBcSeq(System.currentTimeMillis() + "-" + UidGenerateUtils.generate());
 		boardContent.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		boardContent.setWriter(UserAuthenticationUtils.getUserDetails().getName());
 

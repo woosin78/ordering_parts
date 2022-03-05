@@ -21,6 +21,7 @@
 		<result property="regDate" column="reg_date" />
 		<result property="modUsername" column="mod_username" />
 		<result property="modDate" column="mod_date" />
+		<association property="board" foreignColumn="b_seq" column="b_seq" javaType="EpBoardEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardMapper.findBoard" />
 	</resultMap>
 
 	<insert id="insert" parameterType="EpBoardContentEntity">
@@ -71,7 +72,7 @@
 			bc_seq=#{bcSeq}
 	</update>
 
-	<select id="findBoardContent" parameterType="EpBoardContentSearchDto" resultType="EpBoardContentEntity">
+	<select id="findBoardContent" parameterType="EpBoardContentSearchDto" resultMap="epBoardContentEntityMap">
 		select
 		a.*
 		from
@@ -124,7 +125,7 @@
 			</when>
 		</choose>
 
-		order by a.reg_date desc, a.sort, a.depth
+		order by a.p_seq desc, a.sort, a.depth
 		
 		<include refid="PaginationMapper.footer"/>
 	</select>

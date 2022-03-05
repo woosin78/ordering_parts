@@ -22,6 +22,6 @@ public class EpUploadFileListEntity extends IvGeneralEntity
 	private String originName;
 	private String savedName;
 	private String extension;
-	private long size;
+	private long fileSize;
 	private List<MultipartFile> multipartFiles;
 }

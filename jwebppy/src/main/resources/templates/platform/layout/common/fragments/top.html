@@ -4,7 +4,7 @@
 
 <form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
 <script th:inline="javascript">
-function makeGmb()
+function makeGnb()
 {
 	//Make GNB
 	let menu = [];
@@ -144,7 +144,7 @@ function makeGmb()
 };
 
 $(document).ready(function() {
-	makeGmb();
+	makeGnb();
 });
 
 function logout()

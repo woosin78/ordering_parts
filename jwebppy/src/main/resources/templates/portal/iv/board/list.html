@@ -15,15 +15,15 @@
 	<div class="condition-area">
 	<form id="FORM_search">
 	<input type="hidden" id="bSeq" name="bSeq" th:value="${board.bSeq}"/>
+	<input type="hidden" id="bcSeq" name="bcSeq"/>
 	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${boardContentSearch.pageNumber}"/>
-	<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${boardContentSearch.rowPerPage}"/>	
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQP_L_TITLE}"></th>
 				<td> 
 					<div class="input-area">
-						<input type="text" id="title" name="title" class="custom-ui" th:text="${boardContentSearch.title}"/>
+						<input type="text" id="title" name="title" class="custom-ui" th:value="${boardContentSearch.title}"/>
 					</div>							
 				</td>
 			</tr>
@@ -31,7 +31,7 @@
 				<th th:text="#{HQP_L_WRITER}">
 				<td>
 					<div class="input-area">
-						<input type="text" id="writer" name="writer" class="custom-ui" th:text="${boardContentSearch.writer}"/>
+						<input type="text" id="writer" name="writer" class="custom-ui" th:value="${boardContentSearch.writer}"/>
 					</div>				
 				</td>			
 			</tr>
@@ -76,7 +76,7 @@ $(function(){
 		//fixedColumns: {leftColumns: 3},
 		columns : [
 			{data: "no", 				title: "[[#{HQP_L_NUMBER}]]", "width": "8%"},
-			{data: "title", 			title: "[[#{HQP_L_TITLE}]]"},
+			{data: "displayTitle",		title: "[[#{HQP_L_TITLE}]]"},
 			{data: "writer",			title: "[[#{HQP_L_WRITER}]]", "width": "20%"},
 			{data: "displayRegDate", 	title: "[[#{HQP_L_REG_DATE}]]", "width": "15%"},
 			{data: "views", 			title: "[[#{HQP_L_VIEWS}]]", "width": "8%"}		
@@ -105,9 +105,12 @@ $(function(){
 				return list;
 			}
 		},
+		paging : true,				// 페이징 기능켬
+		pageLength: 10,    			// 한 페이지에 20개 행
 		initComplete:function(settings, json)
 		{
 			ProgressBar.hide();
+			//this.api().page(2).draw("page");
 		}
 	});
 	
@@ -134,6 +137,7 @@ $(function(){
 		
 		if (index == 1)
 		{
+			$("#FORM_search input[name=bcSeq]").val(rowData.bcSeq);
 			$("#FORM_search").attr("action", "[[${BASE_PATH}]]/board/view").submit();	
 		};
 	});

@@ -237,7 +237,7 @@ public class LangService extends MgmtGeneralService
 		List<String> basements = new ArrayList<>();
 
 		basements.add("PLTF");
-		basements.add("PLT");
+		basements.add("PTL");
 		basements.add("HQP");
 
 		return basements;

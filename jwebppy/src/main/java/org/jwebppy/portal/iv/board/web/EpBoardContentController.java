@@ -8,10 +8,12 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentSearchDto;
+import org.jwebppy.portal.iv.board.dto.EpBoardDto;
 import org.jwebppy.portal.iv.board.service.EpBoardContentService;
 import org.jwebppy.portal.iv.board.service.EpBoardService;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
+import org.jwebppy.portal.iv.upload.service.EpUploadFileListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,9 @@ public class EpBoardContentController extends IvGeneralController
 	@Autowired
 	private EpBoardContentService boardContentService;
 
+	@Autowired
+	private EpUploadFileListService uploadFileListService;
+
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest, EpBoardContentSearchDto boardContentSearch)
 	{
@@ -46,6 +51,8 @@ public class EpBoardContentController extends IvGeneralController
 	@ResponseBody
 	public Object listData(@ModelAttribute EpBoardContentSearchDto boardContentSearch, WebRequest webRequest)
 	{
+		boardContentSearch.setRowPerPage(999999);
+
 		return new PageableList<>(boardContentService.getPageableBoardContents(boardContentSearch));
 	}
 
@@ -54,24 +61,26 @@ public class EpBoardContentController extends IvGeneralController
 	{
 		boardContentService.plusViews(webRequest.getParameter("bcSeq"));
 
-		model.addAttribute("boardContent", boardContentService.getBoardContent(webRequest.getParameter("bcSeq")));
+		EpBoardContentDto boardContent = boardContentService.getBoardContent(webRequest.getParameter("bcSeq"));
+		EpBoardDto board = boardContent.getBoard();
+
+		if (board.getUfSeq() != null)
+		{
+			boardContent.setUploadFileLists(uploadFileListService.getUploadFileLists(board.getUfSeq(), boardContent.getBcSeq()));
+		}
+
+		model.addAttribute("boardContent", boardContent);
 
 		setDefaultAttribute(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/view/data")
-	@ResponseBody
-	public Object viewData(@RequestParam("bcSeq") String bcSeq)
-	{
-		return boardContentService.getBoardContent(bcSeq);
-	}
-
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest, EpBoardContentSearchDto boardContentSearch)
 	{
 		model.addAttribute("boardContentSearch", boardContentSearch);
+		model.addAttribute("boardContent", boardContentService.getBoardContent(boardContentSearch.getBcSeq()));
 
 		setDefaultAttribute(model, webRequest);
 

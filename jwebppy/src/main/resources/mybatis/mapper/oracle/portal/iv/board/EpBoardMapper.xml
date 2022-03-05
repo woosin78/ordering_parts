@@ -10,10 +10,7 @@
 		ep_board a
 		where
 		a.fg_delete='N'
-
-		<if test="bSeq != null">
-			and a.b_seq=#{bSeq}
-		</if>
+		and a.b_seq=#{bSeq}
 	</select>
 
 </mapper>

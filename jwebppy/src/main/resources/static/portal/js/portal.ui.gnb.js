@@ -1,6 +1,6 @@
 let level2 = {};
 
-function makeGmb()
+function makeGnb()
 {
 	JpUtilsAjax.get({
 		url: "/platform/mgmt/gnb/menu",
