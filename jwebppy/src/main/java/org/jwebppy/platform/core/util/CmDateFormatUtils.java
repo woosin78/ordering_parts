@@ -62,6 +62,11 @@ public class CmDateFormatUtils
 		}
 	}
 
+	public static String defaultZonedFormat(LocalDateTime localDateTime, String format)
+	{
+		return format(localDateTime, null, format);
+	}
+
 	public static String now()
 	{
 		return format(CmDateTimeUtils.now());

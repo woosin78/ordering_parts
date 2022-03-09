@@ -1,8 +1,11 @@
 package org.jwebppy.platform.core.web;
 
 import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -99,16 +102,31 @@ public abstract class GeneralController
 			@Override
 			public void setAsText(String text) throws IllegalArgumentException
 			{
-				try
+				if (CmStringUtils.isNotEmpty(text))
 				{
-					if (CmStringUtils.isNotEmpty(text))
+					Object value = null;
+
+					try
 					{
-						setValue(LocalDateTime.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getDateTimeFormat1())));
+						value = LocalDate.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getDateFormat1()));
 					}
-				}
-				catch (Exception e)
-				{
-					setValue(null);
+					catch (DateTimeParseException e1)
+					{
+						try
+						{
+							value = LocalDateTime.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getDateTimeFormat1()));
+						}
+						catch (DateTimeParseException e2)
+						{
+							try
+							{
+								value = LocalTime.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getTimeFormat1()));
+							}
+							catch (DateTimeParseException e3) {}
+						}
+					}
+
+					setValue(value);
 				}
 			}
 		});

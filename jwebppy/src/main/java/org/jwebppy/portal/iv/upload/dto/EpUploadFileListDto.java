@@ -6,13 +6,19 @@ import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.portal.common.PortalConfigVo;
 import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class EpUploadFileListDto extends IvGeneralDto
 {
 	private static final long serialVersionUID = 7896823726474538055L;

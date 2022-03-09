@@ -13,17 +13,17 @@
 		</div>
 	</div>	
 	<div class="condition-area">
-	<form id="FORM_search">
-	<input type="hidden" id="bSeq" name="bSeq" th:value="${board.bSeq}"/>
+	<form id="FORM_search" th:object="${boardContentSearch}">
+	<input type="hidden" id="bSeq" name="bSeq" th:value="*{bSeq}"/>
 	<input type="hidden" id="bcSeq" name="bcSeq"/>
-	<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${boardContentSearch.pageNumber}"/>
+	<input type="hidden" id="pageNumber" name="pageNumber" th:value="*{pageNumber}"/>
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th th:text="#{HQP_L_TITLE}"></th>
 				<td> 
 					<div class="input-area">
-						<input type="text" id="title" name="title" class="custom-ui" th:value="${boardContentSearch.title}"/>
+						<input type="text" id="title" name="title" class="custom-ui" th:value="*{title}"/>
 					</div>							
 				</td>
 			</tr>
@@ -31,7 +31,7 @@
 				<th th:text="#{HQP_L_WRITER}">
 				<td>
 					<div class="input-area">
-						<input type="text" id="writer" name="writer" class="custom-ui" th:value="${boardContentSearch.writer}"/>
+						<input type="text" id="writer" name="writer" class="custom-ui" th:value="*{writer}"/>
 					</div>				
 				</td>			
 			</tr>
@@ -39,9 +39,9 @@
 				<th th:text="#{HQP_L_REG_DATE}"></th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="fromRegDate" name="fromRegDate" class="custom-ui-calendar"/>
-						<input type="text" id="toRegDate" name="toRegDate" class="custom-ui-calendar to"/>
-					</div>		
+						<input type="text" id="fromRegDate" name="fromRegDate" class="custom-ui-calendar" th:value="*{fromRegDate}"/>
+						<input type="text" id="toRegDate" name="toRegDate" class="custom-ui-calendar to" th:value="*{toRegDate}"/>
+					</div>
 				</td>			
 			</tr>				
 		</tbody>
@@ -98,15 +98,14 @@ $(function(){
 			dataSrc: function(response) 
 			{
 				let result = response.RESULT;
-				let list = result.list;
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(list.length) + " row(s).");
+				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
 
-				return list;
+				return result;
 			}
 		},
-		paging : true,				// 페이징 기능켬
-		pageLength: 10,    			// 한 페이지에 20개 행
+		paging : true, // 페이징 기능켬
+		pageLength: [[${boardContentSearch.rowPerPage}]], // 한 페이지에 20개 행
 		initComplete:function(settings, json)
 		{
 			ProgressBar.hide();

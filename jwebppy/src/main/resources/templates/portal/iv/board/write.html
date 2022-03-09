@@ -15,7 +15,7 @@
 	</div>	
 </div>	
 <div id="boardViwer" class="condition-area">
-<form id="FORM_write" method="post" th:action="|${BASE_PATH}/board/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;" th:object="${boardContent}">
+<form id="FORM_write" method="post" th:action="|${BASE_PATH}/board/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
 <input type="hidden" name="bSeq" th:value="${bSeq}"/>
 <input type="hidden" name="bcSeq" th:value="${boardContent?.bcSeq}"/>
 <input type="hidden" name="textContent" id="textContent" th:value="${boardContent?.textContent}"/>
@@ -33,6 +33,47 @@
 			<th><span th:text="#{HQP_L_CONTENT}"></span><img src="/portal/img/icon_required.png" class="required" /></th>
 			<td><div id="xfe"></div></td>
 		</tr>
+		<tr th:style="${(board.fgSetPeriod == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
+			<th th:text="#{HQP_L_VISIBLE_PERIOD}"/>
+			<td>
+				<table style="padding: 0; margin: 0; border: 0;">
+					<tr>
+						<td>From</td>
+						<td>
+							<input type="text" id="fromViewDate" name="fromViewDate" class="custom-ui-calendar" th:value="${boardContent?.fromViewDate}"/>
+							<div class="split3"></div>
+							<select name="fromViewHours" class="custom-ui" style="width:50px;">
+								<option value=""></option>
+								<option th:each="num : ${#numbers.sequence(0,23)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq boardContent?.fromViewHours}"/>
+							</select>
+							<span>Hours</span>
+							<select name="fromViewMinutes" class="custom-ui" style="width:50px;">
+								<option value=""></option>
+								<option th:each="num : ${#numbers.sequence(0,59)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq boardContent?.fromViewMinutes}"/>
+							</select>
+							<span>Minutes</span>
+						</td>
+					</tr>
+					<tr>
+						<td>To</td>
+						<td>
+							<input type="text" id="toViewDate" name="toViewDate" class="custom-ui-calendar" th:value="${boardContent?.toViewDate}"/>
+							<div class="split3"></div>
+							<select name="toViewHours" class="custom-ui" style="width:50px;">
+								<option value=""></option>
+								<option th:each="num : ${#numbers.sequence(0,23)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq boardContent?.toViewHours}"/>
+							</select>
+							<span>Hours</span>
+							<select name="toViewMinutes" class="custom-ui" style="width:50px;">
+								<option value=""></option>
+								<option th:each="num : ${#numbers.sequence(0,59)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq boardContent?.toViewMinutes}"/>
+							</select>
+							<span>Minutes</span>
+						</td>
+					</tr>					
+				</table>
+			</td>
+		</tr>		
 		<tr>
 			<th th:text="#{HQP_L_ATTACHMENT}"/>
 			<td>
@@ -49,18 +90,23 @@
 </form>
 </div>
 <form id="FORM_search" th:action="|${BASE_PATH}/board/list|" th:object="${boardContentSearch}">
-<input type="hidden" name="bSeq" th:value="${bSeq}"/>
-<input type="hidden" name="title" th:value="${title}"/>
-<input type="hidden" name="writer" th:value="${writer}"/>
-<input type="hidden" name="fromRegDate" th:value="${fromRegDate}"/>
-<input type="hidden" name="toRegDate" th:value="${toRegDate}"/>
-<input type="hidden" name="pageNumber" th:value="${pageNumber}"/>
+<input type="hidden" name="bSeq" th:value="*{bSeq}"/>
+<input type="hidden" name="bcSeq" th:value="${boardContent?.bcSeq}"/>
+<input type="hidden" name="title" th:value="*{title}"/>
+<input type="hidden" name="writer" th:value="*{writer}"/>
+<input type="hidden" name="fromRegDate" th:value="*{fromRegDate}"/>
+<input type="hidden" name="toRegDate" th:value="*{toRegDate}"/>
+<input type="hidden" name="pageNumber" th:value="*{pageNumber}"/>
 </form>
 <script>
 $(window).on("load", function() {
 	ProgressBar.hide();
 	
 	initBoardViwer($("#boardViwer"), $("#xfe"));
+	
+	Calendar.makeCalendar($("#fromViewDate"), "[[${boardContent?.fromViewDate}]]");
+	Calendar.makeCalendar($("#toViewDate"), "[[${boardContent?.toViewDate}]]");
+	
 });
 
 function initBoardViwer($area, $content)
@@ -82,7 +128,6 @@ function installBoardViewResizer($area, $content)
 			return true;
 		};
 		
-		//console.log($(element).prop("tagName") + ":" + $(element).prop("class") + ":" + $(element).outerHeight(true));
 		height += $(element).outerHeight(true);
 	});
 	
@@ -94,6 +139,15 @@ function installBoardViewResizer($area, $content)
 };
 
 $("#BTN_back").on("click", function() {
+	
+	let action = "[[${BASE_PATH}]]/board/list";
+	
+	if (JpUtilsString.isNotEmpty("[[${boardContent?.bcSeq}]]"))
+	{
+		action = "[[${BASE_PATH}]]/board/view";
+	};
+	
+	$("#FORM_search").attr("action", action);
 	$("#FORM_search").submit();
 });
 
@@ -112,7 +166,7 @@ $("#BTN_save").on("click", function() {
 	};
 
 	$("#textContent").val(xfe.getTextValue());
-	$("#htmlContent").val(xfe.getBodyValue());	
+	$("#htmlContent").val(xfe.getBodyValue());
 	
 	let options = {
 			enctype: "multipart/form-data",
@@ -123,6 +177,8 @@ $("#BTN_save").on("click", function() {
 			contentType: false,
 			cache: false,
 			success: function(data, textStatus, jqXHR) {
+				$("#FORM_search input[name=bcSeq]").val(data.RESULT);
+				
 				$("#BTN_back").trigger("click");
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -166,9 +222,6 @@ if (JpUtilsString.isNotEmpty($("#bcSeq").val()))
 			$("#title").val(result.title);
 			$("#htmlContent").val(result.htmlContent);
 			$("#textContent").val(result.textContent);
-			
-			//JpUiCalendar.setDate($("#fromView"), result.fromView);
-			//JpUiCalendar.setDate($("#toView"), result.toView);
 		}
 	});
 	
@@ -191,7 +244,7 @@ if (JpUtilsString.isNotEmpty($("#bcSeq").val()))
 					$("#FORM_write .ui.checkbox").checkbox();
 				};
 			}	
-		});				
+		});
 	};
 };
 

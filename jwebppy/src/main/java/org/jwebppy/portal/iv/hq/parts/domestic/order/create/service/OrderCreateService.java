@@ -333,9 +333,16 @@ public class OrderCreateService extends PartsDomesticGeneralService
 
 	public List<OrderHistoryHeaderDto> getOrderHistoryList(String regUsername, Integer ohhSeq)
 	{
+		/*
 		OrderHistoryHeaderDto orderHistoryHeader = new OrderHistoryHeaderDto();
 		orderHistoryHeader.setRegUsername(regUsername);
 		orderHistoryHeader.setOhhSeq(ohhSeq);
+		*/
+
+		OrderHistoryHeaderDto orderHistoryHeader = OrderHistoryHeaderDto.builder()
+				.regUsername(regUsername)
+				.ohhSeq(ohhSeq)
+				.build();
 
 		return CmModelMapperUtils.mapToDto(OrderHistoryHeaderObjectMapper.INSTANCE, orderCreateMapper.findAllOrderHistoryHeader(orderHistoryHeader));
 	}
@@ -343,7 +350,12 @@ public class OrderCreateService extends PartsDomesticGeneralService
 	@Transactional
 	public Integer saveOrderHistory(OrderDto order)
 	{
+		/*
 		OrderHistoryHeaderDto orderHistoryHeader = new OrderHistoryHeaderDto();
+		orderHistoryHeader.setHeader(order);
+		*/
+
+		OrderHistoryHeaderDto orderHistoryHeader = OrderHistoryHeaderDto.builder().build();
 		orderHistoryHeader.setHeader(order);
 
 		OrderHistoryHeaderEntity orderHistoryHeaderEntity = CmModelMapperUtils.mapToEntity(OrderHistoryHeaderObjectMapper.INSTANCE, orderHistoryHeader);

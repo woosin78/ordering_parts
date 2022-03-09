@@ -2072,3 +2072,44 @@ Error: [1] >Tue Feb 22 23:21:27,971<    RfcException raised by system [GSQ|diver
     return code: RFC_CLOSED (6)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220309 105301 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Mar 09 10:53:01,894<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Wed Mar 09 10:53:01 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Wed Mar 09 10:53:04,285<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Wed Mar 09 10:53:04 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      nixxhl.cpp
+LINE        193
+DETAIL      NiHLGetNodeAddr: hostname cached as unknown
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

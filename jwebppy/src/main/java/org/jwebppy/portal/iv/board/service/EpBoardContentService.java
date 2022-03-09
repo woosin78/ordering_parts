@@ -55,7 +55,9 @@ public class EpBoardContentService extends IvGeneralService
 			return null;
 		}
 
-		boardContent.setBcSeq(System.currentTimeMillis() + "-" + UidGenerateUtils.generate());
+		String bcSeq = System.currentTimeMillis() + "-" + UidGenerateUtils.generate();
+
+		boardContent.setBcSeq(bcSeq);
 		boardContent.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		boardContent.setWriter(UserAuthenticationUtils.getUserDetails().getName());
 
@@ -63,7 +65,6 @@ public class EpBoardContentService extends IvGeneralService
 
 		boardContentMapper.insert(boardContentEntity);
 
-		String bcSeq = boardContentEntity.getBcSeq();
 		String pSeq = boardContent.getPSeq();
 
 		boardContentEntity.setPSeq(CmStringUtils.defaultIfEmpty(pSeq, bcSeq));
@@ -93,7 +94,7 @@ public class EpBoardContentService extends IvGeneralService
 			uploadFileListService.delete(boardContent.getUflSeqs());
 		}
 
-		return boardContent.getBSeq();
+		return boardContent.getBcSeq();
 	}
 
 	public void plusViews(String bcSeq)
@@ -127,8 +128,8 @@ public class EpBoardContentService extends IvGeneralService
 		return CmModelMapperUtils.mapToDto(EpBoardContentObjectMapper.INSTANCE, boardContentMapper.findBoardContent(bcSeq));
 	}
 
-	public List<EpBoardContentDto> getPageableBoardContents(EpBoardContentSearchDto boardContentSearch)
+	public List<EpBoardContentDto> getBoardContents(EpBoardContentSearchDto boardContentSearch)
 	{
-		return CmModelMapperUtils.mapToDto(EpBoardContentObjectMapper.INSTANCE, boardContentMapper.findPageableBoardContents(boardContentSearch));
+		return CmModelMapperUtils.mapToDto(EpBoardContentObjectMapper.INSTANCE, boardContentMapper.findBoardContents(boardContentSearch));
 	}
 }

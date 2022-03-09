@@ -81,52 +81,56 @@
 		a.bc_seq=#{bcSeq}
 		and a.fg_delete='N'
 	</select>
-
-	<select id="findPageableBoardContents" parameterType="EpBoardContentSearchDto" resultMap="epBoardContentEntityMap">
-		<include refid="PaginationMapper.header"/>
-			
+	
+	<select id="findBoardContents" parameterType="EpBoardContentSearchDto" resultMap="epBoardContentEntityMap">
 		select
-		a.*
+		total_count-(rownum-1) no,
+		z.*
 		from
-		ep_board_content a
-		where
-		a.b_seq=#{bSeq}
-		and a.fg_delete='N'
-		
-		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(title)">
-			and upper(a.title) like '%'||upper(#{title})||'%'
-		</if>
-		
-		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(writer)">
-			and upper(a.writer) like '%'||upper(#{writer})||'%'
-		</if>
-		
-		<choose>
-			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
-				and a.reg_date <![CDATA[>=]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(fromRegDate, 'FROM')}' and a.reg_date <![CDATA[<]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(toRegDate, 'TO')}'
-			</when>
-			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate)">
-				and a.reg_date <![CDATA[>=]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(fromRegDate, 'FROM')}'
-			</when>
-			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
-				and a.reg_date <![CDATA[<]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(toRegDate, 'TO')}'
-			</when>
-		</choose>
-		
-		<choose>
-			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
-				and a.from_view <![CDATA[>]]> #{fromView} and a.to_view <![CDATA[<=]]> #{toView}
-			</when>
-			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView)">
-				and a.from_view <![CDATA[>]]> #{fromView}
-			</when>
-			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
-				and a.to_view <![CDATA[<=]]> #{toView}
-			</when>
-		</choose>
+		(
+			select
+			count(*) over() as total_count,
+			a.*
+			from
+			ep_board_content a
+			where
+			a.b_seq=#{bSeq}
+			and a.fg_delete='N'
+			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(title)">
+				and upper(a.title) like '%'||upper(#{title})||'%'
+			</if>
+			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(writer)">
+				and upper(a.writer) like '%'||upper(#{writer})||'%'
+			</if>
+			
+			<choose>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
+					and a.reg_date <![CDATA[>=]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(fromRegDate, 'FROM')}' and a.reg_date <![CDATA[<]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(toRegDate, 'TO')}'
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate)">
+					and a.reg_date <![CDATA[>=]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(fromRegDate, 'FROM')}'
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
+					and a.reg_date <![CDATA[<]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(toRegDate, 'TO')}'
+				</when>
+			</choose>
+			
+			<choose>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
+					and a.from_view <![CDATA[>]]> #{fromView} and a.to_view <![CDATA[<=]]> #{toView}
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView)">
+					and a.from_view <![CDATA[>]]> #{fromView}
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
+					and a.to_view <![CDATA[<=]]> #{toView}
+				</when>
+			</choose>
+	
+			order by a.p_seq desc, a.sort, a.depth
+		) z
 
-		order by a.p_seq desc, a.sort, a.depth
-		
-		<include refid="PaginationMapper.footer"/>
-	</select>
+	</select>	
 </mapper>

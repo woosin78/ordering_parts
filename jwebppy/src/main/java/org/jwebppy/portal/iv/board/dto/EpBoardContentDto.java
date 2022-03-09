@@ -5,23 +5,31 @@ import java.util.List;
 
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.XssHandleUtils;
-import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileListDto;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-public class EpBoardContentDto extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+public class EpBoardContentDto extends GeneralDto
 {
 	private static final long serialVersionUID = -1969963429122839740L;
 
+	private int no;
 	private String bcSeq;
 	private String bSeq;
 	private String pSeq;
@@ -33,6 +41,12 @@ public class EpBoardContentDto extends GeneralDto implements IPagination
 	private String textContent;
 	private LocalDateTime fromView;
 	private LocalDateTime toView;
+	private String fromViewDate;
+	private String fromViewHours;
+	private String fromViewMinutes;
+	private String toViewDate;
+	private String toViewHours;
+	private String toViewMinutes;
 	private int views;
 	private String writer;
 	private EpBoardDto board;
@@ -43,18 +57,58 @@ public class EpBoardContentDto extends GeneralDto implements IPagination
 	private List<MultipartFile> files;
 	private List<String> uflSeqs;
 
-	public String getDisplayFromView()
+	public String getFromViewDate()
 	{
 		return CmDateFormatUtils.format(fromView);
 	}
 
-	public String getDisplayToView()
+	public String getFromViewHours()
+	{
+		return CmDateFormatUtils.defaultZonedFormat(fromView, "HH");
+	}
+
+	public String getFromViewMinutes()
+	{
+		return CmDateFormatUtils.defaultZonedFormat(fromView, "mm");
+	}
+
+	public String getToViewDate()
 	{
 		return CmDateFormatUtils.format(toView);
+	}
+
+	public String getToViewHours()
+	{
+		return CmDateFormatUtils.defaultZonedFormat(toView, "HH");
+	}
+
+	public String getToViewMinutes()
+	{
+		return CmDateFormatUtils.defaultZonedFormat(toView, "mm");
 	}
 
 	public String getDisplayTitle()
 	{
 		return XssHandleUtils.removeTag(title);
+	}
+
+	public LocalDateTime getFromView()
+	{
+		if (CmStringUtils.isNotEmpty(fromViewDate))
+		{
+			return CmDateTimeUtils.parse(fromViewDate, fromViewHours, fromViewMinutes, "00");
+		}
+
+		return null;
+	}
+
+	public LocalDateTime getToView()
+	{
+		if (CmStringUtils.isNotEmpty(toViewDate))
+		{
+			return CmDateTimeUtils.parse(toViewDate, CmStringUtils.defaultIfEmpty(toViewHours, "23"), CmStringUtils.defaultIfEmpty(toViewMinutes, "59"), "59");
+		}
+
+		return null;
 	}
 }

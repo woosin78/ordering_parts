@@ -44,15 +44,15 @@
 </table>
 </div>
 <form id="FORM_search" th:action="|${BASE_PATH}/board/list|" th:object="${boardContentSearch}">
-<input type="hidden" name="bSeq" th:value="${bSeq}"/>
+<input type="hidden" name="bSeq" th:value="*{bSeq}"/>
 <input type="hidden" name="bcSeq" th:value="${boardContent?.bcSeq}"/>
-<input type="hidden" name="title" th:value="${title}"/>
-<input type="hidden" name="writer" th:value="${writer}"/>
-<input type="hidden" name="fromRegDate" th:value="${fromRegDate}"/>
-<input type="hidden" name="toRegDate" th:value="${toRegDate}"/>
-<input type="hidden" name="pageNumber" th:value="${pageNumber}"/>
+<input type="hidden" name="title" th:value="*{title}"/>
+<input type="hidden" name="writer" th:value="*{writer}"/>
+<input type="hidden" name="fromRegDate" th:value="*{fromRegDate}"/>
+<input type="hidden" name="toRegDate" th:value="*{toRegDate}"/>
+<input type="hidden" name="pageNumber" th:value="*{pageNumber}"/>
 </form>
-<input type="hidden" id="htmlContent" th:value="${boardContent.htmlContent}"/>
+<input type="hidden" id="htmlContent" th:value="${boardContent?.htmlContent}"/>
 <script>
 $(window).on("load", function() {
 	ProgressBar.hide();

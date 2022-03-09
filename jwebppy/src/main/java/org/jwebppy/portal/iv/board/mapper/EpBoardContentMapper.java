@@ -17,5 +17,5 @@ public interface EpBoardContentMapper
 	public int updateForReply(String pSeq);
 	public int delete(EpBoardContentEntity boardContent);
 	public EpBoardContentEntity findBoardContent(String bcSeq);
-	public List<EpBoardContentEntity> findPageableBoardContents(EpBoardContentSearchDto boardContentSearch);
+	public List<EpBoardContentEntity> findBoardContents(EpBoardContentSearchDto boardContentSearch);
 }

@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.core.web.ui.pagination.PageableList;
+import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentSearchDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardDto;
@@ -40,8 +39,6 @@ public class EpBoardContentController extends IvGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest, EpBoardContentSearchDto boardContentSearch)
 	{
-		model.addAttribute("boardContentSearch", boardContentSearch);
-
 		setDefaultAttribute(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
@@ -51,9 +48,7 @@ public class EpBoardContentController extends IvGeneralController
 	@ResponseBody
 	public Object listData(@ModelAttribute EpBoardContentSearchDto boardContentSearch, WebRequest webRequest)
 	{
-		boardContentSearch.setRowPerPage(999999);
-
-		return new PageableList<>(boardContentService.getPageableBoardContents(boardContentSearch));
+		return boardContentService.getBoardContents(boardContentSearch);
 	}
 
 	@RequestMapping("/view")
@@ -79,7 +74,6 @@ public class EpBoardContentController extends IvGeneralController
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest, EpBoardContentSearchDto boardContentSearch)
 	{
-		model.addAttribute("boardContentSearch", boardContentSearch);
 		model.addAttribute("boardContent", boardContentService.getBoardContent(boardContentSearch.getBcSeq()));
 
 		setDefaultAttribute(model, webRequest);
@@ -89,7 +83,7 @@ public class EpBoardContentController extends IvGeneralController
 
 	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@ModelAttribute EpBoardContentDto boardContent) throws IOException
+	public Object save(@ModelAttribute EpBoardContentDto boardContent, WebRequest webRequest) throws IOException
 	{
 		return boardContentService.save(boardContent);
 	}
@@ -104,10 +98,21 @@ public class EpBoardContentController extends IvGeneralController
 	@Override
 	protected void setDefaultAttribute(Model model, WebRequest webRequest)
 	{
+		EpBoardContentSearchDto boardContentSearch = EpBoardContentSearchDto.builder()
+				.bSeq(webRequest.getParameter("bSeq"))
+				.bcSeq(webRequest.getParameter("bcSeq"))
+				.title(webRequest.getParameter("title"))
+				.writer(webRequest.getParameter("writer"))
+				.fromRegDate(webRequest.getParameter("fromRegDate"))
+				.toRegDate(webRequest.getParameter("toRegDate"))
+				.fromView(webRequest.getParameter("fromView"))
+				.toView(webRequest.getParameter("toView"))
+				.pageNumber(CmNumberUtils.toInt(webRequest.getParameter("pageNumber"), 1))
+				.rowPerPage(CmNumberUtils.toInt(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE))
+				.build();
+
+		model.addAttribute("boardContentSearch", boardContentSearch);
 		model.addAttribute("board", boardService.getBoard(webRequest.getParameter("bSeq")));
-		model.addAttribute("type", CmStringUtils.defaultString(webRequest.getParameter("type"), "TC"));
-		model.addAttribute("pageNumber", CmStringUtils.defaultString(webRequest.getParameter("pageNumber"), "1"));
-		model.addAttribute("rowPerPage", CmStringUtils.defaultString(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
 
 		addAllAttributeFromRequest(model, webRequest);
 	}

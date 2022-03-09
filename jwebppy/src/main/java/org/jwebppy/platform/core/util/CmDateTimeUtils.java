@@ -72,4 +72,13 @@ public class CmDateTimeUtils
 			return ZoneId.of(PlatformCommonVo.DEFAULT_TIMEZONE);
 		}
 	}
+
+	public static LocalDateTime parse(String date, String hours, String minutes, String seconds)
+	{
+		hours = CmStringUtils.defaultIfEmpty(CmStringUtils.leftPad(hours, 2, "0"), "00");
+		minutes = CmStringUtils.defaultIfEmpty(CmStringUtils.leftPad(minutes, 2, "0"), "00");
+		seconds = CmStringUtils.defaultIfEmpty(CmStringUtils.leftPad(seconds, 2, "0"), "00");
+
+		return LocalDateTime.parse(date + hours + minutes + seconds, DateTimeFormatter.ofPattern(CmDateFormatUtils.getDateFormat() + "HHmmss"));
+	}
 }

@@ -130,13 +130,33 @@ public class PlatformUserDetails implements UserDetails
 		return CmStringUtils.lowerCase(language);
 	}
 
+	public String getDateFormat1()
+	{
+		return CmStringUtils.defaultIfEmpty(dateFormat1, PlatformCommonVo.DEFAULT_DATE_FORMAT);
+	}
+
+	public String getTimeFormat1()
+	{
+		return CmStringUtils.defaultIfEmpty(timeFormat1, PlatformCommonVo.DEFAULT_TIME_FORMAT);
+	}
+
 	public String getDateTimeFormat1()
 	{
-		return CmStringUtils.defaultIfEmpty(dateFormat1, PlatformCommonVo.DEFAULT_DATE_FORMAT) + " " + CmStringUtils.defaultIfEmpty(timeFormat1, PlatformCommonVo.DEFAULT_TIME_FORMAT);
+		return getDateFormat1() + " " + getTimeFormat1();
+	}
+
+	public String getDateFormat2()
+	{
+		return CmStringUtils.defaultIfEmpty(dateFormat2, PlatformCommonVo.DEFAULT_DATE_FORMAT);
+	}
+
+	public String getTimeFormat2()
+	{
+		return CmStringUtils.defaultIfEmpty(timeFormat2, PlatformCommonVo.DEFAULT_TIME_FORMAT);
 	}
 
 	public String getDateTimeFormat2()
 	{
-		return CmStringUtils.defaultIfEmpty(dateFormat2, PlatformCommonVo.DEFAULT_DATE_FORMAT) + " " + CmStringUtils.defaultIfEmpty(timeFormat2, PlatformCommonVo.DEFAULT_TIME_FORMAT);
+		return getDateFormat2() + " " + getTimeFormat2();
 	}
 }

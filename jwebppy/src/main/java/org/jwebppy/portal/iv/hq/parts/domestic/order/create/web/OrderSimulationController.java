@@ -114,10 +114,18 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 			{
 				DataMap dataMap = (DataMap)dataList.get(i);
 
+				/*
 				OrderItemDto orderItem = new OrderItemDto();
 				orderItem.setMaterialNo(dataMap.getString("MATNR"));
 				orderItem.setOrderQty(dataMap.getString("QTY", "1"));
 				orderItem.setUom(dataMap.getString("MEINS"));
+				*/
+
+				OrderItemDto orderItem = OrderItemDto.builder()
+						.materialNo(dataMap.getString("MATNR"))
+						.orderQty(dataMap.getString("QTY", "1"))
+						.uom(dataMap.getString("MEINS"))
+						.build();
 
 				orderItems.add(orderItem);
 			}
@@ -137,11 +145,19 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 				{
 					if (CmStringUtils.isNotEmpty(materialNos[i]))
 					{
+						/*
 						OrderItemDto orderItem = new OrderItemDto();
 
 						orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 						orderItem.setMaterialNo(materialNos[i]);
 						orderItem.setOrderQty(orderQtyies[i]);
+						*/
+
+						OrderItemDto orderItem = OrderItemDto.builder()
+								.lineNo(CmStringUtils.leftPad(i+1, 6, "0"))
+								.materialNo(materialNos[i])
+								.orderQty(orderQtyies[i])
+								.build();
 
 						orderItems.add(orderItem);
 					}
@@ -151,7 +167,8 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 			}
 		}
 
-		SimulationResultDto simulationResult = new SimulationResultDto();
+		//SimulationResultDto simulationResult = new SimulationResultDto();
+		SimulationResultDto simulationResult = SimulationResultDto.builder().build();
 
 		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
 		{
@@ -226,10 +243,18 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 
 			for (int i=0, size=hssfSheet.getPhysicalNumberOfRows(); i<size; i++)
 			{
+				/*
 				OrderItemDto orderItem = new OrderItemDto();
 				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 				orderItem.setMaterialNo(getValueFromExcel(hssfSheet.getRow(i).getCell(0)));
 				orderItem.setOrderQty(getValueFromExcel(hssfSheet.getRow(i).getCell(1)));
+				*/
+
+				OrderItemDto orderItem = OrderItemDto.builder()
+						.lineNo(CmStringUtils.leftPad(i+1, 6, "0"))
+						.materialNo(getValueFromExcel(hssfSheet.getRow(i).getCell(0)))
+						.orderQty(getValueFromExcel(hssfSheet.getRow(i).getCell(1)))
+						.build();
 
 				orderItems.add(orderItem);
 			}
@@ -272,10 +297,17 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 
 			for (int i=0, size=xssfSheet.getPhysicalNumberOfRows(); i<size; i++)
 			{
+				/*
 				OrderItemDto orderItem = new OrderItemDto();
 				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 				orderItem.setMaterialNo(getValueFromExcel(xssfSheet.getRow(i).getCell(0)));
 				orderItem.setOrderQty(getValueFromExcel(xssfSheet.getRow(i).getCell(1)));
+				*/
+				OrderItemDto orderItem = OrderItemDto.builder()
+						.lineNo(CmStringUtils.leftPad(i+1, 6, "0"))
+						.materialNo(getValueFromExcel(xssfSheet.getRow(i).getCell(0)))
+						.orderQty(getValueFromExcel(xssfSheet.getRow(i).getCell(1)))
+						.build();
 
 				orderItems.add(orderItem);
 			}
@@ -385,8 +417,13 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 
 		for (int i=0, count=DEFAULT_ROW_COUNT-lineNo; i<=count; i++)
 		{
+			/*
 			OrderItemDto orderItem = new OrderItemDto();
 			orderItem.setLineNo(CmStringUtils.leftPad(lineNo*10, 6, "0"));
+			*/
+			OrderItemDto orderItem = OrderItemDto.builder()
+					.lineNo(CmStringUtils.leftPad(lineNo*10, 6, "0"))
+					.build();
 
 			normalOrderItems.add(orderItem);
 

@@ -8,13 +8,19 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.hq.parts.common.dto.PartsGeneralDto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderHistoryHeaderDto extends PartsGeneralDto
 {
 	private static final long serialVersionUID = 1933350773842695212L;
@@ -60,11 +66,19 @@ public class OrderHistoryHeaderDto extends PartsGeneralDto
 
 			for (OrderItemDto orderItem: order.getOrderItems())
 			{
+				/*
 				OrderHistoryItemDto orderHistoryItem = new OrderHistoryItemDto();
 
 				orderHistoryItem.setOhhSeq(ohhSeq);
 				orderHistoryItem.setMaterialNo(orderItem.getMaterialNo());
 				orderHistoryItem.setOrderQty(orderItem.getOrderQty());
+				*/
+
+				OrderHistoryItemDto orderHistoryItem = OrderHistoryItemDto.builder()
+						.ohhSeq(ohhSeq)
+						.materialNo(orderItem.getMaterialNo())
+						.orderQty(orderItem.getOrderQty())
+						.build();
 
 				orderHistoryItems.add(orderHistoryItem);
 			}
