@@ -5,13 +5,13 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 	
 <th:block layout:fragment="content">
-	<div class="block-header">
-		<div class="block-title" th:text="#{HQP_T_NOTICE}"></div>
+	<div class="block-header" th:with="boardTitle='PLTF_T_' + ${board.bSeq}">
+		<div class="block-title" th:text="#{${boardTitle}}"></div>
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
 			<button id="BTN_write" type="button" th:text="#{HQP_B_WRITE}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>			
 		</div>
-	</div>	
+	</div>
 	<div class="condition-area">
 	<form id="FORM_search" th:object="${boardContentSearch}">
 	<input type="hidden" id="bSeq" name="bSeq" th:value="*{bSeq}"/>
@@ -24,7 +24,7 @@
 				<td> 
 					<div class="input-area">
 						<input type="text" id="title" name="title" class="custom-ui" th:value="*{title}"/>
-					</div>							
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -98,7 +98,7 @@ $(function(){
 			dataSrc: function(response) 
 			{
 				let result = response.RESULT;
-				
+
 				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
 
 				return result;

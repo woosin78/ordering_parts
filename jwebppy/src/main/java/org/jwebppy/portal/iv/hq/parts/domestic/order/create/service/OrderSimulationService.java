@@ -162,9 +162,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 
 	protected SimulationResultDto makeSimulationResult(RfcResponse rfcResponse)
 	{
-		//SimulationResultDto simulationResult = new SimulationResultDto();
-
-		SimulationResultDto simulationResult = SimulationResultDto.builder().build();
+		SimulationResultDto simulationResult = new SimulationResultDto();
 
 		//Make header info
 		makeHeaderInfo(rfcResponse, simulationResult);
@@ -212,22 +210,12 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 				{
 					DataMap dataMap = (DataMap)items.get(i);
 
-					/*
 					OrderItemDto orderItem = new OrderItemDto();
 					orderItem.setMaterialNo(CmStringUtils.trimToEmpty(dataMap.getString("ERROR_MATNR")));
 					orderItem.setSupplyMaterialNo(dataMap.getString("MATERIAL"));
 					orderItem.setErrorType(entry.getKey());
 					orderItem.setErrorCode(CmStringUtils.trimToEmpty(dataMap.getString("NOTCD")));
 					orderItem.setErrorMessage(CmStringUtils.trimToEmpty(dataMap.getString("NOTCD_TEXT")));
-					*/
-
-					OrderItemDto orderItem = OrderItemDto.builder()
-							.materialNo(CmStringUtils.trimToEmpty(dataMap.getString("ERROR_MATNR")))
-							.supplyMaterialNo(dataMap.getString("MATERIAL"))
-							.errorType(entry.getKey())
-							.errorCode(CmStringUtils.trimToEmpty(dataMap.getString("NOTCD")))
-							.errorMessage(CmStringUtils.trimToEmpty(dataMap.getString("NOTCD_TEXT")))
-							.build();
 
 					errorOrderItems.add(orderItem);
 				}
@@ -261,17 +249,10 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		{
 			DataMap dataMap = new DataMap(obj);
 
-			/*
 			PricingResultDto pricingResult = new PricingResultDto();
 			pricingResult.setName(dataMap.getString("NAME"));
 			pricingResult.setNetValue(dataMap.getString("NEWR"));
 			pricingResult.setCurrency(dataMap.getString("WAERK"));
-			*/
-			PricingResultDto pricingResult = PricingResultDto.builder()
-					.name(dataMap.getString("NAME"))
-					.netValue(dataMap.getString("NEWR"))
-					.currency(dataMap.getString("WAERK"))
-					.build();
 
 			pricingResults.add(pricingResult);
 		}
@@ -310,9 +291,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 					lotQty = 1;
 				}
 
-				/*
 				OrderItemDto orderItem = new OrderItemDto();
-
 				orderItem.setLineNo(dataMap.getString("ITEM"));
 				orderItem.setHigherLineNo(dataMap.getString("HILV"));
 				orderItem.setMaterialNo(CmStringUtils.defaultIfEmpty(dataMap.getString("MATERIAL_ENT"), dataMap.getString("MATERIAL")));
@@ -333,30 +312,6 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 				orderItem.setStockDiv(dataMap.getString("DIV"));
 				orderItem.setAmDevPart(dataMap.getString("AM_PART_NO"));
 				orderItem.setBoQty(dataMap.getString("ZBOQTY"));
-				*/
-
-				OrderItemDto orderItem = OrderItemDto.builder()
-						.lineNo(dataMap.getString("ITEM"))
-						.higherLineNo(dataMap.getString("HILV"))
-						.materialNo(CmStringUtils.defaultIfEmpty(dataMap.getString("MATERIAL_ENT"), dataMap.getString("MATERIAL")))
-						.supplyMaterialNo(dataMap.getString("MATERIAL"))
-						.description(dataMap.getString("MATERIAL_TEXT"))
-						.orderQty(dataMap.getString("REQ_QTY"))
-						.supplyQty(dataMap.getString("QTY"))
-						.availability(dataMap.getString("AVAILABILITY"))
-						.minOrderQty(Integer.toString(minQty))
-						.lotQty(Integer.toString(lotQty))
-						.uom(dataMap.getString("UOM"))
-						.netPrice(dataMap.getString("NETPR"))
-						.netValue(dataMap.getString("NET_VALUE"))
-						.listPrice(dataMap.getString("NETPR"))
-						.message(dataMap.getString("MSG"))
-						.vendor(dataMap.getString("LIFNR"))
-						.plant(dataMap.getString("PLANT"))
-						.stockDiv(dataMap.getString("DIV"))
-						.amDevPart(dataMap.getString("AM_PART_NO"))
-						.boQty(dataMap.getString("ZBOQTY"))
-						.build();
 
 				normalOrderItems.add(orderItem);
 			}

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class IvGeneralService extends PortalGeneralService
 {
-	public RfcResponse getErpUserInfo(String username, String corpCode, String moduleCode)
+	public RfcResponse getErpUserInfo(String username, String bg, String module)
 	{
 		if (CmStringUtils.isNotEmpty(username))
 		{
@@ -18,8 +18,8 @@ public class IvGeneralService extends PortalGeneralService
 			rfcRequest.
 				field(new Object[][] {
 					{"I_USERID", CmStringUtils.upperCase(username)},
-					{"I_BGCON", corpCode},
-					{"I_BGTYP", moduleCode}
+					{"I_BGCON", bg},
+					{"I_BGTYP", module}
 				});
 
 			return simpleRfcTemplate.response(rfcRequest);

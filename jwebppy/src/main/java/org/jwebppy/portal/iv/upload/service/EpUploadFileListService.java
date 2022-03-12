@@ -76,7 +76,6 @@ public class EpUploadFileListService extends IvGeneralService
 
 				multipartFile.transferTo(new File(rootPath + File.separator + path + File.separator + savedName));
 
-				/*
 				EpUploadFileListDto uploadFileList = new EpUploadFileListDto();
 				uploadFileList.setUflSeq(UidGenerateUtils.generate());
 				uploadFileList.setUfSeq(ufSeq);
@@ -86,18 +85,6 @@ public class EpUploadFileListService extends IvGeneralService
 				uploadFileList.setExtension(FilenameUtils.getExtension(originFilename).toLowerCase());
 				uploadFileList.setFileSize(multipartFile.getSize());
 				uploadFileList.setFgDelete(PlatformCommonVo.NO);
-				*/
-
-				EpUploadFileListDto uploadFileList = EpUploadFileListDto.builder()
-						.uflSeq(UidGenerateUtils.generate())
-						.ufSeq(ufSeq)
-						.tSeq(tSeq)
-						.originName(FilenameUtils.getBaseName(originFilename))
-						.savedName(FilenameUtils.getBaseName(savedName))
-						.extension(FilenameUtils.getExtension(originFilename).toLowerCase())
-						.fileSize(multipartFile.getSize())
-						.fgDelete(PlatformCommonVo.NO)
-						.build();
 
 				uploadFileListMapper.insert(CmModelMapperUtils.mapToEntity(EpUploadFileListObjectMapper.INSTANCE, uploadFileList));
 			}
@@ -208,16 +195,9 @@ public class EpUploadFileListService extends IvGeneralService
 
 	public List<EpUploadFileListDto> getUploadFileLists(String ufSeq, String tSeq)
 	{
-		/*
 		EpUploadFileListDto uploadFileList = new EpUploadFileListDto();
 		uploadFileList.setUfSeq(ufSeq);
 		uploadFileList.setTSeq(tSeq);
-		*/
-
-		EpUploadFileListDto uploadFileList = EpUploadFileListDto.builder()
-				.ufSeq(ufSeq)
-				.tSeq(tSeq)
-				.build();
 
 		return CmModelMapperUtils.mapToDto(EpUploadFileListObjectMapper.INSTANCE, uploadFileListMapper.findUploadFileLists(uploadFileList));
 	}

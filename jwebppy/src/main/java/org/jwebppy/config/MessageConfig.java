@@ -2,7 +2,7 @@ package org.jwebppy.config;
 
 import java.util.Locale;
 
-import org.jwebppy.platform.mgmt.i18n.resource.DbMessageSource;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +27,7 @@ public class MessageConfig implements WebMvcConfigurer
 	@Bean
 	public MessageSource messageSource()
 	{
-		return new DbMessageSource();
+		return new I18nMessageSource();
 	}
 
     @Bean

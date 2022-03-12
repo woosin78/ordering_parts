@@ -92,7 +92,7 @@ $("#BTN_moveToTop").click(function() {
  * 공통 함수
  */
 //User
-function showUser(key)
+function _showUserkey)
 {
 	JpUiPopup.open({
 		url: "/platform/mgmt/user/list?uSeq=" + key,
@@ -102,7 +102,7 @@ function showUser(key)
 };
  
 //User Group
-function showUserGroup(key)
+function _showUserGroupkey)
 {
 	JpUiPopup.open({
 		url: "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key)
@@ -110,7 +110,7 @@ function showUserGroup(key)
 };
  
 //Security Policy
-function showCredentialsPolicy(key)
+function _showCredentialsPolicy(key)
 {
 	JpUiPopup.open({
 		url: "/platform/mgmt/user/credentials/policy/write?cpSeq=" + JpUtilsString.trimToEmpty(key)

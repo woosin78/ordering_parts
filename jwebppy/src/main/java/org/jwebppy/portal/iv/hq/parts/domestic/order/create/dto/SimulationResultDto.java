@@ -5,20 +5,13 @@ import java.util.List;
 
 import org.jwebppy.platform.core.util.CmStringUtils;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 public class SimulationResultDto extends OrderDto
 {
 	private static final long serialVersionUID = -1805714249334047867L;
@@ -31,11 +24,8 @@ public class SimulationResultDto extends OrderDto
 	private String blockReason;
 	private String blockMessage;
 
-	@Builder.Default
 	private List<OrderItemDto> normalOrderItems = new LinkedList<>();
-	@Builder.Default
 	private List<OrderItemDto> errorOrderItems = new LinkedList<>();
-	@Builder.Default
 	private List<PricingResultDto> pricingResults = new LinkedList<>();
 
 	public List<OrderItemDto> makeCompactNormalOrderItems(List<OrderItemDto> normalOrderItems)

@@ -8,19 +8,13 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 public abstract class GeneralDto implements Serializable
 {
 	private static final long serialVersionUID = -2141681838401701675L;

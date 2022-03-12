@@ -231,6 +231,26 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
     vertical-align : middle;
 }
 
+.block-button-area {
+    display: inline-block;
+    vertical-align : middle;
+}
+
+.period span.label {
+	padding: 5px 0px 5px 0px;
+	box-sizing: border-box;
+	display: inline-block;
+	position: relative;
+	width: 50px;	
+}
+
+.period select.hours {
+	width: 50px;
+}
+
+.period select.minutes {
+	width: 50px;
+}
 
 /*--- 조건 영역 ------------------*/
 .condition-area {

@@ -1,5 +1,7 @@
 package org.jwebppy.platform.core.util;
 
+import java.util.Locale;
+
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -55,6 +57,11 @@ public class UserAuthenticationUtils
 		{
 			return null;
 		}
+	}
+
+	public static String getLanguage()
+	{
+		return CmStringUtils.defaultString(UserAuthenticationUtils.getUserDetails().getLanguage(), Locale.ENGLISH).toUpperCase();
 	}
 
 	public static boolean isAuthenticated()

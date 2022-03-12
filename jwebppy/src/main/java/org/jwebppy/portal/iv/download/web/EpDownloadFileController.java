@@ -67,22 +67,12 @@ public class EpDownloadFileController extends IvGeneralController
 		EpUploadFileListDto uploadFileList = uploadFileListService.getUploadFileList(decodedKey[1]);
 		EpUploadFileDto uploadFile = uploadFileService.getUploadFile(uploadFileList.getUfSeq());
 
-		/*
 		EpDownloadFileHistoryDto downloadFileHistory = new EpDownloadFileHistoryDto();
 		downloadFileHistory.setUfSeq(uploadFile.getUfSeq());
 		downloadFileHistory.setUflSeq(uploadFileList.getUflSeq());
 		downloadFileHistory.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		downloadFileHistory.setOriginName(uploadFileList.getOriginName() + "." + uploadFileList.getExtension());
 		downloadFileHistory.setSavedName(uploadFileList.getSavedName() + "." + uploadFileList.getExtension());
-		*/
-
-		EpDownloadFileHistoryDto downloadFileHistory = EpDownloadFileHistoryDto.builder()
-				.ufSeq(uploadFile.getUfSeq())
-				.uflSeq(uploadFileList.getUflSeq())
-				.uSeq(UserAuthenticationUtils.getUserDetails().getUSeq())
-				.originName(uploadFileList.getOriginName() + "." + uploadFileList.getExtension())
-				.savedName(uploadFileList.getSavedName() + "." + uploadFileList.getExtension())
-				.build();
 
 		downloadFileHistoryService.create(downloadFileHistory);
 

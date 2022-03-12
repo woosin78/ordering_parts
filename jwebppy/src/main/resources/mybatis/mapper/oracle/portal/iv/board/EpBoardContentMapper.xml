@@ -10,6 +10,12 @@
 		<result property="depth" column="depth" />
 		<result property="uSeq" column="u_seq" />
 		<result property="title" column="title" />
+		<result property="etc1" column="etc1" />
+		<result property="etc2" column="etc2" />
+		<result property="etc3" column="etc3" />
+		<result property="etc4" column="etc4" />
+		<result property="etc5" column="etc5" />
+		<result property="etc6" column="etc6" />
 		<result property="htmlContent" column="html_content" />
 		<result property="textContent" column="text_content" />
 		<result property="fromView" column="from_view" />
@@ -25,8 +31,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="EpBoardContentEntity">
-		insert into ep_board_content (bc_seq, b_seq, p_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, fg_delete, reg_username, reg_date) values (
-			#{bcSeq}, #{bSeq}, nvl(#{pSeq}, #{bcSeq}), 0, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, 'N', #{regUsername}, #{regDate}
+		insert into ep_board_content (bc_seq, b_seq, p_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date) values (
+			#{bcSeq}, #{bSeq}, nvl(#{pSeq}, #{bcSeq}), 0, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, #{etc1}, #{etc2}, #{etc3}, #{etc4}, #{etc5}, #{etc6}, 'N', #{regUsername}, #{regDate}
 		)
 	</insert>
 	
@@ -92,10 +98,14 @@
 			count(*) over() as total_count,
 			a.*
 			from
-			ep_board_content a
+			ep_board_content a,
+			ep_board b
 			where
 			a.b_seq=#{bSeq}
 			and a.fg_delete='N'
+			and a.b_seq=b.b_seq
+			and b.fg_delete='N'
+			and b.corp=#{corp}
 			
 			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(title)">
 				and upper(a.title) like '%'||upper(#{title})||'%'

@@ -1,7 +1,5 @@
 package org.jwebppy.portal.iv.common.web;
 
-import java.util.Locale;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -23,19 +21,16 @@ public class IvGeneralController extends PortalGeneralController
 	@Autowired
 	private IvGeneralService ivGeneralService;
 
-	protected ErpDataMap getErpUserInfo(String corpCode, String moduleCode)
+	protected void setErpUserInfo(String bg, String module)
 	{
-		ErpUserContext erpUserContext = UserAuthenticationUtils.getUserDetails().getErpUserContext();
-		String lang = CmStringUtils.defaultString(UserAuthenticationUtils.getUserDetails().getLanguage(), Locale.ENGLISH).toUpperCase();
-
-		if (erpUserContext == null)
+		if (UserAuthenticationUtils.getUserDetails().getErpUserContext() == null)
 		{
-	        RfcResponse response = ivGeneralService.getErpUserInfo(getUsername(), corpCode, moduleCode);
+	        RfcResponse response = ivGeneralService.getErpUserInfo(getUsername(), bg, module);
 	        DataList userList = response.getTable("T_USER");
 
 	        if (CollectionUtils.isNotEmpty(userList))
 	        {
-	    		erpUserContext = new PartsErpUserContext();
+	        	ErpUserContext erpUserContext = new PartsErpUserContext();
 
 	    		DataMap userMap = (DataMap)userList.get(0);
 
@@ -53,35 +48,38 @@ public class IvGeneralController extends PortalGeneralController
 	    		erpUserContext.setCustGrp5(userMap.getString("KVGR5"));
 
 	    		UserAuthenticationUtils.getUserDetails().setErpUserContext(erpUserContext);
-
-	    		ErpDataMap erpDataMap = new ErpDataMap(userMap);
-				erpDataMap.put("LANG", lang);
-
-				return erpDataMap;
 	        }
 		}
-		else
+	}
+
+	protected ErpDataMap getErpUserInfo(String bg, String module)
+	{
+		ErpUserContext erpUserContext = UserAuthenticationUtils.getUserDetails().getErpUserContext();
+
+		if (erpUserContext == null)
 		{
-			ErpDataMap erpDataMap = new ErpDataMap();
+			setErpUserInfo(bg, module);
 
-			erpDataMap.put("BUKRS", erpUserContext.getCorp());
-			erpDataMap.put("BNAME", erpUserContext.getUsername());
-			erpDataMap.put("KUNNR", erpUserContext.getCustCode());
-			erpDataMap.put("NAME1", erpUserContext.getCustName());
-			erpDataMap.put("VKORG", erpUserContext.getSalesOrg());
-			erpDataMap.put("VTWEG", erpUserContext.getDistChl());
-			erpDataMap.put("SPART", erpUserContext.getDivision());
-			erpDataMap.put("KVGR1", erpUserContext.getCustGrp1());
-			erpDataMap.put("KVGR2", erpUserContext.getCustGrp2());
-			erpDataMap.put("KVGR3", erpUserContext.getCustGrp3());
-			erpDataMap.put("KVGR4", erpUserContext.getCustGrp4());
-			erpDataMap.put("KVGR5", erpUserContext.getCustGrp5());
-			erpDataMap.put("LANG", lang);
-
-			return erpDataMap;
+			erpUserContext = UserAuthenticationUtils.getUserDetails().getErpUserContext();
 		}
 
-		return null;
+		ErpDataMap erpDataMap = new ErpDataMap();
+
+		erpDataMap.put("BUKRS", erpUserContext.getCorp());
+		erpDataMap.put("BNAME", erpUserContext.getUsername());
+		erpDataMap.put("KUNNR", erpUserContext.getCustCode());
+		erpDataMap.put("NAME1", erpUserContext.getCustName());
+		erpDataMap.put("VKORG", erpUserContext.getSalesOrg());
+		erpDataMap.put("VTWEG", erpUserContext.getDistChl());
+		erpDataMap.put("SPART", erpUserContext.getDivision());
+		erpDataMap.put("KVGR1", erpUserContext.getCustGrp1());
+		erpDataMap.put("KVGR2", erpUserContext.getCustGrp2());
+		erpDataMap.put("KVGR3", erpUserContext.getCustGrp3());
+		erpDataMap.put("KVGR4", erpUserContext.getCustGrp4());
+		erpDataMap.put("KVGR5", erpUserContext.getCustGrp5());
+		erpDataMap.put("LANG", UserAuthenticationUtils.getLanguage());
+
+		return erpDataMap;
 	}
 
 	@Override
@@ -90,5 +88,34 @@ public class IvGeneralController extends PortalGeneralController
 		super.addAllAttributeFromRequest(model, webRequest);
 
 		model.addAttribute("BASE_PATH", IvCommonVo.REQUEST_PATH);
+	}
+
+	protected void setErpUserInfoByUsername()
+	{
+		setErpUserInfo(null, null);
+	}
+
+	protected ErpDataMap getErpUserInfoByUsername()
+	{
+		return getErpUserInfo(null, null);
+	}
+
+	protected ErpUserContext getErpUserContext()
+	{
+		return UserAuthenticationUtils.getUserDetails().getErpUserContext();
+	}
+
+	protected String getCorp()
+	{
+		try
+		{
+			setErpUserInfoByUsername();
+
+			return UserAuthenticationUtils.getUserDetails().getErpUserContext().getCorp();
+		}
+		catch (Exception e)
+		{
+			return CmStringUtils.EMPTY;
+		}
 	}
 }

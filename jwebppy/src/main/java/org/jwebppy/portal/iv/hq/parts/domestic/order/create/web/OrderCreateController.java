@@ -94,15 +94,9 @@ public class OrderCreateController extends PartsDomesticGeneralController
 		{
 			if (CmStringUtils.isNotEmpty(materialNos[i]))
 			{
-				/*
 				OrderItemDto orderItem = new OrderItemDto();
 				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 				orderItem.setMaterialNo(materialNos[i]);
-				*/
-				OrderItemDto orderItem = OrderItemDto.builder()
-						.lineNo(CmStringUtils.leftPad(i+1, 6, "0"))
-						.materialNo(materialNos[i])
-						.build();
 
 				orderItems.add(orderItem);
 			}
@@ -143,25 +137,13 @@ public class OrderCreateController extends PartsDomesticGeneralController
 			{
 				if (CmStringUtils.isNotEmpty(materialNos[i]))
 				{
-					/*
 					OrderItemDto orderItem = new OrderItemDto();
-
 					orderItem.setLineNo(lineNos[i]);
 					orderItem.setMaterialNo(materialNos[i]);
 					orderItem.setOrderQty(orderQtyies[i]);
 					orderItem.setLotQty(lotQties[i]);
 					orderItem.setUom(uoms[i]);
 					orderItem.setAvailability(availabilities[i]);
-					*/
-
-					OrderItemDto orderItem = OrderItemDto.builder()
-							.lineNo(lineNos[i])
-							.materialNo(materialNos[i])
-							.orderQty(orderQtyies[i])
-							.lotQty(lotQties[i])
-							.uom(uoms[i])
-							.availability(availabilities[i])
-							.build();
 
 					orderItems.add(orderItem);
 				}

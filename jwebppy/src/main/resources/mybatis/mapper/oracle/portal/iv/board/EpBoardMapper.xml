@@ -3,7 +3,7 @@
 
 <mapper namespace="org.jwebppy.portal.iv.board.mapper.EpBoardMapper">
 
-	<select id="findBoard" parameterType="EpBoardDto" resultType="EpBoardEntity">
+	<select id="findBoard" resultType="EpBoardEntity">
 		select
 		a.*
 		from

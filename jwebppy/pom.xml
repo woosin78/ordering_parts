@@ -62,7 +62,7 @@
 			<artifactId>mapstruct-processor</artifactId>
 			<version>${org.mapstruct.version}</version>
 			<scope>compile</scope>
-		</dependency>		
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -250,7 +250,7 @@
 			<version>12.2.0.1</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/ojdbc8.jar</systemPath>
-		</dependency>		
+		</dependency>
 		
 	</dependencies>
 

@@ -2,19 +2,13 @@ package org.jwebppy.portal.iv.download.dto;
 
 import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 public class EpDownloadFileHistoryDto extends IvGeneralDto
 {
 	private static final long serialVersionUID = -49605620479232026L;

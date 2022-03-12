@@ -40,9 +40,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/content")
 public class ContentController extends ContentGeneralController
 {
-//	@Autowired
-//	private ContentAuthorityService contentAuthorityService;
-
 	@Autowired
 	private ContentLangService contentLangService;
 

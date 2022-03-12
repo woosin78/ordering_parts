@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.RegExUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -15,7 +17,7 @@ import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.AbstractMessageSource;
 
-public class DbMessageSource extends AbstractMessageSource
+public class I18nMessageSource extends AbstractMessageSource
 {
 	@Autowired
 	private LangService langService;
@@ -23,9 +25,30 @@ public class DbMessageSource extends AbstractMessageSource
 	@Override
 	protected MessageFormat resolveCode(String key, Locale locale)
 	{
+		return new MessageFormat(getMessage(key, locale), locale);
+	}
+
+	public String getMessage(String key)
+	{
+		return getMessage(key, new Locale(UserAuthenticationUtils.getUserDetails().getLanguage()));
+	}
+
+	public String getMessage(String key, String[] replaceTexts)
+	{
+		String text = getMessage(key, new Locale(UserAuthenticationUtils.getUserDetails().getLanguage()));
+
+		for (int i=0, length=ArrayUtils.nullToEmpty(replaceTexts).length; i<length; i++)
+		{
+			text = RegExUtils.replaceAll(text, "{" + i + "}", replaceTexts[i]);
+		}
+
+		return text;
+	}
+
+	public String getMessage(String key, Locale locale)
+	{
 		String[] codes = CmStringUtils.split(key, "_");
 
-		//String lang = locale.getLanguage();
 		String lang = locale.toLanguageTag();
 
 		if (UserAuthenticationUtils.isAuthenticated())
@@ -78,9 +101,9 @@ public class DbMessageSource extends AbstractMessageSource
 				}
 			}
 
-			return new MessageFormat(CmStringUtils.trimToEmpty(text), locale);
+			return CmStringUtils.trimToEmpty(text);
 		}
 
-		return new MessageFormat("", locale);
+		return CmStringUtils.EMPTY;
 	}
 }

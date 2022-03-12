@@ -13,6 +13,7 @@ import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
@@ -29,6 +30,9 @@ public class CredentialsPolicyService extends GeneralService
 {
 	@Autowired
 	private CredentialsPolicyMapper credentialsPolicyMapper;
+
+	@Autowired
+	private I18nMessageSource i18nMessageSource;
 
 	public int create(CredentialsPolicyDto credentialsPolicy)
 	{
@@ -296,68 +300,83 @@ public class CredentialsPolicyService extends GeneralService
 
 		List<String> messages = new ArrayList<>();
 
-		messages.add("Length of " + target + " should be between " + minLength + " and " + maxLength + ".");
+		//messages.add("Length of " + target + " should be between " + minLength + " and " + maxLength + ".");
+		messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_11", new String[] {target, minLength, maxLength}));
 
 		if (CmStringUtils.isNotEmpty(minLowercase) && CmStringUtils.isNotEmpty(maxLowercase))
 		{
-			messages.add(target + " should include lower case letters between " + minLowercase + " and " + maxLowercase + ".");
+			//messages.add(target + " should include lower case letters between " + minLowercase + " and " + maxLowercase + ".");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_21", new String[] {target, minLowercase, maxLowercase}));
 		}
 		else if (CmStringUtils.isNotEmpty(minLowercase) && CmStringUtils.isEmpty(maxLowercase))
 		{
-			messages.add(target + " should include a minimum of " + minLowercase + " lower case letter(s).");
+			//messages.add(target + " should include a minimum of " + minLowercase + " lower case letter(s).");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_22", new String[] {target, minLowercase}));
 		}
 		else if (CmStringUtils.isEmpty(minLowercase) && CmStringUtils.isNotEmpty(maxLowercase))
 		{
-			messages.add(target + " should include a maximum of " + maxLowercase + " lower case letter(s).");
+			//messages.add(target + " should include a maximum of " + maxLowercase + " lower case letter(s).");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_23", new String[] {target, maxLowercase}));
 		}
 
 		if (CmStringUtils.isNotEmpty(minUppercase) && CmStringUtils.isNotEmpty(maxUppercase))
 		{
-			messages.add(target + " should include upper case letters between " + minUppercase + " and " + maxUppercase + ".");
+			//messages.add(target + " should include upper case letters between " + minUppercase + " and " + maxUppercase + ".");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_31", new String[] {target, minUppercase, maxUppercase}));
 		}
 		else if (CmStringUtils.isNotEmpty(minUppercase) && CmStringUtils.isEmpty(maxUppercase))
 		{
-			messages.add(target + " should include a minimum of " + minUppercase + " upper case letter(s).");
+			//messages.add(target + " should include a minimum of " + minUppercase + " upper case letter(s).");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_32", new String[] {target, minUppercase}));
 		}
 		else if (CmStringUtils.isEmpty(minUppercase) && CmStringUtils.isNotEmpty(maxUppercase))
 		{
-			messages.add(target + " should include a maximum of " + maxUppercase + " upper case letter(s).");
+			//messages.add(target + " should include a maximum of " + maxUppercase + " upper case letter(s).");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_33", new String[] {target, maxUppercase}));
 		}
 
 		if (CmStringUtils.isNotEmpty(minNumber) && CmStringUtils.isNotEmpty(maxNumber))
 		{
-			messages.add(target + " should include numbers between " + minNumber + " and " + maxNumber + " digits.");
+			//messages.add(target + " should include numbers between " + minNumber + " and " + maxNumber + " digits.");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_41", new String[] {target, minNumber, maxNumber}));
 		}
 		else if (CmStringUtils.isNotEmpty(minNumber) && CmStringUtils.isEmpty(maxNumber))
 		{
-			messages.add(target + " should include a minimum of " + minNumber + " digit(s).");
+			//messages.add(target + " should include a minimum of " + minNumber + " digit(s).");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_42", new String[] {target, minNumber}));
 		}
 		else if (CmStringUtils.isEmpty(minNumber) && CmStringUtils.isNotEmpty(maxNumber))
 		{
-			messages.add(target + " should include a maximum of " + maxNumber + " digit(s).");
+			//messages.add(target + " should include a maximum of " + maxNumber + " digit(s).");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_43", new String[] {target, maxNumber}));
 		}
 
 		if (CmStringUtils.isNotEmpty(minSpecial) && CmStringUtils.isNotEmpty(maxSpecial))
 		{
-			messages.add(target + " should include special letters between " + minSpecial + " and " + maxSpecial + ".");
+			//messages.add(target + " should include special letters between " + minSpecial + " and " + maxSpecial + ".");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_51", new String[] {target, minSpecial, maxSpecial}));
 		}
 		else if (CmStringUtils.isNotEmpty(minSpecial) && CmStringUtils.isEmpty(maxSpecial))
 		{
-			messages.add(target + " should include a minimum of " + minSpecial + " special letter(s).");
+			//messages.add(target + " should include a minimum of " + minSpecial + " special letter(s).");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_52", new String[] {target, minSpecial}));
 		}
 		else if (CmStringUtils.isEmpty(minSpecial) && CmStringUtils.isNotEmpty(maxSpecial))
 		{
-			messages.add(target + " should include a maximum of " + maxSpecial + " special letter(s).");
+			//messages.add(target + " should include a maximum of " + maxSpecial + " special letter(s).");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_53", new String[] {target, maxSpecial}));
 		}
 
 		if (CmStringUtils.equals(fgOnlyLowercase, PlatformCommonVo.YES))
 		{
-			messages.add(target + " should be only lower case.");
+			//messages.add(target + " should be only lower case.");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_61", new String[] {target}));
 		}
 
 		if (CmStringUtils.equals(fgOnlyUppercase, PlatformCommonVo.YES))
 		{
-			messages.add(target + " should be only upper case.");
+			//messages.add(target + " should be only upper case.");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_62", new String[] {target}));
 		}
 
 		return messages;

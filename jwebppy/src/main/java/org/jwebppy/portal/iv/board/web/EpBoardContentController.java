@@ -3,6 +3,7 @@ package org.jwebppy.portal.iv.board.web;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentDto;
@@ -48,15 +49,19 @@ public class EpBoardContentController extends IvGeneralController
 	@ResponseBody
 	public Object listData(@ModelAttribute EpBoardContentSearchDto boardContentSearch, WebRequest webRequest)
 	{
-		return boardContentService.getBoardContents(boardContentSearch);
+		boardContentSearch.setCorp(getCorp());
+
+		return ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch));
 	}
 
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest)
 	{
-		boardContentService.plusViews(webRequest.getParameter("bcSeq"));
+		String bcSeq = webRequest.getParameter("bcSeq");
 
-		EpBoardContentDto boardContent = boardContentService.getBoardContent(webRequest.getParameter("bcSeq"));
+		boardContentService.plusViews(bcSeq);
+
+		EpBoardContentDto boardContent = boardContentService.getBoardContent(bcSeq);
 		EpBoardDto board = boardContent.getBoard();
 
 		if (board.getUfSeq() != null)
@@ -98,18 +103,18 @@ public class EpBoardContentController extends IvGeneralController
 	@Override
 	protected void setDefaultAttribute(Model model, WebRequest webRequest)
 	{
-		EpBoardContentSearchDto boardContentSearch = EpBoardContentSearchDto.builder()
-				.bSeq(webRequest.getParameter("bSeq"))
-				.bcSeq(webRequest.getParameter("bcSeq"))
-				.title(webRequest.getParameter("title"))
-				.writer(webRequest.getParameter("writer"))
-				.fromRegDate(webRequest.getParameter("fromRegDate"))
-				.toRegDate(webRequest.getParameter("toRegDate"))
-				.fromView(webRequest.getParameter("fromView"))
-				.toView(webRequest.getParameter("toView"))
-				.pageNumber(CmNumberUtils.toInt(webRequest.getParameter("pageNumber"), 1))
-				.rowPerPage(CmNumberUtils.toInt(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE))
-				.build();
+		EpBoardContentSearchDto boardContentSearch = new EpBoardContentSearchDto();
+		boardContentSearch.setBSeq(webRequest.getParameter("bSeq"));
+		boardContentSearch.setBcSeq(webRequest.getParameter("bcSeq"));
+		boardContentSearch.setTitle(webRequest.getParameter("title"));
+		boardContentSearch.setWriter(webRequest.getParameter("writer"));
+		boardContentSearch.setFromRegDate(webRequest.getParameter("fromRegDate"));
+		boardContentSearch.setToRegDate(webRequest.getParameter("toRegDate"));
+		boardContentSearch.setFromView(webRequest.getParameter("fromView"));
+		boardContentSearch.setToView(webRequest.getParameter("toView"));
+		boardContentSearch.setPageNumber(CmNumberUtils.toInt(webRequest.getParameter("pageNumber"), 1));
+		boardContentSearch.setRowPerPage(CmNumberUtils.toInt(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
+
 
 		model.addAttribute("boardContentSearch", boardContentSearch);
 		model.addAttribute("board", boardService.getBoard(webRequest.getParameter("bSeq")));

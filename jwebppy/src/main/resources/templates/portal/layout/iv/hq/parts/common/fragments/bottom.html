@@ -15,9 +15,83 @@
 </div>
 <!-- bottom.html end -->
 
+<!-- Logout -->
+<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
+
 <script>
 $(document).ready(function() {
+	//상단 메뉴 생성 공통함수
+	makeGnb();
+	
+	$(".header .logo-doobizplus").on("click", function() {
+		_goHome()
+	});
+	
+	$(".header li.new-window").on("click", function() {
+		window.open("/portal/forward/entry_point", "");
+	});
+	
+	$(".header li.dealer-info").on("click", function() {
+		_clickDealerInfo();	    		
+	});
+	
+	$(".header li.username").on("click", function() {
+		_clickUserInfo();
+	});
+	
+	$(".header .logout-button").on("click", function() {
+		_clickLogout();	    		
+	});
+	
+	//Get last login information
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/login/history/last_login_info",		
+	    success: function(response, textStatus, jqXHR) 
+	    {
+	    	let data = response.RESULT;
+	    	
+	    	if (data != null && JpUtilsString.isNotEmpty(data.displayZonedRegDate))
+	    	{
+	    		$(".last-login-time").html(data.displayZonedRegDate + " / " + data.ip);
+	    	}
+	    	else
+	    	{
+	    		$(".last-login-time").html("-/-");
+	    	};
+	    }	
+	});
+	
+	_checkExpiredPassword();
 });
+
+function _checkExpiredPassword()
+{
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/check/expired_password",
+		global: false,
+		success: function(data, textStatus, jqXHR)
+		{
+			let result = data.RESULT;
+			
+			let difference = parseInt(result.difference);
+			
+			if (difference < 15)
+			{
+				if (difference < 0)
+				{
+					alert("Your password has expired. Please change it now.");
+				}
+				else
+				{
+					if (confirm("Your password will expire on " + result.expiredDate + ". Please change your password within the date.<br/>Do you want to change it now?"))
+					{
+						
+					};
+				};
+			};
+		}
+	});
+};
 
 /*
  * Ajax global settings.
@@ -48,6 +122,26 @@ $(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
 /*
  * 공통 페이지
  */
+ function _goHome()
+ {
+ 	document.location.href = "/portal/forward/entry_point";
+ };
+
+ function _clickUserInfo()
+ {
+ 	Popup.open("/portal/iv/user/write", 700, 300);
+ };
+
+ function _clickDealerInfo()
+ {
+ 	Popup.open("[[${BASE_PATH}]]/dealer_info/view", 1100, 800);
+ };
+
+ function _clickLogout()
+ {
+ 	$("#FORM_logout").submit();
+ }; 
+ 
 //품번 검색
 function _showPartSearch(partNo)
 {

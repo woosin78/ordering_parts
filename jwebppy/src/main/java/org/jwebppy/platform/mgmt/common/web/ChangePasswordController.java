@@ -11,6 +11,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyVo;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
@@ -31,6 +32,9 @@ public class ChangePasswordController extends MgmtGeneralController
 {
 	@Autowired
 	private CredentialsPolicyService credentialsPolicyService;
+
+	@Autowired
+	private I18nMessageSource i18nMessageSource;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -94,32 +98,32 @@ public class ChangePasswordController extends MgmtGeneralController
 							}
 							else
 							{
-								messages.add("A new password should not be the same with your current's.");
+								messages.add(i18nMessageSource.getMessage("PLTF_M_NOT_ALLOW_USE_CURRENT_PASSWORD"));
 							}
 						}
 						else
 						{
-							messages.add("The password you inputted doesn't match your current password.");
+							messages.add(i18nMessageSource.getMessage("PLTF_M_NOT_CORRECT_PASSWORD"));
 						}
 					}
 					else
 					{
-						messages.add("The account is not valid.");
+						messages.add(i18nMessageSource.getMessage("PLTF_M_INACTIVE_ACCOUNT"));
 					}
 				}
 				else
 				{
-					messages.add("There is no account");
+					messages.add(i18nMessageSource.getMessage("PLTF_M_NOT_EXIST_ACCOUNT"));
 				}
 			}
 			else
 			{
-				messages.add("Please check the password. The password and confirm password don't match.");
+				messages.add(i18nMessageSource.getMessage("PLTF_M_NOT_PASSWORD_MATCH"));
 			}
 		}
 		else
 		{
-			messages.add("Session has expired. Please try this again.");
+			messages.add(i18nMessageSource.getMessage("PLTF_M_SESSION_EXPIRED"));
 			resultMap.put("RESULT", -999);
 		}
 

@@ -4,19 +4,13 @@ import java.util.List;
 
 import org.jwebppy.portal.iv.hq.parts.common.dto.PartsGeneralDto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 public class OrderDto extends PartsGeneralDto
 {
 	private static final long serialVersionUID = -2913348250006096364L;

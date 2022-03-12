@@ -12,19 +12,13 @@ import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileListDto;
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-@SuperBuilder
-@NoArgsConstructor
-@AllArgsConstructor
 public class EpBoardContentDto extends GeneralDto
 {
 	private static final long serialVersionUID = -1969963429122839740L;
@@ -49,6 +43,12 @@ public class EpBoardContentDto extends GeneralDto
 	private String toViewMinutes;
 	private int views;
 	private String writer;
+	private String etc1;
+	private String etc2;
+	private String etc3;
+	private String etc4;
+	private String etc5;
+	private String etc6;
 	private EpBoardDto board;
 	private EpUploadFileDto uploadFile;
 	private List<EpUploadFileListDto> uploadFileLists;
@@ -57,9 +57,14 @@ public class EpBoardContentDto extends GeneralDto
 	private List<MultipartFile> files;
 	private List<String> uflSeqs;
 
-	public String getFromViewDate()
+	public String getDisplayFromView()
 	{
 		return CmDateFormatUtils.format(fromView);
+	}
+
+	public String getDisplayToView()
+	{
+		return CmDateFormatUtils.format(toView);
 	}
 
 	public String getFromViewHours()
@@ -70,11 +75,6 @@ public class EpBoardContentDto extends GeneralDto
 	public String getFromViewMinutes()
 	{
 		return CmDateFormatUtils.defaultZonedFormat(fromView, "mm");
-	}
-
-	public String getToViewDate()
-	{
-		return CmDateFormatUtils.format(toView);
 	}
 
 	public String getToViewHours()

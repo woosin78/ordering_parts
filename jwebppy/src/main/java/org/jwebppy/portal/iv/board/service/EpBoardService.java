@@ -16,9 +16,8 @@ public class EpBoardService extends PlatformGeneralService
 
 	public EpBoardDto getBoard(String bSeq)
 	{
-		EpBoardDto board = EpBoardDto.builder()
-				.bSeq(bSeq)
-				.build();
+		EpBoardDto board = new EpBoardDto();
+		board.setBSeq(bSeq);
 
 		return getBoard(board);
 	}
