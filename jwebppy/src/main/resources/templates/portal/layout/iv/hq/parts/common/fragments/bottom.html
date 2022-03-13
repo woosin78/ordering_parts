@@ -21,7 +21,7 @@
 <script>
 $(document).ready(function() {
 	//상단 메뉴 생성 공통함수
-	makeGnb();
+	_makeGnb();
 	
 	$(".header .logo-doobizplus").on("click", function() {
 		_goHome()
@@ -79,19 +79,24 @@ function _checkExpiredPassword()
 			{
 				if (difference < 0)
 				{
-					alert("Your password has expired. Please change it now.");
+					JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]", function() {
+						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});
 				}
 				else
 				{
-					if (confirm("Your password will expire on " + result.expiredDate + ". Please change your password within the date.<br/>Do you want to change it now?"))
-					{
-						
-					};
+					let message = "[[#{PLTF_M_PASSWORD_EXPIRE_DATE_NOTICE}]]".replace("{0}", result.expiredDate);
+					
+					JpUiDimmer.confirm(message, function() {
+						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});					
 				};
+
 			};
 		}
 	});
 };
+
 
 /*
  * Ajax global settings.

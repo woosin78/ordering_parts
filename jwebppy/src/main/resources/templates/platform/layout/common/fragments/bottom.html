@@ -42,8 +42,8 @@
 <script>
 $(document).ready(function() {
 	$(".ui.bottom_blank").height($(".ui.bottom").height());
-	makeGnb();
-	checkExpiredPassword();
+	_makeGnb();
+	_checkExpiredPassword();
 });
 
 $(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
@@ -86,7 +86,7 @@ $("#BTN_moveToTop").click(function() {
 	return false;
 });
 
-function makeGnb()
+function _makeGnb()
 {
 	//Make GNB
 	let menu = [];
@@ -229,7 +229,7 @@ function logout()
 	$("#FORM_logout").submit();	
 };
 
-function checkExpiredPassword()
+function _checkExpiredPassword()
 {
 	JpUtilsAjax.get({
 		url: "/platform/mgmt/user/check/expired_password",
@@ -244,13 +244,15 @@ function checkExpiredPassword()
 			{
 				if (difference < 0)
 				{
-					JpUiDimmer.alert("Your password has expired. Please change it now.", function() {
+					JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
 						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
 					});
 				}
 				else
 				{
-					JpUiDimmer.confirm("Your password will expire on " + result.expiredDate + ". Please change your password within the date.<br/>Do you want to change it now?", function() {
+					let message = "[[#{PLTF_M_PASSWORD_EXPIRE_DATE_NOTICE}]]".replace("{0}", result.expiredDate);
+					
+					JpUiDimmer.confirm(message, function() {
 						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
 					});					
 				};

@@ -8,22 +8,22 @@
 <title th:text="#{PTL_T_APP_NAME}"></title>
 
 <link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/login.css}" />
-<link rel="stylesheet" type="text/css" class="ui" th:href="@{/portal/css/semantic/semantic.min.css}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"/>
 
-<script th:src="@{/portal/js/jquery/jquery.min.js}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script th:src="@{/portal/js/jquery/jquery.cookie.js}"></script>
 <script th:src="@{/portal/js/jWebppy.utils.object.js}"></script>
 <script th:src="@{/portal/js/jWebppy.utils.string.js}"></script>
 <script th:src="@{/portal/js/jWebppy.ui.dimmer.js}"></script>
-<script th:src="@{/portal/js/detect_browser/detect-browser.js}"></script>
-<script th:src="@{/portal/js/semantic/semantic.min.js}"></script>
 <script>
 let INDEX_URL = "[[${T(org.jwebppy.portal.common.PortalConfigVo).INDEX_URL}]]";
 
-$(window).resize(function() {
+$(window).resize($.debounce(100, function(e){
 	resizeView();
-});
+}));
 
 $(window).on("load", function() {
 	resizeView();
@@ -171,7 +171,7 @@ $(document).ready(function() {
 	});
 	
 	$("#IMG_doobizPlus").on("click", function() {
-		document.location.href = "/forward/entry_point";
+		document.location.href = INDEX_URL;
 	});	
 });
 </script>

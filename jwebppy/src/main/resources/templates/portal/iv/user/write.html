@@ -54,28 +54,28 @@ function checkForm()
 {
 	if (JpUtilsString.isEmpty($("#password").val()))
 	{
-		alert("[[#{PLTF_M_LOGIN_EMPTY_PWD}]]");
+		alert("[[#{PTL_M_LOGIN_EMPTY_PWD}]]");
 		$("#password").focus();
 					
 		return false;				
 	}
 	else if (JpUtilsString.isEmpty($("#newPassword").val()))
 	{
-		alert("[[#{PLTF_M_EMPTY_NEW_PWD}]]");
+		alert("[[#{PTL_M_EMPTY_NEW_PWD}]]");
 		$("#newPassword").focus();
 		
 		return false;
 	}
 	else if (JpUtilsString.isEmpty($("#confirmPassword").val()))
 	{
-		alert("[[#{PLTF_M_EMPTY_CONFIRM_PWD}]]");
+		alert("[[#{PTL_M_EMPTY_CONFIRM_PWD}]]");
 		$("#confirmPassword").focus();		
 		
 		return false;				
 	}
 	else if (JpUtilsString.notEquals($("#newPassword").val(), $("#confirmPassword").val()))
 	{
-		alert("[[#{PLTF_M_NOT_PASSWORD_MATCH}]]");
+		alert("[[#{PTL_M_NOT_PASSWORD_MATCH}]]");
 		$("#newPassword").focus();
 		
 		return false;
