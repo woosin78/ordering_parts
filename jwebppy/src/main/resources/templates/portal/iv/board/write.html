@@ -16,8 +16,8 @@
 	</div>	
 	<div id="boardViwer" class="condition-area">
 	<form id="FORM_write" method="post" th:action="|${BASE_PATH}/board/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" name="bSeq" th:value="${bSeq}"/>
-	<input type="hidden" name="bcSeq" th:value="${boardContent?.bcSeq}"/>
+	<input type="hidden" name="bSeq" id="bSeq" th:value="${bSeq}"/>
+	<input type="hidden" name="bcSeq" id="bcSeq" th:value="${boardContent?.bcSeq}"/>
 	<input type="hidden" name="textContent" id="textContent" th:value="${boardContent?.textContent}"/>
 	<input type="hidden" name="htmlContent" id="htmlContent" th:value="${boardContent?.htmlContent}"/>
 	<input type="file" id="files" name="files" multiple style="display:none;"/>
@@ -26,17 +26,38 @@
 			<tr>
 				<th><span th:text="#{HQP_L_TITLE}"></span><img src="/portal/img/icon_required.png" class="required" /></th>
 				<td>
-					<input type="text" name="title" class="custom-ui" autofocus="autofocus" th:value="${boardContent?.title}"/>
+					<input type="text" id="title" name="title" class="custom-ui" autofocus="autofocus" th:value="${boardContent?.title}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><span th:text="#{HQP_L_CONTENT}"></span><img src="/portal/img/icon_required.png" class="required" /></th>
 				<td><div id="xfe"></div></td>
 			</tr>
+			
+			<tr th:style="${(board.fgSetTarget == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
+				<th th:text="#{HQP_L_VISIBLE_TARGET}"/>
+				<td>
+					<div class="split-row-more-compact"></div>
+					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui" th:placeholder="#{HQP_L_PLACEHOLD_DEALER_CODE_NAME}"/></div>
+					<div class="split-row-more-compact"></div>
+					<button id="BTN_deleteVisibleTarget" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
+					<div class="split-row-more-compact"></div>
+					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+					<div class="split-row-more-compact"></div>
+					<div id="addedtargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
+						<div th:each="boardContentTarget : ${boardContent?.boardContentTargets}">
+							<input type="checkbox" class="custom-ui visible-target"/><label th:text="${boardContentTarget.code}"></label>
+							<div class="split2"></div><span th:text="${boardContentTarget.description}"></span>
+							<input name="targetCode" type="hidden" th:value="${boardContentTarget.code}"/>
+							<input name="targetDescription" type="hidden" th:value="${boardContentTarget.description}"/>
+						</div>						
+					</div>					
+				</td>
+			</tr>
 			<tr th:style="${(board.fgSetPeriod == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
 				<th th:text="#{HQP_L_VISIBLE_PERIOD}"/>
 				<td>
-					<div class="period">
+					<div class="input-area period">
 						<span th:text="#{HQP_L_FROM}" class="label"></span>
 						<input type="text" id="fromViewDate" name="fromViewDate" class="custom-ui-calendar" th:value="${boardContent?.fromViewDate}"/>
 						<div class="split3"></div>
@@ -67,8 +88,8 @@
 						<span th:text="#{HQP_L_MINUTES}"></span>			
 					</div>
 				</td>
-			</tr>		
-			<tr>
+			</tr>
+			<tr th:style="${board?.uploadFile != null ? '' : 'display:none;'}">
 				<th th:text="#{HQP_L_ATTACHMENT}"/>
 				<td>
 					<div class="split-row-more-compact"></div>
@@ -76,7 +97,12 @@
 					<div class="split-row-more-compact"></div>
 					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div class="split-row-more-compact"></div>
-					<div id="attachedFiles" style="width:100%; display: block; overflow-y: auto;"></div>
+					<div id="attachedFiles" style="width:100%; height:5em; display: block; overflow-y: auto;">
+						<div th:each="uploadFileList : ${boardContent.uploadFileLists}">
+							<input name="uflSeq" type="checkbox" th:value="${uploadFileList.uflSeq}" class="custom-ui" th:fileName="${uploadFileList.fullOriginName}"/><label th:text="${uploadFileList.fullOriginName}"></label>
+							<div class="split2"></div><span th:text="${uploadFileList.displayFileSize}"></span>
+						</div>
+					</div>
 				</td>
 			</tr>		
 		</tbody>
@@ -93,15 +119,86 @@
 	<input type="hidden" name="pageNumber" th:value="*{pageNumber}"/>
 	</form>
 	<script>
+	$(function(){
+		Calendar.makeCalendar($("#fromViewDate"), "[[${boardContent?.displayFromView}]]");
+		Calendar.makeCalendar($("#toViewDate"), "[[${boardContent?.displayToView}]]");
+		
+		$("#FORM_write .ui.checkbox").checkbox();
+	});
+	
 	$(window).on("load", function() {
 		ProgressBar.hide();
 		
 		initBoardViwer($("#boardViwer"), $("#xfe"));
 		
-		Calendar.makeCalendar($("#fromViewDate"), "[[${boardContent?.fromViewDate}]]");
-		Calendar.makeCalendar($("#toViewDate"), "[[${boardContent?.toViewDate}]]");
-		
+		$("#searchVisibleTarget").autocomplete({
+			source: function(request, response) {
+				JpUtilsAjax.get({
+					url: "[[${BASE_PATH}]]/board/target/data",
+					data: {	"name": $("#searchVisibleTarget").val(), "dealerCode": $("#searchVisibleTarget").val() },
+					success: function(data, textStatus, jqXHR)
+					{
+						let result = data.RESULT;
+						
+						if (JpUtilsObject.isNotNull(result))
+						{
+							response(
+									$.map(result, function(item) {
+										if (JpUtilsString.isNotEmpty(item.KUNNR))
+										{
+											return {
+												label: item.KUNNR + " | " + item.NAME1,
+												value: item.KUNNR
+											}
+										};
+									})
+							);					
+						};
+					}
+				});
+			},
+			select: function(event, ui)
+			{
+				 console.log(ui.item.label + "," + ui.item.value);
+				 addTarget(ui.item.label, ui.item.value);
+				 
+				 $(this).val("");
+				 return false;
+			},
+			//delay: 50,
+			minLength: 3
+		});		
 	});
+	
+	function addTarget(label, value)
+	{
+		let str = label.split("|");
+		
+		console.log(str.length + "," + JpUtilsString.trimToEmpty(str[0]) + " , " + JpUtilsString.trimToEmpty(str[1]));
+		
+		let dealerCode = str[0];
+		let dealerName = str[1];
+		
+		let html = [];
+		
+		html.push("<div>");
+		html.push("<input type='checkbox' class='custom-ui'/><label>" + dealerCode + "</label>");
+		html.push("<div class='split2'></div><span>" + dealerName + "</span>");
+		html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
+		html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
+		html.push("</div>");
+		
+		$("#addedtargets").append(html.join(""));
+	};
+
+	$("#BTN_deleteVisibleTarget").on("click", function(event) {
+		$.each($("#FORM_write .visible-target"), function(i, item) {
+			if ($(this).is(":checked"))
+			{
+				$(this).closest("div").remove();
+			};
+		});
+	});	
 	
 	function initBoardViwer($area, $content)
 	{
@@ -176,6 +273,9 @@
 					$("#BTN_back").trigger("click");
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
+					console.log(textStatus);
+					console.log(errorThrown);
+					
 					alert("[[#{HQP_M_FAIL_SAVE}]]");
 				}
 		};
@@ -203,44 +303,6 @@
 	});
 		
 	xfe.render("xfe");
-	
-	if (JpUtilsString.isNotEmpty($("#bcSeq").val()))
-	{
-		JpUtilsAjax.get({
-			url: "/portal/iv/board/view/data",
-			data: { bcSeq: $("#bcSeq").val() },
-			success: function(data, textStatus, jqXHR) {
-				let result = data.RESULT;
-				
-				$("#bcSeq").val(result.bcSeq);
-				$("#title").val(result.title);
-				$("#htmlContent").val(result.htmlContent);
-				$("#textContent").val(result.textContent);
-			}
-		});
-		
-		let ufSeq = "[[${board.ufSeq}]]";
-		
-		if (JpUtilsString.isNotEmpty(ufSeq))
-		{
-			JpUtilsAjax.get({
-				url: "/portal/iv/upload/list/data",
-				data: { ufSeq: ufSeq, tSeq: $("#bcSeq").val() },
-				success: function(data, textStatus, jqXHR) {
-					let result = data.RESULT;
-					
-					if (JpUtilsObject.isNotNull(result))
-					{
-						$.each(result, function(i, item) {
-							addFile(item.fullOriginName, item.size, item.uflSeq)	
-						});
-	
-						$("#FORM_write .ui.checkbox").checkbox();
-					};
-				}	
-			});
-		};
-	};
 	
 	$("#BTN_searchFile").on("click", function() {
 		$("#files").trigger("click");
@@ -284,8 +346,6 @@
 				$(this).closest("div").remove();
 			};
 		});
-		
-		$(window).trigger("resize");
 	});	
 	
 	function addFile(name, size, uflSeq)
@@ -298,8 +358,6 @@
 		html.push("</div>");
 		
 		$("#attachedFiles").append(html.join(""));
-		
-		$(window).trigger("resize");
 	};
 	
 	function getSize(size)
@@ -327,6 +385,7 @@
 		}
 		else
 		{
+			alert(size);
 			result.push(size);
 			result.push("B");
 		};

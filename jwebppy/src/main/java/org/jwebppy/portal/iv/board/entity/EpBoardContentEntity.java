@@ -3,7 +3,7 @@ package org.jwebppy.portal.iv.board.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.portal.iv.common.entity.IvGeneralEntity;
 import org.jwebppy.portal.iv.upload.entity.EpUploadFileEntity;
 import org.jwebppy.portal.iv.upload.entity.EpUploadFileListEntity;
 
@@ -14,7 +14,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class EpBoardContentEntity extends GeneralEntity
+public class EpBoardContentEntity extends IvGeneralEntity
 {
 	private static final long serialVersionUID = 3571593885122638421L;
 
@@ -40,5 +40,6 @@ public class EpBoardContentEntity extends GeneralEntity
 	private String etc6;
 	private EpBoardEntity board;
 	private EpUploadFileEntity fileUploadFile;
-	private List<EpUploadFileListEntity> fileUploadFileLists;
+	private List<EpUploadFileListEntity> uploadFileLists;
+	private List<EpBoardContentTargetEntity> boardContentTargets;
 }

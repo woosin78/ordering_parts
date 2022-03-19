@@ -41,9 +41,9 @@ public class EpUploadFileListService extends IvGeneralService
     @Autowired
     private EpUploadFileListMapper uploadFileListMapper;
 
-	public int save(String ufSeq, String tSeq, List<MultipartFile> multipartFiles) throws IOException
+	public int save(EpUploadFileDto uploadFile, String tSeq, List<MultipartFile> multipartFiles) throws IOException
 	{
-		EpUploadFileDto uploadFile = uploadFileService.getUploadFile(ufSeq);
+		//EpUploadFileDto uploadFile = uploadFileService.getUploadFile(ufSeq);
 
 		if (uploadFile != null)
 		{
@@ -78,7 +78,7 @@ public class EpUploadFileListService extends IvGeneralService
 
 				EpUploadFileListDto uploadFileList = new EpUploadFileListDto();
 				uploadFileList.setUflSeq(UidGenerateUtils.generate());
-				uploadFileList.setUfSeq(ufSeq);
+				uploadFileList.setUfSeq(uploadFile.getUfSeq());
 				uploadFileList.setTSeq(tSeq);
 				uploadFileList.setOriginName(FilenameUtils.getBaseName(originFilename));
 				uploadFileList.setSavedName(FilenameUtils.getBaseName(savedName));
@@ -172,7 +172,7 @@ public class EpUploadFileListService extends IvGeneralService
 		EpUploadFileListEntity uploadfileList = new EpUploadFileListEntity();
 		uploadfileList.setUflSeq(uflSeq);
 
-		return uploadFileListMapper.delete(uploadfileList);
+		return uploadFileListMapper.updateFgDelete(uploadfileList);
 	}
 
 	public int delete(List<String> uflSeqs)

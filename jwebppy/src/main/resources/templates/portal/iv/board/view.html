@@ -33,6 +33,14 @@
 			<tr>
 				<td colspan="6"><div id="xfe"></div></td>
 			</tr>
+			<tr th:style="${(board.fgSetTarget == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
+				<th th:text="#{HQP_L_VISIBLE_TARGET}"/>
+				<td colspan="5">
+					<div th:each="boardContentTarget : ${boardContent.boardContentTargets}">
+						<span th:text="${boardContentTarget.code}"></span><div class='split2'></div><span th:text="${boardContentTarget.description}"></span>
+					</div>				
+				</td>			
+			</tr>
 			<tr th:style="${(board.fgSetPeriod == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
 				<th th:text="#{HQP_L_VISIBLE_PERIOD}"/>
 				<td colspan="5">
@@ -40,7 +48,7 @@
 					<span th:if="${not #strings.isEmpty(boardContent.displayToView)}" th:text="| - ${boardContent.displayToView}|"></span>
 				</td>
 			</tr>
-			<tr>
+			<tr th:style="${board?.uploadFile != null ? '' : 'display:none;'}">
 				<th th:text="#{HQP_L_ATTACHMENT}"/>
 				<td colspan="5">
 					<div th:each="uploadFileList : ${boardContent.uploadFileLists}">

@@ -1,28 +1,37 @@
 package org.jwebppy.portal.iv.board.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmNumberUtils;
+import org.jwebppy.platform.core.util.Formatter;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentSearchDto;
+import org.jwebppy.portal.iv.board.dto.EpBoardContentTargetDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardDto;
 import org.jwebppy.portal.iv.board.service.EpBoardContentService;
 import org.jwebppy.portal.iv.board.service.EpBoardService;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
+import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.service.EpUploadFileListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH  + "/board")
@@ -33,6 +42,9 @@ public class EpBoardContentController extends IvGeneralController
 
 	@Autowired
 	private EpBoardContentService boardContentService;
+
+	@Autowired
+	private I18nMessageSource I18nMessageSource;
 
 	@Autowired
 	private EpUploadFileListService uploadFileListService;
@@ -63,10 +75,11 @@ public class EpBoardContentController extends IvGeneralController
 
 		EpBoardContentDto boardContent = boardContentService.getBoardContent(bcSeq);
 		EpBoardDto board = boardContent.getBoard();
+		EpUploadFileDto uploadFile = board.getUploadFile();
 
-		if (board.getUfSeq() != null)
+		if (uploadFile != null)
 		{
-			boardContent.setUploadFileLists(uploadFileListService.getUploadFileLists(board.getUfSeq(), boardContent.getBcSeq()));
+			boardContent.setUploadFileLists(uploadFileListService.getUploadFileLists(uploadFile.getUfSeq(), boardContent.getBcSeq()));
 		}
 
 		model.addAttribute("boardContent", boardContent);
@@ -88,9 +101,50 @@ public class EpBoardContentController extends IvGeneralController
 
 	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@ModelAttribute EpBoardContentDto boardContent, WebRequest webRequest) throws IOException
+	public Object save(@ModelAttribute EpBoardContentDto boardContent, @RequestParam(name = "targetCode", required = false) String[] targetCodes, @RequestParam(name = "targetDescription", required = false) String[] targetDescriptions)
 	{
-		return boardContentService.save(boardContent);
+		if (ArrayUtils.isNotEmpty(targetCodes))
+		{
+			List<EpBoardContentTargetDto> boardContentTargets = new ArrayList<>();
+			int index = 0;
+
+			for (String targetCode: targetCodes)
+			{
+				EpBoardContentTargetDto epBoardContentTarget = new EpBoardContentTargetDto();
+				epBoardContentTarget.setBcSeq(boardContent.getBcSeq());
+				epBoardContentTarget.setCode(targetCode);
+				epBoardContentTarget.setDescription(targetDescriptions[index]);
+				epBoardContentTarget.setType("D");//D:Dealer
+
+				boardContentTargets.add(epBoardContentTarget);
+
+				index++;
+			}
+
+			boardContent.setBoardContentTargets(boardContentTargets);
+		}
+
+		try
+		{
+			return boardContentService.save(boardContent);
+		}
+		catch (MaxUploadSizeExceededException e)
+		{
+			EpBoardDto board = boardService.getBoard(boardContent.getBcSeq());
+
+			if (board.getUploadFile() != null)
+			{
+				System.err.println(I18nMessageSource.getMessage("HQP_M_EXCEED_MAXIMUM_UPLOAD_SIZE", new String[] { Formatter.getDisplayFileSize(board.getUploadFile().getMaxFileSize()) } ));
+
+				return I18nMessageSource.getMessage("HQP_M_EXCEED_MAXIMUM_UPLOAD_SIZE", new String[] { Formatter.getDisplayFileSize(board.getUploadFile().getMaxFileSize()) } );
+			}
+		}
+		catch (IOException e)
+		{
+			System.err.println(2);
+		}
+
+		return null;
 	}
 
 	@PostMapping("/delete")
@@ -98,6 +152,20 @@ public class EpBoardContentController extends IvGeneralController
 	public Object delete(@RequestParam("bcSeq") List<String> bcSeqs)
 	{
 		return boardContentService.delete(bcSeqs);
+	}
+
+	@GetMapping("/target/data")
+	@ResponseBody
+	public Object targetData(@RequestParam("name") String name, @RequestParam("dealerCode") String dealerCode)
+	{
+		ErpDataMap rfcParamMap = getErpUserInfoByUsername();
+
+		rfcParamMap.add(new Object[][] {
+			{"name", name},
+			{"dealerCode", dealerCode}
+		});
+
+		return boardContentService.getDealers(rfcParamMap);
 	}
 
 	@Override
@@ -114,7 +182,6 @@ public class EpBoardContentController extends IvGeneralController
 		boardContentSearch.setToView(webRequest.getParameter("toView"));
 		boardContentSearch.setPageNumber(CmNumberUtils.toInt(webRequest.getParameter("pageNumber"), 1));
 		boardContentSearch.setRowPerPage(CmNumberUtils.toInt(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
-
 
 		model.addAttribute("boardContentSearch", boardContentSearch);
 		model.addAttribute("board", boardService.getBoard(webRequest.getParameter("bSeq")));

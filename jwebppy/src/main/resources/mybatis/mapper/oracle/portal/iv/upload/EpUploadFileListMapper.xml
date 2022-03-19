@@ -8,7 +8,7 @@
 		)
 	</insert>
 	
-	<update id="delete" parameterType="EpUploadFileListEntity">
+	<update id="updateFgDelete" parameterType="EpUploadFileListEntity">
 		update ep_upload_file_list set
 			fg_delete='Y',
 			mod_username=#{modUsername},

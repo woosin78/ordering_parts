@@ -42,7 +42,7 @@
 <script>
 $(document).ready(function() {
 	$(".ui.bottom_blank").height($(".ui.bottom").height());
-	_makeGnb();
+	makeGnb();
 	_checkExpiredPassword();
 });
 
@@ -86,7 +86,7 @@ $("#BTN_moveToTop").click(function() {
 	return false;
 });
 
-function _makeGnb()
+function makeGnb()
 {
 	//Make GNB
 	let menu = [];

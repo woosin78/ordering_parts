@@ -33,7 +33,6 @@ public class PortalSecurityConfig extends WebSecurityConfigurerAdapter
 			PortalConfigVo.INDEX_URL,
 			PortalConfigVo.ERROR_PAGE_URL,
 			PortalConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL,
-			PortalConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL
 	};
 
 	@Override

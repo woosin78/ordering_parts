@@ -99,6 +99,26 @@ input {
 	box-sizing: border-box;
 }
 
+/* placeholder 스타일 지정 */
+input::placeholder {
+  color: #dddddd;
+  opacity: 1; /* 파이어폭스에서 뿌옇게 나오는 현상을 방지하기 위한 css */
+}
+
+input::-webkit-input-placeholder {
+  color: #dddddd;
+}
+
+/* IE */
+input:-ms-input-placeholder {
+  color: #dddddd;
+}
+
+/* Firefox */
+input:-mos-input-placeholder {
+  color: #dddddd;
+}
+
 a.link {text-decoration: underline; color: #000; cursor: pointer;}
 a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 

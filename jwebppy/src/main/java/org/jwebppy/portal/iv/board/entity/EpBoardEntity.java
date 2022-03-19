@@ -1,6 +1,7 @@
 package org.jwebppy.portal.iv.board.entity;
 
 import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.portal.iv.upload.entity.EpUploadFileEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +21,7 @@ public class EpBoardEntity extends GeneralEntity
 	private String fgUseComment;
 	private String fgSetPeriod;
 	private String fgSetTarget;
-	private Integer ufSeq;
+	private String corp;
+	//private String ufSeq;
+	private EpUploadFileEntity uploadFile;
 }

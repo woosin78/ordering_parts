@@ -3,11 +3,11 @@ package org.jwebppy.portal.iv.board.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.XssHandleUtils;
+import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileListDto;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +19,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class EpBoardContentDto extends GeneralDto
+public class EpBoardContentDto extends IvGeneralDto
 {
 	private static final long serialVersionUID = -1969963429122839740L;
 
@@ -52,6 +52,7 @@ public class EpBoardContentDto extends GeneralDto
 	private EpBoardDto board;
 	private EpUploadFileDto uploadFile;
 	private List<EpUploadFileListDto> uploadFileLists;
+	private List<EpBoardContentTargetDto> boardContentTargets;
 
 	//variables for file upload
 	private List<MultipartFile> files;

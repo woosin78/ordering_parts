@@ -2,7 +2,6 @@ package org.jwebppy.portal.iv.upload.dto;
 
 import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,8 +15,7 @@ public class EpUploadFileDto extends IvGeneralDto
 
 	private String ufSeq;
 	private String description;
-	@Builder.Default
-	private long maxFileSize = 0l;
+	private long maxFileSize;
 	private String path;
 	private String exExtension;
 	private String inExtension;

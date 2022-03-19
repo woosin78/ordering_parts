@@ -3,8 +3,8 @@ let JpUiDimmer = {
 		html: "<div id='jsUiDimmer' class='ui dimmer'></div>",
 	
 		type1: "<div class='ui text inverted loader'><div class='content'></div></div>",
-		type2: "<div class='content'><h3 class='ui inverted header'></h3><button class='ui teal button ok'>OK</div></button>",
-		type3: "<div class='content'><h3 class='ui inverted header'></h3><button class='ui teal button ok'>OK</button><button class='ui button cancel'>Cancel</button></button>",
+		type2: "<div class='content'><h3 class='ui inverted header'></h3><button class='ui teal button ok'>OK</button></div>",
+		type3: "<div class='content'><h3 class='ui inverted header'></h3><button class='ui teal button ok'>OK</button><button class='ui button cancel'>Cancel</button></button></div>",
 		
 		isMessageDimmerActive: false,
 		obj: null,
@@ -30,6 +30,7 @@ let JpUiDimmer = {
 			
 			JpUiDimmer.showDimmer(function() {
 				obj.find(".ui.button.ok").focus();
+				return false;
 			});
 		},
 		confirm: function(message, callEvent, cancelEvent) {

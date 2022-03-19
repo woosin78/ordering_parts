@@ -30,12 +30,12 @@ public class I18nMessageSource extends AbstractMessageSource
 
 	public String getMessage(String key)
 	{
-		return getMessage(key, new Locale(UserAuthenticationUtils.getUserDetails().getLanguage()));
+		return getMessage(key, new Locale(UserAuthenticationUtils.getLanguage()));
 	}
 
 	public String getMessage(String key, String[] replaceTexts)
 	{
-		String text = getMessage(key, new Locale(UserAuthenticationUtils.getUserDetails().getLanguage()));
+		String text = getMessage(key);
 
 		for (int i=0, length=ArrayUtils.nullToEmpty(replaceTexts).length; i<length; i++)
 		{

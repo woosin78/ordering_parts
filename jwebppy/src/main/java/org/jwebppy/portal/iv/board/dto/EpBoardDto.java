@@ -1,7 +1,7 @@
 package org.jwebppy.portal.iv.board.dto;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
+import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,10 +17,11 @@ public class EpBoardDto extends IvGeneralDto
 	private String bSeq;
 	private String name;
 	private String description;
-	private String fgUseReply = PlatformCommonVo.NO;
-	private String fgUseComment = PlatformCommonVo.NO;
-	private String fgSetPeriod = PlatformCommonVo.NO;
-	private String fgSetTarget = PlatformCommonVo.NO;
-	private String ufSeq;
-	private String fgDelete = PlatformCommonVo.NO;
+	private String fgUseReply;
+	private String fgUseComment;
+	private String fgSetPeriod;
+	private String fgSetTarget;
+	private String corp;
+	//private String ufSeq;
+	private EpUploadFileDto uploadFile;
 }

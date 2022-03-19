@@ -21,7 +21,7 @@
 <script>
 $(document).ready(function() {
 	//상단 메뉴 생성 공통함수
-	_makeGnb();
+	makeGnb();
 	
 	$(".header .logo-doobizplus").on("click", function() {
 		_goHome()
@@ -79,7 +79,7 @@ function _checkExpiredPassword()
 			{
 				if (difference < 0)
 				{
-					JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]", function() {
+					JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
 						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
 					});
 				}

@@ -13,7 +13,7 @@ public class EpUploadFileEntity extends IvGeneralEntity
 {
 	private static final long serialVersionUID = -770355399257314505L;
 
-	private Integer ufSeq;
+	private String ufSeq;
 	private String description;
 	private long maxFileSize;
 	private String path;

@@ -46,23 +46,6 @@ public class EpUploadFileListDto extends IvGeneralDto
 
 	public String getDisplayFileSize()
 	{
-		double KB = 1024;
-		double MB = Math.pow(KB, 2);
-		double GB = Math.pow(KB, 3);
-
-		if (fileSize > GB)
-		{
-			return Formatter.getDefDecimalFormat(fileSize / GB) + "GB";
-		}
-		else if (fileSize > MB)
-		{
-			return Formatter.getDefDecimalFormat(fileSize / MB) + "MB";
-		}
-		else if (fileSize > KB)
-		{
-			return Formatter.getDefDecimalFormat(fileSize / KB) + "KB";
-		}
-
-		return Formatter.getDefDecimalFormat(fileSize) + "B";
+		return Formatter.getDisplayFileSize(fileSize);
 	}
 }

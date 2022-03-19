@@ -12,7 +12,7 @@ import org.jwebppy.portal.iv.upload.entity.EpUploadFileListEntity;
 public interface EpUploadFileListMapper
 {
 	public int insert(EpUploadFileListEntity uploadFileList);
-	public int delete(EpUploadFileListEntity UploadFileList);
+	public int updateFgDelete(EpUploadFileListEntity UploadFileList);
 	public EpUploadFileListEntity findUploadFileList(String uflSeq);
 	public List<EpUploadFileListEntity> findUploadFileLists(EpUploadFileListDto uploadFileList);
 }
