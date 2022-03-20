@@ -10,9 +10,10 @@
 	<div class="dropzone-area">
 		<div class="dropzone-area-top"></div>
 		<div class="dropzone-body dropzone-click-zone">
-			<div class="dropzone-click-zone" style="height:40.5px"></div>
+			<div class="dropzone-click-zone" style="height:20px"></div>
 			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/upload_file.png"/>
 			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_HOW_TO_UPLOAD_SIMULATION}"></div>
+			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_ITEMS_COPY_PASTE}"></div>
 		</div>
 		<div class="dropzone-bottom dropzone-click-zone">
 			<button type="button" onclick="UploadModal.hide()">[[#{HQP_B_CANCEL}]]</button>
@@ -182,6 +183,8 @@
 	$("input:radio[name=docType][value='[[${docType}]]']").prop("checked", true);
 	
 	var errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
+	var initialMaterialNos = [];
+	var initialOrderQties = [];	
 	
 	let UploadModal = {};
 	UploadModal.show = function() {
@@ -203,11 +206,43 @@
 		});
 	
 		$(".dropzone-dimmer, .dropzone-area").show();
+		
+		$(document).on("paste", function(event) {
+			triggerPasteFromClipload(event);
+		});
 	};
 	
 	UploadModal.hide = function()
 	{
 		$(".dropzone-dimmer, .dropzone-area").hide();
+		
+		$(document).off("paste");
+	};
+
+	function resetInitialItems()
+	{
+		initialMaterialNos = [];
+		initialOrderQties = [];		
+	};	
+	
+	function triggerPasteFromClipload(event)
+	{
+		resetInitialItems();
+		
+		let rows = event.originalEvent.clipboardData.getData("Text").split(String.fromCharCode(13));//13:CR
+		let items = [];
+		
+		$.each(rows, function(index, element) {
+			let item = element.split(String.fromCharCode(9));//9:tab
+			
+			if (item[0].trim() != null && item[0].trim() != "")
+			{
+				initialMaterialNos.push(JpUtilsString.replaceAll(item[0], String.fromCharCode(13), ""));
+				initialOrderQties.push(JpUtilsString.replaceAll(item[1], String.fromCharCode(13), ""));
+			};
+		});
+		
+		doSimulation();
 	};
 	
 	$(".dropzone-click-zone").dropzone({
@@ -440,28 +475,31 @@
 		//직접 입력한 후 시뮬레이션 했을 경우
 		if ($("#fileName").val() == "" && $("#simulationFrom").val() == "")
 		{
+			if (initialMaterialNos.length == 0)
+			{
+				let itemParameter = makeItemParameter();
+				
+				let materialNos = itemParameter.materialNos;
+				let orderQties = itemParameter.orderQties;
+		
+				if (materialNo.length == 0 || orderQties.length == 0)
+				{
+					alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
+					return;
+				};
+		
+				if (materialNos.length != orderQties.length)
+				{
+					alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
+					return;
+				};				
+			};
+			
 			if ($("#shippingCondition").val() == "")
 			{
 				alert("[[#{HQP_L_EMPTY_SHIPPING_INFO}]]");
 				return;
-			};
-			
-			let itemParameter = makeItemParameter();
-	
-			let materialNos = itemParameter.materialNos;
-			let orderQties = itemParameter.orderQties;
-	
-			if (materialNo.length == 0 || orderQties.length == 0)
-			{
-				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING	}]]");
-				return;
-			};
-	
-			if (materialNos.length != orderQties.length)
-			{
-				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING	}]]");
-				return;
-			};
+			};			
 		};
 		
 		//시뮬레이션 실행 내역 초기화
@@ -470,7 +508,7 @@
 		$tableObj.ajax.reload();
 		
 		UploadModal.hide();
-		ProgressBar.show();	
+		ProgressBar.show();
 	};
 	
 	function resetDoneSimulation()
@@ -513,7 +551,6 @@
 	});
 	
 	$("#BTN_addRow").on("click", function() {
-	
 		for (let i=0; i<10; i++)
 		{
 			let lastRow = $tableObj.row(":last").data();
@@ -792,10 +829,20 @@
 					//Item
 					if ($("#fileName").val() == "")
 					{
-						let itemParameter = makeItemParameter();
-						
-						p.materialNo = itemParameter.materialNos.join("^");
-						p.orderQty = itemParameter.orderQties.join("^");
+						if (initialMaterialNos.length > 0)
+						{
+							p.materialNo = initialMaterialNos.join("^");
+							p.orderQty = initialOrderQties.join("^");
+							
+							resetInitialItems();
+						}
+						else
+						{
+							let itemParameter = makeItemParameter();
+							
+							p.materialNo = itemParameter.materialNos.join("^");
+							p.orderQty = itemParameter.orderQties.join("^");
+						};
 					}
 					else
 					{
@@ -873,27 +920,26 @@
 			}			
 		});
 
-		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);		
-		
 		function reload()
 		{
 			$("#fileName").val("");
 			$tableObj.ajax.reload();
-		};		
+		};
 		
 		// Datatable onload event
 		$("#TBL_grid").on("draw.dt", function () {
 			$("#fileName").val("");
 			$("#simulationFrom").val("");
 			
-			$("#AREA_grid .btn-popup").on("click", function(event) {
+			$("#TBL_grid .btn-popup").on("click", function(event) {
 				_showPartSearch($(this).siblings("input[name=materialNo]").val());
 			});
 			
-			$.each($("#AREA_grid input[name=materialNo]"), function(index, item) {
+			$.each($("#TBL_grid input[name=materialNo]"), function(index, item) {
 				_setPartAutocomplete(item);	
 			});
+			
+			initGridTable($tableObj);
 	
 			ProgressBar.hide();
 		});

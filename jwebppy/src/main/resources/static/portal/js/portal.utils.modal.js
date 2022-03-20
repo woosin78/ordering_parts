@@ -69,10 +69,13 @@ Modal.dimmerResize = function() {
 		width = screen.availWidth;
 	};
 	
+	/*
 	$(".modal-dimmer").css({
 		"width": width,
-		"height": $(document).height()
+		"height": $(document).height(),
+		"overflow": "hidden"
 	});
+	*/
 };
 
 Modal.resize = function(width, height) {	

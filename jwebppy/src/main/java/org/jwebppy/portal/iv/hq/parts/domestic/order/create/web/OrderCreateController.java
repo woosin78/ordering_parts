@@ -164,8 +164,10 @@ public class OrderCreateController extends PartsDomesticGeneralController
 	}
 
 	@RequestMapping("/popup/ship_to_party")
-	public Object shipToParty(@RequestParam Map<String, Object> paramMap)
+	public Object shipToParty(Model model, WebRequest webRequest)
 	{
+		addAllAttributeFromRequest(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 
