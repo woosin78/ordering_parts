@@ -71,6 +71,9 @@ $(function(){
 			{name: "MAKTX", 	data: "MAKTX", 		title: "[[#{HQP_L_DESCRIPTION}]]"	},	// Part No Desc
 			{name: "AVA_FLAG", 	data: "AVA_FLAG", 	title: "[[#{HQP_L_AVAILABILITY}]]"	}	// Availability
 		],
+		columnDefs: [
+			{targets: [3], className: "dt-body-center"}
+		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/info/sub_part_list/data",
 			data: function(p)
