@@ -272,10 +272,10 @@ function doSearch()
 			let scale = "";
 			$.each(result.scaleList.reverse(), function(index, item) {
 				scale += "<tr>";
-				scale += "	<td>" + item.OPENQ + "</td>";
-				scale += "	<td>" + item.MEINS + "</td>";
-				scale += "	<td>" + item.FINAL_LPRICE + " " + currency + "</td>";
-				scale += "	<td><span class='hidden LPRICE'>" + item.LPRICE + " " + currency + "</span></td>";
+				scale += "	<td class='center'>" + item.OPENQ + "</td>";
+				scale += "	<td class='center'>" + item.MEINS + "</td>";
+				scale += "	<td class='right'>" + item.FINAL_LPRICE + " " + currency + "</td>";
+				scale += "	<td class='right'><span class='hidden LPRICE'>" + item.LPRICE + " " + currency + "</span></td>";
 				scale += "</tr>";
 			});
 			

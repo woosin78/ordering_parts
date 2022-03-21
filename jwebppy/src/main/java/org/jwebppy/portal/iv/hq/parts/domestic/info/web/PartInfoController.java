@@ -90,6 +90,8 @@ public class PartInfoController extends PartsDomesticGeneralController
 				rate = 1 + kbetr * 0.01;
 			}
 
+			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE", "LPRICE"}, "WAERS", new String[] {"KRW"}, 100);
+
 			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, rate);
 
 			FormatBuilder.with(scaleList)
