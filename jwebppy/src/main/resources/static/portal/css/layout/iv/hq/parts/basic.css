@@ -664,7 +664,7 @@ select.custom-ui{
 	border: 1px solid #ddd;
 	margin-right: 1px;
 	font-family: inherit;
-	background: url("/portal/img/arrow_down.png") no-repeat 95% 50%;
+	background: url("/portal/img/icon/arrow_down.png") no-repeat 95% 50%;
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;	
@@ -684,7 +684,7 @@ select::-ms-expand {
 	border-radius: 0px;
 	min-width: 24px;
 	vertical-align: top;
-	background-image: url('/portal/img/btn-popup.png');
+	background-image: url('/portal/img/icon/popup.png');
 	background-position: -4px -4px;
 }
 
@@ -699,7 +699,7 @@ select::-ms-expand {
 	border-radius: 0px;
 	min-width: 24px;
 	vertical-align: top;
-	background-image: url('/portal/img/btn-popup.png');
+	background-image: url('/portal/img/icon/popup.png');
 	background-position: -4px -4px;
 	position:absolute;
 }

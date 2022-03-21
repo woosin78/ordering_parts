@@ -5,19 +5,15 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 
 <th:block layout:fragment="content">
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
 <style>
-.thumbnail-loaded {
+.thumbnail {
 	width:100px;
 	height:100px;
 	/* border: 1px solid #ccc; */
 	cursor: pointer;
 }
-.thumbnail-no-image {
-	width:100px;
-	height:100px;
-	/* border: 1px solid #ccc; */
-}
+
 .bold {
 	font-weight: bold;
 }
@@ -34,9 +30,10 @@
 	<div class="dropzone-area">
 		<div class="dropzone-area-top"></div>
 		<div class="dropzone-body dropzone-click-zone">
-			<div class="dropzone-click-zone" style="height:40.5px"></div>
-			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/upload_file.png"/>
+			<div class="dropzone-click-zone" style="height:20px"></div>
+			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/icon/upload_file.png"/>
 			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_HOW_TO_UPLOAD_SIMULATION}"></div>
+			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_ITEMS_COPY_PASTE}"></div>
 		</div>
 		<div class="dropzone-bottom dropzone-click-zone">
 			<button type="button" onclick="UploadModal.hide()">[[#{HQP_B_CANCEL}]]</button>
@@ -222,24 +219,18 @@
 	</div>
 	
 	<script>
-	$(document).ready(function() {
-		/*
-		$(".thumbnail").lazyload({
-			placeholder: "/portal/img/common/loading.gif" 
-		});
-		*/
-	});	
-
 	$("input:radio[name=docType][value='[[${docType}]]']").prop("checked", true);
 	
 	var errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
+	var initialMaterialNos = [];
+	var initialOrderQties = [];	
 	
 	let UploadModal = {};
 	UploadModal.show = function() {
 		let width = 480;
 		let height = 250;
 		let left = ($(window).innerWidth() - width) * 0.5;
-		let top = ($(window).innerHeight() - height) * 0.5 + $(window).scrollTop();;
+		let top = ($(window).innerHeight() - height) * 0.5;
 	
 		$(".dropzone-area").css({
 			"width": width,
@@ -254,11 +245,43 @@
 		});
 	
 		$(".dropzone-dimmer, .dropzone-area").show();
+		
+		$(document).on("paste", function(event) {
+			triggerPasteFromClipload(event);
+		});
 	};
 	
 	UploadModal.hide = function()
 	{
 		$(".dropzone-dimmer, .dropzone-area").hide();
+		
+		$(document).off("paste");
+	};
+
+	function resetInitialItems()
+	{
+		initialMaterialNos = [];
+		initialOrderQties = [];		
+	};	
+	
+	function triggerPasteFromClipload(event)
+	{
+		resetInitialItems();
+		
+		let rows = event.originalEvent.clipboardData.getData("Text").split(String.fromCharCode(13));//13:CR
+		let items = [];
+		
+		$.each(rows, function(index, element) {
+			let item = element.split(String.fromCharCode(9));//9:tab
+			
+			if (item[0].trim() != null && item[0].trim() != "")
+			{
+				initialMaterialNos.push(JpUtilsString.replaceAll(item[0], String.fromCharCode(13), ""));
+				initialOrderQties.push(JpUtilsString.replaceAll(item[1], String.fromCharCode(13), ""));
+			};
+		});
+		
+		doSimulation();
 	};
 	
 	$(".dropzone-click-zone").dropzone({
@@ -491,28 +514,31 @@
 		//직접 입력한 후 시뮬레이션 했을 경우
 		if ($("#fileName").val() == "" && $("#simulationFrom").val() == "")
 		{
+			if (initialMaterialNos.length == 0)
+			{
+				let itemParameter = makeItemParameter();
+				
+				let materialNos = itemParameter.materialNos;
+				let orderQties = itemParameter.orderQties;
+		
+				if (materialNo.length == 0 || orderQties.length == 0)
+				{
+					alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
+					return;
+				};
+		
+				if (materialNos.length != orderQties.length)
+				{
+					alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
+					return;
+				};				
+			};
+			
 			if ($("#shippingCondition").val() == "")
 			{
 				alert("[[#{HQP_L_EMPTY_SHIPPING_INFO}]]");
 				return;
-			};
-			
-			let itemParameter = makeItemParameter();
-	
-			let materialNos = itemParameter.materialNos;
-			let orderQties = itemParameter.orderQties;
-	
-			if (materialNo.length == 0 || orderQties.length == 0)
-			{
-				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING	}]]");
-				return;
-			};
-	
-			if (materialNos.length != orderQties.length)
-			{
-				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING	}]]");
-				return;
-			};
+			};			
 		};
 		
 		//시뮬레이션 실행 내역 초기화
@@ -521,7 +547,7 @@
 		$tableObj.ajax.reload();
 		
 		UploadModal.hide();
-		ProgressBar.show();	
+		ProgressBar.show();
 	};
 	
 	function resetDoneSimulation()
@@ -770,7 +796,6 @@
 			columns: [
 				{// 컬럼에 checkbox 설정
 					name: "chk",
-					className:"center noselect skip-download",// row selection 기능 막음.
 					orderable: false,// checkbox 는 정렬 불가					
 					title:"<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)' onclick='allChecked(this)'><label></label>",
 					render: function(data, type, row)
@@ -787,7 +812,6 @@
 				{
 					title: "[[#{HQP_L_THUMBNAIL}]]",
 					orderable: false,
-					className:"noselect",
 					render: function(data, type, row)
 					{
 						let thumbnail = "";
@@ -795,7 +819,8 @@
 						
 						if (JpUtilsString.isNotEmpty(supplyMaterialNo))
 						{
-							thumbnail = "<img class='thumbnail' data-original='http://gpes.doosan-iv.com/common/imageResize.jsp?p_imgurl=/djvu/jpg/IV/" + supplyMaterialNo.substr(0, 1) + "/&p_file=" + supplyMaterialNo + "&p_sub=_thumb' materialNo='" + row.supplyMaterialNo + "' >";
+							//Lazy loading 을 사용하기 위해서는 class 에 lozad 가 추가되어야 함
+							thumbnail = "<img class='thumbnail lozad' data-src='https://gpes.doosan-iv.com/djvu/jpg/IV/" + supplyMaterialNo.substr(0, 1) + "/" + supplyMaterialNo + "_thumb.jpg' materialNo='" + supplyMaterialNo + "' errorCount='0'>";
 						};
 						 
 						return thumbnail;
@@ -804,7 +829,6 @@
 				{
 					title: "[[#{HQP_L_ORDER_PART_NO}]]",
 					orderable: false,
-					className:"noselect",
 					render: function(data, type, row)
 					{
 						let partInfo = [];
@@ -812,7 +836,7 @@
 						partInfo.push("<div style='line-height: 23px;'>");
 						partInfo.push("<span class='bold'>[[#{HQP_L_ITEM}]]: " + row.lineNo + "</span></br>");
 						partInfo.push("[[#{HQP_L_ORDER_PART_NO}]]: <input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)' style='width:200px'><br/>");
-						partInfo.push("[[#{HQP_L_REQ_QTY}]]: <input type='text' class='custom-ui' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'><br/>");// FixedColumns 사용시엔 syncInput 호출 필요함.
+						partInfo.push("[[#{HQP_L_REQ_QTY}]]: <input type='number' min='1' class='custom-ui' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'><br/>");// FixedColumns 사용시엔 syncInput 호출 필요함.
 						
 						if (JpUtilsString.isNotEmpty(row.materialNo))
 						{
@@ -836,13 +860,13 @@
 						return partInfo.join("");
 					}
 				},
-				{name: "netPrice", data: "netPrice", title: "[[#{HQP_L_NET_PRICE}]]", className: "right"},//Net Price
-				{name: "netValue", data: "netValue", title: "[[#{HQP_L_NET_VALUE}]]", className: "right bold"}//Net Value
+				{name: "netPrice", data: "netPrice", title: "[[#{HQP_L_NET_PRICE}]]"},//Net Price
+				{name: "netValue", data: "netValue", title: "[[#{HQP_L_NET_VALUE}]]"}//Net Value
 			],
 			columnDefs: [
-				{"width": "80px", "targets": 0},
-				{"width": "110px", "targets": 1},
-				{"width": "150px", "targets": [3,4]},
+				{targets: 0, className: "skip-download dt-body-center"},
+				{targets: 1},
+				{targets: [3, 4], className: "dt-body-center"},
 			],
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/create/simulation",
@@ -870,10 +894,20 @@
 					//Item
 					if ($("#fileName").val() == "")
 					{
-						let itemParameter = makeItemParameter();
-						
-						p.materialNo = itemParameter.materialNos.join("^");
-						p.orderQty = itemParameter.orderQties.join("^");
+						if (initialMaterialNos.length > 0)
+						{
+							p.materialNo = initialMaterialNos.join("^");
+							p.orderQty = initialOrderQties.join("^");
+							
+							resetInitialItems();
+						}
+						else
+						{
+							let itemParameter = makeItemParameter();
+							
+							p.materialNo = itemParameter.materialNos.join("^");
+							p.orderQty = itemParameter.orderQties.join("^");
+						};
 					}
 					else
 					{
@@ -974,18 +1008,37 @@
 				let img = "<img src='" + $(this).attr("src") + "' style='width:700px; height:500px;'/>";
 				
 				Modal.show($(this).attr("materialNo"), 740, 590, img, true);
-			}).lazyload({
-				load: function()
+			}).on("error", function() {
+				if ($(this).attr("errorCount") == 0)
 				{
-					$(this).addClass("thumbnail-loaded");
+					console.log(1);
+					
+					let materialNo = $(this).attr("materialNo");
+					
+					$(this).attr({
+						"src": "https://gpes.doosan-iv.com/djvu/jpg/IV/" + materialNo.substr(0, 1) + "/" + materialNo + ".jpg",
+						"errorCount": "1"
+					});
 				}
+				else
+				{
+					$(this).attr({
+						"src": "/portal/img/common/no-data.png"
+					})
+					.css("cursor", "default")
+					.off("error").off("click");
+				};
 			});
+
+			//Lazy load Images 
+			const observer = lozad();
+			observer.observe();
 			
 			// Datatable grid 초기 설정 셋업
 			initGridTable($tableObj, true);
 			
 			ProgressBar.hide();
 		});
-	});
+	});	
 	</script>
 </th:block>

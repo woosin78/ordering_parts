@@ -2,7 +2,7 @@
 // 그리드에 값 없을때 표시할 내용
 let emptyMessage = 
 			"<div class='empty-message-area'>"
-				+"<img src='/portal/img/no-data.png'/>"
+				+"<img src='/portal/img/common/no-data.png'/>"
 				+"<div>There is no searching result.</div>"
 			+"</div>";
 

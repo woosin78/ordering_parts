@@ -7,7 +7,7 @@ $(function() {
         ,changeYear: true //콤보박스에서 년 선택 가능
         ,changeMonth: true //콤보박스에서 월 선택 가능                
         ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
-        ,buttonImage: "/portal/img/btn_calendar.png" //버튼 이미지 경로
+        ,buttonImage: "/portal/img/icon/calendar.png" //버튼 이미지 경로
         ,buttonImageOnly: true //기본 버튼의 회색 부분을 없애고, 이미지만 보이게 함
 //        ,buttonText: "선택" //버튼에 마우스 갖다 댔을 때 표시되는 텍스트                
 //        ,yearSuffix: "년" //달력의 년도 부분 뒤에 붙는 텍스트

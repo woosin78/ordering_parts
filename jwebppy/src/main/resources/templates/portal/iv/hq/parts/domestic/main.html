@@ -49,7 +49,7 @@
 			<div class="gnb-area">
 				<div class="header">
 					<div class="logo-area">
-						<img class="logo-doosan" th:src="@{/portal/img/main/logo2.png}" /><img class="logo-doobizplus" th:src="@{/portal/img/doobizplus.png}" alt="DOOBIZ Plus" />
+						<img class="logo-doosan" th:src="@{/portal/img/logo/logo2.png}" /><img class="logo-doobizplus" th:src="@{/portal/img/logo/doobizplus.png}" alt="DOOBIZ Plus" />
 					</div>
 					<div class="info-area">
 						<ul class="info-list">
@@ -92,7 +92,7 @@
 											<th:block th:if="${#lists.isEmpty(noticeList)}">
 												<tr>
 													<td rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_NOTICE}"></div> <img
-														src="/portal/img/main/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
+														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
 													/></td>
 													<td colspan="2" th:text="|・  #{HQP_M_EMPTY_RESULT}|"></td>
 												</tr>
@@ -103,7 +103,7 @@
 											<th:block th:unless="${#lists.isEmpty(noticeList)}">
 												<tr th:each="bbsContent, i : ${noticeList}">
 													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_NOTICE}"></div> <img
-														src="/portal/img/main/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
+														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
 													/></td>
 													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|"
 															th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"
@@ -128,7 +128,7 @@
 											<th:block th:if="${#lists.isEmpty(promotionList)}">
 												<tr>
 													<td rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img
-														src="/portal/img/main/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
+														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
 													/></td>
 													<td colspan="2" th:text="|・  #{HQP_M_EMPTY_RESULT}|"></td>
 												</tr>
@@ -139,7 +139,7 @@
 											<th:block th:unless="${#lists.isEmpty(promotionList)}">
 												<tr th:each="bbsContent, i : ${promotionList}">
 													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img
-														src="/portal/img/main/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
+														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
 													/></td>
 													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|"
 															th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"
