@@ -30,9 +30,8 @@ public class IndexContoller extends PlatformGeneralController
 
 	public static void main(String[] args)
 	{
-		System.err.println(AES256Cipher.getInstance().encode("divdp"));
-		System.err.println(AES256Cipher.getInstance().encode("1111"));
-
-
+		System.err.println(AES256Cipher.getInstance().encode("divdp_01"));
+		System.err.println(AES256Cipher.getInstance().encode("divdp_2203"));
+		System.err.println(AES256Cipher.getInstance().encode("Wlqdprkwk!@"));
 	}
 }
