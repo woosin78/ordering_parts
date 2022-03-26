@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.service.GeneralService;
@@ -39,6 +40,11 @@ public class DataAccessLogService extends GeneralService
 	private SimpleRfcTemplate simpleRfcTemplate;
 
 	@Async("threadPoolTaskExecutor")
+	public void writeLogOnAsync(DataAccessLogDto dataAccessLog)
+    {
+		writeLog(dataAccessLog);
+    }
+
 	public void writeLog(DataAccessLogDto dataAccessLog)
 	{
 		DataAccessLogEntity dataAccessLogEntity = CmModelMapperUtils.mapToEntity(DataAccessLogObjectMapper.INSTANCE, dataAccessLog);
@@ -56,19 +62,22 @@ public class DataAccessLogService extends GeneralService
 
 				dataAccessLogMapper.insertDataAccessLogParameter(dataAccessLogParameterEntity);
 
-				if (CollectionUtils.isNotEmpty(dataAccessLogParameter.getDataAccessLogParameterDetails()))
+				if (ObjectUtils.isNotEmpty(dataAccessLogParameterEntity.getDlpSeq()))
 				{
-					for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail : dataAccessLogParameter.getDataAccessLogParameterDetails())
+					if (CollectionUtils.isNotEmpty(dataAccessLogParameter.getDataAccessLogParameterDetails()))
 					{
-						if (CmStringUtils.isEmpty(dataAccessLogParameterDetail.getValue()))
+						for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail : dataAccessLogParameter.getDataAccessLogParameterDetails())
 						{
-							continue;
+							if (CmStringUtils.isEmpty(dataAccessLogParameterDetail.getValue()))
+							{
+								continue;
+							}
+
+							DataAccessLogParameterDetailEntity dataAccessLogParameterDetailEntity = CmModelMapperUtils.mapToEntity(DataAccessLogParameterDetailObjectMapper.INSTANCE, dataAccessLogParameterDetail);
+
+							dataAccessLogParameterDetailEntity.setDlpSeq(dataAccessLogParameterEntity.getDlpSeq());
+							dataAccessLogMapper.insertDataAccessLogParameterDetail(dataAccessLogParameterDetailEntity);
 						}
-
-						DataAccessLogParameterDetailEntity dataAccessLogParameterDetailEntity = CmModelMapperUtils.mapToEntity(DataAccessLogParameterDetailObjectMapper.INSTANCE, dataAccessLogParameterDetail);
-
-						dataAccessLogParameterDetailEntity.setDlpSeq(dataAccessLogParameterEntity.getDlpSeq());
-						dataAccessLogMapper.insertDataAccessLogParameterDetail(dataAccessLogParameterDetailEntity);
 					}
 				}
 			}

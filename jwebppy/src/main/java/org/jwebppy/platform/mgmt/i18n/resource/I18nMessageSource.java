@@ -39,7 +39,7 @@ public class I18nMessageSource extends AbstractMessageSource
 
 		for (int i=0, length=ArrayUtils.nullToEmpty(replaceTexts).length; i<length; i++)
 		{
-			text = RegExUtils.replaceAll(text, "{" + i + "}", replaceTexts[i]);
+			text = RegExUtils.replaceAll(text, "\\{" + i + "\\}", replaceTexts[i]);
 		}
 
 		return text;

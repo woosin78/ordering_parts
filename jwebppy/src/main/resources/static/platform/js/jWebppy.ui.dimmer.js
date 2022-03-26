@@ -29,7 +29,8 @@ let JpUiDimmer = {
 			});
 			
 			JpUiDimmer.showDimmer(function() {
-				//obj.find(".ui.button.ok").focus();
+				obj.find(".ui.button.ok").focus();
+				return false;
 			});
 		},
 		confirm: function(message, callEvent, cancelEvent) {
@@ -58,7 +59,7 @@ let JpUiDimmer = {
 			});
 			
 			JpUiDimmer.showDimmer(function() {
-				//obj.find(".ui.button.cancel").focus();
+				obj.find(".ui.button.cancel").focus();
 			});
 		},
 		hide: function() {

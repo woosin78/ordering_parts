@@ -33,7 +33,6 @@ import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -52,16 +51,16 @@ public class RfcExecutionAspect
     @Around("execution(* org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate.response(..))")
     public Object onAround(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable
     {
-		RfcResponse result = null;
-		String dlSeq = null;
+		Object result = null;
+		String dlSeq = UidGenerateUtils.generate();
 
 		try
 		{
 			setSapConnector(proceedingJoinPoint);
 
-			dlSeq = writeLog(proceedingJoinPoint);
+			result = proceedingJoinPoint.proceed();
 
-			result = (RfcResponse)proceedingJoinPoint.proceed();
+			dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
 		}
 		catch (Exception e)
 		{
@@ -69,8 +68,7 @@ public class RfcExecutionAspect
 		}
 		finally
 		{
-	    	result.setDlSeq(dlSeq);
-	    	writeResultLog(dlSeq, result);
+			dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
 		}
 
 		return result;
@@ -134,14 +132,12 @@ public class RfcExecutionAspect
 		return stackTrace;
     }
 
-    private String writeLog(ProceedingJoinPoint proceedingJoinPoint)
+    public DataAccessLogDto makeDataAccessLog(ProceedingJoinPoint proceedingJoinPoint, RfcResponse rfcResponse, String dlSeq)
     {
     	Object[] args = proceedingJoinPoint.getArgs();
     	RfcRequest rfcRequest = (RfcRequest)args[0];
 
     	String[] stackTrace = getLastStackTrace();
-
-		String dlSeq = UidGenerateUtils.generate();
 
 		DataAccessLogDto dataAccessLog = new DataAccessLogDto();
 		dataAccessLog.setDlSeq(dlSeq);
@@ -152,6 +148,11 @@ public class RfcExecutionAspect
 		dataAccessLog.setRequestId(MDC.get(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY));
 		dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
 		dataAccessLog.setDataAccessLogParameters(makeParameters(rfcRequest));
+		dataAccessLog.setDestination(rfcResponse.getDestination());
+		dataAccessLog.setStartTime(rfcResponse.getStartTime());
+		dataAccessLog.setElapsed(rfcResponse.getElapsed());
+		dataAccessLog.setError(rfcResponse.getErrorMsg());
+
 
 		if (UserAuthenticationUtils.isAuthenticated())
 		{
@@ -159,30 +160,9 @@ public class RfcExecutionAspect
 			dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
 		}
 
-		dataAccessLogService.writeLog(dataAccessLog);
+		dataAccessLogService.modifyDataAccessLog(dataAccessLog);
 
-		return dlSeq;
-    }
-
-	@Async("threadPoolTaskExecutor")
-    private String writeResultLog(String dlSeq, RfcResponse rfcResponse)
-    {
-		if (rfcResponse != null)
-		{
-			DataAccessLogDto dataAccessLog = new DataAccessLogDto();
-
-			dataAccessLog.setDlSeq(dlSeq);
-			dataAccessLog.setDestination(rfcResponse.getDestination());
-			dataAccessLog.setStartTime(rfcResponse.getStartTime());
-			dataAccessLog.setElapsed(rfcResponse.getElapsed());
-			dataAccessLog.setError(rfcResponse.getErrorMsg());
-
-			dataAccessLogService.modifyDataAccessLog(dataAccessLog);
-
-			dataAccessResultLogService.writeLog(dlSeq, rfcResponse);
-		}
-
-		return dlSeq;
+		return dataAccessLog;
     }
 
 	private List<DataAccessLogParameterDto> makeParameters(RfcRequest rfcRequest)

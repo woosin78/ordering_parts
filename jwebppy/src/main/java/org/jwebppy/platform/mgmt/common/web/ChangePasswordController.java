@@ -93,7 +93,7 @@ public class ChangePasswordController extends MgmtGeneralController
 								}
 								else
 								{
-									messages = (List<String>)resultMap.get("MESSAGE");
+									messages.addAll((List<String>)resultMap.get("MESSAGE"));
 								}
 							}
 							else

@@ -775,7 +775,8 @@
 					orderable: false,
 					render: function(data, type, row)
 					{
-						return "<button class='btn-popup' type='button'></button><input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
+						//return "<button class='btn-popup' type='button'></button><input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
+						return "<input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
 				{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{HQP_L_SUPPLY_PART_NO}]]", width: 200},//Supply Part No

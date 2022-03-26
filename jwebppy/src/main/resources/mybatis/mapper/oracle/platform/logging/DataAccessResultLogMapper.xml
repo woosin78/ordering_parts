@@ -31,13 +31,13 @@
 			select pltf_drlp_seq.nextval from dual
 		</selectKey>
 
-		insert into pltf_dacs_res_log_param (drlp_seq, drl_seq, type, name) values (
+		insert /*+append*/ into pltf_dacs_res_log_param (drlp_seq, drl_seq, type, name) values (
 			#{drlpSeq}, #{drlSeq}, #{type}, #{name}
 		)
 	</insert>
 
 	<insert id="insertDataAccessResultLogParameterDetail" parameterType="DataAccessResultLogParameterDetailEntity">
-		insert into pltf_dacs_res_log_param_detail (drlp_seq, line_no, name, value) values (
+		insert /*+append*/ into pltf_dacs_res_log_param_detail (drlp_seq, line_no, name, value) values (
 			#{drlpSeq}, #{lineNo}, #{name}, #{value}
 		)
 	</insert>	

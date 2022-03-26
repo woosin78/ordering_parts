@@ -10,6 +10,7 @@ import javax.naming.directory.InitialDirContext;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.service.UserAuthenticationService;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
@@ -39,6 +40,9 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 	private String LDAP_DEFAULT_NAMING_CONTEXT;
 
 	@Autowired
+	private I18nMessageSource i18nMessageSource;
+
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	@Autowired
@@ -55,7 +59,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
         if (CmStringUtils.isEmpty(username) || CmStringUtils.isEmpty(password))
         {
-        	throw new BadCredentialsException("The username or password is incorrect.");
+        	throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
         }
 
         UserDto user = userService.getUserByUsername(username);
@@ -98,22 +102,22 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         	{
                 if (!userAccount.isValidPeriod())
                 {
-                	throw new AccountExpiredException("The account has expired.");
+                	throw new AccountExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_EXPIRED"));
                 }
                 else if (PlatformCommonVo.YES.equals(user.getUserAccount().getFgAccountLocked()))
                 {
-                	throw new LockedException("The account has been locked.");
+                	throw new LockedException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_LOCKED"));
                 }
                 else if (PlatformCommonVo.YES.equals(user.getUserAccount().getFgPasswordLocked()))
                 {
-                	throw new CredentialsExpiredException("The password has expired.");
+                	throw new CredentialsExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_PASSWORD_EXPIRED"));
                 }
 
                 return userAuthenticationService.getAuthentication(user);
         	}
         }
 
-        throw new BadCredentialsException("The username or password is incorrect.");
+        throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
 	}
 
 	protected boolean isValidUserByLdap(String username, String password)

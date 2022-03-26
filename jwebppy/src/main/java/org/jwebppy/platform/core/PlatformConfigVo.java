@@ -62,7 +62,8 @@ public class PlatformConfigVo
 	//oracle, mariadb, mssql
 
 	//Key
-	public final static String REQUEST_MDC_UUID_TOKEN_KEY = "RUID";
+	public final static String REQUEST_MDC_UUID_TOKEN_KEY = "RUID";//ServletRequest
+	public final static String SESSION_MDC_UUID_TOKEN_KEY = "SUID";//Session
 
 	//문자열 구분자
 	public static final String DELIMITER = "^";

@@ -1,5 +1,6 @@
 package org.jwebppy.platform.core.interceptor;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -51,7 +52,7 @@ public class JdbcExecutionAspect extends DataAccessAspect
 			{
 				DataAccessLogDto dataAccessLog = JdbcStatementContextUtils.get();
 
-				if (dataAccessLog != null)
+				if (ObjectUtils.isNotEmpty(dataAccessLog))
 				{
 					dataAccessLog.setClassName(signature.getDeclaringTypeName());
 					dataAccessLog.setMethodName(signature.getName());

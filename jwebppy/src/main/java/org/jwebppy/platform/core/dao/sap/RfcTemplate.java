@@ -67,9 +67,7 @@ public class RfcTemplate extends AbstractDaoTemplate
 		JCoDestination jCoDestination = null;
 		JCoFunction jCoFunction = null;
 
-		StopWatch stopWatch = new StopWatch();
-
-		stopWatch.start();
+		StopWatch stopWatch = null;
 
         try
         {
@@ -81,6 +79,9 @@ public class RfcTemplate extends AbstractDaoTemplate
             jCoFunction = getJCoFunction(jCoDestination, rfcRequest.getFunctionName());
 
             setParameter(jCoFunction, rfcRequest.getParameterSource().getValues());
+
+            stopWatch = new StopWatch();
+            stopWatch.start();
 
             jCoFunction.execute(jCoDestination);
 

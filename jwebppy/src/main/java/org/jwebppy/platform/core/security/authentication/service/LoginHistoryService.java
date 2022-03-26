@@ -1,12 +1,10 @@
 package org.jwebppy.platform.core.security.authentication.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
@@ -48,6 +46,8 @@ public class LoginHistoryService extends GeneralService
 	{
 		if (createLoginHistory(request, response, PlatformCommonVo.NO) > 0)
 		{
+			/*
+			 * 일정횟수 이상 인증오류 시 계정 lock
 			if (PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_ALLOWABLE_COUNT > 0)
 			{
 				String username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
@@ -73,6 +73,7 @@ public class LoginHistoryService extends GeneralService
 					}
 				}
 			}
+			*/
 
 			return 1;
 		}
