@@ -44,9 +44,10 @@ public class JdbcStatementInterceptor implements Interceptor
 		StopWatch stopWatch = new StopWatch();
 		Object result = null;
 
+		stopWatch.start();
+
 		try
 		{
-			stopWatch.start();
 			result = invocation.proceed();
 			stopWatch.stop();
 		}

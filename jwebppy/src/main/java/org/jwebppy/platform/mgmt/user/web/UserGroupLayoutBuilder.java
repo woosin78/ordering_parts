@@ -124,6 +124,7 @@ public class UserGroupLayoutBuilder
 		document.addDefaultLabelText("Time Format (Front-End)", userGroup.getTimeFormat2());
 		document.addDefaultLabelText("Country", userGroup.getDisplayCountry());
 		document.addDefaultLabelText("Timezone", userGroup.getDisplayTimezone());
+		document.addDefaultLabelText("Currency Format", userGroup.getCurrencyFormat());
 		document.addDefaultLabelText("Credentials Policy", loCredentialsPolicy);
 		document.addDefaultLabelText("Allowable Languages", langKind);
 		document.addDefaultLabelText("Default Language", userGroup.getDisplayDefLang());
@@ -205,6 +206,10 @@ public class UserGroupLayoutBuilder
 			loTimezone.addOption(id, id + ", " + TimeZone.getTimeZone(id).getDisplayName());
 		}
 
+		Input loCurrencyFormat = new Input("currencyFormat", userGroup.getCurrencyFormat());
+		loCurrencyFormat.setLabel("Currency Format");
+		loCurrencyFormat.setRequired(true);
+
 		Select loCredentialPolicy = new Select("cpSeq");
 		loCredentialPolicy.setLabel("Credential Policy");
 		loCredentialPolicy.setRequired(true);
@@ -277,6 +282,7 @@ public class UserGroupLayoutBuilder
 		document.addElement(loTimeFormat2);
 		document.addElement(loCountry);
 		document.addElement(loTimezone);
+		document.addElement(loCurrencyFormat);
 		document.addElement(loCredentialPolicy);
 		document.addElement(loLangKindFields);
 		document.addElement(loDefLangFields);

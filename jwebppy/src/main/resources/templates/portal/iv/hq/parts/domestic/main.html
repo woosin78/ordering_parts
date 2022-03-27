@@ -11,22 +11,10 @@
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/main.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"/>
 	
 	<!-- JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-	
-	<!-- custom javascript library -->
-	<script th:src="@{/portal/js/jWebppy.utils.object.js}"></script>
-	<script th:src="@{/portal/js/jWebppy.utils.string.js}"></script>
-	<script th:src="@{/portal/js/jWebppy.utils.number.js}"></script>
-	<script th:src="@{/portal/js/jWebppy.utils.security.js}"></script>
-	<script th:src="@{/portal/js/jWebppy.utils.path.js}"></script>
-	<script th:src="@{/portal/js/jWebppy.utils.ajax.js}"></script>
-	<script th:src="@{/portal/js/jWebppy.ui.popup.js}"></script>
-	<script th:src="@{/portal/js/portal.utils.progressbar.js}"></script>
-	<script th:src="@{/portal/js/portal.ui.gnb.js}"></script>
+	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/js"></th:block>
 </head>
 <body>
 	<!-- Progress bar end -->
@@ -47,7 +35,7 @@
 			</div>
 			<!-- header.jsp begin -->
 			<div class="gnb-area">
-				<div class="header">
+				<div class="top-header">
 					<div class="logo-area">
 						<img class="logo-doosan" th:src="@{/portal/img/logo/logo2.png}" /><img class="logo-doobizplus" th:src="@{/portal/img/logo/doobizplus.png}" alt="DOOBIZ Plus" />
 					</div>
@@ -218,6 +206,8 @@ $(function(){
 	    	};	    	
 	    }	
 	});
+	
+	checkExpiredPassword();
 });
 
 function goHome()
@@ -248,6 +238,40 @@ function goBbsFromMain(bSeq)	// 게시판 +버튼
 function goBbsPopFromMain(bSeq, bcSeq)	// 게시판 게시물 링크(팝업)
 {
 	Popup.open("/portal/corp/eu/common/bbs/detail_popup?bSeq=" + bSeq + "&bcSeq=" + bcSeq);
+};
+
+
+function checkExpiredPassword()
+{
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/check/expired_password",
+		global: false,
+		success: function(data, textStatus, jqXHR)
+		{
+			let result = data.RESULT;
+			
+			let difference = parseInt(result.difference);
+			
+			if (difference < 15)
+			{
+				if (difference < 0)
+				{
+					JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
+						document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});
+				}
+				else
+				{
+					let message = "[[#{PLTF_M_PASSWORD_EXPIRE_DATE_NOTICE}]]".replace("{0}", result.expiredDate);
+					
+					JpUiDimmer.confirm(message, function() {
+						document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});					
+				};
+
+			};
+		}
+	});
 };
 </script>
 </body>

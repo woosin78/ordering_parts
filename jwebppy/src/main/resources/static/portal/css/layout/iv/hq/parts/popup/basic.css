@@ -123,7 +123,7 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 
 /*--- header(최상단) 영역  ------------------*/
 
-.header {
+.top-header {
 	box-sizing: border-box;
 	height: 58px;
 	text-align: right;

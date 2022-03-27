@@ -33,12 +33,16 @@ import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
 public class RfcExecutionAspect
 {
+	@Value("${if.logging.sap}")
+	private boolean isActiveLogging;
+
 	@Autowired
 	private DataAccessLogService dataAccessLogService;
 
@@ -60,7 +64,10 @@ public class RfcExecutionAspect
 
 			result = proceedingJoinPoint.proceed();
 
-			dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
+			if (isActiveLogging)
+			{
+				dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
+			}
 		}
 		catch (Exception e)
 		{
@@ -68,7 +75,10 @@ public class RfcExecutionAspect
 		}
 		finally
 		{
-			dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
+			if (isActiveLogging)
+			{
+				dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
+			}
 		}
 
 		return result;

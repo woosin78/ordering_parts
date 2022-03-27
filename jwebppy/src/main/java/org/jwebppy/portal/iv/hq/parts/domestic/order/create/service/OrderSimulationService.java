@@ -1,6 +1,5 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.order.create.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -19,6 +18,7 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.core.util.Formatter;
+import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
@@ -43,9 +43,13 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY");
 
-		rfcRequest.addField("I_LANGU", order.getLanguage());
-		rfcRequest.addField("I_BGTYP", "P");
-		rfcRequest.addField("I_USERID", order.getUsername());
+		rfcRequest.
+			field()
+				.add(new Object[][] {
+					{"I_LANGU", order.getLanguage()},
+					{"I_BGTYP", "P"},
+					{"I_USERID", order.getUsername()}
+				});
 
 		List<Map<String, Object>> items = new LinkedList<>();
 
@@ -86,8 +90,31 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 			errorIgnore.put("IGNORE_DIVISION", "X");
 			errorIgnore.put("IGNORE_PURCHASE", "X");
 
+			Map<String, String> option = new HashMap<>();
+			option.put("STOCK", "");
+
 			RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SIMUL_UPLOAD");
 
+			rfcRequest
+				.field()
+					.add(new Object[][] {
+						{"LV_AUART", order.getOrderType()},
+						{"I_USERID", order.getUsername()},
+						{"I_M", CmStringUtils.defaultString(order.getFgShowSubstitute(), "B")},//A:대체 미포함, B:대체 포함
+						{"I_AVAIL", CmStringUtils.defaultString(order.getFgShowAvailability(), "X")},//X:가용성체크
+						{"I_CREDIT", CmStringUtils.defaultString(order.getFgShowCredit(), "X")},//X:여신정보
+						{"I_LANGU", order.getLanguage()},
+						{"I_BGTYP", "P"}
+					})
+				.structure()
+					.add(new Object[][] {
+						{"LS_GENERAL", general},
+						{"LS_MAIN_HEAD", mainHead},
+						{"LS_ERROR_IGNORE", errorIgnore}
+						//{"LS_OPTION", option}
+					});
+
+			/*
 			rfcRequest.addField("LV_AUART", order.getOrderType());
 			rfcRequest.addField("I_USERID", order.getUsername());
 			rfcRequest.addField("I_M", CmStringUtils.defaultString(order.getFgShowSubstitute(), "B")); //A:대체 미포함, B:대체 포함
@@ -100,7 +127,9 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 			rfcRequest.addStructure("LS_MAIN_HEAD", mainHead);
 			rfcRequest.addStructure("LS_ERROR_IGNORE", errorIgnore);
 			rfcRequest.addStructure("LS_OPTION", "STOCK", "");//각 PDC 별 재고 정보 가져오기
+			*/
 
+			/*
 			Map<String, String> divMap = new HashMap<>();
 			divMap.put("WERKS", "F160");
 
@@ -108,6 +137,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 			plants.add(divMap);
 
 			rfcRequest.addTable("LT_STOCK", plants);
+			*/
 
 			adjustOrderQty(order);
 
@@ -228,8 +258,10 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		/* Make Header Info */
 		DataMap mainHeadResult = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");
 
-		FormatBuilder.with(mainHeadResult).decimalFormat(new String[] {"CREDIT", "NETWR"}, "#,##0.00");
-		FormatBuilder.with(mainHeadResult).decimalFormat("TOTAL_WEIGHT", "#,##0.000");
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(mainHeadResult, new String[] {"CREDIT", "NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
+
+		FormatBuilder.with(mainHeadResult).decimalFormat(new String[] {"CREDIT", "NETWR"});
+		FormatBuilder.with(mainHeadResult).weightFormat("TOTAL_WEIGHT");
 
 		simulationResult.setTotalAmount(mainHeadResult.getString("NETWR"));
 		simulationResult.setCredit(mainHeadResult.getString("CREDIT"));
@@ -265,7 +297,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 
 		if (CollectionUtils.isNotEmpty(items))
 		{
-			//PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
+			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
 
 			FormatBuilder.with(items)
 				.qtyFormat(new String[] {"REQ_QTY", "QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY"})

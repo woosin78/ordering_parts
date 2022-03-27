@@ -15,6 +15,9 @@ public class PlatformCommonVo
 
 	public static final String UNLIMITED_DATE_TIME = "9999-12-31 23:59:59";
 
+	//통화 형식
+	public static final String DEFAULT_CURRENCY_FORMAT = "#,###.00";
+
 	//상태 표시
 	public static final String ALL = "A"; //전체
 	public static final String YES = "Y"; //예

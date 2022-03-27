@@ -23,23 +23,23 @@ $(document).ready(function() {
 	//상단 메뉴 생성 공통함수
 	makeGnb();
 	
-	$(".header .logo-doobizplus").on("click", function() {
+	$(".top-header .logo-doobizplus").on("click", function() {
 		_goHome()
 	});
 	
-	$(".header li.new-window").on("click", function() {
+	$(".top-header li.new-window").on("click", function() {
 		window.open("/portal/forward/entry_point", "");
 	});
 	
-	$(".header li.dealer-info").on("click", function() {
+	$(".top-header li.dealer-info").on("click", function() {
 		_clickDealerInfo();	    		
 	});
 	
-	$(".header li.username").on("click", function() {
+	$(".top-header li.username").on("click", function() {
 		_clickUserInfo();
 	});
 	
-	$(".header .logout-button").on("click", function() {
+	$(".top-header .logout-button").on("click", function() {
 		_clickLogout();	    		
 	});
 	
@@ -60,43 +60,7 @@ $(document).ready(function() {
 	    	};
 	    }	
 	});
-	
-	_checkExpiredPassword();
 });
-
-function _checkExpiredPassword()
-{
-	JpUtilsAjax.get({
-		url: "/platform/mgmt/user/check/expired_password",
-		global: false,
-		success: function(data, textStatus, jqXHR)
-		{
-			let result = data.RESULT;
-			
-			let difference = parseInt(result.difference);
-			
-			if (difference < 15)
-			{
-				if (difference < 0)
-				{
-					JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
-						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
-					});
-				}
-				else
-				{
-					let message = "[[#{PLTF_M_PASSWORD_EXPIRE_DATE_NOTICE}]]".replace("{0}", result.expiredDate);
-					
-					JpUiDimmer.confirm(message, function() {
-						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
-					});					
-				};
-
-			};
-		}
-	});
-};
-
 
 /*
  * Ajax global settings.

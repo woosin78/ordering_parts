@@ -24,6 +24,9 @@ public class JdbcExecutionAspect extends DataAccessAspect
 	@Value("${platform.db}")
 	private String db;
 
+	@Value("${if.logging.db}")
+	private boolean isActiveLogging;
+
 	@Autowired
 	private DataAccessLogService dataAccessLogService;
 
@@ -46,27 +49,30 @@ public class JdbcExecutionAspect extends DataAccessAspect
 		}
 		finally
 		{
-			Signature signature = proceedingJoinPoint.getSignature();
-
-			if (!hasNoLoggingAnnotation(signature))
+			if (isActiveLogging)
 			{
-				DataAccessLogDto dataAccessLog = JdbcStatementContextUtils.get();
+				Signature signature = proceedingJoinPoint.getSignature();
 
-				if (ObjectUtils.isNotEmpty(dataAccessLog))
+				if (!hasNoLoggingAnnotation(signature))
 				{
-					dataAccessLog.setClassName(signature.getDeclaringTypeName());
-					dataAccessLog.setMethodName(signature.getName());
-					dataAccessLog.setRequestId(MDC.get(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY));
-					dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
-					dataAccessLog.setError(error);
+					DataAccessLogDto dataAccessLog = JdbcStatementContextUtils.get();
 
-					if (UserAuthenticationUtils.isAuthenticated())
+					if (ObjectUtils.isNotEmpty(dataAccessLog))
 					{
-						dataAccessLog.setTimezone(UserAuthenticationUtils.getUserDetails().getTimezone());
-						dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
-					}
+						dataAccessLog.setClassName(signature.getDeclaringTypeName());
+						dataAccessLog.setMethodName(signature.getName());
+						dataAccessLog.setRequestId(MDC.get(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY));
+						dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
+						dataAccessLog.setError(error);
 
-					dataAccessLogService.writeLog(dataAccessLog);
+						if (UserAuthenticationUtils.isAuthenticated())
+						{
+							dataAccessLog.setTimezone(UserAuthenticationUtils.getUserDetails().getTimezone());
+							dataAccessLog.setRegUsername(UserAuthenticationUtils.getUsername());
+						}
+
+						dataAccessLogService.writeLog(dataAccessLog);
+					}
 				}
 			}
 		}

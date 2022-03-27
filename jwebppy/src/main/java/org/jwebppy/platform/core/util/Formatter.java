@@ -7,10 +7,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.jwebppy.portal.common.PortalCommonVo;
+
 public class Formatter {
-	static final String defaultDateFormat = CmDateFormatUtils.getDateFormat();
-	static final String defaultCurrencyFormat = "#,###.00";
+	static final String defaultDateFormat = PortalCommonVo.DEFAULT_DATE_FORMAT;
+	static final String defaultCurrencyFormat = PortalCommonVo.DEFAULT_CURRENCY_FORMAT;
 	static final String defaultWeightFormat = "#,###.000";
+
+	public static String getCurrencyFormat()
+	{
+		return CmStringUtils.defaultIfEmpty(UserAuthenticationUtils.getUserDetails().getCurrencyFormat(), defaultCurrencyFormat);
+	}
 
 	/**
 	 * 현재(오늘)날짜 가져오기.<br>
@@ -20,7 +27,7 @@ public class Formatter {
 	 */
 	public static String getCurrentDate() {
 		Date date = new Date();
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(defaultDateFormat);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(CmDateFormatUtils.getDateFormat());
 		return simpleDateFormat.format(date);
 	}
 
@@ -91,7 +98,7 @@ public class Formatter {
 			} else if (strDate.indexOf("-") > -1 || strDate.indexOf("/") > -1) { // - 가 있는 경우
 				return strDate.replaceAll("-|/", ".");
 			} else {
-				return getDateFormat(strDate, defaultDateFormat);
+				return getDateFormat(strDate, CmDateFormatUtils.getDateFormat());
 			}
 		} else {
 			return "";
@@ -108,7 +115,7 @@ public class Formatter {
 
 		if (obj instanceof Date)
 		{
-			return new SimpleDateFormat(defaultDateFormat).format(obj);
+			return new SimpleDateFormat(CmDateFormatUtils.getDateFormat()).format(obj);
 		}
 
 		if (obj != null && !"".equals(obj.toString()))
@@ -177,7 +184,7 @@ public class Formatter {
 	 */
 	public static String getDefDecimalFormat(String strValue) {
 		if (strValue != null && !strValue.trim().equals("")) {
-			DecimalFormat decimalFormat = new DecimalFormat(defaultCurrencyFormat);
+			DecimalFormat decimalFormat = new DecimalFormat(getCurrencyFormat());
 			return decimalFormat.format(Double.parseDouble(strValue));
 		} else {
 			return "";
@@ -203,7 +210,7 @@ public class Formatter {
 			if (obj.toString().indexOf(",") > -1) {
 				return obj.toString();
 			} else {
-				DecimalFormat decimalFormat = new DecimalFormat(defaultCurrencyFormat);
+				DecimalFormat decimalFormat = new DecimalFormat(getCurrencyFormat());
 				return decimalFormat.format(Double.parseDouble(obj.toString()));
 
 			}

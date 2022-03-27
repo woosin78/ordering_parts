@@ -87,6 +87,9 @@ public class IvGeneralController extends PortalGeneralController
 	{
 		super.addAllAttributeFromRequest(model, webRequest);
 
+		model.addAttribute("DATE_FORMAT", UserAuthenticationUtils.getUserDetails().getDateFormat2());
+		model.addAttribute("TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getTimeFormat2());
+
 		model.addAttribute("BASE_PATH", IvCommonVo.REQUEST_PATH);
 	}
 

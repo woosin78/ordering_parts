@@ -38,6 +38,8 @@ public class PlatformUserDetails implements UserDetails
 	private String dateFormat2;//Front-End
 	private String timeFormat2;//Front-End
 	private String timezone;
+	private String currencyFormat;
+
 	private List<CItemDto> cItems;
 
 	private ErpUserContext erpUserContext;
@@ -159,4 +161,10 @@ public class PlatformUserDetails implements UserDetails
 	{
 		return getDateFormat2() + " " + getTimeFormat2();
 	}
+
+	public String getCurrencyFormat()
+	{
+		return CmStringUtils.defaultIfEmpty(currencyFormat, PlatformCommonVo.DEFAULT_CURRENCY_FORMAT);
+	}
+
 }

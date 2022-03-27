@@ -73,6 +73,7 @@ public class UserAuthenticationService extends PlatformGeneralService
         platformUserDetails.setDateFormat2(userGroup.getDateFormat2());
         platformUserDetails.setTimeFormat2(userGroup.getTimeFormat2());
         platformUserDetails.setTimezone(user.getTimezone());
+        platformUserDetails.setCurrencyFormat(userGroup.getCurrencyFormat());
         platformUserDetails.setCItems(cItems);
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userAccount.getUsername(), userAccount.getPassword(), platformUserDetails.getAuthorities());
