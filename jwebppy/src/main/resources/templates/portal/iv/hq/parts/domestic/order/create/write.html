@@ -788,7 +788,7 @@
 					orderable: false,
 					render: function(data, type, row)
 					{
-						return "<input type='number' class='custom-ui' name='orderQty' style='width:70px' min='1' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
+						return "<input type='text' class='custom-ui' name='orderQty' style='width:70px' min='1' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},//Req Qty
 				{name: "lotQty", data: "lotQty", title: "[[#{HQP_L_SALES_LOT}]]"},//Sales Lot

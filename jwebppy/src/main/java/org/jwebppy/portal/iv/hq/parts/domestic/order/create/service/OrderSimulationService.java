@@ -58,7 +58,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 			Map<String, Object> itemMap = new HashMap<>();
 			itemMap.put("ITEM", orderItem.getLineNo());
 			itemMap.put("MATERIAL", orderItem.getMaterialNo());
-			itemMap.put("QTY", orderItem.getOrderQty());
+			itemMap.put("QTY", orderItem.getOrderQty().replaceAll(",", ""));
 
 			items.add(itemMap);
 		}
@@ -300,7 +300,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
 
 			FormatBuilder.with(items)
-				.qtyFormat(new String[] {"REQ_QTY", "QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY"})
+				.qtyFormat(new String[] {"REQ_QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY"})
 				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"});
 
 			List<OrderItemDto> normalOrderItems = new LinkedList<>();

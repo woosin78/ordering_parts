@@ -8,7 +8,19 @@ function makeGnb()
 		{
 			let items = data.RESULT;
 			let level1 = [];
-
+			
+			/*
+			let items = [];
+			
+			for (let j=0; j<10; j++)
+			{
+				for (let i=0, length=items2.length; i<length; i++)
+				{
+					items.push(items2[i]);				
+				};				
+			};
+			*/
+			
 	    	for (let i=0, length=items.length; i<length; i++)
 	    	{
 	    		if (items[i].TYPE == "R")
@@ -30,8 +42,15 @@ function makeGnb()
 	    		};
 	    	};
 	    	
-	    	$(".gnb-menu-list").html(level1.join(""));
-	    	$(".gnb-menu-list li").css("width", Math.floor(100 / level1.length).toString() + "%");
+	    	for (let i=6-level1.length; i>0; i--)
+	    	{
+				level1.push("<li></li>");
+			};
+	    	
+	    	//$(".gnb-menu-list").html(level1.join(""));
+	    	$(".gnb-menu-list").html(level1.slice(0, 6).join(""));
+	    	//$(".gnb-menu-list li").css("width", Math.floor(100 / level1.length).toString() + "%");
+	    	$(".gnb-menu-list li").css("width", Math.floor(96 / 6).toString() + "%");
 	    	$(".gnb-menu-list").show();
 	    	
 	    	$(".gnb-menu-list > li").on("click", function() {

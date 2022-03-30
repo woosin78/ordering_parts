@@ -184,9 +184,9 @@ public class OrderCreateService extends PartsDomesticGeneralService
 				Map<String, Object> itemMap = new HashMap<>();
 				itemMap.put("ITEM", orderItem.getLineNo());
 				itemMap.put("MATERIAL", orderItem.getMaterialNo());
-				itemMap.put("QTY", orderItem.getOrderQty());
-				itemMap.put("REQ_QTY", orderItem.getOrderQty());
-				itemMap.put("LOT_QTY", orderItem.getLotQty());
+				itemMap.put("QTY", orderItem.getOrderQty().replaceAll(",", ""));
+				itemMap.put("REQ_QTY", orderItem.getOrderQty().replaceAll(",", ""));
+				itemMap.put("LOT_QTY", orderItem.getLotQty().replaceAll(",", ""));
 				itemMap.put("UOM", orderItem.getUom());
 				itemMap.put("AVAILABILITY", orderItem.getAvailability());
 				itemMap.put("CCHECK", "1");
