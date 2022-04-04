@@ -172,23 +172,23 @@ $(function(){
 	//상단 메뉴 생성 공통함수
 	makeGnb();
 	
-	$(".header .logo-doobizplus").on("click", function() {
+	$(".top-header .logo-doobizplus").on("click", function() {
 		goHome()
 	});
 	
-	$(".header li.new-window").on("click", function() {
+	$(".top-header li.new-window").on("click", function() {
 		window.open("/portal/forward/entry_point", "");
 	});
 	
-	$(".header li.dealer-info").on("click", function() {
+	$(".top-header li.dealer-info").on("click", function() {
 		clickDealerInfo();	    		
 	});
 	
-	$(".header li.username").on("click", function() {
+	$(".top-header li.username").on("click", function() {
 		clickUserInfo();
 	});
 	
-	$(".header .logout-button").on("click", function() {
+	$(".top-header .logout-button").on("click", function() {
 		clickLogout();	    		
 	});	
 
