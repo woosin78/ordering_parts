@@ -4,7 +4,10 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.jwebppy.config.cache.CacheKeyGenerator;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.CacheKeyPrefix;
@@ -59,6 +62,7 @@ public class CacheConfig
                 .disableCachingNullValues()//null value 캐시안함
                 .entryTtl(Duration.ofSeconds(60))//캐시의 기본 유효시간 설정
                 .computePrefixWith(CacheKeyPrefix.simple())
+//                .computePrefixWith(cacheKeyPrefix())
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));//redis 캐시 데이터 저장방식을 StringSeriallizer로 지정
 
 		Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = new HashMap<>();
@@ -92,5 +96,38 @@ public class CacheConfig
 				.fromConnectionFactory(redisConnectionFactory)
 				.cacheDefaults(redisCacheConfiguration)
                 .withInitialCacheConfigurations(redisCacheConfigurationMap).build();
+	}
+
+	@Bean
+	public KeyGenerator cacheKeyGenerator()
+	{
+		return new CacheKeyGenerator();
+	}
+
+	@Bean
+	public CacheKeyPrefix cacheKeyPrefix()
+	{
+		System.out.println("============================================================1");
+
+		return new CacheKeyPrefix()
+		{
+			@Override
+			public String compute(String cacheName)
+			{
+//                String CID = getcid(); // this method needs to be implemented by itself to get tenant code
+//                StringBuilder sBuilder = new StringBuilder(100);
+//                sBuilder.append(SYSTEMCACHE_REDIS_KEY_PREFIX).append(":");
+//                if (StringUtil.isNotBlank(cid)) {
+//                    sBuilder.append(cid).append(":");
+//                }
+				StringBuilder prefix = new StringBuilder();
+
+				prefix.append(cacheName).append("::");
+				prefix.append(UserAuthenticationUtils.getUserDetails().getErpUserContext().getCustCode()).append(":");
+
+                return prefix.toString();
+			}
+		};
+
 	}
 }
