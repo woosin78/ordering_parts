@@ -1,6 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.export.claim.service;
 
-import org.jwebppy.config.CacheConfig;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExClaimDisplayService extends PartsExportGeneralService
 {
-	@Cacheable(value = CacheConfig.CLAIM_DISPLAY, key = "#paramMap", unless="#result == null")
+	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_DISPLAY, unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDERLIST");
@@ -42,7 +42,7 @@ public class ExClaimDisplayService extends PartsExportGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(value = CacheConfig.CLAIM_DISPLAY_DETAIL, key = "#paramMap", unless="#result == null")
+	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_DISPLAY, unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDER_LOAD");
@@ -62,7 +62,7 @@ public class ExClaimDisplayService extends PartsExportGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(value = CacheConfig.CLAIM_REASON, key = "#paramMap", unless="#result == null")
+	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_REASON, unless="#result == null")
 	public DataList getClaimReasonList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_COMPLAIN_REASON");

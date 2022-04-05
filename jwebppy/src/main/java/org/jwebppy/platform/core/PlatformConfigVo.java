@@ -52,6 +52,11 @@ public class PlatformConfigVo
 	public static final String DEFAULT_BASENAME = "PLTF"; //Default 언어 그룹 명
 
 	/*
+	 * Cache
+	 */
+	public static final String DEFAULT_CACHE_NAME = "PLTF"; //Default 캐시 명
+
+	/*
 	 * 데이터베이스
 	 */
 	//사용 가능한 데이터베이스 종류

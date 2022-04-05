@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.jwebppy.config.CacheConfig;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderStatusService extends PartsDomesticGeneralService
 {
-	@Cacheable(value = CacheConfig.ORDER_STATUS, key = "#paramMap", unless="#result == null")
+	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_STATUS, unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		String fromDate = paramMap.getString("fromDate");
@@ -56,7 +56,7 @@ public class OrderStatusService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(value = CacheConfig.ORDER_STATUS_DETAIL, key = "#paramMap", unless="#result == null")
+	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_STATUS, unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
 		String[] orderNos = CmStringUtils.split(CmStringUtils.strip(paramMap.getString("orderNo"), PortalConfigVo.DELIMITER), PortalConfigVo.DELIMITER);

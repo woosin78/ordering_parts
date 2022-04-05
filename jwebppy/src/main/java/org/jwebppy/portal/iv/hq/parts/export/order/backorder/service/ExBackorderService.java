@@ -1,6 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.export.order.backorder.service;
 
-import org.jwebppy.config.CacheConfig;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExBackorderService extends PartsExportGeneralService
 {
-	@Cacheable(value = CacheConfig.BACKORDER, key = "#paramMap", unless="#result == null")
+	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.BACKORDER, unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		String fromDate = paramMap.getString("fromDate");
