@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.jwebppy.config.cache.CacheKeyGenerator;
+import org.jwebppy.platform.core.cache.CacheKeyGenerator;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;

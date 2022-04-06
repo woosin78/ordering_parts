@@ -8,7 +8,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 @EnableAspectJAutoProxy
-//@ComponentScan(nameGenerator = CmBeanNameGenerator.class)
 public class JwebppyApplication
 {
 	public static void main(String[] args)

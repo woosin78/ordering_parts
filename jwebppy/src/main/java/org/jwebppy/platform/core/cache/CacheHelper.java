@@ -1,8 +1,11 @@
-package org.jwebppy.config.cache;
+package org.jwebppy.platform.core.cache;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
@@ -26,6 +29,22 @@ public class CacheHelper
 
 	@Autowired
 	private RedisTemplate<String, Object> redisTemplate;
+
+	public void evict(Set<String> cacheNames)
+	{
+		for (String cacheName: CollectionUtils.emptyIfNull(cacheNames))
+		{
+			evict(cacheName);
+		}
+	}
+
+	public void evict(String[] cacheNames)
+	{
+		for (String cacheName: ArrayUtils.nullToEmpty(cacheNames))
+		{
+			evict(cacheName);
+		}
+	}
 
 	public void evict(String cacheName)
 	{

@@ -1,7 +1,7 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.order.display.service;
 
 import org.jwebppy.config.PortalCacheConfig;
-import org.jwebppy.config.cache.CacheHelper;
+import org.jwebppy.platform.core.cache.CacheHelper;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;

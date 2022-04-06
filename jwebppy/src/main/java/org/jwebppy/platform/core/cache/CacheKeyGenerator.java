@@ -1,4 +1,4 @@
-package org.jwebppy.config.cache;
+package org.jwebppy.platform.core.cache;
 
 import java.lang.reflect.Method;
 

@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 @Configuration
-//@MapperScan(basePackages = "org.jwebppy", nameGenerator = CmBeanNameGenerator.class, annotationClass = org.apache.ibatis.annotations.Mapper.class)
 @MapperScan(basePackages = "org.jwebppy", annotationClass = org.apache.ibatis.annotations.Mapper.class)
 public class MybatisConfig
 {

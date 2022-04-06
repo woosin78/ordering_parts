@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.jwebppy.config.cache.PortalCacheKeyGenerator;
+import org.jwebppy.platform.core.cache.PortalCacheKeyGenerator;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,22 +15,20 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.stereotype.Component;
 
 @Configuration
+@Component
 public class PortalCacheConfig
 {
 	public static final String CUSTOMER = "Customer";
 	public static final String ORDER_TYPE = "OrderType";
 	public static final String ORDER_DISPLAY = "OrderDisplay";
-	//public static final String ORDER_DISPLAY_DETAIL = "OrderDisplayDetail";
 	public static final String BACKORDER = "Backorder";
 	public static final String ORDER_STATUS = "OrderStatus";
-	//public static final String ORDER_STATUS_DETAIL = "OrderStatusDetail";
 	public static final String INVOICE_STATUS = "InvoiceStatus";
 	public static final String SHIPMENT_STATUS = "ShipmentStatus";
-	//public static final String SHIPMENT_STATUS_DETAIL = "ShipmentStatusDetail";
 	public static final String DELIVERY_STATUS = "DeliveryStatus";
-	//public static final String DELIVERY_STATUS_DETAIL = "DeliveryStatusDetail";
 	public static final String AP_LIST = "ApList";
 	public static final String AP_DETAIL = "ApDetail";
 	public static final String AP_SCHEDULE = "ApShedule";
@@ -101,7 +99,7 @@ public class PortalCacheConfig
 		return redisCacheConfigurationMap.containsKey(cacheName);
 	}
 
-	public Set<String> getKeys()
+	public Set<String> getCacheNames()
 	{
 		return redisCacheConfigurationMap.keySet();
 	}
