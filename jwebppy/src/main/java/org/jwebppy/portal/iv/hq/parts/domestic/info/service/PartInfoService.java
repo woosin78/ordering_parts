@@ -1,10 +1,13 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.info.service;
 
+import java.util.Map;
+
 import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.springframework.cache.annotation.Cacheable;
@@ -100,20 +103,20 @@ public class PartInfoService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.PARTS_INFO_AUTOCOMPLETE, unless="#result == null")
-	public DataList getSimplePartInfo(ErpDataMap paramMap)
+	@Cacheable(cacheManager = "portalCacheManager", value = PortalCacheConfig.PARTS_INFO_AUTOCOMPLETE, unless="#result == null")
+	public DataList getSimplePartInfo(Map<String, Object> paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY2");
 
 		rfcRequest
 			.field(new Object[][] {
 				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.getLangForSap()},
-				{"I_USERID", paramMap.getUsername()}
+				{"I_LANGU", paramMap.get("lang")},
+				{"I_USERID", UserAuthenticationUtils.getUsername()}
 			})
 			.and()
 			.table("LT_ITEM")
-				.add("MATERIAL", paramMap.getString("partNo"))
+				.add("MATERIAL", paramMap.get("partNo"))
 			.and()
 			.output("LT_ITEM");
 

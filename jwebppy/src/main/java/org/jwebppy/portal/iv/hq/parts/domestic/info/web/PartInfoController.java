@@ -124,8 +124,9 @@ public class PartInfoController extends PartsDomesticGeneralController
 			return EMPTY_RETURN_VALUE;
 		}
 
-		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partNo", pPartNo);//PartsNo
+		Map<String, Object> rfcParamMap = new HashMap<>();
+		rfcParamMap.put("partNo", pPartNo);
+		rfcParamMap.put("lang", getErpUserInfo().getLangForSap());
 
 		return partsInfoService.getSimplePartInfo(rfcParamMap);
 	}

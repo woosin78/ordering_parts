@@ -74,7 +74,7 @@ public class CacheConfig
 		return redisCacheConfigurationMap.containsKey(cacheName);
 	}
 
-	public Set<String> getKeys()
+	public Set<String> getCacheNames()
 	{
 		return redisCacheConfigurationMap.keySet();
 	}

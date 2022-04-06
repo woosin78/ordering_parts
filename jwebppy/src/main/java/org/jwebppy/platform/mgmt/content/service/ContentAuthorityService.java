@@ -116,6 +116,7 @@ public class ContentAuthorityService extends GeneralService
 		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findMyCItems(cItemSearch));
 	}
 
+	//@Cacheable(cacheManager = "cacheManager", keyGenerator = "cacheKeyGenerator", value = CacheConfig.CITEM, unless="#result == null")
 	public List<CItemDto> getMyCItemHierarchy(CItemSearchDto cItemSearch)
 	{
 		List<CItemDto> cItems = getMyCItems(cItemSearch);

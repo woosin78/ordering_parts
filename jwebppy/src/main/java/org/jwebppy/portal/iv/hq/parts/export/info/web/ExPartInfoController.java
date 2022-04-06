@@ -11,9 +11,9 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
-import org.jwebppy.portal.iv.hq.parts.domestic.info.service.PartInfoService;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.common.web.PartsExportGeneralController;
+import org.jwebppy.portal.iv.hq.parts.export.info.service.ExPartInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +27,7 @@ import org.springframework.web.context.request.WebRequest;
 public class ExPartInfoController extends PartsExportGeneralController
 {
 	@Autowired
-	private PartInfoService partsInfoService;
+	private ExPartInfoService partsInfoService;
 
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest)
@@ -122,8 +122,9 @@ public class ExPartInfoController extends PartsExportGeneralController
 			return EMPTY_RETURN_VALUE;
 		}
 
-		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partNo", pPartNo);//PartsNo
+		Map<String, Object> rfcParamMap = new HashMap<>();
+		rfcParamMap.put("partNo", pPartNo);
+		rfcParamMap.put("lang", getErpUserInfo().getLangForSap());
 
 		return partsInfoService.getSimplePartInfo(rfcParamMap);
 	}

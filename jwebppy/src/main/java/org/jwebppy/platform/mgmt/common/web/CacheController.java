@@ -18,7 +18,7 @@ public class CacheController extends MgmtGeneralController
 			evict = {
 					@CacheEvict (value = CacheConfig.LANG, allEntries = true),
 					@CacheEvict (value = CacheConfig.CITEM, allEntries = true),
-					@CacheEvict (value = CacheConfig.USER, allEntries = true),
+					@CacheEvict (value = CacheConfig.USER, allEntries = true)
 			})
 	public Object resetAll()
 	{
