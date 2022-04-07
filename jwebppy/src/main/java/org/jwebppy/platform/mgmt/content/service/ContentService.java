@@ -1,5 +1,6 @@
 package org.jwebppy.platform.mgmt.content.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
@@ -24,6 +26,7 @@ import org.jwebppy.platform.mgmt.content.mapper.CItemObjectMapper;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -179,6 +182,8 @@ public class ContentService extends GeneralService
 
 		cItem.setCSeq(null);
 		cItem.setPSeq(pSeq);
+		cItem.setFromValid(LocalDateTime.now());
+		cItem.setToValid(LocalDateTime.now().plusYears(100));
 		cItem.setModDate(null);
 		cItem.setModUsername(null);
 
@@ -229,6 +234,7 @@ public class ContentService extends GeneralService
 		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findPageCItems(cItemSearch));
 	}
 
+	@Cacheable(keyGenerator = "cacheKeyGenerator", value = CacheConfig.CITEM, unless="#result == null")
 	public List<CItemDto> getCItemHierarchy(CItemSearchDto cItemSearch)
 	{
 		List<CItemDto> cItems = new ArrayList<>();
@@ -257,6 +263,7 @@ public class ContentService extends GeneralService
 		}
 	}
 
+	@Cacheable(keyGenerator = "cacheKeyGenerator", value = CacheConfig.CITEM, unless="#result == null")
 	public List<Map<String, Object>> getCItemHierarchy2(CItemSearchDto cItemSearch)
 	{
 		cItemSearch.setTypes(new CItemType[] {CItemType.F, CItemType.R, CItemType.M, CItemType.P});

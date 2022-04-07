@@ -99,6 +99,8 @@ public class UserService extends GeneralService
 		userAccount.setPassword(CmStringUtils.trimToEmpty(paramMap.get("password")));
 		userAccount.setFgAccountLocked(PlatformCommonVo.NO);
 		userAccount.setFgPasswordLocked(PlatformCommonVo.YES);
+		userAccount.setFromValid(LocalDateTime.now());
+		userAccount.setToValid(LocalDateTime.now().plusYears(100));
 		userAccount.setModDate(null);
 		userAccount.setModUsername(null);
 

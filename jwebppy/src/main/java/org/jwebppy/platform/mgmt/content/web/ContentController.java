@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.util.CmAnnotationUtils;
 import org.jwebppy.platform.core.util.CmClassUtils;
 import org.jwebppy.platform.core.util.CmReflectionUtils;
@@ -105,6 +106,7 @@ public class ContentController extends ContentGeneralController
 	}
 
 	@PostMapping("/save")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object save(@ModelAttribute CItemDto cItem)
 	{
@@ -114,6 +116,7 @@ public class ContentController extends ContentGeneralController
 	}
 
 	@PostMapping("/delete")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object delete(@RequestParam("cSeq") Integer cSeq)
 	{
@@ -121,6 +124,7 @@ public class ContentController extends ContentGeneralController
 	}
 
 	@PostMapping("/copy")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object copy(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
 	{
@@ -135,6 +139,7 @@ public class ContentController extends ContentGeneralController
 	}
 
 	@PostMapping("/move")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object move(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
 	{
@@ -142,6 +147,7 @@ public class ContentController extends ContentGeneralController
 	}
 
 	@PostMapping("/lang/save")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object saveLang(@ModelAttribute CItemLangRlDto cItemLangRl)
 	{
@@ -208,135 +214,6 @@ public class ContentController extends ContentGeneralController
 
 		return "duplicated";
 	}
-
-	/*
-	@GetMapping("/my_menu")
-	@ResponseBody
-	public Object myMenu(@ModelAttribute CItemSearchDto cItemSearch)
-	{
-		List<Map<String, Object>> cItemsHierarchy = new LinkedList<>();
-
-		cItemSearch.setUSeq(getUSeq());
-
-		List<CItemDto> cItems = contentAuthorityService.getMyCItemHierarchy(cItemSearch);
-
-		for (CItemDto cItem : cItems)
-		{
-			Map<String, Object> itemMap = new LinkedHashMap<>();
-			itemMap.put("KEY", cItem.getCSeq());
-			itemMap.put("NAME", CmStringUtils.defaultIfEmpty(cItem.getName2(), cItem.getName()));
-			itemMap.put("TYPE", cItem.getType().toString());
-			itemMap.put("URL", CmStringUtils.trimToEmpty(cItem.getUrl()));
-
-			itemMap.put("SUB_ITEMS", getSubItems(cItem.getSubCItems()));
-
-			cItemsHierarchy.add(itemMap);
-		}
-
-		return cItemsHierarchy;
-	}
-
-	protected List<Map<String, Object>> getSubItems(List<CItemDto> subCItems)
-	{
-		List<Map<String, Object>> cItems = new LinkedList<>();
-
-		if (CollectionUtils.isNotEmpty(subCItems))
-		{
-			for (CItemDto subCItem: subCItems)
-			{
-				Map<String, Object> itemMap = new LinkedHashMap<>();
-				itemMap.put("KEY", subCItem.getCSeq());
-				itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
-				itemMap.put("TYPE", subCItem.getType().toString());
-				itemMap.put("URL", subCItem.getUrl());
-				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getSubCItems()));
-
-				cItems.add(itemMap);
-			}
-		}
-
-		return cItems;
-	}
-	*/
-
-	/*
-	@GetMapping("/breadcrumb")
-	@ResponseBody
-	public Object breadcrumb(CItemSearchDto cItemSearch)
-	{
-		cItemSearch.setUSeq(getUSeq());
-
-		List<CItemDto> cItems = contentAuthorityService.getMyItemHierarchy(cItemSearch);
-
-		if (CollectionUtils.isNotEmpty(cItems))
-		{
-			for (CItemDto cItem: cItems)
-			{
-				List<CItemDto> breadcrumb = new ArrayList<>();
-
-				if (isFindEntryPoint(breadcrumb, cItem, cItemSearch.getEntryPoint()))
-				{
-					Collections.reverse(breadcrumb);
-
-					List<CItemDto> breadcrumb2 = new ArrayList<>();
-					breadcrumb2.add(breadcrumb.get(0));
-
-					for (int i=0, size=breadcrumb.size(); i<size; i++)
-					{
-						CItemDto cItem2 = breadcrumb.get(i);
-
-						for (int j=i; j<size; j++)
-						{
-							CItemDto cItems3 = breadcrumb.get(j);
-
-							if (cItem2.getPSeq().equals(cItems3.getCSeq()))
-							{
-								breadcrumb2.add(cItems3);
-							}
-						}
-					}
-
-					return breadcrumb2;
-				}
-			}
-		}
-
-		return null;
-	}
-
-	private boolean isFindEntryPoint(List<CItemDto> breadcrumb, CItemDto cItem, String url)
-	{
-		if (CollectionUtils.isNotEmpty(cItem.getSubCItems()))
-		{
-			for (CItemDto subCItem: cItem.getSubCItems())
-			{
-				if (!subCItem.getType().equals(CItemType.M) && !subCItem.getType().equals(CItemType.P))
-				{
-					continue;
-				}
-
-				if (subCItem.getType().equals(CItemType.P) && CmStringUtils.notEquals(url, subCItem.getEntryPoint()))
-				{
-					continue;
-				}
-
-				breadcrumb.add(subCItem);
-
-				if (CmStringUtils.equals(url, subCItem.getEntryPoint()))
-				{
-					return true;
-				}
-
-				if (isFindEntryPoint(breadcrumb, subCItem, url))
-				{
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-	*/
 
 	private List<CItemComponentDto> getComponents()
 	{

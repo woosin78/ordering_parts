@@ -13,6 +13,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
@@ -80,6 +81,7 @@ public class UserController extends UserGeneralController
 	private UserService userService;
 
 	@RequestMapping("/list")
+	@CacheClear(name = "test")
 	public String list(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("userGroups", userGroupService.getUserGroups(null));

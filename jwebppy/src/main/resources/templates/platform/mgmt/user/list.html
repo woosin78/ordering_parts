@@ -214,12 +214,16 @@ $(document).ready(function() {
 					{
 						isValid = true;
 					};
-
+					
+					/*
 					let message = "";
-
+					
 					$.each(data.RESULT.MESSAGE, function (index, value) {
 						message += value + "<br/>";
 					});
+					*/
+					
+					let message = JpUtilsString.trimToEmpty(result.MESSAGE);
 
 					if (type == "U")
 					{

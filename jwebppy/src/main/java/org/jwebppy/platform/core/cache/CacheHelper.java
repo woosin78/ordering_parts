@@ -95,4 +95,12 @@ public class CacheHelper
 			}
 		}
 	}
+
+	public void clear(String type)
+	{
+		if (CmStringUtils.equals(type, "A"))
+		{
+			evict(new String[] {CacheConfig.LANG, CacheConfig.CITEM, CacheConfig.USER});
+		}
+	}
 }

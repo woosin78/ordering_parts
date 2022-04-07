@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RegExUtils;
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -15,6 +16,7 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangDetailDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangKindDto;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.support.AbstractMessageSource;
 
 public class I18nMessageSource extends AbstractMessageSource
@@ -45,6 +47,7 @@ public class I18nMessageSource extends AbstractMessageSource
 		return text;
 	}
 
+	@Cacheable(value = CacheConfig.LANG, key = "{#key, #locale}", unless="#result == null")
 	public String getMessage(String key, Locale locale)
 	{
 		String[] codes = CmStringUtils.split(key, "_");

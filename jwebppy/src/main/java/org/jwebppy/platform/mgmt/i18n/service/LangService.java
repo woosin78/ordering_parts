@@ -26,7 +26,6 @@ import org.jwebppy.platform.mgmt.i18n.mapper.LangKindObjectMapper;
 import org.jwebppy.platform.mgmt.i18n.mapper.LangMapper;
 import org.jwebppy.platform.mgmt.i18n.mapper.LangObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +40,6 @@ public class LangService extends MgmtGeneralService
 	@Autowired
 	private LangMapper langMapper;
 
-	@CacheEvict (value = CacheConfig.LANG, allEntries = true)
 	public int save(LangDto lang)
 	{
 		LangEntity langEntity = null;
@@ -90,7 +88,6 @@ public class LangService extends MgmtGeneralService
 		return lSeq;
 	}
 
-	@CacheEvict (value = CacheConfig.LANG, allEntries = true)
 	public int delete(LangDto lang)
 	{
 		langMapper.updateLangDetailFgDelete(lang);

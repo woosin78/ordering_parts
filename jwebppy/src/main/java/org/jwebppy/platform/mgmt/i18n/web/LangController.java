@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
@@ -35,7 +36,6 @@ public class LangController extends MgmtGeneralController
 	Spanish: es
 	Korean: ko
 	 */
-
 	@Autowired
 	private LangService langService;
 
@@ -99,6 +99,7 @@ public class LangController extends MgmtGeneralController
 
 	@PostMapping("/save")
 	@ResponseBody
+	@CacheClear(name = "A")
 	public Object save(@ModelAttribute LangDto lang, @RequestParam(value = "lkSeq") List<Integer> lkSeqs, @RequestParam(value = "text") String[] texts)
 	{
 		List<LangDetailDto> langDetails = new LinkedList<>();
