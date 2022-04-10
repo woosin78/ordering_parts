@@ -32,7 +32,7 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 	private SimpleRfcTemplate simpleRfcTemplate;
 
     @Value("${file.upload.divk.domestic.parts.claim}")
-    private boolean UPLOAD_PATH;
+    private String UPLOAD_PATH;
 
 	public RfcResponse getInvoiceList(PartsErpDataMap paramMap)
 	{
