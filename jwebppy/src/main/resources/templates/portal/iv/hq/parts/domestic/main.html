@@ -26,9 +26,9 @@
 <body>
 	<!-- Progress bar end -->
 	<div class="wrap">
-		<div class="body-area">
-			<div class="main-back-img">
-				<img th:src="@{/portal/img/main/main.png}" />
+		<div style="position:absolute"><img id="mainImg" th:src="@{/portal/img/main/main.png}" /></div>
+		<div class="body-area">			
+			<div class="main-back-img">				
 				<div class="intro-area">
 					<div class="app-name">DOOBIZ</div>
 					<div class="vision">Global Leader Doosan</div>
@@ -168,7 +168,13 @@ $(window).on("load", function() {
 	ProgressBar.hide();
 });
 
+$(window).resize($.debounce(100, function(e){
+	resizeView();
+}));
+
 $(function(){
+	resizeView();
+
 	//상단 메뉴 생성 공통함수
 	makeGnb();
 	
@@ -279,6 +285,34 @@ function checkExpiredPassword()
 			};
 		}
 	});
+};
+
+let RESIZING_MIN_WIDTH = 1280;
+let RESIZING_MIN_HEIGHT = 720;
+
+function resizeView()
+{
+	let width = $(window).width();
+	let height = $(window).height();
+	
+	if (width > RESIZING_MIN_WIDTH)
+	{
+		$("#mainImg").width(width);
+		
+		if (height > RESIZING_MIN_HEIGHT)
+		{
+			$("#mainImg").height(height);
+		}
+		else
+		{
+			$("#mainImg").height(height);
+		};
+	}
+	else
+	{
+		$("#mainImg").width(RESIZING_MIN_WIDTH);
+		$("#mainImg").height(RESIZING_MIN_HEIGHT);
+	}
 };
 </script>
 </body>

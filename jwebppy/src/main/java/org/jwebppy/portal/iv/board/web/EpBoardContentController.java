@@ -134,14 +134,12 @@ public class EpBoardContentController extends IvGeneralController
 
 			if (board.getUploadFile() != null)
 			{
-				System.err.println(I18nMessageSource.getMessage("HQP_M_EXCEED_MAXIMUM_UPLOAD_SIZE", new String[] { Formatter.getDisplayFileSize(board.getUploadFile().getMaxFileSize()) } ));
-
 				return I18nMessageSource.getMessage("HQP_M_EXCEED_MAXIMUM_UPLOAD_SIZE", new String[] { Formatter.getDisplayFileSize(board.getUploadFile().getMaxFileSize()) } );
 			}
 		}
 		catch (IOException e)
 		{
-			System.err.println(2);
+			e.printStackTrace();
 		}
 
 		return null;

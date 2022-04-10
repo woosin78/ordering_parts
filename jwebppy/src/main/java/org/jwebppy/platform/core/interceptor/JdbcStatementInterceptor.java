@@ -1,6 +1,6 @@
 package org.jwebppy.platform.core.interceptor;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Field;
 import java.sql.Statement;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -22,6 +22,7 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
 import org.jwebppy.platform.core.util.CmBeanUtils;
+import org.jwebppy.platform.core.util.CmReflectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.JdbcStatementContextUtils;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
@@ -87,7 +88,6 @@ public class JdbcStatementInterceptor implements Interceptor
 				for (ParameterMapping parameterMapping : boundSql.getParameterMappings())
 				{
 				    String key = parameterMapping.getProperty();
-
 				    parameterMap.put(key, ((Map<?, ?>)parameterObject).get(key));
 				}
 			}
@@ -99,16 +99,12 @@ public class JdbcStatementInterceptor implements Interceptor
 				{
 				    String propertyValue = parameterMapping.getProperty();
 
-				    try
-				    {
-				    	if (!parameterMap.containsKey(propertyValue))
-				    	{
-				    		parameterMap.put(propertyValue, BeanUtils.getProperty(parameterObject, propertyValue));
-				    	}
-					}
-				    catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException e)
-				    {
-						//e.printStackTrace();
+					Field field = CmReflectionUtils.findField(parameterObject.getClass(), propertyValue);
+
+					if (ObjectUtils.isNotEmpty(field))
+					{
+						CmReflectionUtils.makeAccessible(field);
+						parameterMap.put(propertyValue, CmReflectionUtils.getField(field, parameterObject));
 					}
 				}
 			}
