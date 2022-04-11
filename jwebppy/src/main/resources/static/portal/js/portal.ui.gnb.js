@@ -50,7 +50,7 @@ function makeGnb()
 	    	//$(".gnb-menu-list").html(level1.join(""));
 	    	$(".gnb-menu-list").html(level1.slice(0, 6).join(""));
 	    	//$(".gnb-menu-list li").css("width", Math.floor(100 / level1.length).toString() + "%");
-	    	$(".gnb-menu-list li").css("width", Math.floor(96 / 6).toString() + "%");
+	    	$(".gnb-menu-list li").css("width", Math.floor(100 / 6).toString() + "%");
 	    	$(".gnb-menu-list").show();
 	    	
 	    	$(".gnb-menu-list > li").on("click", function() {

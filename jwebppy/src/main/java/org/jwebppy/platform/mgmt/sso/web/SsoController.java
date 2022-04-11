@@ -34,4 +34,24 @@ public class SsoController extends PlatformGeneralController
 
 		return "/portal/iv/sso/gpes";
 	}
+
+	@RequestMapping("/bulletin")
+	public Object bulletin(Model model)
+	{
+        try
+		{
+        	String time = CmDateFormatUtils.now(IvCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
+
+        	StringEncrypter stringEncrypter = new StringEncrypter("DIV", "DIVDOOBIZ");
+			String key = stringEncrypter.encrypt(getUsername().toUpperCase() + "|@" + time);
+
+			model.addAttribute("key", URLEncoder.encode(key, "UTF-8"));
+		}
+        catch (Exception e)
+        {
+			e.printStackTrace();
+		}
+
+		return "/portal/iv/sso/bulletin";
+	}
 }
