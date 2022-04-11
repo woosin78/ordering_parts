@@ -3,9 +3,6 @@ package org.jwebppy.portal.iv.survey.entity;
 import java.util.List;
 
 import org.jwebppy.platform.core.entity.GeneralEntity;
-import org.jwebppy.portal.iv.survey.dto.SurveyTargetDto;
-import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
-import org.jwebppy.portal.iv.upload.dto.EpUploadFileListDto;
 import org.jwebppy.portal.iv.upload.entity.EpUploadFileEntity;
 import org.jwebppy.portal.iv.upload.entity.EpUploadFileListEntity;
 

@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.jwebppy.portal.iv.board.dto.EpBoardContentTargetDto;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.survey.dto.SurveyDto;
