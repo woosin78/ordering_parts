@@ -30,22 +30,23 @@
 		margin-top: 20px; font-weight:bold;
 	}
 </style>
-<div style="width: 100%; margin:0 auto; text-align: center;">
-	<div style="margin-top:138px;">
-		<img src="/portal/img/popup/confirm.png" />
+	<div style="width: 100%; margin:0 auto; text-align: center;">
+		<div style="margin-top:138px;">
+			<img src="/portal/img/popup/confirm.png" />
+		</div>
+		<div class="guide-go-gpes" th:text="#{PTL_T_MOVE_TO_BULLETIN}"></div>
+		<div class="guide-go-gpes" th:text="#{PTL_T_GUIDE_MOVE_TO_BULLETIN_MANUALLY}"></div>
+		<div style="width:auto; height:220px; background-color: #f9f9f9; margin: 40px 40px 0 40px;">
+			<div style="height: 30px;"></div>
+			<button id="BTN_go" class="gomain-button"><span th:text="#{PTL_B_GO_BULLETIN}"></span> <img src="/portal/img/common/arrow_right.png" /></button>
+		</div>
 	</div>
-	<div class="guide-go-gpes" th:text="#{PTL_T_MOVE_TO_BULLETIN}"></div>
-	<div class="guide-go-gpes" th:text="#{PTL_T_GUIDE_MOVE_TO_BULLETIN_MANUALLY}"></div>
-	<div style="width:auto; height:220px; background-color: #f9f9f9; margin: 40px 40px 0 40px;">
-		<div style="height: 30px;"></div>
-		<button id="BTN_go" class="gomain-button"><span th:text="#{PTL_B_GO_BULLETIN}"></span> <img src="/portal/img/common/arrow_right.png" /></button>
-	</div>
-</div>
 <script>
-let url = "http://gpes.doosan-iv.com/ssoextra/sso_login_doobiz.jsp?p_encryptsso=[[${key}]]&BULLETIN_STS=NEW_BULL&PART_NO=&LAN_CD=EN";
+let url = "https://gpes.doosan-iv.com/ssoextra/sso_login_doobiz.jsp?p_encryptsso=[[${key}]]&BULLETIN_STS=NEW_BULL&PART_NO=&LAN_CD=EN";
 
-$("#BTN_go").on("click", function() {
+$("#BTN_refresh").on("click", function() {
 	window.open(url);
+	$("#content").prop("src", url);
 });
 
 $(function(){
