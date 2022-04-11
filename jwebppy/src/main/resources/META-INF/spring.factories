@@ -1,2 +1,0 @@
-# post processor 적용
-org.springframework.boot.env.EnvironmentPostProcessor=org.jwebppy.platform.core.security.EncryptionEnvironmentPostProcessor
