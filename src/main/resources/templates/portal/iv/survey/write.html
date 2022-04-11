@@ -1,3 +1,369 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+<th:block layout:fragment="content">
+	
+	<div class="block-header" >
+		<div class="block-title" ></div>
+		<div class="block-button-area">
+			<button id="BTN_save" type="button" th:text="등록"></button>
+			<button id="BTN_back" type="button" th:text="뒤로" onclick="goList();"></button>
+		</div>	
+	</div>	
+	
+	<div class="condition-area">
+	<form id="FORM_write" method="post" th:action="|${BASE_PATH}/survey/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
+	<input type="hidden" name="sSeq" id="sSeq" th:value="${survey==null ?0 :survey.sSeq}"/>
+	<input type="hidden" name="validFrom" id="validFrom" th:value="${survey?.validFrom}"/>
+	<input type="hidden" name="validTo" id="validTo" th:value="${survey?.validTo}"/>
+	<input type="file" id="files" name="files" multiple style="display:none;"/>
+	
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th>설문제목</th>
+				<td><input name="title" type="text" th:value="${survey?.title}"/></td>
+			</tr>
+			
+			<tr>
+				<th>설문취지</th>
+				<td>
+					<textarea name="description" th:text="${survey?.description}" rows="5" cols="50">
+					</textarea>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>대상</th>
+				<td>
+					<div class="split-row-more-compact"></div>
+					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui" /></div>
+					<div class="split-row-more-compact"></div>
+					<button id="BTN_deleteVisibleTarget" type="button" th:text="삭제" class="small_button"></button>
+					<div class="split-row-more-compact"></div>
+					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+					<div class="split-row-more-compact"></div>
+					<div id="addedtargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
+						<div th:each="surveyTarget : ${survey?.surveyTargets}">
+							<input type="checkbox" class="custom-ui visible-target"/><label th:text="${surveyTarget.stSeq}"></label>
+							<div class="split2"></div><span th:text="${surveyTarget.targetName}"></span>
+							<input name="targetCode" type="hidden" th:value="${surveyTarget.stSeq}"/>
+							<input name="targetDescription" type="hidden" th:value="${surveyTarget.targetName}"/>
+						</div>						
+					</div>					
+				</td>
+			</tr>
+			
+			<tr>
+				<th>공지기간</th>
+				<td>
+					<div th:with="validFrom=${survey?.validFrom}, validFromDate=${#strings.substring(validFrom, 0, 8)}" class="input-area period">
+						<span th:text="#{HQP_L_FROM}" class="label"></span>
+						<input type="text" id="validFromDate" name="validFromDate" class="custom-ui-calendar" 
+							th:value="${validFromDate}"/>
+						<div class="split3"></div>
+						<select id="validFromHours" name="validFromHours" class="custom-ui hours">
+							<option value=""></option>
+							<option th:each="num : ${#numbers.sequence(0,23)}" th:with="num=${#numbers.formatInteger(num, 2)}" 
+								th:value="${num}" th:text="${num}" th:selected="${num eq #strings.substring(validFrom, 8, 10)}"/>
+						</select>
+						<span th:text="#{HQP_L_HOURS}"></span>
+						<select id="validFromMinutes" name="validFromMinutes" class="custom-ui minutes">
+							<option value=""></option>
+							<option th:each="num : ${#numbers.sequence(0,59)}" th:with="num=${#numbers.formatInteger(num, 2)}" 
+								th:value="${num}" th:text="${num}" th:selected="${num eq #strings.substring(validFrom, 10, 12)}"/>
+						</select>
+						<span th:text="#{HQP_L_MINUTES}"></span>
+					</div>
+					
+					<div th:with="validTo=${survey?.validTo}" class="period">
+						<span th:text="#{HQP_L_TO}" class="label"></span>
+						<input type="text" id="validToDate" name="validToDate" class="custom-ui-calendar" 
+							th:value="${#strings.substring(validTo, 0, 8)}"/>
+						<div class="split3"></div>
+						<select id="validToHours" name="validToHours" class="custom-ui hours">
+							<option value=""></option>
+							<option th:each="num : ${#numbers.sequence(0,23)}" th:with="num=${#numbers.formatInteger(num, 2)}" 
+								th:value="${num}" th:text="${num}" th:selected="${num eq #strings.substring(validTo, 8, 10)}"/>
+						</select>
+						<span th:text="#{HQP_L_HOURS}"></span>
+						<select id="validToMinutes" name="validToMinutes" class="custom-ui minutes">
+							<option value=""></option>
+							<option th:each="num : ${#numbers.sequence(0,59)}" th:with="num=${#numbers.formatInteger(num, 2)}" 
+								th:value="${num}" th:text="${num}" th:selected="${num eq #strings.substring(validTo, 10, 12)}"/>
+						</select>
+						<span th:text="#{HQP_L_MINUTES}"></span>			
+					</div>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>설문공개</th>
+				<td>
+					<input type="radio" class="custom-ui" name="fgOpen" value="Y"/>
+					<label th:text="공개"></label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" class="custom-ui" name="fgOpen" value="N"/>
+					<label th:text="비공개"></label>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>결과공개</th>
+				<td>
+					<input type="radio" class="custom-ui" name="fgOpenResult" value="Y"/>
+					<label th:text="공개"></label>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="radio" class="custom-ui" name="fgOpenResult" value="N"/>
+					<label th:text="비공개"></label>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>감사인사</th>
+				<td>
+					<textarea name="remark" th:text="${survey?.remark}" rows="5" cols="50">
+					</textarea>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>파일첨부</th>
+				<td>
+					<div class="split-row-more-compact"></div>
+					<button id="BTN_searchFile" type="button" th:text="파일" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile" type="button" th:text="삭제" class="small_button"></button>
+					<div class="split-row-more-compact"></div>
+					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+					<div class="split-row-more-compact"></div>
+					<div id="attachedFiles" style="width:100%; height:5em; display: block; overflow-y: auto;">
+						<div th:each="uploadFileList : ${survey?.uploadFileLists}">
+							<input name="uflSeq" type="checkbox" th:value="${uploadFileList.uflSeq}" class="custom-ui" th:fileName="${uploadFileList.fullOriginName}"/><label th:text="${uploadFileList.fullOriginName}"></label>
+							<div class="split2"></div><span th:text="${uploadFileList.displayFileSize}"></span>
+						</div>
+					</div>
+				</td>
+			</tr>
+			
+		</tbody>
+	</table>
+	</form>
+	</div>
+	
+<script>
+$(function(){
+	ProgressBar.hide();
+	
+	$("input:radio[name=fgOpen][value='[[${survey?.fgOpen}]]']").prop("checked", true);
+	$("input:radio[name=fgOpenResult][value='[[${survey?.fgOpenResult}]]']").prop("checked", true);
+	
+	Calendar.makeCalendar($("#validFromDate"), "[[${survey?.validFromYmd}]]");
+	Calendar.makeCalendar($("#validToDate"), "[[${survey?.validToYmd}]]");
 
+	//console.log('write');
+	
+	$("#BTN_save").on("click", function() {
+		// to-do: validation
+		
+		let validFromDate = $("#validFromDate").val().replaceAll('.', '');
+		let validFromHours = $("#validFromHours").val();
+		let validFromMinutes = $("#validFromMinutes").val() ;
+		
+		let validToDate = $("#validToDate").val().replaceAll('.', '');
+		let validToHours = $("#validToHours").val();
+		let validToMinutes = $("#validToMinutes").val();
 
-설문조사 등록/수정 페이지
+		$("#validFrom").val(validFromDate + '' + validFromHours + '' + validFromMinutes);
+		$("#validTo").val(validToDate + '' + validToHours + '' + validToMinutes);
+		
+		let options = {
+			enctype: "multipart/form-data",
+			url: "[[${BASE_PATH}]]/survey/save",
+			data: new FormData($("#FORM_write")[0]),
+			global: false,
+			processData: false,
+			contentType: false,
+			cache: false,
+			success: function(data, textStatus, jqXHR) {
+				$("#FORM_search input[name=bcSeq]").val(data.RESULT);
+				
+				$("#BTN_back").trigger("click");
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(textStatus);
+				console.log(errorThrown);
+			}
+		};
+		
+		JpUtilsAjax.post(options);
+	});
+	
+	
+	$("#searchVisibleTarget").autocomplete({
+		source: function(request, response) {
+			JpUtilsAjax.get({
+				url: "[[${BASE_PATH}]]/board/target/data",
+				data: {	"name": $("#searchVisibleTarget").val(), "dealerCode": $("#searchVisibleTarget").val() },
+				success: function(data, textStatus, jqXHR)
+				{
+					let result = data.RESULT;
+					
+					//console.log(result);
+					
+					if (JpUtilsObject.isNotNull(result))
+					{
+						response(
+								$.map(result, function(item) {
+									if (JpUtilsString.isNotEmpty(item.KUNNR))
+									{
+										return {
+											label: item.KUNNR + " | " + item.NAME1,
+											value: item.KUNNR
+										}
+									};
+								})
+						);					
+					};
+				}
+			});
+		},
+		select: function(event, ui)
+		{
+			 //console.log(ui.item.label + "," + ui.item.value);
+			 addTarget(ui.item.label, ui.item.value);
+			 
+			 $(this).val("");
+			 return false;
+		},
+		//delay: 50,
+		minLength: 3
+	});
+	
+	$("#BTN_deleteVisibleTarget").on("click", function(event) {
+		//console.log(1);
+		$.each($("#FORM_write .visible-target"), function(i, item) {
+			if ($(this).is(":checked"))
+			{
+				$(this).closest("div").remove();
+			};
+		});
+	});	
+	
+	$("#BTN_searchFile").on("click", function() {
+		$("#files").trigger("click");
+	});
+	
+	$("#files").on("change", function() {
+		for (let i=0, length=this.files.length; i<length; i++)
+		{
+			addFile(this.files[i].name, this.files[i].size);
+		};
+		
+		$("#FORM_write .ui.checkbox").checkbox();
+	});
+	
+	$("#BTN_deleteFile").on("click", function(event) {
+		let files = Array.from($("#files")[0].files);
+		
+		$.each($("#FORM_write input[name=uflSeq]"), function(i, item) {
+			if ($(this).is(":checked"))
+			{
+				let fileName = $(this).attr("fileName");
+				
+				for (let j=0, length=files.length; j<length; j++)
+				{
+					if (files[j] == null)
+					{
+						continue;
+					}
+					
+					if (JpUtilsString.equals(files[j].name, fileName))
+					{
+						files.splice(j, 1, null);
+					};
+				};		
+				
+				if (JpUtilsString.isNotEmpty($(this).val()))
+				{
+					$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
+				};
+				
+				$(this).closest("div").remove();
+			};
+		});
+	});
+	
+});
+
+function addFile(name, size, uflSeq)
+{
+	let html = [];
+	
+	html.push("<div>");
+	html.push("<input name='uflSeq' type='checkbox' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' class='custom-ui' fileName='" + JpUtilsString.trimToEmpty(name) + "'/><label>" + name + "</label>");
+	html.push("<div class='split2'></div><span>" + getSize(size) + "</span>");
+	html.push("</div>");
+	
+	$("#attachedFiles").append(html.join(""));
+};
+
+function getSize(size)
+{
+	let KB = 1024;
+	let MB = Math.pow(1024, 2);
+	let GB = Math.pow(1024, 3);
+	
+	let result = [];
+
+	if (size > GB)
+	{
+		result.push((size / GB).toFixed(2));
+		result.push("GB");
+	}
+	else if (size > MB)
+	{
+		result.push((size / MB).toFixed(2));
+		result.push("MB");
+	}
+	else if (size > KB)
+	{
+		result.push((size / KB).toFixed(2));
+		result.push("KB");
+	}
+	else
+	{
+		alert(size);
+		result.push(size);
+		result.push("B");
+	};
+	
+	return result.join("");
+};
+
+function addTarget(label, value)
+{
+	let str = label.split("|");
+	
+	//console.log(str.length + "," + JpUtilsString.trimToEmpty(str[0]) + " , " + JpUtilsString.trimToEmpty(str[1]));
+	
+	let dealerCode = str[0];
+	let dealerName = str[1];
+	
+	let html = [];
+	
+	html.push("<div>");
+	html.push("<input type='checkbox' class='custom-ui visible-target'/><label>" + dealerCode + "</label>");
+	html.push("<div class='split2'></div><span>" + dealerName + "</span>");
+	html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
+	html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
+	html.push("</div>");
+	
+	$("#addedtargets").append(html.join(""));
+};
+
+function goList() {
+	document.location.href = "[[${BASE_PATH}]]/survey/list";
+}
+</script>
+</th:block>	

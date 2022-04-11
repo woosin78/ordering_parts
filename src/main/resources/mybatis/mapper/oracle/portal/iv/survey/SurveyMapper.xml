@@ -2,6 +2,110 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.portal.iv.survey.mapper.SurveyMapper">
+	<resultMap type="SurveyEntity" id="surveyEntityMap">
+		<id property="sSeq" column="s_seq" />
+		<result property="title" column="title" />
+		<result property="description" column="description" />
+		<result property="validFrom" column="valid_from" />
+		<result property="validTo" column="valid_to" />
+		<result property="fgOpen" column="fg_open" />
+		<result property="fgOpenResult" column="fg_open_result" />
+		<result property="remark" column="remark" />
+		<result property="fgDelete" column="fg_delete" />
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+		<result property="modUsername" column="mod_username" />
+		<result property="modDate" column="mod_date" />
+		<result property="fgStatus" column="fg_status" />
+		<result property="applier" column="applier" />
+		<association property="uploadFile" foreignColumn="uf_seq" column="uf_seq" javaType="EpUploadFileEntity" select="org.jwebppy.portal.iv.upload.mapper.EpUploadFileMapper.findUploadFile" />
+		<collection property="surveyTargets" foreignColumn="s_seq" column="s_seq" javaType="java.util.ArrayList" ofType="SurveyTargetEntity" select="org.jwebppy.portal.iv.survey.mapper.SurveyTargetMapper.findSurveyTargets" />
+	</resultMap>	
 
-
+	<select id="findSurvey" resultMap="surveyEntityMap">
+	select
+		a.s_seq,
+		title,
+		description,
+		valid_from,
+		valid_to,
+		to_char(to_date(valid_from, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validFromYmd,
+		to_char(to_date(valid_to, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validToYmd,
+		fg_open,
+		fg_open_result,
+		reg_username,
+		remark
+	from 
+	ep_survey a
+	where
+	a.s_seq=#{sSeq}
+	and a.fg_delete='N'
+	</select>
+	
+	<select id="findSurveys" parameterType="SurveySearchDto" resultMap="surveyEntityMap">
+		select
+		    s_seq,
+		    case 
+		    	when sysdate <![CDATA[<]]> to_date(valid_from,'YYYYMMDDHH24MI') then '1'
+		        when sysdate between to_date(valid_from,'YYYYMMDDHH24MI') and to_date(valid_to,'YYYYMMDDHH24MI') and fg_open = 'Y' then '2'
+		        when sysdate <![CDATA[>]]> to_date(valid_to,'YYYYMMDDHH24MI') and fg_open = 'Y' then '3'
+		        else '0' 
+		    end fg_status,
+		    valid_from,
+		    valid_to,
+		    to_char(to_date(valid_from, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validFromYmd,
+			to_char(to_date(valid_to, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validToYmd,
+		    title,
+		    fg_open_result,
+		    reg_username,
+		    0 as applier
+		from ep_survey
+		where fg_delete = 'N'
+	
+		<if test="fgStatus != null and fgStatus != ''">
+			<choose>
+				<when test="fgStatus==1">
+					and sysdate <![CDATA[<]]> to_date(valid_from,'YYYYMMDDHH24MI')
+				</when>
+				<when test="fgStatus==2">
+					and sysdate between to_date(valid_from,'YYYYMMDDHH24MI') and to_date(valid_to,'YYYYMMDDHH24MI') and fg_open = 'Y'
+				</when>
+				<when test="fgStatus==3">
+					and sysdate <![CDATA[>]]> to_date(valid_to,'YYYYMMDDHH24MI') and fg_open = 'Y'
+				</when>
+				<otherwise>
+				</otherwise>
+			</choose>
+		</if>
+		
+		<if test="query != null and query != ''">
+			and (title like '%' || upper(#{query}) || '%' OR reg_username like '%' || upper(#{query}) || '%')
+		</if>
+		
+		order by s_seq desc
+	</select>
+	
+	<insert id="insert" parameterType="SurveyEntity" useGeneratedKeys="true" keyProperty="s_seq">
+		<selectKey keyProperty="sSeq" resultType="Integer" order="BEFORE">
+			select ep_s_seq.nextval from dual
+		</selectKey>
+		
+		insert into ep_survey (s_seq, title, description, valid_from, valid_to, fg_open, fg_open_result, remark, fg_delete, reg_username, reg_date) values (
+			#{sSeq}, #{title}, #{description}, #{validFrom}, #{validTo}, #{fgOpen}, #{fgOpenResult}, #{remark}, #{fgDelete}, #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+	<update id="update" parameterType="SurveyEntity">
+		update ep_survey set
+			title=#{title},
+			description=#{description},
+			valid_from=#{validFrom},
+			valid_to=#{validTo},
+			fg_open=#{fgOpen},
+			fg_open_result=#{fgOpenResult},
+			remark=#{remark}
+		where
+			s_seq=#{sSeq}
+	</update>
+	
 </mapper>
