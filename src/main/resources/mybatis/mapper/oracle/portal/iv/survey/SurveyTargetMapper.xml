@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.portal.iv.survey.mapper.SurveyTargetMapper">
+	<insert id="insert" parameterType="SurveyTargetEntity" useGeneratedKeys="true" keyProperty="st_seq">
+		<selectKey keyProperty="stSeq" resultType="Integer" order="BEFORE">
+			select ep_st_seq.nextval from dual
+		</selectKey>
+		
+		insert into ep_survey_target (st_seq, s_seq, type, target, target_name, fg_delete, reg_username, reg_date) values (
+			#{stSeq}, #{sSeq}, #{type}, #{target}, #{targetName}, #{fgDelete}, #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+	<update id="updateFgDelete" parameterType="SurveyTargetEntity">
+		update ep_survey_target set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			st_seq=#{stSeq}
+	</update>
+	
+	<select id="findSurveyTargets" resultType="SurveyTargetEntity">
+		select
+		*
+		from
+		ep_survey_target
+		where
+		s_seq=#{sSeq}
+	</select>
+	
+</mapper>
