@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.mgmt.content.mapper.ContentMapper">
+	<insert id="insert" parameterType="CItemEntity" useGeneratedKeys="true" keyProperty="cSeq">
+		insert into pltf_citem (p_seq, type, name, description, component, entry_point, parameter, sort, fg_popup, fg_visible, fg_delete, from_valid, to_valid, reg_username, reg_date) values (
+			#{pSeq}, #{type}, #{name}, #{description}, #{component}, #{entryPoint}, #{parameter}, #{sort}, #{fgPopup}, #{fgVisible}, #{fgDelete}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
+		)
+	</insert>
+
+	<insert id="insertCItemUserRl" parameterType="CItemUserRlEntity" useGeneratedKeys="true" keyProperty="curSeq">
+		insert into pltf_citem_user_rl (c_seq, u_seq, fg_delete, reg_username, reg_date) values (
+			#{cSeq}, #{uSeq}, #{fgDelete}, #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+	<insert id="insertCItemLangRl" parameterType="CItemLangRlEntity" useGeneratedKeys="true" keyProperty="clrSeq">
+		insert into pltf_citem_lang_rl (c_seq, l_seq, reg_username, reg_date) values (
+			#{cSeq}, #{lSeq}, #{regUsername}, #{regDate}
+		)
+	</insert>	
+	
+	<update id="update" parameterType="CItemEntity">
+		update pltf_citem set
+			p_seq=#{pSeq},
+			type=#{type},
+			name=#{name},
+			description=#{description},
+			component=#{component},
+			entry_point=#{entryPoint},
+			parameter=#{parameter},
+			sort=#{sort},
+			fg_visible=#{fgVisible},
+			fg_delete=#{fgDelete},
+			from_valid=#{fromValid},
+			to_valid=#{toValid},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			c_seq=#{cSeq}
+	</update>
+	
+	<update id="delete" parameterType="CItemEntity">
+		update pltf_citem set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			c_seq=#{cSeq}
+	</update>
+	
+	<update id="deleteCItemUserRl" parameterType="CItemUserRlEntity">
+		update pltf_citem_user_rl set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			u_seq=#{uSeq}
+	</update>
+
+	<select id="findCItem" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		*
+		from
+		pltf_citem
+
+		<where>
+			<if test="cSeq != null">
+				c_seq=#{cSeq}
+			</if>
+			<trim prefix="and">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
+					name=#{name}
+				</if>
+			</trim>
+			<trim prefix="and">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+					type=#{type}
+				</if>
+			</trim>			
+			<trim prefix="and">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fgDelete)">
+					fg_delete=#{fgDelete}
+				</if>
+			</trim>			
+		</where>
+	</select>
+
+	<select id="findMyCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		a.*
+		from
+		pltf_citem a,
+		pltf_citem_user_rl b
+		where
+		a.c_seq=b.c_seq
+		and a.fg_delete='N'		
+		and a.from_valid <![CDATA[<]]> now() and a.to_valid <![CDATA[>=]]> now()
+		and b.fg_delete='N'
+		
+		<if test="pSeq != null">
+			and a.p_seq=#{pSeq}
+		</if>			
+		
+		<!-- OGNL(Object Graph Navigation Language) 의 문제로 toString() 추가 -->
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@notEquals(fgVisible, 'A')">
+			and a.fg_visible='Y'
+		</if>		
+		
+		<if test="uSeq != null">
+			and b.u_seq=#{uSeq}
+		</if>
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
+			and b.u_seq=(select u_seq from pltf_user_account where username=#{username})
+		</if>
+
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
+			and a.name=#{name}
+		</if>
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+			and a.type=#{type}
+		</if>
+		
+		<if test="types != null">
+			<trim prefix="and">
+				<foreach collection="types" item="type" open="(" close=")" separator="or">
+					<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+						a.type=#{type}
+					</if>				
+				</foreach>
+			</trim>
+		</if>	
+		
+		order by a.sort, a.c_seq
+	</select>
+	
+	<select id="findCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		a.*
+		from
+		pltf_citem a
+		where
+		a.fg_delete='N'
+
+		<if test="cSeqs != null">
+			<trim prefix="and">
+				<foreach collection="cSeqs" item="cSeq" open="(" close=")" separator="or">
+					<if test="cSeq != null">
+						a.c_seq=#{cSeq}
+					</if>				
+				</foreach>				
+			</trim>
+		</if>
+
+		<if test="cSeq != null">
+			and a.c_seq=#{cSeq}
+		</if>			
+		
+		<if test="pSeq != null">
+			and a.p_seq=#{pSeq}
+		</if>	
+
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
+			and a.name=#{name}
+		</if>
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+			and type=#{type}
+		</if>
+		
+		<if test="types != null">
+			<trim prefix="and">
+				<foreach collection="types" item="type" open="(" close=")" separator="or">
+					<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+						a.type=#{type}
+					</if>				
+				</foreach>
+			</trim>
+		</if>
+		
+	    <if test='fgVisible == "Y"'>
+	    	and a.fg_visible='Y'
+	    	and a.from_valid <![CDATA[<]]> now() and a.to_valid <![CDATA[>=]]> now()
+	    </if>
+	    
+	    order by a.sort, a.c_seq
+
+	</select>
+
+	<resultMap type="CItemEntity" id="cItemEntityMap">
+		<id property="cSeq" column="c_seq" />
+		<result property="pSea" column="p_sea" />
+		<result property="type" column="type" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+		<result property="component" column="component" />
+		<result property="entryPoint" column="entry_point" />
+		<result property="parameter" column="parameter" />
+		<result property="sort" column="sort" />
+		<result property="fromValid" column="from_valid" />		
+		<result property="toValid" column="to_valid" />
+		<result property="fgVisible" column="fg_visible" />
+		<result property="fgPopup" column="fg_popup" />
+		<result property="fgDelete" column="fg_delete" />
+		<result property="pageNumber" column="page_number" />
+		<result property="rowPerPage" column="row_per_page" />
+		<result property="totalCount" column="total_count" />
+		<association property="userCount" foreignColumn="c_seq" column="c_seq" select="findCountUser" />
+	</resultMap>
+
+	<select id="findCountUser" resultType="Integer">
+		select
+		count(x.cur_seq)
+		from
+		pltf_citem_user_rl x,
+		pltf_user y
+		where
+		x.u_seq=y.u_seq
+		and y.fg_delete='N'
+		and x.c_seq=#{cSeq}
+		and x.fg_delete='N'	
+	</select>
+
+	<select id="findPageCItems" parameterType="CItemSearchDto" resultMap="cItemEntityMap">
+		<include refid="PaginationMapper.header">
+			<property name="orderBy" value="c_seq desc"/>
+		</include>	
+	
+		select
+		a.*
+		from
+		pltf_citem a
+		where
+		a.fg_delete='N'
+
+		<trim prefix="and (" suffix=")" prefixOverrides="or">
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
+				a.name like concat('%', upper(trim(#{query})), '%')
+				or upper(a.description) like concat('%', upper(trim(#{query})), '%')
+			</if>
+			
+			<if test="cSeq != null">
+				or a.c_seq=#{cSeq}
+			</if>
+		</trim>
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+			and type=#{type}
+		</if>
+		
+		<if test="types != null">
+			<trim prefix="and">
+				<foreach collection="types" item="type" open="(" close=")" separator="or">
+					<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+						a.type=#{type}
+					</if>				
+				</foreach>				
+			</trim>
+		</if>
+		
+		<include refid="PaginationMapper.footer"/>
+	</select>	
+	
+	<select id="findLang" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
+		select
+		*
+		from
+		pltf_citem_lang_rl
+		where
+		c_seq=#{cSeq}
+		and l_seq=#{lSeq}
+	</select>
+	
+	<select id="findLangs" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
+		select
+		b.*
+		from
+		pltf_citem a,
+		pltf_citem_lang_rl b,
+		pltf_lang_detail c,
+		pltf_lang_kind d
+		where
+		a.c_seq=#{cSeq}
+		
+		<if test="lSeq != null">
+			and b.l_seq=#{lSeq}
+		</if>
+		
+		and a.fg_delete='N'
+		and a.c_seq=b.c_seq
+		and b.l_seq=c.l_seq
+		and c.fg_delete='N'
+		and c.lk_seq=d.lk_seq
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(basename)">
+			and d.basename=#{basename}
+		</if>
+		
+		and d.fg_delete='N'
+		order by d.fg_default desc
+	</select>	
+
+</mapper>

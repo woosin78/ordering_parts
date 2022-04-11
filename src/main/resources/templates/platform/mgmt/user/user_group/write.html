@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{platform/layout/popup/index}">
+
+<th:block layout:fragment="content">
+<div class="ui dividing header">
+	User Group
+	<div class="sub header">Users can be classified according to regions, sales divisions, types of customers so on.</div>
+</div>
+<div class="ui one column grid">
+	<div class="column">
+		<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
+		<div class="ui button BTN_back" th:if="${ugSeq != null}"><i class="arrow left icon"></i> Back</div>
+	</div>
+</div>
+<div class="ui divider"></div>
+<div class="ui segment">
+	<form id="FORM_write" class="ui form" autocomplete="off" onsubmit="return false;">
+	<input type="hidden" id="ugSeq" name="ugSeq" th:value="${ugSeq}"/>
+	</form>
+</div>
+<div class="ui divider"></div>
+<div class="ui one column grid">
+	<div class="column">
+		<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
+		<div class="ui button BTN_back" th:if="${ugSeq != null}"><i class="arrow left icon"></i> Back</div>
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/user_group/write/layout",
+		data: { ugSeq: $("#ugSeq").val() },
+		success: function(data, textStatus, jqXHR)
+		{
+			$("#FORM_write").html(new JpUiRender().render(data)).find(".ui.dropdown").dropdown({ minCharacters: 2, fullTextSearch: true });
+			
+			if ([[${userGroup.userCount}]] > 0)
+			{
+				$("#FORM_write input[name=name]").attr("readonly", true);
+			};
+			
+			$("select[name=country]").closest(".ui.dropdown").dropdown({
+				onChange: function(value, text, $choice)
+				{
+					JpUtilsAjax.get({
+						url: "/platform/mgmt/user/timezone",
+						data: {"country": value},
+						global: false,
+						success: function(data, textStatus, jqXHR)
+						{
+							$("select[name=timezone]").closest(".ui.dropdown").dropdown("change values", data.RESULT).dropdown("set text", "");
+						}
+					});
+				}
+			});			
+
+			$("#FORM_write").form({
+				inline: true,
+				fields: {
+					Name: {
+						identifier: "name",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					},
+					"Date Format (Back-End)": {
+						identifier: "dateFormat1",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					},
+					"Time Format (Back-End)": {
+						identifier: "timeFormat1",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					},
+					"Date Format (Front-End)": {
+						identifier: "dateFormat2",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					},
+					"Time Format (Front-End)": {
+						identifier: "timeFormat2",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					},
+					"Currency Format": {
+						identifier: "currencyFormat",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					},					
+					Country: {
+						identifier: "country",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					},
+					Timezone: {
+						identifier: "timezone",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please input {name}."
+							}
+						]
+					}
+				}				
+			});
+		}
+	});	
+	
+	$(".BTN_save").on("click", function() {
+		if ($("#FORM_write").form("validate form"))
+		{
+			JpUtilsAjax.post({
+				url: "/platform/mgmt/user/user_group/save",
+				data: $("#FORM_write").serialize(),
+				success: function(data, textStatus, jqXHR)
+				{
+					if (JpUtilsString.isEmpty($("#ugSeq").val()))
+					{
+						opener.document.location.reload();
+						$("#ugSeq").val(data.RESULT);
+					}
+					else
+					{
+						if (opener != null)
+						{
+							try
+							{
+								opener.doSearch();	
+							}
+							catch (e) {}
+						};
+					};
+					
+					goBack();
+				}
+			});
+		};
+	});		
+	
+	$(".BTN_back").on("click", function() {
+		goBack();
+	});
+	
+	function goBack()
+	{
+		document.location.href = JpUtilsPath.url("/platform/mgmt/user/user_group/view?ugSeq=" + $("#ugSeq").val());
+	};	
+});
+</script>
+
+</th:block>
+</html>

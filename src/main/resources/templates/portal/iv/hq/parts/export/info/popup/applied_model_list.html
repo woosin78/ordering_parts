@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/popup/index}">
+
+<th:block layout:fragment="content">
+<div class="block-header">
+	<div class="block-title" th:text="#{HQP_T_APPLIED_MODELS}"></div><!-- Applied Models  -->
+	<div class="block-button-area">
+		<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button><!-- Download -->
+		<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->		
+	</div>		
+</div>	
+
+<div class="condition-area">
+<form id="FORM_search" name="FORM_search" onsubmit="return false;">
+<input type="hidden" name="FLAG" id="FLAG" value="S"><!-- Sub Item List의 로딩시 Search를 위한 flag-->
+<table class="condition">
+	<tbody>
+		<tr>
+			<th th:text="#{HQP_L_PART_NO}"></th><!--Part No.  -->
+			<td>
+				<div class="input-area">
+					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" th:value="${pPartNo}" style="text-transform: uppercase;">
+					<button class="btn-popup2" type="button" onclick="_showPartSearch($('#pPartNo').val());"></button>					
+				</div>				
+			</td>
+		</tr>
+	</tbody>
+</table>
+</form>	
+</div>
+<div class="split-row"></div>
+
+<div class="grid-info">
+	<div class="grid-total">
+		<div class="split"></div>
+		<span class="total-number" id="totalRows"></span>
+	</div>
+</div>
+
+<div id="AREA_grid" class="flex-grow grid-area">
+	<table id="TBL_grid" class="order-column stripe compact"></table>	
+</div>
+
+<script>
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});
+
+let $tableObj;
+$(function(){	
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			
+		ordering: true, 
+		scrollY: 100,
+		columns : [					
+			{data: "MAKTX", title: "[[#{HQP_L_MODEL}]]"	}	//Model
+		],
+		ajax: {
+			url: "[[${BASE_PATH}]]/info/applied_model_list/data",
+			data: function(p)
+			{				
+				p.pPartNo = $("#pPartNo").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				
+				return data;
+			}
+		},
+		initComplete: function() {
+			ProgressBar.hide();
+		}
+	});	
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);		
+});
+
+$("#BTN_search").on("click", function(){
+	doSearch();
+});
+
+$("#pPartNo").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Applied_Models_by_Part");
+});
+
+//showPartSearch() callback 함수
+ function _callbackPartSearch(partNo)
+ {
+ 	$("#pPartNo").val(partNo);
+ 	doSearch();
+ };
+</script>	
+</th:block>

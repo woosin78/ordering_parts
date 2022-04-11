@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.mgmt.user.mapper.UserGroupMapper">
+	<resultMap type="UserGroupEntity" id="userGroupEntityMap">
+		<id property="ugSeq" column="ug_seq" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+		<result property="dateFormat1" column="date_format1" />
+		<result property="timeFormat1" column="time_format1" />
+		<result property="dateFormat2" column="date_format2" />
+		<result property="timeFormat2" column="time_format2" />
+		<result property="currencyFormat" column="currency_format" />
+		<result property="country" column="country" />
+		<result property="timezone" column="timezone" />
+		<result property="langKind" column="lang_kind" />
+		<result property="defLang" column="def_lang" />
+		<result property="fgDelete" column="fg_delete" />
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+		<result property="modUsername" column="mod_username" />
+		<result property="modDate" column="mod_date" />
+		<association property="sapConnResource" foreignColumn="scr_seq" column="scr_seq" javaType="SapConnResourceEntity" select="org.jwebppy.platform.mgmt.conn_resource.mapper.SapConnResourceMapper.findSapConnResource" />
+		<association property="credentialsPolicy" foreignColumn="cp_seq" column="cp_seq" javaType="CredentialsPolicyEntity" select="org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyMapper.findCredentialsPolicy" />
+		<association property="userCount" column="ug_seq" javaType="Integer" select="findCountUser" />
+	</resultMap>
+	
+	<insert id="insert" parameterType="UserGroupEntity" useGeneratedKeys="true" keyProperty="ugSeq">
+		<selectKey keyProperty="ugSeq" resultType="Integer" order="BEFORE">
+			select pltf_ug_seq.nextval from dual
+		</selectKey>
+
+		insert into pltf_user_group (ug_seq, name, description, scr_seq, date_format1, time_format1, date_format2, time_format2, country, timezone, currency_format, lang_kind, def_lang, cp_seq, fg_delete, reg_username, reg_date) values (
+			#{ugSeq}, #{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat1}, #{timeFormat1}, #{dateFormat2}, #{timeFormat2}, #{country}, #{timezone}, #{currencyFormat}, #{langKind}, #{defLang}, #{credentialsPolicy.cpSeq}, 'N', #{regUsername}, #{regDate}
+		) 
+	</insert>
+
+	<update id="update" parameterType="UserGroupEntity">
+		update pltf_user_group set
+			name=#{name},
+			description=#{description},
+			scr_seq=#{sapConnResource.scrSeq},
+			date_format1=#{dateFormat1},
+			time_format1=#{timeFormat1},
+			date_format2=#{dateFormat2},
+			time_format2=#{timeFormat2},			
+			currency_format=#{currencyFormat},
+			country=#{country},
+			timezone=#{timezone},
+			lang_kind=#{langKind},
+			def_lang=#{defLang},
+			cp_seq=#{credentialsPolicy.cpSeq},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			ug_seq=#{ugSeq}
+	</update>
+	
+	<update id="updateFgDelete">
+		update pltf_user_group a set
+			a.fg_delete='Y',
+			a.mod_username=#{modUsername},
+			a.mod_date=#{modDate}
+		where
+			a.ug_seq=#{ugSeq}
+			and not exists (
+				select
+				1
+				from
+				pltf_user
+				where
+				fg_delete='N'
+				and ug_seq=a.ug_seq
+			)
+	</update>
+	
+	<update id="updateFgDefault">
+		update pltf_user_group set
+			fg_delete=#{fgDefault},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			ug_seq=#{ugSeq}
+	</update>	
+
+	<select id="findUserGroup" resultMap="userGroupEntityMap">
+		select 
+		*
+		from
+		pltf_user_group
+		where
+		fg_delete='N'
+		and ug_seq=#{ugSeq}
+	</select>
+	
+	<select id="findUserGroupByName" resultMap="userGroupEntityMap">
+		select 
+		*
+		from
+		pltf_user_group
+		where
+		fg_delete='N'
+		and name=#{name}
+	</select>	
+
+	<select id="findUserGroups" resultMap="userGroupEntityMap">
+		select 
+		*
+		from
+		pltf_user_group
+		where
+		fg_delete='N'
+		order by ug_seq
+	</select>
+	
+	<select id="findfindPageUserGroups" resultMap="userGroupEntityMap">
+		<include refid="PaginationMapper.header"/>
+
+		select 
+		*
+		from
+		pltf_user_group
+		where
+		fg_delete='N'
+		
+		order by ug_seq desc
+
+		<include refid="PaginationMapper.footer"/>
+	</select>
+	
+	<select id="findCountUser" resultType="Integer">
+		select 
+		count(u_seq)
+		from
+		pltf_user
+		where
+		fg_delete='N'
+		and ug_seq=#{ugSeq}
+	</select>	
+	
+</mapper>

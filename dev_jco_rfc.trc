@@ -1,0 +1,2203 @@
+
+**** Error file opened at 20210320 153514 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Mar 20 15:35:14,901<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Sat Mar 20 15:35:14 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Sat Mar 20 15:36:30,847<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Sat Mar 20 15:36:30 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210322 210043 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Mon Mar 22 21:00:43,742<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:00:43 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Mar 22 21:02:33,398<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:02:33 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210322 210328 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Mon Mar 22 21:03:28,522<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:03:28 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Mar 22 21:05:31,580<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:05:31 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Mar 22 21:07:59,090<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:07:59 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Mar 22 21:08:51,733<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:08:51 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Mar 22 21:11:07,835<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:11:07 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210322 211205 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Mon Mar 22 21:12:05,508<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:12:05 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210322 212622 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Mon Mar 22 21:26:22,135<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:26:22 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Mon Mar 22 21:26:43,198<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:26:43 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210322 212730 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Mon Mar 22 21:27:30,013<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:27:30 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210322 213154 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Mon Mar 22 21:31:54,738<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Mon Mar 22 21:31:54 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210324 201707 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Mar 24 20:17:07,681<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Wed Mar 24 20:17:07 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210324 201850 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Mar 24 20:18:50,320<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Wed Mar 24 20:18:50 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Wed Mar 24 20:24:48,735<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Wed Mar 24 20:24:48 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210324 202603 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Mar 24 20:26:03,308<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Wed Mar 24 20:26:03 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210324 203012 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Mar 24 20:30:12,116<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Wed Mar 24 20:30:12 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210324 203059 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Mar 24 20:30:59,721<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Wed Mar 24 20:30:59 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210324 203540 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Mar 24 20:35:40,464<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Wed Mar 24 20:35:40 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210324 203726 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Mar 24 20:37:26,370<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Wed Mar 24 20:37:26 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 210459 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 21:04:59,894<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 21:04:59 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 210853 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 21:08:53,530<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 21:08:53 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 211547 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 21:15:47,829<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 21:15:47 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 211818 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 21:18:18,185<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 21:18:18 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Mar 25 21:19:02,614<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 21:19:02 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 212531 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 21:25:31,900<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 21:25:31 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Mar 25 21:28:31,011<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 21:28:31 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 232723 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 23:27:23,439<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 23:27:23 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Mar 25 23:27:44,506<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 23:27:44 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 233030 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 23:30:30,137<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 23:30:30 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 233405 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 23:34:05,340<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 23:34:05 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 234452 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 23:44:52,492<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 23:44:52 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 234931 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 23:49:31,732<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 23:49:31 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 235116 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 23:51:16,387<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 23:51:16 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 235504 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 23:55:04,142<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 23:55:04 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210325 235706 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Mar 25 23:57:06,668<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Mar 25 23:57:06 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210418 212605 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun Apr 18 21:26:05,163<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Sun Apr 18 21:26:05 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20210808 113548 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun Aug 08 11:35:48,037<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=P09 ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Sun Aug 08 11:35:48 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20211230 191828 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Dec 30 19:18:28,441<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=GSQCLNTEPQ_POC ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Dec 30 19:18:28 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Thu Dec 30 19:18:49,475<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=GSQCLNTEPQ_POC ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Dec 30 19:18:49 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20211230 193932 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Dec 30 19:39:32,217<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=GSQCLNTEPQ_POC ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Thu Dec 30 19:39:32 2021
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220101 222810 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Jan 01 22:28:10,374<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Sat Jan 01 22:28:10 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Sat Jan 01 22:32:06,469<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=HDI_GSQ ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Sat Jan 01 22:32:06 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220102 182746 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun Jan 02 18:27:46,424<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Sun Jan 02 18:27:46 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220102 213836 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun Jan 02 21:38:36,469<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=HDI_GSQ ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Sun Jan 02 21:38:36 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Sun Jan 02 21:38:57,504<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=HDI_GSQ ASHOST=10.248.214.5 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.248.214.5:3300' not reached
+TIME        Sun Jan 02 21:38:57 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.248.214.5:3300
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220108 175627 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Jan 08 17:56:27,705<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Sat Jan 08 17:56:27 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Sat Jan 08 18:02:21,815<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Sat Jan 08 18:02:21 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220108 200559 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Jan 08 20:05:59,603<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Sat Jan 08 20:05:59 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Sat Jan 08 21:06:59,352<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Sat Jan 08 21:06:59 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220109 130715 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun Jan 09 13:07:15,172<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Sun Jan 09 13:07:15 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220113 234729 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu Jan 13 23:47:29,169<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Thu Jan 13 23:47:29 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220123 222748 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun Jan 23 22:27:48,307<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+Error:  >Sun Jan 23 22:28:10,826<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+Error:  >Sun Jan 23 22:28:11,955<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+Error:  >Sun Jan 23 22:28:19,719<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+Error:  >Sun Jan 23 22:28:20,714<    >RfcGetException rc (7) message: Open SQL statement with WHERE ... LIKE and pattern that is too large.
+<RfcGetException
+
+
+**** Error file opened at 20220126 074603 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Jan 26 07:46:03,508<    >RfcGetException rc (7) message: No more memory available to add rows to an internal table.
+<RfcGetException
+
+
+**** Error file opened at 20220205 010305 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Feb 05 01:03:05,071<    RfcException:
+    message: Either parameter ABAP system ID ('r3name') or message server service ('msserv') is missing
+    return code: RFC_INVALID_PARAMETER (19)
+    error group: 101
+    key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcOptions.checkParameters(RfcOptions.java:290)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.initialize(MiddlewareJavaRfc.java:1378)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.connect(MiddlewareJavaRfc.java:1408)
+	at com.sap.conn.jco.rt.ClientConnection.connect(ClientConnection.java:729)
+	at com.sap.conn.jco.rt.RepositoryConnection.connect(RepositoryConnection.java:52)
+	at com.sap.conn.jco.rt.PoolingFactory.init(PoolingFactory.java:115)
+	at com.sap.conn.jco.rt.ConnectionManager.createFactory(ConnectionManager.java:349)
+	at com.sap.conn.jco.rt.DefaultConnectionManager.createFactory(DefaultConnectionManager.java:46)
+	at com.sap.conn.jco.rt.ConnectionManager.getFactory(ConnectionManager.java:323)
+	at com.sap.conn.jco.rt.RfcDestination.getSystemID(RfcDestination.java:1013)
+	at com.sap.conn.jco.rt.RepositoryManager.getRepository(RepositoryManager.java:29)
+	at com.sap.conn.jco.rt.RfcDestination.initRepository(RfcDestination.java:968)
+	at com.sap.conn.jco.rt.RfcDestination.getRepository(RfcDestination.java:1079)
+	at com.sap.conn.jco.rt.RfcDestination.getRepository(RfcDestination.java:34)
+	at org.jwebppy.platform.core.dao.sap.RfcTemplate.getJCoFunction(RfcTemplate.java:115)
+	at org.jwebppy.platform.core.dao.sap.RfcTemplate.execute(RfcTemplate.java:81)
+	at org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate.response(SimpleRfcTemplate.java:19)
+	at org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate$$FastClassBySpringCGLIB$$a4e47d92.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at org.jwebppy.platform.core.interceptor.RfcExecutionAspect.onAround(RfcExecutionAspect.java:61)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)
+	at org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate$$EnhancerBySpringCGLIB$$d629bd0d.response(<generated>)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.service.OrderReportService.getList(OrderReportService.java:21)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.web.OrderReportController.listData(OrderReportController.java:43)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.web.OrderReportController$$FastClassBySpringCGLIB$$ac61208f.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at org.jwebppy.platform.core.interceptor.RequestMonitorAspect.onAround(RequestMonitorAspect.java:117)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.web.OrderReportController$$EnhancerBySpringCGLIB$$474aec24.listData(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:197)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:141)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:106)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:894)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1061)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:961)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:626)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter.doFilter(XssEscapeServletFilter.java:36)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:327)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:115)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:115)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.session.web.http.SessionRepositoryFilter.doFilterInternal(SessionRepositoryFilter.java:141)
+	at org.springframework.session.web.http.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:82)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.jwebppy.platform.core.filter.PlatformRequestFilter.doFilter(PlatformRequestFilter.java:29)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:888)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1597)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+
+
+**** Error file opened at 20220205 010819 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Feb 05 01:08:19,609<    RfcException:
+    message: Either parameter ABAP system ID ('r3name') or message server service ('msserv') is missing
+    return code: RFC_INVALID_PARAMETER (19)
+    error group: 101
+    key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcOptions.checkParameters(RfcOptions.java:290)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.initialize(MiddlewareJavaRfc.java:1378)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.connect(MiddlewareJavaRfc.java:1408)
+	at com.sap.conn.jco.rt.ClientConnection.connect(ClientConnection.java:729)
+	at com.sap.conn.jco.rt.RepositoryConnection.connect(RepositoryConnection.java:52)
+	at com.sap.conn.jco.rt.PoolingFactory.init(PoolingFactory.java:115)
+	at com.sap.conn.jco.rt.ConnectionManager.createFactory(ConnectionManager.java:349)
+	at com.sap.conn.jco.rt.DefaultConnectionManager.createFactory(DefaultConnectionManager.java:46)
+	at com.sap.conn.jco.rt.ConnectionManager.getFactory(ConnectionManager.java:323)
+	at com.sap.conn.jco.rt.RfcDestination.getSystemID(RfcDestination.java:1013)
+	at com.sap.conn.jco.rt.RepositoryManager.getRepository(RepositoryManager.java:29)
+	at com.sap.conn.jco.rt.RfcDestination.initRepository(RfcDestination.java:968)
+	at com.sap.conn.jco.rt.RfcDestination.getRepository(RfcDestination.java:1079)
+	at com.sap.conn.jco.rt.RfcDestination.getRepository(RfcDestination.java:34)
+	at org.jwebppy.platform.core.dao.sap.RfcTemplate.getJCoFunction(RfcTemplate.java:117)
+	at org.jwebppy.platform.core.dao.sap.RfcTemplate.execute(RfcTemplate.java:83)
+	at org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate.response(SimpleRfcTemplate.java:19)
+	at org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate$$FastClassBySpringCGLIB$$a4e47d92.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at org.jwebppy.platform.core.interceptor.RfcExecutionAspect.onAround(RfcExecutionAspect.java:61)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)
+	at org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate$$EnhancerBySpringCGLIB$$315bc5a3.response(<generated>)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.service.OrderReportService.getList(OrderReportService.java:21)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.web.OrderReportController.listData(OrderReportController.java:43)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.web.OrderReportController$$FastClassBySpringCGLIB$$ac61208f.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at org.jwebppy.platform.core.interceptor.RequestMonitorAspect.onAround(RequestMonitorAspect.java:117)
+	at jdk.internal.reflect.GeneratedMethodAccessor286.invoke(Unknown Source)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.web.OrderReportController$$EnhancerBySpringCGLIB$$a27cf4ba.listData(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:197)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:141)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:106)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:894)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1061)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:961)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:626)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter.doFilter(XssEscapeServletFilter.java:36)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:327)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:115)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:115)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.session.web.http.SessionRepositoryFilter.doFilterInternal(SessionRepositoryFilter.java:141)
+	at org.springframework.session.web.http.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:82)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.jwebppy.platform.core.filter.PlatformRequestFilter.doFilter(PlatformRequestFilter.java:29)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:888)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1597)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+
+
+**** Error file opened at 20220205 011133 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Feb 05 01:11:33,956<    RfcException:
+    message: Either parameter ABAP system ID ('r3name') or message server service ('msserv') is missing
+    return code: RFC_INVALID_PARAMETER (19)
+    error group: 101
+    key: RFC_ERROR_PROGRAM
+	at com.sap.conn.rfc.api.RfcOptions.checkParameters(RfcOptions.java:290)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.initialize(MiddlewareJavaRfc.java:1378)
+	at com.sap.conn.jco.rt.MiddlewareJavaRfc$JavaRfcClient.connect(MiddlewareJavaRfc.java:1408)
+	at com.sap.conn.jco.rt.ClientConnection.connect(ClientConnection.java:729)
+	at com.sap.conn.jco.rt.RepositoryConnection.connect(RepositoryConnection.java:52)
+	at com.sap.conn.jco.rt.PoolingFactory.init(PoolingFactory.java:115)
+	at com.sap.conn.jco.rt.ConnectionManager.createFactory(ConnectionManager.java:349)
+	at com.sap.conn.jco.rt.DefaultConnectionManager.createFactory(DefaultConnectionManager.java:46)
+	at com.sap.conn.jco.rt.ConnectionManager.getFactory(ConnectionManager.java:323)
+	at com.sap.conn.jco.rt.RfcDestination.getSystemID(RfcDestination.java:1013)
+	at com.sap.conn.jco.rt.RepositoryManager.getRepository(RepositoryManager.java:29)
+	at com.sap.conn.jco.rt.RfcDestination.initRepository(RfcDestination.java:968)
+	at com.sap.conn.jco.rt.RfcDestination.getRepository(RfcDestination.java:1079)
+	at com.sap.conn.jco.rt.RfcDestination.getRepository(RfcDestination.java:34)
+	at org.jwebppy.platform.core.dao.sap.RfcTemplate.getJCoFunction(RfcTemplate.java:117)
+	at org.jwebppy.platform.core.dao.sap.RfcTemplate.execute(RfcTemplate.java:83)
+	at org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate.response(SimpleRfcTemplate.java:19)
+	at org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate$$FastClassBySpringCGLIB$$a4e47d92.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at org.jwebppy.platform.core.interceptor.RfcExecutionAspect.onAround(RfcExecutionAspect.java:61)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)
+	at org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate$$EnhancerBySpringCGLIB$$2490cc37.response(<generated>)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.service.OrderReportService.getList(OrderReportService.java:21)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.web.OrderReportController.listData(OrderReportController.java:43)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.web.OrderReportController$$FastClassBySpringCGLIB$$ac61208f.invoke(<generated>)
+	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:771)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint.proceed(MethodInvocationProceedingJoinPoint.java:89)
+	at org.jwebppy.platform.core.interceptor.RequestMonitorAspect.onAround(RequestMonitorAspect.java:117)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethodWithGivenArgs(AbstractAspectJAdvice.java:634)
+	at org.springframework.aop.aspectj.AbstractAspectJAdvice.invokeAdviceMethod(AbstractAspectJAdvice.java:624)
+	at org.springframework.aop.aspectj.AspectJAroundAdvice.invoke(AspectJAroundAdvice.java:72)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186)
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749)
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691)
+	at org.jwebppy.portal.iv.hq.parts.domestic.report.order.web.OrderReportController$$EnhancerBySpringCGLIB$$95b1fb4e.listData(<generated>)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:197)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:141)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:106)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:894)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1061)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:961)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:626)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
+	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:231)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter.doFilter(XssEscapeServletFilter.java:36)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:327)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:115)
+	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:113)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:105)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:218)
+	at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:212)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.csrf.CsrfFilter.doFilterInternal(CsrfFilter.java:115)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.session.web.http.SessionRepositoryFilter.doFilterInternal(SessionRepositoryFilter.java:141)
+	at org.springframework.session.web.http.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:82)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.jwebppy.platform.core.filter.PlatformRequestFilter.doFilter(PlatformRequestFilter.java:29)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:343)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:888)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1597)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+
+
+**** Error file opened at 20220205 125743 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Feb 05 12:57:43,830<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 44210243
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Feb  5 12:57:43 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:48904
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1573752
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Sat Feb 05 13:14:33,101<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 45338522
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-88.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Feb  5 13:14:32 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.88:3300; L=10.249.10.61:26740
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1574000
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Sat Feb 05 13:14:47,715<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 45354139
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-88.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Feb  5 13:14:47 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.88:3300; L=10.249.10.61:26738
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1574007
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+
+**** Error file opened at 20220205 134152 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Feb 05 13:41:52,291<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 47070708
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-88.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Feb  5 13:41:51 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.88:3300; L=10.249.10.61:64150
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1574411
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Sat Feb 05 13:42:18,624<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 47100047
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-88.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Feb  5 13:42:18 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.88:3300; L=10.249.10.61:53046
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1574422
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Sat Feb 05 14:53:58,146<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 51680491
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-88.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Feb  5 14:53:57 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.88:3300; L=10.249.10.61:54256
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1575478
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+
+**** Error file opened at 20220205 160512 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Feb 05 16:05:12,463<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 55314808
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Feb  5 16:05:11 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:19884
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1576532
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Sat Feb 05 16:05:19,846<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 55323201
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Feb  5 16:05:19 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:58962
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1576538
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+
+**** Error file opened at 20220211 103818 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Fri Feb 11 10:38:18,587<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 54408214
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Fri Feb 11 10:38:18 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:40407
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1696350
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Fri Feb 11 10:38:24,070<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 54414709
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Fri Feb 11 10:38:23 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:40405
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1696355
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+
+**** Error file opened at 20220222 225118 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error: [2] >Tue Feb 22 22:51:18,611<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: connection closed without message (CM_NO_DATA_RECEIVED)
+    return code: RFC_CLOSED (6)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220222 232127 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error: [1] >Tue Feb 22 23:21:27,971<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: connection closed without message (CM_NO_DATA_RECEIVED)
+    return code: RFC_CLOSED (6)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220309 105301 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Mar 09 10:53:01,894<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Wed Mar 09 10:53:01 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Wed Mar 09 10:53:04,285<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Wed Mar 09 10:53:04 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      nixxhl.cpp
+LINE        193
+DETAIL      NiHLGetNodeAddr: hostname cached as unknown
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220318 071228 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Fri Mar 18 07:12:28,965<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Fri Mar 18 07:12:28 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Fri Mar 18 07:12:39,834<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       hostname 'gsq.doosan-iv.com' unknown
+TIME        Fri Mar 18 07:12:39 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -2
+MODULE      ninti.c
+LINE        897
+DETAIL      NiPGetHostByName: 'gsq.doosan-iv.com' not found
+SYSTEM CALL getaddrinfo
+COUNTER     4
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220319 235202 Korea Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Mar 19 23:52:02,337<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner 'gsq.doosan-iv.com:3300' not reached
+TIME        Sat Mar 19 23:52:02 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.249.27.32:3300
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Sat Mar 19 23:52:07,325<    RfcException:
+    message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=IV_GSQ ASHOST=gsq.doosan-iv.com SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner 'gsq.doosan-iv.com:3300' not reached
+TIME        Sat Mar 19 23:52:07 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.249.27.32:3300
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+    return code: RFC_FAILURE (1)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

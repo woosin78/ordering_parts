@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.mgmt.logging.mapper.DataAccessResultLogMapper">	
+	<resultMap type="DataAccessResultLogEntity" id="dataAccessResultLogMap">
+		<id property="drlSeq" column="drl_seq" />
+		<result property="regDate" column="reg_date" />
+		<collection property="dataAccessResultLogParameters" foreignColumn="drl_seq" column="drl_seq" javaType="java.util.ArrayList" ofType="DataAccessLogResultParameterEntity" select="findDataAccessResultLogParameters" />
+	</resultMap>
+	
+	<resultMap type="DataAccessResultLogParameterEntity" id="dataAccessResultLogParameterMap">
+		<id property="drlpSeq" column="drlp_seq" />
+		<result property="drlSeq" column="drl_seq" />
+		<result property="type" column="type" />
+		<result property="name" column="name" />
+		<collection property="dataAccessResultLogParameterDetails" foreignColumn="drlp_seq" column="drlp_seq" javaType="java.util.ArrayList" ofType="DataAccessResultLogParameterDetailEntity" select="findDataAccessResultLogParameterDetails" />
+	</resultMap>
+	
+	<insert id="insertDataAccessResultLog" parameterType="DataAccessResultLogEntity" useGeneratedKeys="true" keyProperty="drlSeq">
+		<selectKey keyProperty="drlSeq" resultType="long" order="BEFORE">
+			select pltf_drl_seq.nextval from dual
+		</selectKey>
+
+		insert into pltf_dacs_res_log (drl_seq, dl_seq, reg_date) values (
+			#{drlSeq}, #{dlSeq}, #{regDate}
+		)
+	</insert>
+
+	<insert id="insertDataAccessResultLogParameter" parameterType="DataAccessResultLogParameterEntity" useGeneratedKeys="true" keyProperty="drlpSeq">
+		<selectKey keyProperty="drlpSeq" resultType="long" order="BEFORE">
+			select pltf_drlp_seq.nextval from dual
+		</selectKey>
+
+		insert /*+append*/ into pltf_dacs_res_log_param (drlp_seq, drl_seq, type, name) values (
+			#{drlpSeq}, #{drlSeq}, #{type}, #{name}
+		)
+	</insert>
+
+	<insert id="insertDataAccessResultLogParameterDetail" parameterType="DataAccessResultLogParameterDetailEntity">
+		insert /*+append*/ into pltf_dacs_res_log_param_detail (drlp_seq, line_no, name, value) values (
+			#{drlpSeq}, #{lineNo}, #{name}, #{value}
+		)
+	</insert>	
+
+	<select id="findResultLog" parameterType="long" resultMap="dataAccessResultLogMap">
+		select
+		a.*
+		from
+		pltf_dacs_res_log a
+		where
+		a.drl_seq=#{drlSeq}
+	</select>
+
+	<select id="findResultLogs" parameterType="String" resultMap="dataAccessResultLogMap">
+		select
+		a.*
+		from
+		pltf_dacs_res_log a
+		where
+		a.dl_seq=#{dlSeq}
+		order by drl_seq desc
+	</select>
+
+	<select id="findDataAccessResultLogParameters" parameterType="String" resultMap="dataAccessResultLogParameterMap">
+		select
+		a.*
+		from
+		pltf_dacs_res_log_param a
+		where
+		a.drl_seq=#{drlSeq}
+		order by a.drlp_seq
+	</select>
+	
+	<select id="findDataAccessResultLogParameterDetails" parameterType="Long" resultType="DataAccessResultLogParameterDetailEntity">
+		select
+		a.*
+		from
+		pltf_dacs_res_log_param_detail a
+		where
+		a.drlp_seq=#{drlpSeq}
+		order by line_no		
+	</select>
+
+</mapper>

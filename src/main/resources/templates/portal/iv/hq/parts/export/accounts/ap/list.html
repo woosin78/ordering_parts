@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_AP_LIST}"></div>
+		<div class="block-button-area">
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
+		</div>
+	</div>
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th th:text="#{HQP_L_COMMERCIAL_INVOICE_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromInvoiceNo" name="pFromInvoiceNo" class="custom-ui-scope" th:value="${pFromInvoiceNo}"> - <input type="text" id="pToInvoiceNo" name="pToInvoiceNo" class="custom-ui-scope" th:value="${pToInvoiceNo}">
+					</div>			
+				</td>
+				<th th:text="#{HQP_L_BILLING_DATE}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">					
+					</div>
+				</td>				
+			</tr>
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+<script>
+let $tableObj;
+$(function(){
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");	
+	
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: {leftColumns: 8},
+		columns : [
+			{data: "ZFCIVNO", title: "[[#{HQP_L_COMMERCIAL_INVOICE_NO}]]"},				
+			{data: "ZTERM", title: "[[#{HQP_L_PAYMENT_TERMS}]]"},
+			{data: "BUZEI", title: "[[#{HQP_L_SEQ}]]"},
+			{data: "BLDAT", title: "[[#{HQP_L_BILLING_DATE}]]"},
+			{data: "FAEDT", title: "[[#{HQP_L_DUE_DATE}]]"},
+			{data: "WRBTR", title: "[[#{HQP_L_AMOUNT}]]"},
+			{data: "WAERK", title: "[[#{HQP_L_CURR}]]"},
+			{data: "WRSHB", title: "[[#{HQP_L_BALANCE}]]"},
+			{data: "VERZN", title: "[[#{HQP_L_ARREAR_DAYS}]]"},
+			{data: "WRBTR2", title: "[[#{HQP_L_INTEREST}]]"}
+		],
+		columnDefs: [
+			{targets: [0, 1, 2, 3, 4, 6, 8, 9], className: "dt-body-center"},
+			{targets: [5, 7], className: "dt-body-right"}
+		],		
+		ajax: {
+			url: "[[${BASE_PATH}]]/accounts/ap/list/data",
+			data: function(p)
+			{
+				p.pFromInvoiceNo = $("#pFromInvoiceNo").val();
+				p.pToInvoiceNo = $("#pToInvoiceNo").val();
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				
+				return data;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+$("#BTN_search").on("click", function(){		
+	doSearch(); 
+});
+
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "AP_List");
+});
+</script>	
+</th:block>

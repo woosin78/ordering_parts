@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_AR_DETAIL}"></div>
+		<div class="block-button-area">
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
+		</div>
+	</div>
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th th:text="#{HQP_L_PO_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromPoNo" name="pFromPoNo" class="custom-ui-scope" th:value="${pFromPoNo}"> - <input type="text" id="pToPoNo" name="pToPoNo" class="custom-ui-scope" th:value="${pToPoNo}">
+					</div>			
+				</td>
+				<th th:text="#{HQP_L_AR_INVOICE_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromInvoiceNo" name="pFromInvoiceNo" class="custom-ui-scope" th:value="${pFromInvoiceNo}"> - <input type="text" id="pToInvoiceNo" name="pToInvoiceNo" class="custom-ui-scope" th:value="${pToInvoiceNo}">
+					</div>			
+				</td>				
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_PART_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
+					</div>
+				</td>
+				<th th:text="#{HQP_L_IV_PURCHASE_DATE}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">					
+					</div>
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+<script>
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});	
+
+let $tableObj;
+$(function(){
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+		
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: {leftColumns: 8},
+		columns : [
+			{data: "EBELN", title: "[[#{HQP_L_PO_NO}]]"},				
+			{data: "SVCMAN_NAME", title: "[[#{HQP_L_IV_BUYER}]]"},
+			{data: "EBELP", title: "[[#{HQP_L_LINE_ITEM}]]"},
+			{data: "BLDAT", title: "[[#{HQP_L_IV_PURCHASE_DATE}]]"},
+			{data: "MATNR", title: "[[#{HQP_L_PART_NO}]]"},
+			{data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"},
+			{data: "MENGE", title: "[[#{HQP_L_QTY}]]"},
+			{data: "BSTME", title: "[[#{HQP_L_UOM}]]"},
+			{data: "NETPR", title: "[[#{HQP_L_NET_VALUE}]]"},
+			{data: "WRBTR", title: "[[#{HQP_L_NET_PRICE}]]"},
+			{data: "WAERS", title: "[[#{HQP_L_CURR}]]"}
+		],
+		columnDefs: [
+			{targets: [0, 2, 3, 6, 7, 10], className: "dt-body-center"},
+			{targets: [8, 9], className: "dt-body-right"}
+		],		
+		ajax: {
+			url: "[[${BASE_PATH}]]/accounts/ar/list/data",
+			data: function(p)
+			{
+				p.pFromPoNo = $("#pFromPoNo").val();
+				p.pToPoNo = $("#pToPoNo").val();
+				p.pFromInvoiceNo = $("#pFromInvoiceNo").val();
+				p.pToInvoiceNo = $("#pToInvoiceNo").val();
+				p.pPartNo = $("#pPartNo").val();
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				
+				return data;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+$("#BTN_search").on("click", function(){		
+	doSearch(); 
+});
+
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "AR_List_Detail");
+});
+</script>	
+</th:block>

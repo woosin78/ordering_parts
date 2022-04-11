@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<script>
+	const GLOBAL_CONST = {
+		"DATE_FORMAT": "[[${DATE_FORMAT}]]",
+		"TIME_FORMAT": "[[${TIME_FORMAT}]]"
+	};
+	</script>
+
+	<title th:text="#{PTL_T_DOOBIZ_PLUS}"></title>
+	<!-- Meta -->
+	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/meta"></th:block>
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/main.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"/>
+	
+	<!-- JavaScript -->
+	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/js"></th:block>
+</head>
+<body>
+	<!-- Progress bar end -->
+	<div class="wrap">
+		<div style="position:absolute"><img id="mainImg" th:src="@{/portal/img/main/main.png}" /></div>
+		<div class="body-area">			
+			<div class="main-back-img">				
+				<div class="intro-area">
+					<div class="app-name">DOOBIZ</div>
+					<div class="vision">Global Leader Doosan</div>
+					<div class="description">
+						Doosan is preparing for the future for the better life of mankind<br />all over the world.
+					</div>
+					<button id="BTN_goOrder" class="order-button" sec:authorize="!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')">
+						<span th:text="#{HQP_B_ORDER}"></span>
+					</button>
+				</div>
+			</div>
+			<!-- header.jsp begin -->
+			<div class="gnb-area">
+				<div class="top-header">
+					<div class="logo-area">
+						<img class="logo-doosan" th:src="@{/portal/img/logo/logo2.png}" /><img class="logo-doobizplus" th:src="@{/portal/img/logo/doobizplus.png}" alt="DOOBIZ Plus" />
+					</div>
+					<div class="info-area">
+						<ul class="info-list">
+							<li class="username" sec:authentication="name"></li>
+							<li>|</li>
+							<li class="new-window" th:text="#{PTL_T_NEW_WINDOW}"></li>
+							<li>|</li>
+							<li class="dealer-info" th:text="#{PTL_T_DEALER_INFO}"></li>
+							<li>|</li>
+							<li class="tooltip"><span th:text="#{PTL_T_LAST_LOGIN_INFO}" style="color: #fff"></span><span class="last-login-time tooltiptext"></span></li>
+						</ul>
+						<div class="split"></div>
+						<button class="logout-button" type="button" th:text="#{PTL_B_LOGOUT}"></button>
+					</div>
+				</div>
+				<div class="gnb-wrap">
+					<div class="gnb-container">
+						<div class="gnb-menu-area">
+							<ul class="gnb-menu-list" style="display:none;"></ul>					
+							<ul class="gnb-menu-sub-list"></ul>
+						</div>
+					</div>
+				</div>				
+				<div class="bulletin-area">
+					<div class="bulletin-sub-area">
+						<table>
+							<colgroup>
+								<col width="50%">
+								<col width="50%">
+							</colgroup>
+							<tr>
+								<td>
+									<table class="bulletin-1">
+										<colgroup>
+											<col width="32%"></col>
+											<col width="48%"></col>
+											<col width="20%"></col>
+										</colgroup>
+										<tbody>
+											<th:block th:if="${#lists.isEmpty(noticeList)}">
+												<tr>
+													<td rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_NOTICE}"></div> <img
+														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
+													/></td>
+													<td colspan="2" th:text="|・  #{HQP_M_EMPTY_RESULT}|"></td>
+												</tr>
+												<tr th:each="i : ${#numbers.sequence(0, 3)}">
+													<td colspan="2">&nbsp;</td>
+												</tr>
+											</th:block>
+											<th:block th:unless="${#lists.isEmpty(noticeList)}">
+												<tr th:each="bbsContent, i : ${noticeList}">
+													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_NOTICE}"></div> <img
+														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
+													/></td>
+													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|"
+															th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"
+														></div></td>
+													<td class="bbs-date" th:text="${#temporals.format(bbsContent.regDate, 'yyyy.MM.dd')}"></td>
+												</tr>
+												<tr th:each="i : ${#numbers.sequence(#lists.size(noticeList), 4)}">
+													<td colspan="2">&nbsp;</td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</td>
+								<td>
+									<table class="bulletin-2">
+										<colgroup>
+											<col width="32%"></col>
+											<col width="48%"></col>
+											<col width="20%"></col>
+										</colgroup>
+										<tbody>
+											<th:block th:if="${#lists.isEmpty(promotionList)}">
+												<tr>
+													<td rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img
+														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
+													/></td>
+													<td colspan="2" th:text="|・  #{HQP_M_EMPTY_RESULT}|"></td>
+												</tr>
+												<tr th:each="i : ${#numbers.sequence(0, 3)}">
+													<td colspan="2">&nbsp;</td>
+												</tr>
+											</th:block>
+											<th:block th:unless="${#lists.isEmpty(promotionList)}">
+												<tr th:each="bbsContent, i : ${promotionList}">
+													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img
+														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
+													/></td>
+													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|"
+															th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"
+														></div></td>
+													<td class="bbs-date" th:text="${#temporals.format(bbsContent.regDate, 'yyyy.MM.dd')}"></td>
+												</tr>
+												<tr th:each="i : ${#numbers.sequence(#lists.size(promotionList), 4)}">
+													<td colspan="2">&nbsp;</td>
+												</tr>
+											</th:block>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bottom-area">
+			<div class="copy-right">
+				<span th:text="#{PTL_T_COPY_RIGHT}"></span>
+			</div>
+		</div>
+	</div>
+	<!-- Logout -->
+	<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>	
+	<iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe>
+<script>
+$(window).on("load", function() {
+	ProgressBar.hide();
+});
+
+$(window).resize($.debounce(100, function(e){
+	resizeView();
+}));
+
+$(function(){
+	resizeView();
+
+	//상단 메뉴 생성 공통함수
+	makeGnb();
+	
+	$(".top-header .logo-doobizplus").on("click", function() {
+		goHome()
+	});
+	
+	$(".top-header li.new-window").on("click", function() {
+		window.open("/portal/forward/entry_point", "");
+	});
+	
+	$(".top-header li.dealer-info").on("click", function() {
+		clickDealerInfo();	    		
+	});
+	
+	$(".top-header li.username").on("click", function() {
+		clickUserInfo();
+	});
+	
+	$(".top-header .logout-button").on("click", function() {
+		clickLogout();	    		
+	});	
+
+	$("#BTN_goOrder").on("click", function() {
+		document.location.href = "[[${BASE_PATH}]]/order/create/write";
+	});
+	
+	//Get last login information
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/login/history/last_login_info",		
+	    success: function(response, textStatus, jqXHR) 
+	    {
+	    	let data = response.RESULT;
+	    	
+	    	if (data != null && JpUtilsString.isNotEmpty(data.regDate))
+	    	{
+	    		$(".last-login-time").html(data.regDate + "/" + data.ip);
+	    	}
+	    	else
+	    	{
+	    		$(".last-login-time").html("-/-");
+	    	};	    	
+	    }	
+	});
+	
+	checkExpiredPassword();
+});
+
+function goHome()
+{
+	document.location.href = "/portal/forward/entry_point";
+};
+
+function clickUserInfo()
+{
+	Popup.open("/portal/corp/eu/common/info/user/account_form", 600, 250);
+};
+
+function clickDealerInfo()
+{
+	Popup.open("[[${BASE_PATH}]]/dealer_info/view", 1100, 800);
+};
+
+function clickLogout()
+{
+	$("#FORM_logout").submit();
+};
+
+function goBbsFromMain(bSeq)	// 게시판 +버튼
+{
+	location.href="/portal/corp/eu/common/bbs/list?bSeq=" + bSeq;	
+};
+
+function goBbsPopFromMain(bSeq, bcSeq)	// 게시판 게시물 링크(팝업)
+{
+	Popup.open("/portal/corp/eu/common/bbs/detail_popup?bSeq=" + bSeq + "&bcSeq=" + bcSeq);
+};
+
+
+function checkExpiredPassword()
+{
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/check/expired_password",
+		global: false,
+		success: function(data, textStatus, jqXHR)
+		{
+			let result = data.RESULT;
+			
+			let difference = parseInt(result.difference);
+			
+			if (difference < 15)
+			{
+				if (difference < 0)
+				{
+					JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
+						document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});
+				}
+				else
+				{
+					let message = "[[#{PLTF_M_PASSWORD_EXPIRE_DATE_NOTICE}]]".replace("{0}", result.expiredDate);
+					
+					JpUiDimmer.confirm(message, function() {
+						document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});					
+				};
+
+			};
+		}
+	});
+};
+
+let RESIZING_MIN_WIDTH = 1280;
+let RESIZING_MIN_HEIGHT = 720;
+
+function resizeView()
+{
+	let width = $(window).width();
+	let height = $(window).height();
+	
+	if (width > RESIZING_MIN_WIDTH)
+	{
+		$("#mainImg").width(width);
+		
+		if (height > RESIZING_MIN_HEIGHT)
+		{
+			$("#mainImg").height(height);
+		}
+		else
+		{
+			$("#mainImg").height(height);
+		};
+	}
+	else
+	{
+		$("#mainImg").width(RESIZING_MIN_WIDTH);
+		$("#mainImg").height(RESIZING_MIN_HEIGHT);
+	}
+};
+</script>
+</body>
+</html>

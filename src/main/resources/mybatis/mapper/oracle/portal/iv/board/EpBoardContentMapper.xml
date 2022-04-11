@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.portal.iv.board.mapper.EpBoardContentMapper">
+	<resultMap type="EpBoardContentEntity" id="boardContentEntityMap">
+		<id property="bcSeq" column="bc_seq" />
+		<result property="bSeq" column="b_seq" />
+		<result property="pSeq" column="p_seq" />
+		<result property="order" column="order" />
+		<result property="depth" column="depth" />
+		<result property="uSeq" column="u_seq" />
+		<result property="title" column="title" />
+		<result property="etc1" column="etc1" />
+		<result property="etc2" column="etc2" />
+		<result property="etc3" column="etc3" />
+		<result property="etc4" column="etc4" />
+		<result property="etc5" column="etc5" />
+		<result property="etc6" column="etc6" />
+		<result property="htmlContent" column="html_content" />
+		<result property="textContent" column="text_content" />
+		<result property="fromView" column="from_view" />
+		<result property="toView" column="to_view" />		
+		<result property="views" column="views" />
+		<result property="writer" column="writer" />
+		<result property="fgDelete" column="fg_delete" />
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+		<result property="modUsername" column="mod_username" />
+		<result property="modDate" column="mod_date" />
+		<association property="board" foreignColumn="b_seq" column="b_seq" javaType="EpBoardEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardMapper.findBoard" />
+		<collection property="boardContentTargets" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpBoardContentTargetEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardContentTargetMapper.findBoardContentTargets" />
+		<collection property="uploadFileLists" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
+	</resultMap>
+
+	<insert id="insert" parameterType="EpBoardContentEntity">
+		insert into ep_board_content (bc_seq, b_seq, p_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date) values (
+			#{bcSeq}, #{bSeq}, nvl(#{pSeq}, #{bcSeq}), 0, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, #{etc1}, #{etc2}, #{etc3}, #{etc4}, #{etc5}, #{etc6}, 'N', #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+	<update id="update" parameterType="EpBoardContentEntity">
+		update ep_board_content set
+			title=#{title},
+			html_content=#{htmlContent},
+			text_content=#{textContent},
+			from_view=#{fromView},
+			to_view=#{toView},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}				
+		where
+			bc_seq=#{bcSeq}
+	</update>
+	
+	<update id="updatePSeq" parameterType="EpBoardContentEntity">
+		update ep_board_content set p_seq=#{pSeq} where bc_seq=#{bcSeq}
+	</update>	
+	
+	<update id="updatePlusViews">
+		update ep_board_content set
+			views=views+1
+		where
+			bc_seq=#{bcSeq}
+	</update>
+	
+	<update id="updateForReply">
+		update ep_board_content set
+			sort=sort+1,
+			depth=depth+1				
+		where
+			p_seq=#{pSeq}
+			and bc_seq>#{pSeq}
+	</update>
+	
+	<update id="delete" parameterType="EpBoardContentEntity">
+		update ep_board_content set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}		
+		where
+			bc_seq=#{bcSeq}
+	</update>
+
+	<select id="findBoardContent" parameterType="EpBoardContentSearchDto" resultMap="boardContentEntityMap">
+		select
+		a.*
+		from
+		ep_board_content a
+		where
+		a.bc_seq=#{bcSeq}
+		and a.fg_delete='N'
+	</select>
+	
+	<select id="findBoardContents" parameterType="EpBoardContentSearchDto" resultMap="boardContentEntityMap">
+		select
+		total_count-(rownum-1) no,
+		z.*
+		from
+		(
+			select
+			count(*) over() as total_count,
+			a.*
+			from
+			ep_board_content a,
+			ep_board b
+			where
+			a.b_seq=#{bSeq}
+			and a.fg_delete='N'
+			and a.b_seq=b.b_seq
+			and b.fg_delete='N'
+			and b.corp=#{corp}
+			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(title)">
+				and upper(a.title) like '%'||upper(#{title})||'%'
+			</if>
+			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(writer)">
+				and upper(a.writer) like '%'||upper(#{writer})||'%'
+			</if>
+			
+			<choose>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
+					and a.reg_date <![CDATA[>=]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(fromRegDate, 'FROM')}' and a.reg_date <![CDATA[<]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(toRegDate, 'TO')}'
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate)">
+					and a.reg_date <![CDATA[>=]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(fromRegDate, 'FROM')}'
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
+					and a.reg_date <![CDATA[<]]> '${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(toRegDate, 'TO')}'
+				</when>
+			</choose>
+			
+			<choose>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
+					and a.from_view <![CDATA[>]]> #{fromView} and a.to_view <![CDATA[<=]]> #{toView}
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView)">
+					and a.from_view <![CDATA[>]]> #{fromView}
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
+					and a.to_view <![CDATA[<=]]> #{toView}
+				</when>
+			</choose>
+	
+			order by a.p_seq desc, a.sort, a.depth
+		) z
+	</select>
+
+	<select id="findUploadFileLists" resultType="EpUploadFileListEntity">
+		select
+		d.*
+		from
+		ep_board a,
+		ep_board_content b,
+		ep_upload_file c,
+		ep_upload_file_list d
+		where
+		a.b_seq=b.b_seq
+		and a.fg_delete='N'
+		and b.bc_seq=#{bcSeq}
+		and b.fg_delete='N'
+		and a.uf_seq=c.uf_seq
+		and c.fg_delete='N'
+		and c.uf_seq=d.uf_seq
+		and d.t_seq=b.bc_seq
+		and d.fg_delete='N'
+		order by d.reg_date
+	</select>
+
+</mapper>

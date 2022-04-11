@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{platform/layout/common/index}">
+
+<th:block layout:fragment="content">
+
+<!-- body start -->
+<div class="ui dividing header">
+  Notice
+  <div class="sub header"></div>
+</div>
+<div class="field">
+	<div class="ui teal button BTN_modify"><i class="edit outline icon"></i> Modify</div>
+	<div class="ui teal button BTN_delete"><i class="minus icon"></i> Delete</div>
+	<div th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}" class="ui teal button BTN_reply"><i class="reply icon"></i> Reply</div>
+	<div class="ui button BTN_list"><i class="list icon"></i> List</div>
+</div>
+<div class="ui segment">
+	<form id="FORM_view" class="ui form" action="/platform/mgmt/board/content/list">
+	<div class="ui header small" th:text="${boardContent.title}"></div>
+	<p><span th:text="${boardContent.writer}"></span> <strong>|</strong> <span th:text="${boardContent.displayRegDate}"></span> <strong>|</strong> Views: <span th:text="${boardContent.views}"></span></p>	
+	<div class="ui divider"></div>
+	<iframe id="content" th:src="@{/platform/mgmt/board/content/viewer?bcSeq=} + ${bcSeq}" style="width:100%; height:0px; border: none; margin: 0; padding: 0;"></iframe>
+	
+	<th:block th:if="${board.fgSetPeriod == T(org.jwebppy.platform.core.PlatformCommonVo).YES}">	
+	<div class="ui divider"></div>
+	<div class="ui two column grid">
+		<div class="column">
+			<div class="ui header render small">View From
+				<div class="sub header" th:text="${boardContent.displayFromView}"></div>
+			</div>
+		</div>
+		<div class="column">
+			<div class="ui header render small">View To
+				<div class="sub header" th:text="${boardContent.displayToView}"></div>
+			</div>		
+		</div>
+	</div>
+	</th:block>	
+	
+	<div id="AREA_attachment" th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}">
+		<div class="ui divider"></div>
+		<div class="ui one column grid">
+			<div class="column">
+				<div id="attachedFiles" class="ui relaxed divided list"></div>			
+			</div>
+		</div>	
+	</div>
+	<input type="hidden" id="bcSeq" name="bcSeq" th:value="${bcSeq}"/>
+	<input type="hidden" id="pSeq" name="pSeq" th:value="${pSeq}"/>	
+	<input type="hidden" name="type" th:value="${type}"/>
+	<input type="hidden" name="query" th:value="${query}"/>
+	<input type="hidden" name="fromDate" th:value="${fromDate}"/>
+	<input type="hidden" name="toDate" th:value="${toDate}"/>
+	<input type="hidden" name="pageNumber" th:value="${pageNumber}"/>
+	<input type="hidden" name="rowPerPage" th:value="${rowPerPage}"/>	
+	</form>
+</div>
+<div class="field">
+	<div class="ui teal button BTN_modify"><i class="edit icon"></i> Modify</div>
+	<div class="ui teal button BTN_delete"><i class="minus icon"></i> Delete</div>
+	<div th:if="${board.fgUseReply == T(org.jwebppy.platform.core.PlatformCommonVo).YES}" class="ui teal button BTN_reply"><i class="reply icon"></i> Reply</div>
+	<div class="ui button BTN_list"><i class="list icon"></i> List</div>
+</div>
+<script th:src="@{/platform/js/jquery/jquery.fileDownload.js}"></script>
+<script>
+$(document).ready(function() {	
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/upload/list/data",
+		data: { ufSeq: [[${board.ufSeq}]], tSeq: $("#bcSeq").val() },
+		success: function(data, textStatus, jqXHR) {
+			let result = data.RESULT;
+			
+			if (JpUtilsObject.isNotNull(result))
+			{
+				$.each(result, function(i, item) {
+					addFile(item.fullOriginName, item.size, item.uflSeq, item.downloadKey)	
+				});
+				
+				$("a[downloadKey]").on("click", function() {					
+					let downloadKey = $(this).attr("downloadKey");
+					
+					JpUtilsDownload.download(downloadKey);
+				});
+			}
+			else
+			{
+				$("#AREA_attachment").hide();
+			};
+		}	
+	});	
+
+	$(".BTN_reply").on("click", function() {
+		$("#pSeq").val($("#bcSeq").val());
+		$("#bcSeq").val("");
+		$("#FORM_view").attr("action", "/platform/mgmt/board/content/write");
+		$("#FORM_view")[0].submit();
+	});	
+	
+	$(".BTN_modify").on("click", function() {
+		$("#FORM_view").attr("action", "/platform/mgmt/board/content/write");
+		$("#FORM_view")[0].submit();
+	});
+
+	$(".BTN_delete").on("click", function() {
+		JpUiDimmer.confirm("Do you want delete it?", function() {
+			JpUtilsAjax.post({
+				url: "/platform/mgmt/board/content/delete",
+				data: { bcSeq: $("#bcSeq").val() },
+				success: function(data, textStatus, jqXHR) {
+					$(".BTN_list").trigger("click");
+				}	
+			});			
+		});
+	});
+
+	$(".BTN_list").on("click", function() {
+		$("#FORM_view")[0].submit();
+	});
+	
+	function addFile(name, size, uflSeq, downloadKey)
+	{
+		let html = [];
+		html.push("<div class='item'>");
+		html.push(getFileIcon(name));
+		html.push("	<div class='content')>");
+		html.push("		<a class='header' downloadKey='" + downloadKey + "'>" + name + "</a>");
+		html.push("		<div class='description'>" + getSize(size) + "</div>");
+		html.push("	</div>");
+		html.push("</div>");			
+		
+		$("#attachedFiles").append(html.join(""));
+	};
+	
+	function getSize(size)
+	{
+		let KB = 1024;
+		let MB = Math.pow(1024, 2);
+		let GB = Math.pow(1024, 3);
+		
+		let result = [];
+
+		if (size > GB)
+		{
+			result.push((size / GB).toFixed(2));
+			result.push("GB");
+		}
+		else if (size > MB)
+		{
+			result.push((size / MB).toFixed(2));
+			result.push("MB");
+		}
+		else if (size > KB)
+		{
+			result.push((size / KB).toFixed(2));
+			result.push("KB");
+		}
+		else
+		{
+			result.push(size);
+		};
+		
+		return result.join("");
+	};
+	
+	function getFileIcon(name)
+	{
+		let extension = name.split(".").pop().toUpperCase();
+		let icon = "file";
+		
+		if ("JPG^JPEG^GIF^PNG^BMP".indexOf(extension) > -1)
+		{
+			icon = "file image";
+		}
+		else if ("XLS^XLSX".indexOf(extension) > -1)
+		{
+			icon = "file excel";
+		}
+		else if ("DOC^DOCX".indexOf(extension) > -1)
+		{
+			icon = "file word";
+		}
+		else if ("PPT^PPTX".indexOf(extension) > -1)
+		{
+			icon = "file powerpoint";
+		}
+		else if ("PDF".indexOf(extension) > -1)
+		{
+			icon = "file pdf";
+		}
+		else if ("HWP".indexOf(extension) > -1)
+		{
+			icon = "file alternate";
+		}		
+		else if ("ZIP^JAR".indexOf(extension) > -1)
+		{
+			icon = "file archive";
+		}
+		else if ("MP3^FLAC^WAV^OGG^APE^M4A".indexOf(extension) > -1)
+		{
+			icon = "file audio";
+		}		
+		else if ("ASF^AVI^FLV^MKV^MOV^MPEG^WMV".indexOf(extension) > -1)
+		{
+			icon = "file video";
+		}
+		
+		return "<i class='large " + icon + " middle aligned icon'></i>";
+	};
+});
+
+function resizeViewer(height)
+{
+	$("#content").height(height + 40);
+};
+
+</script>
+</th:block>
+</html>

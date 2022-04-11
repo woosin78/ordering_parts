@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.portal.iv.hq.parts.domestic.order.create.mapper.OrderCreateMapper">
+	<resultMap type="OrderHistoryHeaderEntity" id="orderHistoryHeaderMap">
+		<id property="ohhSeq" column="ohh_seq" />
+		<result property="corp" column="corp" />
+		<result property="docType" column="doc_type" />
+		<result property="orderType" column="order_type" />
+		<result property="soldToNo" column="sold_to_no" />
+		<result property="shipToNo" column="ship_to_no" />
+		<result property="oaSeq" column="oa_seq" />
+		<result property="salesOrg" column="sales_org" />
+		<result property="distChannel" column="dist_channel" />
+		<result property="division" column="division" />
+		<result property="shippingCondition" column="shipping_condition" />
+		<result property="poNo" column="po_no" />
+		<result property="soNo" column="so_no" />
+		<result property="errorMsg" column="error_msg" />
+		<result property="orderedDate" column="ordered_date" />
+		<result property="duplOhhSeq" column="dupl_ohh_seq" />
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+		<collection property="orderHistoryItems" foreignColumn="ohh_seq" column="ohh_seq" javaType="java.util.ArrayList" ofType="OrderHistoryItemEntity" select="findAllOrderHistoryItems" />
+	</resultMap>
+	
+	<insert id="insertOnetimeAddress" parameterType="OnetimeAddressEntity" useGeneratedKeys="true" keyProperty="oaSeq">
+		insert into ep_onetime_address (corp, name, street, city, country, country_name, postal_code, transport_zone, transport_zone_name, customer_no, fg_use, fg_delete, reg_username, reg_date) values (
+			#{corp}, #{name}, #{street}, #{city}, #{country}, #{countryName}, #{postalCode}, #{transportZone}, #{transportZoneName}, #{customerNo}, #{fgUse}, #{fgDelete}, #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+	<insert id="insertOrderHistoryHeader" parameterType="OrderHistoryHeaderEntity" useGeneratedKeys="true" keyProperty="ohhSeq">
+		insert into ep_order_history_header (corp, doc_type, order_type, sold_to_no, ship_to_no, oa_seq, sales_org, dist_channel, division, shipping_condition, po_no, so_no, error_msg, ordered_date, dupl_ohh_seq, reg_username, reg_date) values (
+			#{corp}, #{docType}, #{orderType}, #{soldToNo}, #{shipToNo}, #{oaSeq}, #{salesOrg}, #{distChannel}, #{division}, #{shippingCondition}, #{poNo}, #{soNo}, #{errorMsg}, #{orderedDate}, #{duplOhhSeq}, #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+	<insert id="insertOrderHistoryItem" parameterType="OrderHistoryItemEntity">
+		insert into ep_order_history_item (ohh_seq, material_no, order_qty) values (
+			#{ohhSeq}, #{materialNo}, #{orderQty}
+		)
+	</insert>
+	
+	<update id="updateFgUseOfOnetimeAddress" parameterType="OnetimeAddressEntity">
+		update ep_onetime_address set fg_use=#{fgUse}, mod_username=#{modUsername}, mod_date=#{modDate}
+		where
+		corp=#{corp}
+		and reg_username=#{regUsername}
+		and oa_seq=#{oaSeq}		
+	</update>	
+	
+	<update id="updateFgDeleteOfOnetimeAddress" parameterType="OnetimeAddressEntity">
+		update ep_onetime_address set fg_delete=#{fgDelete}, mod_username=#{modUsername}, mod_date=#{modDate}
+		where
+		corp=#{corp}
+		and reg_username=#{regUsername}
+
+		<if test="oaSeqs != null">
+			and
+			<foreach collection="oaSeqs" item="oaSeq" open="(" close=")" separator="or">
+				oa_seq=#{oaSeq}
+			</foreach>		
+		</if>		
+	</update>
+
+	<update id="updateSuccessOrderHistoryHeader" parameterType="OrderHistoryHeaderEntity">
+		update ep_order_history_header set so_no=#{soNo}, ordered_date=#{modDate}
+		where
+		ohh_seq=#{ohhSeq}		
+	</update>
+
+	<update id="updateFailOrderHistoryHeader" parameterType="OrderHistoryHeaderEntity">
+		update ep_order_history_header set dupl_ohh_seq=#{duplOhhSeq}, error_msg=#{errorMsg}
+		where
+		ohh_seq=#{ohhSeq}		
+	</update>
+
+	<select id="findOnetimeAddressByOaSeq" parameterType="Integer" resultType="OnetimeAddressEntity">
+		select
+		*
+		from
+		ep_onetime_address
+		where
+		oa_seq=#{oaSeq}
+	</select>
+
+	<select id="findAllOnetimeAddresses" parameterType="OnetimeAddressDto" resultType="OnetimeAddressEntity">
+		select
+		*
+		from
+		ep_onetime_address
+		where
+		corp=#{corp}
+		and reg_username=#{regUsername}
+		and fg_use='Y'
+		and fg_delete='N'
+		
+		<if test="name != null and name != ''">
+			and upper(name) like '%' || upper(#{name}) || '%'
+		</if>
+		
+		<if test="street != null and street != ''">
+			and upper(street) like '%' || upper(#{street}) || '%'
+		</if>
+		
+		<if test="country != null and country != ''">
+			and upper(country) like '%' || upper(#{country}) || '%'
+		</if>
+		
+		<if test="postalCode != null and postalCode != ''">
+			and upper(postal_code) like '%' || upper(#{postalCode}) || '%'
+		</if>
+		
+		<if test="transportZone != null and transportZone != ''">
+			and upper(transport_zone) like '%' || upper(#{transportZone}) || '%' 
+		</if>
+		order by oa_seq desc	
+	</select>
+
+	<select id="findAllSameOnetimeAddresses" parameterType="OnetimeAddressDto" resultType="OnetimeAddressEntity">
+		select
+		*
+		from
+		ep_onetime_address
+		where
+		corp=#{corp}
+		and customer_no=#{customerNo}
+		and reg_username=#{regUsername}
+		and fg_use='Y'
+		and fg_delete='N'
+		and replace(upper(name), ' ','') = replace(upper(#{name}), ' ', '')
+		and replace(upper(street), ' ','') = replace(upper(#{street}), ' ', '')
+		and replace(upper(country), ' ','') = replace(upper(#{country}), ' ', '')
+		and replace(upper(postal_code), ' ','') = replace(upper(#{postalCode}), ' ', '')
+		and replace(upper(transport_zone), ' ','') = replace(upper(#{transportZone}), ' ', '')
+	</select>
+	
+	<select id="findAllOrderHistoryHeader" parameterType="OrderHistoryHeaderDto" resultMap="orderHistoryHeaderMap">
+		select
+		*
+		from
+		ep_order_history_header
+		where
+		reg_username=#{regUsername}
+		and reg_date>=date_add(now(), interval 30 minute)
+		
+		<if test="ohhSeq != null">
+			and ohh_seq <![CDATA[<]]> #{ohhSeq}
+		</if>
+		
+		order by ohh_seq
+	</select>
+
+	<select id="findAllOrderHistoryItems" parameterType="Integer" resultType="OrderHistoryItemEntity">
+		select
+		*
+		from
+		ep_order_history_item
+		where
+		ohh_seq=#{ohhSeq}
+		order by material_no
+	</select>
+</mapper>

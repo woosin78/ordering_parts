@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<script>
+	const GLOBAL_CONST = {
+		"DATE_FORMAT": "[[${DATE_FORMAT}]]",
+		"TIME_FORMAT": "[[${TIME_FORMAT}]]"
+	};
+	</script>
+
+	<title th:text="#{PTL_T_DOOBIZ_PLUS}"></title>
+	<!-- Meta -->
+	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/meta"></th:block>
+	<!-- CSS -->
+	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/css"></th:block>
+	<!-- JavaScript -->
+	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/js"></th:block>
+</head>
+<body>
+<!-- Progress bar start -->
+<script>
+ProgressBar.show();
+</script>
+<!-- Progress bar end -->
+
+<!-- Start Top -->
+<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/top"></th:block>
+<!-- End Top -->
+
+<!-- Start Content -->
+<th:block layout:fragment="content"></th:block>
+<!-- End Content -->
+
+<!-- Start Bottom -->
+<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/bottom"></th:block>
+<!-- End Bottom -->
+</body>
+</html>

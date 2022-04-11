@@ -1,0 +1,580 @@
+/*---- 폰트 --------------*/
+@import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css); 
+
+/*
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 100;
+  src: url(font/NotoSansKR-Thin.woff2) format('woff2'),
+       url(font/NotoSansKR-Thin.woff) format('woff'),
+       url(font/NotoSansKR-Thin.otf) format('opentype');
+}
+@font-face {
+  font-family: 'Noto Sans KR';
+  font-style: normal;
+  font-weight: 300;
+  src: url(font/NotoSansKR-Light.woff2) format('woff2'),
+       url(font/NotoSansKR-Light.woff) format('woff'),
+       url(font/NotoSansKR-Light.otf) format('opentype');
+}
+@font-face {
+   font-family: 'Noto Sans KR';
+   font-style: normal;
+   font-weight: 400;
+   src: url(font/NotoSansKR-Regular.woff2) format('woff2'),
+        url(font/NotoSansKR-Regular.woff) format('woff'),
+        url(font/NotoSansKR-Regular.otf) format('opentype');
+ }
+@font-face {
+   font-family: 'Noto Sans KR';
+   font-style: normal;
+   font-weight: 500;
+   src: url(font/NotoSansKR-Medium.woff2) format('woff2'),
+        url(font/NotoSansKR-Medium.woff) format('woff'),
+        url(font/NotoSansKR-Medium.otf) format('opentype');
+ }
+@font-face {
+   font-family: 'Noto Sans KR';
+   font-style: normal;
+   font-weight: 700;
+   src: url(font/NotoSansKR-Bold.woff2) format('woff2'),
+        url(font/NotoSansKR-Bold.woff) format('woff'),
+        url(font/NotoSansKR-Bold.otf) format('opentype');
+ }
+@font-face {
+   font-family: 'Noto Sans KR';
+   font-style: normal;
+   font-weight: 900;
+   src: url(font/NotoSansKR-Black.woff2) format('woff2'),
+        url(font/NotoSansKR-Black.woff) format('woff'),
+        url(font/NotoSansKR-Black.otf) format('opentype');
+ } 
+*/
+
+/*---- 기본  --------------*/
+
+* {
+	font-family: Noto Sans KR, sans-serif;
+	font-size: 14px;
+	color: #363636;
+	flex: 0 0 auto;
+}
+html, body {
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	margin: 0px;
+	padding: 0px;
+	background: #ffffff;
+	display: flex;
+	flex-flow: column;
+}
+
+button {
+	padding: 5px 15px;
+	background: #00a779;
+	color: #fff;
+	font-weight: bold;
+	border: none;
+	border-radius: 4px;
+	min-width: 90px;
+	cursor: pointer;
+	outline: none;
+}
+
+button:hover{
+	filter: saturate(0.5);
+}
+
+button:active{
+	filter: saturate(0.5);
+	box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.21);
+}
+
+input {
+	box-sizing: border-box;
+}
+
+/*--- header(최상단) 영역  ------------------*/
+
+.gnb-area {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+}
+
+.top-header {
+	box-sizing: border-box;
+	height: 58px;
+	text-align: right;
+	white-space: nowrap;
+	display: inline-block;
+	padding: 10px 40px 10px 40px;
+	width: 100%;
+}
+
+.logo-area {
+	float: left;
+	display: inline;
+	vertical-align: middle;
+}
+.logo-doosan {
+	position:relative;
+	/*width:86px;
+	height:40px;
+	*/
+	vertical-align: middle;
+}
+.logo-doobizplus {
+	margin: 8px 0 0 20px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+.info-area {
+	padding-top: 4px;
+	/* height: 100%; */
+	vertical-align: middle;
+	display: inline-block;
+	position: relative;
+}
+.info-list {
+	vertical-align: middle;
+	margin: 0;
+	display: inline-block;	
+}
+.info-list li {
+	font-weight: normal;
+	cursor: pointer;
+	display: inline-block;
+	margin: 0px 10px;
+	color: #ffffff
+}
+.info-list li:hover {
+	text-decoration: underline;
+}	
+.logout-button {
+	color: #363636;
+	font-weight: bold;
+	cursor: pointer;
+	padding: 5px 16px;
+	background: #fff;
+	vertical-align: middle;
+	border-radius: 15px;
+	border: 1px solid rgba(0, 48, 129, 0.2);
+}
+.logout-button:hover {
+	background: #f8fffd;
+}
+.order-button {
+	padding: 5px 15px;
+	background-color: #003081;
+	border: none;
+	border-radius: 20px;
+	width: 150px;
+	height: 40px;
+	cursor: pointer;
+	outline: none;
+	vertical-align: middle;
+	position: relative;
+	top: 80px;
+}
+.order-button span {
+	color: #fff;
+	font-size: 18px;
+	vertical-align: middle;
+	font-weight: normal;
+}
+
+/*--- 여백 과 flex ------------------*/
+.split {
+	display: inline-block;
+	height: 10px;
+	/* background: #eee; */
+	width: 1px;
+	margin: 0;
+	padding: 0;
+}
+.split2 {
+	display: inline-block;
+	height: 10px;
+	/* background: #eee; */
+	width: 8px;
+	margin: 0;
+	padding: 0;
+}
+.split-row {
+	display: block;
+	height: 12px;
+}
+.flex-grow{
+	flex: 1;
+}
+
+/*--- 팝업 블록 버튼 그룹 ------------------*/
+.modal-block {
+	position: absolute;
+	z-index:999;
+	background-color: #ffffff;
+	border-radius: 4px;
+	box-shadow: 0 25px 25px 0 rgba(0, 0, 0, 0.16);
+	display:none;
+}
+.modal-block-top-line {
+	position:relative;
+	z-index:980;
+	background-color: #003081;
+	height: 10px;
+	border-radius: 4px;	
+}
+.modal-block-body-background {	
+	position:relative;	
+	z-index:990;	
+	top:-5px;	
+	background-color: #ffffff;
+}
+.modal-block-body {	
+	background-color: #ffffff;
+	z-index:980;
+	margin: 0 20px 0 20px;
+}
+.modal-block-header {
+	height: 36px;	
+	margin-top: 16px;
+	box-sizing: border-box;
+	text-align: right;
+	display: inline-block;
+	width: 100%;
+	position: relative;	
+}
+.modal-block-header-title {
+	margin-top: -10px;
+	display: inline-block;
+	font-weight: bold;
+	font-size: 24px;
+	float: left;
+}
+.modal-block-header-button {
+    display: inline-block;
+    vertical-align : middle;
+}
+.modal-block-content {
+	margin-top: 15px;
+}
+.modal-block-close-button {
+	cursor: pointer;
+}
+
+/*--- Dimmer ------------------*/
+.dimmer {
+	opacity: 0.25;
+	background-color: #000000;
+	position: absolute;
+	z-index: 990;
+	width: 100%;
+	height: 100%;	
+}
+
+/*--- Main ------------------*/
+.wrap {	
+	width:100%;	
+	margin:0 auto;	
+}
+
+.body-area {
+	position: relative;
+	top: 0;
+	left: 0;
+	width:100%;
+}
+
+.main-back-img {	
+ 	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.main-back-img img {
+	width: 100%;
+	height: calc(100vh - 70px);
+}
+
+@media screen and (max-width: 1280px) {
+	body {
+		width: 1280px;
+		height: 720px;
+		overflow: hidden;
+	}
+	
+	.intro-area {
+		width: 100vw;
+		position: absolute;
+		left: 251px;	
+		top: 167px;
+	}
+	
+	.intro-area .app-name {
+		width: 175px;
+		height: 74px;	
+		font-size: 50px;
+		line-height: 0.56;
+		letter-spacing: -2.25px;
+		text-align: left;
+		color: #ffffff;
+	}
+	
+	.intro-area .vision {
+		font-size: 64px;
+		line-height: 0.44;
+		letter-spacing: -2.88px;
+		text-align: left;
+		color: #ffffff;
+		position: relative;
+		top: -5px;
+	}
+	
+	.intro-area .description {
+		font-size: 18px;
+		line-height: 1.11;
+		letter-spacing: normal;
+		text-align: left;
+		color: #ffffff;
+		position: relative;
+		top: 30px;
+	}
+	
+	.bulletin-area {
+		position: relative;
+		width: 1280px;
+	 	height:134px;
+	 	top: 445px;
+	 	left: 50%;
+	    transform: translate(-50%,-50%);
+	}
+	
+	.bulletin-sub-area {
+		position: absolute;
+		left: 50%;
+		display: inline-block;
+		transform: translate(-50%, 0%);
+	}
+	
+	.bulletin-1 {	
+		width: 380px;
+		height: 130px;
+		background-color: #ffffff;
+		padding-left:40px;
+		padding-right:40px;
+		padding-top:20px;
+		margin-right:10px;
+	}
+	
+	.bulletin-2 {	
+		width: 380px;
+		height: 130px;
+		background-color: #ffffff;
+		padding-left:40px;
+		padding-right:40px;
+		padding-top:20px;
+		margin-left:10px;
+	}
+	
+	.bulletin-title-text {
+	  vertical-align: top;
+	  font-size: 22px;
+	  font-weight: bold;
+	  font-stretch: normal;
+	  font-style: normal;
+	  line-height: 0.91;
+	  letter-spacing: -0.44px;
+	  text-align: left;
+	  color: #363636;
+	}
+	
+	.bottom-area {
+		position: relative;
+		height: 70px;		
+		top: 650px;
+		width:1280px;
+		border: none;
+		margin: 0;
+		background-color: #fff;
+	}
+	
+	.bottom-area .copy-right {
+		height: 70px;
+		margin: 25px 0 25px 0;
+		font-size: 14px;
+		line-height: 1.64;	
+		color: #363636;
+		position: absolute;
+		left: 650px;
+		transform: translate(-50%, 0%);
+	}
+}
+
+@media screen and (min-width: 1281px) {
+	body {
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+		
+	.intro-area {
+		width: 100%;
+		position: fixed;
+		left: 19.3%;	
+		bottom: 56%;
+	}
+	
+	.intro-area .app-name {
+		width: 175px;
+		height: 74px;	
+		font-size: 50px;
+		line-height: 0.56;
+		letter-spacing: -2.25px;
+		text-align: left;
+		color: #ffffff;
+	}
+	
+	.intro-area .vision {
+		font-size: 64px;
+		line-height: 0.44;
+		letter-spacing: -2.88px;
+		text-align: left;
+		color: #ffffff;
+		position: relative;
+		top: -5px;
+	}
+	
+	.intro-area .description {
+		font-size: 18px;
+		line-height: 1.11;
+		letter-spacing: normal;
+		text-align: left;
+		color: #ffffff;
+		position: relative;
+		top: 30px;
+	}
+	
+	.bulletin-area {
+		position: fixed;
+		bottom: 0px;
+		width: 100%;
+	 	height:134px; 
+	    left: 50%;
+	    text-align: center;
+	    transform: translate(-50%,-50%);
+	}
+	
+	.bulletin-sub-area {
+		position: absolute;	
+		left: 50%;
+		display: inline-block;
+		transform: translate(-50%, 0%);
+	}
+	
+	.bulletin-1 {	
+		bottom: 70px;
+		/*width: 580px;*/
+		width: calc(100vw * 0.3);
+		height: 130px;
+		background-color: #ffffff;
+		padding-left:40px;
+		padding-right:40px;
+		padding-top:20px;
+		margin-right:10px;
+	}
+	
+	.bulletin-2 {	
+		bottom: 70px;
+		/*width: 580px;*/
+		width: calc(100vw * 0.3);
+		height: 130px;
+		background-color: #ffffff;
+		padding-left:40px;
+		padding-right:40px;
+		padding-top:20px;
+		margin-left:10px;	
+	}
+	
+	.bulletin-title-text {
+	  vertical-align: top;
+	  font-size: 22px;
+	  font-weight: bold;
+	  font-stretch: normal;
+	  font-style: normal;
+	  line-height: 0.91;
+	  letter-spacing: -0.44px;
+	  text-align: left;
+	  color: #363636;
+	}
+	
+	.bottom-area {
+		height: 70px;	
+		position: fixed;
+		bottom: 0;
+		width:100%;
+		border: none;
+		margin: 0;
+		background-color: #fff;
+	}
+	
+	.bottom-area .copy-right {
+		margin: 25px 0 25px 0;
+		font-size: 14px;
+		line-height: 1.64;	
+		color: #363636;
+		text-align: center;
+	}	
+}
+
+/* Tooltip container */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  /*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+ 
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 100;
+  top: 100%;
+  left: 50%;
+  margin-left: -125px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+/* BBS */
+.bbs-title {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap:normal;
+	overflow: hidden;
+}
+.bbs-date {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap:normal;
+	overflow: hidden;
+}
+
+.bulletin-area {
+	opacity: 85%;
+	bottom: 33px;
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_CLAIM_DISPLAY}"></div>
+		<div class="block-button-area">
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->		
+		</div>
+	</div>	
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	<input type="hidden" id="orderNo" name="orderNo">
+	<input type="hidden" id="docDate" name="docDate">
+	<input type="hidden" id="docType" name="docType">	
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th th:text="#{HQP_L_COMPLAINT_NO}"></th><!-- Complaint No. -->
+				<td> 
+					<div class="input-area">
+						<input type="text" id="pComplaintNo" name="pComplaintNo" class="custom-ui" th:value="${pComplaintNo}">
+					</div>							
+				</td>
+				<th th:text="#{HQP_L_REFERENCE_NO}"></th><!--Reference No.  -->
+				<td>
+					<div class="input-area">
+						<input type="text" id="pReferenceNo" name="pReferenceNo" class="custom-ui" th:value="${pReferenceNo}">
+					</div>				
+				</td>			
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_PART_NO}"></th><!-- Part No. -->
+				<td> 		
+					<div class="input-area">
+						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
+					</div>					
+				</td>
+				<th th:text="#{HQP_L_PERIOD}"></th><!-- Period -->
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">
+					</div>		
+				</td>			
+			</tr>				
+		</tbody>
+	</table>
+	</form>
+	</div>
+	
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+<script>
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});	
+
+let $tableObj;
+$(function(){
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+
+	$tableObj = $("#TBL_grid").DataTable({
+		select: {
+			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true, 
+		scrollY: 100,
+		//fixedColumns: {leftColumns: 3},
+		columns : [
+			{data: "VBELN", 		title: "[[#{HQP_L_CLAIM_NO}]]"},//Claim No.
+			{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},// Line Item.
+			{data: "TEXT", 			title: "[[#{HQP_L_CLAIM_REASON}]]"},// Reason
+			{data: "ERDAT", 		title: "[[#{HQP_L_CLAIM_DOC_CREATE_DATE}]]"},// Doc. Date
+			{data: "VBELN2", 		title: "[[#{HQP_L_SALES_DOC_NO}]]"},// Sales Doc. No.
+			{data: "T_NETWR", 		title: "[[#{HQP_L_TOTAL_AMOUNT}]]"},// Total Amount
+			{data: "WAERK", 		title: "[[#{HQP_L_CURR}]]"},// Curr.
+			{data: "RFGSK_TX_T", 	title: "[[#{HQP_L_PROCESS_RESULT}]]"},// Process Result						
+			{data: "RFGSK_TX_T1", 	title: "[[#{HQP_L_RETURN_RESULT}]]"},// Return Status			
+			{data: "VBELN3", 		title: "[[#{HQP_L_FINAL_DOC}]]"}// Final Document		
+		],
+		columnDefs: [
+			{targets: [0, 4], className: "link dt-body-center"},
+			{targets: [1, 3, 6, 9], className: "dt-body-center"},
+			{targets: [5], className: "dt-body-right"}
+		],		
+		ajax: {
+			url: "[[${BASE_PATH}]]/claim/list/data",
+			data: function(p)
+			{
+				p.pComplaintNo 	= $("#pComplaintNo").val();
+				p.pReferenceNo	= $("#pReferenceNo").val();
+				p.pPartNo 		= $("#pPartNo").val();
+				p.pFromDate 	= $("#pFromDate").val();
+				p.pToDate 		= $("#pToDate").val();				
+			},
+			dataSrc: function(response) 
+			{				
+				let claimList = response.RESULT.claimList;
+				let claimReason1List = response.RESULT.claimReason1List;
+				
+				let returnData = new Array();
+										
+				for (let i=0, length=claimList.length; i<length; i++)
+				{
+					claimList[i].TEXT = "";
+						
+					for (let j=0, length1=claimReason1List.length; j<length1; j++)
+					{
+						if (claimList[i].ZZCMPCD == claimReason1List[j].VALUE)
+						{
+							claimList[i].TEXT = claimReason1List[j].TEXT;							
+						}
+					}
+				}
+
+				$("#totalRows").html(JpUtilsNumber.addComma(claimList.length) + " row(s).");
+
+				return claimList;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+	
+	// Search 버튼 클릭
+	$("#BTN_search").on("click", function(){		
+		doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+	});
+	
+	//Input text 엔터 키 입력
+	$("#FORM_search input:text").on("keydown", function(event) {
+		if (event.keyCode == 13)
+		{
+			doSearch();
+		};
+	});		
+	
+	/*
+	 *  detail display submit(컴플레인 생성번호)
+	 */	
+	$("#TBL_grid tbody").on("click", "tr", function (e){				
+	    let tblGrid = $("#TBL_grid").DataTable();	    
+	    let index = $("#TBL_grid").dataTable().api().cell($(e.target).closest("td")).index().column;	    	    
+		let rowData = tblGrid.row(this).data();
+		
+		if (index == 0)
+		{
+			let orderNo = rowData.VBELN;
+			
+			if (orderNo != null)
+			{
+				$("#orderNo").val(orderNo);			
+				$("#docDate").val(rowData.ERDAT);
+				$("#docType").val("A");
+				$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/view").submit();
+			}
+		}
+		else if (index == 4)
+		{
+			let soNo = rowData.VBELN2;
+			
+			if (JpUtilsString.isNotEmpty(soNo))
+			{
+				Popup.open("[[${BASE_PATH}]]/order/display/order/popup/view?orderNo=" + soNo);
+			};
+		};
+	});			
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+}
+</script>
+</th:block>	

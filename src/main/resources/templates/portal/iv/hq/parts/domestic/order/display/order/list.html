@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_ORDER_LIST}"></div>
+		<div id="BTN_search" class="block-button-area">
+			<button type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
+		</div>
+	</div>
+	
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	<input type="hidden" id="orderNo" name="orderNo"/>
+	<table class="condition">
+		<tbody>
+			<tr>
+				<th colspan="4">
+					<div class="input-area">
+						<input type="radio" class="custom-ui" name="pDocType" value="C" checked/>
+						<label th:text="#{HQP_L_ORDER}"></label>
+						
+						&nbsp;&nbsp;
+						
+						<input type="radio" class="custom-ui" name="pDocType" value="A"/>
+						<label id="LB_docType2" th:text="#{HQP_L_INQUIRY}"></label>
+						
+						&nbsp;&nbsp;
+						
+						<input type="radio" class="custom-ui" name="pDocType" value="B" />
+						<label id="LB_docType3" th:text="#{HQP_L_QUOTATION}"></label>
+					</div>
+				</th>
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_ORDER_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
+					</div>
+				</td>
+				<th th:text="#{HQP_L_ORDER_TYPE}"></th>
+				<td>
+					<div class="input-area order-type"></div>
+				</td>
+			</tr>		
+			<tr>
+				<th th:text="#{HQP_L_ORDER_DATE}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">
+					</div>
+				</td>
+				<th th:text="#{HQP_L_PO_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>	
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+<script>
+$(function(){
+	$("input:radio[name=pDocType][value='[[${pDocType}]]']").prop("checked", true);
+	
+	//주문유형 가져오기
+	let orderComponent = new OrderComponent();
+	orderComponent.makeOrderType($(".order-type"), "pOrderType", "[[${pOrderType}]]");	
+	
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	
+	$tableObj = $("#TBL_grid").DataTable({
+		select: {
+			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true,// 정렬 기능 켬
+		scrollY: 100,
+		columns : [
+			{data: "VBELN", title: "[[#{HQP_L_ORDER_NO}]]"},//Order No.
+			{data: "ZZAUKON", title: "[[#{HQP_L_ORDER_TYPE}]]"},//Order Type
+			{data: "VTEXT2", title: "[[#{HQP_L_SHIPPING_CONDITION}]]"},//Shipping Condition
+			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
+			{data: "ERDAT2", title: "[[#{HQP_L_ORDER_DATE}]]"},//Create Date
+			{data: "COUNT", title: "[[#{HQP_L_ORDER_ITEM_ROWS}]]"},//Item Rows
+			{data: "T_NETWR", title: "[[#{HQP_L_ORDER_AMOUNT}]]"},//Order Amt.
+			{data: "WAERK", title: "[[#{HQP_L_CURR}]]"}//Curr.
+		],
+		columnDefs: [
+			{targets: 0, className: "link dt-body-center"},
+			{targets: [3, 4, 5, 7], className: "dt-body-center"},
+			{targets: 6, className: "dt-body-right"},
+		],
+		ajax: {
+			url: "[[${BASE_PATH}]]/order/display/order/list/data",
+			data: function(p)
+			{
+				// ajax로 넘길 파라미터
+				p.pDocType = $("#FORM_search input:radio[name=pDocType]:checked").val();
+				p.pOrderNo = $("#pOrderNo").val();
+				p.pOrderType = $("#pOrderType").val();
+				p.pPoNo = $("#pPoNo").val();
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+			},
+			dataSrc: function(response)
+			{
+				let result = response.RESULT;
+				
+				for (let i=0, length=result.length; i<length; i++)
+				{
+					result[i].ERDAT2 = result[i].ERDAT + " " + result[i].ERZET;
+				};
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
+
+				return result;
+			}
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+	
+	$("input:radio[name=pDocType]").on("click", function() {
+		let docType = $(this).val();
+		
+		let docName = "order";
+		
+		if (docType == "A")
+		{
+			docName = "inquiry";
+		}
+		else if (docType == "B")
+		{
+			docName = "quot";
+		}
+		
+		document.location.href = "[[${BASE_PATH}]]/order/display/" + docName + "/list?pDocType=" + $(this).val();
+	});
+	
+	$("#BTN_search").on("click", function() {
+		doSearch();
+	});
+	
+	//Input text 엔터 키 입력
+	$("#FORM_search input:text").on("keydown", function(event) {
+		if (event.keyCode == 13)
+		{
+			doSearch();
+		};
+	});	
+	
+	function doSearch()
+	{
+		$tableObj.ajax.reload();
+	}
+	
+	$("#TBL_grid tbody").on("click", "td:first-child", function () {
+		let orderNo = $tableObj.cell(this).data();
+		
+		if (JpUtilsString.isNotEmpty(orderNo))
+		{
+			$("#orderNo").val(orderNo);
+			$("#FORM_search").attr("action", "[[${BASE_PATH}]]/order/display/order/view").submit();
+		};
+	});
+});
+</script>	
+</th:block>

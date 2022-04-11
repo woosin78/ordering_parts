@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="-1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta id="_csrf" name="_csrf" th:content="${_csrf.token}" />
+<meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}" />
+<title th:text="#{PLTF_T_0006}"></title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/platform/css/login/login.css}" />
+<link rel="stylesheet" type="text/css" class="ui" th:href="@{/platform/css/semantic/semantic.min.css}" />
+
+<script th:src="@{/platform/js/jquery/jquery.min.js}"></script>
+<script th:src="@{/platform/js/jquery/jquery.cookie.js}"></script>
+<script th:src="@{/platform/js/jquery/jquery-ui.min.js}"></script>
+<script th:src="@{/platform/js/jWebppy.utils.object.js}"></script>
+<script th:src="@{/platform/js/jWebppy.utils.string.js}"></script>
+<script th:src="@{/platform/js/jWebppy.ui.dimmer.js}"></script>
+<script th:src="@{/platform/js/semantic/semantic.min.js}"></script>
+<script>
+let INDEX_URL = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).INDEX_URL}]]";
+
+$(window).on("load", function() {
+	showLoginBox();
+	
+	let loginFailType = JpUtilsString.trimToEmpty("[[${#request.getAttribute(T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_FAIL_TYPE)}]]");
+	
+	if (JpUtilsString.isEmpty(loginFailType))
+	{
+		setFocus();
+	}
+	else
+	{
+		if (loginFailType == "CredentialsExpired")
+		{
+			//비밀번호 초기화 or 만료 시 초기 비밀번호 변경 화면으로 이동
+			JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
+				document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";	
+			});
+		}
+		else if (loginFailType == "Locked")
+		{
+			JpUiDimmer.alert("[[#{PLTF_M_LOGIN_ACCOUNT_LOCKED}]]", function() {
+				setFocus();
+			});
+		}
+		else
+		{
+			JpUiDimmer.alert("[[#{PLTF_M_LOGIN_AUTHENTICATION_FAILED}]]", function() {
+				setFocus();
+			});
+		};
+	};
+});
+
+$(window).resize(function() {
+	resizeView();	
+});
+
+function setFocus()
+{
+	if (JpUtilsString.isNotEmpty($("#username").val()))
+	{
+		$("#password").select();
+	}
+	else
+	{
+		$("#username").select();
+	};	
+};
+
+/*
+ * HD: 1280X720
+ * FDH: 1920X1080
+ */
+function resizeView()
+{
+	$("#IMG_main").width($(window).width());
+	//$("#IMG_main").height($(window).height());
+};
+
+function checkForm()
+{
+	if (JpUtilsString.isEmpty($("#username")))
+	{
+		JpUiDimmer.alert("[[#{PLTF_M_LOGIN_EMPTY_USERNAME}]]", function() {
+			$("#username").focus();	
+		});
+		
+		return false;
+	}
+	else if (JpUtilsString.isEmpty($("#password")))
+	{
+		JpUiDimmer.alert("[[#{PLTF_M_LOGIN_EMPTY_PWD}]]", function() {
+			$("#password").focus();	
+		});		
+		
+		return false;				
+	};
+	
+	return true;
+};
+
+let isProcessing = false;
+function login()
+{
+	JpUiDimmer.show();
+
+	//중복 submit 방지
+	if (!isProcessing)
+	{
+		isProcessing = true;
+		
+		$("#FORM_login").submit();
+	};
+};
+
+$(document).ready(function() {
+	if (JpUtilsString.isNotEmpty($.cookie("username")))
+	{
+		$("#username").val($.cookie("username"));
+	};	
+	
+	$(".btn-login").on("click", function() {
+		if (checkForm())
+		{
+			login();
+		};	
+	});
+
+	$("#username, #password").on("keydown", function(event) {
+		if (event.keyCode == 13)
+		{
+			if (checkForm())
+			{
+				login();
+			}
+		}
+	});
+	
+	$("#openNewWindow").on("click", function() {
+		window.open(INDEX_URL, new Date().getMilliseconds());
+	});
+	
+	$(".save-username").on("click", function() {
+		let src = "/platform/img/login/uncheck.png";		
+		
+		if ($(this).find("img").attr("src").indexOf("uncheck") > -1)
+		{
+			src = "/platform/img/login/check.png";
+			$("#saveUsername").val("Y");
+		}
+		else
+		{
+			$("#saveUsername").val("N");
+		};
+		
+		$(this).find("img").attr("src", src);
+	});
+	
+	resizeView();
+});
+
+//인증 실패 후 새로고침 시 인증실패 페이지가 계속 reload 되는 것을 방지 
+$(document).on("keydown", function(event){
+	//F5 키 누름 체크
+	if (event.keyCode == 116)
+	{
+		document.location.href = INDEX_URL;
+		event.stopPropagation();
+		return false;
+	};
+});
+
+function showLoginBox()
+{
+	$(".login-box").toggle("drop", 300);
+};
+</script>
+</head>
+<body style="background-color: #000;">
+<div id="openNewWindow" style="position: fixed; top: 5px; right: 5px; cursor: pointer; font-weight: bold;">New Window</div>
+<form id="FORM_login" method="post" th:action="${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_PROCESSING_URL}">
+<input type="hidden" id="saveUsername" name="saveUsername" value="Y" />
+<div id="wrap" class="wrap">
+	<div style="text-align: center">
+		<img id="IMG_main" th:src="@{/platform/img/login/main4.jpg}" alt="Main Image" />
+	</div> 
+	<div class="body">
+		<div class="login-box" style="display:none;">
+			<div class="title" th:text="#{PLTF_T_LOGIN_BOX_HEADER}"></div>
+			<div class="username"><img th:src="@{/platform/img/login/username.png}" class="login-input" th:alt="#{PLTF_L_USERNAME}" /><input type="text" th:id="${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_USERNAME}" th:name="${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_USERNAME}" th:placeholder="#{PLTF_L_USERNAME}" /></div>
+			<div class="password"><img th:src="@{/platform/img/login/password.png}" class="login-input" th:alt="#{PLTF_L_PASSWORD}" /><input type="password" th:id="${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_PASSWORD}" th:name="${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_PASSWORD}" th:placeholder="#{PLTF_L_PASSWORD}" /></div>
+			<button class="btn-login" type="button" th:text="#{PLTF_B_LOGIN}"></button>
+			<div class="bottom"> 
+				<div class="save-username"><img th:src="@{/platform/img/login/check.png}" class="save-username-chk" alt="Save Username" /><span>[[#{PLTF_L_SAVE-USERNAME}]]</span></div>
+			</div>
+		</div>
+	</div>
+	<div class="bottom" style="height: 60px; opacity: 0.3;">
+		<div class="copy-right">
+			<div class="text"th:text="#{PLTF_T_COPYLEFT}"></div>
+		</div>
+	</div>
+</div>
+</form>
+</body>
+</html>

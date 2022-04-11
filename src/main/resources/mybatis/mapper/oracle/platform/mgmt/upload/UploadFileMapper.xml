@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.platform.mgmt.upload.mapper.UploadFileMapper">
+	
+	<select id="findUploadFile" parameterType="Integer" resultType="UploadFileEntity">
+		select
+		a.*
+		from
+		pltf_upload_file a
+		where
+		a.uf_seq=#{ufSeq}		
+	</select>
+	
+</mapper>

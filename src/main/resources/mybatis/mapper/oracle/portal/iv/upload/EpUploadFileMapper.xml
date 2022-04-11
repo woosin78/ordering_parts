@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.portal.iv.upload.mapper.EpUploadFileMapper">
+	
+	<select id="findUploadFile" resultType="EpUploadFileEntity">
+		select
+		a.*
+		from
+		ep_upload_file a
+		where
+		a.uf_seq=#{ufSeq}
+		and a.fg_delete='N'
+	</select>
+
+</mapper>

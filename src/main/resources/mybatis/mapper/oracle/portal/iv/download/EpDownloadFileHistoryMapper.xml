@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.portal.iv.download.mapper.EpDownloadFileHistoryMapper">
+	
+	<insert id="insert" parameterType="EpDownloadFileHistoryEntity" useGeneratedKeys="true" keyProperty="dfhSeq">
+		<selectKey keyProperty="dfhSeq" resultType="Integer" order="BEFORE">
+			select ep_dfh_seq.nextval from dual
+		</selectKey>
+
+		insert into ep_download_file_history (dfh_seq, uf_seq, ufl_seq, u_seq, origin_name, saved_name, reg_username, reg_date) values (
+			#{dfhSeq}, #{ufSeq}, #{uflSeq}, ${uSeq}, #{originName}, #{savedName}, #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+</mapper>

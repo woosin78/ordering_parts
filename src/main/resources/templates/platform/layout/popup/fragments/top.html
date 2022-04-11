@@ -1,0 +1,19 @@
+<div class="ui fixed inverted menu topMenu">
+<!-- Top menu area. This comment is mandatory to make a space between top and body.-->
+</div>
+<script>
+function makeGnb()
+{
+	var menu = [];
+    
+    menu.push("<div class='ui item right inverted' style='cursor:pointer' onclick='window.close()'>");
+    menu.push("<i class='close icon'></i>");
+    menu.push("</div>");    
+    
+    $(".ui.menu.topMenu").html(menu.join(""));
+};
+
+$(document).ready(function() {
+	makeGnb();
+});
+</script>
