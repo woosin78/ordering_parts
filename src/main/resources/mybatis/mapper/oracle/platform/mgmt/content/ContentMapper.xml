@@ -2,13 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.platform.mgmt.content.mapper.ContentMapper">
+	<resultMap type="CItemEntity" id="cItemEntityMap">
+		<id property="cSeq" column="c_seq" />
+		<result property="pSea" column="p_sea" />
+		<result property="type" column="type" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+		<result property="component" column="component" />
+		<result property="entryPoint" column="entry_point" />
+		<result property="parameter" column="parameter" />
+		<result property="sort" column="sort" />
+		<result property="fromValid" column="from_valid" />		
+		<result property="toValid" column="to_valid" />
+		<result property="fgVisible" column="fg_visible" />
+		<result property="launchType" column="launch_type" />
+		<result property="scrWidth" column="scr_width" />
+		<result property="scrHeight" column="scr_height" />
+		<result property="fgDelete" column="fg_delete" />
+		<result property="pageNumber" column="page_number" />
+		<result property="rowPerPage" column="row_per_page" />
+		<result property="totalCount" column="total_count" />
+		<association property="userCount" foreignColumn="c_seq" column="c_seq" select="findCountUser" />
+	</resultMap>
+
 	<insert id="insert" parameterType="CItemEntity" useGeneratedKeys="true" keyProperty="cSeq">
 		<selectKey keyProperty="cSeq" resultType="Integer" order="BEFORE">
 			select pltf_c_seq.nextval from dual
 		</selectKey>	
 	
-		insert into pltf_citem (c_seq, p_seq, type, name, description, component, entry_point, parameter, sort, fg_popup, fg_visible, fg_delete, from_valid, to_valid, reg_username, reg_date) values (
-			#{cSeq}, #{pSeq}, #{type}, #{name}, #{description}, #{component}, #{entryPoint}, #{parameter}, #{sort}, #{fgPopup}, #{fgVisible}, #{fgDelete}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
+		insert into pltf_citem (c_seq, p_seq, type, name, description, component, entry_point, parameter, sort, fg_visible, launch_type, scr_width, scr_height, fg_delete, from_valid, to_valid, reg_username, reg_date) values (
+			#{cSeq}, #{pSeq}, #{type}, #{name}, #{description}, #{component}, #{entryPoint}, #{parameter}, #{sort}, #{fgVisible}, #{launchType}, #{scrWidth}, #{scrHeight}, #{fgDelete}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -43,6 +66,9 @@
 			parameter=#{parameter},
 			sort=#{sort},
 			fg_visible=#{fgVisible},
+			launch_type=#{launchType},
+			scr_width=#{scrWidth},
+			src_height=#{scrHeight},
 			fg_delete=#{fgDelete},
 			from_valid=#{fromValid},
 			to_valid=#{toValid},
@@ -200,27 +226,6 @@
 	    order by a.sort, a.c_seq
 
 	</select>
-
-	<resultMap type="CItemEntity" id="cItemEntityMap">
-		<id property="cSeq" column="c_seq" />
-		<result property="pSea" column="p_sea" />
-		<result property="type" column="type" />
-		<result property="name" column="name" />
-		<result property="description" column="description" />
-		<result property="component" column="component" />
-		<result property="entryPoint" column="entry_point" />
-		<result property="parameter" column="parameter" />
-		<result property="sort" column="sort" />
-		<result property="fromValid" column="from_valid" />		
-		<result property="toValid" column="to_valid" />
-		<result property="fgVisible" column="fg_visible" />
-		<result property="fgPopup" column="fg_popup" />
-		<result property="fgDelete" column="fg_delete" />
-		<result property="pageNumber" column="page_number" />
-		<result property="rowPerPage" column="row_per_page" />
-		<result property="totalCount" column="total_count" />
-		<association property="userCount" foreignColumn="c_seq" column="c_seq" select="findCountUser" />
-	</resultMap>
 
 	<select id="findCountUser" resultType="Integer">
 		select

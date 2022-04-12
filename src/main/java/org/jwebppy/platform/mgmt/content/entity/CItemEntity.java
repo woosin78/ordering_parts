@@ -25,10 +25,12 @@ public class CItemEntity extends GeneralEntity
 	private String entryPoint;
 	private String parameter;
 	private int sort;
-	private String fgPopup;
 	private String fgVisible;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
+	private String launchType;
+	private String scrWidth;
+	private String scrHeight;
 	private Integer lSeq;
 	private List<Integer> seqs;
 	private String depth;

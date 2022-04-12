@@ -29,11 +29,13 @@ public class CItemDto extends GeneralDto implements IPagination
 	private String entryPoint;
 	private String parameter;
 	private int sort = 100;
-	private String fgPopup = PlatformCommonVo.NO;
 	private String fgVisible = PlatformCommonVo.NO;
 	private String fgDelete = PlatformCommonVo.NO;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
+	private String launchType;
+	private String scrWidth;
+	private String scrHeight;
 	private Integer lSeq;
 	private List<Integer> seqs;
 	private int depth;

@@ -47,6 +47,9 @@ public class GnbController extends MgmtGeneralController
 			itemMap.put("NAME", CmStringUtils.defaultIfEmpty(cItem.getName2(), cItem.getName()));
 			itemMap.put("TYPE", cItem.getType().toString());
 			itemMap.put("URL", CmStringUtils.trimToEmpty(cItem.getUrl()));
+			itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(cItem.getLaunchType()));
+			itemMap.put("WIDTH", CmStringUtils.trimToEmpty(cItem.getScrWidth()));
+			itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(cItem.getScrHeight()));
 
 			itemMap.put("SUB_ITEMS", getSubItems(cItem.getSubCItems()));
 
@@ -69,6 +72,9 @@ public class GnbController extends MgmtGeneralController
 				itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 				itemMap.put("TYPE", subCItem.getType().toString());
 				itemMap.put("URL", subCItem.getUrl());
+				itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(subCItem.getLaunchType()));
+				itemMap.put("WIDTH", CmStringUtils.trimToEmpty(subCItem.getScrWidth()));
+				itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(subCItem.getScrHeight()));
 				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getSubCItems()));
 
 				cItems.add(itemMap);
