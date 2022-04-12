@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
@@ -103,6 +104,7 @@ public class UserGroupController extends MgmtGeneralController
 	}
 
 	@PostMapping("/save")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object save(@ModelAttribute UserGroupDto userGroup, @ModelAttribute SapConnResourceDto sapConnResource, @ModelAttribute CredentialsPolicyDto credentialsPolicy, @RequestParam List<String> langKind)
 	{
@@ -114,6 +116,7 @@ public class UserGroupController extends MgmtGeneralController
 	}
 
 	@PostMapping("/delete")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object delete(@RequestParam("ugSeq") List<Integer> ugSeqs)
 	{

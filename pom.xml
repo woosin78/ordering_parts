@@ -143,12 +143,18 @@
 			<artifactId>mssql-jdbc</artifactId>
 			<scope>runtime</scope>
 		</dependency -->
-		<!-- JDBC Driver-MSSQL -->
+		<!-- JDBC Driver-MARIADB -->
 		<!-- dependency>
 			<groupId>org.mariadb.jdbc</groupId>
 			<artifactId>mariadb-java-client</artifactId>
 			<scope>runtime</scope>
-		</dependency -->		
+		</dependency -->
+		<!-- JDBC Driver-ORALCE -->
+		<dependency>
+			<groupId>com.oracle.database.jdbc</groupId>
+			<artifactId>ojdbc8</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		
 		<!-- Redis's Connection Pool -->
 		<dependency>
@@ -246,11 +252,6 @@
 			<version>1.0</version>
 			<scope>system</scope>
 			<systemPath>${project.lib.path}/sap/GenericConnector.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.oracle.database.jdbc</groupId>
-			<artifactId>ojdbc8</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 

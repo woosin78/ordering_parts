@@ -232,7 +232,7 @@
 					or upper(b.email) like '%'||upper(trim(#{query}))||'%'
 				</if>
 				
-				<if test="uSeq != null and uSeq != ''">
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(uSeq)">
 					or a.u_seq=#{uSeq}
 				</if>
 			</trim>

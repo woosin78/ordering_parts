@@ -68,7 +68,7 @@
 			fg_visible=#{fgVisible},
 			launch_type=#{launchType},
 			scr_width=#{scrWidth},
-			src_height=#{scrHeight},
+			scr_height=#{scrHeight},
 			fg_delete=#{fgDelete},
 			from_valid=#{fromValid},
 			to_valid=#{toValid},

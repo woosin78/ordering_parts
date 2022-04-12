@@ -12,5 +12,15 @@
 		a.uf_seq=#{ufSeq}
 		and a.fg_delete='N'
 	</select>
+	
+	<select id="findUploadFileByName" resultType="EpUploadFileEntity">
+		select
+		a.*
+		from
+		ep_upload_file a
+		where
+		a.name=#{name}
+		and a.fg_delete='N'
+	</select>	
 
 </mapper>

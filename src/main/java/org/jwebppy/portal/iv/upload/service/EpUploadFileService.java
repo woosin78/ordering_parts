@@ -24,4 +24,9 @@ public class EpUploadFileService extends IvGeneralService
 	{
 		return CmModelMapperUtils.mapToDto(EpUploadFileObjectMapper.INSTANCE, uploadFileMapper.findUploadFile(ufSeq));
 	}
+
+	public EpUploadFileDto getUploadFileByName(String name)
+	{
+		return CmModelMapperUtils.mapToDto(EpUploadFileObjectMapper.INSTANCE, uploadFileMapper.findUploadFileByName(name));
+	}
 }

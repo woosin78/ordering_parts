@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.tomcat.util.http.fileupload.InvalidFileNameException;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
@@ -41,11 +42,21 @@ public class EpUploadFileListService extends IvGeneralService
     @Autowired
     private EpUploadFileListMapper uploadFileListMapper;
 
+    public int save(String name, String tSeq, List<MultipartFile> multipartFiles) throws IOException
+    {
+    	EpUploadFileDto uploadFile = uploadFileService.getUploadFileByName(name);
+
+    	if (ObjectUtils.isNotEmpty(uploadFile))
+    	{
+    		return save(uploadFile, tSeq, multipartFiles);
+    	}
+
+    	return 0;
+    }
+
 	public int save(EpUploadFileDto uploadFile, String tSeq, List<MultipartFile> multipartFiles) throws IOException
 	{
-		//EpUploadFileDto uploadFile = uploadFileService.getUploadFile(ufSeq);
-
-		if (uploadFile != null)
+		if (ObjectUtils.isNotEmpty(uploadFile))
 		{
 			if (isExceedMaxUploadSize(multipartFiles, uploadFile.getMaxFileSize()))
 			{
@@ -54,7 +65,7 @@ public class EpUploadFileListService extends IvGeneralService
 
 			String validCheckResult = checkValidExtension(multipartFiles, uploadFile);
 
-			if (validCheckResult != null)
+			if (ObjectUtils.isNotEmpty(validCheckResult))
 			{
 				throw new InvalidFileNameException(validCheckResult, "[" + validCheckResult + "] Invalid File Extension");
 			}

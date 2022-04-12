@@ -14,6 +14,7 @@ public class EpUploadFileDto extends IvGeneralDto
 	private static final long serialVersionUID = 2354731635588102842L;
 
 	private String ufSeq;
+	private String name;
 	private String description;
 	private long maxFileSize;
 	private String path;

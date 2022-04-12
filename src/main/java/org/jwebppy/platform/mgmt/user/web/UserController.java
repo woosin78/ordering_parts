@@ -81,7 +81,6 @@ public class UserController extends UserGeneralController
 	private UserService userService;
 
 	@RequestMapping("/list")
-	@CacheClear(name = "test")
 	public String list(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("userGroups", userGroupService.getUserGroups(null));
@@ -209,6 +208,7 @@ public class UserController extends UserGeneralController
 	}
 
 	@PostMapping("/save/{tabPath}")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object save(@PathVariable("tabPath") String tabPath,
 			@ModelAttribute UserDto user, @ModelAttribute UserAccountDto userAccount, @ModelAttribute UserContactInfoDto userContactInfo,
@@ -249,6 +249,7 @@ public class UserController extends UserGeneralController
 	}
 
 	@PostMapping("/delete")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object delete(@RequestParam("uSeq") List<Integer> uSeqs)
 	{
@@ -256,6 +257,7 @@ public class UserController extends UserGeneralController
 	}
 
 	@PostMapping("/{command}")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object lock(@PathVariable("command") String command, @RequestParam("uSeq") List<Integer> uSeqs)
 	{
@@ -348,6 +350,7 @@ public class UserController extends UserGeneralController
 	}
 
 	@PostMapping("/copy")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object copy(@RequestParam Map<String, String> paramMap)
 	{

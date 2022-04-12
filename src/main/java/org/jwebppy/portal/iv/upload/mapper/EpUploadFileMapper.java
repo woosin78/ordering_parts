@@ -11,4 +11,5 @@ public interface EpUploadFileMapper
 	public int insert(EpUploadFileEntity uploadFile);
 	public int delete(String uflSeq);
 	public EpUploadFileEntity findUploadFile(String ufSeq);
+	public EpUploadFileEntity findUploadFileByName(String name);
 }
