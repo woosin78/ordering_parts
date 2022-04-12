@@ -31,7 +31,7 @@ public class SurveyController extends IvGeneralController
 	private SurveyService surveyService;
 	
 	@RequestMapping("/list")
-	public String list(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
+	public String list(Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
 		
@@ -43,6 +43,19 @@ public class SurveyController extends IvGeneralController
 	public Object listData(@ModelAttribute SurveySearchDto surveySearchDto)
 	{
 		return ListUtils.emptyIfNull(surveyService.getSurveys(surveySearchDto));
+	}
+	
+	@RequestMapping("/view")
+	public String view(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
+	{
+		int sSeq = surveySearchDto.getSSeq();
+		if (sSeq > 0) {
+			model.addAttribute("survey", surveyService.getSurvey(surveySearchDto.getSSeq()));
+		}
+
+		addAllAttributeFromRequest(model, webRequest);
+		
+		return DEFAULT_VIEW_URL;
 	}
 	
 	@RequestMapping("/write")

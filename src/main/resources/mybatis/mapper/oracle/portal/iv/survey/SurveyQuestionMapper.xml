@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.portal.iv.survey.mapper.SurveyQuestionMapper">
+	
+	<insert id="insert" parameterType="SurveyQuestionEntity" useGeneratedKeys="true" keyProperty="si_seq">
+		<selectKey keyProperty="sqSeq" resultType="Integer" order="BEFORE">
+			select ep_sq_seq.nextval from dual
+		</selectKey>
+		
+		insert into ep_survey_question (sq_seq, s_seq, title, type, mandatory_cnt, fg_mandatory, fg_delete, reg_username, reg_date) values (
+			#{sqSeq}, #{sSeq}, #{title}, #{type}, #{mandatoryCnt}, #{fgMandatory}, #{fgDelete}, #{regUsername}, #{regDate}
+		)
+	</insert>
+	
+	<select id="findSurveyQuestions" resultType="SurveyQuestionEntity">
+		select
+		*
+		from
+		ep_survey_question
+		where
+		s_seq=#{sSeq}
+		order by sq_seq
+	</select>
+	
+	<select id="findSurveyQuestion" resultType="SurveyQuestionEntity">
+		select
+		*
+		from
+		ep_survey_question
+		where
+		sq_seq=#{sqSeq}
+	</select>
+	
+</mapper>

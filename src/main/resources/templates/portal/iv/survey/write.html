@@ -9,7 +9,7 @@
 		<div class="block-title" ></div>
 		<div class="block-button-area">
 			<button id="BTN_save" type="button" th:text="등록"></button>
-			<button id="BTN_back" type="button" th:text="뒤로" onclick="goList();"></button>
+			<button id="BTN_back" type="button" th:text="뒤로" onclick="goView();"></button>
 		</div>	
 	</div>	
 	
@@ -186,7 +186,7 @@ $(function(){
 			contentType: false,
 			cache: false,
 			success: function(data, textStatus, jqXHR) {
-				$("#FORM_search input[name=bcSeq]").val(data.RESULT);
+				$("#FORM_write input[name=sSeq]").val(data.RESULT);
 				
 				$("#BTN_back").trigger("click");
 			},
@@ -362,8 +362,17 @@ function addTarget(label, value)
 	$("#addedtargets").append(html.join(""));
 };
 
-function goList() {
-	document.location.href = "[[${BASE_PATH}]]/survey/list";
+function goView() {
+	let sSeq = $("#sSeq").val();
+	let url = '';
+	
+	if (sSeq > 0) {
+		url = "[[${BASE_PATH}]]/survey/view?sSeq="+sSeq;
+	} else {
+		url = "[[${BASE_PATH}]]/survey/list";
+	}
+	
+	document.location.href = url;
 }
 </script>
 </th:block>	

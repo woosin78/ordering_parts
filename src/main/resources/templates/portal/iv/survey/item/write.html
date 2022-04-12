@@ -1,4 +1,85 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/popup/index}">
+<th:block layout:fragment="content">
+	
+	<div class="block-header" >
+		<div class="block-title" ></div>
+		<div class="block-button-area">
+			<button id="BTN_save" type="button" th:text="등록"></button>
+			<button id="BTN_back" type="button" th:text="닫기" onclick="window.close();"></button>
+		</div>	
+	</div>	
+	
+	<div class="condition-area">
+	<form id="FORM_write" method="post" th:action="|${BASE_PATH}/survey/question/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
+	<input type="hidden" name="sqSeq" th:value="${surveyQuestion?.sqSeq}"/>
 
+	<table class="condition table-fixed">
+		<tr>
+			<td style="width:300px;">설문제목</td>
+			<td>[[${survey?.title}]]</td>
+		</tr>
+		<tr>
+			<td style="width:300px;">문항</td>
+			<td>[[${surveyQuestion?.title}]]</td>
+		</tr>
+		<tr>
+			<td>설문시작일</td>
+			<td>[[${survey?.validFrom}]] ~ [[${survey?.validTo}]]</td>
+		</tr>
+	</table>	
+	<br/><br/>
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th>텍스트</th>
+				<td><input name="title" type="text" /></td>
+			</tr>
+			
+		</tbody>
+	</table>
+	</form>
+	</div>
+	
+<script>
+$(function(){
+	ProgressBar.hide();
 
+	$("#BTN_save").on("click", function() {
+		
+		JpUtilsAjax.post({
+			url: "[[${BASE_PATH}]]/survey/item/save",
+			method: "POST",
+			data: $("#FORM_write").serialize(),
+			beforeSend: function(jqXHR, settings)
+			{
+				ProgressBar.show();
+			},		
+		    success: function(response, textStatus, jqXHR)
+		    {
+		    	_callbackSurveyQuestion(response.RESULT);
+		    },
+		    error: function(jqXHR, textStatus, errorThrown)
+	    	{
+		    	_callbackSurveyQuestion(response.RESULT);
+	    	}
+		});
+	});
+});
 
-설문조사 문항 보기 등록/수정
+function _callbackSurveyQuestion(result) {
+	opener._callbackSurveyItem();		
+	ProgressBar.hide();
+	
+	if (!confirm('계속 등록하시겠습니까?')) {
+		window.close();
+	} else {
+		window.location.reload();
+	}
+}
+
+</script>
+</th:block>	

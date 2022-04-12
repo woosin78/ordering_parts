@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+
+<th:block layout:fragment="content">
+	
+	<div class="block-header" >
+		<div class="block-title"></div>
+		<div class="block-button-area">
+			<button onclick="Survey_BTN.modify();" type="button" th:text="수정"></button>
+			<button onclick="Survey_BTN.remove();" type="button" th:text="삭제"></button>
+			<button onclick="Survey_BTN.back();" type="button" th:text="뒤로"></button>
+		</div>	
+	</div>	
+	
+	<div id="boardViwer" class="condition-area">
+	<form name="FORM_search" id="FORM_search" th:action="|${BASE_PATH}/survey/list|">
+		<input type="hidden" name="sSeq" th:value="${survey?.sSeq}"/>
+		<input type="hidden" name="sqSeq" id="sqSeq" th:value="0"/>
+	</form>
+	
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th>설문제목</th>
+				<td><span th:text="${survey?.title}"></span></td>
+			</tr>
+			
+			<tr>
+				<th>설문취지</th>
+				<td th:text="${survey?.description}">
+				</td>
+			</tr>
+			
+			<tr>
+				<th>대상</th>
+				<td>
+					<div th:each="surveyTarget : ${survey?.surveyTargets}">
+						<div></div><span th:text="${surveyTarget.targetName}"></span>
+					</div>						
+				</td>
+			</tr>
+			
+			<tr>
+				<th>공지기간</th>
+				<td>
+					<span th:text="${survey?.validFrom}"></span> ~ <span th:text="${survey?.validTo}"></span>
+				</td>
+			</tr>
+			
+			<tr>
+				<th>설문공개</th>
+				<td th:text="${(survey?.fgOpen == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '공개' : '비공개'}">
+				</td>
+			</tr>
+			
+			<tr>
+				<th>결과공개</th>
+				<td th:text="${(survey?.fgOpenResult == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '공개' : '비공개'}">
+				</td>
+			</tr>
+			
+			<tr>
+				<th>감사인사</th>
+				<td th:text="${survey?.remark}"></td>
+			</tr>
+			
+			<tr>
+				<th>파일첨부</th>
+				<td>
+					<div th:each="uploadFileList : ${survey?.uploadFileLists}">
+						<div></div><span th:text="${uploadFileList.displayFileSize}"></span>
+					</div>
+				</td>
+			</tr>
+			
+		</tbody>
+	</table>
+	</div>
+	
+	<br/>
+	
+	<!------------------------------------ 문항 그리드 시작 --------------------------------------->
+	<div class="grid-info">
+		<div class="block-button-area">
+			<button onclick="SurveyQuestion.write();" type="button">문항등록</button>
+		</div> 
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	<!------------------------------------ 문항 그리드 종료 --------------------------------------->
+	
+	<div></div>
+	
+	<!------------------------------------ 문항보기 그리드 시작 --------------------------------------->
+	<div class="grid-info">
+		<div class="block-button-area">
+			<button id="BTN_item_write" type="button">문항보기등록</button>
+		</div> 
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalItemRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_item_grid" class="flex-grow grid-area">
+		<table id="TBL_item_grid" class="order-column stripe compact"></table>
+	</div>
+	<!------------------------------------ 문항보기 그리드 종료 --------------------------------------->
+	
+	
+	<script>
+	let $tableObj;
+	let $itemTableObj;
+	
+	// 버튼처리
+	let Survey_BTN = {
+		modify: function() {
+			this.submit("[[${BASE_PATH}]]/survey/write?sSeq="+Survey.sSeq);
+		},
+		
+		remove: function() {
+			Survey.remove();
+		},
+		
+		back: function() {
+			this.submit("[[${BASE_PATH}]]/survey/list");
+		},
+		
+		submit: function(url) {
+			$("#FORM_search").attr("action", url);
+			$("#FORM_search").submit();
+		}
+	}
+	
+	// 설문
+	let Survey = {
+		sSeq: "[[${survey?.sSeq}]]",
+		remove: function() {
+			if (confirm ('Do you want to delete?')) {
+			// to-do
+			}
+		}	
+	};
+	
+	// 설문조사항목
+	let SurveyQuestion = {
+		sqSeq: '0',
+		write: function() {
+			this.popup('write?sSeq='+Survey.sSeq);
+		},
+		modify: function() {
+			this.popup('write?sqSeq='+this.sqSeq);
+		},
+		remove: function() {
+			if (confirm ('Do you want to delete?')) {
+			// to-do
+			}
+		},
+		popup: function(rest) {
+			Popup.open("[[${BASE_PATH}]]/survey/question/"+rest, 600, 600);
+		}
+	};
+	
+	// 설문조사항목보기
+	let SurveyItem = {
+		siSeq: '0',
+		write: function() {
+			this.popup('write?sqSeq='+SurveyQuestion.sqSeq);
+			// to-do: grid로 대체
+		},
+		modify: function() {
+			this.popup('write?siSeq='+this.siSeq);
+			// to-do: grid로 대체
+		},
+		list: function() {
+			$itemTableObj.ajax.reload();
+		},
+		popup: function(rest) {
+			Popup.open("[[${BASE_PATH}]]/survey/item/"+rest, 600, 600);
+		}
+	};
+	
+	/************************ 문항 그리드(TBL_grid) 처리 시작 *************************/
+	$(window).on("load", function() {
+		ProgressBar.hide();
+		
+		$tableObj = $("#TBL_grid").DataTable({
+			select: true,
+			ordering: false,
+			searching: false,
+			scrollY: 330,
+			columns : [
+				{data:"sqSeq", 			title: "번호",		"width": "5%"},
+				{data:"title",			title: "질문"},
+				{data:"type",			title: "문항(다중)", 	"width": "15%"},
+				{data:"fgMandatory",	title: "옵션", 		"width": "15%"},
+				{data:"mandatoryCnt", 	title: "보기수", 		"width": "15%"},
+				{data:null, 			title: "비고", 		"width": "15%"},
+				{data:"sseq", 			title: "번호",		"width": "5%"} 
+			],
+			columnDefs: [
+				{targets: 0, className: "dt-body-center", 
+					render: function(data, type, row, meta) {
+						return meta.row+1;
+					}
+				},
+				{targets: 2, className: "dt-body-center", 
+					render: function(data, type, row) {
+						return {'0': '객관식', '1': '다중객관식', '2':'주관식', '3':'가중치', '4':'우선순위'}[data];
+					}
+				},
+				{targets: 3, className: "dt-body-center", 
+					render: function(data, type, row) {
+						return {'0': '필수선택', '1': '선택가능'}[data];
+					}
+				},
+				{targets: 4, className: "dt-body-center"},
+				{targets: 5, className: "dt-body-center", defaultContent:"<button>수정</button>"},
+				{targets: 6, visible: false}
+			],
+			ajax: {
+				url: "[[${BASE_PATH}]]/survey/question/list/data",
+				data: function(p) {
+					p.sSeq 		= "[[${survey?.sSeq}]]";
+				},
+				dataSrc: function(response) {
+					let result = response.RESULT;
+					$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
+
+					return result;
+				}
+			},
+			paging : false, // 페이징 기능켬
+			initComplete:function(settings, json) {
+				ProgressBar.hide();
+			}
+		});
+		initGridTable($tableObj);
+		
+		$("#TBL_grid").on("click", 'button',  function(event){		
+			let data = $tableObj.row( $(this).parents('tr') ).data();
+			SurveyQuestion.sqSeq = data['sqSeq'];
+			SurveyQuestion.modify();
+		});
+		
+		$("#TBL_grid tbody").on("click", 'tr', function(event){		
+			let data = $tableObj.row( $(this) ).data();
+			SurveyQuestion.sqSeq = data['sqSeq'];
+			SurveyItem.list();
+		});
+		/************************ 문항 그리드(TBL_grid) 처리 종료 *************************/
+		
+		/************************ 문항 그리드(TBL_item_grid) 처리 시작 *************************/
+		$itemTableObj = $("#TBL_item_grid").DataTable({
+			select: {
+				selector: "td:not(.noselect)"
+		    },
+			ordering: false,
+			searching: false,
+			scrollY: 350,
+			columns : [
+				{data:"sqSeq", 			title: "번호",		"width": "5%"},
+				{data:"title",			title: "텍스트"},
+				{data:null, 			title: "비고", 		"width": "15%"}
+			],
+			columnDefs: [
+				{targets: [0], className: "dt-body-center",
+					render: function(data, type, row, meta) {
+						return meta.row+1;
+					}
+				},
+				{targets: 2, className: "dt-body-center", defaultContent:"<button>수정</button>"}
+			],
+			
+			ajax: {
+				url: "[[${BASE_PATH}]]/survey/item/list/data",
+				data: function(p)
+				{
+					p.sqSeq 		= SurveyQuestion.sqSeq
+				},
+				dataSrc: function(response) 
+				{
+					let result = response.RESULT;
+					$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
+
+					return result;
+				}
+			},
+			paging : false, // 페이징 기능켬
+			initComplete:function(settings, json)
+			{
+				ProgressBar.hide();
+			}
+		});
+
+		initGridTable($itemTableObj);
+		
+		$("#TBL_item_grid").on("click", 'button',  function(event){		
+			let data = $tableObj.row( $(this).parents('tr') ).data();
+			SurveyQuestion.sqSeq = data['sqSeq'];
+			SurveyItem.write();
+		});
+		
+		$("#BTN_item_write").on("click", function(){
+			SurveyItem.write();
+		});
+		/************************ 문항 그리드(TBL_item_grid) 처리 종료 *************************/
+		
+	});
+	
+	function _callbackSurveyQuestion(result) {
+		$tableObj.ajax.reload();
+	}
+	
+	function _callbackSurveyItem(result) {
+		$itemTableObj.ajax.reload();
+	}
+	
+	</script>
+</th:block>								
