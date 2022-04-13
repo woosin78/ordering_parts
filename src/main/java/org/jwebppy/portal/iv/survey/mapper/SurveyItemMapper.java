@@ -10,7 +10,8 @@ import org.jwebppy.portal.iv.survey.entity.SurveyItemEntity;
 @Mapper
 public interface SurveyItemMapper {
 
-	public List<SurveyItemEntity> findSurveyItems(int sqSeq);
-	
-	public int insert(SurveyItemEntity surveyItemEntity);
+	public List<SurveyItemEntity> findSurveyItems(int sqSeq);	
+	public int insert(SurveyItemEntity surveyItemEntity);	
+	public int update(SurveyItemEntity surveyItemEntity);
+	public int delete(SurveyItemEntity surveyItemEntity);
 }

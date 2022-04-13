@@ -8,7 +8,7 @@
 	<div class="block-header" >
 		<div class="block-title" ></div>
 		<div class="block-button-area">
-			<button id="BTN_save" type="button" th:text="등록"></button>
+			<button id="BTN_save" type="button" th:text="저장"></button>
 			<button id="BTN_back" type="button" th:text="닫기" onclick="window.close();"></button>
 		</div>	
 	</div>	
@@ -16,10 +16,11 @@
 	<div class="condition-area">
 	<form id="FORM_write" method="post" th:action="|${BASE_PATH}/survey/question/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
 	<input type="hidden" name="sSeq" th:value="${survey?.sSeq}"/>
+	<input type="hidden" name="sqSeq" th:value="${surveyQuestion==null? 0 : surveyQuestion.sqSeq}"/>
 
 	<table class="condition table-fixed">
 		<tr>
-			<td style="width:300px;">설문제목</td>
+			<td style="width:20%;">설문제목</td>
 			<td>[[${survey?.title}]]</td>
 		</tr>
 		<tr>
@@ -28,17 +29,17 @@
 		</tr>
 	</table>	
 	<br/><br/>
-	<table class="condition table-fixed">
+	<table class="condition">
 		<tbody>
 			<tr>
-				<th>제목</th>
+				<th style="width:30%;">제목</th>
 				<td><input name="title" type="text" th:value="${surveyQuestion?.title}"/></td>
 			</tr>
 			
 			<tr>
 				<th>문항유형</th>
 				<td>
-					<select name="type" id="type">
+					<select name="type" id="type" onchange="handleMandatoryCnt(this.value);">
 						<option value="0">객관식</option>
 						<option value="1">다중객관식</option>
 						<option value="2">주관식</option>
@@ -60,7 +61,7 @@
 			
 			<tr>
 				<th>선택최대개수</th>
-				<td><input name="mandatoryCnt" type="text" th:value="${surveyQuestion?.mandatoryCnt}"/></td>
+				<td><input name="mandatoryCnt" id="mandatoryCnt" type="text" th:value="${surveyQuestion?.mandatoryCnt}"/></td>
 			</tr>
 			
 		</tbody>
@@ -71,7 +72,10 @@
 <script>
 $(function(){
 	ProgressBar.hide();
-
+	
+	$("#type").val("[[${surveyQuestion?.type}]]");
+	$("#fgMandatory").val("[[${surveyQuestion?.fgMandatory}]]");
+	
 	$("#BTN_save").on("click", function() {
 		
 		JpUtilsAjax.post({
@@ -84,18 +88,18 @@ $(function(){
 			},		
 		    success: function(response, textStatus, jqXHR)
 		    {
-		    	_callbackSurveyQuestion(response.RESULT);
+		    	callbackSurveyQuestion(response.RESULT);
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
 	    	{
-		    	_callbackSurveyQuestion(response.RESULT);
+		    	callbackSurveyQuestion(response.RESULT);
 	    	}
 		});
 	});
 });
 
-function _callbackSurveyQuestion(result) {
-	opener._callbackSurveyQuestion();		
+function callbackSurveyQuestion(result) {
+	opener.callbackSurveyQuestion();		
 	ProgressBar.hide();
 	
 	if (!confirm('계속 등록하시겠습니까?')) {
@@ -105,5 +109,12 @@ function _callbackSurveyQuestion(result) {
 	}
 }
 
+function handleMandatoryCnt(type) {
+	if (type == 1) {
+		$("#mandatoryCnt").removeAttr('readonly');
+	} else {
+		$("#mandatoryCnt").attr('readonly', true).val(1);
+	}
+}
 </script>
 </th:block>	

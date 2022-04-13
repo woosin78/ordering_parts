@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.survey.dto.SurveyDto;
+import org.jwebppy.portal.iv.survey.dto.SurveyItemDto;
 import org.jwebppy.portal.iv.survey.dto.SurveyQuestionDto;
 import org.jwebppy.portal.iv.survey.dto.SurveyTargetDto;
 import org.jwebppy.portal.iv.survey.service.SurveyQuestionService;
@@ -58,6 +60,11 @@ public class SurveyQuestionController extends IvGeneralController
 		int sSeq = Integer.parseInt(webRequest.getParameter("sSeq"));
 		model.addAttribute("survey", surveyService.getSurvey(sSeq));
 		
+		if (!CmStringUtils.isEmpty(webRequest.getParameter("sqSeq"))) {
+			int sqSeq = Integer.parseInt(webRequest.getParameter("sqSeq"));
+			model.addAttribute("surveyQuestion", surveyQuestionService.getSurveyQuestion(sqSeq));
+		}
+		
 		addAllAttributeFromRequest(model, webRequest);
 		
 		return DEFAULT_VIEW_URL;
@@ -67,7 +74,14 @@ public class SurveyQuestionController extends IvGeneralController
 	@ResponseBody
 	public Object save(@ModelAttribute SurveyQuestionDto surveyQuestion)
 	{
-		
 		return surveyQuestionService.save(surveyQuestion);
+	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public Object delete(@ModelAttribute SurveyQuestionDto surveyQuestion)
+	{
+		
+		return surveyQuestionService.delete(surveyQuestion);
 	}
 }

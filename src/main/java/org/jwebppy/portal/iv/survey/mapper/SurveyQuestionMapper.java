@@ -15,4 +15,8 @@ public interface SurveyQuestionMapper {
 	public List<SurveyQuestionEntity> findSurveyQuestions(int sSeq);
 	
 	public int insert(SurveyQuestionEntity surveyQuestion);
+	
+	public int update(SurveyQuestionEntity surveyQuestion);
+	
+	public int delete(SurveyQuestionEntity surveyQuestion);
 }

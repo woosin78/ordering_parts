@@ -1,5 +1,8 @@
 package org.jwebppy.portal.iv.survey.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
 
 import lombok.Getter;
@@ -17,4 +20,5 @@ public class SurveyItemDto extends IvGeneralDto
 	private int sqSeq;
 	private String title;
 
+	private ArrayList<SurveyItemDto> surveyItemList;
 }

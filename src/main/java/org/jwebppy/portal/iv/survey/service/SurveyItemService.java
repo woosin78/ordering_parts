@@ -24,13 +24,40 @@ public class SurveyItemService extends PlatformGeneralService
 	}
 	
 	public int save(SurveyItemDto surveyItem) {
-		return create(surveyItem);
+		
+		int cnt = 0;
+		for (SurveyItemDto item : surveyItem.getSurveyItemList()) {
+			if (item.getSiSeq() > 0) {
+				modify(item);
+			} else {
+				create(item);
+			}
+			cnt++;
+		}
+		
+		return cnt;
 	}
 	
 	public int create(SurveyItemDto surveyItem) {
 		
 		SurveyItemEntity surveyItemEntity = CmModelMapperUtils.mapToEntity(SurveyItemObjectMapper.INSTANCE, surveyItem);
 		surveyItemMapper.insert(surveyItemEntity);
+		
+		return surveyItemEntity.getSiSeq();
+	}
+	
+	public int modify(SurveyItemDto surveyItem) {
+		
+		SurveyItemEntity surveyItemEntity = CmModelMapperUtils.mapToEntity(SurveyItemObjectMapper.INSTANCE, surveyItem);
+		surveyItemMapper.update(surveyItemEntity);
+		
+		return surveyItemEntity.getSiSeq();
+	}
+	
+	public int delete(SurveyItemDto surveyItem) {
+		
+		SurveyItemEntity surveyItemEntity = CmModelMapperUtils.mapToEntity(SurveyItemObjectMapper.INSTANCE, surveyItem);
+		surveyItemMapper.delete(surveyItemEntity);
 		
 		return surveyItemEntity.getSiSeq();
 	}

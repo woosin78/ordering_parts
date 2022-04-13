@@ -1,5 +1,8 @@
 package org.jwebppy.portal.iv.survey.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
@@ -54,4 +57,13 @@ public class SurveyItemController extends IvGeneralController
 		
 		return surveyItemService.save(surveyItem);
 	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public Object delete(@ModelAttribute SurveyItemDto surveyItem)
+	{
+		
+		return surveyItemService.delete(surveyItem);
+	}
+	
 }

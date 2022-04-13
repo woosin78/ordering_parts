@@ -5,7 +5,9 @@ import java.util.List;
 import org.jwebppy.platform.common.service.PlatformGeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.portal.iv.survey.dto.SurveyQuestionDto;
+import org.jwebppy.portal.iv.survey.entity.SurveyItemEntity;
 import org.jwebppy.portal.iv.survey.entity.SurveyQuestionEntity;
+import org.jwebppy.portal.iv.survey.mapper.SurveyItemMapper;
 import org.jwebppy.portal.iv.survey.mapper.SurveyQuestionMapper;
 import org.jwebppy.portal.iv.survey.mapper.SurveyQuestionObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class SurveyQuestionService extends PlatformGeneralService
 {
 	@Autowired
 	private SurveyQuestionMapper surveyQuestionMapper;
+	
+	@Autowired
+	private SurveyItemMapper surveyItemMapper;
 
 	public SurveyQuestionDto getSurveyQuestion(int sqSeq) 
 	{
@@ -28,13 +33,36 @@ public class SurveyQuestionService extends PlatformGeneralService
 	}
 	
 	public int save(SurveyQuestionDto surveyQuestion) {
-		return create(surveyQuestion);
+		if (surveyQuestion.getSqSeq() > 0) {
+			return modify(surveyQuestion);
+		} else {
+			return create(surveyQuestion);			
+		}
 	}
 	
 	public int create(SurveyQuestionDto surveyQuestion) {
-		
 		SurveyQuestionEntity surveyQuestionEntity = CmModelMapperUtils.mapToEntity(SurveyQuestionObjectMapper.INSTANCE, surveyQuestion);
 		surveyQuestionMapper.insert(surveyQuestionEntity);
+		
+		return surveyQuestionEntity.getSqSeq();
+	}
+
+	public int modify(SurveyQuestionDto surveyQuestion) {
+		SurveyQuestionEntity surveyQuestionEntity = CmModelMapperUtils.mapToEntity(SurveyQuestionObjectMapper.INSTANCE, surveyQuestion);
+		surveyQuestionMapper.update(surveyQuestionEntity);
+		
+		return surveyQuestionEntity.getSqSeq();
+	}
+
+	public int delete(SurveyQuestionDto surveyQuestion) {
+		
+		List<SurveyItemEntity> surveyItems = surveyItemMapper.findSurveyItems(surveyQuestion.getSqSeq());
+		for (SurveyItemEntity surveyItem : surveyItems) {
+			surveyItemMapper.delete(surveyItem);
+		}
+		
+		SurveyQuestionEntity surveyQuestionEntity = CmModelMapperUtils.mapToEntity(SurveyQuestionObjectMapper.INSTANCE, surveyQuestion);
+		surveyQuestionMapper.delete(surveyQuestionEntity);
 		
 		return surveyQuestionEntity.getSqSeq();
 	}

@@ -13,6 +13,24 @@
 		)
 	</insert>
 	
+	<update id="update" parameterType="SurveyItemEntity">
+		update ep_survey_item set
+			title=#{title},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			si_seq=#{siSeq}
+	</update>
+	
+	<update id="delete" parameterType="SurveyItemEntity">
+		update ep_survey_item set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			si_seq=#{siSeq}
+	</update>
+	
 	<select id="findSurveyItems" resultType="SurveyItemEntity">
 		select
 		*
@@ -20,6 +38,7 @@
 		ep_survey_item
 		where
 		sq_seq=#{sqSeq}
+		and fg_delete='N'
 		order by si_seq
 	</select>
 	
