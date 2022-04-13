@@ -2201,3 +2201,19 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220413 123930 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Apr 13 12:39:30,147<    >RfcGetException rc (7) message: 01  .  . is not a valid date
+<RfcGetException
+
+
+**** Error file opened at 20220413 131714 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Apr 13 13:17:14,047<    >RfcGetException rc (7) message: 01  .  . is not a valid date
+<RfcGetException
+
+Error:  >Wed Apr 13 13:17:47,102<    >RfcGetException rc (7) message: 01  .  . is not a valid date
+<RfcGetException
+
+Error:  >Wed Apr 13 13:17:54,535<    >RfcGetException rc (7) message: 01  .  . is not a valid date
+<RfcGetException
+
