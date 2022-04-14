@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_CLEAR_AMOUNT}"></div>
+		<div class="block-button-area">
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
+		</div>
+	</div>
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th th:text="#{HQP_L_PERIOD}"></th>
+				<td>
+					<div class="input-area">
+						<select id="pYear" name="pYear" class="custom_ui">
+							<option th:each="year: ${#numbers.sequence(pYear, pYear)}" th:value="${year}" th:text="${year}"></option>
+						</select>
+						<select id="pMonth" name="pMonth" class="custom_ui">
+							<option th:each="month: ${#numbers.sequence(1, 12)}" th:value="${#numbers.formatInteger(month, 2)}" th:text="${#numbers.formatInteger(month, 2)}"></option>
+						</select>
+					</div>
+				</td>
+				<th th:text="#{HQP_L_TYPE}"></th>
+				<td>
+					<div class="input-area">
+						<input type="radio" class="custom-ui" name="pFgComplete" value="C" /><label th:text="#{HQP_L_CONFIRMED}"></label>
+						<div class="split2"></div>
+						<input type="radio" class="custom-ui" name="pFgComplete" value="N" /><label th:text="#{HQP_L_NOT_CONFIRMED}"></label>
+					</div>
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	<div class="condition-area">
+		<table class="condition table-fixed">
+			<thead>
+		        <tr>
+		            <th th:text="#{HQP_L_SALES_AMOUNT}" class="center"></th>
+		            <th th:text="#{HQP_L_VAT_TAX_AMOUNT}" class="center"></th>                        
+		            <th th:text="#{HQP_L_TOTAL_AMOUNT2}" class="center"></th>
+		        </tr>
+		     </thead>
+		     <tbody>
+				<tr>
+					<td id="SUMMARY_1" class="right"></td>
+					<td id="SUMMARY_2" class="right"></td>
+					<td id="SUMMARY_3" class="right"></td>
+				</tr>
+			</tbody>        
+		</table>
+	</div>		
+	<div class="split-row"></div>
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+<script>
+$(document).ready(function() {
+});	
+
+let $tableObj;
+$(function(){
+	$("#pYear").val("[[${pYear}]]");
+	$("#pMonth").val("[[${pMonth}]]");
+	
+	JpUiForm.checkbox.checkByValue($("input[name=pFgComplete]"), JpUtilsString.defaultString("[[${pFgComplete}]]", "C"));
+		
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		//fixedColumns: {leftColumns: 8},
+		columns : [
+			{data: "MATNR", title: "[[#{HQP_T_PART_NO}]]"},
+			{data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"},
+			{data: "QTY", 	title: "[[#{HQP_L_QTY}]]"},
+			{data: "SALES_AMT", title: "[[#{HQP_L_SALES_PRICE}]]"},
+			{data: "SALE_DATE", title: "[[#{HQP_L_SALES_DATE}]]"},
+			{data: "DEPOTNM", title: "[[#{HQP_L_AS_BRANCH}]]"},
+			{data: "EMPNM", title: "[[#{HQP_L_RESPONSIBLE_STAFF}]]"}
+		],
+		columnDefs: [
+			{targets: [2, 4], className: "dt-body-center"},
+			{targets: [3], className: "dt-body-right"}
+		],		
+		ajax: {
+			url: "[[${BASE_PATH}]]/accounts/ar/clear_amount/list/data",
+			data: function(p)
+			{
+				p.pYear = $("#pYear").val();
+				p.pMonth = $("#pMonth").val();
+				p.pFgComplete = JpUiForm.checkbox.checkedRadioValue($("input[name=pFgComplete]"));//$("#pFgComplete").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				let summary = data.SUMMARY;
+				let list = data.LIST;
+				
+				try
+				{
+					$("#SUMMARY_1").html(JpUtilsString.defaultString(summary.S_AMOUNT, "0"));
+					$("#SUMMARY_2").html(JpUtilsString.defaultString(summary.T_AMOUNT, "0"));
+					$("#SUMMARY_3").html(JpUtilsString.defaultString(summary.TOT_AMOUNT, "0"));					
+				}
+				catch (e) {}
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(list.length) + " row(s).");
+				
+				return list;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+});
+
+$("#BTN_search").on("click", function(){		
+	doSearch(); 
+});
+
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Get_As_Sales");
+});
+</script>	
+</th:block>

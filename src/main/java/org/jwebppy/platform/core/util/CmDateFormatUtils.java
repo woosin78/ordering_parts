@@ -273,4 +273,19 @@ public class CmDateFormatUtils
 
 		return null;
 	}
+
+	public static String year()
+	{
+		return format(CmDateTimeUtils.now(), "yyyy");
+	}
+
+	public static String month()
+	{
+		return format(CmDateTimeUtils.now(), "MM");
+	}
+
+	public static String day(String format)
+	{
+		return format(CmDateTimeUtils.now(), "dd");
+	}
 }

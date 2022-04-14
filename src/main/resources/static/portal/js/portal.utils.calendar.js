@@ -22,25 +22,26 @@ $(function() {
 //        ,maxDate: "+1M" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)
     });
     
-    $.datepicker.setDefaults($.datepicker.regional["ko"]);
+    //$.datepicker.setDefaults($.datepicker.regional["ko"]);
 });
 
 var Calendar = {};
 
-Calendar.makeCalendar = function(target, defaultDate)
+Calendar.makeCalendar = function(target, defaultDate, options)
 {
 	if ($(target).length == 0)
 	{
 		target = $("#" + target);
 	};
 	
-	var calendar = target.datepicker();
+	let calendar = target.datepicker();
 	
 	if ($.trim(defaultDate) != "")
 	{
 		calendar.datepicker("setDate", defaultDate);
-		//target.val(defaultDate);
 	};
+	
+	Calendar.setOptions(calendar, options);
 	
 	Calendar.applyCss();
 	
@@ -52,10 +53,23 @@ Calendar.applyCss = function()
 	$("img.ui-datepicker-trigger").css({"cursor":"pointer", "margin-left":"-25px", "margin-bottom":"-4px"});
 };
 
-Calendar.makeBeetweenCalendar = function(fromDate, defaultFromDate, toDate, defaultToDate)
+Calendar.makeBeetweenCalendar = function(fromDate, defaultFromDate, toDate, defaultToDate, options)
 {
 	var fromDate = Calendar.makeCalendar(fromDate, defaultFromDate);
 	var toDate = Calendar.makeCalendar(toDate, defaultToDate);
 	
 	Calendar.applyCss();
 };
+
+Calendar.setOptions = function(calendar, options)
+{
+	if (JpUtilsObject.isNotNull(calendar) && JpUtilsObject.isNotNull(options))
+	{
+		if (JpUtilsObject.isNotNull(options["dateFormat"]))
+		{
+			alert(options["dateFormat"]);
+			
+			calendar.datepicker({"dateFormat": options["dateFormat"]});
+		};
+	};
+}
