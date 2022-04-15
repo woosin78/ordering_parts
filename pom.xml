@@ -242,21 +242,28 @@
 		    <artifactId>sapjco3</artifactId>
 		    <version>1.0</version>
 		    <scope>system</scope>
-		    <systemPath>${project.lib.path}/sap/sapjco3.jar</systemPath>
+		    <systemPath>${project.lib.path}/sapjco3.jar</systemPath>
 		</dependency>		
 		<dependency>
 			<groupId>javax.resource</groupId>
 			<artifactId>connector</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${project.lib.path}/sap/connector1.0.jar</systemPath>
+			<systemPath>${project.lib.path}/connector1.0.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.sapportals.connector.connection</groupId>
 			<artifactId>GenericConnector</artifactId>
 			<version>1.0</version>
 			<scope>system</scope>
-			<systemPath>${project.lib.path}/sap/GenericConnector.jar</systemPath>
+			<systemPath>${project.lib.path}/GenericConnector.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>cos</groupId>
+			<artifactId>cos</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.lib.path}/cos.jar</systemPath>
 		</dependency>
 	</dependencies>
 
