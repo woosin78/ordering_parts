@@ -34,6 +34,16 @@
 			sq_seq=#{sqSeq}
 	</update>
 	
+	<update id="deleteBySseq" parameterType="SurveyQuestionEntity">
+		update ep_survey_question set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where 
+			s_seq=#{sSeq}
+			and fg_delete = 'N'
+	</update>
+	
 	<select id="findSurveyQuestions" resultType="SurveyQuestionEntity">
 		select
 		*
@@ -43,6 +53,16 @@
 		s_seq=#{sSeq}
 		and fg_delete='N'
 		order by sq_seq
+	</select>
+	
+	<select id="findSurveyQuestionCount" resultType="int">
+		select
+		count(*)
+		from
+		ep_survey_question
+		where
+		s_seq=#{sSeq}
+		and fg_delete='N'
 	</select>
 	
 	<select id="findSurveyQuestion" resultType="SurveyQuestionEntity">

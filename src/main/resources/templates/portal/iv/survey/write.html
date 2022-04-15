@@ -15,7 +15,7 @@
 	
 	<div class="condition-area">
 	<form id="FORM_write" method="post" th:action="|${BASE_PATH}/survey/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
-	<input type="hidden" name="sSeq" id="sSeq" th:value="${survey==null ?0 :survey.sSeq}"/>
+	<input type="hidden" name="sSeq" id="sSeq" th:value="${survey==null ? 0 :survey.sSeq}"/>
 	<input type="hidden" name="validFrom" id="validFrom" th:value="${survey?.validFrom}"/>
 	<input type="hidden" name="validTo" id="validTo" th:value="${survey?.validTo}"/>
 	<input type="file" id="files" name="files" multiple style="display:none;"/>
@@ -284,10 +284,10 @@ $(function(){
 					};
 				};		
 				
-				if (JpUtilsString.isNotEmpty($(this).val()))
-				{
-					$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
-				};
+				/* if (JpUtilsString.isNotEmpty($(this).val()))
+				{ */
+				$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
+				//};
 				
 				$(this).closest("div").remove();
 			};

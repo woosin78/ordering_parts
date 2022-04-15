@@ -56,7 +56,7 @@
 <script>
 let $tableObj;
 $(function(){
-	console.log('list');
+	const level = 1; // to-do: 권한처리
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		select: {
@@ -109,7 +109,14 @@ $(function(){
 			{targets: 5, render: function(data, type, row) {
 				return {'Y':'공개', 'N':'비공개'}[data];
 			}},
-			{targets: 8, className: "dt-body-center", defaultContent:"<button>click</button>"},
+			{targets: 8, className: "dt-body-center", render: function(data, type, row) {
+				// to-do: 권한에 따른 버튼
+				if (level == 1) {
+					return '<button onclick="goResult(\''+data['sseq']+'\');">결과보기</button>';
+				} else {
+					return '<button onclick="vote(\''+data['sseq']+'\');">설문참여</button>';
+				}
+			}},
 		],
 		
 		ajax: {
@@ -136,7 +143,6 @@ $(function(){
 			//this.api().page(2).draw("page");
 		}
 	});
-	
 	initGridTable($tableObj);
 	
 	$("#TBL_grid").on("click", '.clickable',  function(event){
@@ -153,13 +159,21 @@ $(function(){
 	});
 	
 	$("#BTN_search").on("click", function(){		
-		doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+	//	doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
 	});
 	
 	$("#BTN_write").on("click", function() {
-		goWrite();
+	//	goWrite();
 	});
 });
+
+function goResult(sSeq) {
+	alert(sSeq);
+}
+
+function vote(sSeq) {
+	alert(sSeq);
+}
 
 function goView(sSeq) {
 	

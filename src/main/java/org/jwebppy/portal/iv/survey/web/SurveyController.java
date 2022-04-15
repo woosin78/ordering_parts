@@ -83,7 +83,7 @@ public class SurveyController extends IvGeneralController
 			for (String targetCode: targetCodes)
 			{
 				SurveyTargetDto surveyTarget = new SurveyTargetDto();
-				//surveyTarget.setSSeq(survey.getSSeq());
+				surveyTarget.setSSeq(survey.getSSeq());
 				surveyTarget.setTarget(targetCode);
 				surveyTarget.setTargetName(targetDescriptions[index]);
 				surveyTarget.setType("D");//D:DealerepBoardContentTarget.setType("D");//D:Dealer
@@ -99,6 +99,22 @@ public class SurveyController extends IvGeneralController
 		try {
 			
 			return surveyService.save(survey);
+		} 
+		catch (IOException e) 
+		{
+			System.err.println(e);
+		}
+		
+		return null;
+	}
+	
+	@PostMapping("/delete")
+	@ResponseBody
+	public Object delete(@ModelAttribute SurveyDto survey)
+	{
+		try {
+			
+			return surveyService.delete(survey);
 		} 
 		catch (IOException e) 
 		{

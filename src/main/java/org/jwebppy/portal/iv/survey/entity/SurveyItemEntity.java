@@ -15,6 +15,7 @@ public class SurveyItemEntity extends GeneralEntity
 	
 	private int siSeq;
 	private int sqSeq;
+	private int sSeq;
 	private String title;
 	
 }

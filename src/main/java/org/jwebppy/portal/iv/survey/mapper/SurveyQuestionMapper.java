@@ -19,4 +19,6 @@ public interface SurveyQuestionMapper {
 	public int update(SurveyQuestionEntity surveyQuestion);
 	
 	public int delete(SurveyQuestionEntity surveyQuestion);
+	
+	public int deleteBySseq(SurveyQuestionEntity surveyQuestion);
 }

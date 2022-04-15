@@ -35,6 +35,7 @@ public class SurveyDto extends IvGeneralDto
 	private List<SurveyTargetDto> surveyTargets;
 
 	//variables for file upload
+	private String ufSeq;
 	private EpUploadFileDto uploadFile;
 	private List<EpUploadFileListDto> uploadFileLists;
 	private List<MultipartFile> files;

@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.jwebppy.platform.common.service.PlatformGeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
+import org.jwebppy.portal.iv.survey.dto.SurveyItemDto;
 import org.jwebppy.portal.iv.survey.dto.SurveyQuestionDto;
-import org.jwebppy.portal.iv.survey.entity.SurveyItemEntity;
 import org.jwebppy.portal.iv.survey.entity.SurveyQuestionEntity;
-import org.jwebppy.portal.iv.survey.mapper.SurveyItemMapper;
 import org.jwebppy.portal.iv.survey.mapper.SurveyQuestionMapper;
 import org.jwebppy.portal.iv.survey.mapper.SurveyQuestionObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,8 @@ public class SurveyQuestionService extends PlatformGeneralService
 	private SurveyQuestionMapper surveyQuestionMapper;
 	
 	@Autowired
-	private SurveyItemMapper surveyItemMapper;
-
+	private SurveyItemService surveyItemService;
+	
 	public SurveyQuestionDto getSurveyQuestion(int sqSeq) 
 	{
 		return CmModelMapperUtils.mapToDto(SurveyQuestionObjectMapper.INSTANCE, surveyQuestionMapper.findSurveyQuestion(sqSeq));
@@ -56,13 +55,20 @@ public class SurveyQuestionService extends PlatformGeneralService
 
 	public int delete(SurveyQuestionDto surveyQuestion) {
 		
-		List<SurveyItemEntity> surveyItems = surveyItemMapper.findSurveyItems(surveyQuestion.getSqSeq());
-		for (SurveyItemEntity surveyItem : surveyItems) {
-			surveyItemMapper.delete(surveyItem);
+		List<SurveyItemDto> surveyItems = surveyItemService.getSurveyItems(surveyQuestion.getSqSeq());
+		for (SurveyItemDto surveyItem : surveyItems) {
+			surveyItemService.delete(surveyItem);
 		}
 		
 		SurveyQuestionEntity surveyQuestionEntity = CmModelMapperUtils.mapToEntity(SurveyQuestionObjectMapper.INSTANCE, surveyQuestion);
 		surveyQuestionMapper.delete(surveyQuestionEntity);
+		
+		return surveyQuestionEntity.getSqSeq();
+	}
+	
+	public int deleteBySseq(SurveyQuestionDto surveyQuestion) {
+		SurveyQuestionEntity surveyQuestionEntity = CmModelMapperUtils.mapToEntity(SurveyQuestionObjectMapper.INSTANCE, surveyQuestion);
+		surveyQuestionMapper.deleteBySseq(surveyQuestionEntity);
 		
 		return surveyQuestionEntity.getSqSeq();
 	}

@@ -18,7 +18,7 @@
 		<result property="modDate" column="mod_date" />
 		<result property="fgStatus" column="fg_status" />
 		<result property="applier" column="applier" />
-		<association property="uploadFile" foreignColumn="uf_seq" column="uf_seq" javaType="EpUploadFileEntity" select="org.jwebppy.portal.iv.upload.mapper.EpUploadFileMapper.findUploadFile" />
+		<collection property="uploadFileLists" foreignColumn="s_seq" column="s_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
 		<collection property="surveyTargets" foreignColumn="s_seq" column="s_seq" javaType="java.util.ArrayList" ofType="SurveyTargetEntity" select="org.jwebppy.portal.iv.survey.mapper.SurveyTargetMapper.findSurveyTargets" />
 	</resultMap>	
 
@@ -103,9 +103,55 @@
 			valid_to=#{validTo},
 			fg_open=#{fgOpen},
 			fg_open_result=#{fgOpenResult},
-			remark=#{remark}
+			remark=#{remark},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			s_seq=#{sSeq}
+	</update>
+		
+	<update id="delete" parameterType="SurveyEntity">
+		update ep_survey set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			s_seq=#{sSeq}
+			and fg_delete = 'N'
+	</update>
+	
+	<update id="updateUfSeq" parameterType="SurveyEntity">
+		update ep_survey set
+			uf_seq=#{ufSeq},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
 		where
 			s_seq=#{sSeq}
 	</update>
 	
+	<select id="findUfSeq" parameterType="int" resultType="String">
+		select
+			uf_seq
+		from 
+		ep_survey a
+		where
+		a.s_seq=#{sSeq}
+		and a.fg_delete='N'
+	</select>
+	
+	<select id="findUploadFileLists" resultType="EpUploadFileListEntity">
+		select
+		b.*
+		from
+		ep_survey a,		
+		ep_upload_file_list b
+		where
+		a.uf_seq = b.uf_seq
+        and a.s_seq = b.t_seq
+		and a.fg_delete='N'		
+		and b.fg_delete='N'
+		and a.fg_delete='N'
+        and b.fg_delete='N'
+        and a.s_seq = #{sSeq}
+	</select>
 </mapper>

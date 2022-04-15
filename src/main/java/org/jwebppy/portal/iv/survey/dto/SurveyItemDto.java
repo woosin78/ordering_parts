@@ -18,6 +18,7 @@ public class SurveyItemDto extends IvGeneralDto
 
 	private int siSeq;
 	private int sqSeq;
+	private int sSeq;
 	private String title;
 
 	private ArrayList<SurveyItemDto> surveyItemList;

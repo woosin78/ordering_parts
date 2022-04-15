@@ -58,7 +58,7 @@
 				<th>파일첨부</th>
 				<td>
 					<div th:each="uploadFileList : ${survey?.uploadFileLists}">
-						<div></div><span th:text="${uploadFileList.displayFileSize}"></span>
+						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a><div class='split2'></div><span th:text="${uploadFileList.displayFileSize}"></span>
 					</div>
 				</td>
 			</tr>
@@ -133,7 +133,25 @@
 		sSeq: "[[${survey?.sSeq}]]",
 		remove: function() {
 			if (confirm ('Do you want to delete?')) {
-			// to-do
+				JpUtilsAjax.post({
+					url: "[[${BASE_PATH}]]/survey/delete",
+					method: "POST",
+					data: {sSeq:this.sSeq},
+					beforeSend: function(jqXHR, settings)
+					{
+						ProgressBar.show();
+					},		 
+				    success: function(response, textStatus, jqXHR)
+				    {
+				    	alert('삭제되었습니다');
+				    	Survey_BTN.back();
+				    },
+				    error: function(jqXHR, textStatus, errorThrown)
+			    	{
+				    	alert('삭제할 수 없습니다');
+				    	Survey_BTN.back();
+			    	}
+				});
 			}
 		}	
 	};
@@ -267,6 +285,7 @@
 			select: true,
 			ordering: false,
 			searching: false,
+			bInfo: false,
 			scrollY: 330,
 			columns : [
 				{data:"sqSeq", 			title: "번호",		"width": "5%"},
@@ -316,7 +335,7 @@
 			paging : false, // 페이징 기능켬
 			initComplete:function(settings, json) {
 				ProgressBar.hide();
-				clickTblFirstRow();
+				clickTblRow(0);
 			}
 		});
 		initGridTable($tableObj);
@@ -342,13 +361,14 @@
 			$(this).addClass('selected');
 			
 			let data = $tableObj.row( $(this) ).data();
+			if (data == undefined) return;
+			
 			SurveyQuestion.sqSeq = data['sqSeq'];
 			SurveyItem.list();
 		});
 		
 		$("#TBL_grid tbody").on("dblclick", 'tr', function(event){
-			alert(0);
-			
+			// ?
 		});
 		/************************ 문항 그리드(TBL_grid) 처리 종료 *************************/
 		
@@ -359,6 +379,7 @@
 		    },
 			ordering: false,
 			searching: false,
+			bInfo: false,
 			scrollY: 330,
 			columns : [
 				{data:"sqSeq", 			title: "번호",		"width": "5%"},
@@ -390,7 +411,7 @@
 				dataSrc: function(response) 
 				{
 					let result = response.RESULT;
-					$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
+					$("#totalItemRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
 
 					return result;
 				}
@@ -418,14 +439,14 @@
 		
 	});
 	
-	function clickTblFirstRow() {
-		$("#TBL_grid tbody tr:eq(0)").click();		
+	function clickTblRow(row) {
+		$("#TBL_grid tbody tr:eq("+row+")").click();		
 	}
 	
 	function callbackSurveyQuestion() {
 		ProgressBar.hide();
 		$tableObj.ajax.reload(function() {
-			clickTblFirstRow();
+			clickTblRow(0);
 		});
 	}
 	

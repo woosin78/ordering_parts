@@ -61,4 +61,12 @@ public class SurveyItemService extends PlatformGeneralService
 		
 		return surveyItemEntity.getSiSeq();
 	}
+	
+	public int deleteBySseq(SurveyItemDto surveyItem) {
+		
+		SurveyItemEntity surveyItemEntity = CmModelMapperUtils.mapToEntity(SurveyItemObjectMapper.INSTANCE, surveyItem);
+		surveyItemMapper.deleteBySseq(surveyItemEntity);
+		
+		return surveyItemEntity.getSiSeq();
+	}
 }

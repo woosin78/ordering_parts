@@ -42,4 +42,15 @@
 		order by si_seq
 	</select>
 	
+	<update id="deleteBySseq" parameterType="SurveyItemEntity">
+		update ep_survey_item set
+			fg_delete = 'Y'
+		where 
+		    fg_delete = 'N'
+		    and sq_seq in (
+		    	select sq_seq from ep_survey_question where s_seq = #{sSeq} and fg_delete = 'N'
+		    )
+	</update>
+	
+	
 </mapper>

@@ -12,13 +12,14 @@
 		)
 	</insert>
 	
-	<update id="updateFgDelete" parameterType="SurveyTargetEntity">
+	<update id="delete" parameterType="SurveyTargetEntity">
 		update ep_survey_target set
 			fg_delete='Y',
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			st_seq=#{stSeq}
+			s_seq=#{sSeq}
+			and fg_delete='N'
 	</update>
 	
 	<select id="findSurveyTargets" resultType="SurveyTargetEntity">
@@ -28,6 +29,17 @@
 		ep_survey_target
 		where
 		s_seq=#{sSeq}
+		and fg_delete='N'
+	</select>
+	
+	<select id="findSurveyTargetCount" resultType="int">
+		select
+		count(*)
+		from
+		ep_survey_target
+		where
+		s_seq=#{sSeq}
+		and fg_delete='N'
 	</select>
 	
 </mapper>

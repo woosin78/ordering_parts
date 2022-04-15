@@ -15,4 +15,8 @@ public interface SurveyMapper {
 	public SurveyEntity findSurvey(SurveyDto survey);
 	public List<SurveyEntity> findSurveys(SurveySearchDto surveySearchDto);
 	public int insert(SurveyEntity survey);
+	public int update(SurveyEntity survey);
+	public int updateUfSeq(SurveyEntity survey);
+	public String findUfSeq(int sSeq);
+	public int delete(SurveyEntity survey);
 }

@@ -1,5 +1,7 @@
 package org.jwebppy.portal.iv.survey.entity;
 
+import java.util.List;
+
 import org.jwebppy.platform.core.entity.GeneralEntity;
 
 import lombok.Getter;
@@ -18,4 +20,5 @@ public class SurveyTargetEntity extends GeneralEntity
 	private String type;
 	private String target;
 	private String targetName;
+	private List<SurveyTargetEntity> surveyTargets;
 }

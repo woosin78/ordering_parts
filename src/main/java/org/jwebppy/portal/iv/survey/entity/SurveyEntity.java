@@ -33,6 +33,7 @@ public class SurveyEntity extends GeneralEntity
 	
 	private List<SurveyTargetEntity> surveyTargets;
 	
+	private String ufSeq;
 	private EpUploadFileEntity uploadFile;
 	private List<EpUploadFileListEntity> uploadFileLists;
 	

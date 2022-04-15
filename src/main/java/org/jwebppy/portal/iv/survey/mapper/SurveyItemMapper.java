@@ -14,4 +14,5 @@ public interface SurveyItemMapper {
 	public int insert(SurveyItemEntity surveyItemEntity);	
 	public int update(SurveyItemEntity surveyItemEntity);
 	public int delete(SurveyItemEntity surveyItemEntity);
+	public int deleteBySseq(SurveyItemEntity surveyItemEntity);
 }
