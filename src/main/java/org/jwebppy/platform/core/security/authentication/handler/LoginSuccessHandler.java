@@ -7,7 +7,9 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
+import org.springframework.security.web.savedrequest.SavedRequest;
 
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler
 {
@@ -44,12 +47,15 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		//Login 시 Save Username 체크 했을 경우 처리
         if (CmStringUtils.equals(request.getParameter("saveUsername"), PlatformCommonVo.YES))
         {
-        	Cookie cookie = new Cookie("username", authentication.getName());
+        	Cookie cookie = new Cookie(PlatformConfigVo.FORM_LOGIN_USERNAME, authentication.getName());
         	response.addCookie(cookie);
         	cookie.setMaxAge(10*365*24*60*60);
         }
 
-        if (requestCache.getRequest(request, response) == null)
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
+
+        //error 페이지로는 다시 이동시키지 않는다
+        if (ObjectUtils.isEmpty(savedRequest) || CmStringUtils.endsWith(savedRequest.getRedirectUrl(), PlatformConfigVo.ERROR_PAGE_URL))
         {
         	getRedirectStrategy().sendRedirect(request, response, determineTargetUrl(request, response, authentication));
         }

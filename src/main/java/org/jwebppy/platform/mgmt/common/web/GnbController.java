@@ -13,6 +13,7 @@ import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
+import org.jwebppy.portal.common.PortalConfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/gnb")
+@RequestMapping({PlatformConfigVo.CONTEXT_PATH + "/mgmt/gnb", PortalConfigVo.CONTEXT_PATH + "/mgmt/gnb"})
 public class GnbController extends MgmtGeneralController
 {
 	@Autowired

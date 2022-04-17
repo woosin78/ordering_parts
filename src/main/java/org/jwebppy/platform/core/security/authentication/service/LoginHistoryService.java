@@ -44,41 +44,7 @@ public class LoginHistoryService extends GeneralService
 
 	public int fail(HttpServletRequest request, HttpServletResponse response)
 	{
-		if (createLoginHistory(request, response, PlatformCommonVo.NO) > 0)
-		{
-			/*
-			 * 일정횟수 이상 인증오류 시 계정 lock
-			if (PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_ALLOWABLE_COUNT > 0)
-			{
-				String username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
-
-				LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
-				loginHistorySearch.setUsername(username);
-				loginHistorySearch.setFromDate(LocalDateTime.now().minusMinutes(5));
-				loginHistorySearch.setPageNumber(1);
-				loginHistorySearch.setRowPerPage(5);
-
-				List<LoginHistoryDto> loginHistories = ListUtils.emptyIfNull(getPageableLoginHistories(loginHistorySearch));
-
-				if (loginHistories.size() >= PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_ALLOWABLE_COUNT)
-				{
-					if (CmStringUtils.equals(PlatformConfigVo.FORM_LOGIN_PASSWORD_FAIL_PENALTY, "LOCK"))
-					{
-						UserDto user = userService.getUserByUsername(username);
-
-						if (!user.getUserAccount().isAccountLocked())
-						{
-							userService.lockUserAccount(userService.getUserByUsername(username).getUSeq(), PlatformCommonVo.YES);
-						}
-					}
-				}
-			}
-			*/
-
-			return 1;
-		}
-
-		return 0;
+		return createLoginHistory(request, response, PlatformCommonVo.NO);
 	}
 
 	public int createLoginHistory(HttpServletRequest request, HttpServletResponse response, String fgResult)

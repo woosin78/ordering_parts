@@ -133,12 +133,8 @@
 											</th:block>
 											<th:block th:unless="${#lists.isEmpty(promotionList)}">
 												<tr th:each="bbsContent, i : ${promotionList}">
-													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img
-														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
-													/></td>
-													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|"
-															th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"
-														></div></td>
+													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"/></td>
+													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|" th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"></div></td>
 													<td class="bbs-date" th:text="${#temporals.format(bbsContent.regDate, 'yyyy.MM.dd')}"></td>
 												</tr>
 												<tr th:each="i : ${#numbers.sequence(#lists.size(promotionList), 4)}">

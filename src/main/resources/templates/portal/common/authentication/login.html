@@ -112,21 +112,50 @@ function checkForm()
 let isProcessing = false;
 function login()
 {
-	JpUiDimmer.show();
-
-	//중복 submit 방지
 	if (!isProcessing)
 	{
 		isProcessing = true;
 		
-		$("#FORM_login").submit();
+		let key = "[[${key}]]";
+		let token = "[[${token}]]";
+	
+		$.ajax({
+			contentType:"application/json",         
+			type: "GET",
+			url: "[[${gateway}]]/authform/sso/inbound/ad",
+			headers: {"user-key": key, "user-token": token, "user-xuser": $("#username").val(), "user-xpass": $("#password").val()},
+			beforeSend: function(jqXHR, settings)
+			{
+				JpUiDimmer.show();
+			},
+			success: function(response, textStatus, jqXHR)
+			{
+				if (response != null)
+				{
+					let result = response.RESULT;
+					
+					console.log(response);
+					$("#token").val(result);
+				};
+			},
+			error: function(jqXHR, textStatus, errorThrown)
+			{
+				console.log("AD authorization failed. Start to login using this system.");
+			},
+			complete: function(jqXHR, textStatus)
+			{
+				$("#FORM_login").submit();
+			}
+		});		
 	};
 };
 
 $(document).ready(function() {
-	if (JpUtilsString.isNotEmpty($.cookie("username")))
+	let username = JpUtilsString.trimToEmpty($.cookie("username"));
+	
+	if (JpUtilsString.isNotEmpty(username))
 	{
-		$("#username").val($.cookie("username"));
+		$("#username").val(username);
 	};	
 	
 	$(".btn-login").on("click", function() {
@@ -144,6 +173,8 @@ $(document).ready(function() {
 				login();
 			}
 		}
+	}).on("focus", function(event) {
+		$(this).select();
 	});
 	
 	$("#openNewWindow").on("click", function() {

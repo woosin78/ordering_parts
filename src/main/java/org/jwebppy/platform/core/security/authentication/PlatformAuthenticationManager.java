@@ -1,12 +1,5 @@
 package org.jwebppy.platform.core.security.authentication;
 
-import java.util.Hashtable;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
-
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.service.UserAuthenticationService;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -29,15 +22,6 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 {
 	@Value("${master.password}")
 	private String MASTER_PASSWORD;
-
-	@Value("${ldap.enable}")
-	private boolean LDAP_ENABLE;
-
-	@Value("${ldap.url}")
-	private String LDAP_URL;
-
-	@Value("${ldap.dn}")
-	private String LDAP_DEFAULT_NAMING_CONTEXT;
 
 	@Autowired
 	private I18nMessageSource i18nMessageSource;
@@ -81,22 +65,14 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         	 * Y: 인증 허용 않음
         	 * N: 인증 허용
         	 */
-        	if (PlatformCommonVo.NO.equals(userAccount.getFgNoUsePassword()))
+        	if (CmStringUtils.equals(userAccount.getFgNoUsePassword(), PlatformCommonVo.NO))
         	{
-        		if (passwordEncoder.matches(password, userAccount.getPassword()))
+        		//AD 인증에 성공했거나 비밀번호가 동일할 경우
+        		if (CmStringUtils.equals(password, "AD-USER") || passwordEncoder.matches(password, userAccount.getPassword()))
         		{
         			isValidCredentials = true;
         		}
         	}
-
-            //LDAP 인증
-        	if (!isValidCredentials && LDAP_ENABLE)
-            {
-                if (isValidUserByLdap(username, password))
-                {
-                	isValidCredentials = true;
-                }
-            }
 
         	if (isValidCredentials)
         	{
@@ -118,31 +94,5 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         }
 
         throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
-	}
-
-	protected boolean isValidUserByLdap(String username, String password)
-	{
-		try
-		{
-			Hashtable<String, String> validateEnv = new Hashtable<>();
-			validateEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-			validateEnv.put(Context.PROVIDER_URL, LDAP_URL);
-			validateEnv.put(Context.SECURITY_PRINCIPAL, "DSG\\" + username);
-			validateEnv.put(Context.SECURITY_CREDENTIALS, password);
-
-			DirContext ctx = new InitialDirContext(validateEnv);
-			ctx.getAttributes(LDAP_DEFAULT_NAMING_CONTEXT);
-			ctx.close();
-		}
-		catch (AuthenticationException e)
-		{
-			return false;
-		}
-		catch (NamingException e)
-		{
-			return false;
-		}
-
-		return true;
 	}
 }

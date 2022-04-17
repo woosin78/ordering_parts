@@ -31,7 +31,10 @@ ProgressBar.show = function(message)
 		"top": top
 	});
 	
-	$(".progress-dimmer").css("height", $(window).innerHeight());
+	$(".progress-dimmer").css({
+		"width": $(document).width(),
+		"height": $(window).innerHeight()
+	});
 	
 	$(".progress-dimmer, .progress-block").show();
 };

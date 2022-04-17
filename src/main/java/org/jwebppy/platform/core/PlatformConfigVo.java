@@ -18,10 +18,6 @@ public class PlatformConfigVo
 	public final static String FORM_LOGIN_PAGE_URL = FORM_AUTHENTICATION_PATH + FORM_LOGIN_PAGE_PATH; //폼 로그인 - 로그인 페이지 url
 	public final static String FORM_LOGIN_PROCESSING_URL = FORM_AUTHENTICATION_PATH + FORM_LOGIN_PROCESSING_PATH; //폼 로그인 - 로그인 처리 url
 	public final static String FORM_LOGIN_FAIL_TYPE = "Login-Fail-Type";
-	public final static int FORM_LOGIN_PASSWORD_FAIL_ALLOWABLE_COUNT = 5;//비밀번호 실패 허용 횟수. 0: 체크 안함.
-	public final static int FORM_LOGIN_PASSWORD_FAIL_CHECK_PERIOD = 5;//비밀번호 실패 체크 시간 범위(단위: 분).
-	public final static String FORM_LOGIN_PASSWORD_FAIL_PENALTY = "LOCK";//LOCK: Account Lock, SLEEP:
-	public final static int FORM_LOGIN_PASSWORD_FAIL_SLEEP_DURATION = 5;//로그인 실패 허용 횟수 초과 후 휴면 시간(분)
 
 	public final static String FORM_LOGOUT_PROCESSING_URL = FORM_AUTHENTICATION_PATH + "/logout"; //폼 로그인 - 로그아웃 url
 	public final static String FORM_LOGOUT_SUCCESS_URL = INDEX_URL; //폼 로그인 - 인증 성공 시 default 이동 url
@@ -50,21 +46,6 @@ public class PlatformConfigVo
 	 * 다국어
 	 */
 	public static final String DEFAULT_BASENAME = "PLTF"; //Default 언어 그룹 명
-
-	/*
-	 * Cache
-	 */
-	public static final String DEFAULT_CACHE_NAME = "PLTF"; //Default 캐시 명
-
-	/*
-	 * 데이터베이스
-	 */
-	//사용 가능한 데이터베이스 종류
-	public final static String MariaDB = "mariadb";
-	public final static String MSSQL = "mssql";
-	//public final static String Oracle = "oracle";
-
-	//oracle, mariadb, mssql
 
 	//Key
 	public final static String REQUEST_MDC_UUID_TOKEN_KEY = "RUID";//ServletRequest

@@ -120,19 +120,44 @@ function dataTableResizeWithoutScrollY($dataTable, $parent){
 */
 function installDataTableResizer($dataTable, $parent, isShowAllWithoutScrollY){
 	let prevHeight = 0;
-	$(window).resize($.debounce(100, function(e){
-		if (isShowAllWithoutScrollY)
-		{
-			dataTableResizeWithoutScrollY($dataTable, $parent);
-		}
-		else
-		{
-			prevHeight = dataTableResize($dataTable, $parent, prevHeight);	
-		};
+	const INTERVAL = 100;
+	
+	$(window).resize($.debounce(INTERVAL, function(e){
+		dataTableResizing($dataTable, $parent, prevHeight, isShowAllWithoutScrollY);
 	}));
 	// 최초 로딩시 리사이징.
 	$(window).resize();
+
+	let count = 0;
+
+	let intervalId = setInterval(function() {
+		//10회 만 실행시킴
+		if (count > 9)
+		{
+			clearInterval(intervalId);
+		};
+		
+		//첫번째는 resize 가 실행되며 조정되기 때문에 skip
+		if (count > 0)
+		{
+			dataTableResizing($dataTable, $parent, prevHeight, isShowAllWithoutScrollY);	
+		};
+		
+		count++;
+	}, INTERVAL);
 }
+
+function dataTableResizing($dataTable, $parent, prevHeight, isShowAllWithoutScrollY)
+{
+	if (isShowAllWithoutScrollY)
+	{
+		dataTableResizeWithoutScrollY($dataTable, $parent);
+	}
+	else
+	{
+		prevHeight = dataTableResize($dataTable, $parent, prevHeight);	
+	};
+};
 
 /*
 DataTable 버그 수정
