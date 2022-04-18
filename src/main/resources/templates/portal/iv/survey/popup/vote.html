@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/popup/index}">
+<th:block layout:fragment="content">
+	
+	<div class="block-header" >
+		<div class="block-title" th:text="설문참여"></div>
+	</div>	
+	
+	<div class="condition-area">
+		<table class="condition table-fixed">
+			<tr>
+				<td style="width:20%">[[${survey?.title}]]</td>
+				<td>
+					첨부파일 : <span th:each="uploadFileList : ${survey?.uploadFileLists}">
+						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a>
+						(<span th:text="${uploadFileList.displayFileSize}"></span>)
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">[[${survey?.description}]]</td>
+			</tr>
+		</table>
+	<br/><br/>
+	<table class="condition">
+		<tbody>
+			<tr th:each="question, index : ${voteItems}">
+				<td th:switch="${question.type}">
+					<!--  객관식 -->
+					<table th:case="0">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${index.count}+'.'"></span>
+											<span style="color:red;" th:text="${question.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:blue;" th:text="${question.title}"></span>
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tr th:each="item : ${question.items}">
+										<td>
+											<span>
+												<input th:name="'I_'+${item.siSeq}" th:id="'I_'+${item.siSeq}" type="radio" /> 
+											</span>
+											<span>[[${item.title}]]</span>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					
+					<!--  다중객관식 -->
+					<table th:case="1">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${index.count}+'.'"></span>
+											<span style="color:red;" th:text="${question.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:blue;" th:text="${question.title}"></span>
+											<span>(다중선택개수 : [[${question.mandatoryCnt}]])</span>
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tr th:each="item : ${question.items}">
+										<td>
+											<span><input th:name="'I_'+${item.siSeq}" th:id="'I_'+${item.siSeq}" type="checkbox" /></span>
+											<span>[[${item.title}]]</span>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					
+					<!--  주관식 -->
+					<table th:case="2">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${index.count}+'.'"></span>
+											<span style="color:red;" th:text="${question.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:blue;" th:text="${question.title}"></span>
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tr>
+										<td>
+											<textarea th:name="'Q_'+${question.sqSeq}" th:id="'Q_'+${question.sqSeq}" rows="5" cols="50">
+											</textarea>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				
+					<!--  가중치 -->
+					<table th:case="3">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${index.count}+'.'"></span>
+											<span style="color:red;" th:text="${question.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:blue;" th:text="${question.title}"></span>
+											<span>(가중치의 합 : 10점)</span>
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tr th:each="item : ${question.items}">
+										<td>
+											<span>
+												<select th:name="'I_'+${item.siSeq}" th:id="'I_'+${item.siSeq}">
+													<option value="1">1점</option>
+													<option value="2">2점</option>
+													<option value="3">3점</option>
+													<option value="4">4점</option>
+													<option value="5">5점</option>
+													<option value="6">6점</option>
+													<option value="7">7점</option>
+													<option value="8">8점</option>
+													<option value="9">9점</option>
+													<option value="10">10점</option>
+												</select>
+											</span>
+											<span>[[${item.title}]]</span>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					
+					<!--  우선순위 -->
+					<table th:case="4">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${index.count}+'.'"></span>
+											<span style="color:red;" th:text="${question.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:blue;" th:text="${question.title}"></span>
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tr th:each="item : ${question.items}">
+										<td>
+											<span>
+												<select th:name="'I_'+${item.siSeq}" th:id="'I_'+${item.siSeq}">
+													<option th:each="idx, itemIndex : ${question.items}" value="">[[${itemIndex.count}]] 우선순위</option>
+												</select>
+											</span>
+											<span>[[${item.title}]]</span>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	
+<script th:inline="javascript">
+$(function(){
+	ProgressBar.hide();
+	
+	/*[# th:each="question, index : ${voteItems}"]*/
+	console.log( /*[[${question.sqSeq}]]*/);
+	/*[/]*/	
+});
+</script>
+</th:block>	

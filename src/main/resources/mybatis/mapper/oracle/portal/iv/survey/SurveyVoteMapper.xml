@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.portal.iv.survey.mapper.SurveyVoteMapper">
+	<resultMap type="SurveyVoteEntity" id="surveyVoteEntityMap">
+		<id property="sSeq" column="s_seq" />
+		<result property="sqSeq" column="sq_seq" />
+		<result property="title" column="title" />
+		<result property="type" column="type" />
+		<result property="mandatoryCnt" column="mandatory_cnt" />
+		<result property="fgMandatory" column="fg_mandatory" />
+		<result property="siSeq" column="si_seq" />
+		<collection property="items" foreignColumn="sq_seq" column="sq_seq" javaType="java.util.ArrayList" ofType="SurveyVoteEntity" select="findItemsBySqSeq" />
+	</resultMap>	
+
+	<select id="findSurveyVoteItems" resultMap="surveyVoteEntityMap">
+	select 
+	a.s_seq, b.sq_seq, b.title, b.type, b.mandatory_cnt, b.fg_mandatory
+	from ep_survey a, 
+	ep_survey_question b
+	where 
+	a.s_seq = b.s_seq 
+	and a.fg_delete = 'N' 
+	and b.fg_delete = 'N'
+	and a.s_seq = #{sSeq}
+	order by b.sq_seq
+	</select>
+	
+	<select id="findItemsBySqSeq" resultType="SurveyVoteEntity">
+	select
+		si_seq, sq_seq, title
+	from ep_survey_item
+	where sq_seq = #{sqSeq}
+	and fg_delete = 'N'
+	order by si_seq
+	</select>
+</mapper>

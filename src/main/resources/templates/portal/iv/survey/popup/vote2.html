@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/popup/index}">
+<th:block layout:fragment="content">
+	
+	<div class="block-header" >
+		<div class="block-title" th:text="설문참여"></div>
+	</div>	
+	
+	<div class="condition-area">
+		<table class="condition table-fixed">
+			<tr>
+				<td style="width:20%">[[${survey?.title}]]</td>
+				<td>
+					첨부파일 : <span th:each="uploadFileList : ${survey?.uploadFileLists}">
+						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a>
+						(<span th:text="${uploadFileList.displayFileSize}"></span>)
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">[[${survey?.description}]]</td>
+			</tr>
+		</table>
+	<br/><br/>
+	<table class="condition">
+		<tbody>
+			<tr th:each="question, index : ${voteItems}">
+				<td th:switch="${question.type}">
+					<table>
+						<tr>
+							<td>[[${question.type}]][[${question.mandatoryCnt}]]
+								<span style="color:blue;" th:text="${index.index+1}+'.'"></span>
+								<span style="color:red;" th:text="${question.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+								<span style="color:blue;" th:text="${question.title}"></span>
+								<span>(가중치의 합 : 10점)</span>
+							</td>
+						</tr>
+					</table>
+					<table>
+						<tr th:each="item : ${question.items}">
+							<td><span>[[${item.title}]]</span></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	
+<script>
+$(function(){
+	ProgressBar.hide();
+
+});
+</script>
+</th:block>	

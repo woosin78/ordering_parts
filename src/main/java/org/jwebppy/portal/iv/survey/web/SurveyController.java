@@ -131,4 +131,5 @@ public class SurveyController extends IvGeneralController
 		
 		return DEFAULT_VIEW_URL;
 	}
+	
 }

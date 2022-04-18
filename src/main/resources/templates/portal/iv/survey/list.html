@@ -46,7 +46,7 @@
 	</div>
 	
 	<div id="AREA_grid" class="flex-grow grid-area">
-		<table id="TBL_grid" class="order-column stripe compact"></table>
+		<table id="TBL_grid" class="order-column stripe compact hover"></table>
 	</div>
 
 	<form id="FORM_search" th:action="|${BASE_PATH}/survey/list|">
@@ -110,6 +110,9 @@ $(function(){
 				return {'Y':'공개', 'N':'비공개'}[data];
 			}},
 			{targets: 8, className: "dt-body-center", render: function(data, type, row) {
+				
+				return '<button onclick="vote(\''+data['sseq']+'\');">설문참여</button>';
+			
 				// to-do: 권한에 따른 버튼
 				if (level == 1) {
 					return '<button onclick="goResult(\''+data['sseq']+'\');">결과보기</button>';
@@ -150,20 +153,20 @@ $(function(){
 		goView(data['sseq']);
 	});
 	
-	$("#TBL_grid").on("click", 'button',  function(event){		
+	/* $("#TBL_grid").on("click", 'button',  function(event){		
 		let data = $tableObj.row( $(this).parents('tr') ).data();
 		//alert(data['sseq']);
 		
 		//to-do: 권한에 따라 다른 처리
 		Popup.open("[[${BASE_PATH}]]/survey/popup/view?sseq="+data['sseq'], 1100, 600);
-	});
+	}); */
 	
 	$("#BTN_search").on("click", function(){		
-	//	doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+		doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
 	});
 	
 	$("#BTN_write").on("click", function() {
-	//	goWrite();
+		goWrite();
 	});
 });
 
@@ -172,7 +175,7 @@ function goResult(sSeq) {
 }
 
 function vote(sSeq) {
-	alert(sSeq);
+	Popup.open("[[${BASE_PATH}]]/survey/popup/vote?sSeq="+sSeq, 1100, 600);
 }
 
 function goView(sSeq) {
