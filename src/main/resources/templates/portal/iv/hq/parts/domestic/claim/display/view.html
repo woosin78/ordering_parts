@@ -60,7 +60,7 @@
 let $tableObj;
 
 JpUtilsAjax.get({
-	url: "[[${BASE_PATH}]]/claim/view/data",
+	url: "[[${BASE_PATH}]]/claim/display/view/data",
 	data: {"pOrderNo": "[[${orderNo}]]", "pDocType": "[[${docType}]]"},		
     success: function(data, textStatus, jqXHR) 
     {
@@ -195,11 +195,11 @@ JpUtilsAjax.get({
 });
 
 $("#BTN_print").on("click", function() {
-	document.location.href = "[[${BASE_PATH}]]/claim/download/doc?orderNo=[[${orderNo}]]&docType=[[${docType}]]";
+	document.location.href = "[[${BASE_PATH}]]/claim/display/download/doc?orderNo=[[${orderNo}]]&docType=[[${docType}]]";
 });
 
 $("#BTN_back").on("click", function() {
-	$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/list").submit();
+	$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/display/list").submit();
 });
 
 </script>	

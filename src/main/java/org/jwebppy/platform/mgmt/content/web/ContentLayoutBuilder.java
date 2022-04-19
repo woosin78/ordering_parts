@@ -143,9 +143,11 @@ public class ContentLayoutBuilder
 	{
 		Document document = new Document();
 
-		Select loCorp = new Select("basename");
-		loCorp.setLabel("Basename");
-		loCorp.setValue(lang.getBasename());
+		document.addDefaultLabelText("Code", lang.getCode());
+
+		Select loBasename = new Select("basename");
+		loBasename.setLabel("Basename");
+		loBasename.setValue(lang.getBasename());
 
 		for (String basename : basenames)
 		{
@@ -162,11 +164,11 @@ public class ContentLayoutBuilder
 
 			if (isContain)
 			{
-				loCorp.addOption(basename, basename);
+				loBasename.addOption(basename, basename);
 			}
 		}
 
-		document.addElement(loCorp);
+		document.addElement(loBasename);
 
 		if (CollectionUtils.isNotEmpty(langKinds))
 		{
