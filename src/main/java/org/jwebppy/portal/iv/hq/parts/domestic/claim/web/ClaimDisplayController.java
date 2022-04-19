@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/claim")
+@RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/claim/display")
 public class ClaimDisplayController extends PartsDomesticGeneralController
 {
 	@Autowired

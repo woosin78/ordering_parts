@@ -99,7 +99,7 @@ $(function(){
 			{targets: [5], className: "dt-body-right"}
 		],		
 		ajax: {
-			url: "[[${BASE_PATH}]]/claim/list/data",
+			url: "[[${BASE_PATH}]]/claim/display/list/data",
 			data: function(p)
 			{
 				p.pComplaintNo 	= $("#pComplaintNo").val();
@@ -172,7 +172,7 @@ $(function(){
 				$("#orderNo").val(orderNo);			
 				$("#docDate").val(rowData.ERDAT);
 				$("#docType").val("A");
-				$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/view").submit();
+				$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/display/view").submit();
 			}
 		}
 		else if (index == 4)

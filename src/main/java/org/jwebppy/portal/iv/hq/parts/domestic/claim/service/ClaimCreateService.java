@@ -34,29 +34,8 @@ public class ClaimCreateService extends PartsDomesticGeneralService
     @Value("${file.upload.divk.domestic.parts.claim}")
     private String UPLOAD_PATH;
 
-	public RfcResponse getInvoiceList(PartsErpDataMap paramMap)
-	{
-		RfcRequest rfcRequest = new RfcRequest("Z_EP_INVOICELIST");
-
-		rfcRequest
-			.field()
-				.add(new String[][] {
-					{"I_BGTYP", "P"},
-					{"I_USERID", paramMap.getUsername()}
-				})
-			.and()
-			.structure("LS_SEARCH")
-				.add(new String[][] {
-					{"RFGSK", "X"},
-					{"VBTYP", "C"},
-					{"VBELN", paramMap.getString("VBELN")}
-				});
-
-		return simpleRfcTemplate.response(rfcRequest);
-	}
-
 	// 반품사유 1,2 취득
-	public RfcResponse getComplatintReason(PartsErpDataMap paramMap)
+	public RfcResponse getClaimReasons(PartsErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_SD_GET_RETURN_REASON");
 
@@ -76,53 +55,17 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 	}
 
 	// 반품생성 화면에서 넘어온 파일을 파일서버 지정위치에 업로드하고 파일서버에 저장한 파일명을 반환한다.
-	public String saveTempFile(MultipartFile multipartFile, String fileUploadPath) throws IOException
+	public String saveTempFile(MultipartFile multipartFile) throws IOException
 	{
-		String name = getUsername() + "_" + CmDateFormatUtils.now("yyyyMMddHHmmss") + "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+		String fileName = getUsername() + "_" + CmDateFormatUtils.now("yyyyMMddHHmmss") + "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
 
-		File file = new File(UPLOAD_PATH + name);
-		multipartFile.transferTo(file);
+		multipartFile.transferTo(new File(UPLOAD_PATH + File.separator + fileName));
 
-		return name;
-	}
-
-	// 반품생성 화면에서 넘어온 파일을 파일서버 지정위치에서 삭제하고 파일명을 반환한다.
-	public String deleteComplaintCreateFile(String srcFileDir, String[] delFileNames) throws IOException
-	{
-		StringBuilder sb = new StringBuilder();
-		int delCnt = 0;
-		for (String delFileName : delFileNames)
-		{
-			String destFileNm = srcFileDir + delFileName;
-			File destinationFile = new File(destFileNm);
-			boolean isDelete = destinationFile.delete();
-			if (isDelete)
-			{
-				delCnt++;
-			} else
-			{
-				sb.append(destFileNm).append(":");
-			}
-
-		}
-		if (delCnt == delFileNames.length)
-		{
-			return "DELETE_OK";
-		} else
-		{
-			if (sb.length() > 0)
-			{
-				return sb.toString().substring(0, sb.toString().length() - 1);
-			} else
-			{
-				return "";
-			}
-		}
+		return fileName;
 	}
 
 	// SAP로 반품생성정보를 보낸다.
-	//@CacheEvict (value = RedisConfig.ORDER_DISPLAY, allEntries = true)
-	public RfcResponse sendComplaintInfoToSAP(HttpServletRequest request, PartsErpDataMap paramMap, String filePath) throws ConnectorException, FileNotFoundException, IOException
+	public RfcResponse create(HttpServletRequest request, PartsErpDataMap paramMap, String filePath) throws ConnectorException, FileNotFoundException, IOException
 	{
 		final int BUFFER = 1024; // returnTable row 별로 송신할 파일의 byte size (파일 정보를 1kb씩 끊어서 송신함)
 		byte[] buffer = new byte[BUFFER];

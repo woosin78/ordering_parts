@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{PLTF_L_1650325527557}"></div><!-- Claim Create -->
+		<div class="block-button-area">
+			<button id="BTN_create" type="button" th:text="#{HQP_B_CREATE}"></button>
+		</div>
+	</div>
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th>
+					<div th:text="#{HQP_L_PO_NO}"></div><img src="/portal/img/icon/required.png" class="required" />
+				</th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="poNo" name="poNo" class="custom-ui" th:value="${poNo}">
+					</div>
+				</td>			
+			</tr>
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<button id="BTN_add" type="button">[[#{HQP_B_ADD}]]</button>
+			<div class="split"></div>
+			<button id="BTN_delete" type="button">[[#{HQP_B_DELETE}]]</button>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<form name="FORM_create">
+		<table id="template" class="condition table-fixed">
+			<tbody>
+				<tr>
+					<th style="width:50px; text-align:center;"><input type="checkbox" class="custom-ui check-all" onclick="allChecked(this)"><label></label></th>
+					<th th:text="#{HQP_L_ORDER_NO}"></th>
+					<th th:text="#{HQP_L_LINE_ITEM}"></th>
+					<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
+					<th th:text="#{HQP_L_DESCRIPTION}"></th>
+					<th th:text="#{HQP_L_ORDER_QTY}"></th>
+					<th th:text="#{HQP_L_CLAIM_QTY}"></th>
+					<th th:text="#{HQP_L_UOM}"></th>
+					<th th:text="#{HQP_L_NET_PRICE}"></th>
+					<th th:text="#{HQP_L_NET_VALUE2}"></th>
+					<th th:text="#{HQP_L_ORDER_DATE}"></th>
+				</tr>
+				<tr>
+					<td></td>
+					<td id="aaa" data-key="order-no">1</td>
+					<td data-key="line-item">2</td>
+					<td data-key="order-part-no">3</td>
+					<td data-key="description">4</td>
+					<td data-key="order-qty">5</td>
+					<td><input type="text" name="claimQty" class="custom-ui"></td>
+					<td data-key="uom">7</td>
+					<td data-key="net-price">8</td>
+					<td data-key="net-value">9</td>
+					<td data-key="order-date">10</td>
+				</tr>
+				<tr>
+					<th></th>
+					<th colspan="3" th:text="#{HQP_L_CLAIM_REASON}"></th>
+					<th colspan="4" th:text="#{HQP_L_ADDITIONAL_TEXT}"></th>
+					<th colspan="3" th:text="#{HQP_L_ATTACHMENT}"></th>
+				</tr>
+				<tr>
+					<td></td>
+					<td colspan="3">
+						<div class="input-area">
+							<select class="custom-ui" name="reason1">
+								<option value="">반품사유1</option>
+							</select>
+							<div class="split-row-compact"></div>
+							<select class="custom-ui" name="reason2">
+								<option value="">반품사유2</option>
+							</select>
+						</div>
+					</td>
+					<td colspan="4">
+						<div class="input-area">
+							<textarea style="width:100%; height:5em;" class="custom-ui"></textarea>
+						</div>
+					</td>
+					<td colspan="3">3</td>
+				</tr>				
+			</tbody>
+		</table>
+		</form>
+	</div>
+<script>
+ProgressBar.hide();
+
+function setSelectedItems(rows)
+{
+	alert(rows.length);
+	
+	
+	$.each(rows, function(index, element) {
+		//$(template).find("td[date-key]").text("ddd");
+		let template = $("#template").clone();
+		
+		$(template).is("[data-key]").html("Aaaa");
+		
+		$("#AREA_grid").append(template);
+	});
+};
+
+
+$("#BTN_add").on("click", function(){		
+	Popup.open("[[${BASE_PATH}]]/claim/create/reference/order/popup/list", 1100, 600); 
+});
+</script>	
+</th:block>
