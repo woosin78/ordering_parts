@@ -59,6 +59,7 @@ public class ReferenceSearchController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("LT_SEARCH2");
 
 		FormatBuilder.with(dataList)
+			.decimalFormat(new String[] {"NETPR", "KBETR"})
 			.qtyFormat("KWMENG")
 			.dateFormat("ERDAT");
 

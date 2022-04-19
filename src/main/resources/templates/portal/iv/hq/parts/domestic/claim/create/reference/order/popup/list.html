@@ -145,7 +145,7 @@ $(function(){
 	
 			if ($td.find("input:checkbox").is(":checked"))
 			{
-				selectedItems.push($tableObj.row($td));
+				selectedItems.push($tableObj.row($td).data());
 			};
 		};
 

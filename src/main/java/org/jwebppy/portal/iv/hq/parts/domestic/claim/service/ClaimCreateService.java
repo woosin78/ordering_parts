@@ -42,13 +42,13 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 		rfcRequest.
 			field()
 				.add(new String[][] {
-					{"I_LANGU", "E"},
+					{"I_LANGU", paramMap.getLangForSap()},
 					{"I_VKORG", paramMap.getSalesOrg()}
 				});
 
-		if (paramMap.isEquals("COMP_RES_CD", "2"))
+		if (paramMap.isEquals("depth", "2"))
 		{
-			rfcRequest.addField("LS_ZZCMPCD", paramMap.getString("complaintReason1"));// Reason1 사유
+			rfcRequest.addField("LS_ZZCMPCD", paramMap.getString("reason1"));// Reason1 사유
 		}
 
 		return simpleRfcTemplate.response(rfcRequest);

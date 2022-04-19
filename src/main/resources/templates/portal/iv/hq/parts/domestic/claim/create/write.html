@@ -40,86 +40,157 @@
 	</div>
 	
 	<div id="AREA_grid" class="flex-grow grid-area">
-		<form name="FORM_create">
-		<table id="template" class="condition table-fixed">
-			<tbody>
-				<tr>
-					<th style="width:50px; text-align:center;"><input type="checkbox" class="custom-ui check-all" onclick="allChecked(this)"><label></label></th>
-					<th th:text="#{HQP_L_ORDER_NO}"></th>
-					<th th:text="#{HQP_L_LINE_ITEM}"></th>
-					<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
-					<th th:text="#{HQP_L_DESCRIPTION}"></th>
-					<th th:text="#{HQP_L_ORDER_QTY}"></th>
-					<th th:text="#{HQP_L_CLAIM_QTY}"></th>
-					<th th:text="#{HQP_L_UOM}"></th>
-					<th th:text="#{HQP_L_NET_PRICE}"></th>
-					<th th:text="#{HQP_L_NET_VALUE2}"></th>
-					<th th:text="#{HQP_L_ORDER_DATE}"></th>
-				</tr>
-				<tr>
-					<td></td>
-					<td id="aaa" data-key="order-no">1</td>
-					<td data-key="line-item">2</td>
-					<td data-key="order-part-no">3</td>
-					<td data-key="description">4</td>
-					<td data-key="order-qty">5</td>
-					<td><input type="text" name="claimQty" class="custom-ui"></td>
-					<td data-key="uom">7</td>
-					<td data-key="net-price">8</td>
-					<td data-key="net-value">9</td>
-					<td data-key="order-date">10</td>
-				</tr>
-				<tr>
-					<th></th>
-					<th colspan="3" th:text="#{HQP_L_CLAIM_REASON}"></th>
-					<th colspan="4" th:text="#{HQP_L_ADDITIONAL_TEXT}"></th>
-					<th colspan="3" th:text="#{HQP_L_ATTACHMENT}"></th>
-				</tr>
-				<tr>
-					<td></td>
-					<td colspan="3">
-						<div class="input-area">
+		<div id="template">		
+			<table class="condition table-fixed">
+				<tbody>
+					<tr>
+						<th style="width:50px; text-align:center;"><input type="checkbox" class="custom-ui check-all"><label></label></th>
+						<th th:text="#{HQP_L_ORDER_NO}"></th>
+						<th th:text="#{HQP_L_LINE_ITEM}"></th>
+						<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
+						<th th:text="#{HQP_L_DESCRIPTION}"></th>
+						<th th:text="#{HQP_L_ORDER_QTY}"></th>
+						<th th:text="#{HQP_L_CLAIM_QTY}"></th>
+						<th th:text="#{HQP_L_UOM}"></th>
+						<th th:text="#{HQP_L_NET_PRICE}"></th>
+						<th th:text="#{HQP_L_NET_VALUE2}"></th>
+						<th th:text="#{HQP_L_ORDER_DATE}"></th>
+					</tr>
+					<tr>
+						<td></td>
+						<td data-key="order-no"></td>
+						<td data-key="line-item"></td>
+						<td data-key="order-part-no"></td>
+						<td data-key="description"></td>
+						<td data-key="order-qty"></td>
+						<td data-key="claim-qty"></td>
+						<td data-key="uom"></td>
+						<td data-key="net-price"></td>
+						<td data-key="net-value"></td>
+						<td data-key="order-date"></td>
+					</tr>
+					<tr>
+						<th></th>
+						<th colspan="3" th:text="#{HQP_L_CLAIM_REASON}"></th>
+						<th colspan="4" th:text="#{HQP_L_ADDITIONAL_TEXT}"></th>
+						<th colspan="3" th:text="#{HQP_L_ATTACHMENT}"></th>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="3">
 							<select class="custom-ui" name="reason1">
-								<option value="">반품사유1</option>
+								<option value="" th:text="#{HQP_L_REASON1}"></option>
+								<option value="" th:each="reason : ${reason1}" th:value="${reason.ZZCMPCD}" th:text="${reason.VTEXT}"></option>
 							</select>
-							<div class="split-row-compact"></div>
+							<div class="split-row-more-compact"></div>
 							<select class="custom-ui" name="reason2">
-								<option value="">반품사유2</option>
+								<option value="" th:text="#{HQP_L_REASON2}"></option>
 							</select>
-						</div>
-					</td>
-					<td colspan="4">
-						<div class="input-area">
-							<textarea style="width:100%; height:5em;" class="custom-ui"></textarea>
-						</div>
-					</td>
-					<td colspan="3">3</td>
-				</tr>				
-			</tbody>
-		</table>
-		</form>
+							<input type="hidden" name="reason1Text"/>
+						</td>
+						<td colspan="4">
+							<textarea style="width:100%; height:4em;" class="custom-ui" name="claimDescription"></textarea>
+						</td>
+						<td colspan="3"></td>
+					</tr>				
+				</tbody>
+			</table>
+			<input type="hidden" name="orderNo"/>
+			<input type="hidden" name="partNo"/>
+			<input type="hidden" name="orderDate"/>
+			<input type="hidden" name="attachment"/>			
+		</div>
+		<form id="FORM_create"></form>
 	</div>
+<script th:inline="javascript">
+const CLAIM_REASON2 = [];
+
+/*[# th:each="reason : ${reason2}"]*/
+CLAIM_REASON2.push({
+	DESCRIPT: /*[[${reason.DESCRIPT}]]*/,
+	REASON: /*[[${reason.REASON}]]*/,
+	VTEXT: /*[[${reason.VTEXT}]]*/,
+	ZZCMPCD: /*[[${reason.ZZCMPCD}]]*/
+});
+/*[/]*/
+</script>
+
 <script>
-ProgressBar.hide();
+$(window).on("load", function() {
+	ProgressBar.hide();
+});
+
+$(function(){
+	$("select[name=reason1]").on("change", function() {
+		let value = $(this).val();		
+		let reason2 = $(this).siblings("select[name=reason2]");
+		
+		$(reason2).empty();
+		$(reason2).append("<option value=''>[[#{HQP_L_REASON2}]]</option>")
+
+		$.each(CLAIM_REASON2, function(index, element) {
+			if (value == element.ZZCMPCD)
+			{
+				$(reason2).append("<option value='" + element.REASON + "'>" + element.DESCRIPT + "</option>")				
+			};
+		});
+	});
+	
+	$("#BTN_add").on("click", function(){
+		Popup.open("[[${BASE_PATH}]]/claim/create/reference/order/popup/list", 1100, 600); 
+	});
+	
+	$("#BTN_delete").on("click", function(){
+		$("input.check-all:checked").each(function(index, element) {
+			$(this).closest("table").prev("div .split-row-compact").remove();//delete split row 
+			$(this).closest("table").remove();
+		}); 
+	});	
+	
+	$("#BTN_create").on("click", function(){
+		$("input[name=claimQty]").each(function(index, element) {
+			if (JpUtilsString.isEmpty($(this).val()))
+			{
+				alert("[[#{HQP_M_EMPTY_CLAIM_REQ_QTY}]]");
+				$(this).focus();
+				return false;
+			};
+		});
+
+		$("textarea[name=claimDescription]").each(function(index, element) {
+			if (JpUtilsString.isEmpty($(this).val()))
+			{
+				alert("[[#{HQP_M_EMPTY_CLAIM_DESCRIPTION}]]");
+				$(this).focus();
+				return false;
+			};
+		});
+	});	
+});
 
 function setSelectedItems(rows)
 {
-	alert(rows.length);
-	
+	let splitRow = "<div class='split-row-compact'></div>";
 	
 	$.each(rows, function(index, element) {
-		//$(template).find("td[date-key]").text("ddd");
 		let template = $("#template").clone();
 		
-		$(template).is("[data-key]").html("Aaaa");
+		$(template).find("[data-key=order-no]").text(element.VBELN);
+		$(template).find("[data-key=line-item]").text(element.POSNR);
+		$(template).find("[data-key=order-part-no]").text(element.MATNR);
+		$(template).find("[data-key=description]").text(element.MAKTX);
+		$(template).find("[data-key=order-qty]").text(element.KWMENG);
+		$(template).find("[data-key=claim-qty]").html("<input type='text'' name='claimQty' class='custom-ui' value='" + element.KWMENG + "'/>");
+		$(template).find("[data-key=uom]").text(element.VRKME);
+		$(template).find("[data-key=net-price]").text(element.NETPR);
+		$(template).find("[data-key=net-value]").text(element.KBETR);
+		$(template).find("[data-key=order-date]").text(element.ERDAT);
+		$(template).find("input[name=orderNo]").text(element.VBELN);
+		$(template).find("input[name=partNo]").text(element.MATNR);
+		$(template).find("input[name=orderDate]").text(element.ERDAT);
 		
-		$("#AREA_grid").append(template);
+		$("#FORM_create").append(splitRow + $(template).html());
 	});
 };
-
-
-$("#BTN_add").on("click", function(){		
-	Popup.open("[[${BASE_PATH}]]/claim/create/reference/order/popup/list", 1100, 600); 
-});
 </script>	
 </th:block>

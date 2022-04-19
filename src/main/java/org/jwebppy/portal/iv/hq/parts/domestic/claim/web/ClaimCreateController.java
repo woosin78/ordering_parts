@@ -42,6 +42,14 @@ public class ClaimCreateController extends PartsDomesticGeneralController
 	@RequestMapping("/write")
 	public String form(Model model, WebRequest webRequest)
 	{
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+		rfcParamMap.add("depth", "1");
+
+		RfcResponse rfcResponse = claimCreateService.getClaimReasons(rfcParamMap);
+
+		model.addAttribute("reason1", rfcResponse.getTable("T_COMPLAIN"));
+		model.addAttribute("reason2", rfcResponse.getTable("T_RETURN"));
+
 		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
