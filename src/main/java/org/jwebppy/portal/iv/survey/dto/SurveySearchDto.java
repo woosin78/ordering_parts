@@ -16,4 +16,5 @@ public class SurveySearchDto extends IvGeneralDto
 	private int sSeq;
 	private String fgStatus;
 	private String query;
+	private Integer uSeq;
 }

@@ -124,12 +124,4 @@ public class SurveyController extends IvGeneralController
 		return null;
 	}
 	
-	@RequestMapping("/popup/view")
-	public String preView(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
-	{
-		addAllAttributeFromRequest(model, webRequest);
-		
-		return DEFAULT_VIEW_URL;
-	}
-	
 }

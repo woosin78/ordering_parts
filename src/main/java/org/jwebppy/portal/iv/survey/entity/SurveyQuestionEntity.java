@@ -18,5 +18,6 @@ public class SurveyQuestionEntity extends GeneralEntity
 	private String title;
 	private String type;
 	private int mandatoryCnt;
+	private int itemCnt;
 	private String fgMandatory;
 }

@@ -46,13 +46,32 @@
 	
 	<select id="findSurveyQuestions" resultType="SurveyQuestionEntity">
 		select
-		*
+			a.sq_seq,
+			a.s_seq,
+			a.title,
+			a.type,
+			a.mandatory_cnt,
+			a.fg_mandatory,
+			b.itemCnt
 		from
-		ep_survey_question
+			ep_survey_question a,
+			(
+			select 
+				esi.sq_seq, count(esi.si_seq) itemCnt
+			from 
+				ep_survey_item esi, ep_survey_question epq
+			where 
+				esi.sq_seq = epq.sq_seq
+				and epq.s_seq = #{sSeq}
+				and epq.fg_delete = 'N'
+				and esi.fg_delete = 'N'
+				group by esi.sq_seq
+			) b 
 		where
-		s_seq=#{sSeq}
-		and fg_delete='N'
-		order by sq_seq
+			a.sq_seq = b.sq_seq
+			and a.s_seq=#{sSeq}
+			and a.fg_delete='N'
+		order by a.sq_seq
 	</select>
 	
 	<select id="findSurveyQuestionCount" resultType="int">

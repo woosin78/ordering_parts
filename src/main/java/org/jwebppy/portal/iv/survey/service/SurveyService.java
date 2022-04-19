@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.common.service.PlatformGeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.survey.dto.SurveyDto;
 import org.jwebppy.portal.iv.survey.dto.SurveyItemDto;
 import org.jwebppy.portal.iv.survey.dto.SurveyQuestionDto;
@@ -59,6 +60,7 @@ public class SurveyService extends PlatformGeneralService
 
 	public List<SurveyDto> getSurveys(SurveySearchDto surveySearchDto) 
 	{
+		surveySearchDto.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		return CmModelMapperUtils.mapToDto(SurveyObjectMapper.INSTANCE, surveyMapper.findSurveys(surveySearchDto));
 	}
 	

@@ -8,7 +8,6 @@ import org.jwebppy.portal.iv.survey.dto.SurveyItemDto;
 import org.jwebppy.portal.iv.survey.entity.SurveyItemEntity;
 import org.jwebppy.portal.iv.survey.mapper.SurveyItemMapper;
 import org.jwebppy.portal.iv.survey.mapper.SurveyItemObjectMapper;
-import org.jwebppy.portal.iv.survey.mapper.SurveyQuestionObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

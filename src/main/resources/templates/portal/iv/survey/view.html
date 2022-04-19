@@ -9,9 +9,10 @@
 	<div class="block-header" >
 		<div class="block-title"></div>
 		<div class="block-button-area">
-			<button onclick="Survey_BTN.modify();" type="button" th:text="수정"></button>
-			<button onclick="Survey_BTN.remove();" type="button" th:text="삭제"></button>
-			<button onclick="Survey_BTN.back();" type="button" th:text="뒤로"></button>
+			<button onclick="BTN.modify();" type="button" th:text="수정"></button>
+			<button onclick="BTN.remove();" type="button" th:text="삭제"></button>
+			<button onclick="BTN.preview();" type="button" th:text="미리보기"></button>
+			<button onclick="BTN.back();" type="button" th:text="뒤로"></button>
 		</div>	
 	</div>	
 	
@@ -109,7 +110,7 @@
 	let $itemTableObj;
 	
 	// 버튼처리
-	let Survey_BTN = {
+	let BTN = {
 		modify: function() {
 			this.submit("[[${BASE_PATH}]]/survey/write?sSeq="+Survey.sSeq);
 		},
@@ -125,6 +126,10 @@
 		submit: function(url) {
 			$("#FORM_search").attr("action", url);
 			$("#FORM_search").submit();
+		},
+		
+		preview: function() {
+			Popup.open("[[${BASE_PATH}]]/survey/popup/view?sSeq="+Survey.sSeq, 700, 700);
 		}
 	}
 	
@@ -144,12 +149,12 @@
 				    success: function(response, textStatus, jqXHR)
 				    {
 				    	alert('삭제되었습니다');
-				    	Survey_BTN.back();
+				    	BTN.back();
 				    },
 				    error: function(jqXHR, textStatus, errorThrown)
 			    	{
 				    	alert('삭제할 수 없습니다');
-				    	Survey_BTN.back();
+				    	BTN.back();
 			    	}
 				});
 			}
@@ -231,7 +236,8 @@
 				},		 
 			    success: function(response, textStatus, jqXHR)
 			    {
-			    	callbackSurveyItem();
+			    	//callbackSurveyItem();
+			    	location.reload();
 			    },
 			    error: function(jqXHR, textStatus, errorThrown)
 		    	{
@@ -256,7 +262,8 @@
 				},		 
 			    success: function(response, textStatus, jqXHR)
 			    {
-			    	callbackSurveyItem();
+			    	//callbackSurveyItem();
+			    	location.reload();
 			    },
 			    error: function(jqXHR, textStatus, errorThrown)
 		    	{
@@ -292,7 +299,7 @@
 				{data:"title",			title: "질문"},
 				{data:"type",			title: "문항(다중)", 	"width": "15%"},
 				{data:"fgMandatory",	title: "옵션", 		"width": "15%"},
-				{data:"mandatoryCnt", 	title: "보기수", 		"width": "15%"},
+				{data:"itemCnt", 		title: "보기수", 		"width": "15%"},
 				{data:null, 			title: "비고", 		"width": "15%"},
 				{data:null, 			title: "비고", 		"width": "15%"},
 				{data:"sseq", 			title: "번호",		"width": "5%"} 

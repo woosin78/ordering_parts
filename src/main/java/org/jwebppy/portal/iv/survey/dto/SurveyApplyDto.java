@@ -11,16 +11,20 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class SurveyVoteDto extends IvGeneralDto
+public class SurveyApplyDto extends IvGeneralDto
 {
 	private static final long serialVersionUID = -7094243416317320896L;
 
+	private int saSeq;
 	private int sSeq;
 	private int sqSeq;
 	private int siSeq;
+	private Integer uSeq;
 	private String title;
 	private String type;
+	private String answer;
 	private int mandatoryCnt;
 	private String fgMandatory;
-	private List<SurveyVoteDto> items;
+	private String regName;
+	private List<SurveyApplyDto> items;
 }

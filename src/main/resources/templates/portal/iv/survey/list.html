@@ -65,17 +65,18 @@ $(function(){
 		ordering: true, 
 		scrollY: 100,
 		columns : [
-			{data:"sseq", 			title: "번호",		"width": "5%"},
-			{data:"fgStatus",		title: "상태", 		"width": "8%"},
-			{data:"validFrom",		title: "공지기간", 	"width": "15%"},
-			{data:"validTo",		title: "공지기간", 	"width": "15%"},
-			{data:"title", 			title: "설문제목"},
-			{data:"fgOpenResult",	title: "결과", 		"width": "8%"},
-			{data:"regUsername", 	title: "작성자", 		"width": "10%"},
-			{data:"applier", 		title: "참여", 		"width": "8%"},
-			{data:null, 			title: "비고", 		"width": "10%"},
-			{data:"validFromYmd",	title: "공지기간", 	"width": "15%"},
-			{data:"validToYmd",		title: "공지기간", 	"width": "15%"}
+			{data:"sseq", 			title: "번호",		"width": "5%"},		// 0
+			{data:"fgStatus",		title: "상태", 		"width": "8%"},		// 1
+			{data:"validFrom",		title: "공지기간", 	"width": "15%"},	// 2
+			{data:"validTo",		title: "공지기간", 	"width": "15%"},	// 3
+			{data:"title", 			title: "설문제목"},						// 4
+			{data:"fgOpenResult",	title: "결과", 		"width": "8%"},		// 5
+			{data:"regUsername", 	title: "작성자", 		"width": "10%"},	// 6
+			{data:"applier", 		title: "참여", 		"width": "8%"},		// 7
+			{data:null, 			title: "비고", 		"width": "10%"},	// 8
+			{data:"validFromYmd",	title: "공지기간", 	"width": "15%"},	// 9
+			{data:"validToYmd",		title: "공지기간", 	"width": "15%"},	// 10
+			{data:"fgApply",		title: "참여여부", 	"width": "15%"},	// 11	
 		],
 		columnDefs: [
 			{targets: [0, 5, 6, 7], className: "dt-body-center"},
@@ -104,18 +105,22 @@ $(function(){
 				//return moment(data.substr(0, 8)).format('YYYY.MM.DD') + ' ~ ' + moment(row['validTo'].substr(0, 8)).format('YYYY.MM.DD');
 				return row['validFromYmd'] + '  ~  ' + row['validToYmd'];
 			}},
-			{targets: [3, 9, 10], visible: false},
+			{targets: [3, 9, 10, 11], visible: false},
 			{targets: 4, className: "link clickable"},
 			{targets: 5, render: function(data, type, row) {
 				return {'Y':'공개', 'N':'비공개'}[data];
 			}},
 			{targets: 8, className: "dt-body-center", render: function(data, type, row) {
 				
-				return '<button onclick="vote(\''+data['sseq']+'\');">설문참여</button>';
-			
 				// to-do: 권한에 따른 버튼
-				if (level == 1) {
-					return '<button onclick="goResult(\''+data['sseq']+'\');">결과보기</button>';
+				if (data['fgApply'] == 'Y') {
+					
+					if (data['fgOpenResult'] == 'Y') {
+						return '<button onclick="goResult(\''+data['sseq']+'\');">결과보기</button>';						
+					} else {
+						return '-';
+					}
+					
 				} else {
 					return '<button onclick="vote(\''+data['sseq']+'\');">설문참여</button>';
 				}
@@ -171,11 +176,11 @@ $(function(){
 });
 
 function goResult(sSeq) {
-	alert(sSeq);
+	Popup.open("[[${BASE_PATH}]]/survey/result/view?sSeq="+sSeq, 700, 700);
 }
 
 function vote(sSeq) {
-	Popup.open("[[${BASE_PATH}]]/survey/popup/vote?sSeq="+sSeq, 1100, 600);
+	Popup.open("[[${BASE_PATH}]]/survey/popup/vote?sSeq="+sSeq, 700, 700);
 }
 
 function goView(sSeq) {

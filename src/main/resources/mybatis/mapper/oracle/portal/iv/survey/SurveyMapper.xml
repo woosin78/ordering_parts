@@ -18,6 +18,7 @@
 		<result property="modDate" column="mod_date" />
 		<result property="fgStatus" column="fg_status" />
 		<result property="applier" column="applier" />
+		<result property="fgApply" column="fg_apply" />
 		<collection property="uploadFileLists" foreignColumn="s_seq" column="s_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
 		<collection property="surveyTargets" foreignColumn="s_seq" column="s_seq" javaType="java.util.ArrayList" ofType="SurveyTargetEntity" select="org.jwebppy.portal.iv.survey.mapper.SurveyTargetMapper.findSurveyTargets" />
 	</resultMap>	
@@ -44,34 +45,49 @@
 	
 	<select id="findSurveys" parameterType="SurveySearchDto" resultMap="surveyEntityMap">
 		select
-		    s_seq,
+		    a.s_seq,
 		    case 
-		    	when sysdate <![CDATA[<]]> to_date(valid_from,'YYYYMMDDHH24MI') then '1'
-		        when sysdate between to_date(valid_from,'YYYYMMDDHH24MI') and to_date(valid_to,'YYYYMMDDHH24MI') and fg_open = 'Y' then '2'
-		        when sysdate <![CDATA[>]]> to_date(valid_to,'YYYYMMDDHH24MI') and fg_open = 'Y' then '3'
+		    	when sysdate <![CDATA[<]]> to_date(a.valid_from,'YYYYMMDDHH24MI') then '1'
+		        when sysdate between to_date(a.valid_from,'YYYYMMDDHH24MI') and to_date(a.valid_to,'YYYYMMDDHH24MI') and a.fg_open = 'Y' then '2'
+		        when sysdate <![CDATA[>]]> to_date(a.valid_to,'YYYYMMDDHH24MI') and a.fg_open = 'Y' then '3'
 		        else '0' 
 		    end fg_status,
-		    valid_from,
-		    valid_to,
-		    to_char(to_date(valid_from, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validFromYmd,
-			to_char(to_date(valid_to, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validToYmd,
-		    title,
-		    fg_open_result,
-		    reg_username,
-		    0 as applier
-		from ep_survey
-		where fg_delete = 'N'
+		    a.valid_from,
+		    a.valid_to,
+		    to_char(to_date(a.valid_from, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validFromYmd,
+			to_char(to_date(a.valid_to, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validToYmd,
+		    a.title,
+		    a.fg_open_result,
+		    a.reg_username,
+		    (
+			    select 
+			        count(unique(esa.u_seq)) 
+			    from ep_survey_question esq, ep_survey_apply esa
+			    where esq.sq_seq = esa.sq_seq
+			    and esq.s_seq = a.s_seq    
+		    ) as applier,
+		    (
+		        select 
+		            decode(count(unique(esa.u_seq)), 1, 'Y', 'N')
+		        from ep_survey_question esq, ep_survey_apply esa
+		        where esq.sq_seq = esa.sq_seq
+		        and esq.s_seq = a.s_seq    
+		        and esa.u_seq = #{uSeq}
+		    ) as fg_apply
+		    
+		from ep_survey a
+		where a.fg_delete = 'N'
 	
 		<if test="fgStatus != null and fgStatus != ''">
 			<choose>
 				<when test="fgStatus==1">
-					and sysdate <![CDATA[<]]> to_date(valid_from,'YYYYMMDDHH24MI')
+					and sysdate <![CDATA[<]]> to_date(a.valid_from,'YYYYMMDDHH24MI')
 				</when>
 				<when test="fgStatus==2">
-					and sysdate between to_date(valid_from,'YYYYMMDDHH24MI') and to_date(valid_to,'YYYYMMDDHH24MI') and fg_open = 'Y'
+					and sysdate between to_date(a.valid_from,'YYYYMMDDHH24MI') and to_date(a.valid_to,'YYYYMMDDHH24MI') and a.fg_open = 'Y'
 				</when>
 				<when test="fgStatus==3">
-					and sysdate <![CDATA[>]]> to_date(valid_to,'YYYYMMDDHH24MI') and fg_open = 'Y'
+					and sysdate <![CDATA[>]]> to_date(a.valid_to,'YYYYMMDDHH24MI') and a.fg_open = 'Y'
 				</when>
 				<otherwise>
 				</otherwise>
@@ -79,10 +95,10 @@
 		</if>
 		
 		<if test="query != null and query != ''">
-			and (title like '%' || upper(#{query}) || '%' OR reg_username like '%' || upper(#{query}) || '%')
+			and (a.title like '%' || upper(#{query}) || '%' OR a.reg_username like '%' || upper(#{query}) || '%')
 		</if>
 		
-		order by s_seq desc
+		order by a.s_seq desc
 	</select>
 	
 	<insert id="insert" parameterType="SurveyEntity" useGeneratedKeys="true" keyProperty="s_seq">
