@@ -8,17 +8,18 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.claim.service.ClaimCreateService;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,8 +36,11 @@ public class ClaimCreateController extends PartsDomesticGeneralController
 	@Autowired
 	private ClaimCreateService claimCreateService;
 
-	@Autowired
-	private Environment environment;
+    @Value("${file.upload.divk.domestic.parts.claim}")
+    private String UPLOAD_PATH;
+
+    @Value("${file.upload.invalidExtension}")
+    private String INVALID_UPLOAD_FILE_EXTENSION;
 
 	// 반품생성 메인페이지
 	@RequestMapping("/write")
@@ -55,43 +59,51 @@ public class ClaimCreateController extends PartsDomesticGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	// 반품이유1 조회
-	@RequestMapping("/reason/{level}")
-	@ResponseBody
-	public Object reasonData(@PathVariable String level, @RequestParam Map<String, Object> paramMap)
-	{
-		PartsErpDataMap rfcParamMap = getErpUserInfo();
-
-		rfcParamMap
-			.add(new Object[][] {
-				{"level", level},
-				{"reason1", paramMap.get("reason1")},
-			});
-
-		RfcResponse rfcResponse = claimCreateService.getClaimReasons(rfcParamMap);
-
-		if (CmStringUtils.equals(level, "1"))
-		{
-			return rfcResponse.getTable("T_COMPLAIN");
-		}
-		else
-		{
-			return rfcResponse.getTable("T_RETURN");
-		}
-	}
-
 	// 반품 생성 첨부파일을 SAP에 전송하기 전, 자체 스토리지에 저장해 둔다.
 	@PostMapping("/attachment/upload")
 	@ResponseBody
 	public Object upload(@RequestParam(value = "file", required = false) MultipartFile multipartFile) throws IOException
     {
-		Map<String, Object> resultMap = new HashMap<>();
-		resultMap.put("ORIGIN_FILE_NAME", multipartFile.getOriginalFilename());
-		resultMap.put("SAVED_FILE_NAME", claimCreateService.saveTempFile(multipartFile));
-		resultMap.put("CONTENT_TYPE", multipartFile.getContentType());
-		resultMap.put("SIZE", multipartFile.getSize());
+		String originalFileName = multipartFile.getOriginalFilename();
 
-        return resultMap;
+		System.err.println("name: " + originalFileName);
+		System.err.println(CmStringUtils.split(INVALID_UPLOAD_FILE_EXTENSION, PortalCommonVo.DELIMITER));
+
+		for (String a: CmStringUtils.split(INVALID_UPLOAD_FILE_EXTENSION, PortalCommonVo.DELIMITER))
+		{
+			System.err.println("ext:" + a);
+		}
+
+		if (!FilenameUtils.isExtension(originalFileName, CmStringUtils.split(INVALID_UPLOAD_FILE_EXTENSION, PortalCommonVo.DELIMITER)))
+		{
+			try
+			{
+				File path = new File(UPLOAD_PATH);
+
+				if (!path.exists())
+				{
+					path.mkdir();
+				}
+
+				String fileName = getUsername() + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+
+				multipartFile.transferTo(new File(UPLOAD_PATH + File.separator + fileName));
+
+				Map<String, Object> resultMap = new HashMap<>();
+				resultMap.put("ORIGIN_FILE_NAME", originalFileName);
+				resultMap.put("SAVED_FILE_NAME", fileName);
+				resultMap.put("CONTENT_TYPE", multipartFile.getContentType());
+				resultMap.put("SIZE", multipartFile.getSize());
+
+				return resultMap;
+			}
+			catch (IllegalStateException | IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+        return EMPTY_RETURN_VALUE;
     }
 
 	@RequestMapping("/save")
@@ -105,17 +117,5 @@ public class ClaimCreateController extends PartsDomesticGeneralController
 		resultMap.put("ERROR_MSG", rfcResponse.getString("E_MEG"));
 
 		return resultMap;
-	}
-
-	// 파일 경로 반환
-	private String getComplaintFileUploadPath()
-	{
-		File path = new File(environment.getProperty("file.upload.rootPath") + File.separator + "complaint" + File.separator);
-
-		if (!path.exists())
-		{
-			path.mkdirs();
-		}
-		return path.getAbsolutePath() + File.separator;
 	}
 }

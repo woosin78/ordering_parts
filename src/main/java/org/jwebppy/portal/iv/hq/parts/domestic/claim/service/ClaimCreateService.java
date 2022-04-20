@@ -12,7 +12,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
@@ -25,7 +24,6 @@ import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGener
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.sapportals.connector.ConnectorException;
 
@@ -38,7 +36,6 @@ public class ClaimCreateService extends PartsDomesticGeneralService
     @Value("${file.upload.divk.domestic.parts.claim}")
     private String UPLOAD_PATH;
 
-	// 반품사유 1,2 취득
 	public RfcResponse getClaimReasons(PartsErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_SD_GET_RETURN_REASON");
@@ -58,17 +55,6 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	// 반품생성 화면에서 넘어온 파일을 파일서버 지정위치에 업로드하고 파일서버에 저장한 파일명을 반환한다.
-	public String saveTempFile(MultipartFile multipartFile) throws IOException
-	{
-		String fileName = getUsername() + "_" + CmDateFormatUtils.now("yyyyMMddHHmmss") + "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
-
-		multipartFile.transferTo(new File(UPLOAD_PATH + File.separator + fileName));
-
-		return fileName;
-	}
-
-	// SAP로 반품생성정보를 보낸다.
 	public RfcResponse create(HttpServletRequest request, PartsErpDataMap paramMap) throws ConnectorException, FileNotFoundException, IOException
 	{
 		String[] orderNos = request.getParameterValues("orderNo");
