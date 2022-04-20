@@ -87,36 +87,22 @@ public class ClaimCreateController extends PartsDomesticGeneralController
     {
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("ORIGIN_FILE_NAME", multipartFile.getOriginalFilename());
-		resultMap.put("TEMP_FILE_NAME", claimCreateService.saveTempFile(multipartFile));
+		resultMap.put("SAVED_FILE_NAME", claimCreateService.saveTempFile(multipartFile));
 		resultMap.put("CONTENT_TYPE", multipartFile.getContentType());
 		resultMap.put("SIZE", multipartFile.getSize());
 
         return resultMap;
     }
 
-	// 반품 생성
-	@RequestMapping("/create")
+	@RequestMapping("/save")
 	@ResponseBody
-	public Object create(HttpServletRequest request) throws ConnectorException, FileNotFoundException, IOException
+	public Object save(HttpServletRequest request) throws ConnectorException, FileNotFoundException, IOException
 	{
-		RfcResponse rfcResponse = claimCreateService.create(request, getErpUserInfo(), getComplaintFileUploadPath());
-
-		String errorMsg = "";	// 에러 메시지
-		String complaintNo = "";	// SAP 반품번호
-		String sapReturnFlag = rfcResponse.getString("RETURN2");	// S일 경우 성공, E 실패
-
-		if (sapReturnFlag.equals("S"))
-		{
-			complaintNo = rfcResponse.getString("LV_VENLR").trim();	// SAP 반품번호
-		} else
-		{
-			complaintNo = "NO_LV_VENLR";
-			errorMsg = rfcResponse.getString("E_MEG");
-		}
+		RfcResponse rfcResponse = claimCreateService.create(request, getErpUserInfo());
 
 		Map<String, String> resultMap = new HashMap<>();
-		resultMap.put("complaintNo", complaintNo);
-		resultMap.put("errorMsg", errorMsg);
+		resultMap.put("CLAIM_NO", rfcResponse.getString("LV_VENLR"));
+		resultMap.put("ERROR_MSG", rfcResponse.getString("E_MEG"));
 
 		return resultMap;
 	}

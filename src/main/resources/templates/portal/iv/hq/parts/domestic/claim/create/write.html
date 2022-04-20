@@ -12,7 +12,6 @@
 		</div>
 	</div>
 	<div class="condition-area">
-	<form id="FORM_search" name="FORM_search">
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
@@ -21,13 +20,12 @@
 				</th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="poNo" name="poNo" class="custom-ui" th:value="${poNo}">
+						<input type="text" id="poNo" name="poNo" class="custom-ui"/>
 					</div>
 				</td>			
 			</tr>
 		</tbody>
 	</table>
-	</form>
 	</div>
 	<div class="split-row"></div>
 	
@@ -89,18 +87,20 @@
 							<input type="hidden" name="reason1Text"/>
 						</td>
 						<td colspan="4">
-							<textarea style="width:100%; height:4em;" class="custom-ui" name="claimDescription"></textarea>
+							<textarea style="width:100%; height:4em;" class="custom-ui" name="description"></textarea>
 						</td>
 						<td colspan="3"></td>
 					</tr>				
 				</tbody>
 			</table>
 			<input type="hidden" name="orderNo"/>
+			<input type="hidden" name="lineNo"/>
 			<input type="hidden" name="partNo"/>
 			<input type="hidden" name="orderDate"/>
-			<input type="hidden" name="attachment"/>			
 		</div>
-		<form id="FORM_create"></form>
+		<form id="FORM_claim">
+			<input type="hidden" name="poNo"/>
+		</form>
 	</div>
 <script th:inline="javascript">
 const CLAIM_REASON2 = [];
@@ -121,43 +121,86 @@ $(window).on("load", function() {
 });
 
 $(function(){
-	$("select[name=reason1]").on("change", function() {
-		let value = $(this).val();		
-		let reason2 = $(this).siblings("select[name=reason2]");
-		
-		$(reason2).empty();
-		$(reason2).append("<option value=''>[[#{HQP_L_REASON2}]]</option>")
-
-		$.each(CLAIM_REASON2, function(index, element) {
-			if (value == element.ZZCMPCD)
-			{
-				$(reason2).append("<option value='" + element.REASON + "'>" + element.DESCRIPT + "</option>")				
-			};
-		});
-	});
-	
 	$("#BTN_add").on("click", function(){
 		Popup.open("[[${BASE_PATH}]]/claim/create/reference/order/popup/list", 1100, 600); 
 	});
 	
 	$("#BTN_delete").on("click", function(){
 		$("input.check-all:checked").each(function(index, element) {
-			$(this).closest("table").prev("div .split-row-compact").remove();//delete split row 
+			$(this).closest("table").prev("div.split-row-compact").remove();//delete split row 
 			$(this).closest("table").remove();
-		}); 
+		});
+		
+		try
+		{
+			$("#FORM_claim div.split-row-compact")[0].remove();//delete split row
+		}
+		catch (e) {};
+		
+		if ($("#FORM_claim input.check-all").length == 0)
+		{
+			$("#template").show();
+		};
 	});	
 	
 	$("#BTN_create").on("click", function(){
-		$("input[name=claimQty]").each(function(index, element) {
+		let isValid = true;
+		
+		if (JpUtilsString.isEmpty($("#poNo").val()))
+		{
+			alert("[[#{HQP_M_EMPTY_PONO}]]");
+			$("#poNo").focus();
+			
+			isValid = false;
+			
+			return false;			
+		};
+		
+		if (!isValid) return;
+		
+		$("#FORM_claim select[name=reason1]").each(function(index, element) {
+			if (JpUtilsString.isEmpty($(this).val()))
+			{
+				alert("[[#{HQP_M_EMPTY_CLAIM_REASON}]]");
+				$(this).focus();
+				
+				isValid = false;
+				
+				return false;
+			};
+		});
+		
+		if (!isValid) return;
+		
+		$("#FORM_claim select[name=reason2]").each(function(index, element) {
+			if (JpUtilsString.isEmpty($(this).val()))
+			{
+				alert("[[#{HQP_M_EMPTY_CLAIM_REASON}]]");
+				$(this).focus();
+				
+				isValid = false;
+				
+				return false;
+			};
+		});		
+		
+		if (!isValid) return;
+		
+		$("#FORM_claim input[name=reqQty]").each(function(index, element) {
 			if (JpUtilsString.isEmpty($(this).val()))
 			{
 				alert("[[#{HQP_M_EMPTY_CLAIM_REQ_QTY}]]");
 				$(this).focus();
+				
+				isValid = false;
+				
 				return false;
 			};
 		});
+		
+		if (!isValid) return;
 
-		$("textarea[name=claimDescription]").each(function(index, element) {
+		$("#FORM_claim textarea[name=description]").each(function(index, element) {
 			if (JpUtilsString.isEmpty($(this).val()))
 			{
 				alert("[[#{HQP_M_EMPTY_CLAIM_DESCRIPTION}]]");
@@ -165,11 +208,62 @@ $(function(){
 				return false;
 			};
 		});
-	});	
+		
+		if (!isValid) return;
+		
+		$("#FORM_claim input[name=reqQty]").each(function(index, element) {
+			let orderQty = $(this).attr("orderQty");
+			
+			if (parseInt($(this).val()) >  parseInt(orderQty))
+			{
+				alert("[[#{HQP_M_INVALID_AVAIL_CLMAIN_QUANTITY}]]");
+				$(this).focus();
+				
+				isValid = false;
+				
+				return false;				
+			};
+		});
+		
+		if (!isValid) return;
+		
+		if (confirm("[[#{HQP_M_CONFIRM_CREATE_CLAIM}]]"))
+		{
+			$("#FORM_claim input[name=poNo]").val($("#poNo").val());
+			
+			alert($("#FORM_claim input[name=poNo]").val());
+			
+			JpUtilsAjax.post({
+				url: "[[${BASE_PATH}]]/claim/create/save",
+				method: "POST",
+				data: $("#FORM_claim").serialize(),
+				beforeSend: function(jqXHR, settings)
+				{
+					ProgressBar.show();
+				},		
+			    success: function(response, textStatus, jqXHR)
+			    {
+			    	let result = response.RESULT;
+			    	
+			    	alert(result.CLAIM_NO);
+			    },
+			    error: function(jqXHR, textStatus, errorThrown)
+		    	{
+		    	},
+			    complete: function(jqXHR, textStatus)
+			    {
+			    	ProgressBar.hide();
+			    }
+			});			
+		};
+	});
 });
 
 function setSelectedItems(rows)
 {
+	//Template 은 최초 로딩시에만 보여주고 반품 대상을 선택하면 이후부터는 감춘다
+	$("#template").hide();
+	
 	let splitRow = "<div class='split-row-compact'></div>";
 	
 	$.each(rows, function(index, element) {
@@ -180,16 +274,37 @@ function setSelectedItems(rows)
 		$(template).find("[data-key=order-part-no]").text(element.MATNR);
 		$(template).find("[data-key=description]").text(element.MAKTX);
 		$(template).find("[data-key=order-qty]").text(element.KWMENG);
-		$(template).find("[data-key=claim-qty]").html("<input type='text'' name='claimQty' class='custom-ui' value='" + element.KWMENG + "'/>");
+		$(template).find("[data-key=claim-qty]").html("<input type='text'' name='reqQty' class='custom-ui' value='" + element.KWMENG + "' orderQty='" + element.KWMENG + "'/>");
 		$(template).find("[data-key=uom]").text(element.VRKME);
 		$(template).find("[data-key=net-price]").text(element.NETPR);
 		$(template).find("[data-key=net-value]").text(element.KBETR);
 		$(template).find("[data-key=order-date]").text(element.ERDAT);
-		$(template).find("input[name=orderNo]").text(element.VBELN);
-		$(template).find("input[name=partNo]").text(element.MATNR);
-		$(template).find("input[name=orderDate]").text(element.ERDAT);
+		$(template).find("input[name=orderNo]").val(element.VBELN);
+		$(template).find("input[name=lineNo]").val(element.POSNR);
+		$(template).find("input[name=partNo]").val(element.MATNR);
+		$(template).find("input[name=orderDate]").val(element.ERDAT);
 		
-		$("#FORM_create").append(splitRow + $(template).html());
+		if ($("#FORM_claim input.check-all").length > 0)
+		{
+			$("#FORM_claim").append(splitRow);
+		};
+		
+		$("#FORM_claim").append($(template).html());
+	});
+	
+	$("select[name=reason1]").on("change", function() {
+		let value = $(this).val();		
+		let reason2 = $(this).siblings("select[name=reason2]");
+		
+		$(reason2).empty();
+		$(reason2).append("<option value=''>[[#{HQP_L_REASON2}]]</option>")
+		
+		$.each(CLAIM_REASON2, function(index, element) {
+			if (value == element.ZZCMPCD)
+			{
+				$(reason2).append("<option value='" + element.REASON + "'>" + element.DESCRIPT + "</option>")				
+			};
+		});
 	});
 };
 </script>	

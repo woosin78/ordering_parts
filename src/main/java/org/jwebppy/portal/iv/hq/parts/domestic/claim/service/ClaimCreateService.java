@@ -7,15 +7,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +69,124 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 	}
 
 	// SAP로 반품생성정보를 보낸다.
-	public RfcResponse create(HttpServletRequest request, PartsErpDataMap paramMap, String filePath) throws ConnectorException, FileNotFoundException, IOException
+	public RfcResponse create(HttpServletRequest request, PartsErpDataMap paramMap) throws ConnectorException, FileNotFoundException, IOException
+	{
+		String[] orderNos = request.getParameterValues("orderNo");
+		String[] lineNos = request.getParameterValues("lineNo");
+		String[] partNos = request.getParameterValues("partNo");
+		String[] reason1s = request.getParameterValues("reason1");
+		String[] reason2s = request.getParameterValues("reason2");
+		String[] descriptions = request.getParameterValues("description");
+		String[] reqQties = request.getParameterValues("reqQty");
+		String[] orderDates = request.getParameterValues("orderDate");
+
+		RfcRequest rfcRequest = new RfcRequest("Z_EP_COMPLAIN_SAVE");
+
+		rfcRequest
+			.field()
+				.add(new Object[][] {
+					{"I_USERID", paramMap.getUsername()},
+					{"I_LANGU", paramMap.getLang()},
+					{"BSTNK", request.getParameter("poNo")},
+					{"I_BGTYP", "P"},
+					{"I_KVGR5", paramMap.getCustomerGrp5()}
+				});
+
+		if (ArrayUtils.isNotEmpty(partNos))
+		{
+			List<Map<String, Object>> itemList = new ArrayList<>();
+			List<Map<String, Object>> attachmentList = new ArrayList<>();
+
+			for (int i=0, length=partNos.length; i<length; i++)
+			{
+				Map<String, Object> dataMap = new HashMap<String, Object>();
+
+				String lineNo = CmStringUtils.leftPad((i+1)*10, 6, "0");//000010
+
+				dataMap.put("CCHECK", (i+1));
+				dataMap.put("ITEM", lineNo);//000010
+				dataMap.put("MATERIAL", partNos[i]);
+				dataMap.put("COMPLAINT", reason1s[i]);
+				dataMap.put("REASON", reason2s[i]);
+				dataMap.put("COMPLAINT_DESC", descriptions[i]);
+				dataMap.put("QTY", reqQties[i]);
+				dataMap.put("REQ_QTY", reqQties[i]);
+				dataMap.put("ZZDEALDT", CmDateFormatUtils.stripDateFormat(orderDates[i]));
+				dataMap.put("REF_ORD", orderNos[i]);
+				dataMap.put("REF_ITEM", lineNos[i]);
+
+				itemList.add(dataMap);
+
+				String[] attachments = request.getParameterValues("attachment" + "_" + orderNos[i] + "_" + lineNos[i]);
+				if (ArrayUtils.isNotEmpty(attachments))
+				{
+					final int BUFFER = 1024; // returnTable row 별로 송신할 파일의 byte size (파일 정보를 1kb씩 끊어서 송신함)
+					byte[] buffer = new byte[BUFFER];
+
+					for (int j=0, length2=attachments.length; j<length2; j++)
+					{
+						String[] fileNames = CmStringUtils.split(attachments[j], PortalCommonVo.DELIMITER);
+
+						if (ArrayUtils.isNotEmpty(fileNames) && fileNames.length > 2)
+						{
+							FileInputStream fileInputStream = null;
+							BufferedInputStream bufferedInputStream = null;
+
+	            			try
+	            			{
+	            				fileInputStream = new FileInputStream(UPLOAD_PATH + File.separator + fileNames[1]);
+
+	            				//송신 파일 설정 1024byte 씩 끊어서 append 한다.
+	            				bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER);
+
+	                            int seq = 1;
+
+	                            while (bufferedInputStream.read(buffer) != -1)
+	                            {
+	                                HashMap<String, Object> fileDataMap = new HashMap<>();
+
+	                                fileDataMap.put("INT_NO", (j+1));
+	                                fileDataMap.put("DOCU_ITEM", lineNo);
+	                                fileDataMap.put("FILE_NAME", fileNames[0]);
+	                                fileDataMap.put("DESCRIPTION", "Complaint_Req");
+	                                fileDataMap.put("FILE_NO", seq++);
+	                                fileDataMap.put("FILE_DATA", buffer);
+
+	                                attachmentList.add(fileDataMap);
+
+	                                buffer = new byte[BUFFER];
+	                            }
+
+	                            bufferedInputStream.close(); bufferedInputStream = null;
+	                            fileInputStream.close(); fileInputStream = null;
+	            			}
+	            			finally
+	            			{
+	            				if (bufferedInputStream != null)
+	            				{
+	            					bufferedInputStream.close(); bufferedInputStream = null;
+	            				}
+
+	            				if (fileInputStream != null)
+	            				{
+	            					fileInputStream.close(); fileInputStream = null;
+	            				}
+	            			}
+						}
+					}
+
+					rfcRequest.addTable("LT_FILE", attachmentList);
+				}
+			}
+
+			rfcRequest.addTable("LT_ITEM", itemList);
+		}
+
+        return simpleRfcTemplate.response(rfcRequest);
+	}
+
+	// SAP로 반품생성정보를 보낸다.
+	public RfcResponse create3(HttpServletRequest request, PartsErpDataMap paramMap, String filePath) throws ConnectorException, FileNotFoundException, IOException
 	{
 		final int BUFFER = 1024; // returnTable row 별로 송신할 파일의 byte size (파일 정보를 1kb씩 끊어서 송신함)
 		byte[] buffer = new byte[BUFFER];
