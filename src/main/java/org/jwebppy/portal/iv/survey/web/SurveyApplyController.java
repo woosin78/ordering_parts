@@ -63,7 +63,19 @@ public class SurveyApplyController extends IvGeneralController
 	{
 		model.addAttribute("survey", surveyService.getSurvey(surveySearchDto.getSSeq()));
 		
-		//model.addAttribute("voteItems", surveyApplyService.getSurveyResult(surveySearchDto.getSSeq()));
+		model.addAttribute("voteResult", surveyApplyService.getSurveyResult(surveySearchDto.getSSeq()));
+		
+		addAllAttributeFromRequest(model, webRequest);
+		
+		return DEFAULT_VIEW_URL;
+	}
+
+	@RequestMapping("/result/textAnswers")
+	public String resultTextAnswers(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
+	{
+		model.addAttribute("survey", surveyService.getSurvey(surveySearchDto.getSSeq()));
+		
+		model.addAttribute("textAnswers", surveyApplyService.getSurveyTextAnswers(surveySearchDto.getSqSeq()));
 		
 		addAllAttributeFromRequest(model, webRequest);
 		

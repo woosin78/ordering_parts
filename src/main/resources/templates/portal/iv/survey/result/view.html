@@ -1,3 +1,196 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/popup/index}">
+<th:block layout:fragment="content">
+	
+	<div class="block-header" >
+		<div class="block-title" th:text="설문조사결과보기"></div>
+	</div>	
+	
+	<div class="condition-area">
+		<table class="condition table-fixed">
+			<tr>
+				<td style="width:20%">[[${survey?.title}]]</td>
+				<td th:style="${#lists.isEmpty(survey?.uploadFileLists) ? 'display:none' : ''}">
+					첨부파일 : <span th:each="uploadFileList : ${survey?.uploadFileLists}">
+						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a>
+						(<span th:text="${uploadFileList.displayFileSize}"></span>)
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">[[${survey?.description}]]</td>
+			</tr>
+		</table>
+	<br/><br/>
+	<table class="condition">
+		<tbody>
+			<tr th:each="voteItem, rowIndex : ${voteResult}">
+				<td th:switch="${voteItem.type}">
+					
+					<!--  객관식 -->
+					<table th:case="0" style="width:100%">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${rowIndex.count}+'.'"></span>
+											<span style="color:blue;" th:text="${voteItem.title}"></span>
+											<span>(객관식)</span>
+										</td>
+									</tr>
+								</table>
+								<table style="width:100%">
+									<tbody th:each="item, index : ${voteItem.items}">
+										<tr>
+											<td>
+												<span>([[${index.count}]])  [[${item.title}]]
+											</td>
+										</tr>
+										<tr>
+											<td style="color:#cc6600; font-weight:bold; font-size:1em;">
+												<img th:src="'https://doobiz-edu.doosan-iv.com/common/images/common/common/graph_'+${rowIndex.count}+'.gif'" height="12"
+													th:width="${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}+'%'"> 
+													[[${item.voteCnt}]] ([[${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}]]%)
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</table>
+					
+					<!--  다중객관식 -->
+					<table th:case="1" style="width:100%">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${rowIndex.count}+'.'"></span>
+											<span style="color:blue;" th:text="${voteItem.title}"></span>
+											<span>(다중선택개수 : [[${voteItem.mandatoryCnt}]])</span>
+										</td>
+									</tr>
+								</table>
+								<table style="width:100%">
+									<tbody th:each="item, index : ${voteItem.items}">
+										<tr>
+											<td>
+												<span>([[${index.count}]])  [[${item.title}]]
+											</td>
+										</tr>
+										<tr>
+											<td style="color:#cc6600; font-weight:bold; font-size:1em;">
+												<img th:src="'https://doobiz-edu.doosan-iv.com/common/images/common/common/graph_'+${rowIndex.count}+'.gif'" height="12"
+													th:width="${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}+'%'"> 
+													[[${item.voteCnt}]] ([[${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}]]%) 
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</table>
+					
+					<!--  주관식 -->
+					<table th:case="2">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${rowIndex.count}+'.'"></span>
+											<span style="color:blue;" th:text="${voteItem.title}"></span>
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tr>
+										<td>
+											<button th:onclick="goTextAnswers([[${voteItem.sSeq}]], [[${voteItem.sqSeq}]], [[${rowIndex.count}]]);">기타의견보기</button>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					
+					<!--  가중치 -->
+					<table th:case="3" style="width:100%">
+						<tr> 
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${rowIndex.count}+'.'"></span>
+											<span style="color:blue;" th:text="${voteItem.title}"></span>
+											<span>(가중치의 합 : 10점)</span>
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tbody th:each="item, index : ${voteItem.items}">
+										<tr>
+											<td>
+												<span>([[${index.count}]])  [[${item.title}]]</span>
+											</td>
+										</tr>
+										<tr>
+											<td style="color:#cc6600; font-weight:bold; font-size:1em;">[[${item.resultTxt}]]</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</table>
+					
+					<!--  우선순위 -->
+					<table th:case="4">
+						<tr>
+							<td>
+								<table>
+									<tr>
+										<td>
+											<span style="color:blue;" th:text="${rowIndex.count}+'.'"></span>
+											<span style="color:blue;" th:text="${voteItem.title}"></span>
+											<span>(우선순위)</span>
+										</td>
+									</tr>
+								</table>
+								<table>
+									<tbody th:each="item, index : ${voteItem.items}">
+										<tr>
+											<td>
+												<span>([[${index.count}]])  [[${item.title}]]</span>
+											</td>
+										</tr>
+										<tr>
+											<td style="color:#cc6600; font-weight:bold; font-size:1em;">[[${item.resultTxt}]]</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</table>
+					
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	
+<script>
+$(function(){
+	ProgressBar.hide();
+});
 
+function goTextAnswers(sSeq, sqSeq, rowIndex) {
+	location.href="[[${BASE_PATH}]]/survey/result/textAnswers?sSeq="+sSeq+"&sqSeq="+sqSeq+"&rowIndex="+rowIndex;
+}
 
-설문조사 결과보기 팝업
+</script>
+</th:block>	

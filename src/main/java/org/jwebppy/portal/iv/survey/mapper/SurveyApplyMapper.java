@@ -11,5 +11,7 @@ import org.jwebppy.portal.iv.survey.entity.SurveyApplyEntity;
 public interface SurveyApplyMapper {
 
 	public List<SurveyApplyEntity> findSurveyVoteItems(int sSeq);
+	public List<SurveyApplyEntity> findSurveyResult(int sSeq);
+	public List<SurveyApplyEntity> findSurveyTextAnswers(int sSeq);
 	public int insert(SurveyApplyEntity surveyVote);
 }

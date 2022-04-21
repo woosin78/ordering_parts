@@ -212,6 +212,7 @@ let Vote = {
 		    success: function(response, textStatus, jqXHR)
 		    {
 		    	alert('성공적으로 처리되었습니다.');
+		    	opener.location.reload();
 		    	window.close();
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
@@ -279,20 +280,21 @@ let Vote = {
 	//객관식
 	setType0Answer: function(voteItem) {	
 		let val = $('input:radio[name=Q_'+ voteItem.sqSeq +']:checked').val();
-		if (!JpUtilsString.isNotEmpty(val)) {
+		if (voteItem.fgMandatory == 'Y' && !JpUtilsString.isNotEmpty(val)) {
 			alert('['+ voteItem.title + ']을 선택해주세요');
 			return false;
 		}
 		
-		this.setApplyList(voteItem.sqSeq, val, '');
-		
+		if (JpUtilsString.isNotEmpty(val)) {
+			this.setApplyList(voteItem.sqSeq, val, '');	
+		}
 		return true;
 	},
 	
 	//다중객관식
 	setType1Answers: function(voteItem) {	
 		let checked = $('input:checkbox[name=Q_'+voteItem.sqSeq+']:checked');
-		if (checked.length == 0) {
+		if (voteItem.fgMandatory == 'Y' && checked.length == 0) {
 			alert('['+ voteItem.title + ']을 선택해주세요');
 			return false;
 		}
@@ -302,23 +304,26 @@ let Vote = {
 			return false;
 		}
 		
-		let ts = this;
-		$(checked).each(function(idx, element) {
-			ts.setApplyList(voteItem.sqSeq, element.value, '');
-	    });
+		if (checked.length > 0) {
+			let ts = this;
+			$(checked).each(function(idx, element) {
+				ts.setApplyList(voteItem.sqSeq, element.value, '');
+		    });
+		}
 		return true;
 	},
 	
 	//주관식
 	setType2Answer: function(voteItem) {	
 		let val = $("#Q_"+voteItem.sqSeq).val();
-		if (!JpUtilsString.isNotEmpty(val)) {
+		if (voteItem.fgMandatory == 'Y' && !JpUtilsString.isNotEmpty(val)) {
 			alert('['+ voteItem.title + ']을/를 입력해주세요');
 			return false;
 		}
 		
-		this.setApplyList(voteItem.sqSeq, 0, val);
-		
+		if (JpUtilsString.isNotEmpty(val)) {
+			this.setApplyList(voteItem.sqSeq, 0, val);	
+		}
 		return true;
 	},
 	
@@ -330,13 +335,23 @@ let Vote = {
 		$(voteItem.items).each(function(idx, obj) {
 			answer = parseInt($("#I_"+obj.siSeq).val(), 10);
 			sum += answer;
-			
-			ts.setApplyList(voteItem.sqSeq, obj.siSeq, answer);
 		});
-		
-		if (sum != 10) {
-			alert('['+ voteItem.title + ']의 합은 10점입니다');
+		 
+		if (voteItem.fgMandatory == 'Y' && sum == 0) {
+			alert('['+ voteItem.title + '] 가중치를 선택해주세요');
 			return false;
+		}
+		
+		if (voteItem.fgMandatory == 'Y' && sum != 10) {
+			alert('['+ voteItem.title + '] 가중치의 합은 10점입니다');
+			return false;
+		}
+		
+		if (sum == 10) {
+			$(voteItem.items).each(function(idx, obj) {
+				answer = parseInt($("#I_"+obj.siSeq).val(), 10);
+				ts.setApplyList(voteItem.sqSeq, obj.siSeq, answer);
+			});
 		}
 		return true;
 	},
@@ -348,14 +363,19 @@ let Vote = {
 		$(voteItem.items).each(function(idx, obj) {
 			answer = parseInt($("#I_"+obj.siSeq).val(), 10);
 			arr.push(answer);
-			
-			ts.setApplyList(voteItem.sqSeq, obj.siSeq, answer);
 		});
 		
 		let unqiue = new Set(arr);
-		if (arr.length != unqiue.size) {
+		if (voteItem.fgMandatory == 'Y' && (arr.length != unqiue.size)) {
 			alert('['+ voteItem.title + ']의 우선순위가 중복 되었습니다');
 			return false;
+		}
+		
+		if (arr.length == unqiue.size) {
+			$(voteItem.items).each(function(idx, obj) {
+				answer = parseInt($("#I_"+obj.siSeq).val(), 10);
+				ts.setApplyList(voteItem.sqSeq, obj.siSeq, answer);
+			});
 		}
 		return true;
 	},

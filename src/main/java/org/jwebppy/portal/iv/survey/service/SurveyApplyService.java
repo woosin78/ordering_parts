@@ -22,6 +22,16 @@ public class SurveyApplyService extends PlatformGeneralService
 	{
 		return CmModelMapperUtils.mapToDto(SurveyApplyObjectMapper.INSTANCE, surveyApplyMapper.findSurveyVoteItems(sSeq));
 	}
+
+	public List<SurveyApplyDto> getSurveyResult(int sSeq) 
+	{
+		return CmModelMapperUtils.mapToDto(SurveyApplyObjectMapper.INSTANCE, surveyApplyMapper.findSurveyResult(sSeq));
+	}
+	
+	public List<SurveyApplyDto> getSurveyTextAnswers(int sSeq) 
+	{
+		return CmModelMapperUtils.mapToDto(SurveyApplyObjectMapper.INSTANCE, surveyApplyMapper.findSurveyTextAnswers(sSeq));
+	}
 	
 	public int save(SurveyApplyDto surveyApplys) 
 	{

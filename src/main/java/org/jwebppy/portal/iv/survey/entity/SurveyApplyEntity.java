@@ -26,5 +26,7 @@ public class SurveyApplyEntity extends GeneralEntity
 	private int mandatoryCnt;
 	private String fgMandatory;
 	private String regName;
+	private int voteCnt;
+	private String resultTxt;
 	private List<SurveyApplyEntity> items;
 }

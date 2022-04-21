@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/popup/index}">
+<th:block layout:fragment="content">
+	
+	<div class="block-header" >
+		<div class="block-title" th:text="설문조사결과보기[주관식]"></div>
+		<div class="block-button-area">
+			<button id="BTN_back" type="button" th:text="돌아가기" onclick="history.back();"></button>
+		</div>
+	</div>	
+	
+	<div class="condition-area">
+		<table class="condition table-fixed">
+			<tr>
+				<td style="width:20%">[[${survey?.title}]]</td>
+				<td th:style="${#lists.isEmpty(survey?.uploadFileLists) ? 'display:none' : ''}">
+					첨부파일 : <span th:each="uploadFileList : ${survey?.uploadFileLists}">
+						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a>
+						(<span th:text="${uploadFileList.displayFileSize}"></span>)
+					</span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">[[${survey?.description}]]</td>
+			</tr>
+		</table>
+	<br/><br/>
+	<table class="condition">
+		<tbody>
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<td>
+								<span style="color:blue;" th:text="${rowIndex}+'.'"></span>
+								<span style="color:red;" th:text="${textAnswers[0]?.fgMandatory} == 'Y' ? '[ 필수문항 ]': '[ 선택문항 ]'"></span>
+								<span style="color:blue;" th:text="${textAnswers[0]?.title}"></span>
+							</td>
+						</tr>
+					</table>
+					<table >
+						<tr th:each="answer, index : ${textAnswers}">
+							<td>
+								<span>[[${index.count}]].</span>
+								<span>[[${answer.answer}]]</span>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	
+<script>
+$(function(){
+	ProgressBar.hide();
+});
+
+
+</script>
+</th:block>	

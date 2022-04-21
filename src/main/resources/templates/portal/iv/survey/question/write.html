@@ -61,7 +61,7 @@
 			
 			<tr>
 				<th>선택최대개수</th>
-				<td><input name="mandatoryCnt" id="mandatoryCnt" type="text" th:value="${surveyQuestion?.mandatoryCnt}"/></td>
+				<td><input name="mandatoryCnt" id="mandatoryCnt" type="number" th:value="${surveyQuestion?.mandatoryCnt}"/></td>
 			</tr>
 			
 		</tbody>
@@ -73,7 +73,9 @@
 $(function(){
 	ProgressBar.hide();
 	
-	$("#type").val("[[${surveyQuestion?.type}]]");
+	let type = "[[${surveyQuestion?.type}]]";
+	$("#type").val(type);
+	handleMandatoryCnt(type);
 	$("#fgMandatory").val("[[${surveyQuestion?.fgMandatory}]]");
 	
 	$("#BTN_save").on("click", function() {
@@ -102,10 +104,11 @@ function callbackSurveyQuestion(result) {
 	opener.callbackSurveyQuestion();		
 	ProgressBar.hide();
 	
-	if (!confirm('계속 등록하시겠습니까?')) {
-		window.close();
-	} else {
+	let sSeq = "[[${survey?.sSeq}]]";
+	if (!JpUtilsString.isNotEmpty(sSeq) && confirm('계속 등록하시겠습니까?')) {
 		window.location.reload();
+	} else {
+		window.close();
 	}
 }
 
