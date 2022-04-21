@@ -3,6 +3,7 @@ package org.jwebppy.portal.common.web;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -24,14 +25,31 @@ public class PortalGeneralController extends GeneralController
 		return UserAuthenticationUtils.getUsername();
 	}
 
-	public void downloadByRfc(HttpServletResponse response, DataList dataList, String key, String fileName)
+	public void downloadByRfc(HttpServletRequest request, HttpServletResponse response, DataList dataList, String key, String fileName)
 	{
 		BufferedOutputStream bufferOutputStream = null;
 
 		try
 		{
+			String client = request.getHeader("User-Agent");
+
+			if (client.indexOf("MSIE") != -1)
+			{
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + java.net.URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "\\ ") + "\"");
+			}
+			else if (client.indexOf("Edge") != -1)
+			{
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + java.net.URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "\\ ") + "\"");
+			}
+			else
+			{
+			    // 한글 파일명 처리
+				response.setHeader("Content-Disposition", "attachment; filename=\"" + new String(fileName.getBytes("UTF-8"), "ISO8859_1") + "\"");
+				//response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
+			}
+
 			response.setContentType("application/octet-stream; charset=UTF-8");
-			response.setHeader("Content-Disposition","attachment; filename=" +  fileName + ";");
+			//response.setHeader("Content-Disposition","attachment; filename=" +  fileName + ";");
 			response.setHeader("Content-Transfer", "binary");
 			response.setHeader("Set-Cookie", "fileDownload=true; path=/");//$.fileDownload callback 처리를 위해 추가되어야 함
 

@@ -3,6 +3,7 @@ package org.jwebppy.portal.iv.hq.parts.domestic.claim.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
@@ -33,6 +34,7 @@ public class ClaimDisplayController extends PartsDomesticGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
+		model.addAttribute("pClaimNo", CmStringUtils.trimToEmpty(webRequest.getParameter("pClaimNo")));
 		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateMonth(CmDateTimeUtils.now())));
 		model.addAttribute("pToDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pToDate"), CmDateFormatUtils.today()));
 
@@ -50,7 +52,7 @@ public class ClaimDisplayController extends PartsDomesticGeneralController
 		rfcParamMap.with(paramMap)
 			.addByKey(new Object[][] {
 				{"referenceNo", "pReferenceNo"},
-				{"complaintNo", "pComplaintNo"},
+				{"claimNo", "pClaimNo"},
 				{"partNo", "pPartNo"}
 			})
 			.addDateByKey(new Object[][] {
@@ -115,7 +117,7 @@ public class ClaimDisplayController extends PartsDomesticGeneralController
 	}
 
 	@RequestMapping("/download/doc")
-	public void downloadDocument(@RequestParam Map<String, Object> paramMap, HttpServletResponse httpServletResponse)
+	public void downloadDocument(@RequestParam Map<String, Object> paramMap, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
@@ -127,11 +129,11 @@ public class ClaimDisplayController extends PartsDomesticGeneralController
 
 		RfcResponse rfcResponse = claimDisplayService.getView(rfcParamMap);
 
-		downloadByRfc(httpServletResponse, rfcResponse.getTable("LT_FILE2"), "FILE_DATA", "Complain_" + CmStringUtils.trimToEmpty(paramMap.get("orderNo")) + ".pdf");
+		downloadByRfc(httpServletRequest, httpServletResponse, rfcResponse.getTable("LT_FILE2"), "FILE_DATA", "Complain_" + CmStringUtils.trimToEmpty(paramMap.get("orderNo")) + ".pdf");
 	}
 
 	@RequestMapping("/download/attachment")
-	public void downloadAttachment(@RequestParam Map<String, Object> paramMap, HttpServletResponse httpServletResponse)
+	public void downloadAttachment(@RequestParam Map<String, Object> paramMap, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
@@ -145,6 +147,6 @@ public class ClaimDisplayController extends PartsDomesticGeneralController
 
 		RfcResponse rfcResponse = claimDisplayService.getAttachment(rfcParamMap);
 
-		downloadByRfc(httpServletResponse, rfcResponse.getTable("LT_FILE"), "FILE_DATA", CmStringUtils.trimToEmpty(paramMap.get("fileName")));
+		downloadByRfc(httpServletRequest, httpServletResponse, rfcResponse.getTable("LT_FILE"), "FILE_DATA", CmStringUtils.trimToEmpty(paramMap.get("fileName")));
 	}
 }

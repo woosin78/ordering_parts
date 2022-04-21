@@ -2217,3 +2217,45 @@ Error:  >Wed Apr 13 13:17:47,102<    >RfcGetException rc (7) message: 01  .  . i
 Error:  >Wed Apr 13 13:17:54,535<    >RfcGetException rc (7) message: 01  .  . is not a valid date
 <RfcGetException
 
+
+**** Error file opened at 20220420 095948 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Apr 20 09:59:48,744<    >RfcGetException rc (3) message: CPIC-CALL: CMRCV on convId: 73517585
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       connection to partner 'gsq.doosan-iv.com:3300' broken
+TIME        Wed Apr 20 09:59:48 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=10.249.27.32:3300; L=10.91.27.140:62040
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     5
+
+<RfcGetException
+
+Error: [1] >Wed Apr 20 09:59:48,750<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: CPIC-CALL: CMRCV on convId: 73517585
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       connection to partner 'gsq.doosan-iv.com:3300' broken
+TIME        Wed Apr 20 09:59:48 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=10.249.27.32:3300; L=10.91.27.140:62040
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     5
+
+    return code: RFC_SYS_EXCEPTION (3)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

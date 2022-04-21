@@ -36,6 +36,15 @@ public class ClaimCreateService extends PartsDomesticGeneralService
     @Value("${file.upload.divk.domestic.parts.claim}")
     private String UPLOAD_PATH;
 
+    public RfcResponse getSummary(PartsErpDataMap paramMap)
+    {
+    	RfcRequest rfcRequest = new RfcRequest("Z_SS_CLAIM_SUMMARY_INFO");
+
+    	rfcRequest.field("I_BNAME", paramMap.getUsername());
+
+    	return simpleRfcTemplate.response(rfcRequest);
+    }
+
 	public RfcResponse getClaimReasons(PartsErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_SD_GET_RETURN_REASON");
@@ -104,16 +113,18 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 				itemList.add(dataMap);
 
 				String[] attachments = request.getParameterValues("attachment" + "_" + orderNos[i] + "_" + lineNos[i]);
+
 				if (ArrayUtils.isNotEmpty(attachments))
 				{
-					final int BUFFER = 1024; // returnTable row 별로 송신할 파일의 byte size (파일 정보를 1kb씩 끊어서 송신함)
+					final int BUFFER = 1024;
 					byte[] buffer = new byte[BUFFER];
 
 					for (int j=0, length2=attachments.length; j<length2; j++)
 					{
+						//0: original file name, 1: saved file name
 						String[] fileNames = CmStringUtils.split(attachments[j], PortalCommonVo.DELIMITER);
 
-						if (ArrayUtils.isNotEmpty(fileNames) && fileNames.length > 2)
+						if (ArrayUtils.isNotEmpty(fileNames) && fileNames.length >= 2)
 						{
 							FileInputStream fileInputStream = null;
 							BufferedInputStream bufferedInputStream = null;

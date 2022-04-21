@@ -3,6 +3,7 @@ package org.jwebppy.portal.iv.hq.parts.export.invoice.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -114,7 +115,7 @@ public class ExInvoiceController extends PartsExportGeneralController
 	}
 
 	@RequestMapping("/download/{mode}")
-	public void download(HttpServletResponse response, @RequestParam Map<String, Object> paramMap, String mode, String[] invoiceNo, String[] shipmentNo)
+	public void download(HttpServletRequest request, HttpServletResponse response, @RequestParam Map<String, Object> paramMap, String mode, String[] invoiceNo, String[] shipmentNo)
 	{
 		if ("BL".equals(mode))
 		{
@@ -131,7 +132,7 @@ public class ExInvoiceController extends PartsExportGeneralController
 
 			if (CollectionUtils.isNotEmpty(dataList))
 			{
-				downloadByRfc(response, dataList, "FILE_DATA", CmStringUtils.trimToEmpty(((Map)dataList.get(0)).get("FILE_NAME")));
+				downloadByRfc(request, response, dataList, "FILE_DATA", CmStringUtils.trimToEmpty(((Map)dataList.get(0)).get("FILE_NAME")));
 			}
 		}
 		else
@@ -155,7 +156,7 @@ public class ExInvoiceController extends PartsExportGeneralController
 			{
 				DataList dataList = ("EDI".equals(mode)) ? rfcResponse.getTable("LT_TAB") : rfcResponse.getTable("T_PDF");
 
-				downloadByRfc(response, dataList, "LINE", getFileName(mode));
+				downloadByRfc(request, response, dataList, "LINE", getFileName(mode));
 			}
 		}
 	}

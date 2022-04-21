@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
@@ -126,7 +127,7 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 	}
 
 	@RequestMapping("/download/confirm_sheet")
-	public void downloadConfirmSheet(@RequestParam Map<String, Object> paramMap, HttpServletResponse httpServletResponse) throws FileNotFoundException
+	public void downloadConfirmSheet(@RequestParam Map<String, Object> paramMap, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws FileNotFoundException
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.putAll(paramMap);
@@ -156,7 +157,7 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 
 		if (CmStringUtils.isNotEmpty(fileName))
 		{
-			downloadByRfc(httpServletResponse, dataList, "LINE", fileName);
+			downloadByRfc(httpServletRequest, httpServletResponse, dataList, "LINE", fileName);
 		}
 	}
 }

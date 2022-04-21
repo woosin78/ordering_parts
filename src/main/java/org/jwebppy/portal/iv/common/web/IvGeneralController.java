@@ -8,6 +8,7 @@ import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.portal.common.PortalConfigVo;
 import org.jwebppy.portal.common.web.PortalGeneralController;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.service.IvGeneralService;
@@ -89,6 +90,7 @@ public class IvGeneralController extends PortalGeneralController
 
 		model.addAttribute("DATE_FORMAT", UserAuthenticationUtils.getUserDetails().getDateFormat2());
 		model.addAttribute("TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getTimeFormat2());
+		model.addAttribute("DELIMITER", PortalConfigVo.DELIMITER);//split 구분자
 
 		model.addAttribute("BASE_PATH", IvCommonVo.REQUEST_PATH);
 	}

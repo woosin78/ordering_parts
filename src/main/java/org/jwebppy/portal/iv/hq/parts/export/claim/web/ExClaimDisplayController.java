@@ -3,6 +3,7 @@ package org.jwebppy.portal.iv.hq.parts.export.claim.web;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
@@ -115,7 +116,7 @@ public class ExClaimDisplayController extends PartsExportGeneralController
 	}
 
 	@RequestMapping("/download/doc")
-	public void downloadDocument(@RequestParam Map<String, Object> paramMap, HttpServletResponse httpServletResponse)
+	public void downloadDocument(@RequestParam Map<String, Object> paramMap, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
@@ -127,11 +128,11 @@ public class ExClaimDisplayController extends PartsExportGeneralController
 
 		RfcResponse rfcResponse = claimDisplayService.getView(rfcParamMap);
 
-		downloadByRfc(httpServletResponse, rfcResponse.getTable("LT_FILE2"), "FILE_DATA", "Complain_" + CmStringUtils.trimToEmpty(paramMap.get("orderNo")) + ".pdf");
+		downloadByRfc(httpServletRequest, httpServletResponse, rfcResponse.getTable("LT_FILE2"), "FILE_DATA", "Complain_" + CmStringUtils.trimToEmpty(paramMap.get("orderNo")) + ".pdf");
 	}
 
 	@RequestMapping("/download/attachment")
-	public void downloadAttachment(@RequestParam Map<String, Object> paramMap, HttpServletResponse httpServletResponse)
+	public void downloadAttachment(@RequestParam Map<String, Object> paramMap, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
@@ -145,6 +146,6 @@ public class ExClaimDisplayController extends PartsExportGeneralController
 
 		RfcResponse rfcResponse = claimDisplayService.getAttachment(rfcParamMap);
 
-		downloadByRfc(httpServletResponse, rfcResponse.getTable("LT_FILE"), "FILE_DATA", CmStringUtils.trimToEmpty(paramMap.get("fileName")));
+		downloadByRfc(httpServletRequest, httpServletResponse, rfcResponse.getTable("LT_FILE"), "FILE_DATA", CmStringUtils.trimToEmpty(paramMap.get("fileName")));
 	}
 }

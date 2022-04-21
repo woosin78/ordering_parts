@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
+import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.claim.service.ClaimCreateService;
@@ -42,9 +44,8 @@ public class ClaimCreateController extends PartsDomesticGeneralController
     @Value("${file.upload.invalidExtension}")
     private String INVALID_UPLOAD_FILE_EXTENSION;
 
-	// 반품생성 메인페이지
 	@RequestMapping("/write")
-	public String form(Model model, WebRequest webRequest)
+	public String write(Model model, WebRequest webRequest)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.add("depth", "1");
@@ -65,14 +66,6 @@ public class ClaimCreateController extends PartsDomesticGeneralController
 	public Object upload(@RequestParam(value = "file", required = false) MultipartFile multipartFile) throws IOException
     {
 		String originalFileName = multipartFile.getOriginalFilename();
-
-		System.err.println("name: " + originalFileName);
-		System.err.println(CmStringUtils.split(INVALID_UPLOAD_FILE_EXTENSION, PortalCommonVo.DELIMITER));
-
-		for (String a: CmStringUtils.split(INVALID_UPLOAD_FILE_EXTENSION, PortalCommonVo.DELIMITER))
-		{
-			System.err.println("ext:" + a);
-		}
 
 		if (!FilenameUtils.isExtension(originalFileName, CmStringUtils.split(INVALID_UPLOAD_FILE_EXTENSION, PortalCommonVo.DELIMITER)))
 		{
@@ -117,5 +110,25 @@ public class ClaimCreateController extends PartsDomesticGeneralController
 		resultMap.put("ERROR_MSG", rfcResponse.getString("E_MEG"));
 
 		return resultMap;
+	}
+
+	@RequestMapping("/summary")
+	@ResponseBody
+	public Object summary(Model model, WebRequest webRequest)
+	{
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
+
+		DataMap dataMap = claimCreateService.getSummary(rfcParamMap).getStructure("O_ZSSS0075");
+
+		//dataMap.put("A_PRICE", dataMap.getDouble("O_AMT") + dataMap.getDouble("R_AMT"));
+		//dataMap.put("A_ROW", dataMap.getDecimal("O_ROW").add(dataMap.getDecimal("R_ROW")).toString());
+		dataMap.put("A_PRICE", "0");
+		dataMap.put("A_ROW", "0");
+
+		FormatBuilder.with(dataMap)
+			.decimalFormat(new String[] {"B_AMT", "L_AMT", "A_AMT", "A_PRICE", "AO_AMT"})
+			.qtyFormat(new String[] {"A_ROW", "A_ROW", "AO_ROW"});
+
+		return dataMap;
 	}
 }

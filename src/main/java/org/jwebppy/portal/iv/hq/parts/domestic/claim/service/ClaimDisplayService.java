@@ -30,7 +30,7 @@ public class ClaimDisplayService extends PartsDomesticGeneralService
 			.structure("LS_SEARCH").with(paramMap)
 				.add("VBTYP", "A")
 				.addByKey(new Object[][] {
-					{"VBELN", "complaintNo"},
+					{"VBELN", "claimNo"},
 					{"VGBEL", "referenceNo"},
 					{"MATNR", "partNo"},
 					{"FRDATE", "fromDate"},
