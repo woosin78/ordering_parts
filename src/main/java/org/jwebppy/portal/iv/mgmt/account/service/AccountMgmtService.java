@@ -143,7 +143,7 @@ public class AccountMgmtService
 		user.setLanguage(userGroup.getDefLang());
 		user.setUserGroup(userGroup);
 
-		int uSeq = userService.createUser(user);
+		int uSeq = userService.saveUser(user);
 
 		UserAccountDto userAccount = new UserAccountDto();
 		userAccount.setUSeq(uSeq);

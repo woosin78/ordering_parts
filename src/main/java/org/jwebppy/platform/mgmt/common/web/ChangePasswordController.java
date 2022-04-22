@@ -87,7 +87,7 @@ public class ChangePasswordController extends MgmtGeneralController
 									userAccount.setPassword(newPassword);
 									userAccount.setFgPasswordLocked(PlatformCommonVo.NO);
 
-									userService.modifyUserAccount(userAccount);
+									userService.saveUserAccount(userAccount);
 
 									return resultMap;
 								}

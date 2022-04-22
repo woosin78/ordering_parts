@@ -49,7 +49,7 @@ public class UserService extends GeneralService
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public int createUser(UserDto user)
+	protected int createUser(UserDto user)
 	{
 		UserEntity userEntity = CmModelMapperUtils.mapToEntity(UserObjectMapper.INSTANCE, user);
 
@@ -58,7 +58,7 @@ public class UserService extends GeneralService
 		return userEntity.getUSeq();
 	}
 
-	public int createUserAccount(UserAccountDto userAccount)
+	protected int createUserAccount(UserAccountDto userAccount)
 	{
 		userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
 
@@ -75,7 +75,7 @@ public class UserService extends GeneralService
 		return userMapper.insertUserAccount(CmModelMapperUtils.mapToEntity(UserAccountObjectMapper.INSTANCE, userAccount));
 	}
 
-	public int createUserContactInfo(UserContactInfoDto userContactInfo)
+	protected int createUserContactInfo(UserContactInfoDto userContactInfo)
 	{
 		return userMapper.insertUserContactInfo(CmModelMapperUtils.mapToEntity(UserContactInfoObjectMapper.INSTANCE, userContactInfo));
 	}
@@ -143,12 +143,12 @@ public class UserService extends GeneralService
 		return uSeq;
 	}
 
-	public int modifyUser(UserDto user)
+	private int modifyUser(UserDto user)
 	{
 		return userMapper.updateUser(CmModelMapperUtils.mapToEntity(UserObjectMapper.INSTANCE, user));
 	}
 
-	public int modifyUserAccount(UserAccountDto userAccount)
+	protected int modifyUserAccount(UserAccountDto userAccount)
 	{
 		//비밀번호 변경 이력 남기기
 		if (CmStringUtils.isNotEmpty(userAccount.getPassword()))
@@ -177,7 +177,7 @@ public class UserService extends GeneralService
 		return userMapper.updateUserAccount(CmModelMapperUtils.mapToEntity(UserAccountObjectMapper.INSTANCE, userAccount));
 	}
 
-	public int modifyUserContactInfo(UserContactInfoDto userContactInfo)
+	protected int modifyUserContactInfo(UserContactInfoDto userContactInfo)
 	{
 		return userMapper.updateUserContactInfo(CmModelMapperUtils.mapToEntity(UserContactInfoObjectMapper.INSTANCE, userContactInfo));
 	}

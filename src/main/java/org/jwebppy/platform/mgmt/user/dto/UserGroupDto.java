@@ -1,12 +1,16 @@
 package org.jwebppy.platform.mgmt.user.dto;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
+import org.jwebppy.platform.mgmt.i18n.dto.LangKindType;
 
 import com.ibm.icu.util.TimeZone;
 
@@ -97,5 +101,19 @@ public class UserGroupDto extends GeneralDto implements IPagination
 		}
 
 		return null;
+	}
+
+	public Map<String, String> getLangKind2()
+	{
+		Map<String, String> langKindMap = new HashMap<>();
+
+		String[] langKinds = ArrayUtils.nullToEmpty(CmStringUtils.split(langKind, PlatformConfigVo.DELIMITER));
+
+		for (String langKind: langKinds)
+		{
+			langKindMap.put(LangKindType.valueOf(langKind).name(), LangKindType.valueOf(langKind).getType());
+		}
+
+		return langKindMap;
 	}
 }

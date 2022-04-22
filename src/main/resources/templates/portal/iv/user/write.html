@@ -11,7 +11,7 @@
 	</div>
 </div>
 <div class="condition-area">
-	<form id="FORM_password" method="post" autocomplete="off" onsubmit="return false;">
+	<form id="FORM_user" method="post" autocomplete="off" onsubmit="return false;">
 	<table class="condition table-fixed">
 		<tr>
 			<th style="width:200px;"><div th:text="#{HQP_L_CURRENT_PASSWORD}"></div><img src="/portal/img/icon/required.png" class="required" /></th>
@@ -29,7 +29,7 @@
 			<th><div th:text="#{HQP_B_LANGUAGE}"></div><img src="/portal/img/icon/required.png" class="required" /></th>
 			<td>
 				<select id="language" name="language" class="custom-ui">
-					<option value="en">English</option>
+					<option value="en" th:each="entry: ${langKinds}" th:value="${entry.key}" th:text="${entry.value}" th:selected="${entry.key eq myLang}" />
 				</select>
 			</td>
 		</tr>		
@@ -43,43 +43,32 @@ $(window).on("load", function() {
 	ProgressBar.hide();
 });
 
-$("input:password").on("keydown", function (e) {
-	if (e.keyCode == 13)
-	{
-		doSubmit();
-	};
-});
-
 function checkForm()
 {
-	if (JpUtilsString.isEmpty($("#password").val()))
+	if (JpUtilsString.isNotEmpty($("#password").val()))
 	{
-		alert("[[#{PTL_M_LOGIN_EMPTY_PWD}]]");
-		$("#password").focus();
-					
-		return false;				
-	}
-	else if (JpUtilsString.isEmpty($("#newPassword").val()))
-	{
-		alert("[[#{PTL_M_EMPTY_NEW_PWD}]]");
-		$("#newPassword").focus();
-		
-		return false;
-	}
-	else if (JpUtilsString.isEmpty($("#confirmPassword").val()))
-	{
-		alert("[[#{PTL_M_EMPTY_CONFIRM_PWD}]]");
-		$("#confirmPassword").focus();		
-		
-		return false;				
-	}
-	else if (JpUtilsString.notEquals($("#newPassword").val(), $("#confirmPassword").val()))
-	{
-		alert("[[#{PTL_M_NOT_PASSWORD_MATCH}]]");
-		$("#newPassword").focus();
-		
-		return false;
-	}
+		if (JpUtilsString.isEmpty($("#newPassword").val()))
+		{
+			alert("[[#{PTL_M_EMPTY_NEW_PWD}]]");
+			$("#newPassword").focus();
+			
+			return false;
+		}
+		else if (JpUtilsString.isEmpty($("#confirmPassword").val()))
+		{
+			alert("[[#{PTL_M_EMPTY_CONFIRM_PWD}]]");
+			$("#confirmPassword").focus();		
+			
+			return false;				
+		}
+		else if (JpUtilsString.notEquals($("#newPassword").val(), $("#confirmPassword").val()))
+		{
+			alert("[[#{PTL_M_NOT_PASSWORD_MATCH}]]");
+			$("#newPassword").focus();
+			
+			return false;
+		}		
+	};
 	
 	return true;
 };
@@ -87,17 +76,40 @@ function checkForm()
 $("#BTN_save").on("click", function() {
 	if (checkForm())
 	{
-		doSubmit();
+		doSubmit1();
 	};
 });
 
-function doSubmit()
+$("input:password").on("keydown", function (e) {
+	if (e.keyCode == 13)
+	{
+		doSubmit1();
+	};
+});
+
+function doSubmit1()
+{
+	JpUtilsAjax.post({
+		url: "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PROCESSING_URL}]]",
+		data: $("#FORM_user").serialize(),
+		beforeSend: function(jqXHR, settings)
+		{
+			ProgressBar.show();
+		},			
+		success: function(data, textStatus, jqXHR)
+		{
+			doSubmit2();
+		}
+	});	
+};
+
+function doSubmit2()
 {
 	if (checkForm())
 	{
 		JpUtilsAjax.post({
 			url: "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PROCESSING_URL}]]",
-			data: $("#FORM_password").serialize(),
+			data: $("#FORM_user").serialize(),
 			beforeSend: function(jqXHR, settings)
 			{
 				ProgressBar.show();

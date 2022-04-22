@@ -258,7 +258,8 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		/* Make Header Info */
 		DataMap mainHeadResult = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");
 
-		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(mainHeadResult, new String[] {"CREDIT", "NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
+		//PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(mainHeadResult, new String[] {"CREDIT", "NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(mainHeadResult, new String[] {"NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
 
 		FormatBuilder.with(mainHeadResult).decimalFormat(new String[] {"CREDIT", "NETWR"});
 		FormatBuilder.with(mainHeadResult).weightFormat("TOTAL_WEIGHT");
