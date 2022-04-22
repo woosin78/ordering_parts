@@ -97,9 +97,11 @@ JpUtilsAjax.get({
 			{
 				if (itemList[i].ITEM == fileList[l].DOCU_ITEM)
 				{
-					fileName += "<div onclick=downloadAttachment('" + fileList[l].FILE_NAME + "','" + fileList[l].INT_NO + "','" + fileList[l].DOCU_ITEM + "')>" + fileList[l].FILE_NAME + "</div>";
+					fileName += "<div onclick=downloadAttachment('" + JpUtilsString.replaceAll(fileList[l].FILE_NAME, " ", "") + "','" + fileList[l].INT_NO + "','" + fileList[l].DOCU_ITEM + "')>" + fileList[l].FILE_NAME + "</div>";
 				}
 			};
+			
+			console.log(fileName);
 			
 			itemList[i].TEXT = JpUtilsString.trimToEmpty(reason1);
 			itemList[i].TEXT2 = JpUtilsString.trimToEmpty(reason2);
@@ -120,13 +122,10 @@ JpUtilsAjax.get({
     			{data: "RCOMMENT", 		title: "[[#{HQP_L_COMMENT}]]"},// Comment
     			{data: "FILE_NAME", 	title: "[[#{HQP_L_ATTACHED_FILE}]]"},// Attached File	
     			{data: "ZZDEALDT", 		title: "[[#{HQP_L_ORIGIN_DOC_DATE}]]"}// Origin Doc. Date
-    			//{data: "INT_NO", 		title: "INT_NO(Hidden)"},
-    			//{data: "DOCU_ITEM",		title: "DOCU_ITEM(Hidden)"}    			
     		],  	
     		columnDefs: [
     			{targets: [7], className: "link"},
     			{targets: [0, 2, 8], className: "dt-body-center"}
-    			//{targets: [9, 10], visible: false}
     		],	    		    		
     		data: itemList,
     		initComplete:function(settings, json) 

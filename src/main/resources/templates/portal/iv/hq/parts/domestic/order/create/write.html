@@ -70,7 +70,6 @@
 					<div class="input-area">
 						<input type="radio" class="custom-ui" id="docType1" name="docType" value="C" checked />
 						<label th:text="#{HQP_L_ORDER}"></label>
-						&nbsp;&nbsp;
 						<input type="radio" class="custom-ui" id="docType2" name="docType" value="A" />
 						<label th:text="#{HQP_L_INQUIRY}"></label>
 					</div>
@@ -78,20 +77,15 @@
 			</tr>
 			<tr>
 				<th th:text="#{HQP_L_ORDER_TYPE}"></th><!-- Order Type -->
-				<td>
-					<div class="input-area order-type"></div>
-				</td>
+				<td><div class="input-area order-type"></div></td>
 				<th>
-					<span th:text="#{HQP_L_SHIP_TO_PARTY}"></span><div class="split3"></div>
-					<div><button id="BTN_shipToParty" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button></div>
+					[[#{HQP_L_SHIP_TO_PARTY}]] <button id="BTN_shipToParty" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button>
 				</th>
-				<td>
-					<div id="AREA_shipToAddress"></div>					
-				</td>
+				<td><div id="AREA_shipToAddress"></div></td>
 			</tr>
 			<tr>
 				<th>
-					<div th:text="#{HQP_L_PO_NO}"></div><img src="/portal/img/icon/required.png" class="required" />
+					[[#{HQP_L_PO_NO}]] <img src="/portal/img/icon/required.png" class="required" />
 				</th>
 				<td>
 					<div class="input-area">
@@ -99,8 +93,7 @@
 					</div>
 				</td>
 				<th rowspan="2">
-					<span th:text="#{HQP_L_SHIPPING_INFO}"></span><div class="split3"></div>
-					<div><button id="BTN_shippingInfo" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button></div>
+					[[#{HQP_L_SHIPPING_INFO}]] <button id="BTN_shippingInfo" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button>
 				</th>
 				<td rowspan="2">
 					<table class="table-inner table-fixed shippin-info">

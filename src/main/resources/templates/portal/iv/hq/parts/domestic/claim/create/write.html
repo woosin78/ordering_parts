@@ -12,7 +12,7 @@
 		<div class="dropzone-body dropzone-click-zone">
 			<div class="dropzone-click-zone" style="height:20px"></div>
 			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/icon/upload_file.png"/>
-			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_HOW_TO_UPLOAD_SIMULATION}"></div>
+			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_HOW_TO_UPLOAD}"></div>
 		</div>
 		<div class="dropzone-bottom dropzone-click-zone">
 			<button type="button" onclick="UploadModal.hide()">[[#{HQP_B_CANCEL}]]</button>
@@ -25,9 +25,9 @@
 		<div class="block-button-area">
 			<button id="BTN_create" type="button" th:text="#{HQP_B_CREATE}"></button>
 		</div>
-	</div>
-	
+	</div>	
 	<div class="condition-area">
+		<div class="condition-title" th:text="#{HQP_T_CLAIM_SUMMARY_EXPLAIN}"></div>
 		<table class="condition table-fixed">
 			<tbody>
 				<tr>
@@ -53,6 +53,7 @@
 			</tbody>
 		</table>
 	</div>
+	<div class="split-row"></div>
 	<div class="condition-area">
 		<table class="condition table-fixed">
 			<tbody>
@@ -79,7 +80,7 @@
 		</div>
 	</div>
 	
-	<div id="AREA_grid" class="flex-grow grid-area">
+	<div id="AREA_grid" class="flex-grow grid-area" style="overflow-y: auto;">
 		<div id="AREA_template">		
 			<table class="condition table-fixed template">
 				<tbody>
@@ -113,7 +114,7 @@
 						<th></th>
 						<th colspan="3" th:text="#{HQP_L_CLAIM_REASON}" class="center"></th>
 						<th colspan="4" th:text="#{HQP_L_ADDITIONAL_TEXT}" class="center"></th>
-						<th colspan="3" class="center"><div><span th:text="#{HQP_L_ATTACHMENT}"></span><div class="split3"></div><button type="button" class="small_button upload" th:text="#{HQP_B_UPLOAD}"></button></div></th>
+						<th colspan="3" class="center">[[#{HQP_L_ATTACHMENT}]] <button type="button" class="small_button upload" th:text="#{HQP_B_UPLOAD}"></button></th>
 					</tr>
 					<tr>
 						<td></td>
