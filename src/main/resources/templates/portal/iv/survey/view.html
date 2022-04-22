@@ -7,12 +7,12 @@
 <th:block layout:fragment="content">
 	
 	<div class="block-header" >
-		<div class="block-title"></div>
+		<div class="block-title" th:text="#{HQP_T_SURVEY_BASIC_INFO}">></div>
 		<div class="block-button-area">
-			<button onclick="BTN.modify();" type="button" th:text="수정"></button>
-			<button onclick="BTN.remove();" type="button" th:text="삭제"></button>
-			<button onclick="BTN.preview();" type="button" th:text="미리보기"></button>
-			<button onclick="BTN.back();" type="button" th:text="뒤로"></button>
+			<button onclick="BTN.modify();" type="button" th:text="#{HQP_B_MODIFY}"></button>
+			<button onclick="BTN.remove();" type="button" th:text="#{HQP_B_DELETE}"></button>
+			<button onclick="BTN.preview();" type="button" th:text="#{HQP_B_PREVIEW}"></button>
+			<button onclick="BTN.back();" type="button" th:text="#{HQP_B_BACK}"></button>
 		</div>	
 	</div>	
 	
@@ -25,38 +25,42 @@
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<th>설문제목</th>
+				<th><span th:text="#{HQP_L_SURVEY_TITLE}"></span></th>
 				<td><span th:text="${survey?.title}"></span></td>
-				<th>공지기간</th>
+				<th><span th:text="#{HQP_L_SURVEY_PERIOD}"></span></th>
 				<td>
 					<span th:text="${survey?.validFrom}"></span> ~ <span th:text="${survey?.validTo}"></span>
 				</td>
 			</tr>
 			<tr>
-				<th>설문공개</th>
-				<td th:text="${(survey?.fgOpen == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '공개' : '비공개'}">
+				<th><span th:text="#{HQP_L_SURVEY_OPEN}"></span></th>
+				<td>
+					<span th:if="${(survey?.fgOpen == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_PUBLIC}"></span>
+					<span th:unless="${(survey?.fgOpen == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_PRIVATE}"></span>
 				</td>
-				<th>결과공개</th>
-				<td th:text="${(survey?.fgOpenResult == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '공개' : '비공개'}">
+				<th><span th:text="#{HQP_L_RESULT_OPEN}"></span></th>
+				<td>
+					<span th:if="${(survey?.fgOpenResult == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_PUBLIC}"></span>
+					<span th:unless="${(survey?.fgOpenResult == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_PRIVATE}"></span>
 				</td>	
 			</tr>
 			<tr>
-				<th>설문취지</th>
+				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
 				<td colspan="3" th:text="${survey?.description}">
 				</td>
 			</tr>
 			<tr>
-				<th>감사인사</th>
+				<th><span th:text="#{HQP_L_THANKS_GREETING}"></span></th>
 				<td colspan="3" th:text="${survey?.remark}"></td>
 			</tr>
 			<tr>
-				<th>대상</th>
+				<th><span th:text="#{HQP_L_SURVEY_TARGET}"></span></th>
 				<td>
 					<div th:each="surveyTarget : ${survey?.surveyTargets}">
 						<div></div><span th:text="${surveyTarget.targetName}"></span>
 					</div>						
 				</td>
-				<th>파일첨부</th>
+				<th><span th:text="#{HQP_L_ATTACHMENT}"></span></th>
 				<td>
 					<div th:each="uploadFileList : ${survey?.uploadFileLists}">
 						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a><div class='split2'></div><span th:text="${uploadFileList.displayFileSize}"></span>
@@ -72,7 +76,7 @@
 	<!------------------------------------ 문항 그리드 시작 --------------------------------------->
 	<div class="grid-info">
 		<div class="block-button-area">
-			<button onclick="SurveyQuestion.write();" type="button">문항등록</button>
+			<button onclick="SurveyQuestion.write();" type="button" th:text="#{HQP_B_ADD_QUESTION}"></button>
 		</div> 
 		<div class="grid-total">
 			<div class="split"></div>
@@ -90,8 +94,8 @@
 	<!------------------------------------ 문항보기 그리드 시작 --------------------------------------->
 	<div class="grid-info">
 		<div class="block-button-area">
-			<button onclick="SurveyItem.write();" type="button">추가</button>
-			<button onclick="SurveyItem.save();" type="button">저장</button>
+			<button onclick="SurveyItem.write();" type="button" th:text="#{HQP_B_ADD}"></button>
+			<button onclick="SurveyItem.save();" type="button" th:text="#{HQP_B_SAVE}"></button>
 		</div> 
 		<div class="grid-total">
 			<div class="split"></div>
@@ -295,14 +299,14 @@
 			bInfo: false,
 			scrollY: 330,
 			columns : [
-				{data:"sqSeq", 			title: "번호",		"width": "5%"},
-				{data:"title",			title: "질문"},
-				{data:"type",			title: "문항(다중)", 	"width": "15%"},
-				{data:"fgMandatory",	title: "옵션", 		"width": "15%"},
-				{data:"itemCnt", 		title: "보기수", 		"width": "15%"},
-				{data:null, 			title: "비고", 		"width": "15%"},
-				{data:null, 			title: "비고", 		"width": "15%"},
-				{data:"sseq", 			title: "번호",		"width": "5%"} 
+				{data:"sqSeq", 			title: "[[#{HQP_L_NUMBER}]]",		"width": "5%"},
+				{data:"title",			title: "[[#{HQP_L_QUESTION}]]"},
+				{data:"type",			title: "[[#{HQP_L_QUESTION_MULTI}]]", 	"width": "15%"},
+				{data:"fgMandatory",	title: "[[#{HQP_L_OPTION}]]", 		"width": "15%"},
+				{data:"itemCnt", 		title: "[[#{HQP_L_EXAMPLE_COUNT}]]", 		"width": "15%"},
+				{data:null, 			title: "[[#{HQP_L_SURVEY_NOTE}]]", 		"width": "15%"},
+				{data:null, 			title: "[[#{HQP_L_SURVEY_NOTE}]]", 		"width": "15%"},
+				{data:"sseq", 			title: "[[#{HQP_L_NUMBER}]]",		"width": "5%"} 
 			],
 			columnDefs: [
 				{targets: 0, className: "dt-body-center", 
@@ -313,17 +317,19 @@
 				},
 				{targets: 2, className: "dt-body-center", 
 					render: function(data, type, row) {
-						return {'0': '객관식', '1': '다중객관식', '2':'주관식', '3':'가중치', '4':'우선순위'}[data];
+						//return {'0': '객관식', '1': '다중객관식', '2':'주관식', '3':'가중치', '4':'우선순위'}[data];
+						return {'0': '[[#{HQP_L_OBJECTIVE_QUESTION}]]', '1': '[[#{HQP_L_MULTIPLE_SELECTION}]]', 
+							'2':'[[#{HQP_L_SUBJECTIVE_QUESTION}]]', '3':'[[#{HQP_L_EXTRA_WEIGHT}]]', '4':'[[#{HQP_L_PRIORITY}]]'}[data];
 					}
 				},
 				{targets: 3, className: "dt-body-center", 
 					render: function(data, type, row) {
-						return {'Y': '필수선택', 'N': '선택가능'}[data];
+						return {'Y': '[[#{HQP_L_SELECT_ESSENTIAL}]]', 'N': '[[#{HQP_L_SELECT_POTENTIAL}]]'}[data];
 					}
 				},
 				{targets: 4, className: "dt-body-center"},
 				{targets: [5, 6], className: "dt-body-center", 
-					defaultContent:"<button class='dev-modify'>수정</button>&nbsp;<button class='dev-remove'>삭제</button>"
+					defaultContent:"<button class='dev-modify'>[[#{HQP_B_MODIFY}]]</button>&nbsp;<button class='dev-remove'>[[#{HQP_B_DELETE}]]</button>"
 				},
 				{targets: [6, 7], visible: false}
 			],
@@ -389,9 +395,9 @@
 			bInfo: false,
 			scrollY: 330,
 			columns : [
-				{data:"sqSeq", 			title: "번호",		"width": "5%"},
-				{data:"title",			title: "텍스트"},
-				{data:null, 			title: "비고", 		"width": "15%"},
+				{data:"sqSeq", 			title: "[[#{HQP_L_NUMBER}]]",		"width": "5%"},
+				{data:"title",			title: "[[#{HQP_L_SURVEY_TEXT}]]"},
+				{data:null, 			title: "[[#{HQP_L_SURVEY_NOTE}]]", 		"width": "15%"},
 				{data:"siSeq", 			title: "siSeq",		"width": "5%"}
 			],
 			columnDefs: [
@@ -405,7 +411,7 @@
 						return '<input onblur="SurveyItem.setTitle(this.value, \''+meta.row+'\', \''+meta.col+'\');" type="text" value="'+data+'" />';
 					}	
 				},
-				{targets: 2, className: "dt-body-center", defaultContent:"<button>삭제</button>"},
+				{targets: 2, className: "dt-body-center", defaultContent:"<button>[[#{HQP_B_DELETE}]]</button>"},
 				{targets: 3, visible: false},
 			],
 			

@@ -6,10 +6,10 @@
 <th:block layout:fragment="content">
 	
 	<div class="block-header" >
-		<div class="block-title" ></div>
+		<div class="block-title" th:text="#{HQP_L_SURVEY_QUESTION}"></div>
 		<div class="block-button-area">
-			<button id="BTN_save" type="button" th:text="저장"></button>
-			<button id="BTN_back" type="button" th:text="닫기" onclick="window.close();"></button>
+			<button id="BTN_save" type="button" th:text="#{HQP_B_SAVE}"></button>
+			<button id="BTN_back" type="button" th:text="#{HQP_B_CLOSE}" onclick="window.close();"></button>
 		</div>	
 	</div>	
 	
@@ -20,11 +20,11 @@
 
 	<table class="condition table-fixed">
 		<tr>
-			<td style="width:20%;">설문제목</td>
+			<td style="width:20%;"><span th:text="#{HQP_L_SURVEY_TITLE}"></span></td>
 			<td>[[${survey?.title}]]</td>
 		</tr>
 		<tr>
-			<td>설문시작일</td>
+			<td><span th:text="#{HQP_L_SURVEY_PERIOD}"></span></td>
 			<td>[[${survey?.validFrom}]] ~ [[${survey?.validTo}]]</td>
 		</tr>
 	</table>	
@@ -32,35 +32,35 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th style="width:30%;">제목</th>
+				<th style="width:30%;"><span th:text="#{HQP_L_TITLE}"></span></th>
 				<td><input name="title" type="text" th:value="${surveyQuestion?.title}"/></td>
 			</tr>
 			
 			<tr>
-				<th>문항유형</th>
+				<th><span th:text="#{HQP_L_QUESTION_TYPE}"></span></th>
 				<td>
 					<select name="type" id="type" onchange="handleMandatoryCnt(this.value);">
-						<option value="0">객관식</option>
-						<option value="1">다중객관식</option>
-						<option value="2">주관식</option>
-						<option value="3">가중치</option>
-						<option value="4">우선순위</option>
+						<option value="0">[[#{HQP_L_OBJECTIVE_QUESTION}]]</option>
+						<option value="1">[[#{HQP_L_MULTIPLE_SELECTION}]]</option>
+						<option value="2">[[#{HQP_L_SUBJECTIVE_QUESTION}]]</option>
+						<option value="3">[[#{HQP_L_EXTRA_WEIGHT}]]</option>
+						<option value="4">[[#{HQP_L_PRIORITY}]]</option>
 					</select>
 				</td>
 			</tr>
 			
 			<tr>
-				<th>필수선택 / 선택가능</th>
+				<th>[[#{HQP_L_SELECT_ESSENTIAL}]] / [[#{HQP_L_SELECT_POTENTIAL}]]</th>
 				<td>
 					<select name="fgMandatory" id="fgMandatory">
-						<option value="Y">필수선택</option>
-						<option value="N">선택가능</option>
+						<option value="Y">[[#{HQP_L_SELECT_ESSENTIAL}]]</option>
+						<option value="N">[[#{HQP_L_SELECT_POTENTIAL}]]</option>
 					</select>
 				</td>
 			</tr>
 			
 			<tr>
-				<th>선택최대개수</th>
+				<th>[[#{HQP_L_MAX_SELECTION_NUMBER}]]</th>
 				<td><input name="mandatoryCnt" id="mandatoryCnt" type="number" th:value="${surveyQuestion?.mandatoryCnt}"/></td>
 			</tr>
 			

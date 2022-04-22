@@ -6,7 +6,10 @@
 <th:block layout:fragment="content">
 	
 	<div class="block-header" >
-		<div class="block-title" th:text="설문참여"></div>
+		<div class="block-title" th:text="#{HQP_L_SURVEY_PREVIEW}"></div>
+		<div class="block-button-area">
+			<button type="button" th:text="#{HQP_B_CLOSE}" onclick="window.close();"></button>
+		</div>
 	</div>	
 	
 	<div class="condition-area">
@@ -14,7 +17,7 @@
 			<tr>
 				<td style="width:20%">[[${survey?.title}]]</td>
 				<td th:style="${#lists.isEmpty(survey?.uploadFileLists) ? 'display:none' : ''}">
-					첨부파일 : <span th:each="uploadFileList : ${survey?.uploadFileLists}">
+					[[#{HQP_L_ATTACHMENT}]] : <span th:each="uploadFileList : ${survey?.uploadFileLists}">
 						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a>
 						(<span th:text="${uploadFileList.displayFileSize}"></span>)
 					</span>
@@ -37,7 +40,8 @@
 									<tr>
 										<td>
 											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:text="${voteItem.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
 											<span style="color:blue;" th:text="${voteItem.title}"></span>
 										</td>
 									</tr>
@@ -64,9 +68,10 @@
 									<tr>
 										<td>
 											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:text="${voteItem.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
 											<span style="color:blue;" th:text="${voteItem.title}"></span>
-											<span>(다중선택개수 : [[${voteItem.mandatoryCnt}]])</span>
+											<span>([[#{HQP_L_SELECTION_NUMBER}]] : [[${voteItem.mandatoryCnt}]])</span>
 										</td>
 									</tr>
 								</table>
@@ -90,7 +95,8 @@
 									<tr>
 										<td>
 											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:text="${voteItem.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
 											<span style="color:blue;" th:text="${voteItem.title}"></span>
 										</td>
 									</tr>
@@ -114,9 +120,10 @@
 									<tr>
 										<td>
 											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:text="${voteItem.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
 											<span style="color:blue;" th:text="${voteItem.title}"></span>
-											<span>(가중치의 합 : 10점)</span>
+											<span>([[#{HQP_L_EXTRA_WEIGHT_SUM}]] : 10[[#{HQP_L_POINT}]])</span>
 										</td>
 									</tr>
 								</table>
@@ -125,16 +132,16 @@
 										<td>
 											<span>
 												<select th:name="'I_'+${item.siSeq}" th:id="'I_'+${item.siSeq}">
-													<option value="1">1점</option>
-													<option value="2">2점</option>
-													<option value="3">3점</option>
-													<option value="4">4점</option>
-													<option value="5">5점</option>
-													<option value="6">6점</option>
-													<option value="7">7점</option>
-													<option value="8">8점</option>
-													<option value="9">9점</option>
-													<option value="10">10점</option>
+													<option value="1">1[[#{HQP_L_POINT}]]</option>
+													<option value="2">2[[#{HQP_L_POINT}]]</option>
+													<option value="3">3[[#{HQP_L_POINT}]]</option>
+													<option value="4">4[[#{HQP_L_POINT}]]</option>
+													<option value="5">5[[#{HQP_L_POINT}]]</option>
+													<option value="6">6[[#{HQP_L_POINT}]]</option>
+													<option value="7">7[[#{HQP_L_POINT}]]</option>
+													<option value="8">8[[#{HQP_L_POINT}]]</option>
+													<option value="9">9[[#{HQP_L_POINT}]]</option>
+													<option value="10">10[[#{HQP_L_POINT}]]</option>
 												</select>
 											</span>
 											<span>[[${item.title}]]</span>
@@ -153,7 +160,8 @@
 									<tr>
 										<td>
 											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:text="${voteItem.fgMandatory} == 'Y' ? '[ 필수선택 ]': '[ 선택가능 ]'"></span>
+											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
 											<span style="color:blue;" th:text="${voteItem.title}"></span>
 										</td>
 									</tr>
@@ -163,7 +171,7 @@
 										<td>
 											<span>
 												<select th:name="'I_'+${item.siSeq}" th:id="'I_'+${item.siSeq}">
-													<option th:each="idx, itemIndex : ${voteItem.items}" th:value="${itemIndex.count}">[[${itemIndex.count}]] 우선순위</option>
+													<option th:each="idx, itemIndex : ${voteItem.items}" th:value="${itemIndex.count}">[[${itemIndex.count}]] [[#{HQP_L_PRIORITY_POINT}]]</option>
 												</select>
 											</span>
 											<span>[[${item.title}]]</span>

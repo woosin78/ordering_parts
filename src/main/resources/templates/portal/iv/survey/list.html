@@ -6,10 +6,10 @@
 <th:block layout:fragment="content">
 	
 	<div class="block-header">
-		<div class="block-title" th:text="설문조사"></div>
+		<div class="block-title" th:text="#{HQP_L_SURVEY}"></div>
 		<div class="block-button-area">
-			<button id="BTN_write" type="button">설문등록</button>
-			<button id="BTN_search" type="button">검색</button>
+			<button id="BTN_write" type="button" th:text="#{HQP_B_SURVEY_CREATION}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}">검색</button>
 		</div>
 	</div>
 	
@@ -20,11 +20,11 @@
 				<td width="10%"> 
 					<div>
 						<select id="fgStatus" name="fgStatus" onchange="doSearch();">
-							<option value="0">전체보기</option>
-							<option value="1">설문작성중</option>
+							<option value="0">[[#{HQP_L_ALL}]]</option>
+							<option value="1">[[#{HQP_L_SURVEY_DOING}]]</option>
 							<!-- <option value="2">설문대기중</option> -->
-							<option value="2">설문진행</option>
-							<option value="3">설문완료</option>
+							<option value="2">[[#{HQP_L_SURVEY_RUNNING}]]</option>
+							<option value="3">[[#{HQP_L_SURVEY_COMPLETE}]]</option>
 						</select>
 					</div>
 				</td>
@@ -65,18 +65,18 @@ $(function(){
 		ordering: true, 
 		scrollY: 100,
 		columns : [
-			{data:"sseq", 			title: "번호",		"width": "5%"},		// 0
-			{data:"fgStatus",		title: "상태", 		"width": "8%"},		// 1
-			{data:"validFrom",		title: "공지기간", 	"width": "15%"},	// 2
-			{data:"validTo",		title: "공지기간", 	"width": "15%"},	// 3
-			{data:"title", 			title: "설문제목"},						// 4
-			{data:"fgOpenResult",	title: "결과", 		"width": "8%"},		// 5
-			{data:"regUsername", 	title: "작성자", 		"width": "10%"},	// 6
-			{data:"applier", 		title: "참여", 		"width": "8%"},		// 7
-			{data:null, 			title: "비고", 		"width": "10%"},	// 8
-			{data:"validFromYmd",	title: "공지기간", 	"width": "15%"},	// 9
-			{data:"validToYmd",		title: "공지기간", 	"width": "15%"},	// 10
-			{data:"fgApply",		title: "참여여부", 	"width": "15%"},	// 11	
+			{data:"sseq", 			title: "[[#{HQP_L_NUMBER}]]",		"width": "5%"},		// 0
+			{data:"fgStatus",		title: "[[#{HQP_L_STATUS}]]", 		"width": "8%"},		// 1
+			{data:"validFrom",		title: "[[#{HQP_L_SURVEY_PERIOD}]]", 	"width": "15%"},	// 2
+			{data:"validTo",		title: "[[#{HQP_L_SURVEY_PERIOD}]]", 	"width": "15%"},	// 3
+			{data:"title", 			title: "[[#{HQP_L_SURVEY_TITLE}]]"},						// 4
+			{data:"fgOpenResult",	title: "[[#{HQP_L_RESULT}]]", 		"width": "8%"},		// 5
+			{data:"regUsername", 	title: "[[#{HQP_L_WRITER}]]", 		"width": "10%"},	// 6
+			{data:"applier", 		title: "[[#{HQP_L_PARTICIPATE}]]", 		"width": "8%"},		// 7
+			{data:null, 			title: "[[#{HQP_L_SURVEY_NOTE}]]", 		"width": "10%"},	// 8
+			{data:"validFromYmd",	title: "[[#{HQP_L_SURVEY_PERIOD}]]", 	"width": "15%"},	// 9
+			{data:"validToYmd",		title: "[[#{HQP_L_SURVEY_PERIOD}]]", 	"width": "15%"},	// 10
+			{data:"fgApply",		title: "[[#{HQP_L_PARTICIPATE}]]", 	"width": "15%"},	// 11	
 		],
 		columnDefs: [
 			{targets: [0, 5, 6, 7], className: "dt-body-center"},
@@ -98,7 +98,7 @@ $(function(){
 					$(td).css('color', color);
 				},
 				render: function(data, type, row) {
-					return {'0': '-', '1': '설문작성중', '2':'설문진행', '3':'설문완료'}[data];
+					return {'0': '-', '1': '[[#{HQP_L_SURVEY_DOING}]]', '2':'[[#{HQP_L_SURVEY_RUNNING}]]', '3':'[[#{HQP_L_SURVEY_COMPLETE}]]'}[data];
 				}
 			},
 			{targets: [2,3], className: "dt-body-center", render: function(data, type, row) {
@@ -108,7 +108,7 @@ $(function(){
 			{targets: [3, 9, 10, 11], visible: false},
 			{targets: 4, className: "link clickable"},
 			{targets: 5, render: function(data, type, row) {
-				return {'Y':'공개', 'N':'비공개'}[data];
+				return {'Y':'[[#{HQP_L_PUBLIC}]]', 'N':'[[#{HQP_L_PRIVATE}]]'}[data];
 			}},
 			{targets: 8, className: "dt-body-center", render: function(data, type, row) {
 				
@@ -116,13 +116,13 @@ $(function(){
 				if (data['fgApply'] == 'Y') {
 					
 					if (data['fgOpenResult'] == 'Y') {
-						return '<button onclick="goResult(\''+data['sseq']+'\');">결과보기</button>';						
+						return '<button onclick="goResult(\''+data['sseq']+'\');">[[#{HQP_B_RESULT}]]</button>';						
 					} else {
 						return '-';
 					}
 					
 				} else {
-					return '<button onclick="vote(\''+data['sseq']+'\');">설문참여</button>';
+					return '<button onclick="vote(\''+data['sseq']+'\');">[[#{HQP_B_SURVEY_PARTICIPATE}]]</button>';
 				}
 			}},
 		],

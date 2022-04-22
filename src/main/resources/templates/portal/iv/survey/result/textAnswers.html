@@ -6,9 +6,9 @@
 <th:block layout:fragment="content">
 	
 	<div class="block-header" >
-		<div class="block-title" th:text="설문조사결과보기[주관식]"></div>
+		<div class="block-title">[[#{HQP_L_SURVEY_VIEW_RESULT}]] ([[#{HQP_L_SUBJECTIVE_QUESTION}]])</div>
 		<div class="block-button-area">
-			<button id="BTN_back" type="button" th:text="돌아가기" onclick="history.back();"></button>
+			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}" onclick="history.back();"></button>
 		</div>
 	</div>	
 	
@@ -17,7 +17,7 @@
 			<tr>
 				<td style="width:20%">[[${survey?.title}]]</td>
 				<td th:style="${#lists.isEmpty(survey?.uploadFileLists) ? 'display:none' : ''}">
-					첨부파일 : <span th:each="uploadFileList : ${survey?.uploadFileLists}">
+					[[#{HQP_L_ATTACHMENT}]] : <span th:each="uploadFileList : ${survey?.uploadFileLists}">
 						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a>
 						(<span th:text="${uploadFileList.displayFileSize}"></span>)
 					</span>
@@ -36,7 +36,8 @@
 						<tr>
 							<td>
 								<span style="color:blue;" th:text="${rowIndex}+'.'"></span>
-								<span style="color:red;" th:text="${textAnswers[0]?.fgMandatory} == 'Y' ? '[ 필수문항 ]': '[ 선택문항 ]'"></span>
+								<span style="color:red;" th:if="${(textAnswers[0]?.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+								<span style="color:red;" th:unless="${(textAnswers[0]?.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
 								<span style="color:blue;" th:text="${textAnswers[0]?.title}"></span>
 							</td>
 						</tr>

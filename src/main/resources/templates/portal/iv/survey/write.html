@@ -6,10 +6,10 @@
 <th:block layout:fragment="content">
 	
 	<div class="block-header" >
-		<div class="block-title" ></div>
+		<div class="block-title" th:text="#{HQP_T_SURVEY_BASIC_INFO}">></div>
 		<div class="block-button-area">
-			<button id="BTN_save" type="button" th:text="저장"></button>
-			<button id="BTN_back" type="button" th:text="뒤로" onclick="goView();"></button>
+			<button id="BTN_save" type="button" th:text="#{HQP_B_SAVE}"></button>
+			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}" onclick="goView();"></button>
 		</div>	
 	</div>	
 	
@@ -23,12 +23,12 @@
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<th>설문제목</th>
+				<th><span th:text="#{HQP_L_SURVEY_TITLE}"></span></th>
 				<td><input name="title" type="text" th:value="${survey?.title}"/></td>
 			</tr>
 			
 			<tr>
-				<th>설문취지</th>
+				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
 				<td>
 					<textarea name="description" th:text="${survey?.description}" rows="5" cols="50">
 					</textarea>
@@ -36,12 +36,12 @@
 			</tr>
 			
 			<tr>
-				<th>대상</th>
+				<th><span th:text="#{HQP_L_SURVEY_TARGET}"></span></th>
 				<td>
 					<div class="split-row-more-compact"></div>
 					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui" /></div>
 					<div class="split-row-more-compact"></div>
-					<button id="BTN_deleteVisibleTarget" type="button" th:text="삭제" class="small_button"></button>
+					<button id="BTN_deleteVisibleTarget" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
 					<div class="split-row-more-compact"></div>
 					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div class="split-row-more-compact"></div>
@@ -57,7 +57,7 @@
 			</tr>
 			
 			<tr>
-				<th>공지기간</th>
+				<th><span th:text="#{HQP_L_SURVEY_PERIOD}"></span></th>
 				<td>
 					<div th:with="validFrom=${survey?.validFrom}, validFromDate=${#strings.substring(validFrom, 0, 8)}" class="input-area period">
 						<span th:text="#{HQP_L_FROM}" class="label"></span>
@@ -100,29 +100,29 @@
 			</tr>
 			
 			<tr>
-				<th>설문공개</th>
+				<th><span th:text="#{HQP_L_SURVEY_OPEN}"></span></th>
 				<td>
 					<input type="radio" class="custom-ui" name="fgOpen" value="Y"/>
-					<label th:text="공개"></label>
+					<label th:text="#{HQP_L_PUBLIC}"></label>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="radio" class="custom-ui" name="fgOpen" value="N"/>
-					<label th:text="비공개"></label>
+					<label th:text="#{HQP_L_PRIVATE}"></label>
 				</td>
 			</tr>
 			
 			<tr>
-				<th>결과공개</th>
+				<th><span th:text="#{HQP_L_RESULT_OPEN}"></span></th>
 				<td>
 					<input type="radio" class="custom-ui" name="fgOpenResult" value="Y"/>
-					<label th:text="공개"></label>
+					<label th:text="#{HQP_L_PUBLIC}"></label>
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					<input type="radio" class="custom-ui" name="fgOpenResult" value="N"/>
-					<label th:text="비공개"></label>
+					<label th:text="#{HQP_L_PRIVATE}"></label>
 				</td>
 			</tr>
 			
 			<tr>
-				<th>감사인사</th>
+				<th><span th:text="#{HQP_L_THANKS_GREETING}"></span></th>
 				<td>
 					<textarea name="remark" th:text="${survey?.remark}" rows="5" cols="50">
 					</textarea>
@@ -130,10 +130,10 @@
 			</tr>
 			
 			<tr>
-				<th>파일첨부</th>
+				<th th:text="#{HQP_L_ATTACHMENT}"/>
 				<td>
 					<div class="split-row-more-compact"></div>
-					<button id="BTN_searchFile" type="button" th:text="파일" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile" type="button" th:text="삭제" class="small_button"></button>
+					<button id="BTN_searchFile" type="button" th:text="#{HQP_B_FILE}" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
 					<div class="split-row-more-compact"></div>
 					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div class="split-row-more-compact"></div>
