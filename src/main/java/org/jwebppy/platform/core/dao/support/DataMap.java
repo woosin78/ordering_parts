@@ -223,11 +223,11 @@ public class DataMap implements IDataMap, Serializable
 
     public Number getNumber(Object key, Number defaultValue)
     {
-    	BigDecimal value = null;
+    	Number value = null;
 
     	try
     	{
-    		value = (BigDecimal)get(key);
+    		value = (Number)get(key);
     	}
     	catch (ClassCastException e)
     	{

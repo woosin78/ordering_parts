@@ -320,6 +320,14 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 .condition td.wp15{
 	width: 15%;
 }
+.condition th.order-no { width: 150px; }
+.condition th.item-line { width: 100px; }
+.condition th.material { width: 200px; }
+.condition th.uom { width: 100px; }
+.condition th.qty { width: 100px; }
+.condition th.weight { width: 150px; }
+.condition th.order-date { width: 100px; }
+.condition th.price { width: 150px; }
 /* condition 테이블 모서리 라운드 처리*/
 
 .condition tr:first-child th:first-child, .condition tr:first-child td:first-child {

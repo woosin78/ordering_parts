@@ -120,14 +120,12 @@ public class ClaimCreateController extends PartsDomesticGeneralController
 
 		DataMap dataMap = claimCreateService.getSummary(rfcParamMap).getStructure("O_ZSSS0075");
 
-		//dataMap.put("A_PRICE", dataMap.getDouble("O_AMT") + dataMap.getDouble("R_AMT"));
-		//dataMap.put("A_ROW", dataMap.getDecimal("O_ROW").add(dataMap.getDecimal("R_ROW")).toString());
-		dataMap.put("A_PRICE", "0");
-		dataMap.put("A_ROW", "0");
+		dataMap.put("A_PRICE", dataMap.getDouble("O_AMT") + dataMap.getDouble("R_AMT"));
+		dataMap.put("A_ROW", dataMap.getInt("O_ROW") + dataMap.getInt("R_ROW"));
 
 		FormatBuilder.with(dataMap)
 			.decimalFormat(new String[] {"B_AMT", "L_AMT", "A_AMT", "A_PRICE", "AO_AMT"})
-			.qtyFormat(new String[] {"A_ROW", "A_ROW", "AO_ROW"});
+			.qtyFormat(new String[] {"A_ROW", "AO_ROW"});
 
 		return dataMap;
 	}

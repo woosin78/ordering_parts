@@ -31,24 +31,24 @@
 		<table class="condition table-fixed">
 			<tbody>
 				<tr>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY1}"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY2}"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY3}"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY4}"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY5}"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY6}"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY7}"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY8}"></th>
+					<th th:text="#{HQP_L_CLAIM_SUMMARY1}" class="center"></th>
+					<th th:text="#{HQP_L_CLAIM_SUMMARY2}" class="center"></th>
+					<th th:text="#{HQP_L_CLAIM_SUMMARY3}" class="center"></th>
+					<th th:text="#{HQP_L_CLAIM_SUMMARY4}" class="center"></th>
+					<th th:text="#{HQP_L_CLAIM_SUMMARY5}" class="center"></th>
+					<th th:text="#{HQP_L_CLAIM_SUMMARY6}" class="center"></th>
+					<th th:text="#{HQP_L_CLAIM_SUMMARY7}" class="center"></th>
+					<th th:text="#{HQP_L_CLAIM_SUMMARY8}" class="center"></th>
 				</tr>
 				<tr>
-					<td data-key="summary1"></td>
-					<td data-key="summary2"></td>
-					<td data-key="summary3"></td>
-					<td data-key="summary4"></td>
-					<td data-key="summary5"></td>
-					<td data-key="summary6"></td>
-					<td data-key="summary7"></td>
-					<td data-key="summary8"></td>
+					<td data-key="summary1" class="center"></td>
+					<td data-key="summary2" class="right"></td>
+					<td data-key="summary3" class="right"></td>
+					<td data-key="summary4" class="center"></td>
+					<td data-key="summary5" class="right"></td>
+					<td data-key="summary6" class="center"></td>
+					<td data-key="summary7" class="right"></td>
+					<td data-key="summary8" class="center"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -80,40 +80,40 @@
 	</div>
 	
 	<div id="AREA_grid" class="flex-grow grid-area">
-		<div id="template">		
-			<table class="condition table-fixed">
+		<div id="AREA_template">		
+			<table class="condition table-fixed template">
 				<tbody>
 					<tr>
-						<th style="width:50px; text-align:center;"><input type="checkbox" class="custom-ui check-all"><label></label></th>
-						<th th:text="#{HQP_L_ORDER_NO}"></th>
-						<th th:text="#{HQP_L_LINE_ITEM}"></th>
-						<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
-						<th th:text="#{HQP_L_DESCRIPTION}"></th>
-						<th th:text="#{HQP_L_ORDER_QTY}"></th>
-						<th th:text="#{HQP_L_CLAIM_QTY}"></th>
-						<th th:text="#{HQP_L_UOM}"></th>
-						<th th:text="#{HQP_L_NET_PRICE}"></th>
-						<th th:text="#{HQP_L_NET_VALUE2}"></th>
-						<th th:text="#{HQP_L_ORDER_DATE}"></th>
+						<th style="width:50px;" class="center"><input type="checkbox" class="custom-ui check-all"><label></label></th>
+						<th th:text="#{HQP_L_ORDER_NO}" class="center order-no"></th>
+						<th th:text="#{HQP_L_LINE_ITEM}" class="center item-line"></th>
+						<th th:text="#{HQP_L_ORDER_PART_NO}" class="center material"></th>
+						<th th:text="#{HQP_L_DESCRIPTION}" class="center"></th>
+						<th th:text="#{HQP_L_ORDER_QTY}" class="center qty"></th>
+						<th th:text="#{HQP_L_CLAIM_QTY}" class="center qty"></th>
+						<th th:text="#{HQP_L_UOM}" class="center uom"></th>
+						<th th:text="#{HQP_L_NET_PRICE}" class="center price"></th>
+						<th th:text="#{HQP_L_NET_VALUE2}" class="center price"></th>
+						<th th:text="#{HQP_L_ORDER_DATE}" class="center order-date"></th>
 					</tr>
 					<tr>
 						<td></td>
-						<td data-key="order-no"></td>
-						<td data-key="line-item"></td>
+						<td data-key="order-no" class="center"></td>
+						<td data-key="line-item" class="center"></td>
 						<td data-key="order-part-no"></td>
 						<td data-key="description"></td>
-						<td data-key="order-qty"></td>
+						<td data-key="order-qty" class="center"></td>
 						<td data-key="claim-qty"></td>
-						<td data-key="uom"></td>
-						<td data-key="net-price"></td>
-						<td data-key="net-value"></td>
-						<td data-key="order-date"></td>
+						<td data-key="uom" class="center"></td>
+						<td data-key="net-price" class="right"></td>
+						<td data-key="net-value" class="right"></td>
+						<td data-key="order-date" class="center"></td>
 					</tr>
 					<tr>
 						<th></th>
-						<th colspan="3" th:text="#{HQP_L_CLAIM_REASON}"></th>
-						<th colspan="4" th:text="#{HQP_L_ADDITIONAL_TEXT}"></th>
-						<th colspan="3"><span th:text="#{HQP_L_ATTACHMENT}"></span><div class="split3"></div><button type="button" class="small_button upload" th:text="#{HQP_B_UPLOAD}"></button></th>
+						<th colspan="3" th:text="#{HQP_L_CLAIM_REASON}" class="center"></th>
+						<th colspan="4" th:text="#{HQP_L_ADDITIONAL_TEXT}" class="center"></th>
+						<th colspan="3" class="center"><div><span th:text="#{HQP_L_ATTACHMENT}"></span><div class="split3"></div><button type="button" class="small_button upload" th:text="#{HQP_B_UPLOAD}"></button></div></th>
 					</tr>
 					<tr>
 						<td></td>
@@ -201,7 +201,7 @@ $(function(){
 	$("#BTN_delete").on("click", function(){
 		$("input.check-all:checked").each(function(index, element) {
 			$(this).closest("table").prev("div.split-row-compact").remove();//delete split row 
-			$(this).closest("table").remove();
+			$(this).closest("table").not(".template").remove();
 		});
 		
 		try
@@ -212,7 +212,7 @@ $(function(){
 		
 		if ($("#FORM_claim input.check-all").length == 0)
 		{
-			$("#template").show();
+			$("#AREA_template").show();
 		};
 	});	
 	
@@ -338,16 +338,16 @@ $(function(){
 function setSelectedItems(rows)
 {
 	//Template 은 최초 로딩시에만 보여주고 반품 대상을 선택하면 이후부터는 감춘다
-	$("#template").hide();
+	$("#AREA_template").hide();
 	
 	let splitRow = "<div class='split-row-compact'></div>";
 	
 	$.each(rows, function(index, element) {
-		let template = $("#template").clone();
+		let template = $("#AREA_template").clone();
 		
 		let id = element.VBELN + "_" + element.POSNR;
 		
-		$(template).find("table").attr("id", id);
+		$(template).find("table").attr("id", id).removeClass("template");
 		
 		$(template).find("[data-key=order-no]").text(element.VBELN);
 		$(template).find("[data-key=line-item]").text(element.POSNR);
