@@ -1,13 +1,16 @@
 package org.jwebppy.portal.iv.hq.parts.common.web;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.portal.iv.hq.common.web.HqGeneralController;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpUserContext;
@@ -70,5 +73,23 @@ public class PartsGeneralController extends HqGeneralController
 		}
 
 		return null;
+	}
+
+	protected boolean hasAuthority(String[] authorities)
+	{
+		List<CItemDto> cItems = ListUtils.emptyIfNull(UserAuthenticationUtils.getUserDetails().getCItems());
+
+		for (String authority: authorities)
+		{
+			for (CItemDto cItem: cItems)
+			{
+				if (CmStringUtils.equals(authority, cItem.getName()))
+				{
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 }

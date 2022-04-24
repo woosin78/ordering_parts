@@ -91,13 +91,13 @@
 	</select>
 	
 	<select id="findBoardContents" parameterType="EpBoardContentSearchDto" resultMap="boardContentEntityMap">
-		select
-		total_count-(rownum-1) no,
+		<include refid="PaginationMapper.header"/>
+
+		select		
 		z.*
 		from
 		(
-			select
-			count(*) over() as total_count,
+			select			
 			a.*
 			from
 			ep_board_content a,
@@ -143,6 +143,8 @@
 	
 			order by a.p_seq desc, a.sort, a.depth
 		) z
+
+		<include refid="PaginationMapper.footer"/>
 	</select>
 
 	<select id="findUploadFileLists" resultType="EpUploadFileListEntity">

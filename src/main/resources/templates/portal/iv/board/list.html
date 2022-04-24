@@ -6,7 +6,7 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header" th:with="boardTitle='PLTF_T_' + ${board.bSeq}">
-		<div class="block-title" th:text="#{${boardTitle}}"></div>
+		<div class="block-title">[[#{${boardTitle}}]]</div>
 		<div class="block-button-area">
 			<button id="BTN_write" type="button" th:text="#{HQP_B_WRITE}"></button>
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>			

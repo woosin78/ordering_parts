@@ -118,279 +118,246 @@
 	<input type="hidden" name="toRegDate" th:value="*{toRegDate}"/>
 	<input type="hidden" name="pageNumber" th:value="*{pageNumber}"/>
 	</form>
-	<script>
-	$(function(){
-		Calendar.makeCalendar($("#fromViewDate"), "[[${boardContent?.displayFromView}]]");
-		Calendar.makeCalendar($("#toViewDate"), "[[${boardContent?.displayToView}]]");
-		
-		$("#FORM_write .ui.checkbox").checkbox();
-	});
+<script>
+$(function(){
+	Calendar.makeCalendar($("#fromViewDate"), "[[${boardContent?.displayFromView}]]");
+	Calendar.makeCalendar($("#toViewDate"), "[[${boardContent?.displayToView}]]");
 	
-	$(window).on("load", function() {
-		ProgressBar.hide();
-		
-		initBoardViwer($("#boardViwer"), $("#xfe"));
-		
-		$("#searchVisibleTarget").autocomplete({
-			source: function(request, response) {
-				JpUtilsAjax.get({
-					url: "[[${BASE_PATH}]]/board/target/data",
-					data: {	"name": $("#searchVisibleTarget").val(), "dealerCode": $("#searchVisibleTarget").val() },
-					success: function(data, textStatus, jqXHR)
+	$("#FORM_write .ui.checkbox").checkbox();
+});
+
+$(window).on("load", function() {
+	ProgressBar.hide();
+	
+	initBoardViwer($("#boardViwer"), $("#xfe"));
+	
+	$("#searchVisibleTarget").autocomplete({
+		source: function(request, response) {
+			JpUtilsAjax.get({
+				url: "[[${BASE_PATH}]]/board/target/data",
+				data: {	"name": $("#searchVisibleTarget").val(), "dealerCode": $("#searchVisibleTarget").val() },
+				success: function(data, textStatus, jqXHR)
+				{
+					let result = data.RESULT;
+					
+					if (JpUtilsObject.isNotNull(result))
 					{
-						let result = data.RESULT;
-						
-						if (JpUtilsObject.isNotNull(result))
-						{
-							response(
-									$.map(result, function(item) {
-										if (JpUtilsString.isNotEmpty(item.KUNNR))
-										{
-											return {
-												label: item.KUNNR + " | " + item.NAME1,
-												value: item.KUNNR
-											}
-										};
-									})
-							);					
-						};
-					}
-				});
-			},
-			select: function(event, ui)
-			{
-				 console.log(ui.item.label + "," + ui.item.value);
-				 addTarget(ui.item.label, ui.item.value);
-				 
-				 $(this).val("");
-				 return false;
-			},
-			//delay: 50,
-			minLength: 3
-		});		
+						response(
+								$.map(result, function(item) {
+									if (JpUtilsString.isNotEmpty(item.KUNNR))
+									{
+										return {
+											label: item.KUNNR + " | " + item.NAME1,
+											value: item.KUNNR
+										}
+									};
+								})
+						);					
+					};
+				}
+			});
+		},
+		select: function(event, ui)
+		{
+			 console.log(ui.item.label + "," + ui.item.value);
+			 addTarget(ui.item.label, ui.item.value);
+			 
+			 $(this).val("");
+			 return false;
+		},
+		//delay: 50,
+		minLength: 3
+	});		
+});
+
+function addTarget(label, value)
+{
+	let str = label.split("|");
+	
+	console.log(str.length + "," + JpUtilsString.trimToEmpty(str[0]) + " , " + JpUtilsString.trimToEmpty(str[1]));
+	
+	let dealerCode = str[0];
+	let dealerName = str[1];
+	
+	let html = [];
+	
+	html.push("<div>");
+	html.push("<input type='checkbox' class='custom-ui'/><label>" + dealerCode + "</label>");
+	html.push("<div class='split2'></div><span>" + dealerName + "</span>");
+	html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
+	html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
+	html.push("</div>");
+	
+	$("#addedtargets").append(html.join(""));
+};
+
+$("#BTN_deleteVisibleTarget").on("click", function(event) {
+	$.each($("#FORM_write .visible-target"), function(i, item) {
+		if ($(this).is(":checked"))
+		{
+			$(this).closest("div").remove();
+		};
+	});
+});	
+
+function initBoardViwer($area, $content)
+{
+	installBoardViewResizer($area, $content);
+	
+	$(window).on("resize", $.debounce(100, function(e){
+		installBoardViewResizer($area, $content);
+	}));
+};
+
+function installBoardViewResizer($area, $content)
+{
+	let height = 0;
+	
+	$.each($("body").children(":not(script)").not($area), function(index, element) {
+		if (!$(element).is(":visible"))
+		{
+			return true;
+		};
+		
+		height += $(element).outerHeight(true);
 	});
 	
-	function addTarget(label, value)
+	let bodyHeight = $("body").height();
+	let h1 = $area.outerHeight(true) - $content.outerHeight(true);//게시글 영역 외 height
+	
+	$content.height(bodyHeight - height - h1);
+	xfe.setHeight($content.height() + "px");
+};
+
+$("#BTN_back").on("click", function() {
+	
+	let action = "[[${BASE_PATH}]]/board/list";
+	
+	if (JpUtilsString.isNotEmpty("[[${boardContent?.bcSeq}]]"))
 	{
-		let str = label.split("|");
-		
-		console.log(str.length + "," + JpUtilsString.trimToEmpty(str[0]) + " , " + JpUtilsString.trimToEmpty(str[1]));
-		
-		let dealerCode = str[0];
-		let dealerName = str[1];
-		
-		let html = [];
-		
-		html.push("<div>");
-		html.push("<input type='checkbox' class='custom-ui'/><label>" + dealerCode + "</label>");
-		html.push("<div class='split2'></div><span>" + dealerName + "</span>");
-		html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
-		html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
-		html.push("</div>");
-		
-		$("#addedtargets").append(html.join(""));
+		action = "[[${BASE_PATH}]]/board/view";
+	};
+	
+	$("#FORM_search").attr("action", action);
+	$("#FORM_search").submit();
+});
+
+$("#BTN_save").on("click", function() {
+	if (JpUtilsString.isEmpty($("#FORM_write input[name=title]").val()))
+	{
+		alert("[[#{HQP_M_EMPTY_TITLE}]]");
+		$("#title").focus();
+		return;
 	};
 
-	$("#BTN_deleteVisibleTarget").on("click", function(event) {
-		$.each($("#FORM_write .visible-target"), function(i, item) {
-			if ($(this).is(":checked"))
-			{
-				$(this).closest("div").remove();
-			};
-		});
-	});	
-	
-	function initBoardViwer($area, $content)
+	if (JpUtilsString.isEmpty(xfe.getTextValue()))
 	{
-		installBoardViewResizer($area, $content);
-		
-		$(window).on("resize", $.debounce(100, function(e){
-			installBoardViewResizer($area, $content);
-		}));
+		alert("[[#{HQP_M_EMPTY_CONTENT}]]");
+		return;
+	};
+
+	$("#textContent").val(xfe.getTextValue());
+	$("#htmlContent").val(xfe.getBodyValue());
+	
+	let options = {
+			enctype: "multipart/form-data",
+			url: "[[${BASE_PATH}]]/board/save",
+			data: new FormData($("#FORM_write")[0]),
+			global: false,
+			processData: false,
+			contentType: false,
+			cache: false,
+			success: function(data, textStatus, jqXHR) {
+				$("#FORM_search input[name=bcSeq]").val(data.RESULT);
+				
+				$("#BTN_back").trigger("click");
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				console.log(textStatus);
+				console.log(errorThrown);
+				
+				alert("[[#{HQP_M_FAIL_SAVE}]]");
+			}
 	};
 	
-	function installBoardViewResizer($area, $content)
+	JpUtilsAjax.post(options);
+});
+
+/*
+ * 에디터 생성.
+ * 
+ * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
+ * width : 에디터의 너비
+ * height : 에디터의 높이
+ * onLoad : 에디터 초기 로드 이벤트				 
+ */
+let xfe = new XFE({
+	basePath: "[[@{/editor_html5}]]",
+	width: "100%",
+	height: "100%",
+	onLoad: function() {
+		xfe.setBodyValue($("#htmlContent").val());
+	},
+	language: "english",
+	initFontFamily: "Arial"
+});
+	
+xfe.render("xfe");
+
+$("#BTN_searchFile").on("click", function() {
+	$("#files").trigger("click");
+});	
+
+$("#files").on("change", function() {
+	for (let i=0, length=this.files.length; i<length; i++)
 	{
-		let height = 0;
-		
-		$.each($("body").children(":not(script)").not($area), function(index, element) {
-			if (!$(element).is(":visible"))
+		addFile(this.files[i].name, this.files[i].size);
+	};
+	
+	$("#FORM_write .ui.checkbox").checkbox();
+});
+
+$("#BTN_deleteFile").on("click", function(event) {
+	let files = Array.from($("#files")[0].files);
+	
+	$.each($("#FORM_write input[name=uflSeq]"), function(i, item) {
+		if ($(this).is(":checked"))
+		{
+			let fileName = $(this).attr("fileName");
+			
+			for (let j=0, length=files.length; j<length; j++)
 			{
-				return true;
+				if (files[j] == null)
+				{
+					continue;
+				}
+				
+				if (JpUtilsString.equals(files[j].name, fileName))
+				{
+					files.splice(j, 1, null);
+				};
+			};		
+			
+			if (JpUtilsString.isNotEmpty($(this).val()))
+			{
+				$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
 			};
 			
-			height += $(element).outerHeight(true);
-		});
-		
-		let bodyHeight = $("body").height();
-		let h1 = $area.outerHeight(true) - $content.outerHeight(true);//게시글 영역 외 height
-		
-		$content.height(bodyHeight - height - h1);
-		xfe.setHeight($content.height() + "px");
-	};
-	
-	$("#BTN_back").on("click", function() {
-		
-		let action = "[[${BASE_PATH}]]/board/list";
-		
-		if (JpUtilsString.isNotEmpty("[[${boardContent?.bcSeq}]]"))
-		{
-			action = "[[${BASE_PATH}]]/board/view";
+			$(this).closest("div").remove();
 		};
-		
-		$("#FORM_search").attr("action", action);
-		$("#FORM_search").submit();
 	});
+});	
+
+function addFile(name, size, uflSeq)
+{
+	let html = [];
 	
-	$("#BTN_save").on("click", function() {
-		if (JpUtilsString.isEmpty($("#FORM_write input[name=title]").val()))
-		{
-			alert("[[#{HQP_M_EMPTY_TITLE}]]");
-			$("#title").focus();
-			return;
-		};
+	html.push("<div>");
+	html.push("<input name='uflSeq' type='checkbox' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' class='custom-ui' fileName='" + JpUtilsString.trimToEmpty(name) + "'/><label>" + name + "</label>");
+	html.push("<div class='split2'></div><span>" + JpUtilsFile.displaySize(size) + "</span>");
+	html.push("</div>");
 	
-		if (JpUtilsString.isEmpty(xfe.getTextValue()))
-		{
-			alert("[[#{HQP_M_EMPTY_CONTENT}]]");
-			return;
-		};
-	
-		$("#textContent").val(xfe.getTextValue());
-		$("#htmlContent").val(xfe.getBodyValue());
-		
-		let options = {
-				enctype: "multipart/form-data",
-				url: "[[${BASE_PATH}]]/board/save",
-				data: new FormData($("#FORM_write")[0]),
-				global: false,
-				processData: false,
-				contentType: false,
-				cache: false,
-				success: function(data, textStatus, jqXHR) {
-					$("#FORM_search input[name=bcSeq]").val(data.RESULT);
-					
-					$("#BTN_back").trigger("click");
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					console.log(textStatus);
-					console.log(errorThrown);
-					
-					alert("[[#{HQP_M_FAIL_SAVE}]]");
-				}
-		};
-		
-		JpUtilsAjax.post(options);
-	});
-	
-	/*
-	 * 에디터 생성.
-	 * 
-	 * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
-	 * width : 에디터의 너비
-	 * height : 에디터의 높이
-	 * onLoad : 에디터 초기 로드 이벤트				 
-	 */
-	let xfe = new XFE({
-		basePath: "[[@{/editor_html5}]]",
-		width: "100%",
-		height: "100%",
-		onLoad: function() {
-			xfe.setBodyValue($("#htmlContent").val());
-		},
-		language: "english",
-		initFontFamily: "Arial"
-	});
-		
-	xfe.render("xfe");
-	
-	$("#BTN_searchFile").on("click", function() {
-		$("#files").trigger("click");
-	});	
-	
-	$("#files").on("change", function() {
-		for (let i=0, length=this.files.length; i<length; i++)
-		{
-			addFile(this.files[i].name, this.files[i].size);
-		};
-		
-		$("#FORM_write .ui.checkbox").checkbox();
-	});
-	
-	$("#BTN_deleteFile").on("click", function(event) {
-		let files = Array.from($("#files")[0].files);
-		
-		$.each($("#FORM_write input[name=uflSeq]"), function(i, item) {
-			if ($(this).is(":checked"))
-			{
-				let fileName = $(this).attr("fileName");
-				
-				for (let j=0, length=files.length; j<length; j++)
-				{
-					if (files[j] == null)
-					{
-						continue;
-					}
-					
-					if (JpUtilsString.equals(files[j].name, fileName))
-					{
-						files.splice(j, 1, null);
-					};
-				};		
-				
-				if (JpUtilsString.isNotEmpty($(this).val()))
-				{
-					$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
-				};
-				
-				$(this).closest("div").remove();
-			};
-		});
-	});	
-	
-	function addFile(name, size, uflSeq)
-	{
-		let html = [];
-		
-		html.push("<div>");
-		html.push("<input name='uflSeq' type='checkbox' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' class='custom-ui' fileName='" + JpUtilsString.trimToEmpty(name) + "'/><label>" + name + "</label>");
-		html.push("<div class='split2'></div><span>" + getSize(size) + "</span>");
-		html.push("</div>");
-		
-		$("#attachedFiles").append(html.join(""));
-	};
-	
-	function getSize(size)
-	{
-		let KB = 1024;
-		let MB = Math.pow(1024, 2);
-		let GB = Math.pow(1024, 3);
-		
-		let result = [];
-	
-		if (size > GB)
-		{
-			result.push((size / GB).toFixed(2));
-			result.push("GB");
-		}
-		else if (size > MB)
-		{
-			result.push((size / MB).toFixed(2));
-			result.push("MB");
-		}
-		else if (size > KB)
-		{
-			result.push((size / KB).toFixed(2));
-			result.push("KB");
-		}
-		else
-		{
-			alert(size);
-			result.push(size);
-			result.push("B");
-		};
-		
-		return result.join("");
-	};
-	</script>
+	$("#attachedFiles").append(html.join(""));
+};
+</script>
 </th:block>								

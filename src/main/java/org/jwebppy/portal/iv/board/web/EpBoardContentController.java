@@ -10,6 +10,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.Formatter;
+import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentSearchDto;
@@ -48,6 +49,11 @@ public class EpBoardContentController extends IvGeneralController
 
 	@Autowired
 	private EpUploadFileListService uploadFileListService;
+
+	public static void main(String[] args)
+	{
+		System.err.println(UidGenerateUtils.generate());
+	}
 
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest, EpBoardContentSearchDto boardContentSearch)

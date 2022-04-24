@@ -361,23 +361,25 @@ input {
 	}
 	
 	.bulletin-1 {	
+		table-layout: fixed;
 		width: 380px;
 		height: 130px;
 		background-color: #ffffff;
-		padding-left:40px;
-		padding-right:40px;
+		padding-left:20px;
+		padding-right:20px;
 		padding-top:20px;
-		margin-right:10px;
+		margin-right: 5px;
 	}
 	
-	.bulletin-2 {	
+	.bulletin-2 {
+		table-layout: fixed;	
 		width: 380px;
 		height: 130px;
 		background-color: #ffffff;
-		padding-left:40px;
-		padding-right:40px;
+		padding-left:20px;
+		padding-right:20px;
 		padding-top:20px;
-		margin-left:10px;
+		margin-left: 5px;
 	}
 	
 	.bulletin-title-text {
@@ -475,28 +477,30 @@ input {
 		transform: translate(-50%, 0%);
 	}
 	
-	.bulletin-1 {	
+	.bulletin-1 {
+		table-layout: fixed;	
 		bottom: 70px;
-		/*width: 580px;*/
 		width: calc(100vw * 0.3);
 		height: 130px;
 		background-color: #ffffff;
-		padding-left:40px;
-		padding-right:40px;
-		padding-top:20px;
-		margin-right:10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		padding-left:20px;
+		padding-right:20px;
+		margin-right: 5px;
 	}
 	
-	.bulletin-2 {	
+	.bulletin-2 {
+		table-layout: fixed;	
 		bottom: 70px;
-		/*width: 580px;*/
 		width: calc(100vw * 0.3);
 		height: 130px;
 		background-color: #ffffff;
-		padding-left:40px;
-		padding-right:40px;
-		padding-top:20px;
-		margin-left:10px;	
+		padding-top: 5px;
+		padding-bottom: 5px;		
+		padding-left:20px;
+		padding-right:20px;
+		margin-left: 5px;
 	}
 	
 	.bulletin-title-text {
@@ -561,20 +565,32 @@ input {
 }
 
 /* BBS */
+.bbs-name {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap:normal;
+	overflow: hidden;
+	width: 150px;
+	vertical-align: top;
+}
 .bbs-title {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	word-wrap:normal;
 	overflow: hidden;
+	text-align: left;
 }
 .bbs-date {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	word-wrap:normal;
 	overflow: hidden;
+	width: 80px;
 }
-
 .bulletin-area {
 	opacity: 85%;
 	bottom: 33px;
 }
+
+a.link {color: #000; cursor: pointer;}
+a.link:hover {text-decoration: underline; color: #4183C4; cursor: pointer;}

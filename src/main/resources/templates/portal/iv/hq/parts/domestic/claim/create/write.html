@@ -5,7 +5,7 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 	
 <th:block layout:fragment="content">
-	<!-- Modal for upload simulation -->	
+	<!-- Modal for upload file -->	
 	<div class="dropzone-dimmer dimmer"></div>		
 	<div class="dropzone-area">
 		<div class="dropzone-area-top"></div>
@@ -18,7 +18,7 @@
 			<button type="button" onclick="UploadModal.hide()">[[#{HQP_B_CANCEL}]]</button>
 		</div>
 	</div>
-	<!-- Modal for upload simulation -->
+	<!-- Modal for upload file -->
 
 	<div class="block-header">
 		<div class="block-title" th:text="#{PLTF_L_1650325527557}"></div><!-- Claim Create -->
@@ -193,7 +193,6 @@ $(function(){
 	    	ProgressBar.hide();
 	    }
 	});		
-	
 	
 	$("#BTN_add").on("click", function(){
 		Popup.open("[[${BASE_PATH}]]/claim/create/reference/order/popup/list", 1100, 600); 
@@ -397,7 +396,9 @@ function setSelectedItems(rows)
 		UploadModal.show();
 	});
 };
+</script>
 
+<script>
 let UploadModal = {};
 UploadModal.show = function() {
 	let width = 480;
@@ -428,7 +429,6 @@ UploadModal.hide = function()
 $(".dropzone-click-zone").dropzone({
 	url: "[[${BASE_PATH}]]/claim/create/attachment/upload",
 	maxFilesize: 5, //MB
-	//acceptedFiles: ".xls,.xlsx",
 	accept: function(file, done)
 	{
 		done();
@@ -447,7 +447,7 @@ $(".dropzone-click-zone").dropzone({
 		let savedFileName = result.SAVED_FILE_NAME;
 
 		let id = $("#FORM_claim button[data-key=" + uploadingTarget + "]").closest("table").attr("id"); 
-		let content = "<div>" + originalFileName + "<div class='split3'></div><img src='/portal/img/icon/x.png' style='width:10px;' class='cursor-pointer delete-attachment'><input type='hidden' name='attachment_" + id + "' value='" + originalFileName + GLOBAL_CONST.DELIMITER + savedFileName + "'/><div>"; 
+		let content = "<div>" + originalFileName + "<div class='split3'></div>" + JpUtilsFile.displaySize(result.SIZE) + "<div class='split3'></div><img src='/portal/img/icon/x.png' style='width:10px;' class='cursor-pointer delete-attachment'><input type='hidden' name='attachment_" + id + "' value='" + originalFileName + GLOBAL_CONST.DELIMITER + savedFileName + "'/><div>"; 
 
 		$("#FORM_claim button[data-key=" + uploadingTarget + "]").closest("table").find("[data-key=attachment]").append(content);
 

@@ -78,70 +78,52 @@
 							<tr>
 								<td>
 									<table class="bulletin-1">
-										<colgroup>
-											<col width="32%"></col>
-											<col width="48%"></col>
-											<col width="20%"></col>
-										</colgroup>
-										<tbody>
-											<th:block th:if="${#lists.isEmpty(noticeList)}">
-												<tr>
-													<td rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_NOTICE}"></div> <img
-														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
-													/></td>
-													<td colspan="2" th:text="|・  #{HQP_M_EMPTY_RESULT}|"></td>
-												</tr>
-												<tr th:each="i : ${#numbers.sequence(0, 3)}">
-													<td colspan="2">&nbsp;</td>
-												</tr>
-											</th:block>
-											<th:block th:unless="${#lists.isEmpty(noticeList)}">
-												<tr th:each="bbsContent, i : ${noticeList}">
-													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_NOTICE}"></div> <img
-														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
-													/></td>
-													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|"
-															th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"
-														></div></td>
-													<td class="bbs-date" th:text="${#temporals.format(bbsContent.regDate, 'yyyy.MM.dd')}"></td>
-												</tr>
-												<tr th:each="i : ${#numbers.sequence(#lists.size(noticeList), 4)}">
-													<td colspan="2">&nbsp;</td>
-												</tr>
-											</th:block>
-										</tbody>
+									<th:block th:if="${#lists.isEmpty(notice)}">
+										<tr>
+											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="#{PLTF_L_1650718139552}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-date">&nbsp;</td>
+										</tr>
+										<tr th:each="i: ${#numbers.sequence(1, 3)}">
+											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-date">&nbsp;</td>
+										</tr>
+									</th:block>
+									<th:block th:unless="${#lists.isEmpty(notice)}">
+										<tr th:each="content, i: ${notice}">
+											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="#{PLTF_L_1650718139552}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goToBoard('1-07008bda-f80b-4f6c-8397-c382bc344273');" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td class="bbs-title">・<a class="link">[[${content.title}]]</a></td>
+											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
+										</tr>
+										<tr th:if="${#lists.size(notice) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(notice)-4)}">
+											<td colspan="2">&nbsp;</td>
+										</tr>											
+									</th:block>
 									</table>
 								</td>
 								<td>
 									<table class="bulletin-2">
-										<colgroup>
-											<col width="32%"></col>
-											<col width="48%"></col>
-											<col width="20%"></col>
-										</colgroup>
-										<tbody>
-											<th:block th:if="${#lists.isEmpty(promotionList)}">
-												<tr>
-													<td rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img
-														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
-													/></td>
-													<td colspan="2" th:text="|・  #{HQP_M_EMPTY_RESULT}|"></td>
-												</tr>
-												<tr th:each="i : ${#numbers.sequence(0, 3)}">
-													<td colspan="2">&nbsp;</td>
-												</tr>
-											</th:block>
-											<th:block th:unless="${#lists.isEmpty(promotionList)}">
-												<tr th:each="bbsContent, i : ${promotionList}">
-													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"/></td>
-													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|" th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"></div></td>
-													<td class="bbs-date" th:text="${#temporals.format(bbsContent.regDate, 'yyyy.MM.dd')}"></td>
-												</tr>
-												<tr th:each="i : ${#numbers.sequence(#lists.size(promotionList), 4)}">
-													<td colspan="2">&nbsp;</td>
-												</tr>
-											</th:block>
-										</tbody>
+									<th:block th:if="${#lists.isEmpty(market)}">
+										<tr>
+											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="#{PLTF_L_1650717788574}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goToBoard('1-92953403-226b-494e-9c63-55763f8bbb8b');" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-date">&nbsp;</td>
+										</tr>
+										<tr th:each="i: ${#numbers.sequence(1, 3)}">
+											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-date">&nbsp;</td>
+										</tr>
+									</th:block>
+									<th:block th:unless="${#lists.isEmpty(market)}">
+										<tr th:each="content, i: ${market}">
+											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="#{PLTF_L_1650717788574}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goToBoard('1-92953403-226b-494e-9c63-55763f8bbb8b');" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td class="bbs-title">・<a class="link">[[${content.title}]]</a></td>
+											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
+										</tr>
+										<tr th:if="${#lists.size(market) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(market)-4)}">
+											<td colspan="2">&nbsp;</td>
+										</tr>											
+									</th:block>
 									</table>
 								</td>
 							</tr>
@@ -239,16 +221,15 @@ function clickLogout()
 	$("#FORM_logout").submit();
 };
 
-function goBbsFromMain(bSeq)	// 게시판 +버튼
+function goToBoard(bSeq)
 {
-	location.href="/portal/corp/eu/common/bbs/list?bSeq=" + bSeq;	
+	location.href = "/portal/iv/board/list?bSeq=" + bSeq;	
 };
 
 function goBbsPopFromMain(bSeq, bcSeq)	// 게시판 게시물 링크(팝업)
 {
 	Popup.open("/portal/corp/eu/common/bbs/detail_popup?bSeq=" + bSeq + "&bcSeq=" + bcSeq);
 };
-
 
 function checkExpiredPassword()
 {

@@ -112,4 +112,10 @@ public class EpBoardContentDto extends IvGeneralDto
 
 		return null;
 	}
+
+	//Return only date
+	public String getDisplayRegDate2()
+	{
+		return CmDateFormatUtils.format(regDate, null, CmDateFormatUtils.getDateFormat());
+	}
 }
