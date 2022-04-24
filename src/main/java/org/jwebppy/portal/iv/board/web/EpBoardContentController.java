@@ -9,6 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmNumberUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
@@ -175,8 +176,10 @@ public class EpBoardContentController extends IvGeneralController
 	@Override
 	protected void setDefaultAttribute(Model model, WebRequest webRequest)
 	{
+		String bSeq = webRequest.getParameter("bSeq");
+
 		EpBoardContentSearchDto boardContentSearch = new EpBoardContentSearchDto();
-		boardContentSearch.setBSeq(webRequest.getParameter("bSeq"));
+		boardContentSearch.setBSeq(bSeq);
 		boardContentSearch.setBcSeq(webRequest.getParameter("bcSeq"));
 		boardContentSearch.setTitle(webRequest.getParameter("title"));
 		boardContentSearch.setWriter(webRequest.getParameter("writer"));
@@ -189,6 +192,7 @@ public class EpBoardContentController extends IvGeneralController
 
 		model.addAttribute("boardContentSearch", boardContentSearch);
 		model.addAttribute("board", boardService.getBoard(webRequest.getParameter("bSeq")));
+		model.addAttribute("boardName", I18nMessageSource.getMessage(CmStringUtils.upperCase("PLTF_T_" + bSeq)));
 
 		addAllAttributeFromRequest(model, webRequest);
 	}

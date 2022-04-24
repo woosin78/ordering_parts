@@ -92,7 +92,7 @@
 									<th:block th:unless="${#lists.isEmpty(notice)}">
 										<tr th:each="content, i: ${notice}">
 											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="#{PLTF_L_1650718139552}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goToBoard('1-07008bda-f80b-4f6c-8397-c382bc344273');" style="cursor: pointer; margin-top: 20px;"/></td>
-											<td class="bbs-title">・<a class="link">[[${content.title}]]</a></td>
+											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.board.bSeq}">[[${content.title}]]</a></td>
 											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
 										</tr>
 										<tr th:if="${#lists.size(notice) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(notice)-4)}">
@@ -117,7 +117,7 @@
 									<th:block th:unless="${#lists.isEmpty(market)}">
 										<tr th:each="content, i: ${market}">
 											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="#{PLTF_L_1650717788574}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goToBoard('1-92953403-226b-494e-9c63-55763f8bbb8b');" style="cursor: pointer; margin-top: 20px;"/></td>
-											<td class="bbs-title">・<a class="link">[[${content.title}]]</a></td>
+											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.board.bSeq}">[[${content.title}]]</a></td>
 											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
 										</tr>
 										<tr th:if="${#lists.size(market) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(market)-4)}">
@@ -226,10 +226,10 @@ function goToBoard(bSeq)
 	location.href = "/portal/iv/board/list?bSeq=" + bSeq;	
 };
 
-function goBbsPopFromMain(bSeq, bcSeq)	// 게시판 게시물 링크(팝업)
-{
-	Popup.open("/portal/corp/eu/common/bbs/detail_popup?bSeq=" + bSeq + "&bcSeq=" + bcSeq);
-};
+$(".bulletin-area a.link").on("click", function() {
+	location.href = "/portal/iv/board/view?bSeq=" + $(this).attr("bSeq") + "&bcSeq=" + $(this).attr("data-key");
+	//Popup.open("/portal/iv/board/view?bSeq=" + bcSeq);
+});
 
 function checkExpiredPassword()
 {

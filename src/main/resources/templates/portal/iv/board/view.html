@@ -7,8 +7,8 @@
 <th:block layout:fragment="content">
 	<script th:src="@{/editor_html5/js/xfe_main.js}"></script>
 	
-	<div class="block-header" th:with="boardTitle='PLTF_T_' + ${board.bSeq}">
-		<div class="block-title" th:text="#{${boardTitle}}"></div>
+	<div class="block-header">
+		<div class="block-title" th:text="${boardName}"></div>
 		<div class="block-button-area">
 			<button id="BTN_modify" type="button" th:text="#{HQP_B_MODIFY}"></button>
 			<button id="BTN_delete" type="button" th:text="#{HQP_B_DELETE}"></button>
