@@ -76,6 +76,21 @@ public class EpBoardContentController extends IvGeneralController
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest)
 	{
+		procView(model, webRequest);
+
+		return DEFAULT_VIEW_URL;
+	}
+
+	@RequestMapping("/popup/view")
+	public Object viewPopup(Model model, WebRequest webRequest)
+	{
+		procView(model, webRequest);
+
+		return DEFAULT_VIEW_URL;
+	}
+
+	protected void procView(Model model, WebRequest webRequest)
+	{
 		String bcSeq = webRequest.getParameter("bcSeq");
 
 		boardContentService.plusViews(bcSeq);
@@ -92,8 +107,6 @@ public class EpBoardContentController extends IvGeneralController
 		model.addAttribute("boardContent", boardContent);
 
 		setDefaultAttribute(model, webRequest);
-
-		return DEFAULT_VIEW_URL;
 	}
 
 	@RequestMapping("/write")
@@ -193,6 +206,8 @@ public class EpBoardContentController extends IvGeneralController
 		model.addAttribute("boardContentSearch", boardContentSearch);
 		model.addAttribute("board", boardService.getBoard(webRequest.getParameter("bSeq")));
 		model.addAttribute("boardName", I18nMessageSource.getMessage(CmStringUtils.upperCase("PLTF_T_" + bSeq)));
+		model.addAttribute("isManager", isManager());
+		model.addAttribute("fgFrom", webRequest.getParameter("fgFrom"));//M:main
 
 		addAllAttributeFromRequest(model, webRequest);
 	}

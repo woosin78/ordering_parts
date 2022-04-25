@@ -7,6 +7,8 @@ import org.springframework.web.context.request.WebRequest;
 
 public class HqGeneralController extends IvGeneralController
 {
+	protected final String[] MANAGER_AUTHORITIES = {"DP_IVDO_PARTS_MANAGER", "DP_IVEX_PARTS_MANAGER"};
+
 	@Override
 	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
 	{

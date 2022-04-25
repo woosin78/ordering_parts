@@ -132,6 +132,7 @@ public class ContentController extends ContentGeneralController
 	}
 
 	@PostMapping("/copy_with_sub_items")
+	@CacheClear(name = "A")
 	@ResponseBody
 	public Object copyWithSubItems(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
 	{

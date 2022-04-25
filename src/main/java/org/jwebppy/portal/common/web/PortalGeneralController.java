@@ -13,6 +13,8 @@ import org.jwebppy.platform.core.web.GeneralController;
 
 public class PortalGeneralController extends GeneralController
 {
+	protected final String[] MANAGER_AUTHORITIES = {};
+
 	@Override
 	protected Integer getUSeq()
 	{
@@ -45,11 +47,9 @@ public class PortalGeneralController extends GeneralController
 			{
 			    // 한글 파일명 처리
 				response.setHeader("Content-Disposition", "attachment; filename=\"" + new String(fileName.getBytes("UTF-8"), "ISO8859_1") + "\"");
-				//response.setHeader("Content-Type", "application/octet-stream; charset=utf-8");
 			}
 
 			response.setContentType("application/octet-stream; charset=UTF-8");
-			//response.setHeader("Content-Disposition","attachment; filename=" +  fileName + ";");
 			response.setHeader("Content-Transfer", "binary");
 			response.setHeader("Set-Cookie", "fileDownload=true; path=/");//$.fileDownload callback 처리를 위해 추가되어야 함
 
@@ -81,5 +81,10 @@ public class PortalGeneralController extends GeneralController
 				e1.printStackTrace();
 			}
 		}
+	}
+
+	public boolean isManager()
+	{
+		return UserAuthenticationUtils.hasRole(MANAGER_AUTHORITIES);
 	}
 }
