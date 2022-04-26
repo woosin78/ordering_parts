@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApScheduleService extends PartsDomesticGeneralService
 {
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.AP_SCHEDULE, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.AP_SCHEDULE, unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_CLEARED_AR_BY_DAY");

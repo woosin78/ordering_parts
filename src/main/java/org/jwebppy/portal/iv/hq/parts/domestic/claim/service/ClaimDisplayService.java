@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClaimDisplayService extends PartsDomesticGeneralService
 {
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_DISPLAY, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_DISPLAY, unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDERLIST");
@@ -42,7 +42,7 @@ public class ClaimDisplayService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_DISPLAY, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_DISPLAY, unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDER_LOAD");
@@ -62,7 +62,7 @@ public class ClaimDisplayService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_REASON, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_REASON, unless="#result == null")
 	public DataList getClaimReasonList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_COMPLAIN_REASON");

@@ -274,7 +274,7 @@ public class OrderCreateService extends PartsDomesticGeneralService
 			{
 				modifySuccessOrderHistoryHeader(ohhSeq, orderNo);
 
-				cacheHelper.evict(portalCacheConfig.getCacheNames());
+				//cacheHelper.evict(portalCacheConfig.getCacheNames());
 			}
 			else
 			{

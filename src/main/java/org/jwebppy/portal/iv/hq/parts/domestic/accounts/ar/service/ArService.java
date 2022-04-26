@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ArService extends PartsDomesticGeneralService
 {
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.AR_LIST, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.AR_LIST, unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_AP_INVOICE_DETAIL");

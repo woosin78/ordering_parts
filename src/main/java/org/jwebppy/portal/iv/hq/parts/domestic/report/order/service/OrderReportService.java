@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderReportService extends PartsDomesticGeneralService
 {
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.BUSINESS_TOOLS, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.BUSINESS_TOOLS, unless="#result == null")
 	public Map<String, Object> getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("IV_BPP", "RS_VC_GET_QUERY_VIEW_DATA_FLAT");

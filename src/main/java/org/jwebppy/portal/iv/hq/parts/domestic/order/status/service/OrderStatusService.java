@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderStatusService extends PartsDomesticGeneralService
 {
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_STATUS, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_STATUS, unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		String fromDate = paramMap.getString("fromDate");
@@ -56,7 +56,7 @@ public class OrderStatusService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_STATUS, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_STATUS, unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
 		String[] orderNos = CmStringUtils.split(CmStringUtils.strip(paramMap.getString("orderNo"), PortalConfigVo.DELIMITER), PortalConfigVo.DELIMITER);

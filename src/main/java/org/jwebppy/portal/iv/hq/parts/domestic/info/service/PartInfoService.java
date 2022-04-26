@@ -103,7 +103,7 @@ public class PartInfoService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(cacheManager = "portalCacheManager", value = PortalCacheConfig.PARTS_INFO_AUTOCOMPLETE, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", value = PortalCacheConfig.PARTS_INFO_AUTOCOMPLETE, unless="#result == null")
 	public DataList getSimplePartInfo(Map<String, Object> paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY2");
