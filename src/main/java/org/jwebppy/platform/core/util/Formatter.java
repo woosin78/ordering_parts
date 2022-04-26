@@ -12,7 +12,7 @@ import org.jwebppy.portal.common.PortalCommonVo;
 public class Formatter {
 	static final String defaultDateFormat = PortalCommonVo.DEFAULT_DATE_FORMAT;
 	static final String defaultCurrencyFormat = PortalCommonVo.DEFAULT_CURRENCY_FORMAT;
-	static final String defaultWeightFormat = "#,###.000";
+	static final String defaultWeightFormat = "#,###.00";
 
 	public static String getCurrencyFormat()
 	{

@@ -27,6 +27,12 @@
 	</table>
 	</div>
 	<div class="split-row"></div>
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>	
 	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
@@ -92,6 +98,8 @@ $(function(){
 						data[i].LST_ETD = "0000-00-00";
 					}
 				};
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
 				
 				return data;
 			}

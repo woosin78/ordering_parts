@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
@@ -67,6 +68,28 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 
 		DataList dataList = rfcResponse.getTable("LT_SEARCH");
 
+		if (CollectionUtils.isNotEmpty(dataList))
+		{
+			double totalAmount = 0;
+			int totalItemCount = 0;
+
+			for (int i=0, size=dataList.size(); i<size; i++)
+			{
+				DataMap dataMap = (DataMap)dataList.get(i);
+
+				totalAmount += dataMap.getDouble("T_NETWR");
+				totalItemCount += dataMap.getInt("COUNT");
+			}
+
+			DataMap summaryMap = new DataMap();
+			summaryMap.putAll((DataMap)dataList.get(0));
+			summaryMap.clearValue("WAERK");
+			summaryMap.put("T_NETWR", totalAmount);
+			summaryMap.put("COUNT", totalItemCount);
+
+			dataList.add(0, summaryMap);
+		}
+
 		FormatBuilder.with(dataList)
 			.decimalFormat("T_NETWR")
 			.qtyFormat("COUNT")
@@ -109,7 +132,9 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 		DataList itemList = rfcResponse.getTable("LT_ITEM");
 
 		FormatBuilder.with(generalMap).dateFormat("VDATU");
-		FormatBuilder.with(mainHeadResultMap).decimalFormat(new String[] {"NETWR", "CREDIT", "TOTAL_WEIGHT"});
+		FormatBuilder.with(mainHeadResultMap)
+			.decimalFormat(new String[] {"NETWR", "CREDIT"})
+			.weightFormat("TOTAL_WEIGHT");
 		FormatBuilder.with(itemList)
 			.decimalFormat(new String[] {"KBETR", "NET_PRICE", "NET_VALUE"})
 			.qtyFormat("REQ_QTY");

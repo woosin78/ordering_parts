@@ -236,6 +236,19 @@ public class RfcRequest extends AbstractDaoRequest
 		return this;
 	}
 
+	public RfcRequest addByKey(Object[] fields)
+	{
+		if (ArrayUtils.isNotEmpty(fields))
+		{
+			for (Object field: fields)
+			{
+				addByKeyToRequest((String)field, (String)field);
+			}
+		}
+
+		return this;
+	}
+
 	public RfcRequest addByKey(Object[][] fields)
 	{
 		if (ArrayUtils.isNotEmpty(fields))
@@ -255,7 +268,7 @@ public class RfcRequest extends AbstractDaoRequest
 		return this;
 	}
 
-	public void addByKeyToRequest(String to, String from)
+	protected void addByKeyToRequest(String to, String from)
 	{
 		if (CmStringUtils.isNotEmpty(tableName))
 		{

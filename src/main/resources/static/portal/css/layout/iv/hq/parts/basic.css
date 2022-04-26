@@ -442,6 +442,7 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 /* 데이터 좌우 정렬을 위한 클래스 */
 .center {text-align: center;}
 .right {text-align: right;}
+.summary {background-color: #dcf2ec; font-weight: bold;}
 
 /*td.link {text-decoration: underline; color: #4183C4; cursor: pointer;}*/
 td.link {text-decoration: underline; color:#4183C4; cursor: pointer;}

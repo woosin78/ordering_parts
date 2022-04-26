@@ -94,6 +94,7 @@ $(function(){
 		scrollY: 100,
 		//fixedColumns: {leftColumns: 8},
 		columns : [
+			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
 			{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]"},//Shipment No.				
 			{data: "EXIDV", title: "[[#{HQP_L_HU_NO}]]"},//H.U. No.
 			{data: "MATNR_SO", title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Order Parts No.
@@ -105,12 +106,11 @@ $(function(){
 			{data: "HERKL", title: "[[#{HQP_L_ORIGIN}]]"},//Origin
 			{data: "VBELN2", title: "[[#{HQP_L_SALES_DOC_NO}]]"},//Sales Doc. No.
 			{data: "ZFOBDT", title: "[[#{HQP_L_ONBOARD_DATE}]]"},//Onboard Date
-			//{data: "KWERT", title: "[[#{HQP_L_FREIGHT_FEE}]]"},//Freight Fee
-			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"}//P.O. No.
+			{data: "KWERT", title: "[[#{HQP_L_FREIGHT_FEE}]]"}//Freight Fee
 		],
 		columnDefs: [
-			{targets: [0, 1, 5, 8, 9, 10, 11], className: "dt-body-center"},
-			{targets: [6, 7], className: "dt-body-right"}
+			{targets: [0, 1, 2, 6, 9, 10, 11], className: "dt-body-center"},
+			{targets: [7, 8, 12], className: "dt-body-right"}
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/delivery/view/data",

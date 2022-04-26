@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -98,6 +99,36 @@ public class DataMap implements IDataMap, Serializable
 	{
 		map.clear();
 	}
+
+    public void clearValue(String exclude)
+    {
+    	clearValues(new String[] {exclude});
+    }
+
+    public void clearValues()
+    {
+    	clearValues(null);
+    }
+
+    public void clearValues(String[] excludes)
+    {
+    	if (map != null)
+    	{
+    		Iterator it = map.keySet().iterator();
+
+    		while (it.hasNext())
+    		{
+    			String key = (String)it.next();
+
+    			if (ArrayUtils.contains(excludes, key))
+    			{
+    				continue;
+    			}
+
+    			map.put(key, null);
+    		}
+    	}
+    }
 
 	@Override
 	public Set<Object> keySet()
