@@ -29,7 +29,7 @@
 				<td><span th:text="${survey?.title}"></span></td>
 				<th><span th:text="#{HQP_L_SURVEY_PERIOD}"></span></th>
 				<td>
-					<span th:text="${survey?.validFrom}"></span> ~ <span th:text="${survey?.validTo}"></span>
+					<span th:text="${survey?.validFromYmdHHMI}"></span> ~ <span th:text="${survey?.validToYmdYmdHHMI}"></span>
 				</td>
 			</tr>
 			<tr>
@@ -111,6 +111,10 @@
 	<script>
 	let $tableObj;
 	let $itemTableObj;
+	
+	$("a[downloadKey]").on("click", function() {					
+		PortalFileDownload.download($(this).attr("downloadKey"));
+	});	
 	
 	// 버튼처리
 	let BTN = {

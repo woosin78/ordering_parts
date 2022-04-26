@@ -195,6 +195,10 @@
 <script>
 $(function(){
 	ProgressBar.hide();
+	
+	$("a[downloadKey]").on("click", function() {					
+		PortalFileDownload.download($(this).attr("downloadKey"));
+	});	
 });
 
 function goTextAnswers(sSeq, sqSeq, rowIndex) {

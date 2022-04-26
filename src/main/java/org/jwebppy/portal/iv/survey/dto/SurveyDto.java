@@ -25,6 +25,8 @@ public class SurveyDto extends IvGeneralDto
 	private String validFromYmd;
 	private String validTo;
 	private String validToYmd;
+	private String validFromYmdHHMI;
+	private String validToYmdYmdHHMI;
 	private String fgOpen;
 	private String fgOpenResult;
 	private String remark;

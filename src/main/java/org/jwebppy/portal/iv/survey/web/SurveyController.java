@@ -33,6 +33,7 @@ public class SurveyController extends IvGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
+		model.addAttribute("isManager", isManager());
 		addAllAttributeFromRequest(model, webRequest);
 		
 		return DEFAULT_VIEW_URL;

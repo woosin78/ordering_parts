@@ -8,7 +8,7 @@
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_L_SURVEY}"></div>
 		<div class="block-button-area">
-			<button id="BTN_write" type="button" th:text="#{HQP_B_SURVEY_CREATION}"></button>
+			<button th:if="${isManager == true}" id="BTN_write" type="button" th:text="#{HQP_B_SURVEY_CREATION}"></button>
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
 		</div>
 	</div>
@@ -56,7 +56,7 @@
 <script>
 let $tableObj;
 $(function(){
-	const level = 1; // to-do: 권한처리
+	const isManager = [[${isManager}]]; // to-do: 권한처리
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		select: {
@@ -106,21 +106,23 @@ $(function(){
 				return row['validFromYmd'] + '  ~  ' + row['validToYmd'];
 			}},
 			{targets: [3, 9, 10, 11], visible: false},
-			{targets: 4, className: "link clickable"},
+			{targets: 4, 
+				createdCell: function(td, cellData, rowData, row, col) {
+					if (isManager) {
+						$(td).addClass('link clickable');
+					}
+				},	
+			},
 			{targets: 5, render: function(data, type, row) {
 				return {'Y':'[[#{HQP_L_PUBLIC}]]', 'N':'[[#{HQP_L_PRIVATE}]]'}[data];
 			}},
 			{targets: 8, className: "dt-body-center", render: function(data, type, row) {
-				
-				// to-do: 권한에 따른 버튼
 				if (data['fgApply'] == 'Y') {
-					
 					if (data['fgOpenResult'] == 'Y') {
 						return '<button onclick="goResult(\''+data['sseq']+'\');">[[#{HQP_B_RESULT}]]</button>';						
 					} else {
 						return '-';
 					}
-					
 				} else {
 					return '<button onclick="vote(\''+data['sseq']+'\');">[[#{HQP_B_SURVEY_PARTICIPATE}]]</button>';
 				}

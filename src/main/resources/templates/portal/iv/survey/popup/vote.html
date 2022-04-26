@@ -199,6 +199,10 @@
 <script th:inline="javascript">
 $(function(){
 	ProgressBar.hide();
+	
+	$("a[downloadKey]").on("click", function() {					
+		PortalFileDownload.download($(this).attr("downloadKey"));
+	});	
 });
 
 let Vote = {

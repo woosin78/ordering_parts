@@ -64,8 +64,10 @@
 <script>
 $(function(){
 	ProgressBar.hide();
+	
+	$("a[downloadKey]").on("click", function() {					
+		PortalFileDownload.download($(this).attr("downloadKey"));
+	});	
 });
-
-
 </script>
 </th:block>	
