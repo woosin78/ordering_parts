@@ -9,7 +9,7 @@
 		<div class="block-title" th:text="#{HQP_L_SURVEY}"></div>
 		<div class="block-button-area">
 			<button id="BTN_write" type="button" th:text="#{HQP_B_SURVEY_CREATION}"></button>
-			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}">검색</button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
 		</div>
 	</div>
 	
@@ -17,9 +17,9 @@
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<td width="10%"> 
-					<div>
-						<select id="fgStatus" name="fgStatus" onchange="doSearch();">
+				<td width="13%"> 
+					<div class="input-area">
+						<select id="fgStatus" name="fgStatus" onchange="doSearch();" class="custom-ui">
 							<option value="0">[[#{HQP_L_ALL}]]</option>
 							<option value="1">[[#{HQP_L_SURVEY_DOING}]]</option>
 							<!-- <option value="2">설문대기중</option> -->

@@ -32,6 +32,10 @@ public class SurveyQuestionService extends PlatformGeneralService
 	}
 	
 	public int save(SurveyQuestionDto surveyQuestion) {
+		if (surveyQuestion.getFgMandatory() == null) {
+			surveyQuestion.setFgMandatory("N");
+		}
+		
 		if (surveyQuestion.getSqSeq() > 0) {
 			return modify(surveyQuestion);
 		} else {
@@ -56,9 +60,11 @@ public class SurveyQuestionService extends PlatformGeneralService
 	public int delete(SurveyQuestionDto surveyQuestion) {
 		
 		List<SurveyItemDto> surveyItems = surveyItemService.getSurveyItems(surveyQuestion.getSqSeq());
-		for (SurveyItemDto surveyItem : surveyItems) {
-			surveyItemService.delete(surveyItem);
-		}
+		if (surveyItems != null) {
+			for (SurveyItemDto surveyItem : surveyItems) {
+				surveyItemService.delete(surveyItem);
+			}
+		} 
 		
 		SurveyQuestionEntity surveyQuestionEntity = CmModelMapperUtils.mapToEntity(SurveyQuestionObjectMapper.INSTANCE, surveyQuestion);
 		surveyQuestionMapper.delete(surveyQuestionEntity);

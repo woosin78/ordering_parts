@@ -20,26 +20,26 @@
 
 	<table class="condition table-fixed">
 		<tr>
-			<td style="width:20%;"><span th:text="#{HQP_L_SURVEY_TITLE}"></span></td>
-			<td>[[${survey?.title}]]</td>
+			<th style="width:30%;"><span th:text="#{HQP_L_SURVEY_TITLE}"></span></th>
+			<td><span th:text="${survey?.title}"></span></td>
 		</tr>
 		<tr>
-			<td><span th:text="#{HQP_L_SURVEY_PERIOD}"></span></td>
+			<th><span th:text="#{HQP_L_SURVEY_PERIOD}"></span></th>
 			<td>[[${survey?.validFrom}]] ~ [[${survey?.validTo}]]</td>
 		</tr>
 	</table>	
 	<br/><br/>
-	<table class="condition">
+	<table class="condition table-fixed">
 		<tbody>
 			<tr>
 				<th style="width:30%;"><span th:text="#{HQP_L_TITLE}"></span></th>
-				<td><input name="title" type="text" th:value="${surveyQuestion?.title}"/></td>
+				<td><input name="title" id="title" class="custom-ui" type="text" th:value="${surveyQuestion?.title}"/></td>
 			</tr>
 			
 			<tr>
 				<th><span th:text="#{HQP_L_QUESTION_TYPE}"></span></th>
 				<td>
-					<select name="type" id="type" onchange="handleMandatoryCnt(this.value);">
+					<select name="type" id="type" class="custom-ui" onchange="handleMandatoryCnt(this.value);">
 						<option value="0">[[#{HQP_L_OBJECTIVE_QUESTION}]]</option>
 						<option value="1">[[#{HQP_L_MULTIPLE_SELECTION}]]</option>
 						<option value="2">[[#{HQP_L_SUBJECTIVE_QUESTION}]]</option>
@@ -52,7 +52,7 @@
 			<tr>
 				<th>[[#{HQP_L_SELECT_ESSENTIAL}]] / [[#{HQP_L_SELECT_POTENTIAL}]]</th>
 				<td>
-					<select name="fgMandatory" id="fgMandatory">
+					<select name="fgMandatory" id="fgMandatory" class="custom-ui">
 						<option value="Y">[[#{HQP_L_SELECT_ESSENTIAL}]]</option>
 						<option value="N">[[#{HQP_L_SELECT_POTENTIAL}]]</option>
 					</select>
@@ -61,7 +61,7 @@
 			
 			<tr>
 				<th>[[#{HQP_L_MAX_SELECTION_NUMBER}]]</th>
-				<td><input name="mandatoryCnt" id="mandatoryCnt" type="number" th:value="${surveyQuestion?.mandatoryCnt}"/></td>
+				<td><input name="mandatoryCnt" id="mandatoryCnt" class="custom-ui" type="number" th:value="${surveyQuestion?.mandatoryCnt}"/></td>
 			</tr>
 			
 		</tbody>
@@ -79,6 +79,21 @@ $(function(){
 	$("#fgMandatory").val("[[${surveyQuestion?.fgMandatory}]]");
 	
 	$("#BTN_save").on("click", function() {
+		
+		let title = $("#title").val();
+		if (!JpUtilsString.isNotEmpty(title)) {
+			alert('타이틀을 입력해주세요');
+			$("#title").focus();
+			return false;
+		}
+		
+		let type = $("#type").val();
+		if (!JpUtilsString.isNotEmpty(type)) {
+			alert('질문유형을 선택해주세요');
+			$("#type").focus();
+			return false;
+		}
+		
 		
 		JpUtilsAjax.post({
 			url: "[[${BASE_PATH}]]/survey/question/save",
@@ -104,7 +119,7 @@ function callbackSurveyQuestion(result) {
 	opener.callbackSurveyQuestion();		
 	ProgressBar.hide();
 	
-	let sSeq = "[[${survey?.sSeq}]]";
+	let sSeq = "[[${sqSeq}]]";
 	if (!JpUtilsString.isNotEmpty(sSeq) && confirm('계속 등록하시겠습니까?')) {
 		window.location.reload();
 	} else {

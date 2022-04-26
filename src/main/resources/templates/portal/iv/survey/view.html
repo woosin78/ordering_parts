@@ -6,8 +6,8 @@
 
 <th:block layout:fragment="content">
 	
-	<div class="block-header" >
-		<div class="block-title" th:text="#{HQP_T_SURVEY_BASIC_INFO}">></div>
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_SURVEY_BASIC_INFO}"></div>
 		<div class="block-button-area">
 			<button onclick="BTN.modify();" type="button" th:text="#{HQP_B_MODIFY}"></button>
 			<button onclick="BTN.remove();" type="button" th:text="#{HQP_B_DELETE}"></button>
@@ -46,12 +46,11 @@
 			</tr>
 			<tr>
 				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
-				<td colspan="3" th:text="${survey?.description}">
-				</td>
+				<td colspan="3"><span th:text="${survey?.description}"></span></td>
 			</tr>
 			<tr>
 				<th><span th:text="#{HQP_L_THANKS_GREETING}"></span></th>
-				<td colspan="3" th:text="${survey?.remark}"></td>
+				<td colspan="3"><span th:text="${survey?.remark}"></span></td>
 			</tr>
 			<tr>
 				<th><span th:text="#{HQP_L_SURVEY_TARGET}"></span></th>
@@ -329,7 +328,7 @@
 				},
 				{targets: 4, className: "dt-body-center"},
 				{targets: [5, 6], className: "dt-body-center", 
-					defaultContent:"<button class='dev-modify'>[[#{HQP_B_MODIFY}]]</button>&nbsp;<button class='dev-remove'>[[#{HQP_B_DELETE}]]</button>"
+					defaultContent:"<button class='dev-modify small_button'>[[#{HQP_B_MODIFY}]]</button>&nbsp;<button class='dev-remove small_button'>[[#{HQP_B_DELETE}]]</button>"
 				},
 				{targets: [6, 7], visible: false}
 			],
@@ -408,10 +407,10 @@
 				},
 				{targets: 1, className: "dev-item-title", 
 					render: function(data, type, row, meta) {
-						return '<input onblur="SurveyItem.setTitle(this.value, \''+meta.row+'\', \''+meta.col+'\');" type="text" value="'+data+'" />';
+						return '<input onblur="SurveyItem.setTitle(this.value, \''+meta.row+'\', \''+meta.col+'\');" type="text" value="'+data+'" class="custom-ui"/>';
 					}	
 				},
-				{targets: 2, className: "dt-body-center", defaultContent:"<button>[[#{HQP_B_DELETE}]]</button>"},
+				{targets: 2, className: "dt-body-center", defaultContent:"<button class='small_button'>[[#{HQP_B_DELETE}]]</button>"},
 				{targets: 3, visible: false},
 			],
 			
