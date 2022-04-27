@@ -34,47 +34,15 @@ public class SsoController extends PlatformGeneralController
 		{
         	String[] secret = SSO_TARGET.get(target);
 
-        	model.addAttribute("key", secret[2] + URLEncoder.encode(encrypt(secret[0], secret[1]), "UTF-8"));
+        	model.addAttribute("url", secret[2] + URLEncoder.encode(encrypt(secret[0], secret[1]), "UTF-8"));
 		}
         catch (Exception e)
         {
 			e.printStackTrace();
 		}
 
-		return "/portal/iv/sso/" + target;
+		return "/portal/iv/sso/sso";
 	}
-
-	/*
-	@RequestMapping("/gpes")
-	public Object gpes(Model model)
-	{
-        try
-		{
-        	model.addAttribute("key", URLEncoder.encode(encrypt("DIV", "DIVORDER"), "UTF-8"));
-		}
-        catch (Exception e)
-        {
-			e.printStackTrace();
-		}
-
-		return "/portal/iv/sso/gpes";
-	}
-
-	@RequestMapping("/bulletin")
-	public Object bulletin(Model model)
-	{
-        try
-		{
-			model.addAttribute("key", URLEncoder.encode(encrypt("DIV", "DIVDOOBIZ"), "UTF-8"));
-		}
-        catch (Exception e)
-        {
-			e.printStackTrace();
-		}
-
-		return "/portal/iv/sso/bulletin";
-	}
-	*/
 
 	protected String encrypt(String key, String iv)
 	{
