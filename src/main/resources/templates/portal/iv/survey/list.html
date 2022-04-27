@@ -21,7 +21,7 @@
 					<div class="input-area">
 						<select id="fgStatus" name="fgStatus" onchange="doSearch();" class="custom-ui">
 							<option value="0">[[#{HQP_L_ALL}]]</option>
-							<option value="1">[[#{HQP_L_SURVEY_DOING}]]</option>
+							<option th:if="${isManager == true}" value="1">[[#{HQP_L_SURVEY_DOING}]]</option>
 							<!-- <option value="2">설문대기중</option> -->
 							<option value="2">[[#{HQP_L_SURVEY_RUNNING}]]</option>
 							<option value="3">[[#{HQP_L_SURVEY_COMPLETE}]]</option>
@@ -117,14 +117,22 @@ $(function(){
 				return {'Y':'[[#{HQP_L_PUBLIC}]]', 'N':'[[#{HQP_L_PRIVATE}]]'}[data];
 			}},
 			{targets: 8, className: "dt-body-center", render: function(data, type, row) {
+				if (isManager) {
+					if (data['fgStatus'] > 1) {
+						return '<button onclick="popupResult(\''+data['sseq']+'\');">[[#{HQP_B_RESULT}]]</button>';
+					} else {
+						return '<button onclick="popupPreview(\''+data['sseq']+'\');">[[#{HQP_B_PREVIEW}]]</button>';
+					}
+				}
+				
 				if (data['fgApply'] == 'Y') {
 					if (data['fgOpenResult'] == 'Y') {
-						return '<button onclick="goResult(\''+data['sseq']+'\');">[[#{HQP_B_RESULT}]]</button>';						
+						return '<button onclick="popupResult(\''+data['sseq']+'\');">[[#{HQP_B_RESULT}]]</button>';						
 					} else {
 						return '-';
 					}
 				} else {
-					return '<button onclick="vote(\''+data['sseq']+'\');">[[#{HQP_B_SURVEY_PARTICIPATE}]]</button>';
+					return '<button onclick="popupVote(\''+data['sseq']+'\');">[[#{HQP_B_SURVEY_PARTICIPATE}]]</button>';
 				}
 			}},
 		],
@@ -177,31 +185,36 @@ $(function(){
 	});
 });
 
-function goResult(sSeq) {
-	Popup.open("[[${BASE_PATH}]]/survey/result/view?sSeq="+sSeq, 700, 700);
+function popupPreview(sSeq) {
+	openPopup("[[${BASE_PATH}]]/survey/popup/view?sSeq="+sSeq);
 }
 
-function vote(sSeq) {
-	Popup.open("[[${BASE_PATH}]]/survey/popup/vote?sSeq="+sSeq, 700, 700);
+function popupResult(sSeq) {
+	openPopup("[[${BASE_PATH}]]/survey/result/view?sSeq="+sSeq);
+}
+
+function popupVote(sSeq) {
+	openPopup("[[${BASE_PATH}]]/survey/popup/vote?sSeq="+sSeq);
+}
+
+function openPopup(url) {
+	Popup.open(url, 700, 700);
 }
 
 function goView(sSeq) {
-	
 	document.location.href = "[[${BASE_PATH}]]/survey/view?sSeq="+sSeq;
-	/* $("#FORM_search").attr("action", "[[${BASE_PATH}]]/survey/view");
-	$("#FORM_search").submit(); */
 }
 
-function goWrite() 
-{
+function goWrite() {
 	document.location.href = "[[${BASE_PATH}]]/survey/write";	
-	/* $("#FORM_search").attr("action", "[[${BASE_PATH}]]/survey/write");
-	$("#FORM_search").submit(); */
 }
 
-function doSearch()
-{
+function doSearch() {
 	$tableObj.ajax.reload();
+}
+
+function callbackAfterVote() {
+	document.location.reload();
 }
 </script>
 </th:block>	

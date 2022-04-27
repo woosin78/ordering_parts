@@ -33,6 +33,7 @@ public class SurveyEntity extends GeneralEntity
 	private String fgStatus;
 	private String applier;
 	private String fgApply;
+	private String editable;
 	
 	private List<SurveyTargetEntity> surveyTargets;
 	

@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.ehcache.core.util.CollectionUtil;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.survey.dto.SurveyDto;
@@ -33,7 +37,14 @@ public class SurveyController extends IvGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		model.addAttribute("isManager", isManager());
+		//model.addAttribute("isManager", isManager());
+		// to-do: admin계정처리
+		boolean isManager = false;
+		if (UserAuthenticationUtils.getUserDetails().getUSeq() == 1) {
+			isManager = true;
+		}
+		model.addAttribute("isManager", isManager);
+		
 		addAllAttributeFromRequest(model, webRequest);
 		
 		return DEFAULT_VIEW_URL;
@@ -43,6 +54,13 @@ public class SurveyController extends IvGeneralController
 	@ResponseBody
 	public Object listData(@ModelAttribute SurveySearchDto surveySearchDto)
 	{
+		// to-do: admin계정처리
+		boolean isManager = false;
+		if (UserAuthenticationUtils.getUserDetails().getUSeq() == 1) {
+			isManager = true;
+		}
+		surveySearchDto.setManager(isManager);
+		
 		return ListUtils.emptyIfNull(surveyService.getSurveys(surveySearchDto));
 	}
 	
@@ -125,4 +143,19 @@ public class SurveyController extends IvGeneralController
 		return null;
 	}
 	
+	@RequestMapping("/latest")
+	@ResponseBody
+	public Object latestData(@ModelAttribute SurveySearchDto surveySearchDto)
+	{
+		return surveyService.getLatestSurvey(surveySearchDto);
+	}
+	
+	// to-do: 테스트코드제거
+	@RequestMapping("/test")
+	public String test(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
+	{
+		addAllAttributeFromRequest(model, webRequest);
+		
+		return DEFAULT_VIEW_URL;
+	}
 }

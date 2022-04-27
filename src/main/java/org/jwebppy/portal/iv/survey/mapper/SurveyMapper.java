@@ -19,4 +19,5 @@ public interface SurveyMapper {
 	public int updateUfSeq(SurveyEntity survey);
 	public String findUfSeq(int sSeq);
 	public int delete(SurveyEntity survey);
+	public SurveyEntity findLatestSurvey(SurveySearchDto surveySearchDto);
 }

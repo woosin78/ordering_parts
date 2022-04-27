@@ -34,6 +34,7 @@ public class SurveyDto extends IvGeneralDto
 	private String fgStatus;
 	private String applier;
 	private String fgApply;
+	private String editable;
 
 	private List<SurveyTargetDto> surveyTargets;
 

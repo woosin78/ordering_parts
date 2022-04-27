@@ -10,8 +10,8 @@
 		<div class="block-title" th:text="#{HQP_T_SURVEY_BASIC_INFO}"></div>
 		<div class="block-button-area">
 			<button onclick="BTN.modify();" type="button" th:text="#{HQP_B_MODIFY}"></button>
-			<button onclick="BTN.remove();" type="button" th:text="#{HQP_B_DELETE}"></button>
-			<button onclick="BTN.preview();" type="button" th:text="#{HQP_B_PREVIEW}"></button>
+			<button onclick="BTN.remove();" type="button" th:text="#{HQP_B_DELETE}" th:if="${survey?.editable == 'Y'}"></button>
+			<button onclick="BTN.preview();" type="button" th:text="#{HQP_B_PREVIEW}" th:if="${survey?.editable == 'Y'}"></button>
 			<button onclick="BTN.back();" type="button" th:text="#{HQP_B_BACK}"></button>
 		</div>	
 	</div>	
@@ -74,7 +74,7 @@
 	
 	<!------------------------------------ 문항 그리드 시작 --------------------------------------->
 	<div class="grid-info">
-		<div class="block-button-area">
+		<div class="block-button-area" th:if="${survey?.editable == 'Y'}">
 			<button onclick="SurveyQuestion.write();" type="button" th:text="#{HQP_B_ADD_QUESTION}"></button>
 		</div> 
 		<div class="grid-total">
@@ -92,7 +92,7 @@
 	
 	<!------------------------------------ 문항보기 그리드 시작 --------------------------------------->
 	<div class="grid-info">
-		<div class="block-button-area">
+		<div class="block-button-area surveyItemBtns" th:if="${survey?.editable == 'Y'}">
 			<button onclick="SurveyItem.write();" type="button" th:text="#{HQP_B_ADD}"></button>
 			<button onclick="SurveyItem.save();" type="button" th:text="#{HQP_B_SAVE}"></button>
 		</div> 
@@ -111,6 +111,8 @@
 	<script>
 	let $tableObj;
 	let $itemTableObj;
+	
+	let isEditable = "[[${survey?.editable}]]"
 	
 	$("a[downloadKey]").on("click", function() {					
 		PortalFileDownload.download($(this).attr("downloadKey"));
@@ -288,6 +290,12 @@
 			let table = $("#TBL_item_grid").DataTable();
 			let cell = table.cell(row, col);
 			cell.data(data);
+		},
+		hideBtns: function() {
+			$(".surveyItemBtns").hide();
+		},
+		showBtns: function() {
+			$(".surveyItemBtns").show();
 		}
 	};
 	
@@ -332,7 +340,14 @@
 				},
 				{targets: 4, className: "dt-body-center"},
 				{targets: [5, 6], className: "dt-body-center", 
-					defaultContent:"<button class='dev-modify small_button'>[[#{HQP_B_MODIFY}]]</button>&nbsp;<button class='dev-remove small_button'>[[#{HQP_B_DELETE}]]</button>"
+					render: function(data, type, row) {
+						if (isEditable == 'Y') {
+							return "<button class='dev-modify small_button'>[[#{HQP_B_MODIFY}]]</button>&nbsp;<button class='dev-remove small_button'>[[#{HQP_B_DELETE}]]</button>";
+						} else {
+							return "-";
+						}
+					}
+					
 				},
 				{targets: [6, 7], visible: false}
 			],
@@ -366,10 +381,6 @@
 			if ($(this).hasClass('dev-remove')) {
 				SurveyQuestion.remove();
 			}
-			
-			/* let data = $tableObj.row( $(this).parents('tr') ).data();
-			SurveyQuestion.sqSeq = data['sqSeq'];
-			SurveyQuestion.modify(); */
 		});
 		
 		$("#TBL_grid tbody").on("click", 'tr', function(event){
@@ -378,9 +389,14 @@
 			
 			let data = $tableObj.row( $(this) ).data();
 			if (data == undefined) return;
-			
 			SurveyQuestion.sqSeq = data['sqSeq'];
 			SurveyItem.list();
+			
+			if (data['type'] == 2 || isEditable == 'N') {
+				SurveyItem.hideBtns();
+			} else {
+				SurveyItem.showBtns();
+			}
 		});
 		
 		$("#TBL_grid tbody").on("dblclick", 'tr', function(event){
@@ -411,10 +427,22 @@
 				},
 				{targets: 1, className: "dev-item-title", 
 					render: function(data, type, row, meta) {
-						return '<input onblur="SurveyItem.setTitle(this.value, \''+meta.row+'\', \''+meta.col+'\');" type="text" value="'+data+'" class="custom-ui"/>';
+						if (isEditable == 'Y') {
+							return '<input onblur="SurveyItem.setTitle(this.value, \''+meta.row+'\', \''+meta.col+'\');" type="text" value="'+data+'" class="custom-ui"/>';
+						} else {
+							return data;
+						}
 					}	
 				},
-				{targets: 2, className: "dt-body-center", defaultContent:"<button class='small_button'>[[#{HQP_B_DELETE}]]</button>"},
+				{targets: 2, className: "dt-body-center", 
+					render: function(data, type, row) {
+						if (isEditable == 'Y') {
+							return "<button class='small_button'>[[#{HQP_B_DELETE}]]</button>";
+						} else {
+							return "-";
+						}
+					}
+				},
 				{targets: 3, visible: false},
 			],
 			

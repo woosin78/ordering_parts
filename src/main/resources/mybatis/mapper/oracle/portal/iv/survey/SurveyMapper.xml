@@ -24,25 +24,44 @@
 	</resultMap>	
 
 	<select id="findSurvey" resultMap="surveyEntityMap">
+	with survey as (
+		select
+			a.s_seq,
+			title,
+			description,
+			valid_from,
+			valid_to,
+			to_char(to_date(valid_from, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validFromYmd,
+			to_char(to_date(valid_from, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD HH24:MI') validFromYmdHHMI,
+			to_char(to_date(valid_to, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validToYmd,
+			to_char(to_date(valid_to, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD HH24:MI') validToYmdYmdHHMI,
+			fg_open,
+			fg_open_result,
+			reg_username,
+			remark,
+			case 
+		    	when sysdate <![CDATA[<]]> to_date(a.valid_from,'YYYYMMDDHH24MI') then '1'
+		        when sysdate between to_date(a.valid_from,'YYYYMMDDHH24MI') and to_date(a.valid_to,'YYYYMMDDHH24MI') and a.fg_open = 'Y' then '2'
+		        when sysdate <![CDATA[>]]> to_date(a.valid_to,'YYYYMMDDHH24MI') and a.fg_open = 'Y' then '3'
+		        else '0' 
+		    end fg_status,
+		    (
+			    select 
+			        count(unique(esa.u_seq)) 
+			    from ep_survey_question esq, ep_survey_apply esa
+			    where esq.sq_seq = esa.sq_seq
+			    and esq.s_seq = a.s_seq    
+		    ) as applier
+		from 
+		ep_survey a
+		where
+		a.s_seq=#{sSeq}
+		and a.fg_delete='N'
+	)
 	select
-		a.s_seq,
-		title,
-		description,
-		valid_from,
-		valid_to,
-		to_char(to_date(valid_from, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validFromYmd,
-		to_char(to_date(valid_from, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD HH24:MI') validFromYmdHHMI,
-		to_char(to_date(valid_to, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD') validToYmd,
-		to_char(to_date(valid_to, 'YYYY.MM.DD HH24:MI'), 'YYYY.MM.DD HH24:MI') validToYmdYmdHHMI,
-		fg_open,
-		fg_open_result,
-		reg_username,
-		remark
-	from 
-	ep_survey a
-	where
-	a.s_seq=#{sSeq}
-	and a.fg_delete='N'
+	    a.*,
+	    (CASE WHEN fg_status = 1 and applier = 0 THEN 'Y' ELSE 'N' END) AS editable
+	from survey a
 	</select>
 	
 	<select id="findSurveys" parameterType="SurveySearchDto" resultMap="surveyEntityMap">
@@ -79,6 +98,10 @@
 		    
 		from ep_survey a
 		where a.fg_delete = 'N'
+		
+		<if test="isManager == false">
+			and sysdate between to_date(a.valid_from,'YYYYMMDDHH24MI') and to_date(a.valid_to,'YYYYMMDDHH24MI') and a.fg_open = 'Y'
+		</if>
 	
 		<if test="fgStatus != null and fgStatus != ''">
 			<choose>
@@ -172,4 +195,16 @@
         and b.fg_delete='N'
         and a.s_seq = #{sSeq}
 	</select>
+	
+	<select id="findLatestSurvey" parameterType="SurveySearchDto" resultMap="surveyEntityMap">
+		select 
+		    ep.s_seq, ep.title
+		from ep_survey_target est, ep_survey ep
+		where est.s_seq = ep.s_seq
+		and est.target = #{targetCode}
+		and sysdate between to_date(ep.valid_from,'YYYYMMDDHH24MI') and to_date(ep.valid_to,'YYYYMMDDHH24MI') and ep.fg_open = 'Y'	
+		and ep.fg_delete = 'N'
+		and est.fg_delete = 'N'
+	</select>
+	
 </mapper>
