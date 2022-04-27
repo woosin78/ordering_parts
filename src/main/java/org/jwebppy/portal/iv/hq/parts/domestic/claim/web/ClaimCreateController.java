@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataMap;
@@ -38,11 +40,31 @@ public class ClaimCreateController extends PartsDomesticGeneralController
 	@Autowired
 	private ClaimCreateService claimCreateService;
 
-    @Value("${file.upload.divk.domestic.parts.claim}")
-    private String UPLOAD_PATH;
+    @Value("${file.upload.rootPath}")
+    private String rootPath;
+
+    @Value("${file.upload.claim}")
+    private String claimPath;
 
     @Value("${file.upload.invalidExtension}")
-    private String INVALID_UPLOAD_FILE_EXTENSION;
+    private String invalidUploadFileExtension;
+
+    private String uploadPath;
+
+    @PostConstruct
+    public void init()
+    {
+    	uploadPath = rootPath + File.separator + claimPath;
+
+    	try
+    	{
+			FileUtils.forceMkdir(new File(uploadPath));
+		}
+    	catch (IOException e)
+    	{
+			e.printStackTrace();
+		}
+    }
 
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest)
@@ -67,20 +89,13 @@ public class ClaimCreateController extends PartsDomesticGeneralController
     {
 		String originalFileName = multipartFile.getOriginalFilename();
 
-		if (!FilenameUtils.isExtension(originalFileName, CmStringUtils.split(INVALID_UPLOAD_FILE_EXTENSION, PortalCommonVo.DELIMITER)))
+		if (!FilenameUtils.isExtension(originalFileName, CmStringUtils.split(invalidUploadFileExtension, PortalCommonVo.DELIMITER)))
 		{
 			try
 			{
-				File path = new File(UPLOAD_PATH);
-
-				if (!path.exists())
-				{
-					path.mkdir();
-				}
-
 				String fileName = getUsername() + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
 
-				multipartFile.transferTo(new File(UPLOAD_PATH + File.separator + fileName));
+				multipartFile.transferTo(new File(uploadPath + File.separator + fileName));
 
 				Map<String, Object> resultMap = new HashMap<>();
 				resultMap.put("ORIGIN_FILE_NAME", originalFileName);

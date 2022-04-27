@@ -57,6 +57,11 @@ public class SurveyService extends PlatformGeneralService
 	{
 		return CmModelMapperUtils.mapToDto(SurveyObjectMapper.INSTANCE, surveyMapper.findSurvey(survey));
 	}
+	
+	public SurveyDto getLatestSurvey(SurveySearchDto surveySearchDto) 
+	{
+		return CmModelMapperUtils.mapToDto(SurveyObjectMapper.INSTANCE, surveyMapper.findLatestSurvey(surveySearchDto));
+	}
 
 	public List<SurveyDto> getSurveys(SurveySearchDto surveySearchDto) 
 	{

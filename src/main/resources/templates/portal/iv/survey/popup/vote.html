@@ -228,12 +228,14 @@ let Vote = {
 		    success: function(response, textStatus, jqXHR)
 		    {
 		    	alert('성공적으로 처리되었습니다.');
-		    	opener.location.reload();
+		    	opener.callbackAfterVote();
+		    	//opener.location.reload();
 		    	window.close();
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
 	    	{
 		    	alert('처리에 실패하였습니다');
+		    	opener.callbackAfterVote();
 		    	window.close();
 	    	}
 		});
@@ -406,7 +408,6 @@ let Vote = {
 		this.lastIndex = index;
 	}
 }
-
 
 </script>
 </th:block>	

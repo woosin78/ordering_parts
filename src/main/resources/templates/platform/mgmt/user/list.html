@@ -507,7 +507,7 @@ $(document).ready(function() {
 
 							JpUtilsAjax.get({
 								url: "/platform/mgmt/content/list/layout",
-								data: {"types" : ["R", "G"]},
+								data: {"types" : ["R", "G"], "fgVisible" : "Y"},
 								global: false,
 								traditional: true,
 								success: function(data, textStatus, jqXHR)
@@ -563,6 +563,8 @@ $(document).ready(function() {
 								$.each($("#TBL_myAuthorityList").find("input:checkbox[name=cSeq]"), function(i, item) {
 									values.push($(this).val());
 								});
+								
+								console.log(values);
 
 								myAuthorityTable.settings.ajax.data = { cSeqs: values };
 								myAuthorityTable.render();

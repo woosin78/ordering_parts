@@ -10,8 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
@@ -33,8 +35,28 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 	@Autowired
 	private SimpleRfcTemplate simpleRfcTemplate;
 
-    @Value("${file.upload.divk.domestic.parts.claim}")
-    private String UPLOAD_PATH;
+    @Value("${file.upload.rootPath}")
+    private String rootPath;
+
+    @Value("${file.upload.claim}")
+    private String claimPath;
+
+    private String uploadPath;
+
+    @PostConstruct
+    public void init()
+    {
+    	uploadPath = rootPath + File.separator + claimPath;
+
+    	try
+    	{
+			FileUtils.forceMkdir(new File(uploadPath));
+		}
+    	catch (IOException e)
+    	{
+			e.printStackTrace();
+		}
+    }
 
     public RfcResponse getSummary(PartsErpDataMap paramMap)
     {
@@ -131,7 +153,7 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 
 	            			try
 	            			{
-	            				fileInputStream = new FileInputStream(UPLOAD_PATH + File.separator + fileNames[1]);
+	            				fileInputStream = new FileInputStream(uploadPath + File.separator + fileNames[1]);
 
 	            				//송신 파일 설정 1024byte 씩 끊어서 append 한다.
 	            				bufferedInputStream = new BufferedInputStream(fileInputStream, BUFFER);

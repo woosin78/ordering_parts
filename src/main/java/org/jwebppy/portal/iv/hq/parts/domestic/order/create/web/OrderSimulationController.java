@@ -8,7 +8,10 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -31,7 +34,7 @@ import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.SimulationResultDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderSimulationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,8 +49,28 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 {
 	private final int DEFAULT_ROW_COUNT = 10;
 
-	@Autowired
-	private Environment environment;
+    @Value("${file.upload.rootPath}")
+    private String rootPath;
+
+    @Value("${file.upload.order}")
+    private String orderPath;
+
+    private String uploadPath;
+
+    @PostConstruct
+    public void init()
+    {
+    	uploadPath = rootPath + File.separator + orderPath;
+
+    	try
+    	{
+			FileUtils.forceMkdir(new File(uploadPath));
+		}
+    	catch (IOException e)
+    	{
+			e.printStackTrace();
+		}
+    }
 
 	@Autowired
 	private OrderSimulationService orderSimulationService;
@@ -62,7 +85,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 			{
 				String fileName = getUsername() + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
 
-				multipartFile.transferTo(new File(getOrderUploadFilePath() + File.separator + fileName));
+				multipartFile.transferTo(new File(uploadPath + File.separator + fileName));
 
 				return fileName;
 			}
@@ -90,7 +113,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 
 			try
 			{
-				file = new File(getOrderUploadFilePath() + File.separator + order.getFileName());
+				file = new File(uploadPath + File.separator + order.getFileName());
 
 				if (file.exists())
 				{
@@ -160,18 +183,6 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 		makeOrderItemForm(simulationResult);
 
 		return simulationResult;
-	}
-
-	protected String getOrderUploadFilePath()
-	{
-		File path = new File(environment.getProperty("file.upload.rootPath") + File.separator + "order");
-
-		if (!path.exists())
-		{
-			path.mkdir();
-		}
-
-		return path.getAbsolutePath();
 	}
 
 	protected List<OrderItemDto> getItemsFromUploadedFile(@RequestParam("file") MultipartFile multipartFile)

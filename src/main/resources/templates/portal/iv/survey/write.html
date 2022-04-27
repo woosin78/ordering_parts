@@ -23,20 +23,20 @@
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<th><span th:text="#{HQP_L_SURVEY_TITLE}"></span></th>
+				<th><span th:text="#{HQP_L_SURVEY_TITLE}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
 				<td><input type="text" name="title" id="title" class="custom-ui" autofocus="autofocus" th:value="${survey?.title}"/></td>
 			</tr>
 			
 			<tr>
 				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
 				<td>
-					<textarea class="custom-ui" name="description" th:text="${survey?.description}" rows="5" cols="50">
+					<textarea class="custom-ui" name="description" id="description" th:text="${survey?.description}" rows="5" cols="50">
 					</textarea>
 				</td>
 			</tr>
 			
 			<tr>
-				<th><span th:text="#{HQP_L_SURVEY_TARGET}"></span></th>
+				<th><span th:text="#{HQP_L_SURVEY_TARGET}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
 				<td>
 					<div class="split-row-more-compact"></div>
 					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui" th:placeholder="#{HQP_L_PLACEHOLD_DEALER_CODE_NAME}"/></div>
@@ -47,7 +47,7 @@
 					<div class="split-row-more-compact"></div>
 					<div id="addedtargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
 						<div th:each="surveyTarget : ${survey?.surveyTargets}">
-							<input type="checkbox" class="custom-ui visible-target"/><label th:text="${surveyTarget.stSeq}"></label>
+							<input type="checkbox" class="custom-ui visible-target"/><label th:text="${surveyTarget.target}"></label>
 							<div class="split2"></div><span th:text="${surveyTarget.targetName}"></span>
 							<input name="targetCode" type="hidden" th:value="${surveyTarget.stSeq}"/>
 							<input name="targetDescription" type="hidden" th:value="${surveyTarget.targetName}"/>
@@ -57,7 +57,7 @@
 			</tr>
 			
 			<tr>
-				<th><span th:text="#{HQP_L_SURVEY_PERIOD}"></span></th>
+				<th><span th:text="#{HQP_L_SURVEY_PERIOD}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
 				<td>
 					<div th:with="validFrom=${survey?.validFrom}, validFromDate=${#strings.substring(validFrom, 0, 8)}" class="input-area period">
 						<span th:text="#{HQP_L_FROM}" class="label"></span>
@@ -94,7 +94,7 @@
 			</tr>
 			
 			<tr>
-				<th><span th:text="#{HQP_L_SURVEY_OPEN}"></span></th>
+				<th><span th:text="#{HQP_L_SURVEY_OPEN}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
 				<td>
 					<input type="radio" class="custom-ui" name="fgOpen" value="Y"/>
 					<label th:text="#{HQP_L_PUBLIC}"></label>
@@ -105,7 +105,7 @@
 			</tr>
 			
 			<tr>
-				<th><span th:text="#{HQP_L_RESULT_OPEN}"></span></th>
+				<th><span th:text="#{HQP_L_RESULT_OPEN}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
 				<td>
 					<input type="radio" class="custom-ui" name="fgOpenResult" value="Y"/>
 					<label th:text="#{HQP_L_PUBLIC}"></label>
@@ -154,24 +154,56 @@ $(function(){
 	
 	Calendar.makeCalendar($("#validFromDate"), "[[${survey?.validFromYmd}]]");
 	Calendar.makeCalendar($("#validToDate"), "[[${survey?.validToYmd}]]");
-
-	//console.log('write');
 	
 	$("#BTN_save").on("click", function() {
-		// to-do: validation
+		let title = $("#title").val();
+		if (!JpUtilsString.isNotEmpty(title)) {
+			alert("[[#{HQP_L_SURVEY_TITLE}]] 을 입력해주세요");
+			$("#title").focus();
+			return;
+		}
 		
-		
+		let targets = $("input[name=targetCode]");
+		if (targets.length == 0) {
+			alert("[[#{HQP_L_SURVEY_TARGET}]] 을 선택해주세요");
+			return;
+		}
 		
 		let validFromDate = $("#validFromDate").val().replaceAll('.', '');
 		let validFromHours = $("#validFromHours").val();
 		let validFromMinutes = $("#validFromMinutes").val() ;
+		let validFrom = validFromDate + '' + validFromHours + '' + validFromMinutes;
+		if (!moment(validFrom, 'YYYYMMDDHHmm', true).isValid()) {
+			alert("[[#{HQP_L_SURVEY_PERIOD}]] 을 선택해주세요");
+			return;
+		}
 		
 		let validToDate = $("#validToDate").val().replaceAll('.', '');
 		let validToHours = $("#validToHours").val();
 		let validToMinutes = $("#validToMinutes").val();
-
-		$("#validFrom").val(validFromDate + '' + validFromHours + '' + validFromMinutes);
-		$("#validTo").val(validToDate + '' + validToHours + '' + validToMinutes);
+		let validTo = validToDate + '' + validToHours + '' + validToMinutes; 
+		if (!moment(validTo, 'YYYYMMDDHHmm', true).isValid()) {
+			alert("[[#{HQP_L_SURVEY_PERIOD}]] 을 선택해주세요");
+			return;
+		}
+		
+		if (validFrom >= validTo) {
+			alert("[[#{HQP_L_SURVEY_PERIOD}]] 을 확인해주세요");
+			return;
+		}
+		
+		$("#validFrom").val(validFrom);
+		$("#validTo").val(validTo);
+		
+		if ($("input:radio[name=fgOpen]:checked").val() == undefined) {
+			alert("[[#{HQP_L_SURVEY_OPEN}]] 을 선택해주세요");
+			return;
+		}
+		
+		if ($("input:radio[name=fgOpenResult]:checked").val() == undefined) {
+			alert("[[#{HQP_L_RESULT_OPEN}]] 을 선택해주세요");
+			return;
+		}
 		
 		let options = {
 			enctype: "multipart/form-data",

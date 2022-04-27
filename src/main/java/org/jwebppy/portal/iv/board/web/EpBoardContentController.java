@@ -76,7 +76,7 @@ public class EpBoardContentController extends IvGeneralController
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest)
 	{
-		procView(model, webRequest);
+		viewProc(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -84,12 +84,12 @@ public class EpBoardContentController extends IvGeneralController
 	@RequestMapping("/popup/view")
 	public Object viewPopup(Model model, WebRequest webRequest)
 	{
-		procView(model, webRequest);
+		viewProc(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
 
-	protected void procView(Model model, WebRequest webRequest)
+	protected void viewProc(Model model, WebRequest webRequest)
 	{
 		String bcSeq = webRequest.getParameter("bcSeq");
 
