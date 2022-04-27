@@ -8,7 +8,7 @@
 	<div class="block-header">
 		<div class="block-title" th:text="${boardName}"></div>
 		<div class="block-button-area">
-			<button id="BTN_write" type="button" th:text="#{HQP_B_WRITE}"></button>
+			<button id="BTN_write" type="button" th:text="#{HQP_B_WRITE}" th:if="${isManager}"></button>
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>			
 		</div>
 	</div>

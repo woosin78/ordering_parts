@@ -8,7 +8,7 @@
 	<div class="block-header">
 		<div class="block-title" th:text="${boardName}"></div>
 		<div class="block-button-area">
-			<th:block th:if="${isManager eq true}">
+			<th:block th:if="${isManager}">
 				<button id="BTN_modify" type="button" th:text="#{HQP_B_MODIFY}"></button>
 				<button id="BTN_delete" type="button" th:text="#{HQP_B_DELETE}"></button>
 			</th:block>

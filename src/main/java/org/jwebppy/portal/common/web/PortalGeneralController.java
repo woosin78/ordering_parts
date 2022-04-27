@@ -13,7 +13,7 @@ import org.jwebppy.platform.core.web.GeneralController;
 
 public class PortalGeneralController extends GeneralController
 {
-	protected final String[] MANAGER_AUTHORITIES = {};
+	protected final String[] MANAGER_AUTHORITIES = {"DP_IVDO_PARTS_MANAGER", "DP_IVEX_PARTS_MANAGER", "DP_UKDO_PARTS_MANAGER", "DP_EUDO_PARTS_MANAGER"};
 
 	@Override
 	protected Integer getUSeq()
