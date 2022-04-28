@@ -22,4 +22,5 @@ public class EpBoardContentSearchDto extends IvGeneralDto
 	private String toRegDate;
 	private String fromView;
 	private String toView;
+	private String custCode;
 }

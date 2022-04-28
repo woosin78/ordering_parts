@@ -73,6 +73,17 @@ public class EpBoardContentController extends IvGeneralController
 		return ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch));
 	}
 
+	@RequestMapping("/popup/list/data")
+	@ResponseBody
+	public Object popupListData(@ModelAttribute EpBoardContentSearchDto boardContentSearch, WebRequest webRequest)
+	{
+		boardContentSearch.setCorp(getCorp());
+		boardContentSearch.setBSeq("1-07008bda-f80b-4f6c-8397-c382bc344273");
+		boardContentSearch.setCustCode(getErpUserContext().getCustCode());
+
+		return ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch));
+	}
+
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest)
 	{

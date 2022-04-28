@@ -198,6 +198,20 @@ $(function(){
 	    }	
 	});
 	
+	JpUtilsAjax.get({
+		url: "/portal/iv/board/popup/list/data",
+		global: false,
+		success: function(data, textStatus, jqXHR)
+		{
+			let result = data.RESULT;
+			
+			$.each(result, function(index, element) {
+				let url = "/portal/iv/board/popup/view?bSeq=" + element.board.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
+				Popup.open(url, 1024, 730, "Y", "Y");
+			});
+		}
+	});	
+	
 	checkExpiredPassword();
 });
 
