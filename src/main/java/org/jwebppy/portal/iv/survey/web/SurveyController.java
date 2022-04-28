@@ -37,14 +37,7 @@ public class SurveyController extends IvGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		//model.addAttribute("isManager", isManager());
-		// to-do: admin계정처리
-		boolean isManager = false;
-		if (UserAuthenticationUtils.getUserDetails().getUSeq() == 1) {
-			isManager = true;
-		}
-		model.addAttribute("isManager", isManager);
-		
+		model.addAttribute("isManager", isManager());
 		addAllAttributeFromRequest(model, webRequest);
 		
 		return DEFAULT_VIEW_URL;
@@ -54,13 +47,7 @@ public class SurveyController extends IvGeneralController
 	@ResponseBody
 	public Object listData(@ModelAttribute SurveySearchDto surveySearchDto)
 	{
-		// to-do: admin계정처리
-		boolean isManager = false;
-		if (UserAuthenticationUtils.getUserDetails().getUSeq() == 1) {
-			isManager = true;
-		}
-		surveySearchDto.setManager(isManager);
-		
+		surveySearchDto.setManager(isManager());
 		return ListUtils.emptyIfNull(surveyService.getSurveys(surveySearchDto));
 	}
 	

@@ -32,10 +32,6 @@ public class SurveyQuestionService extends PlatformGeneralService
 	}
 	
 	public int save(SurveyQuestionDto surveyQuestion) {
-		if (surveyQuestion.getFgMandatory() == null) {
-			surveyQuestion.setFgMandatory("N");
-		}
-		
 		if (surveyQuestion.getSqSeq() > 0) {
 			return modify(surveyQuestion);
 		} else {

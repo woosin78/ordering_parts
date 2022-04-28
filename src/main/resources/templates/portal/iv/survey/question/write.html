@@ -74,22 +74,37 @@ $(function(){
 	ProgressBar.hide();
 	
 	let type = "[[${surveyQuestion?.type}]]";
+	if (!JpUtilsString.isNotEmpty(type)) {
+		type = '0';	
+	}
 	$("#type").val(type);
 	handleMandatoryCnt(type);
-	$("#fgMandatory").val("[[${surveyQuestion?.fgMandatory}]]");
+	
+	let fgMandatory = "[[${surveyQuestion?.fgMandatory}]]";
+	if (JpUtilsString.isNotEmpty(fgMandatory)) {
+		$("#fgMandatory").val(fgMandatory);	
+	} else {
+		$("#fgMandatory").val("Y");
+	}
 	
 	$("#BTN_save").on("click", function() {
 		
 		let title = $("#title").val();
 		if (!JpUtilsString.isNotEmpty(title)) {
-			alert('타이틀을 입력해주세요');
+			//alert('타이틀을 입력해주세요');
+			let msg = "[[#{HQP_M_INSERT_SUBJECTIVE}]]";	// 타이틀을 입력해주세요
+			alert(msg.replace("{0}", "[[#{HQP_L_TITLE}]]"));
+			
 			$("#title").focus();
 			return false;
 		}
 		
 		let type = $("#type").val();
 		if (!JpUtilsString.isNotEmpty(type)) {
-			alert('질문유형을 선택해주세요');
+			//alert('질문유형을 선택해주세요');
+			let msg = "[[#{HQP_M_SELECT_EXAMPLE_OF}]]";	// 질문유형을 선택해주세요
+			alert(msg.replace("{0}", "[[#{HQP_L_QUESTION_TYPE}]]"));
+			
 			$("#type").focus();
 			return false;
 		}

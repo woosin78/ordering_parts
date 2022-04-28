@@ -158,14 +158,19 @@ $(function(){
 	$("#BTN_save").on("click", function() {
 		let title = $("#title").val();
 		if (!JpUtilsString.isNotEmpty(title)) {
-			alert("[[#{HQP_L_SURVEY_TITLE}]] 을 입력해주세요");
+			//alert("[[#{HQP_L_SURVEY_TITLE}]] 을 입력해주세요");
+			let msg = "[[#{HQP_M_INSERT_SUBJECTIVE}]]";	//을/를 입력해주세요'
+			alert(msg.replace("{0}", "[[#{HQP_L_SURVEY_TITLE}]]"));
+			
 			$("#title").focus();
 			return;
 		}
 		
 		let targets = $("input[name=targetCode]");
 		if (targets.length == 0) {
-			alert("[[#{HQP_L_SURVEY_TARGET}]] 을 선택해주세요");
+			//alert("[[#{HQP_L_SURVEY_TARGET}]] 을 선택해주세요");
+			let msg = "[[#{HQP_M_SELECT_EXAMPLE_OF}]]";	// 을 선택해주세요
+			alert(msg.replace("{0}", "[[#{HQP_L_SURVEY_TARGET}]]"));
 			return;
 		}
 		
@@ -174,7 +179,9 @@ $(function(){
 		let validFromMinutes = $("#validFromMinutes").val() ;
 		let validFrom = validFromDate + '' + validFromHours + '' + validFromMinutes;
 		if (!moment(validFrom, 'YYYYMMDDHHmm', true).isValid()) {
-			alert("[[#{HQP_L_SURVEY_PERIOD}]] 을 선택해주세요");
+			//alert("[[#{HQP_L_SURVEY_PERIOD}]] 을 선택해주세요");
+			let msg = "[[#{HQP_M_SELECT_EXAMPLE_OF}]]";	// 을 선택해주세요
+			alert(msg.replace("{0}", "[[#{HQP_L_SURVEY_PERIOD}]]"));
 			return;
 		}
 		
@@ -183,12 +190,16 @@ $(function(){
 		let validToMinutes = $("#validToMinutes").val();
 		let validTo = validToDate + '' + validToHours + '' + validToMinutes; 
 		if (!moment(validTo, 'YYYYMMDDHHmm', true).isValid()) {
-			alert("[[#{HQP_L_SURVEY_PERIOD}]] 을 선택해주세요");
+			//alert("[[#{HQP_L_SURVEY_PERIOD}]] 을 선택해주세요");
+			let msg = "[[#{HQP_M_SELECT_EXAMPLE_OF}]]";	// 을 선택해주세요
+			alert(msg.replace("{0}", "[[#{HQP_L_SURVEY_PERIOD}]]"));
 			return;
 		}
 		
 		if (validFrom >= validTo) {
-			alert("[[#{HQP_L_SURVEY_PERIOD}]] 을 확인해주세요");
+			//alert("[[#{HQP_L_SURVEY_PERIOD}]] 을 확인해주세요");
+			let msg = "[[#{HQP_M_CONFIRM_SURVEY_PERIOD}]]";	// 을 확인해주세요
+			alert(msg.replace("{0}", "[[#{HQP_L_SURVEY_PERIOD}]]"));
 			return;
 		}
 		
@@ -196,12 +207,16 @@ $(function(){
 		$("#validTo").val(validTo);
 		
 		if ($("input:radio[name=fgOpen]:checked").val() == undefined) {
-			alert("[[#{HQP_L_SURVEY_OPEN}]] 을 선택해주세요");
+			//alert("[[#{HQP_L_SURVEY_OPEN}]] 을 선택해주세요");
+			let msg = "[[#{HQP_M_SELECT_EXAMPLE_OF}]]";	// 을 선택해주세요
+			alert(msg.replace("{0}", "[[#{HQP_L_SURVEY_OPEN}]]"));
 			return;
 		}
 		
 		if ($("input:radio[name=fgOpenResult]:checked").val() == undefined) {
-			alert("[[#{HQP_L_RESULT_OPEN}]] 을 선택해주세요");
+			//alert("[[#{HQP_L_RESULT_OPEN}]] 을 선택해주세요");
+			let msg = "[[#{HQP_M_SELECT_EXAMPLE_OF}]]";	// 을 선택해주세요
+			alert(msg.replace("{0}", "[[#{HQP_L_RESULT_OPEN}]]"));
 			return;
 		}
 		

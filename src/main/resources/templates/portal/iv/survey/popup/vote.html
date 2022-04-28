@@ -19,12 +19,12 @@
 				<th style="width:20%;"><span th:text="#{HQP_L_SURVEY_TITLE}"></span></th>
 				<td><span th:text="${survey?.title}" /></td>
 			</tr>
-			<tr>
-				<th>설문취지</th>
+			<tr th:style="${survey?.description == null ? 'display:none' : ''}">
+				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
 				<td><span th:text="${survey?.description}"/></td>
 			</tr>
 			<tr th:style="${#lists.isEmpty(survey?.uploadFileLists) ? 'display:none' : ''}">
-				<th>첨부파일</th>
+				<th><span th:text="#{HQP_L_ATTACHMENT}"></span></th>
 				<td>
 					<span th:each="uploadFileList : ${survey?.uploadFileLists}">
 					<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a>
@@ -299,7 +299,8 @@ let Vote = {
 	setType0Answer: function(voteItem) {	
 		let val = $('input:radio[name=Q_'+ voteItem.sqSeq +']:checked').val();
 		if (voteItem.fgMandatory == 'Y' && !JpUtilsString.isNotEmpty(val)) {
-			alert('['+ voteItem.title + ']을 선택해주세요');
+			let msg = /*[[#{HQP_M_SELECT_EXAMPLE_OF}]]*/;	// 을 선택해주세요
+			alert(msg.replace("{0}", '['+voteItem.title+']'));
 			return false;
 		}
 		
@@ -313,12 +314,14 @@ let Vote = {
 	setType1Answers: function(voteItem) {	
 		let checked = $('input:checkbox[name=Q_'+voteItem.sqSeq+']:checked');
 		if (voteItem.fgMandatory == 'Y' && checked.length == 0) {
-			alert('['+ voteItem.title + ']을 선택해주세요');
+			let msg = /*[[#{HQP_M_SELECT_EXAMPLE_OF}]]*/;	// 을 선택해주세요
+			alert(msg.replace("{0}", '['+voteItem.title+']'));
 			return false;
 		}
 		
 		if (checked.length > voteItem.mandatoryCnt) {
-			alert('['+ voteItem.title + '] 최대 선택 개수를 초과합니다');
+			let msg = /*[[#{HQP_M_EXCEED_NUMBER_OF}]]*/;	//최대 선택 개수를 초과합니다
+			alert('['+voteItem.title+']' + msg);
 			return false;
 		}
 		
@@ -335,7 +338,8 @@ let Vote = {
 	setType2Answer: function(voteItem) {	
 		let val = $("#Q_"+voteItem.sqSeq).val();
 		if (voteItem.fgMandatory == 'Y' && !JpUtilsString.isNotEmpty(val)) {
-			alert('['+ voteItem.title + ']을/를 입력해주세요');
+			let msg = /*[[#{HQP_M_INSERT_SUBJECTIVE}]]*/;	//을/를 입력해주세요'
+			alert(msg.replace("{0}", '['+voteItem.title+']'));
 			return false;
 		}
 		
@@ -356,12 +360,14 @@ let Vote = {
 		});
 		 
 		if (voteItem.fgMandatory == 'Y' && sum == 0) {
-			alert('['+ voteItem.title + '] 가중치를 선택해주세요');
+			let msg = /*[[#{HQP_M_SELECT_EXAMPLE_OF}]]*/;	// 가중치를 선택해주세요
+			alert(msg.replace("{0}", '['+voteItem.title+']'));
 			return false;
 		}
 		
 		if (voteItem.fgMandatory == 'Y' && sum != 10) {
-			alert('['+ voteItem.title + '] 가중치의 합은 10점입니다');
+			let msg = /*[[#{HQP_M_SUM_OF_EXTRA_WEIGHT}]]*/;	// 가중치의 합은 10점입니다
+			alert('['+voteItem.title+'] ' + msg);
 			return false;
 		}
 		
@@ -385,7 +391,8 @@ let Vote = {
 		
 		let unqiue = new Set(arr);
 		if (voteItem.fgMandatory == 'Y' && (arr.length != unqiue.size)) {
-			alert('['+ voteItem.title + ']의 우선순위가 중복 되었습니다');
+			let msg = /*[[#{HQP_M_PRIORITY}]]*/;	// 우선순위가 중복 되었습니다
+			alert('['+voteItem.title+'] ' + msg);
 			return false;
 		}
 		

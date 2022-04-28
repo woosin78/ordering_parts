@@ -18,12 +18,12 @@
 				<th style="width:20%;"><span th:text="#{HQP_L_SURVEY_TITLE}"></span></th>
 				<td><span th:text="${survey?.title}" /></td>
 			</tr>
-			<tr>
-				<th>설문취지</th>
+			<tr th:style="${survey?.description == null ? 'display:none' : ''}">
+				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
 				<td><span th:text="${survey?.description}"/></td>
 			</tr>
 			<tr th:style="${#lists.isEmpty(survey?.uploadFileLists) ? 'display:none' : ''}">
-				<th>첨부파일</th>
+				<th><span th:text="#{HQP_L_ATTACHMENT}"></span></th>
 				<td>
 					<span th:each="uploadFileList : ${survey?.uploadFileLists}">
 					<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a>
