@@ -21,13 +21,14 @@ import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.service.UserGroupService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.jwebppy.portal.iv.common.IvCommonVo;
+import org.jwebppy.portal.iv.common.service.IvGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class AccountMgmtService
+public class AccountMgmtService extends IvGeneralService
 {
 	@Autowired
 	private ContentAuthorityService contentAuthorityService;

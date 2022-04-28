@@ -17,6 +17,17 @@
 			bc_seq=#{bcSeq}
 	</insert>
 	
+	<select id="findBoardContentTarget" resultType="EpBoardContentTargetDto">
+		select
+		*
+		from
+		ep_board_content_target
+		where
+		bc_seq=#{bcSeq}
+		and code=#{code}
+		and fg_delete='N'		
+	</select>
+	
 	<select id="findBoardContentTargets" resultType="EpBoardContentTargetEntity">
 		select
 		*

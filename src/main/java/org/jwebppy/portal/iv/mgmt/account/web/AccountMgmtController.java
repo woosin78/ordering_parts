@@ -16,10 +16,12 @@ import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.mgmt.account.service.AccountMgmtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH + "/mgmt/account")
@@ -32,8 +34,10 @@ public class AccountMgmtController extends IvGeneralController
 	private UserService userService;
 
 	@RequestMapping("/list")
-	public String accountList()
+	public String list(Model model, WebRequest webRequest)
 	{
+		addAllAttributeFromRequest(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 

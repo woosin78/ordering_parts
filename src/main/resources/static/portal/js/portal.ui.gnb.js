@@ -8,6 +8,7 @@ function makeGnb()
 		{
 			let items = data.RESULT;
 			let level1 = [];
+			let MENU_PER_PAGE = 7;
 			
 	    	for (let i=0, length=items.length; i<length; i++)
 	    	{
@@ -30,13 +31,13 @@ function makeGnb()
 	    		};
 	    	};
 	    	
-	    	for (let i=6-level1.length; i>0; i--)
+	    	for (let i=MENU_PER_PAGE-level1.length; i>0; i--)
 	    	{
 				level1.push("<li></li>");
 			};
 	    	
-	    	$(".gnb-menu-list").html(level1.slice(0, 6).join(""));
-	    	$(".gnb-menu-list li").css("width", Math.floor(100 / 6).toString() + "%");
+	    	$(".gnb-menu-list").html(level1.slice(0, MENU_PER_PAGE).join(""));
+	    	$(".gnb-menu-list li").css("width", Math.floor(100 / MENU_PER_PAGE).toString() + "%");
 	    	$(".gnb-menu-list").show();
 	    	
 	    	$(".gnb-menu-list > li").on("click", function() {

@@ -42,4 +42,9 @@ public class EpBoardContentTargetService extends IvGeneralService
 
 		return boardContentTargetMapper.updateFgDelete(epBoardContentTarget);
 	}
+
+	public EpBoardContentTargetDto getBoardContentTarget(EpBoardContentTargetDto boardContentTarget)
+	{
+		return CmModelMapperUtils.mapToDto(EpBoardContentTargetObjectMapper.INSTANCE, boardContentTargetMapper.findBoardContentTarget(boardContentTarget));
+	}
 }
