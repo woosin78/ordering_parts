@@ -1,10 +1,18 @@
 package org.jwebppy.platform.core.security.authentication;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.sso.uitils.StringEncrypter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -25,7 +33,14 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 	@Value("${sso.ad.domainSecret}")
 	private String DOMAIN_SECRET;
 
-	public PlatformAuthenticationFilter() {}
+    private final static Map<String, String[]> SSO_ALLOWED_SYSTEMS = new HashMap<>();
+
+    static
+    {
+    	SSO_ALLOWED_SYSTEMS.put("SSO_DOOBIZ", new String[] {"1-5fd1c5f3-241f-4830-936b-ecd59335bc76", "1-ef6d7d40-a788-4318-8d55-26dc57371ce5"});
+    }
+
+    public PlatformAuthenticationFilter() {}
 
 	public PlatformAuthenticationFilter(AuthenticationManager authenticationManager)
 	{
@@ -51,6 +66,18 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 		if (isAdUser(CmStringUtils.trimToEmpty(request.getParameter("token"))))
 		{
 			password = "AD-USER";
+		}
+
+		if (SSO_ALLOWED_SYSTEMS.containsKey(username))
+		{
+			username = ssoValidCheck(username, password);
+
+			if (CmStringUtils.isEmpty(username))
+			{
+				throw new BadCredentialsException("Unauthorized user.");
+			}
+
+			password = "SSO-USER";
 		}
 
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
@@ -85,5 +112,37 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
         }
 
         return false;
+    }
+
+    private String ssoValidCheck(String username, String password)
+    {
+		try
+		{
+			String[] secretInfo = SSO_ALLOWED_SYSTEMS.get(username);
+
+			String[] message = CmStringUtils.split(new StringEncrypter(secretInfo[0], secretInfo[1]).decrypt(password), ":");
+
+	    	if (ArrayUtils.isEmpty(message))
+	    	{
+	    		return null;
+	    	}
+
+	    	LocalDateTime time = CmDateTimeUtils.toLocalDateTime(message[1]);
+
+	    	long period = ChronoUnit.SECONDS.between(time, LocalDateTime.now());
+
+	    	if (period > 30)
+	    	{
+	    		return null;
+	    	}
+
+	    	return message[0];
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+    	return null;
     }
 }

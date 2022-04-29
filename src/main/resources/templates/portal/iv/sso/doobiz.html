@@ -41,16 +41,20 @@
 		<button id="BTN_go" class="gomain-button"><span th:text="#{PTL_B_MOVE_TO_SYSTEM}"></span> <img src="/portal/img/common/arrow_right.png" /></button>
 	</div>
 </div>
+<form id="FORM_sso" method="post" th:action="${url}" target="doobiz">
+<textarea name="j_user" style="display:none;" th:text="${token}"></textarea>
+<input type="hidden" name="j_password" value="">
+<input type="hidden" name="from" value="citrix">
+<input type="hidden" name="login_submit" value="on">
+</form>
 <script>
-//let url = "http://gpes.doosan-iv.com/ssoextra/sso_login_div_order.jsp?p_encryptsso=[[${key}]]";
-let url = "[[${url}]]";
-
 $("#BTN_go").on("click", function() {
-	window.open(url);
+	window.open("", "doobiz");
+	$("#FORM_sso").submit();
 });
 
 $(function(){
-	window.open(url);
+	$("#BTN_go").trigger("click");
 	ProgressBar.hide();
 });
 
