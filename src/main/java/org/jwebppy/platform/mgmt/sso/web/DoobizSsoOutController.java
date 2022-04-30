@@ -8,16 +8,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/doobiz")
-public class DoobizSsoController extends SsoController
+@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/out/doobiz")
+public class DoobizSsoOutController extends SsoController
 {
 	private final String KEY = "Infracore";
 	private final String IV = "Doosan";
-	private final String PRD_URL = "https://doobiz.doosan-iv.com/irj/portal";
-	private final String DEV_URL = "https://doobiz-edu.doosan-iv.com/irj/portal";
+	private final String PRD_URL = "https://doobiz.doosan-iv.com";
+	private final String DEV_URL = "https://doobiz-edu.doosan-iv.com";
 
-	@RequestMapping
-	public Object out(Model model)
+	@RequestMapping("/in/doobiz")
+	public Object sso(Model model)
 	{
         try
 		{
@@ -31,6 +31,6 @@ public class DoobizSsoController extends SsoController
 			e.printStackTrace();
 		}
 
-		return "/portal/iv/sso/doobiz";
+		return "/portal/iv/sso/doobiz/sso";
 	}
 }

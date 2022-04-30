@@ -31,14 +31,15 @@ public class PlatformSecurityConfig extends WebSecurityConfigurerAdapter
 			PlatformConfigVo.ERROR_PAGE_URL,
 			PlatformConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL,
 			PlatformConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL,
-			"/mail/tracking"
+			PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/in/**"
+			//,"/mail/tracking"
 	};
 
 	private final String[] commonRequests = {
 			PlatformConfigVo.CONTEXT_PATH + "/mgmt/gnb/menu",//GNB 메뉴
 			PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/login/history/last_login_info",//최종로그인정보 제공
 			PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/check/valid_credentials",//아이디,비밀번호 유효성 체크
-			PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/**",//SSO
+			PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/out/**",//SSO
 			PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/check/expired_password"//비밀번호 사용만료 체크
 	};
 

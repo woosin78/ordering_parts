@@ -60,18 +60,25 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
         	UserAccountDto userAccount = user.getUserAccount();
 
-        	/*
-        	 * 자체 계정 인증 허용 여부
-        	 * Y: 인증 허용 않음
-        	 * N: 인증 허용
-        	 */
-        	if (CmStringUtils.equals(userAccount.getFgNoUsePassword(), PlatformCommonVo.NO))
+        	if (CmStringUtils.equalsAny(password, "AD-USER", "SSO-USER"))
         	{
-        		//AD 인증에 성공했거나 비밀번호가 동일할 경우
-        		if (CmStringUtils.equals(password, "AD-USER") || passwordEncoder.matches(password, userAccount.getPassword()))
-        		{
-        			isValidCredentials = true;
-        		}
+        		isValidCredentials = true;
+        	}
+        	else
+        	{
+            	/*
+            	 * DoobizPlus 자체 계정 인증 허용 여부
+            	 * Y: 인증 허용 않음
+            	 * N: 인증 허용
+            	 */
+            	if (CmStringUtils.equals(userAccount.getFgNoUsePassword(), PlatformCommonVo.NO))
+            	{
+            		//AD 인증에 성공했거나 비밀번호가 동일할 경우
+            		if (passwordEncoder.matches(password, userAccount.getPassword()))
+            		{
+            			isValidCredentials = true;
+            		}
+            	}
         	}
 
         	if (isValidCredentials)

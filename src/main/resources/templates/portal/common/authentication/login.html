@@ -220,8 +220,8 @@ $(document).ready(function() {
 		<div><img id="mainImg" th:src="@{/portal/img/login/main.png}" alt="Main Image" /></div>
 		<div class="login-box">
 			<div class="title" th:text="#{PTL_T_FORM_LOGIN}"></div>
-			<div class="username"><img th:src="@{/portal/img/login/username.png}" class="login-input" alt="Username" /><input type="text" id="username" name="username" th:placeholder="#{PTL_T_FORM_USERNAME}" autofocus /></div>
-			<div class="password"><img th:src="@{/portal/img/login/password.png}" class="login-input" alt="Password" /><input type="password" id="password" name="password" th:placeholder="#{PTL_T_FORM_PASSWORD}" /></div>
+			<div class="username"><img th:src="@{/portal/img/login/username.png}" class="login-input" alt="Username" /><input type="text" th:with="username=${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_USERNAME}" th:id="${username}" th:name="${username}" th:placeholder="#{PTL_T_FORM_USERNAME}" autofocus /></div>
+			<div class="password"><img th:src="@{/portal/img/login/password.png}" class="login-input" alt="Password" /><input type="password" th:with="password=${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_PASSWORD}" th:id="${password}" th:name="${password}" th:placeholder="#{PTL_T_FORM_PASSWORD}" /></div>
 			<button class="btn-login" type="button" th:text="#{PTL_B_FORM_LOGIN}"></button>
 			<div class="bottom"> 
 				<div class="save-username"><img th:src="@{/portal/img/login/check.png}" class="save-username-chk" alt="Save Username" /><span>[[#{PTL_T_FORM_SAVE_USERNAME}]]</span></div>

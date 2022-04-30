@@ -7,25 +7,25 @@ import java.util.Map;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/gpes")
-public class GpesSsoController extends SsoController
+@RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/out/gpes")
+public class GpesSsoOutController extends SsoController
 {
 	private final static Map<String, String[]> TARGET = new HashMap<>();
-	private final String PRD_URL = "https://doobiz.doosan-iv.com/irj/portal";
-	private final String DEV_URL = "https://doobiz-edu.doosan-iv.com/irj/portal";
+	private final String PRD_URL = "https://gpes.doosan-iv.com";
+	private final String DEV_URL = "https://gpes.doosan-iv.com";
 
 	static
 	{
-		TARGET.put("gpes", new String[] {"DIV", "DIVORDER", "/ssoextra/sso_login_div_order.jsp?p_encryptsso="});
+		TARGET.put("sso", new String[] {"DIV", "DIVORDER", "/ssoextra/sso_login_div_order.jsp?p_encryptsso="});
 		TARGET.put("bulletin", new String[] {"DIV", "DIVDOOBIZ", "/ssoextra/sso_login_doobiz.jsp?BULLETIN_STS=NEW_BULL&PART_NO=&LAN_CD=EN&p_encryptsso="});
 	}
 
-	@RequestMapping("/{target}")
-	public Object out(@PathVariable(value = "target") String target, Model model)
+	@RequestMapping
+	public Object sso(@RequestParam(value = "target", required = false, defaultValue = "sso") String target, Model model)
 	{
         try
 		{
@@ -40,6 +40,6 @@ public class GpesSsoController extends SsoController
 			e.printStackTrace();
 		}
 
-		return "/portal/iv/sso/gpes";
+		return "/portal/iv/sso/out/gpes/sso";
 	}
 }

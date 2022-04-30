@@ -276,7 +276,7 @@ public class ContentController extends ContentGeneralController
     				continue;
     			}
 
-    			if (!method.isAnnotationPresent(ResponseBody.class))
+    			if (method.isAnnotationPresent(RequestMapping.class) && !method.isAnnotationPresent(ResponseBody.class))
     			{
 					String url = getReturnUrl(clazz, method);
 
@@ -302,13 +302,10 @@ public class ContentController extends ContentGeneralController
 	{
 		if (CmAnnotationUtils.isAnnotationDeclaredLocally(RequestMapping.class, clazz))
 		{
-	        String value1 = CmAnnotationUtils.getAnnotationValue(CmAnnotationUtils.getAnnotation(clazz, RequestMapping.class));
-			String value2 = CmAnnotationUtils.getAnnotationValue(CmAnnotationUtils.getAnnotation(method, RequestMapping.class));
+	        String value1 = CmStringUtils.trimToEmpty(CmAnnotationUtils.getAnnotationValue(CmAnnotationUtils.getAnnotation(clazz, RequestMapping.class)));
+			String value2 = CmStringUtils.trimToEmpty(CmAnnotationUtils.getAnnotationValue(CmAnnotationUtils.getAnnotation(method, RequestMapping.class)));
 
-			if (CmStringUtils.isNotEmpty(value1) && CmStringUtils.isNotEmpty(value2))
-			{
-				return value1 + value2;
-			}
+			return value1 + value2;
 		}
 
 		return null;

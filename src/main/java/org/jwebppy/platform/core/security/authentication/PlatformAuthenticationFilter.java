@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -37,7 +38,7 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
     static
     {
-    	SSO_ALLOWED_SYSTEMS.put("SSO_DOOBIZ", new String[] {"1-5fd1c5f3-241f-4830-936b-ecd59335bc76", "1-ef6d7d40-a788-4318-8d55-26dc57371ce5"});
+    	SSO_ALLOWED_SYSTEMS.put("DIV_DOOBIZ", new String[] {"Infracore", "Doosan"});
     }
 
     public PlatformAuthenticationFilter() {}
@@ -50,34 +51,35 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException
 	{
-		String username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
-		String password = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_PASSWORD));
+		String username = null;
+		String password = null;
 
-		if ("".equals(username))
+		String[] credentials = checkSsoUser(request);
+
+		if (ArrayUtils.isNotEmpty(credentials))
 		{
-			throw new UsernameNotFoundException("The username or password is incorrect.");
+			username = credentials[0];
+			password = credentials[1];
 		}
-
-		if ("".equals(password))
+		else
 		{
-			throw new BadCredentialsException("The username or password is incorrect.");
-		}
+			username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
+			password = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_PASSWORD));
 
-		if (isAdUser(CmStringUtils.trimToEmpty(request.getParameter("token"))))
-		{
-			password = "AD-USER";
-		}
-
-		if (SSO_ALLOWED_SYSTEMS.containsKey(username))
-		{
-			username = ssoValidCheck(username, password);
-
-			if (CmStringUtils.isEmpty(username))
+			if ("".equals(username))
 			{
-				throw new BadCredentialsException("Unauthorized user.");
+				throw new UsernameNotFoundException("The username or password is incorrect.");
 			}
 
-			password = "SSO-USER";
+			if ("".equals(password))
+			{
+				throw new BadCredentialsException("The username or password is incorrect.");
+			}
+
+			if (isAdUser(CmStringUtils.trimToEmpty(request.getParameter("token"))))
+			{
+				password = "AD-USER";
+			}
 		}
 
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
@@ -114,29 +116,37 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
         return false;
     }
 
-    private String ssoValidCheck(String username, String password)
+    private String[] checkSsoUser(HttpServletRequest request)
     {
+    	String system = CmStringUtils.trimToEmpty(request.getParameter("system"));
+    	String key = CmStringUtils.trimToEmpty(request.getParameter("key"));
+
+    	if (CmStringUtils.isAnyEmpty(system, key))
+    	{
+    		return null;
+    	}
+
 		try
 		{
-			String[] secretInfo = SSO_ALLOWED_SYSTEMS.get(username);
+			String[] secretInfo = SSO_ALLOWED_SYSTEMS.get(system);
 
-			String[] message = CmStringUtils.split(new StringEncrypter(secretInfo[0], secretInfo[1]).decrypt(password), ":");
+			String[] message = CmStringUtils.split(new StringEncrypter(secretInfo[0], secretInfo[1]).decrypt(key), ":");
 
-	    	if (ArrayUtils.isEmpty(message))
+	    	if (ArrayUtils.isEmpty(message) || message.length != 2)
 	    	{
 	    		return null;
 	    	}
 
-	    	LocalDateTime time = CmDateTimeUtils.toLocalDateTime(message[1]);
+	    	LocalDateTime time = CmDateTimeUtils.toLocalDateTime(message[1], PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
 
 	    	long period = ChronoUnit.SECONDS.between(time, LocalDateTime.now());
 
-	    	if (period > 30)
+	    	if (period > 120)
 	    	{
 	    		return null;
 	    	}
 
-	    	return message[0];
+	    	return new String[] {message[0], "SSO-USER"} ;
 		}
 		catch (Exception e)
 		{

@@ -2259,3 +2259,60 @@ COUNTER     5
     return code: RFC_SYS_EXCEPTION (3)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220427 073427 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error: [2] >Wed Apr 27 07:34:27,606<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: connection closed without message (CM_NO_DATA_RECEIVED)
+    return code: RFC_CLOSED (6)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220429 160237 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Fri Apr 29 16:02:37,928<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 48693895
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-88.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Fri Apr 29 16:02:37 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.88:3300; L=10.249.10.61:16838
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     832697
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Fri Apr 29 16:02:50,423<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 48707390
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-88.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Fri Apr 29 16:02:50 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.88:3300; L=10.249.10.61:16836
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     832703
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+

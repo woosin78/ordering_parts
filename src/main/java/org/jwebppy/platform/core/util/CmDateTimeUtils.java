@@ -22,7 +22,12 @@ public class CmDateTimeUtils
 
 	public static LocalDateTime toLocalDateTime(String dateTime)
 	{
-		return LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern(CmDateFormatUtils.getDateTimeFormat()));
+		return toLocalDateTime(dateTime, null);
+	}
+
+	public static LocalDateTime toLocalDateTime(String dateTime, String format)
+	{
+		return LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern(CmStringUtils.defaultString(format, CmDateFormatUtils.getDateTimeFormat())));
 	}
 
 	public static ZonedDateTime toZonedDateTime(Object dateTime)

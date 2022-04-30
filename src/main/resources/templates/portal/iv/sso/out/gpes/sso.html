@@ -41,17 +41,19 @@
 		<button id="BTN_go" class="gomain-button"><span th:text="#{PTL_B_MOVE_TO_SYSTEM}"></span> <img src="/portal/img/common/arrow_right.png" /></button>
 	</div>
 </div>
-<script>
-let url = "[[${url}]]";
+<script th:inline="javascript">
+/*<![CDATA[*/
+let url = [[${url}]];
 
 $("#BTN_go").on("click", function() {
 	window.open(url);
 });
 
 $(function(){
-	window.open(url);
+	$("#BTN_go").trigger("click");	
+
 	ProgressBar.hide();
 });
-
+/*]]>*/
 </script>
 </th:block>

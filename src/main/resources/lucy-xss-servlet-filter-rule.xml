@@ -66,10 +66,12 @@
 			<url disable="true">/platform/mgmt/i18n/save</url>
 		</url-rule>
 		
+		<!-- Excel Download -->
 		<url-rule>
 			<url disable="true">/portal/iv/download/grid/excel</url>			
 		</url-rule>
 		
+		<!-- I/F Log -->
 		<url-rule>
 			<url disable="true">/platform/mgmt/log/view/download</url>
 		</url-rule>
