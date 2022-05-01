@@ -16,6 +16,8 @@
 		<result property="etc4" column="etc4" />
 		<result property="etc5" column="etc5" />
 		<result property="etc6" column="etc6" />
+		<result property="width" column="width" />
+		<result property="height" column="height" />		
 		<result property="htmlContent" column="html_content" />
 		<result property="textContent" column="text_content" />
 		<result property="fromView" column="from_view" />
@@ -33,8 +35,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="EpBoardContentEntity">
-		insert into ep_board_content (bc_seq, b_seq, p_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date) values (
-			#{bcSeq}, #{bSeq}, nvl(#{pSeq}, #{bcSeq}), 0, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, #{etc1}, #{etc2}, #{etc3}, #{etc4}, #{etc5}, #{etc6}, 'N', #{regUsername}, #{regDate}
+		insert into ep_board_content (bc_seq, b_seq, p_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date, width, height) values (
+			#{bcSeq}, #{bSeq}, nvl(#{pSeq}, #{bcSeq}), 0, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, #{etc1}, #{etc2}, #{etc3}, #{etc4}, #{etc5}, #{etc6}, 'N', #{regUsername}, #{regDate}, #{width}, #{height}
 		)
 	</insert>
 	
@@ -45,6 +47,8 @@
 			text_content=#{textContent},
 			from_view=#{fromView},
 			to_view=#{toView},
+			width=#{width},
+			height=#{height},
 			mod_username=#{modUsername},
 			mod_date=#{modDate}				
 		where
@@ -141,17 +145,22 @@
 				</when>
 			</choose>
 			
-			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(custCode)">
-				and exists (
-					select
-					1
-					from
-					ep_board_content_target
-					where
-					bc_seq=a.bc_seq
-					and code=#{custCode}
-				)
-			</if>			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@equals(fgPopup, 'Y')">
+				and nvl(a.from_view, sysdate-1) <![CDATA[<]]> sysdate and nvl(a.to_view, sysdate+1) <![CDATA[>=]]> sysdate
+				and
+				(
+					(select count(1) from ep_board_content_target where bc_seq=a.bc_seq) = 0
+					or exists (
+						select
+						1
+						from
+						ep_board_content_target
+						where
+						bc_seq=a.bc_seq
+						and code=#{custCode}
+					)					
+				)				
+			</if>
 	
 			order by a.p_seq desc, a.sort, a.depth
 		) z

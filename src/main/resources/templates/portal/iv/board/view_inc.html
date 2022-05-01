@@ -49,6 +49,12 @@
 						<span th:if="${not #strings.isEmpty(boardContent.displayToView)}" th:text="| - ${boardContent.displayToView}|"></span>
 					</td>
 				</tr>
+				<tr th:style="${(board.fgSetPopup == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
+					<th th:text="#{HQP_L_WIDTH}"/>
+					<td th:text="|${boardContent.width} #{HQP_L_PLACEHOLD_PIXEL}|"></td>
+					<th th:text="#{HQP_L_HEIGHT}"/>
+					<td colspan="3" th:text="|${boardContent.height} #{HQP_L_PLACEHOLD_PIXEL}|"></td>
+				</tr>
 			</th:block>
 			<tr th:style="${board?.uploadFile != null ? '' : 'display:none;'}">
 				<th th:text="#{HQP_L_ATTACHMENT}"/>

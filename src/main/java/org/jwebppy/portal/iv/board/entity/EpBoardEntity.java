@@ -21,7 +21,7 @@ public class EpBoardEntity extends GeneralEntity
 	private String fgUseComment;
 	private String fgSetPeriod;
 	private String fgSetTarget;
+	private String fgSetPopup;
 	private String corp;
-	//private String ufSeq;
 	private EpUploadFileEntity uploadFile;
 }

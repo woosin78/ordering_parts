@@ -206,8 +206,12 @@ $(function(){
 			let result = data.RESULT;
 			
 			$.each(result, function(index, element) {
-				let url = "/portal/iv/board/popup/view?bSeq=" + element.board.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
-				Popup.open(url, 1024, 730, "Y", "Y");
+				let url = "/portal/iv/board/popup/view2?bSeq=" + element.board.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
+				
+				let width = JpUtilsString.defaultString(element.width, "700");
+				let height = JpUtilsString.defaultString(element.height, "600");
+				
+				Popup.open(url, width, height, "Y", "Y");
 			});
 		}
 	});	

@@ -257,7 +257,7 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 	box-sizing: border-box;
 	display: inline-block;
 	position: relative;
-	width: 50px;	
+	width: 60px;	
 }
 
 .period select.hours {
@@ -266,6 +266,14 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 
 .period select.minutes {
 	width: 50px;
+}
+
+.popup span.label {
+	padding: 5px 0px 5px 0px;
+	box-sizing: border-box;
+	display: inline-block;
+	position: relative;
+	width: 60px;	
 }
 
 /*--- 조건 영역 ------------------*/

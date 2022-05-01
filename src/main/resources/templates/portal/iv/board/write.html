@@ -24,13 +24,13 @@
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<th><span th:text="#{HQP_L_TITLE}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
+				<th>[[#{HQP_L_TITLE}]]<img src="/portal/img/icon/required.png" class="required" /></th>
 				<td>
 					<input type="text" id="title" name="title" class="custom-ui" autofocus="autofocus" th:value="${boardContent?.title}"/>
 				</td>
 			</tr>
 			<tr>
-				<th><span th:text="#{HQP_L_CONTENT}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
+				<th>[[#{HQP_L_CONTENT}]]<img src="/portal/img/icon/required.png" class="required" /></th>
 				<td><div id="xfe"></div></td>
 			</tr>
 			
@@ -51,7 +51,7 @@
 							<input name="targetCode" type="hidden" th:value="${boardContentTarget.code}"/>
 							<input name="targetDescription" type="hidden" th:value="${boardContentTarget.description}"/>
 						</div>						
-					</div>					
+					</div>
 				</td>
 			</tr>
 			<tr th:style="${(board.fgSetPeriod == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
@@ -72,7 +72,8 @@
 						</select>
 						<span th:text="#{HQP_L_MINUTES}"></span>
 					</div>
-					<div class="period">
+					<div class="split-row-more-compact"></div>
+					<div class="input-area period">
 						<span th:text="#{HQP_L_TO}" class="label"></span>
 						<input type="text" id="toViewDate" name="toViewDate" class="custom-ui-calendar" th:value="${boardContent?.toViewDate}"/>
 						<div class="split3"></div>
@@ -86,6 +87,20 @@
 							<option th:each="num : ${#numbers.sequence(0,59)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq boardContent?.toViewMinutes}"/>
 						</select>
 						<span th:text="#{HQP_L_MINUTES}"></span>			
+					</div>
+				</td>
+			</tr>
+			<tr th:style="${(board.fgSetPopup == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
+				<th>[[#{HQP_L_POPUP_SIZE}]]</th>
+				<td>
+					<div class="input-area popup">
+						<span th:text="#{HQP_L_WIDTH}" class="label"></span>
+						<input type="text" class="custom-ui-scope" id="width" name="width" th:value="${boardContent?.width}" th:placeholder="#{HQP_L_PLACEHOLD_PIXEL}" />
+					</div>
+					<div class="split-row-more-compact"></div>
+					<div class="input-area popup">
+						<span th:text="#{HQP_L_HEIGHT}" class="label"></span>
+						<input type="text" class="custom-ui-scope" id="height" name="height" th:value="${boardContent?.height}" th:placeholder="#{HQP_L_PLACEHOLD_PIXEL}" />
 					</div>
 				</td>
 			</tr>

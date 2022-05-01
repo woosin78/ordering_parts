@@ -23,4 +23,5 @@ public class EpBoardContentSearchDto extends IvGeneralDto
 	private String fromView;
 	private String toView;
 	private String custCode;
+	private String fgPopup;
 }

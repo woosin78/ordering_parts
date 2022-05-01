@@ -5,6 +5,14 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 	
 <th:block layout:fragment="content">
+<style>
+.text {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap: normal;
+	overflow: hidden;	
+}
+</style>
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_T_PARTS_ORDER_REPORT}"></div>
 		<div class="block-button-area">
@@ -18,11 +26,24 @@
 		<table class="condition table-fixed">
 			<tbody>
 				<tr>
+					<th th:text="#{HQP_L_TYPE}"></th>
+					<td>
+						<div class="input-area">
+							<select id="type" name="type" class="custom-ui">
+								<option value="monthly" selected>Monthly Based</option>
+								<option value="order_type">Order Type</option>
+							</select>
+						</div>
+					</td>
+				</tr>
+				<tr>
 					<th th:text="#{HQP_L_YEAR}"></th>
 					<td>
-						<select id="pYear" name="pYear" class="custom_ui">
-							<option th:each="year: ${#numbers.sequence(pYear, pYear-1)}" th:value="${year}" th:text="${year}"></option>
-						</select>
+						<div class="input-area">
+							<select id="pYear" name="pYear" class="custom_ui">
+								<option th:each="year: ${#numbers.sequence(pYear, pYear-1)}" th:value="${year}" th:text="${year}"></option>
+							</select>
+						</div>
 					</td>
 				</tr>
 			</tbody>
@@ -31,18 +52,15 @@
 	</div>	
 	
 	<div class="condition-area">
-		<div class="condition-title right">
-		<span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span>
-		</div>
+		<div class="condition-title right"><span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span></div>
 		<table class="condition table-fixed order-report">
 			<thead>
 				<tr><th>&nbsp;</th></tr>
 			</thead>
 			<tbody></tbody>
 		</table>
-		<div class="split-row"></div>
-		<div id="AREA_chart" style="width:60%; margin: auto; "></div>
 	</div>
+	<div id="AREA_chart" style="width:60%; margin: auto; "></div>
 	
 <script>
 $(document).ready(function() {
@@ -60,7 +78,7 @@ $(document).ready(function() {
 		thead.push("<tr><th></th>");
 		
 		$.each(column, function(index, item) {
-			thead.push("<th>");
+			thead.push("<th class='center text' title='" + item.CAPTION + "'>");
 			thead.push(item.CAPTION);
 			thead.push("</th>");
 		});
@@ -69,7 +87,7 @@ $(document).ready(function() {
 		
 		$.each(axis, function(index1, item1) {
 			tbody.push("<tr>");
-			tbody.push("<td>" + axis[index1].CAPTION + "</td>");
+			tbody.push("<td class='text' title='" + axis[index1].CAPTION + "'>" + axis[index1].CAPTION + "</td>");
 			
 			$.each(data[index1], function(index2, item2) {
 				let value = item2.VALUE;
@@ -79,8 +97,10 @@ $(document).ready(function() {
 					value = Number(value).toFixed(2);
 				};
 				
-				tbody.push("<td class='right'>");
-				tbody.push(JpUtilsNumber.addComma(value));
+				let formattedValue = JpUtilsNumber.addComma(value);
+				
+				tbody.push("<td class='right text' title='" + formattedValue + "'>");
+				tbody.push(formattedValue);
 				tbody.push("</td>");
 			});
 			
@@ -168,7 +188,7 @@ $(document).ready(function() {
 	function load()
 	{
 		JpUtilsAjax.get({
-			url: "[[${BASE_PATH}]]/report/order/list/data",
+			url: "[[${BASE_PATH}]]/report/order/monthly/list/data",
 			data: {"pYear": $("#pYear").val()},
 			beforeSend: function(jqXHR, settings) {
 				ProgressBar.show();
@@ -196,6 +216,10 @@ $(document).ready(function() {
 	});
 	
 	doSearch();
+	
+	$("#type").on("change", function() {
+		document.location.href = "[[${BASE_PATH}]]/report/order/" + $(this).val() + "/list";
+	});
 });
 </script>	
 </th:block>

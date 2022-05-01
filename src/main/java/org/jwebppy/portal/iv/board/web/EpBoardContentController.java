@@ -13,6 +13,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
+import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentSearchDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentTargetDto;
@@ -78,8 +79,9 @@ public class EpBoardContentController extends IvGeneralController
 	public Object popupListData(@ModelAttribute EpBoardContentSearchDto boardContentSearch, WebRequest webRequest)
 	{
 		boardContentSearch.setCorp(getCorp());
-		boardContentSearch.setBSeq("1-07008bda-f80b-4f6c-8397-c382bc344273");
+		boardContentSearch.setBSeq("0-e9267a6b-69ce-445d-a683-42f6cf916787");
 		boardContentSearch.setCustCode(getErpUserContext().getCustCode());
+		boardContentSearch.setFgPopup(PortalCommonVo.YES);
 
 		return ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch));
 	}
@@ -94,6 +96,14 @@ public class EpBoardContentController extends IvGeneralController
 
 	@RequestMapping("/popup/view")
 	public Object viewPopup(Model model, WebRequest webRequest)
+	{
+		viewProc(model, webRequest);
+
+		return DEFAULT_VIEW_URL;
+	}
+
+	@RequestMapping("/popup/view2")
+	public Object viewPopup2(Model model, WebRequest webRequest)
 	{
 		viewProc(model, webRequest);
 

@@ -272,6 +272,14 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 	width: 50px;
 }
 
+.popup span.label {
+	padding: 5px 0px 5px 0px;
+	box-sizing: border-box;
+	display: inline-block;
+	position: relative;
+	width: 60px;	
+}
+
 /*--- 조건 영역 ------------------*/
 .condition-area {
 	margin: 5px 40px 5px 40px;

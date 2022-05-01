@@ -11,6 +11,7 @@
 		<result property="fgUseComment" column="fg_use_comment" />
 		<result property="fgSetPeriod" column="fg_set_period" />
 		<result property="fgSetTarget" column="fg_set_target" />
+		<result property="fgSetPopup" column="fg_set_popup" />
 		<result property="corp" column="corp" />
 		<result property="fgDelete" column="fg_delete" />
 		<result property="regUsername" column="reg_username" />

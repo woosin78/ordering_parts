@@ -38,6 +38,8 @@ public class EpBoardContentEntity extends IvGeneralEntity
 	private String etc4;
 	private String etc5;
 	private String etc6;
+	private String width;
+	private String height;
 	private EpBoardEntity board;
 	private EpUploadFileEntity fileUploadFile;
 	private List<EpUploadFileListEntity> uploadFileLists;

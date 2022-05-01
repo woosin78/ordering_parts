@@ -49,6 +49,8 @@ public class EpBoardContentDto extends IvGeneralDto
 	private String etc4;
 	private String etc5;
 	private String etc6;
+	private String width;
+	private String height;
 	private EpBoardDto board;
 	private EpUploadFileDto uploadFile;
 	private List<EpUploadFileListDto> uploadFileLists;

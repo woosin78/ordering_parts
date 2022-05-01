@@ -2316,3 +2316,99 @@ COUNTER     832703
     Return code: RFCIO_ERROR_SYSERROR(5)<
 
 
+
+**** Error file opened at 20220501 161907 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sun May 01 16:19:07,356<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 22427111
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sun May  1 16:19:07 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:42272
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     874175
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Sun May 01 16:27:58,534<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 22987265
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sun May  1 16:27:58 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:9678
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     874309
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Sun May 01 16:28:03,111<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 22993870
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sun May  1 16:28:02 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:9676
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     874315
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+Error:  >Sun May 01 16:44:47,886<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 24058679
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner '10.249.7.220:sapgw00' broken
+TIME        Sun May  1 16:44:47 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:40405
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     874561
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
