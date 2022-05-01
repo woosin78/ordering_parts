@@ -15,12 +15,19 @@
 	padding: 10px 5px 5px 10px;
 	background-color: #000;	
 }
+.pop-bottom label {
+	color:#fff;
+}
+
+.pop-bottom label.link {color: #fff; cursor: pointer;}
+.pop-bottom label.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
+	
 </style>
 </head>	
 <body style="overflow: hidden; margin:0; padding:0;">
 <div id="xfe"></div>
 <div id="bottom" class="pop-bottom">	
-	<input type="checkbox" class="custom-ui" checked/> <label th:text="#{HQP_T_NOT_SHOW_POPUP_A_DAY}"></label>
+	<input type="checkbox" class="custom-ui" checked/> <label th:text="#{HQP_T_NOT_SHOW_POPUP_A_DAY}" class="link"></label>
 	<div style="float: right;"><button id="BTN_close" type="button" th:text="#{HQP_B_CLOSE}"></button></div>	
 </div>
 <textarea id="htmlContent" th:text="${boardContent?.htmlContent}" style="display:none;"></textarea>
@@ -52,12 +59,16 @@ let xfe = new XFE({
 xfe.render("xfe");
 
 $("#BTN_close").on("click", function() {
-	if ($("input[type=checkbox]:checked"))
+	if ($("input[type=checkbox]").is(":checked"))
 	{
 		$.cookie("[[${boardContent.bcSeq}]]", "Y", {expires: 1 /*유효 기간(일 단위 기준)*/, path: "/"});
 	};
 	
 	window.close();
+});
+
+$(".link").on("click", function() {
+	$("input[type=checkbox]").prop("checked", !$("input[type=checkbox]").is(":checked"));
 });
 
 </script>

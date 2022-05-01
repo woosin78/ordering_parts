@@ -76,39 +76,23 @@ function checkForm()
 $("#BTN_save").on("click", function() {
 	if (checkForm())
 	{
-		doSubmit1();
+		doSubmit();
 	};
 });
 
 $("input:password").on("keydown", function (e) {
 	if (e.keyCode == 13)
 	{
-		doSubmit1();
+		doSubmit();
 	};
 });
 
-function doSubmit1()
-{
-	JpUtilsAjax.post({
-		url: "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PROCESSING_URL}]]",
-		data: $("#FORM_user").serialize(),
-		beforeSend: function(jqXHR, settings)
-		{
-			ProgressBar.show();
-		},			
-		success: function(data, textStatus, jqXHR)
-		{
-			doSubmit2();
-		}
-	});	
-};
-
-function doSubmit2()
+function doSubmit()
 {
 	if (checkForm())
 	{
 		JpUtilsAjax.post({
-			url: "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PROCESSING_URL}]]",
+			url: "[[${BASE_PATH}]]/user/save",
 			data: $("#FORM_user").serialize(),
 			beforeSend: function(jqXHR, settings)
 			{
@@ -118,11 +102,16 @@ function doSubmit2()
 			{
 				let result = data.RESULT;
 				
-				let checkResult = result.RESULT;
-				
-				if (checkResult == 1)
+				if (result.RESULT == 1)
 				{
-					alert("[[#{HQP_M_CHANGE_PASSWORD_SUCCESS}]]");
+					alert("[[#{HQP_M_SUCCESS_SAVE}]]");
+					
+					try
+					{
+						opener.document.location.reload();
+					}
+					catch (e) {}
+					
 					window.close();
 				}
 				else

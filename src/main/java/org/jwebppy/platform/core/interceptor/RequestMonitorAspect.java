@@ -16,17 +16,20 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.cache.CacheHelper;
+import org.jwebppy.platform.core.security.authentication.service.UserAuthenticationService;
 import org.jwebppy.platform.core.util.CmAnnotationUtils;
 import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmClassUtils;
 import org.jwebppy.platform.core.util.CmResponseEntityUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.GeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +43,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @Component
 public class RequestMonitorAspect
 {
-//	@Autowired
-//	private UserAuthenticationService userAuthenticationService;
+	@Autowired
+	private UserAuthenticationService userAuthenticationService;
 
 	@Autowired
 	private CacheHelper cacheHelper;
@@ -113,8 +116,8 @@ public class RequestMonitorAspect
 	@Around("execution(* org.jwebppy..*Controller.*(..))")
 	public Object onAround(final ProceedingJoinPoint proceedingJoinPoint) throws Throwable
 	{
-		//사용자 정보 업데이트
-		//updateUserDetails();
+		//사용자 정보 실시간 업데이트
+		updateUserDetails();
 
 		Object result = proceedingJoinPoint.proceed();
 
@@ -167,7 +170,6 @@ public class RequestMonitorAspect
 		return VIEW_URLS.get(signature.getDeclaringTypeName() + "." + ((MethodSignature)signature).getMethod().getName());
 	}
 
-	/*
 	private void updateUserDetails()
 	{
 		if (UserAuthenticationUtils.isAuthenticated())
@@ -175,5 +177,4 @@ public class RequestMonitorAspect
 			SecurityContextHolder.getContext().setAuthentication(userAuthenticationService.getAuthentication(UserAuthenticationUtils.getUSeq()));
 		}
 	}
-	*/
 }

@@ -1,10 +1,11 @@
-package org.jwebppy.platform.mgmt.sso.web;
+package org.jwebppy.platform.mgmt.sso.web.gpes;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.mgmt.sso.web.SsoController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
