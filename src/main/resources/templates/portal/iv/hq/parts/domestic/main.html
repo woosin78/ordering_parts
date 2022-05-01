@@ -206,12 +206,17 @@ $(function(){
 			let result = data.RESULT;
 			
 			$.each(result, function(index, element) {
-				let url = "/portal/iv/board/popup/view2?bSeq=" + element.board.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
+				let fgNotShow = JpUtilsString.defaultString($.cookie(element.bcSeq), "N");
 				
-				let width = JpUtilsString.defaultString(element.width, "700");
-				let height = JpUtilsString.defaultString(element.height, "600");
-				
-				Popup.open(url, width, height, "Y", "Y");
+				if (JpUtilsString.equals(fgNotShow, "N"))
+				{
+					let url = "/portal/iv/board/popup/view2?bSeq=" + element.board.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
+					
+					let width = JpUtilsString.defaultString(element.width, "700");
+					let height = JpUtilsString.defaultString(element.height, "600");
+					
+					Popup.open(url, width, height, "Y", "Y");					
+				};
 			});
 		}
 	});	
