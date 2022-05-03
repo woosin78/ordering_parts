@@ -2,6 +2,7 @@ package org.jwebppy.portal.iv.survey.dto;
 
 import java.util.List;
 
+import org.jwebppy.platform.core.util.XssHandleUtils;
 import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileListDto;
@@ -45,4 +46,8 @@ public class SurveyDto extends IvGeneralDto
 	private List<MultipartFile> files;
 	private List<String> uflSeqs;
 
+	public String getDisplayTitle()
+	{
+		return XssHandleUtils.removeTag(title);
+	}
 }
