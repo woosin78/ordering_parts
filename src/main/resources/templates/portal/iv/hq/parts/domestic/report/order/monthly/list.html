@@ -16,49 +16,49 @@
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_T_PARTS_ORDER_REPORT}"></div>
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
+			<!-- button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button -->
 		</div>
 	</div>
 	<div class="split-row"></div>
-	
+
 	<div class="condition-area">
-	<form id="FORM_search" name="FORM_search">
-		<table class="condition table-fixed">
-			<tbody>
-				<tr>
-					<th th:text="#{HQP_L_TYPE}"></th>
-					<td>
-						<div class="input-area">
-							<select id="type" name="type" class="custom-ui">
-								<option value="monthly" selected>Monthly Based</option>
-								<option value="order_type">Order Type</option>
-							</select>
-						</div>
-					</td>
-				</tr>
-				<tr>
-					<th th:text="#{HQP_L_YEAR}"></th>
-					<td>
-						<div class="input-area">
-							<select id="pYear" name="pYear" class="custom_ui">
-								<option th:each="year: ${#numbers.sequence(pYear, pYear-1)}" th:value="${year}" th:text="${year}"></option>
-							</select>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</form>
+		<form id="FORM_search" name="FORM_search">
+			<table class="condition table-fixed">
+				<tbody>
+					<tr>
+						<th th:text="#{HQP_L_YEAR}"></th>
+						<td>
+							<div class="input-area">
+								<select id="pYear" name="pYear" class="custom_ui">
+									<option th:each="year: ${#numbers.sequence(thisYear, thisYear-1)}" th:value="${year}" th:text="${year}" th:selected="${year}==${pYear}"></option>
+								</select>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<th th:text="#{HQP_L_TYPE}"></th>
+						<td>
+							<div class="input-area">
+								<select id="type" name="type" class="custom-ui">
+									<option value="monthly" selected th:text="#{HQP_L_REPORT_TYPE_MONTHLY}"></option>
+									<option value="order_type" th:text="#{HQP_L_REPORT_TYPE_ORDER_TYPE}"></option>
+								</select>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
 	</div>	
 	
 	<div class="condition-area">
 		<div class="condition-title right"><span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span></div>
-		<table class="condition table-fixed order-report">
-			<thead>
-				<tr><th>&nbsp;</th></tr>
-			</thead>
-			<tbody></tbody>
-		</table>
+			<table class="condition table-fixed order-report">
+				<thead>
+					<tr><th>&nbsp;</th></tr>
+				</thead>
+				<tbody></tbody>
+			</table>
 	</div>
 	<div id="AREA_chart" style="width:60%; margin: auto; "></div>
 	
@@ -215,11 +215,15 @@ $(document).ready(function() {
 		doSearch();
 	});
 	
-	doSearch();
+	$("#pYear").on("change", function() {
+		doSearch();
+	});	
 	
 	$("#type").on("change", function() {
-		document.location.href = "[[${BASE_PATH}]]/report/order/" + $(this).val() + "/list";
+		document.location.href = "[[${BASE_PATH}]]/report/order/" + $(this).val() + "/list?pYear=" + $("#pYear").val();
 	});
+	
+	doSearch();
 });
 </script>	
 </th:block>

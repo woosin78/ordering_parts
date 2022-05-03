@@ -2,18 +2,15 @@ package org.jwebppy.portal.iv.hq.parts.domestic.report.order.service;
 
 import java.util.Map;
 
-import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.portal.iv.common.utils.BwParseHelper;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrderReportService extends PartsDomesticGeneralService
 {
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.BUSINESS_TOOLS, unless="#result == null")
 	public Map<String, Object> getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("IV_BPP", "RS_VC_GET_QUERY_VIEW_DATA_FLAT");
@@ -23,7 +20,7 @@ public class OrderReportService extends PartsDomesticGeneralService
         rfcRequest
         	.field()
         		.add(new Object[][] {
-        			{"I_QUERY", "Z_ZSS_M001_Q004_D"}
+        			{"I_QUERY", paramMap.getString("query")}
         		})
         	.and()
         	.table("I_T_PARAMETER")

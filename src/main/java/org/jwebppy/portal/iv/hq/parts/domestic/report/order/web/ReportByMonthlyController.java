@@ -27,7 +27,10 @@ public class ReportByMonthlyController extends PartsDomesticGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		model.addAttribute("pYear", Integer.parseInt(CmStringUtils.defaultIfEmpty(webRequest.getParameter("pYear"), CmDateFormatUtils.format(CmDateTimeUtils.now(), "yyyy"))));
+		String thisYear = CmDateFormatUtils.format(CmDateTimeUtils.now(), "yyyy");
+
+		model.addAttribute("pYear", Integer.parseInt(CmStringUtils.defaultIfEmpty(webRequest.getParameter("pYear"), thisYear)));
+		model.addAttribute("thisYear", Integer.parseInt(thisYear));
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -39,7 +42,12 @@ public class ReportByMonthlyController extends PartsDomesticGeneralController
 	public Object listData(@RequestParam Map<String, Object> paramMap)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.add("year", CmStringUtils.defaultIfEmpty(paramMap.get("pYear"), CmDateFormatUtils.format(CmDateTimeUtils.now(), "yyyy")));
+
+		rfcParamMap
+			.add(new Object[][] {
+				{"year", CmStringUtils.defaultIfEmpty(paramMap.get("pYear"), CmDateFormatUtils.format(CmDateTimeUtils.now(), "yyyy"))},
+				{"query", "Z_ZSS_M001_Q004_D"}
+			});
 
 		return orderReportService.getList(rfcParamMap);
 	}
