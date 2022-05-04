@@ -17,7 +17,7 @@ public class ExBackorderService extends PartsExportGeneralService
 		String fromDate = paramMap.getString("fromDate");
 		String toDate = paramMap.getString("toDate");
 
-		if (paramMap.hasEmptyValue(new String[] {"orderNo", "poNo", "orderPartNo", "orderType"}))
+		if (paramMap.isAnyEmptyValue(new String[] {"orderNo", "poNo", "orderPartNo", "orderType"}))
 		{
     		fromDate = "19000101";
     		toDate = "29991231";

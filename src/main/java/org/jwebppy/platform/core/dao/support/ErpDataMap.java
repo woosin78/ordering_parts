@@ -204,7 +204,7 @@ public class ErpDataMap extends DataMap implements Serializable
 		}
 	}
 
-	public boolean hasEmptyValue(String[] keys)
+	public boolean isAnyEmptyValue(String[] keys)
 	{
 		if (keys != null)
 		{
