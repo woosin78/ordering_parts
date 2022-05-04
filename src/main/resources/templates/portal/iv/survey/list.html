@@ -7,13 +7,13 @@
 	
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_L_SURVEY}"></div>
-		<div class="block-button-area">
-			<button th:if="${isManager == true}" id="BTN_write" type="button" th:text="#{HQP_B_SURVEY_CREATION}"></button>
+		<div th:if="${isManager == true}" class="block-button-area">
+			<button id="BTN_write" type="button" th:text="#{HQP_B_SURVEY_CREATION}"></button>
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
 		</div>
 	</div>
 	
-	<div class="condition-area">
+	<div th:if="${isManager == true}" class="condition-area">
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>

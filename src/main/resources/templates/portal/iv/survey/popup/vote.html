@@ -247,6 +247,9 @@ let Vote = {
 		
 		let ts = this;
 		let voteItems = /*[[${voteItems}]]*/;
+		if (voteItems == null) {
+			return false;
+		}
 		$.each(voteItems, function(index, voteItem) {
 			sqSeq = voteItem.sqSeq;
 			
