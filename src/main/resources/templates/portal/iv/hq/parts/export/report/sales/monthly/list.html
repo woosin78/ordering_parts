@@ -6,7 +6,7 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQP_T_PARTS_ORDER_REPORT}"></div>
+		<div class="block-title" th:text="#{PLTF_L_1651725228840}"></div>
 		<div class="block-button-area">
 			<!-- button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button -->
 		</div>
@@ -45,13 +45,14 @@
 	
 	<div class="condition-area">
 		<div class="condition-title right"><span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span></div>
-			<table class="condition table-fixed order-report">
-				<thead>
-					<tr><th>&nbsp;</th></tr>
-				</thead>
-				<tbody></tbody>
-			</table>
+		<table class="condition table-fixed order-report">
+			<thead>
+				<tr><th>&nbsp;</th></tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 	</div>
+	<div class="split-row-compact"></div>
 	<div id="AREA_chart" style="width:60%; margin: auto; "></div>
 	
 <script>
@@ -146,14 +147,6 @@ $(document).ready(function() {
 			data: {
 				columns: chartData,
 				labels: false
-				/*
-				labels: {
-					format: {
-						Plan: d3.format(","),
-						"Sales Record": d3.format(",")
-					}
-				}
-				*/
 			},
 			axis: {
 				x: {
@@ -166,7 +159,7 @@ $(document).ready(function() {
 				},
 				y: {
 					label: {
-						text: "Order Amount",
+						text: "Sales Amount",
 						position: "outer-middle"
 					},
 					tick: {
@@ -180,7 +173,7 @@ $(document).ready(function() {
 	function load()
 	{
 		JpUtilsAjax.get({
-			url: "[[${BASE_PATH}]]/report/order/monthly/list/data",
+			url: "[[${BASE_PATH}]]/report/sales/monthly/list/data",
 			data: {"pYear": $("#pYear").val()},
 			beforeSend: function(jqXHR, settings) {
 				ProgressBar.show();
@@ -212,7 +205,7 @@ $(document).ready(function() {
 	});	
 	
 	$("#type").on("change", function() {
-		document.location.href = "[[${BASE_PATH}]]/report/order/" + $(this).val() + "/list?pYear=" + $("#pYear").val();
+		document.location.href = "[[${BASE_PATH}]]/report/sales/" + $(this).val() + "/list?pYear=" + $("#pYear").val();
 	});
 	
 	doSearch();

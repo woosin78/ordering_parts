@@ -51,6 +51,11 @@ public abstract class GeneralDto implements Serializable
 		return CmDateFormatUtils.format(regDate);
 	}
 
+	public String getDisplayRegDate2()
+	{
+		return CmDateFormatUtils.format(regDate, null, CmDateFormatUtils.getDateFormat());
+	}
+
 	public String getDisplayModDate()
 	{
 		return CmDateFormatUtils.format(modDate);

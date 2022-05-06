@@ -1,4 +1,4 @@
-package org.jwebppy.portal.iv.hq.parts.export.report.order.service;
+package org.jwebppy.portal.iv.hq.parts.export.report.sales.service;
 
 import java.util.Map;
 
@@ -9,7 +9,7 @@ import org.jwebppy.portal.iv.hq.parts.export.common.service.PartsExportGeneralSe
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExOrderReportService extends PartsExportGeneralService
+public class ExSalesReportService extends PartsExportGeneralService
 {
 	public Map<String, Object> getList(ErpDataMap paramMap)
 	{

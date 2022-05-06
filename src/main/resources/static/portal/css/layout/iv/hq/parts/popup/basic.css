@@ -297,6 +297,9 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 	border-top: 1px solid #cfcfcf;
 	border-bottom: 1px solid #cfcfcf;
 }
+.table-none-border {
+	border: none;
+}
 .condition th, .condition td{
 	padding: 3px 15px;
 	border-top:1px solid #cfcfcf;
@@ -738,6 +741,12 @@ img.required {
 }
 .visible {
 	display: block;
+}
+.text-ellipsis {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	word-wrap: normal;
+	overflow: hidden;	
 }
 
 /* 클릭시 border 애니메이션

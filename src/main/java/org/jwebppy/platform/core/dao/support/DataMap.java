@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -200,7 +201,7 @@ public class DataMap implements IDataMap, Serializable
     @Override
 	public int getInt(Object key, int defaultValue)
     {
-    	return getNumber(key, new Integer(defaultValue)).intValue();
+    	return getNumber(key, defaultValue).intValue();
     }
 
     @Override
@@ -212,7 +213,7 @@ public class DataMap implements IDataMap, Serializable
     @Override
 	public long getLong(Object key, long defaultValue)
     {
-        return getNumber(key, new Long(defaultValue)).longValue();
+        return getNumber(key, defaultValue).longValue();
     }
 
     @Override
@@ -224,7 +225,7 @@ public class DataMap implements IDataMap, Serializable
     @Override
 	public float getFloat(Object key, float defaultValue)
     {
-        return getNumber(key, new Float(defaultValue)).floatValue();
+        return getNumber(key, defaultValue).floatValue();
     }
 
     @Override
@@ -236,7 +237,7 @@ public class DataMap implements IDataMap, Serializable
     @Override
 	public double getDouble(Object key, double defaultValue)
     {
-        return getNumber(key, new Double(defaultValue)).doubleValue();
+        return getNumber(key, defaultValue).doubleValue();
     }
 
 	@Override
@@ -262,7 +263,14 @@ public class DataMap implements IDataMap, Serializable
     	}
     	catch (ClassCastException e)
     	{
-    		throw e;
+    		try
+    		{
+    			value = NumberUtils.createNumber((String)get(key));
+    		}
+    		catch (Exception ee)
+    		{
+    			throw ee;
+    		}
     	}
 
     	if (value == null)

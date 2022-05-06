@@ -3,6 +3,7 @@ package org.jwebppy.platform.mgmt.authority.service;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.mgmt.authority.dto.CItemAuthRlDto;
@@ -12,6 +13,7 @@ import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.mapper.CItemObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ public class AuthorityService
 	}
 
 	//현재 가지고 있는 권한을 모두 삭제 한 후 부여
+	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
 	public int save(CItemAuthRlDto cItemAuthRl)
 	{
 		Integer pSeq = cItemAuthRl.getPSeq();

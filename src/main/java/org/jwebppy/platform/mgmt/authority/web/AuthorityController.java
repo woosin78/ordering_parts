@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -52,7 +53,7 @@ public class AuthorityController extends UserGeneralController
 	{
 		PageableList<CItemDto> pageableList = null;
 
-		if (cItemSearch.getType() == null && CmStringUtils.isEmpty(cItemSearch.getQuery()))
+		if (ObjectUtils.allNull(cItemSearch.getType(), cItemSearch.getCSeq()) && CmStringUtils.isEmpty(cItemSearch.getQuery()))
 		{
 			pageableList = new PageableList<>();
 		}

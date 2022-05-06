@@ -181,7 +181,7 @@ public class ContentAuthorityService extends GeneralService
 		return Collections.emptyList();
 	}
 
-	@Cacheable(keyGenerator = "cacheKeyGenerator", value = CacheConfig.CITEM, unless="#result == null")
+	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
 	public List<CItemDto> getSubCItems(Integer cSeq, String lang)
 	{
 		List<CItemDto> cItems = new LinkedList<>();

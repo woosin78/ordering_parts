@@ -149,7 +149,7 @@
 				and nvl(a.from_view, sysdate-1) <![CDATA[<]]> sysdate and nvl(a.to_view, sysdate+1) <![CDATA[>=]]> sysdate
 				and
 				(
-					(select count(1) from ep_board_content_target where bc_seq=a.bc_seq) = 0
+					(select count(1) from ep_board_content_target where bc_seq=a.bc_seq and fg_delete='N') = 0
 					or exists (
 						select
 						1
@@ -158,6 +158,7 @@
 						where
 						bc_seq=a.bc_seq
 						and code=#{custCode}
+						and fg_delete='N'
 					)					
 				)				
 			</if>

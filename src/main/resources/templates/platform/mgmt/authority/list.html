@@ -236,7 +236,17 @@ $(document).ready(function() {
 											minCharacters: 2,
 											placeholder: "Search",
 											fullTextSearch: true
-										});									    
+										});
+
+										$(".ui.tab[data-tab=authority] .ui.dropdown input.search").on("keydown", function(event) {
+											if (event.keyCode == 13)
+											{
+												if ($(".ui.tab[data-tab=authority] .ui.dropdown a.ui.label.transition.visible").length > 0)
+												{
+													$(".BTN_add").trigger("click");
+												};
+											};
+										});
 									};
 								}
 							});
@@ -407,13 +417,15 @@ $(document).ready(function() {
 	$(".BTN_save").on("click", function() {
 		if ($("#FORM_modifyAuthority").form("validate form"))
 		{
-			if (viewAuthorityTab.tabPath == "authority")
+			let tabPath = viewAuthorityTab.tabPath;
+			
+			if (tabPath == "authority")
 			{
 				$("#TBL_myAuthorityList").find(".ui.checkbox").checkbox("check");
 			};
 			
 			JpUtilsAjax.post({
-				url: "/platform/mgmt/authority/save/" + viewAuthorityTab.tabPath,
+				url: "/platform/mgmt/authority/save/" + tabPath,
 				data: $("#FORM_modifyAuthority").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -425,13 +437,13 @@ $(document).ready(function() {
 						{
 							$("#FORM_search input:hidden[name=cSeq]").val(cSeq);
 						};
+						
+						doSearch();
+					}
+					else
+					{
+						changeTab(tabPath);
 					};
-					
-					//reload 후에는 General Tab 으로 이동하기 때문에 현재 tabPath 를 저장해 둠.
-					let tabPath = viewAuthorityTab.tabPath;
-					
-					doSearch();
-					changeTab(tabPath);					
 				}
 			});
 		}

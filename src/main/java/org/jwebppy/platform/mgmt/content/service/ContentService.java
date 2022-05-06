@@ -234,7 +234,7 @@ public class ContentService extends GeneralService
 		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findPageCItems(cItemSearch));
 	}
 
-	@Cacheable(keyGenerator = "cacheKeyGenerator", value = CacheConfig.CITEM, unless="#result == null")
+	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
 	public List<CItemDto> getCItemHierarchy(CItemSearchDto cItemSearch)
 	{
 		List<CItemDto> cItems = new ArrayList<>();
@@ -263,7 +263,7 @@ public class ContentService extends GeneralService
 		}
 	}
 
-	@Cacheable(keyGenerator = "cacheKeyGenerator", value = CacheConfig.CITEM, unless="#result == null")
+	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
 	public List<Map<String, Object>> getCItemHierarchy2(CItemSearchDto cItemSearch)
 	{
 		cItemSearch.setTypes(new CItemType[] {CItemType.F, CItemType.R, CItemType.M, CItemType.P});

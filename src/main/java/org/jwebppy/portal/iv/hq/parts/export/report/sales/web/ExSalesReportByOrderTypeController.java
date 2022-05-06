@@ -1,4 +1,4 @@
-package org.jwebppy.portal.iv.hq.parts.domestic.report.order.web;
+package org.jwebppy.portal.iv.hq.parts.export.report.sales.web;
 
 import java.util.Map;
 
@@ -6,9 +6,9 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
-import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
-import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
-import org.jwebppy.portal.iv.hq.parts.domestic.report.order.service.OrderReportService;
+import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
+import org.jwebppy.portal.iv.hq.parts.export.common.web.PartsExportGeneralController;
+import org.jwebppy.portal.iv.hq.parts.export.report.sales.service.ExSalesReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/report/order/order_type")
-public class ReportByOrderTypeController extends PartsDomesticGeneralController
+@RequestMapping(PartsExportCommonVo.REQUEST_PATH + "/report/sales/order_type")
+public class ExSalesReportByOrderTypeController extends PartsExportGeneralController
 {
 	@Autowired
-	private OrderReportService orderReportService;
+	private ExSalesReportService salesReportService;
 
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
@@ -49,6 +49,6 @@ public class ReportByOrderTypeController extends PartsDomesticGeneralController
 				{"query", "Z_ZSS_M001_Q006"}
 			});
 
-		return orderReportService.getList(rfcParamMap);
+		return salesReportService.getList(rfcParamMap);
 	}
 }

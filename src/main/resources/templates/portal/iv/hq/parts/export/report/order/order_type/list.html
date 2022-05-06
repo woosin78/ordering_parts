@@ -32,8 +32,8 @@
 						<td>
 							<div class="input-area">
 								<select id="type" name="type" class="custom-ui">
-									<option value="monthly" selected th:text="#{HQP_L_REPORT_TYPE_MONTHLY}"></option>
-									<option value="order_type" th:text="#{HQP_L_REPORT_TYPE_ORDER_TYPE}"></option>
+									<option value="monthly" th:text="#{HQP_L_REPORT_TYPE_MONTHLY}"></option>
+									<option value="order_type" selected th:text="#{HQP_L_REPORT_TYPE_ORDER_TYPE}"></option>
 								</select>
 							</div>
 						</td>
@@ -45,13 +45,14 @@
 	
 	<div class="condition-area">
 		<div class="condition-title right"><span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span></div>
-			<table class="condition table-fixed order-report">
-				<thead>
-					<tr><th>&nbsp;</th></tr>
-				</thead>
-				<tbody></tbody>
-			</table>
+		<table class="condition table-fixed order-report">
+			<thead>
+				<tr><th>&nbsp;</th></tr>
+			</thead>
+			<tbody></tbody>
+		</table>
 	</div>
+	<div class="split-row-compact"></div>
 	<div id="AREA_chart" style="width:60%; margin: auto; "></div>
 	
 <script>
@@ -66,6 +67,7 @@ $(document).ready(function() {
 		
 		let thead = [];
 		let tbody = [];
+		let currency;
 		
 		thead.push("<tr><th></th>");
 		
@@ -94,6 +96,13 @@ $(document).ready(function() {
 				tbody.push("<td class='right text-ellipsis' title='" + formattedValue + "'>");
 				tbody.push(formattedValue);
 				tbody.push("</td>");
+				
+				console.log()
+				
+				if (JpUtilsString.isEmpty(currency) && JpUtilsString.isNotEmpty(item2.CURRENCY))
+				{
+					currency = item2.CURRENCY; 
+				};
 			});
 			
 			tbody.push("</tr>");
@@ -102,34 +111,37 @@ $(document).ready(function() {
 		$("table.order-report > thead").html(thead.join(""));
 		$("table.order-report > tbody").html(tbody.join(""));
 		
-		$("#curr").html(data[0][0].CURRENCY);
+		$("#curr").html(currency);
 	};
 	
 	function drawChart(result)
 	{
 		let column = result.BW_COLUMN;
 		let data = result.BW_DATA;
-		let axis = result.BW_AXIS;		
+		let axis = result.BW_AXIS;
+		let axisLength = axis.length;
 		
 		let chartData = [];
 		let xAxis = [];
+		let groups = new Array();
+		groups.push(new Array());
 		
 		$.each(column, function(index, item) {
-			if (index >=1 && index <= 12)
+			if (index >=0 && index <= 11)
 			{
 				xAxis.push(item.CAPTION);	
 			};
 		});
-		
+
 		$.each(axis, function(index1, item1) {
 			
-			if (index1 <= 1 || index1 == 3)
+			if (index1 >= 0 && index1 <= axisLength-4 && index1%2 == 0)
 			{
 				let chartColumn = [];
 				chartColumn.push(axis[index1].CAPTION);
 				
 				$.each(data[index1], function(index2, item2) {
-					if (index2 >= 1 && index2 <= 12)
+					if (index2 >= 0 && index2 <= 11)
 					{
 						let value = (item2.MWKZ == "%") ? Number(item2.VALUE).toFixed(2) : item2.VALUE;
 						
@@ -137,7 +149,9 @@ $(document).ready(function() {
 					};
 				});
 				
-				chartData.push(chartColumn);				
+				chartData.push(chartColumn);
+				
+				groups[0].push(axis[index1].CAPTION);
 			};
 		});			
 
@@ -145,15 +159,9 @@ $(document).ready(function() {
 			bindto: "#AREA_chart",
 			data: {
 				columns: chartData,
-				labels: false
-				/*
-				labels: {
-					format: {
-						Plan: d3.format(","),
-						"Sales Record": d3.format(",")
-					}
-				}
-				*/
+				labels: false,
+				type: "bar",
+				groups: groups
 			},
 			axis: {
 				x: {
@@ -175,12 +183,12 @@ $(document).ready(function() {
 				}
 			}
 		});
-	};	
+	};		
 	
 	function load()
 	{
 		JpUtilsAjax.get({
-			url: "[[${BASE_PATH}]]/report/order/monthly/list/data",
+			url: "[[${BASE_PATH}]]/report/order/order_type/list/data",
 			data: {"pYear": $("#pYear").val()},
 			beforeSend: function(jqXHR, settings) {
 				ProgressBar.show();

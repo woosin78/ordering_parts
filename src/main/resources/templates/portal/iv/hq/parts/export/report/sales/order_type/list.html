@@ -6,7 +6,7 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQP_T_PARTS_ORDER_REPORT}"></div>
+		<div class="block-title" th:text="#{PLTF_L_1651725228840}"></div>
 		<div class="block-button-area">
 			<!-- button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button -->
 		</div>
@@ -32,8 +32,8 @@
 						<td>
 							<div class="input-area">
 								<select id="type" name="type" class="custom-ui">
-									<option value="monthly" selected th:text="#{HQP_L_REPORT_TYPE_MONTHLY}"></option>
-									<option value="order_type" th:text="#{HQP_L_REPORT_TYPE_ORDER_TYPE}"></option>
+									<option value="monthly" th:text="#{HQP_L_REPORT_TYPE_MONTHLY}"></option>
+									<option value="order_type" selected th:text="#{HQP_L_REPORT_TYPE_ORDER_TYPE}"></option>
 								</select>
 							</div>
 						</td>
@@ -45,13 +45,16 @@
 	
 	<div class="condition-area">
 		<div class="condition-title right"><span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span></div>
-			<table class="condition table-fixed order-report">
+		<div style="height:250px; overflow-y: auto; border: 1px solid #003081;">
+			<table class="condition table-fixed order-report table-none-border">
 				<thead>
 					<tr><th>&nbsp;</th></tr>
 				</thead>
 				<tbody></tbody>
 			</table>
+		</div>
 	</div>
+	<div class="split-row-compact"></div>
 	<div id="AREA_chart" style="width:60%; margin: auto; "></div>
 	
 <script>
@@ -66,11 +69,12 @@ $(document).ready(function() {
 		
 		let thead = [];
 		let tbody = [];
+		let currency;
 		
-		thead.push("<tr><th></th>");
+		thead.push("<tr><th style='position: sticky; top:0'>&nbsp;</th>");
 		
 		$.each(column, function(index, item) {
-			thead.push("<th class='center text-ellipsis' title='" + item.CAPTION + "'>");
+			thead.push("<th style='position: sticky; top:0' class='center text-ellipsis' title='" + item.CAPTION + "'>");
 			thead.push(item.CAPTION);
 			thead.push("</th>");
 		});
@@ -94,6 +98,11 @@ $(document).ready(function() {
 				tbody.push("<td class='right text-ellipsis' title='" + formattedValue + "'>");
 				tbody.push(formattedValue);
 				tbody.push("</td>");
+				
+				if (JpUtilsString.isEmpty(currency) && JpUtilsString.isNotEmpty(item2.CURRENCY))
+				{
+					currency = item2.CURRENCY; 
+				};
 			});
 			
 			tbody.push("</tr>");
@@ -102,34 +111,37 @@ $(document).ready(function() {
 		$("table.order-report > thead").html(thead.join(""));
 		$("table.order-report > tbody").html(tbody.join(""));
 		
-		$("#curr").html(data[0][0].CURRENCY);
+		$("#curr").html(currency);
 	};
 	
 	function drawChart(result)
 	{
 		let column = result.BW_COLUMN;
 		let data = result.BW_DATA;
-		let axis = result.BW_AXIS;		
+		let axis = result.BW_AXIS;
+		let axisLength = axis.length;
 		
 		let chartData = [];
 		let xAxis = [];
+		let groups = new Array();
+		groups.push(new Array());
 		
 		$.each(column, function(index, item) {
-			if (index >=1 && index <= 12)
+			if (index >=0 && index <= 11)
 			{
 				xAxis.push(item.CAPTION);	
 			};
 		});
-		
+
 		$.each(axis, function(index1, item1) {
 			
-			if (index1 <= 1 || index1 == 3)
+			if (index1 >= 0 && index1 <= axisLength-4 && index1%2 == 0)
 			{
 				let chartColumn = [];
 				chartColumn.push(axis[index1].CAPTION);
 				
 				$.each(data[index1], function(index2, item2) {
-					if (index2 >= 1 && index2 <= 12)
+					if (index2 >= 0 && index2 <= 11)
 					{
 						let value = (item2.MWKZ == "%") ? Number(item2.VALUE).toFixed(2) : item2.VALUE;
 						
@@ -137,7 +149,9 @@ $(document).ready(function() {
 					};
 				});
 				
-				chartData.push(chartColumn);				
+				chartData.push(chartColumn);
+				
+				groups[0].push(axis[index1].CAPTION);
 			};
 		});			
 
@@ -145,15 +159,9 @@ $(document).ready(function() {
 			bindto: "#AREA_chart",
 			data: {
 				columns: chartData,
-				labels: false
-				/*
-				labels: {
-					format: {
-						Plan: d3.format(","),
-						"Sales Record": d3.format(",")
-					}
-				}
-				*/
+				labels: false,
+				type: "bar",
+				groups: groups
 			},
 			axis: {
 				x: {
@@ -166,7 +174,7 @@ $(document).ready(function() {
 				},
 				y: {
 					label: {
-						text: "Order Amount",
+						text: "Sales Amount",
 						position: "outer-middle"
 					},
 					tick: {
@@ -175,12 +183,12 @@ $(document).ready(function() {
 				}
 			}
 		});
-	};	
+	};		
 	
 	function load()
 	{
 		JpUtilsAjax.get({
-			url: "[[${BASE_PATH}]]/report/order/monthly/list/data",
+			url: "[[${BASE_PATH}]]/report/sales/order_type/list/data",
 			data: {"pYear": $("#pYear").val()},
 			beforeSend: function(jqXHR, settings) {
 				ProgressBar.show();
@@ -212,7 +220,7 @@ $(document).ready(function() {
 	});	
 	
 	$("#type").on("change", function() {
-		document.location.href = "[[${BASE_PATH}]]/report/order/" + $(this).val() + "/list?pYear=" + $("#pYear").val();
+		document.location.href = "[[${BASE_PATH}]]/report/sales/" + $(this).val() + "/list?pYear=" + $("#pYear").val();
 	});
 	
 	doSearch();

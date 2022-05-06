@@ -564,8 +564,6 @@ $(document).ready(function() {
 									values.push($(this).val());
 								});
 								
-								console.log(values);
-
 								myAuthorityTable.settings.ajax.data = { cSeqs: values };
 								myAuthorityTable.render();
 
@@ -874,7 +872,7 @@ $(document).ready(function() {
 			}
 			
 			JpUtilsAjax.post({
-				url: "/platform/mgmt/user/save/" + viewUserTab.tabPath,
+				url: "/platform/mgmt/user/save/" + tabPath,
 				data: $("#FORM_modify").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
@@ -891,7 +889,7 @@ $(document).ready(function() {
 					}
 					else
 					{
-						changeTab(viewUserTab.tabPath);
+						changeTab(tabPath);
 					};
 				}
 			});
