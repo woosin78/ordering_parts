@@ -5,122 +5,162 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQP_T_INVOICE_STATUS}"></div><!-- Invoice Status -->	
+		<div class="block-title" th:text="#{PLTF_L_1651928631967}"></div><!-- Invoice Status -->	
 		<div class="block-button-area">		
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 		</div>
 	</div>
 	<div class="condition-area">
-	<form id="FORM_search" name="FORM_search">
-	<table class="condition">
-		<tbody>
-			<tr>
-				<th th:text="#{HQP_L_PERIOD}"></th>
-				<td colspan="3">
-					<div class="input-area">
-						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
-						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">
-					</div>
-				</td>
-			</tr>	
-		</tbody>
-	</table>
-	</form>
+		<form id="FORM_search" name="FORM_search">
+			<table class="condition">
+				<tbody>
+					<tr>
+						<th th:text="#{HQP_L_PERIOD}"></th>
+						<td colspan="3">
+							<div class="input-area">
+								<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}"/>
+								<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}"/>
+							</div>
+						</td>
+					</tr>	
+				</tbody>
+			</table>
+		</form>
 	</div>
 	<div class="split-row"></div>
-	<div class="grid-info">
-		<div class="grid-total">
-			<div class="split"></div>
-			<span class="total-number" id="totalRows"></span>
-		</div>
-	</div>
-	
-	<div id="AREA_grid" class="flex-grow grid-area">
-		<table id="TBL_grid" class="order-column stripe compact"></table>
+	<div id="AREA_grid" class="container">
+		<table id="TBL_grid" class="condition table-fixed">
+			<thead></thead>
+			<tbody style="display:block; height:200px; overflow-y: auto;"></tbody>
+		</table>
 	</div>
 <script>
+ProgressBar.hide();
+
 let $tableObj;
 let columns = [];
 let data = [];
 
 $(function(){
-	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "2012.01.01", $("#pToDate"), "[[${pToDate}]]");
 	
-	$tableObj = $("#TBL_grid").DataTable({
-		select: {
-			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
-	    },
-		ordering: true,// 정렬 기능 켬
-		scrollY: 100,
-		//fixedColumns: {leftColumns: 5},
-		columns : columns,
-		/*
-		columnDefs: [
-			{targets: [0], className: "skip-download dt-body-center"},
-			{targets: [1], className: "link dt-body-center"},
-			{targets: [4, 5, 6, 10, 12, 13, 14, 15], className: "dt-body-center"},
-			{targets: [11], className: "dt-body-right"}
-		],		
-		ajax: {
-			url: "[[${BASE_PATH}]]/report/order/machine/list/data",
-			data: function(p)
-			{
-				p.pFromDate = $("#pFromDate").val();
-				p.pToDate = $("#pToDate").val();
-			},
-			dataSrc: function(response) 
+	//Search 버튼 클릭
+	$("#BTN_search").on("click", function(){		
+		doSearch(); 
+	});
+	
+	function doSearch()
+	{
+		JpUtilsAjax.get({
+			url: "[[${BASE_PATH}]]/report/order/machine/list/data",		
+			data: {"pFromDate": $("#pFromDate").val(), "pToDate": $("#pToDate").val()},
+			success: function(response, textStatus, jqXHR)
 			{
 				let data = response.RESULT;
-
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
-
-				return data;
+				
+				let from = data.from;
+				let to = data.to;
+				let models = data.models;
+				let values = data.values;
+				
+				let thead = [];
+				let tbody = [];
+				
+				thead.push("<tr><th></th>");
+				
+				for (let i=from; i<=to; i++)
+				{
+					thead.push("<th style='position: sticky; top:0' class='center text-ellipsis' title='" + i + "'>" + i + "</th>");
+				};
+				
+				thead.push("</tr>");
+				
+				for (let i=0, length=models.length; i<length; i++)
+				{
+					tbody.push("<tr>");
+					tbody.push("<td class='text-ellipsis' title='" + models[i] + "'>" + models[i] + "</td>");
+					
+					$.each(values[i], function(index, item) {
+						let value = (item > 0) ? JpUtilsNumber.addComma(item): "";
+						
+						tbody.push("<td class='center text-ellipsis'");
+						
+						if (JpUtilsString.isNotEmpty(value))
+						{
+							tbody.push(" title='" + value + "'");
+						};
+						
+						tbody.push(">" + value + "</td>");
+					});
+					
+					tbody.push("</tr>");
+				};
+				
+				$("#TBL_grid thead").html(thead.join(""));
+				$("#TBL_grid tbody").html(tbody.join(""));
+				
+				initJpGrid();
+			},
+			complete: function(jqXHR, textStatus)
+			{
+				ProgressBar.hide();
 			}
-		},
-		*/
-		initComplete:function(settings, json) 
-		{			
-			ProgressBar.hide();
-		}
-	});
-
-	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
-});
-
-//Search 버튼 클릭
-$("#BTN_search").on("click", function(){		
-	doSearch(); 
-});
-
-function doSearch()
-{
-	columns = [];
-	data = [];
-	
-	JpUtilsAjax.get({
-		url: "[[${BASE_PATH}]]/report/order/machine/list/data",		
-		data: {"pFromDate": $("#pFromDate").val(), "pToDate": $("#pToDate").val()},
-		success: function(response, textStatus, jqXHR)
+		});
+		
+		function initJpGrid()
 		{
-			let data = response.RESULT;
+			resizeJpGrid();
 			
-			alert(data.keys().length);
-			
-			$.each(data, function(index, item) {
-				//columns.push({data: "ZFCIVNO", title: "[[#{HQP_L_INVOICE_NO}]]"});
-				//alert(item);
-			});
-			
-			//columnDefs.push({targets: [0], className: "skip-download dt-body-center"});
-			
-		},
-		complete: function(jqXHR, textStatus)
+			$(window).resize($.debounce(100, function(e){
+				resizeJpGrid();
+			}));
+		};
+		
+		function resizeJpGrid()
 		{
-		}
-	});	
-	
-	//$tableObj.ajax.reload();
-};
+			let SCROLLBAR_WIDTH = 15; 
+			
+			let gridWidth = $("#AREA_grid").width();
+			
+			if ($("body").prop("scrollWidth") > $("body").prop("clientWidth"))
+			{
+				gridWidth += SCROLLBAR_WIDTH;
+			};
+			
+			$("#TBL_grid tbody").css("width", gridWidth);
+			
+			let th = $("#TBL_grid thead th");
+			
+			if (JpUtilsObject.isNotNull(th))
+			{
+				let td = $("#TBL_grid tbody tr:first td");
+				
+				if (JpUtilsObject.isNotNull(td))
+				{
+					let length = td.length;
+					let tdWidth = 0;
+					let sumTdWidth = 0;
+
+					$.each(td, function(index, element) {
+						tdWidth = $(th[index]).outerWidth(true);
+						
+						if (index == length-1)
+						{
+							tdWidth = gridWidth - sumTdWidth;
+						};
+						
+						$(element).css("width", tdWidth);
+						
+						sumTdWidth += tdWidth;
+					});
+				};
+			};
+			
+			let gridAreaHeight = $("body").outerHeight(true) - $("#AREA_grid").position().top - parseInt($("#AREA_grid").css("margin-top")) - parseInt($("#AREA_grid").css("margin-bottom")) - $(".footer-area").outerHeight(true);
+			
+			$("#AREA_grid").height(gridAreaHeight);
+		};
+	};	
+});
 </script>
 </th:block>

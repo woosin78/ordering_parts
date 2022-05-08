@@ -1,9 +1,10 @@
 package org.jwebppy.portal.iv.hq.parts.export.report.order.machine.web;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
+import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+
+import com.google.common.collect.ImmutableMap;
 
 @Controller
 @RequestMapping(PartsExportCommonVo.REQUEST_PATH + "/report/order/machine")
@@ -39,39 +42,30 @@ public class ExMachineOrderReportController extends PartsExportGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	public static void main(String[] args)
-	{
-		String dt = "2022.05.01";
-
-		//CmDateTimeUtils.toLocalDateTime(dt, "yyyy.MM.ddHHmmdd");
-
-		System.err.println(CmDateFormatUtils.defaultZonedFormat(CmDateTimeUtils.parse(dt), "yyyy"));
-
-	}
-
 	@RequestMapping("/list/data")
 	@ResponseBody
 	public Object listData(@RequestParam Map<String, Object> paramMap)
 	{
-		String pFromYear = CmStringUtils.trimToEmpty(paramMap.get("pFromDate"));
+		String pFromDate = CmStringUtils.trimToEmpty(paramMap.get("pFromDate"));
 		String pToDate = CmStringUtils.trimToEmpty(paramMap.get("pToDate"));
 
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
 		rfcParamMap
 			.addDate(new Object[][] {
-				{"fromDate", pFromYear},
+				{"fromDate", pFromDate},
 				{"toDate", pToDate}
 			});
 
-		DataList dataList = machineOrderReportService.getList(rfcParamMap).getTable("T_LIST");
+		return format(machineOrderReportService.getList(rfcParamMap).getTable("T_LIST"), pFromDate, pToDate);
+	}
 
-		Map<String, Map<Integer, Integer>> resultMap = new HashMap<>();
-		int fromYear = Integer.parseInt(CmDateFormatUtils.defaultZonedFormat(CmDateTimeUtils.parse(pFromYear), "yyyy"));
-		int toYear = Integer.parseInt(CmDateFormatUtils.defaultZonedFormat(CmDateTimeUtils.parse(pToDate), "yyyy"));
+	private Map<String, Object> format(DataList dataList, String fromDate, String toDate)
+	{
+		int fromYear = Integer.parseInt(CmDateFormatUtils.defaultZonedFormat(CmDateTimeUtils.parse(fromDate), "yyyy"));
+		int toYear = Integer.parseInt(CmDateFormatUtils.defaultZonedFormat(CmDateTimeUtils.parse(toDate), "yyyy"));
 
-		System.err.println("fromYear:" + fromYear);
-		System.err.println("fromYear:" + toYear);
+		Map<String, Map<Integer, Integer>> reportMap = new LinkedHashMap<>();
 
 		for (int i=0, size=dataList.size(); i<size; i++)
 		{
@@ -80,13 +74,13 @@ public class ExMachineOrderReportController extends PartsExportGeneralController
 			String model = dataMap.getString("MDLNM");
 			Map<Integer, Integer> countMap;
 
-			if (resultMap.containsKey(model))
+			if (reportMap.containsKey(model))
 			{
-				countMap = resultMap.get(model);
+				countMap = reportMap.get(model);
 			}
 			else
 			{
-				countMap = new TreeMap<>();
+				countMap = new LinkedHashMap<>();
 
 				//for (int j=toYear; j>=fromYear; j--)
 				for (int j=fromYear; j<=toYear; j++)
@@ -94,7 +88,7 @@ public class ExMachineOrderReportController extends PartsExportGeneralController
 					countMap.put(j, 0);
 				}
 
-				resultMap.put(model, countMap);
+				reportMap.put(model, countMap);
 			}
 
 			int year = dataMap.getInt("YEAR");
@@ -109,7 +103,12 @@ public class ExMachineOrderReportController extends PartsExportGeneralController
 			}
 		}
 
-		System.err.println(resultMap);
+		ImmutableMap<String, Object> resultMap = new ImmutableMap.Builder<String, Object>()
+				.put("from", fromYear)
+				.put("to", toYear)
+				.put("models", ListUtils.emptyIfNull(new ArrayList<>(reportMap.keySet())))
+				.put("values", ListUtils.emptyIfNull(new ArrayList<>(reportMap.values())))
+				.build();
 
 		return resultMap;
 	}

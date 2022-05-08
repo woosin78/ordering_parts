@@ -276,6 +276,11 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 	width: 60px;	
 }
 
+/*--- 영역 ------------------*/
+.container {
+	margin: 5px 40px 5px 40px;
+}
+
 /*--- 조건 영역 ------------------*/
 .condition-area {
 	margin: 5px 40px 5px 40px;

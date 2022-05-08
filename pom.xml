@@ -142,18 +142,6 @@
 			<version>3.11.0</version>
 		</dependency>
 
-		<!-- JDBC Driver-MSSQL -->
-		<!-- dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>mssql-jdbc</artifactId>
-			<scope>runtime</scope>
-		</dependency -->
-		<!-- JDBC Driver-MARIADB -->
-		<!-- dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
-			<scope>runtime</scope>
-		</dependency -->
 		<!-- JDBC Driver-ORALCE -->
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
@@ -179,17 +167,6 @@
 		</dependency>
 		<!-- thymeleaf -->
 		
-		<!-- ehcache -->		
-		<dependency>
-			<groupId>org.ehcache</groupId>
-			<artifactId>ehcache</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.cache</groupId>
-			<artifactId>cache-api</artifactId>
-		</dependency>
-		<!-- ehcache -->
-		
 		<!-- modelmapper -->
 		<dependency>
 			<groupId>org.modelmapper</groupId>
@@ -198,10 +175,12 @@
 		</dependency>
 		<!-- modelmapper -->
 		
+		<!-- Base64 encode, decode
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 		</dependency>
+		-->
 		
 		<!-- XSS detection -->		
 		<dependency>
@@ -234,6 +213,13 @@
 			<groupId>commons-validator</groupId>
 			<artifactId>commons-validator</artifactId>
 			<version>1.7</version>
+		</dependency>
+		
+		<!-- Google core library guava -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>31.1-jre</version>
 		</dependency>
 		
 		<!-- SAP Jco -->

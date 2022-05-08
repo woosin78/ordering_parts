@@ -151,7 +151,10 @@ $(function(){
 
 		try
 		{
-			opener.setSelectedItems(selectedItems);	
+			if (selectedItems.length > 0)
+			{
+				opener.setSelectedItems(selectedItems);	
+			};
 		}
 		catch (e) {}
 	});

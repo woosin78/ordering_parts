@@ -1,14 +1,11 @@
 package org.jwebppy.portal.iv.survey.web;
 
-import java.util.List;
-
-import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
-import org.jwebppy.portal.iv.survey.dto.SurveySearchDto;
 import org.jwebppy.portal.iv.survey.dto.SurveyApplyDto;
-import org.jwebppy.portal.iv.survey.service.SurveyService;
+import org.jwebppy.portal.iv.survey.dto.SurveySearchDto;
 import org.jwebppy.portal.iv.survey.service.SurveyApplyService;
+import org.jwebppy.portal.iv.survey.service.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -84,8 +84,6 @@ public class CmDateTimeUtils
 		minutes = CmStringUtils.defaultIfEmpty(CmStringUtils.leftPad(minutes, 2, "0"), "00");
 		seconds = CmStringUtils.defaultIfEmpty(CmStringUtils.leftPad(seconds, 2, "0"), "00");
 
-		System.err.println((date + hours + minutes + seconds) + "," + CmDateFormatUtils.getDateFormat() + "HHmmss");
-
 		return LocalDateTime.parse(date + hours + minutes + seconds, DateTimeFormatter.ofPattern(CmDateFormatUtils.getDateFormat() + "HHmmss"));
 	}
 

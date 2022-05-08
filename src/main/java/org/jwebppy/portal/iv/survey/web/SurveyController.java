@@ -4,12 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.ehcache.core.util.CollectionUtil;
-import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.survey.dto.SurveyDto;
@@ -33,16 +29,16 @@ public class SurveyController extends IvGeneralController
 
 	@Autowired
 	private SurveyService surveyService;
-	
+
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("isManager", isManager());
 		addAllAttributeFromRequest(model, webRequest);
-		
+
 		return DEFAULT_VIEW_URL;
 	}
-	
+
 	@RequestMapping("/list/data")
 	@ResponseBody
 	public Object listData(@ModelAttribute SurveySearchDto surveySearchDto)
@@ -50,7 +46,7 @@ public class SurveyController extends IvGeneralController
 		surveySearchDto.setManager(isManager());
 		return ListUtils.emptyIfNull(surveyService.getSurveys(surveySearchDto));
 	}
-	
+
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
 	{
@@ -60,10 +56,10 @@ public class SurveyController extends IvGeneralController
 		}
 
 		addAllAttributeFromRequest(model, webRequest);
-		
+
 		return DEFAULT_VIEW_URL;
 	}
-	
+
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
 	{
@@ -73,10 +69,10 @@ public class SurveyController extends IvGeneralController
 		}
 
 		addAllAttributeFromRequest(model, webRequest);
-		
+
 		return DEFAULT_VIEW_URL;
 	}
-	
+
 	@PostMapping("/save")
 	@ResponseBody
 	public Object save(@ModelAttribute SurveyDto survey, @RequestParam(name = "targetCode", required = false) String[] targetCodes, @RequestParam(name = "targetDescription", required = false) String[] targetDescriptions)
@@ -93,56 +89,54 @@ public class SurveyController extends IvGeneralController
 				surveyTarget.setTarget(targetCode);
 				surveyTarget.setTargetName(targetDescriptions[index]);
 				surveyTarget.setType("D");//D:DealerepBoardContentTarget.setType("D");//D:Dealer
-				
+
 				surveyTargets.add(surveyTarget);
 
 				index++;
 			}
-			
+
 			survey.setSurveyTargets(surveyTargets);
 		}
-		
+
 		try {
-			
 			return surveyService.save(survey);
-		} 
-		catch (IOException e) 
-		{
-			System.err.println(e);
 		}
-		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
 		return null;
 	}
-	
+
 	@PostMapping("/delete")
 	@ResponseBody
 	public Object delete(@ModelAttribute SurveyDto survey)
 	{
 		try {
-			
 			return surveyService.delete(survey);
-		} 
-		catch (IOException e) 
-		{
-			System.err.println(e);
 		}
-		
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
 		return null;
 	}
-	
+
 	@RequestMapping("/latest")
 	@ResponseBody
 	public Object latestData(@ModelAttribute SurveySearchDto surveySearchDto)
 	{
 		return surveyService.getLatestSurvey(surveySearchDto);
 	}
-	
+
 	// to-do: 테스트코드제거
 	@RequestMapping("/test")
 	public String test(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
 	{
 		addAllAttributeFromRequest(model, webRequest);
-		
+
 		return DEFAULT_VIEW_URL;
 	}
 }
