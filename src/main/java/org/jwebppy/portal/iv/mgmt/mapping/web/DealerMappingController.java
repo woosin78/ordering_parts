@@ -8,6 +8,7 @@ import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.mgmt.mapping.service.DealerMappingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH + "/mgmt/mapping")
+@PreAuthorize("hasAnyRole('ROLE_DP_ACCOUNTS_MANAGER', 'ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 public class DealerMappingController extends IvGeneralController
 {
 	@Autowired

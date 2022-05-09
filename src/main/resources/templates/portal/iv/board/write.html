@@ -274,6 +274,8 @@ $("#BTN_save").on("click", function() {
 	$("#textContent").val(xfe.getTextValue());
 	$("#htmlContent").val(xfe.getBodyValue());
 	
+	ProgressBar.show();
+
 	let options = {
 			enctype: "multipart/form-data",
 			url: "[[${BASE_PATH}]]/board/save",
@@ -288,10 +290,9 @@ $("#BTN_save").on("click", function() {
 				$("#BTN_back").trigger("click");
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
-				console.log(textStatus);
-				console.log(errorThrown);
-				
 				alert("[[#{HQP_M_FAIL_SAVE}]]");
+				
+				ProgressBar.hide();
 			}
 	};
 	
