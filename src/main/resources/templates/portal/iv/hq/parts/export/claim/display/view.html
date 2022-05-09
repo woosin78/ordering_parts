@@ -43,7 +43,7 @@
 	
 	<form id="FORM_download">
 		<input type="hidden" id="fileName" 		name="fileName">	
-		<input type="hidden" id="orderNo" 		name="orderNo">	
+		<input type="hidden" id="orderNo" 		name="orderNo" 		th:value="${orderNo}">	
 		<input type="hidden" id="intNo" 		name="intNo">
 		<input type="hidden" id="docuItem" 		name="docuItem">		
 	</form>
@@ -60,55 +60,52 @@
 let $tableObj;
 
 JpUtilsAjax.get({
-	url: "[[${BASE_PATH}]]/claim/view/data",
+	url: "[[${BASE_PATH}]]/claim/display/view/data",
 	data: {"pOrderNo": "[[${orderNo}]]", "pDocType": "[[${docType}]]"},		
     success: function(data, textStatus, jqXHR) 
     {
 		let itemList = data.RESULT.itemList;
 		let fileList = data.RESULT.fileList;
 		let reason1List = data.RESULT.reason1List;		
-		let reason2List = data.RESULT.reason2List;    	
-
-    	$("#ITEM_COUNT").html(itemList.length);		
+		let reason2List = data.RESULT.reason2List;
+		
+    	$("#ITEM_COUNT").html(itemList.length);
     	
 		for (let i=0, length=itemList.length; i<length; i++)
 		{
-			itemList[i].FILE_NAME = "";
-			itemList[i].INT_NO = "";
-			itemList[i].DOCU_ITEM = "";
+			let reason1, reason2, fileName = "";	
 			
 			for (let j=0, length1=reason1List.length; j<length1; j++)
-			{	
-				itemList[i].TEXT = "";
-				itemList[i].TEXT2 = "";	
-				itemList[i].FILE_TEXT = "";
-				
-				for (let j=0, length1=reason1List.length; j<length1; j++)
+			{
+				if (itemList[i].COMPLAINT == reason1List[j].VALUE)
 				{
-					if (itemList[i].COMPLAINT == reason1List[j].VALUE)
-					{
-						itemList[i].TEXT = reason1List[j].TEXT;							
-					}
+					reason1 = reason1List[j].TEXT;
+					break;
 				}
-				
-				for (let k=0, length2=reason2List.length; k<length2; k++)
+			};
+			
+			for (let k=0, length2=reason2List.length; k<length2; k++)
+			{
+				if (itemList[i].REASON == reason2List[k].VALUE)
 				{
-					if (itemList[i].REASON == reason2List[k].VALUE)
-					{
-						itemList[i].TEXT2 = reason2List[k].TEXT;							
-					}
-				}				
-				
-				for (let l=0, length3=fileList.length; l<length3; l++)
+					reason2 = reason2List[k].TEXT;
+					break;
+				}
+			};			
+
+			for (let l=0, length3=fileList.length; l<length3; l++)
+			{
+				if (itemList[i].ITEM == fileList[l].DOCU_ITEM)
 				{
-					if (itemList[i].ITEM == fileList[l].DOCU_ITEM)
-					{												
-						itemList[i].FILE_NAME = fileList[l].FILE_NAME;
-						itemList[i].INT_NO = fileList[l].INT_NO;
-						itemList[i].DOCU_ITEM = fileList[l].DOCU_ITEM;						
-					}
-				}									
-			}	
+					fileName += "<div onclick=downloadAttachment('" + JpUtilsString.replaceAll(fileList[l].FILE_NAME, " ", "") + "','" + fileList[l].INT_NO + "','" + fileList[l].DOCU_ITEM + "')>" + fileList[l].FILE_NAME + "</div>";
+				}
+			};
+			
+			console.log(fileName);
+			
+			itemList[i].TEXT = JpUtilsString.trimToEmpty(reason1);
+			itemList[i].TEXT2 = JpUtilsString.trimToEmpty(reason2);
+			itemList[i].FILE_NAME = JpUtilsString.trimToEmpty(fileName);
 		}
 	    	
     	$tableObj = $("#TBL_grid").DataTable({
@@ -124,14 +121,11 @@ JpUtilsAjax.get({
     			{data: "COMPLAINT_DESC",title: "[[#{HQP_L_ADDITIONAL_TEXT}]]"},// Text
     			{data: "RCOMMENT", 		title: "[[#{HQP_L_COMMENT}]]"},// Comment
     			{data: "FILE_NAME", 	title: "[[#{HQP_L_ATTACHED_FILE}]]"},// Attached File	
-    			{data: "ZZDEALDT", 		title: "[[#{HQP_L_ORIGIN_DOC_DATE}]]"},// Origin Doc. Date
-    			{data: "INT_NO", 		title: "INT_NO(Hidden)"},
-    			{data: "DOCU_ITEM",		title: "DOCU_ITEM(Hidden)"}    			
+    			{data: "ZZDEALDT", 		title: "[[#{HQP_L_ORIGIN_DOC_DATE}]]"}// Origin Doc. Date
     		],  	
     		columnDefs: [
     			{targets: [7], className: "link"},
-    			{targets: [0, 2, 8], className: "dt-body-center"},
-    			{targets: [9, 10], visible: false}
+    			{targets: [0, 2, 8], className: "dt-body-center"}
     		],	    		    		
     		data: itemList,
     		initComplete:function(settings, json) 
@@ -174,34 +168,28 @@ JpUtilsAjax.get({
 						tmpTa.text(desc);
 					}
 				}	
-			}		
-			else if (index == 7)
-			{
-				let fileName = rowData.FILE_NAME;
-
-				if (fileName != null)
-				{
-					$("#fileName").val(fileName);
-					$("#orderNo").val(rowData.REF_ORD);		
-					$("#intNo").val(rowData.INT_NO);
-					$("#docuItem").val(rowData.DOCU_ITEM);										
-					$("#FORM_download").attr("action", "[[${BASE_PATH}]]/claim/download/attachment").submit();
-				}
 			}
 		}).mouseout(function(){
-			 hideTextArea();
+			 //hideTextArea();
 		});			
     }
 });
 
 $("#BTN_print").on("click", function() {
-	document.location.href = "[[${BASE_PATH}]]/claim/download/doc?orderNo=[[${orderNo}]]&docType=[[${docType}]]";
+	document.location.href = "[[${BASE_PATH}]]/claim/display/download/doc?orderNo=[[${orderNo}]]&docType=[[${docType}]]";
 });
 
 $("#BTN_back").on("click", function() {
-	$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/list").submit();
+	$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/display/list").submit();
 });
 
+function downloadAttachment(fileName, intNo, docuItem)
+{
+	$("#fileName").val(fileName);
+	$("#intNo").val(intNo);
+	$("#docuItem").val(docuItem);										
+	$("#FORM_download").attr("action", "[[${BASE_PATH}]]/claim/display/download/attachment").submit();	
+};
 </script>	
 </th:block>
 	

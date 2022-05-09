@@ -13,7 +13,7 @@ import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
-import org.jwebppy.portal.iv.hq.parts.domestic.claim.service.ClaimDisplayService;
+import org.jwebppy.portal.iv.hq.parts.export.claim.service.ExClaimDisplayService;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.common.web.PartsExportGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +25,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(PartsExportCommonVo.REQUEST_PATH + "/claim")
+@RequestMapping(PartsExportCommonVo.REQUEST_PATH + "/claim/display")
 public class ExClaimDisplayController extends PartsExportGeneralController
 {
 	@Autowired
-	private ClaimDisplayService claimDisplayService;
+	private ExClaimDisplayService claimDisplayService;
 
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
+		model.addAttribute("pClaimNo", CmStringUtils.trimToEmpty(webRequest.getParameter("pClaimNo")));
 		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateMonth(CmDateTimeUtils.now())));
 		model.addAttribute("pToDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pToDate"), CmDateFormatUtils.today()));
 
@@ -51,7 +52,7 @@ public class ExClaimDisplayController extends PartsExportGeneralController
 		rfcParamMap.with(paramMap)
 			.addByKey(new Object[][] {
 				{"referenceNo", "pReferenceNo"},
-				{"complaintNo", "pComplaintNo"},
+				{"claimNo", "pClaimNo"},
 				{"partNo", "pPartNo"}
 			})
 			.addDateByKey(new Object[][] {
