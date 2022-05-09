@@ -71,6 +71,7 @@ html, body {
 	display: flex;
 	flex-flow: column;
 	overflow-x: auto;
+	overflow-y: hidden;
 	min-width: 1300px;
 }
 

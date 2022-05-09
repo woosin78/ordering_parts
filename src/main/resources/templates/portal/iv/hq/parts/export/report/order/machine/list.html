@@ -28,12 +28,7 @@
 		</form>
 	</div>
 	<div class="split-row"></div>
-	<div id="AREA_grid" class="container">
-		<table id="TBL_grid" class="condition table-fixed">
-			<thead></thead>
-			<tbody style="display:block; height:200px; overflow-y: auto;"></tbody>
-		</table>
-	</div>
+	<div id="AREA_grid" class="container"></div>
 <script>
 ProgressBar.hide();
 
@@ -51,6 +46,9 @@ $(function(){
 	
 	function doSearch()
 	{
+		let defaultGridHeight = 250;
+		let scrollVerticalArrowSize = 10;//스크롤바 화살표 사이즈
+		
 		JpUtilsAjax.get({
 			url: "[[${BASE_PATH}]]/report/order/machine/list/data",		
 			data: {"pFromDate": $("#pFromDate").val(), "pToDate": $("#pToDate").val()},
@@ -96,8 +94,17 @@ $(function(){
 					tbody.push("</tr>");
 				};
 				
-				$("#TBL_grid thead").html(thead.join(""));
-				$("#TBL_grid tbody").html(tbody.join(""));
+				let table = [];
+				table.push("<table id='TBL_grid' class='condition table-fixed'>");
+				table.push("<thead>");
+				table.push(thead.join(""));
+				table.push("</thead>");
+				table.push("<tbody style='display:block; overflow-y: auto;'>");
+				table.push(tbody.join(""));
+				table.push("</tbody>");
+				table.push("</table>");
+				
+				$("#AREA_grid").html(table.join(""));
 				
 				initJpGrid();
 			},
@@ -109,25 +116,28 @@ $(function(){
 		
 		function initJpGrid()
 		{
-			resizeJpGrid();
+			initJpGridSize();
 			
 			$(window).resize($.debounce(100, function(e){
-				resizeJpGrid();
+				initJpGridSize();
 			}));
 		};
 		
-		function resizeJpGrid()
+		function getJpGridAreaHeight()
 		{
-			let SCROLLBAR_WIDTH = 15; 
+			let bodyHeight = $("body").outerHeight(true);
+			let gridAreaHeight = 0;
 			
+			gridAreaHeight = bodyHeight - $("#AREA_grid").position().top;//Grid 상단까지의 height 를 빼주고
+			gridAreaHeight -= parseInt($("#AREA_grid").css("margin-top")) - parseInt($("#AREA_grid").css("margin-bottom"));//Grid 의 top, bottom margin, padding 값 빼주고
+			gridAreaHeight -= parseInt($(".footer-area").outerHeight(true));///Bottom 영역 빼주고
+			
+			return gridAreaHeight;
+		};
+		
+		function initJpGridSize()
+		{
 			let gridWidth = $("#AREA_grid").width();
-			
-			if ($("body").prop("scrollWidth") > $("body").prop("clientWidth"))
-			{
-				gridWidth += SCROLLBAR_WIDTH;
-			};
-			
-			$("#TBL_grid tbody").css("width", gridWidth);
 			
 			let th = $("#TBL_grid thead th");
 			
@@ -155,10 +165,24 @@ $(function(){
 					});
 				};
 			};
+
+			let gridAreaHeight = getJpGridAreaHeight();
 			
-			let gridAreaHeight = $("body").outerHeight(true) - $("#AREA_grid").position().top - parseInt($("#AREA_grid").css("margin-top")) - parseInt($("#AREA_grid").css("margin-bottom")) - $(".footer-area").outerHeight(true);
+			if ($("#AREA_grid").outerHeight(true) > gridAreaHeight)
+			{
+				gridAreaHeight -= scrollVerticalArrowSize;
+			}
+			else
+			{
+				gridAreaHeight = $("#TBL_grid").height(); 
+			};
+
+			$("#TBL_grid tbody").css({
+				"width": gridWidth,
+				"height": gridAreaHeight - $("#TBL_grid thead").outerHeight(),
+			});
 			
-			$("#AREA_grid").height(gridAreaHeight);
+			$("#AREA_grid").css("height", gridAreaHeight);
 		};
 	};	
 });
