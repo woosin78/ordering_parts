@@ -13,6 +13,7 @@ import org.jwebppy.portal.iv.survey.dto.SurveySearchDto;
 import org.jwebppy.portal.iv.survey.dto.SurveyTargetDto;
 import org.jwebppy.portal.iv.survey.service.SurveyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,7 +27,6 @@ import org.springframework.web.context.request.WebRequest;
 @RequestMapping(IvCommonVo.REQUEST_PATH  + "/survey")
 public class SurveyController extends IvGeneralController
 {
-
 	@Autowired
 	private SurveyService surveyService;
 
@@ -48,6 +48,7 @@ public class SurveyController extends IvGeneralController
 	}
 
 	@RequestMapping("/view")
+	@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 	public String view(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
 	{
 		int sSeq = surveySearchDto.getSSeq();
@@ -61,6 +62,7 @@ public class SurveyController extends IvGeneralController
 	}
 
 	@RequestMapping("/write")
+	@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 	public String write(Model model, WebRequest webRequest, SurveySearchDto surveySearchDto)
 	{
 		int sSeq = surveySearchDto.getSSeq();
@@ -75,6 +77,7 @@ public class SurveyController extends IvGeneralController
 
 	@PostMapping("/save")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 	public Object save(@ModelAttribute SurveyDto survey, @RequestParam(name = "targetCode", required = false) String[] targetCodes, @RequestParam(name = "targetDescription", required = false) String[] targetDescriptions)
 	{
 		if (ArrayUtils.isNotEmpty(targetCodes))
@@ -111,6 +114,7 @@ public class SurveyController extends IvGeneralController
 
 	@PostMapping("/delete")
 	@ResponseBody
+	@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 	public Object delete(@ModelAttribute SurveyDto survey)
 	{
 		try {
