@@ -6,12 +6,13 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.portal.iv.hq.parts.common.service.PartsGeneralService;
+import org.jwebppy.portal.iv.eu.common.service.EuGeneralService;
+import org.jwebppy.portal.iv.eu.parts.common.service.EuPartsGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderGeneralService extends PartsGeneralService
+public class OrderGeneralService extends EuGeneralService
 {
 	@Autowired
 	private SimpleRfcTemplate simpleRfcTemplate;

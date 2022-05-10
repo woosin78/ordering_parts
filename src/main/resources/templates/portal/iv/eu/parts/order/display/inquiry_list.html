@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+
+<th:block layout:fragment="content">
+
+	<div class="block-header">
+		<div class="block-title" th:text="#{DIVEU_TXT_0045}"></div>
+		<div id="BTN_search" class="block-button-area">
+			<button th:text="#{DIVEU_BTN_0002}"></button>
+		</div>
+	</div>
+	
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	<input type="hidden" id="orderNo" name="orderNo"/>
+	<input type="hidden" id="status" name="status"/>
+	<table class="condition">
+		<tbody>
+			<tr>
+				<th colspan="4">
+					<div class="input-area">
+						<input type="radio" class="custom-ui" name="pDocType" value="C"/>
+						<label th:text="#{DIVEU_LB_0037}"></label>
+						
+						&nbsp;&nbsp;
+						
+						<input type="radio" class="custom-ui" name="pDocType" value="A" checked/>
+						<label th:text="#{DIVEU_LB_0038}"></label>
+						
+						&nbsp;&nbsp;
+						
+						<input type="radio" class="custom-ui" name="pDocType" value="B"/>
+						<label th:text="#{DIVEU_LB_0039}"></label>
+					</div>
+				</th>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0013}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
+					</div>
+				</td>
+				<th th:text="#{DIVEU_LB_0015}"></th>
+				<td colspan="3">
+					<div class="input-area">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0029}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
+					</div>
+				</td>
+				<th th:text="#{DIVEU_LB_0042}"></th>
+				<td>
+					<div class="input-area">
+						<select class="custom-ui" id="pStatus" name="pStatus">
+							<option value="X"></option>
+							<option value="O" th:text="#{DIVEU_TXT_0043}"></option>
+							<option value="C" th:text="#{DIVEU_TXT_0044}"></option>
+						</select>
+					</div>	
+				</td>				
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0016}"></th>
+				<td colspan="3">
+					<div class="input-area">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<div class="split"></div>
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>		
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+<script type="application/javascript">
+
+//화면중 일부 area 를 채우는 그리드 예제. 상위 div #sample-grid-area 영역을 100% 채움.
+//컬럼 width 자동. scroller 자동.
+//고정된 맵 데이터 사용. 페이지 생성시 데이터 넘겨서 그리드 만드는 방식
+
+$(function(){
+
+	$("input:radio[name=pDocType][value='[[${pDocType}]]']").prop("checked", true);
+	$("#pOrderType").val("[[${pOrderType}]]");
+	$("#pStatus").val("[[${pStatus}]]");
+	
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: true, 			// 정렬 기능 켬
+		scrollY: 100,
+		columns : [
+			{data: "VBELN", title: "[[#{DIVEU_LB_0013}]]", className:"link"},//Inuqiry No.
+			{data: "BSTKD", title: "[[#{DIVEU_LB_0015}]]"},//P.O. No.
+			{data: "VBELN2", title: "[[#{DIVEU_LB_0043}]]", className:"link"},//Sales Doc. No.
+			{data: "ERDAT2", title: "[[#{DIVEU_LB_0018}]]"},//Create Date
+			{data: "COUNT", title: "[[#{DIVEU_LB_0019}]]"},//Line Item
+			{data: "T_NETWR", title: "[[#{DIVEU_LB_0045}]]"},//Order Amt.
+			{data: "WAERK", title: "[[#{DIVEU_LB_0021}]]"},//Curr.
+			{data: "RFGSK_TX", title: "[[#{DIVEU_LB_0042}]]"}//Open Status
+		],
+		columnDefs: [
+			{ className: "left", targets: "_all" }
+		],
+		ajax: {
+			url: "/portal/corp/eu/scm/parts/order/display/inquiry_list/data",
+			data: function(p)
+			{
+				// ajax로 넘길 파라미터
+				p.pDocType = $("#FORM_search input:radio[name=pDocType]:checked").val();
+				p.pOrderNo = $("#pOrderNo").val();
+				p.pPoNo = $("#pPoNo").val();
+				p.pOrderPartNo = $("#pOrderPartNo").val();
+				p.pStatus = $("#pStatus").val();
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+			},
+			dataSrc: function(response) 
+			{
+				let result = response.RESULT;
+				let returnData = new Array();
+				
+				for (let i=0, length=result.length; i<length; i++)
+				{
+					result[i].ERDAT2 = result[i].ERDAT + " " + result[i].ERZET;
+					
+					if (result[i].RFGSK == "A")
+					{
+						result[i].RFGSK_TX = "Open";
+					}
+					else
+					{
+						result[i].RFGSK_TX = "Close";
+					};
+				};
+				
+				$("#totalRows").html(result.length+" row(s).");
+
+				return result;
+			}
+		},
+		initComplete: function() {
+			ProgressBar.hide();
+		}
+	});
+
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+	
+	$("input:radio[name=pDocType]").on("click", function() {
+		let docType = $(this).val();
+		
+		let docName = "order";
+		
+		if (docType == "A")
+		{
+			docName = "inquiry";
+		}
+		else if (docType == "B")
+		{
+			docName = "quotation";
+		}
+		
+		document.location.href = "/portal/corp/eu/scm/parts/order/display/" + docName + "_list?pDocType=" + $(this).val();
+	});
+	
+	$("#BTN_search").on("click", function() {
+		doSearch();
+	});
+	
+	//Input text 엔터 키 입력
+	$("#FORM_search input:text").on("keydown", function(event) {
+		if (event.keyCode == 13)
+		{
+			doSearch();
+		};
+	});		
+	
+	function doSearch()
+	{
+		$tableObj.ajax.reload();
+	};
+	
+	$("#TBL_grid tbody").on("click", "td:first-child", function () {
+		let data = $tableObj.row($(this)).data();		
+		
+		$("#orderNo").val(data.VBELN);
+		$("#status").val(data.RFGSK);
+		
+		$("#FORM_search").attr("action", "/portal/corp/eu/scm/parts/order/display/inquiry_detail").submit();
+	});
+	
+	$("#TBL_grid tbody").on("click", "td:nth-child(3)", function () {
+		let data = $tableObj.row($(this)).data();		
+		
+		Popup.open("/portal/corp/eu/scm/parts/order/display/order_detail_popup?orderNo=" + data.VBELN2 + "&pOrderNo=" + data.VBELN2, 1000, 600);
+	});		
+});
+</script>	
+</th:block>

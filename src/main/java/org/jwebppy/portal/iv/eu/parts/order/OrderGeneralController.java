@@ -16,15 +16,15 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.portal.iv.hq.parts.common.web.PartsGeneralController;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.SimulationResultDto;
+import org.jwebppy.portal.iv.eu.parts.common.web.EuPartsGeneralController;
+import org.jwebppy.portal.iv.eu.parts.order.create.dto.EuOrderItemDto;
+import org.jwebppy.portal.iv.eu.parts.order.create.dto.EuSimulationResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-public class OrderGeneralController extends PartsGeneralController
+public class OrderGeneralController extends EuPartsGeneralController
 {
 	@Autowired
 	private Environment environment;
@@ -41,7 +41,7 @@ public class OrderGeneralController extends PartsGeneralController
 		return path.getAbsolutePath();
 	}
 
-	protected List<OrderItemDto> getItemsFromUploadedFile(@RequestParam("file") MultipartFile multipartFile)
+	protected List<EuOrderItemDto> getItemsFromUploadedFile(@RequestParam("file") MultipartFile multipartFile)
 	{
 		try
 		{
@@ -68,7 +68,7 @@ public class OrderGeneralController extends PartsGeneralController
 		return null;
 	}
 
-	protected List<OrderItemDto> getOrderItemsFromExcelFile(String fileName, InputStream inputStream)
+	protected List<EuOrderItemDto> getOrderItemsFromExcelFile(String fileName, InputStream inputStream)
 	{
 		String extension = FilenameUtils.getExtension(fileName);
 
@@ -80,10 +80,10 @@ public class OrderGeneralController extends PartsGeneralController
 		return getOrderItemsInXlsxFormat(inputStream);
 	}
 
-	private List<OrderItemDto> getOrderItemsInXlsFormat(InputStream inputStream)
+	private List<EuOrderItemDto> getOrderItemsInXlsFormat(InputStream inputStream)
 	{
 		HSSFWorkbook hssfWorkbook = null;
-		List<OrderItemDto> orderItems = new LinkedList<>();
+		List<EuOrderItemDto> orderItems = new LinkedList<>();
 
 		try
 		{
@@ -92,7 +92,7 @@ public class OrderGeneralController extends PartsGeneralController
 
 			for (int i=0, size=hssfSheet.getPhysicalNumberOfRows(); i<size; i++)
 			{
-				OrderItemDto orderItem = new OrderItemDto();
+				EuOrderItemDto orderItem = new EuOrderItemDto();
 				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 				orderItem.setMaterialNo(getValueFromExcel(hssfSheet.getRow(i).getCell(0)));
 				
@@ -135,10 +135,10 @@ public class OrderGeneralController extends PartsGeneralController
 		return orderItems;
 	}
 
-	private List<OrderItemDto> getOrderItemsInXlsxFormat(InputStream inputStream)
+	private List<EuOrderItemDto> getOrderItemsInXlsxFormat(InputStream inputStream)
 	{
 		XSSFWorkbook xssfWorkbook = null;
-		List<OrderItemDto> orderItems = new LinkedList<>();
+		List<EuOrderItemDto> orderItems = new LinkedList<>();
 
 		try
 		{
@@ -147,7 +147,7 @@ public class OrderGeneralController extends PartsGeneralController
 
 			for (int i=0, size=xssfSheet.getPhysicalNumberOfRows(); i<size; i++)
 			{
-				OrderItemDto orderItem = new OrderItemDto();
+				EuOrderItemDto orderItem = new EuOrderItemDto();
 				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 				orderItem.setMaterialNo(getValueFromExcel(xssfSheet.getRow(i).getCell(0)));
 				
@@ -255,23 +255,23 @@ public class OrderGeneralController extends PartsGeneralController
 		return false;
 	}
 
-	protected void makeOrderItemForm(SimulationResultDto simulationResult)
+	protected void makeOrderItemForm(EuSimulationResultDto simulationResult)
 	{
 		int DEFAULT_ROW_COUNT = 20;
 
-		List<OrderItemDto> normalOrderItems = simulationResult.getNormalOrderItems();
+		List<EuOrderItemDto> normalOrderItems = simulationResult.getNormalOrderItems();
 		int size = normalOrderItems.size();
 		int lineNo = 1;
 
 		if (size > 0)
 		{
-			OrderItemDto orderItem = normalOrderItems.get(size-1);
+			EuOrderItemDto orderItem = normalOrderItems.get(size-1);
 			lineNo = CmNumberUtils.toInt(orderItem.getLineNo(), 10) / 10 + 1;
 		}
 
 		for (int i=0, count=DEFAULT_ROW_COUNT-lineNo; i<=count; i++)
 		{
-			OrderItemDto orderItem = new OrderItemDto();
+			EuOrderItemDto orderItem = new EuOrderItemDto();
 			orderItem.setLineNo(CmStringUtils.leftPad(lineNo*10, 6, "0"));
 
 			normalOrderItems.add(orderItem);

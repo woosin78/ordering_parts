@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
+	layout:decorate="~{portal/layout/popup/index_mall}">
+
+<th:block layout:fragment="content">
+
+<div class="block-header">
+	<div class="block-title" th:text="#{DIVEU_LB_0062}"></div>	<!-- Modify Category -->
+	<div class="block-button-area">		
+		<button class="catModBtn" th:text="#{DIVEU_BTN_0022}"></button>	<!-- Modify -->
+		<div class="split"></div>
+		<button class="catCanBtn" th:text="#{DIVEU_BTN_0014}"></button>	<!-- Cancel -->
+	</div>
+</div>
+
+<div class="mallcondition-area">
+<form id="FORM_modify" method="post" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
+	<input type="hidden" name="mcSeq" th:value="${categoryDto.mcSeq}" />
+	<input type="hidden" id="IPT_fgDisplayCurrVal" th:value="${categoryDto.fgDisplay}" />
+	<input type="hidden" id="IPT_categoryCodeCurrVal" th:value="${categoryDto.categoryCode}" />
+		
+	<div th:each="langKindEntity : ${langKindEntityList}">
+		<input type="hidden" name="categoryLangKindSeqs" th:id="|IPT_lkinfo_${langKindEntity.name}|" th:value="${langKindEntity.lkSeq}" />
+	</div>
+		
+	<table class="mallcondition">
+		<tbody>
+			<tr>
+				<th><span>[[#{DIVEU_LB_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
+				<td>
+					<select name="categoryCode" class="custom-ui">
+						<option th:each="sapCategory : ${sapCategoryList}" th:value="${sapCategory.PRODH}" th:text="${sapCategory.PRODH}"></option>
+					</select>
+				</td>						
+			</tr>
+						
+			<tr th:each="langDto : ${categoryLangDtos}">
+ 				<th><span>[[#{DIVEU_LB_0064}]]([[${langDto.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category Name --> 
+				<td><input type="text" th:value="${langDto.text}" name="categoryNames" class="custom-ui" />
+					<input type="hidden" th:value="${langDto.ldSeq}" name="categoryNameLangDetailSeqs"/>
+				</td>				
+			</tr>
+			
+<!-- 			<div id="DIV_addCategoryName"></div> -->
+			
+			<tr class="mall-addtrbefore">	<!-- 다국어가 x개만 있었을 때 추가된 다국어가 있다면 x개의 다국어가 표시된 뒤 후처리로 x+1개의 다국어를 끼워넣기 위한 class선언 -->
+<!-- 				<th th:text="|#{DIVEU_LB_0065}*|"></th>	Sort -->
+				<th><span>[[#{DIVEU_LB_0065}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Sort -->
+				<td>
+					<th:block th:with="x= ${categoryDto.totalCount}">
+						<select id="SLT_sort" name="sort" class="custom-ui">								
+							<th:block th:each="num : ${#numbers.sequence(1,x)}">
+								 <option th:value="${num}" th:selected="(${num} == ${categoryDto.sort})" th:text="${num}" ></option>		
+							</th:block>								
+						</select>
+					</th:block>
+				</td>
+			</tr>	
+			<tr>
+				<th><span>[[#{DIVEU_LB_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
+				<td>
+					<select id="SLT_fgDisplay" name="fgDisplay" class="custom-ui"></select>
+				</td>						
+			</tr>
+		</tbody>
+	</table>
+	
+</form>
+
+<form id="FORM_view" method="post" action="/portal/corp/eu/scm/parts/merchandize/category/view">
+	<input type="hidden" name="mcSeq" th:value="${categoryDto.mcSeq}" />		
+</form>
+
+</div>
+
+
+<script type="application/javascript">
+$(document).ready(function() 
+{	
+	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0062}]]' );	// Modify Category
+	$('#SLT_categoryCode').val( $('#IPT_categoryCodeCurrVal').val() );
+// 	$(".numeric").numeric(); 
+	addFgDisplayOption();
+	
+	insertAddedLangInfo(); 
+});
+
+function addFgDisplayOption() 
+{	
+	var myOptions = {
+	    Y : 'Y',
+	    N : 'N'
+	};
+	var _select = $('<select>');
+	$.each(myOptions, function(val, text) {
+	    _select.append(
+            $('<option></option>').val(val).html(text)
+        );
+	});
+	$('#SLT_fgDisplay').append(_select.html());
+	$('#SLT_fgDisplay').val( $('#IPT_fgDisplayCurrVal').val() );	
+}
+
+
+// 데이터 저장 이후 다국어가 새로 추가된 경우, 새로 추가된 다국어를 테이블에 끼워넣는 처리
+function insertAddedLangInfo() 
+{
+	var pastLangCnt = document.getElementsByName("categoryNameLangDetailSeqs").length;	// 기존에 존재하던 다국어 갯수
+	var currLangCnt = document.getElementsByName("categoryLangKindSeqs").length;	// 새로 추가된 다국어 갯수
+	
+	if (pastLangCnt < currLangCnt) 
+	{	
+		var addLangNameInfoStr = '';
+		$("input[name=categoryLangKindSeqs]").each(function(index, item)	
+		{
+			if ( index  < pastLangCnt) 
+			{
+				return;
+			} else 
+			{
+				// 추가 다국어 입력란 생성
+				addLangNameInfoStr += '<tr><th>[[#{DIVEU_LB_0064}]](' + item.id.substring(11) + ')<img src="/portal/img/icon_required.png" class="required" /></th>';
+				addLangNameInfoStr += '<td><input type="text" name="categoryNames" class="custom-ui">';
+				addLangNameInfoStr += '<input type="hidden" name="categoryNameLangDetailSeqs" value="0" />';	// ld_seq 값이 0일 경우 새로 추가된 언어의 데이터로 간주하여, 수정 로직을 실행할 때 해당 0 데이터는 삽입 처리를 한다.
+				addLangNameInfoStr += '</td></tr>';
+			}	
+		});
+		
+// 		$("#DIV_addCategoryName").html(addLangNameInfoStr);
+		$(".mall-addtrbefore").eq(-1).before(addLangNameInfoStr);	// 추가 다국어 입력영역 끼워넣기
+	}
+}
+
+
+$('.catModBtn').click(function() {
+	
+	if (validCheck()) {
+		
+		$.ajax({
+		    url:'/portal/corp/eu/scm/parts/merchandize/category/save',
+		    type:'post',
+			data: $("#FORM_modify").serialize(),
+		    success: function(data) {
+		    	var resultNum = Number(data.RESULT.resultCnt);
+// 		    	if (resultNum == 1) {
+// 		    		alert("Category updated.");	
+// 		    	} else if (resultNum == -1) {
+// 		    		alert("Category duplicated. Please check exist categories.");
+// 		    	} else {
+// 		    		alert(resultNum);
+// 		    	}
+		    	$("#FORM_view").submit();
+		        
+		    },
+		    error: function(err) {
+		    	alert("Ajax error");
+		    }
+		});
+	}
+	
+});
+
+$('.catCanBtn').click(function() {
+	$("#FORM_view").submit();
+});
+
+function validCheck() {
+	
+	var noNameBool = false;
+	$("input[name=categoryNames]").each(function(index, item)
+	{
+		if (item.value == '') 
+		{
+			noNameBool = true;
+			return false;
+		}
+	});
+	
+	if (noNameBool) {
+		alert("[[#{DIVEU_MSG_0030}]]");	// Please Input the Category Name.		
+		return false;
+	} else {
+		return true;
+	}	
+}
+</script>
+
+</th:block>
+</html>

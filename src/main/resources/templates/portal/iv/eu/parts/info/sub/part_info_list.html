@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+	
+<th:block layout:fragment="content">
+
+<style>
+.ui-menu-item .ui-menu-item-wrapper.ui-state-active {
+    background: #B2E4D7 !important;
+    font-weight: bold !important;
+    color: #000 !important;
+} 
+</style>
+
+<div class="block-header">
+	<div class="block-title" th:text="#{DIVEU_TXT_0078}"></div><!-- Parts Info. -->
+	<div class="block-button-area">
+		<button id="BTN_search" type="button" th:text="#{DIVEU_BTN_0002}"></button><!-- Search -->	
+	</div>
+</div>	
+<div class="condition-area">
+<form id="FORM_search" name="FORM_search" onsubmit="return false;">
+<table class="condition table-fixed">
+	<tbody>
+		<tr>
+			<th style="width:150px" th:text="#{DIVEU_LB_0102}"></th><!--Parts No.  -->
+			<td> 			
+				<div class="input-area">
+					<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" tabindex="1">
+					<button class="btn-popup2" type="button" onclick="searchParts();"></button>					
+				</div>
+			</td>
+			<th style="width:150px" th:text="#{DIVEU_LB_0144}"></th><!-- Req Qty -->
+			<td>
+				<div class="input-area">
+				<input type="text" id="pReqQty" name="pReqQty" class="custom-ui" tabindex="2">
+				</div>							
+			</td>			
+		</tr>		
+	</tbody>
+</table>
+</form>	
+</div>
+<div class="split-row"></div>
+<div class="condition-area">
+<table class="condition table-fixed">
+	<tbody>
+		<tr>
+			<th style="width:150px" th:text="#{DIVEU_LB_0145}"></th><!-- Part No Desc -->
+			<td id="MAKTX"></td>
+			<th style="width:150px" th:text="#{DIVEU_LB_0146}"></th><!-- Stock -->
+			<td id="AVA_FLAG"></td>			
+		</tr>		
+		<tr>
+			<th th:text="#{DIVEU_LB_0101}"></th><!--Serviceable  -->
+			<td id="SVRCD"></td>
+			<th th:text="#{DIVEU_LB_0147}"></th><!--Not Service Reason  -->
+			<td>
+				<div id="AREA_notServReason" style="display:none;">			
+				<span id="NOT_SERVICE" class="custom-ui"></span>
+				<button id="BTN_notServReason" class="btn-popup2" type="button" onclick="showMoreInfoPop(this);"></button>
+				</div>						
+			</td>			
+		</tr>		
+		<tr>
+			<th th:text="#{DIVEU_LB_0050}"></th><!--Sales Lot  -->
+			<td id="AUMNG"></td>
+			<th th:text="#{DIVEU_LB_0148}"></th><!--Model  -->
+			<td>						
+				<div id="AREA_appliedModel" style="display:none;">			
+				<span id="M_MATNR" class="custom-ui"></span>
+				<button id="BTN_appliedModel" class="btn-popup2" type="button" onclick="showMoreInfoPop(this);"></button>
+				</div>								
+			</td>			
+		</tr>			
+		<tr>
+			<th th:text="#{DIVEU_LB_0149}"></th><!--Product Hierarchy  -->
+			<td id="PRODH_T"></td>
+			<th th:text="#{DIVEU_LB_0150}"></th><!--Open Qty  -->
+			<td id="KWMENG"></td>			
+		</tr>	
+		<tr>
+			<th th:text="#{DIVEU_LB_0151}"></th><!--Net Weight  -->
+			<td id="NTGEW"></td>
+			<th th:text="#{DIVEU_LB_0152}"></th><!-- List Price Cost Code -->
+			<td id="KONDM"></td>			
+		</tr>
+		<tr>
+			<th th:text="#{DIVEU_LB_0153}"></th><!-- Supply Part Number -->
+			<td>				
+				<div id="AREA_subItem" style="display:none;">			
+				<span id="REPNR" class="custom-ui"></span>
+				<button id="BTN_subItem" class="btn-popup2" type="button" onclick="showMoreInfoPop(this);"></button>
+				</div>								
+			</td>
+			<th th:text="#{DIVEU_LB_0154}"></th><!-- Stock of Supply Part -->
+			<td id="STOCKP"></td>			
+		</tr>
+	</tbody>
+</table>	
+</div>
+<div class="split-row"></div>
+<div class="condition-area">
+<table class="condition">
+     <tbody>
+		<tr>
+			<th th:text="#{DIVEU_LB_0033}"></th><!--List Price  -->
+		</tr>		
+		<tr>
+			<td id="LPRICE"></td>
+		</tr> 
+	</tbody>        
+</table>	
+</div>	
+<script type="application/javascript">
+$(window).load(function() {
+	ProgressBar.hide();
+});
+
+function doSearch()
+{
+	if (CmStringUtils.isEmpty($("#pPartsNo").val()))
+	{
+		alert("[[#{DIVEU_MSG_0038}]]");
+		return;
+	}
+	
+	$("#pPartsNo").val($("#pPartsNo").val().toUpperCase());
+	
+	$.ajax({
+		url: "/portal/corp/eu/scm/parts/info/part_info_list/data",
+		data: {	"pPartsNo": $("#pPartsNo").val(), "pReqQty": $("#pReqQty").val() },
+		beforeSend: function(jqXHR, settings)
+		{
+			ProgressBar.show();
+		},		
+	 	success: function(data, textStatus, jqXHR) 
+    	{
+	    	var result = data.RESULT;	    	
+	    	var items = result.items;
+	    	
+	    	if (items.length == 0)
+	    	{
+	    		alert("[[#{DIVEU_MSG_0015}]]");
+	    		document.location.reload();
+	    	};
+	    	
+			$("#MAKTX").html(items[0].MAKTX);// Part No Desc
+			$("#AVA_FLAG").html(items[0].STOCK);// Stock
+			$("#SVRCD").html(items[0].SVRCD);// Serviceable
+			
+			var notcd = $.trim(items[0].NOTCD);
+			$("#NOT_SERVICE").html("");
+			
+			if (notcd != "")
+			{
+				if (notcd == "MUL")
+				{
+					$("#AREA_notServReason").show();
+				}
+				else
+				{
+					$("#AREA_notServReason").hide();
+				};
+				
+				$("#NOT_SERVICE").html(notcd + ":" + items[0].NOTCD_T);// Not Service Reason
+			};
+			
+			var salesLot = $.trim(items[0].LFMNG);
+			if (salesLot != "")
+			{
+				$("#AUMNG").html(salesLot + " " + items[0].MEINS);// Sales Lot	
+			};
+			
+			var model = $.trim(items[0].MDLNM);
+			$("#M_MATNR").html("");
+			$("#AREA_appliedModel").hide();
+
+			if (model != "")
+			{
+				$("#M_MATNR").html(model);// Model
+				$("#AREA_appliedModel").show();
+			};
+			
+			var openQty = $.trim(items[0].OPENQ);
+			$("#KWMENG").html("");
+			if (openQty != "")
+			{
+				$("#KWMENG").html(openQty + " " + items[0].MEINS);// Open Qty	
+			};
+			
+			var supplyPartsNo = $.trim(items[0].SUPNR);
+			$("#REPNR").html("");
+			$("#AREA_subItem").hide();
+
+			if (supplyPartsNo != "")
+			{
+				$("#REPNR").html(supplyPartsNo);// Supply Part Number
+				$("#AREA_subItem").show();
+			};
+			
+			var leadMsg = $.trim(items[0].LEAD_MSG);
+			if (leadMsg != "")
+			{
+				$("#STOCKP").html(items[0].STOCKP + " (" + leadMsg + ")");// Stock of Supply Part
+				
+				if (CmStringUtils.isNotEmpty(items[0].LEAD_EXTRA_MSG))
+				{
+					$("#STOCKP").append("<p style='color:red;'>" + items[0].LEAD_EXTRA_MSG + "</p>");
+				};
+			}
+			else
+			{
+				$("#STOCKP").html(items[0].STOCKP);
+			};
+			
+			var listPriceCostCode = $.trim(items[0].KONDM);
+			$("#KONDM").html("");
+
+			if (listPriceCostCode != "")
+			{
+				$("#KONDM").html(listPriceCostCode + " : " + items[0].KONDM_T);// List Price Cost Code	
+			};
+			
+			$("#PRODH_T").html(items[0].PRODH_T+"  ["+items[0].PRODH+"]");// Product Hierarchy
+			$("#NTGEW").html(items[0].NTGEW + " " + items[0].GEWEI);// Net Weight									
+			$("#LPRICE").html(items[0].LPRICE+" "+items[0].WAERS);
+    	},
+    	complete: function(jqXHR, textStatus)
+    	{
+    		ProgressBar.hide();
+    	}    	
+	});				
+};
+
+//Search 버튼 클릭
+$("#BTN_search").on("click", function(){		
+	doSearch(); 
+});
+
+$("#pPartsNo, #pReqQty").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		if ($.trim(this.value) != "")
+		{
+			doSearch();	
+		};
+	};
+});
+
+$("#pPartsNo").autocomplete({	
+	source: function(request, response) {
+		$.ajax({
+			url: "/portal/corp/eu/scm/parts/info/autocompete/data",
+			data: {	"pPartsNo": $("#pPartsNo").val() },			
+			success: function(data, textStatus, jqXHR)
+			{
+				let result = data.RESULT;
+				
+				response(
+						$.map(result.items, function(item) {
+							if (CmStringUtils.isNotEmpty(item.MATERIAL_TEXT))
+							{
+								return {
+									label: item.MATERIAL + " | " + item.MATERIAL_TEXT,
+									value: item.MATERIAL
+								}								
+							};
+						})
+						);
+			}
+		});
+	},
+	delay: 500,
+	minLength: 4
+});
+
+/*
+ * code(parts)변경 popup	 
+ */ 	
+function searchParts()
+{
+	Popup.open("/portal/corp/eu/scm/parts/info/parts_number_popup_list?pPartsNo=" + $("#pPartsNo").val(), 700, 600);
+};
+
+/**
+ * 이미지 클릭시 대체품, Models applied by part, Controlling part 
+ * 리스트 popup띄움
+ */	
+function showMoreInfoPop(obj)
+{
+	var id = obj.id;
+	var width = 900;
+	var height = 520;
+	var url;
+	var param = "?pPartsNo=" + $("#pPartsNo").val();
+	
+	if ($.trim($("#pPartsNo").val()).length>0)
+	{
+		if ("BTN_subItem" == id)
+		{
+			url = "/portal/corp/eu/scm/parts/info/sub_item_popup_list";	
+		}
+		else if ("BTN_appliedModel" == id)
+		{
+			url = "/portal/corp/eu/scm/parts/info/applied_model_popup_list";
+			width = 800;			
+		}
+		else if ("BTN_notServReason" == id)
+		{
+			url = "/portal/corp/eu/scm/parts/info/alternative_popup_list";
+			width = 400;			
+		}
+		
+		Popup.open(url+param, width, height);
+	}
+	else
+	{
+		  //display error message
+		  $("#pPartsNo").focus();	
+	}
+}
+
+function setPartsNo(partsNo)
+{
+	$("#pPartsNo").val(partsNo);
+};
+</script>
+</th:block>

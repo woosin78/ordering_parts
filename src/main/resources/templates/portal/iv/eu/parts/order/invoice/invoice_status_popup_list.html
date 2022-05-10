@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/popup/index}">
+	
+<th:block layout:fragment="content">
+	<th:block th:replace="portal/corp/eu/scm/parts/order/invoice/invoice_status_list_inc"></th:block>
+</th:block>

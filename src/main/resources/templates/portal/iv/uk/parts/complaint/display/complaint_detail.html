@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{DIVUK_TXT_0031}"></div><!-- Complaint Detail Information -->
+		<div class="block-button-area">
+			<button id="BTN_pdfDownload" type="button" th:text="#{DIVUK_BTN_0011}"></button><!-- Print -->
+			<button id="BTN_back" type="button" th:text="#{DIVUK_BTN_0010}"></button><!-- Back -->
+		</div>		
+	</div>
+	
+	<div class="condition-area">
+	<table class="condition">
+		<tbody>
+			<tr>
+				<th th:text="#{DIVUK_LB_0040}"></th><!--Complaint No  -->
+				<td id="COMPLAINT_NO"><span th:text="${orderNo}"></span></td>
+				<th th:text="#{DIVUK_LB_0053}"></th><!--Doc date  -->
+				<td id="DOC_DATE"><span th:text="${detailDate}"></span></td>
+				<th th:text="#{DIVUK_LB_0054}"></th><!--Item Count  -->
+				<td id="ITEM_COUNT"></td>				
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	<div class="split-row"></div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>		
+	
+	<form id="FORM_search" name="FORM_search">
+		<input type='hidden' id="pFromDate" 	name="pFromDate" 	th:value="${pFromDate}">
+		<input type='hidden' id="pToDate" 		name="pToDate" 		th:value="${pToDate}">
+		<input type='hidden' id="pComplaintNo" 	name="pComplaintNo" th:value="${pComplaintNo}">
+		<input type='hidden' id="pReferenceNo" 	name="pReferenceNo" th:value="${pReferenceNo}">
+		<input type='hidden' id="pPartNo" 		name="pPartNo" 		th:value="${pPartNo}">
+		<input type="hidden" id="orderNo" 		name="orderNo"		th:value="${orderNo}">
+		<input type="hidden" id="detailDate" 	name="detailDate"	th:value="${detailDate}">
+		<input type="hidden" id="docType" 		name="docType"		th:value="${docType}">	
+	</form>
+	
+	<form id="FORM_download" name="FORM_search" method="post">
+		<input type="hidden" id="fileName" 		name="fileName">	
+		<input type="hidden" id="orderNo" 		name="orderNo">	
+		<input type="hidden" id="intNo" 		name="intNo">
+		<input type="hidden" id="docuItem" 		name="docuItem">		
+	</form>
+	
+	<!-- Text Area -->
+	<div id="textareaDiv" style="border:1px solid gray;width:300px;height:170px;backgroud:white;position:relative;top:0;left:0;display:none;">
+	    <div id="table_type1" style="padding:10px">
+	        <textarea style="width:278;height:150px;overflow:auto;padding:5px;" ></textarea>
+	    </div>
+	</div>
+	<!-- /Text Area -->
+	
+	<script type="application/javascript">
+	let $tableObj;
+	
+	let seq = 0;
+	
+	$.ajax({
+		url: "/portal/corp/uk/scm/parts/complaint/display/complaint_detail/data",
+		data: { "pOrderNo": "[[${orderNo}]]",
+				"pDocType": "[[${docType}]]"
+				},		
+	    success: function(data, textStatus, jqXHR) 
+	    {    	
+			let detailList = data.RESULT.detailList;
+			let fileList = data.RESULT.fileList;
+			let reasonList1 = data.RESULT.reasonList1;		
+			let reasonList2 = data.RESULT.reasonList2;    	
+	
+	    	$("#ITEM_COUNT").html(detailList.length);		
+	    	
+			for (let i=0, length=detailList.length; i<length; i++)
+			{
+				detailList[i].SEQ = i+1;	
+				detailList[i].FILE_NAME = '';
+				detailList[i].INT_NO = '';
+				detailList[i].DOCU_ITEM = '';
+				
+				for (let j=0, length1=reasonList1.length; j<length1; j++)
+				{	
+					detailList[i].TEXT = '';
+					detailList[i].TEXT2 = '';	
+					detailList[i].FILE_TEXT = '';
+					
+					for (let j=0, length1=reasonList1.length; j<length1; j++)
+					{
+						if (detailList[i].COMPLAINT == reasonList1[j].VALUE)
+						{
+							detailList[i].TEXT = reasonList1[j].TEXT;							
+						}
+					}
+					
+					for (let j2=0, length2=reasonList2.length; j2<length2; j2++)
+					{
+						if (detailList[i].REASON == reasonList2[j2].VALUE)
+						{
+							detailList[i].TEXT2 = reasonList2[j2].TEXT;							
+						}
+					}				
+					
+					for (let f=0, length3=fileList.length; f<length3; f++)
+					{
+						if (detailList[i].ITEM == fileList[f].DOCU_ITEM)
+						{												
+							detailList[i].FILE_NAME = fileList[f].FILE_NAME;
+							detailList[i].INT_NO = fileList[f].INT_NO;
+							detailList[i].DOCU_ITEM = fileList[f].DOCU_ITEM;						
+						}
+					}									
+				}	
+			}
+		    	
+	    	$tableObj = $("#TBL_grid").DataTable({
+	    		select: true,// row 선택 기능 켬
+	    		ordering: true,// 정렬 기능 켬
+	    		scrollY: 100,
+	    		columns : [
+	    			//{data: "SEQ",	 		title: "Seq."			},
+	    			{data: "REF_ORD", 		title: "[[#{DIVUK_LB_0041}]]"	},	// Reference No
+	    			{data: "MATERIAL", 		title: "[[#{DIVUK_LB_0055}]]"	},	// Part No
+	    			{data: "QTY", 			title: "[[#{DIVUK_LB_0056}]]"	},	// Qty	
+	    			{data: "TEXT", 			title: "[[#{DIVUK_LB_0057}]]"	},	// Complaint
+	    			{data: "TEXT2", 		title: "[[#{DIVUK_LB_0045}]]"	},	// Reason																										
+	    			{data: "COMPLAINT_DESC",title: "[[#{DIVUK_LB_0058}]]"	},	// Text
+	    			{data: "RCOMMENT", 		title: "[[#{DIVUK_LB_0059}]]"	},	// Reply
+	    			{data: "FILE_NAME", 	title: "[[#{DIVUK_LB_0060}]]", className:'link'},	// File	
+	    			{data: "ZZDEALDT", 		title: "[[#{DIVUK_LB_0061}]]"},			// Origin Doc. Date
+	    			{data: "INT_NO", 		title: "INT_NO(Hidden)"},
+	    			{data: "DOCU_ITEM",		title: "DOCU_ITEM(Hidden)"}    			
+	    		],  	
+	    		columnDefs: [
+	    			{ 
+	    				"targets": [ 9, 10 ],
+	                    "visible": false,				
+	    			}			
+	    		],	    		    		
+	    		data: detailList,
+	    		initComplete:function(settings, json) 
+	    		{			
+	    			ProgressBar.hide();
+	    		}
+	    	});
+	    	
+			// Datatable grid 초기 설정 셋업
+			initGridTable($tableObj);  	
+	    }
+	});
+	
+	$("#BTN_pdfDownload").on("click", function() {
+		document.location.href = "/portal/corp/uk/scm/parts/complaint/display/pdf_download?pOrderNo=[[${orderNo}]]&pDocType=[[${docType}]]";
+	});
+	
+	$("#BTN_back").on("click", function() {
+		$("#FORM_search").attr("action", "/portal/corp/uk/scm/parts/complaint/display/complaint_list").submit();
+	});
+	
+	$('#TBL_grid tbody').on('click', 'tr', function (e){				
+	    let tblGrid = $('#TBL_grid').DataTable();	    
+	    let index = $('#TBL_grid').dataTable().api().cell($(e.target).closest('td')).index().column;	    	    
+		let rowData = tblGrid.row(this).data();
+		
+		let orderNo = rowData.REF_ORD;	
+		let fileName = rowData.FILE_NAME;
+		let intNo = rowData.INT_NO;	
+		let docuItem = rowData.DOCU_ITEM;			
+	 		
+		if(index == 8)
+		{		
+			if (fileName != null)
+			{			
+				$("#fileName").val(fileName);
+				$("#orderNo").val(orderNo);		
+				$("#intNo").val(intNo);
+				$("#docuItem").val(docuItem);										
+				$("#FORM_download").attr("action", "/portal/corp/uk/scm/parts/complaint/display/file_download").submit();
+			}
+		}
+	});
+	
+	// complain description tooltip
+	$('#TBL_grid tbody').on('click', 'tr', function (e){				
+	    let tblGrid = $('#TBL_grid').DataTable();	    
+	    let index = $('#TBL_grid').dataTable().api().cell($(e.target).closest('td')).index().column;	    	    
+		let rowData = tblGrid.row(this).data();	
+		
+		if(index == 4)
+		{	
+			let desc = $(this).text();
+			if(desc.length>0){
+				let taDiv = $("#textareaDiv");
+				let tmpTa = $("#textareaDiv textarea");
+		
+			    if (taDiv.css("display")=='none') {
+					tmpTa.empty();
+					tmpTa.text(desc);
+		
+					taDiv.css({
+						"display":"block",
+						"position":"absolute",
+						"top":$(this).offset().top+20,
+						"left":$(this).offset().left
+					});
+				}else{
+					taDiv.css("display","none");
+					tmpTa.text(desc);
+				}
+			}	
+		}
+	}).mouseout(function(){
+		 hideTextArea();
+	});
+	
+	</script>	
+</th:block>
+	

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
+	layout:decorate="~{portal/layout/popup/index_mall}">
+
+<th:block layout:fragment="content">
+
+<div class="block-header">
+	<div class="block-title" th:text="#{DIVEU_LB_0068}"></div>	<!-- Category Details -->
+	<div class="block-button-area">		
+		<button class="catModBtn" th:text="#{DIVEU_BTN_0022}"></button>
+		<div class="split"></div>
+		<button class="catDelBtn" th:text="#{DIVEU_BTN_0010}"></button>  <!-- Delete -->
+		<div class="split"></div>
+		<button class="catLisBtn" th:text="#{DIVEU_BTN_0004}"></button>  <!-- Back -->
+	</div>
+</div>
+
+<!-- <div class="split-row"></div> -->
+
+<div class="mallcondition-area">
+<form id="FORM_view" method="post" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
+	
+	<table class="mallcondition">
+		<tbody>
+			<tr>
+				<th th:text="#{DIVEU_LB_0063}"></th>	<!-- Category -->
+				<td th:text="${categoryDto.categoryCode}"></td>
+			</tr>
+			<tr th:each="langDto : ${categoryLangDtos}">
+								
+				<th th:text="|#{DIVEU_LB_0064}(${langDto.name})|"></th>	<!-- Category Name -->
+				<!-- 				<th>Category Name(<span th:text="${langDto.name}"></span>)</th> -->
+				<td th:text="${langDto.text}"></td>					
+			</tr>			
+			<tr>
+				<th th:text="#{DIVEU_LB_0065}"></th>	<!-- Sort -->
+				<td th:text="${categoryDto.sort}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0066}"></th>	<!-- Display Y/N -->
+				<td th:text="${categoryDto.fgDisplay}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0069}"></th>	<!-- Reg.User -->
+				<td th:text="${categoryDto.regUsername}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0070}"></th>	<!-- Reg.Date -->
+				<td th:text="${#temporals.format(categoryDto.regDate, 'yyyy.MM.dd')}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0071}"></th>	<!-- Mod.User -->
+				<td th:text="${categoryDto.modUsername}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0072}"></th>	<!-- Mod.Date -->
+				<td th:text="${#temporals.format(categoryDto.modDate, 'yyyy.MM.dd')}"></td>
+			</tr>
+			
+		</tbody>	
+	</table>
+	
+</form>
+
+<form id="FORM_modify" method="post" action="/portal/corp/eu/scm/parts/merchandize/category/modify">
+	<input type="hidden" name="mcSeq" th:value="${categoryDto.mcSeq}" />
+</form>
+
+<form id="FORM_delete" method="post" action="/portal/corp/eu/scm/parts/merchandize/category/delete">
+	<input type="hidden" name="mcSeq" th:value="${categoryDto.mcSeq}" />
+</form>
+
+<form id="FORM_main" method="post" action="/portal/corp/eu/scm/parts/merchandize/category/main_admin"></form>
+
+</div>
+
+<script type="application/javascript">
+$(document).ready(function() 
+{
+// 	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0068}]]' );	// Category Details
+});
+
+function makeCategoryNameFieldArea() 
+{	
+// 	$("#categoryNameDiv").empty();
+	
+// 	var innerHtmlStr = '';	
+// 	$("input[name=categoryNameFields]").each(function(index, item)
+// 	{		
+// 		innerHtmlStr += '<div class="fields"><div class="sixteen wide field"><label>Category Name(' + item.value + ')</label>';
+// 		innerHtmlStr += '<input type="text" id="_' + item.id + '" name="categoryNames"/></div></div>'; 
+// 		innerHtmlStr += '<input type="hidden" value="' + item.id + '" name="categoryLangKindSeqs"/>';	// �ٱ��� ���� �ĺ���(lk_seq)
+// 	});
+	
+// 	$("#categoryNameDiv").html(innerHtmlStr);
+}
+
+// ?�?�
+$('.catModBtn').click(function() 
+{
+	$("#FORM_modify").submit();
+});
+
+
+// ?�?�
+$('.catDelBtn').click(function() 
+{	
+	if (confirm("Do you want to delete this category?")) 
+	{
+		$.ajax(
+		{
+		    url:'/portal/corp/eu/scm/parts/merchandize/category/delete',
+		    type:'post', 
+			data: $("#FORM_delete").serialize(),
+		    success: function(data) 
+		    {
+		    	$("#FORM_main").submit();
+// 		    	var resultCnt = Number(data.RESULT.resultCnt);
+// 		    	if (resultCnt > 0) {	
+		    		
+// 		    	} else {
+// 		    		alert('Delete failed. Please contact system manager.');
+// 		    	}
+		    },
+		    error: function(request,status,error)
+		    {
+	    	    alert("ajax error");		    	   
+		    }
+		});
+	}
+});
+
+// 목�?
+$('.catLisBtn').click(function() 
+{
+	$("#FORM_main").submit();
+});
+
+
+</script>
+
+</th:block>
+</html>

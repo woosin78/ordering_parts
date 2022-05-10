@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+	
+<th:block layout:fragment="content">
+	<style>
+	.curr{
+		margin-top: 6px;
+		vertical-align: bottom;
+		display: inline-block;
+		font-weight: bold;
+		font-size:16px;
+	}
+	</style>
+		<div class="block-header">
+			<div class="block-title" th:text="#{DIVEU_TXT_0076}"></div><!-- Shipment Status detail information -->
+			<div id="BTN_search" class="block-button-area">
+				<button id="BTN_pdfDownload" th:text="#{DIVEU_BTN_0008}"></button>
+				<button id="BTN_back" th:text="#{DIVEU_BTN_0004}"></button>
+			</div>
+		</div>	
+		<div class="condition-area">
+		<table class="condition">
+			<tbody>
+				<tr>
+					<th th:text="#{DIVEU_LB_0135}"></th><!-- Shipment No. -->
+					<td id="SHIPMENT_NO"><span th:text="${shipmentNo}"></span></td>
+					<th th:text="#{DIVEU_LB_0139}"></th><!-- Real Shipment Date -->
+					<td id="REAL_SHIPMENT_DATE"><span th:text="${realShipmentDate}"></span></td>
+					<th th:text="#{DIVEU_LB_0127}"></th><!-- Invoice number -->
+					<td id="INVOICE_NUMBER"><span th:text="${invoiceNo}"></span></td>				
+				</tr>
+				<tr>
+					<th th:text="#{DIVEU_LB_0131}"></th><!-- Freight Forward Ref -->
+					<td id="FREIGHT_FORWARD_REF"><span th:text="${freightForwardRef}"></span></td>
+					<th th:text="#{DIVEU_LB_0087}"></th><!-- Customer Name -->
+					<td id="CUSTOMER_NAME"></td>
+					<th th:text="#{DIVEU_LB_0022}"></th><!-- Ship to party -->
+					<td id="SHIP_TO_PARTY"></td>				
+				</tr>
+				<tr>
+					<th th:text="#{DIVEU_LB_0017}"></th><!-- Shipping Condition -->
+					<td colspan="5" id="SHIPPING_CONDITION"></td>
+				</tr>			
+			</tbody>
+		</table>
+		</div>
+		<div class="split-row"></div>
+		
+		<div class="grid-info">
+			<span class="curr">[[#{DIVEU_LB_0140}]]</span><!-- (Curr. : EUR)  -->
+		</div>		
+		<div id="AREA_grid" class="flex-grow grid-area">
+			<table id="TBL_grid" class="order-column stripe compact"></table>
+		</div>	
+		
+	<form id="FORM_search" name="FORM_search" method="post">
+		<input type='hidden' id="pFromDate" name="pFromDate" 	th:value="${pFromDate}">
+		<input type='hidden' id="pToDate" 	name="pToDate" 		th:value="${pToDate}">
+		<input type='hidden' id="pPartsNo" 	name="pPartsNo" 	th:value="${pPartsNo}">
+		<input type='hidden' id="pPoNo" 	name="pPoNo" 		th:value="${pPoNo}">
+		<input type='hidden' id="pOrderNo" 	name="pOrderNo" 	th:value="${pOrderNo}">					
+	</form>
+	<form id="FORM_pdf" name="FORM_pdf" method="post">
+	     <input type='hidden' id="TKNUM" name="TKNUM" th:value="${TKNUM}">		
+	</form>	
+	<script type="application/javascript">
+	$(window).load(function(){
+		ProgressBar.hide();
+	}); 
+	
+	let $tableObj;
+	
+	let seq = 0;
+	
+	$.ajax({
+		url: "/portal/corp/eu/scm/parts/order/shipment/shipment_status_detail/data",
+		data: { "pShipmentNo": "[[${shipmentNo}]]",
+				"pFromDate": "[[${pFromDate}]]",
+				"pToDate": "[[${pToDate}]]"
+				},		
+	    success: function(data, textStatus, jqXHR) 
+	    {
+	    	let result = data.RESULT;
+	    	
+	    	let mainHeadResult = result.mainHeadResult;
+			
+	    	$("#CUSTOMER_NAME").html(mainHeadResult[0].NAME1);
+	    	$("#SHIP_TO_PARTY").html(mainHeadResult[0].STREET);
+	    	$("#SHIPPING_CONDITION").html(mainHeadResult[0].VSBED_TEXT);
+	    	
+	    	$tableObj = $("#TBL_grid").DataTable({
+	    		select: true,// row 선택 기능 켬
+	    		ordering: true,// 정렬 기능 켬
+	    		scrollY: 100,
+	    		columns : [
+	    			{data: "MATWA", 		title: "[[#{DIVEU_LB_0029}]]"	},	// Order Part No.
+	    			{data: "MATNR", 		title: "[[#{DIVEU_LB_0030}]]"	},	// Supply Part No 
+	    			{data: "ARKTX", 		title: "[[#{DIVEU_LB_0031}]]"	},	// Description
+	    			{data: "LFIMG", 		title: "[[#{DIVEU_LB_0141}]]"	},	// Qty
+	    			{data: "NETPR", 		title: "[[#{DIVEU_LB_0034}]]"	},	// Net Price																											
+	    			{data: "MEINS", 		title: "[[#{DIVEU_LB_0049}]]"	},	// UoM
+	    			{data: "NETWR", 		title: "[[#{DIVEU_LB_0045}]]"	},	// Amount
+	    			{data: "VBELN", 		title: "[[#{DIVEU_LB_0141}]]"	},	// Sales order no
+	    			{data: "BSTKD", 		title: "[[#{DIVEU_LB_0132}]]"	} 	// P.O No.
+	    		],  	
+	    		data: result.item,
+	    		initComplete:function(settings, json) 
+	    		{			
+	    			ProgressBar.hide();
+	    		}   		
+	    	});
+	    	
+			// Datatable grid 초기 설정 셋업
+			initGridTable($tableObj); 	
+	    }
+	});
+	
+	$("#BTN_pdfDownload").on("click", function() {
+		document.location.href = "/portal/corp/eu/scm/parts/order/shipment/pdf_download?pShipmentNo=[[${shipmentNo}]]";
+	});
+	
+	$("#BTN_back").on("click", function() {
+		$("#FORM_search").attr("action", "/portal/corp/eu/scm/parts/order/shipment/shipment_status_list").submit();
+	});
+	
+	</script>	
+</th:block>

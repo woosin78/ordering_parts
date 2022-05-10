@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/popup/index}">
+	
+<th:block layout:fragment="content">	
+	<div class="block-header">
+		<div class="block-title" th:text="#{DIVEU_TXT_0080}"></div><!-- Parts No -->
+		<div class="block-button-area">
+			<button id="BTN_search" type="button" th:text="#{DIVEU_BTN_0002}"></button><!-- Search -->
+			<!-- button id="BTN_close" type="button" th:text="#{DIVUK_BTN_0005}"></button><!-- Close -->
+		</div>	
+	</div>	
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	<table class="condition">
+		<tbody>
+			<tr>
+				<th th:text="#{DIVEU_LB_0102}"></th><!--Parts No.  -->
+				<td>			
+					<div class="input-area">			
+						<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui" th:value="${pPartsNo}" style="text-transform: uppercase;">
+					</div> 										
+				</td>
+			</tr>
+			<tr>			
+				<th th:text="#{DIVEU_LB_0145}"></th><!--Part No Desc  -->
+				<td>
+					<div class="input-area">			
+						<input type="text" id="pPartsNoDesc" name="pPartsNoDesc" class="custom-ui" th:value="${pPartsNoDesc}">
+					</div>							
+				</td>			
+			</tr>		
+		</tbody>
+	</table>
+	</form>	
+	</div>
+	<div class="split-row"></div>
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>	
+	</div>
+	
+	<script type="application/javascript">
+	let $tableObj;
+	let totalRows = 0;
+	
+	$(function(){
+		$("#pPartsNo, #pPartsNoDesc").on("keydown", function(event) {
+			
+			$("#pPartsNo").val($("#pPartsNo").val().toUpperCase());
+			
+			if (event.keyCode == 13)
+			{
+				doSearch();
+			};
+		});
+	
+		$tableObj = $("#TBL_grid").DataTable({
+			select: {
+				selector: 'td:not(.noselect)'	// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+		    },		   			
+			ordering: true, 
+			scrollY: 100,
+			columns: [
+				{// 컬럼에 radio 설정
+					name: "RAD_MATNR",
+					className:"center noselect skip-download",// row selection 기능 막음.
+					orderable: false,// checkbox 는 정렬 불가
+					render: function(data, type, row)
+					{
+						if (row.disabled == "disabled")
+						{
+							return "";
+						}
+	
+						return '<input type="radio" name="RAD_MATNR" id="RAD_MATNR" class="custom-ui" value="' + row.MATNR + '" onclick="clickParts(this)"><label for="RAD_MATNR"></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
+					}
+				},
+				{name: "MATNR", data: "MATNR", title: "[[#{DIVEU_LB_0102}]]"},	// Parts No.
+				{name: "MAKTX", data: "MAKTX", title: "[[#{DIVEU_LB_0031}]]"}		// Description
+			],
+			ajax: {
+				url: "/portal/corp/eu/scm/parts/info/parts_number_popup_list/data",
+				type: "POST",
+				data: function(p)
+				{				
+					p.pPartsNo = $("#pPartsNo").val();
+					p.pPartsNoDesc = $("#pPartsNoDesc").val();
+				},
+				dataSrc: function(response) 
+				{				
+					let data = response.RESULT;
+					
+					if (data == null)
+					{
+						return [];
+					}
+					
+					for (let i=0, length=data.length; i<length; i++)
+					{
+						data[i].RAD_MATNR = "";					
+					}
+					
+					$("#totalRows").html(data.length + " row(s).");
+					
+					return data;
+				}
+			},
+			initComplete: function() {
+				ProgressBar.hide();
+			}
+		});
+		
+		// Datatable grid 초기 설정 셋업
+		initGridTable($tableObj);		
+	
+		// Search 버튼 클릭
+		$("#BTN_search").on("click", function(){		
+			doSearch(); 
+		});
+	});	
+	
+	function clickParts(obj)
+	{
+		try
+		{
+			opener.setPartsNo(obj.value);
+		}
+		catch (e) {}
+	};
+	
+	function doSearch()
+	{
+		$tableObj.ajax.reload();
+	}
+	
+	$("#BTN_close").on("click", function(){
+		self.close();	
+	});	
+	</script>	
+</th:block>

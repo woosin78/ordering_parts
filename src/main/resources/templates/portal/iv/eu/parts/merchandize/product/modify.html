@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
+	layout:decorate="~{portal/layout/popup/index_mall}">
+
+<th:block layout:fragment="content">
+<link rel="stylesheet" type="text/css" th:href="@{/portal/css/bbs_basic.css}">
+
+<div class="block-header">
+	<div class="block-title" th:text="#{DIVEU_LB_0079}"></div>
+	<div class="block-button-area">		
+		<button class="prdModBtn" th:text="#{DIVEU_BTN_0022}"></button>	<!-- Modify -->
+		<div class="split"></div>
+		<button class="prdCanBtn" th:text="#{DIVEU_BTN_0014}"></button>	<!-- Cancel -->
+	</div>
+</div>
+
+<div class="mallcondition-area">
+<form id="FORM_modify" method="post" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
+	
+	<input type="hidden" name="mpSeq" th:value="${productDto.mpSeq}" />
+	<input type="hidden" id="IPT_fgDisplayCurrVal" th:value="${productDto.fgDisplay}" />
+	<input type="hidden" id="IPT_mcSeqCurrVal" th:value="${productDto.mcSeq}" />
+	
+	<input type="hidden" id="IPT_fuiId" name="fuiId"  th:value="${fileValidStr}">
+		
+	<!-- 다국어 종류 관련 -->				
+	<div th:each="langKindEntity : ${langKindEntityList}">
+		<input type="hidden" name="productLangKindSeqs" th:id="|IPT_lkinfo_${langKindEntity.name}|" th:value="${langKindEntity.lkSeq}" />
+	</div>
+	
+	<table class="mallcondition">
+		<tbody>
+			<tr>
+				<th><span>[[#{DIVEU_LB_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
+				<td>
+					<select id="SLT_category" name="mcSeq" class="custom-ui">
+						<option th:each="categoryDto : ${categoryList}"
+								th:value="${categoryDto.mcSeq}"
+								th:text="${categoryDto.categoryName}">
+						</option>
+					</select>					
+				</td>						
+			</tr>			
+			<tr>
+				<th><span>[[#{DIVEU_LB_0080}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Code -->
+				<td><input type="text" id="IPT_materialNo" name="materialNo" th:value="${productDto.materialNo}" class="custom-ui"/></td>						
+			</tr>
+			
+			<!-- DB에 저장되어 있는 다국어 정보만큼 상품명 수정영역 생성 -->
+			<tr th:each="langDto : ${productNameLangDtos}" class="mall-addPrdNametrafters">
+				<th><span>[[#{DIVEU_LB_0081}]]([[${langDto.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Name -->
+				<td><input type="text" name="productNames" th:value="${langDto.text}" class="custom-ui" />
+					<input type="hidden" th:value="${langDto.ldSeq}" name="productNameLangDetailSeqs"/>
+				</td>				
+			</tr>
+			
+			<!-- DB에 저장되어 있는 다국어 정보만큼 상품설명 수정영역 생성 -->			
+			<tr th:each="langDescDto : ${productDescLangDtos}">
+				<th><span>[[#{DIVEU_LB_0082}]]([[${langDescDto.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Description -->
+				<td><textarea name="productDescs" th:text="${langDescDto.text}" class="custom-ui"></textarea>
+					<input type="hidden" th:value="${langDescDto.ldSeq}" name="productDescLangDetailSeqs"/>
+				</td>				
+			</tr>
+				
+			<tr class="mall-addPrdDesctrbefore">
+				<th><span>[[#{DIVEU_LB_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
+				<td>
+					<select id="SLT_fgDisplay" name="fgDisplay" class="custom-ui"></select>
+				</td>						
+			</tr>
+						
+			<tr>
+				<th><span>[[#{DIVEU_LB_0083}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Image -->
+				<td>
+					<span id="SPN_imageSizeText">Image Size: 500 x 500 Pixel</span>
+					<div id="DIV_addFileArea" style="">
+						<article th:replace="/portal/corp/eu/common/bbs/attach_file :: attachFileUpdate(${fileUploads})"></article>
+						<article th:replace="${fileUploadInfo} != null ? ~{/portal/corp/eu/common/bbs/attach_file :: attachFileScript('5', ${fileUploadInfo.fileLimitSize})} : ~{/portal/corp/eu/common/bbs/attach_file :: attachFileScript('5', '1048576')}"></article>	
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+</form>
+</div>
+
+<form id="FORM_view" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/view">
+	<input type="hidden" name="mpSeq" th:value="${productDto.mpSeq}" />		
+</form>
+
+
+<script type="application/javascript">
+$(document).ready(function() 
+{
+// 	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0079}]]' );	// Modify Product
+// 	$(".numeric").numeric();
+	$('#SLT_category').val( $('#IPT_mcSeqCurrVal').val() );	
+	addFgDisplayOption();
+	
+	insertAddedLangInfo(); 
+});
+
+// [노출여부] Select Box의 선택값 만들기
+function addFgDisplayOption() 
+{	
+	var myOptions = {
+	    Y : 'Y',
+	    N : 'N'
+	};
+	var _select = $('<select>');
+	$.each(myOptions, function(val, text) {
+	    _select.append(
+            $('<option></option>').val(val).html(text)
+        );
+	});
+	$('#SLT_fgDisplay').append(_select.html());
+	$('#SLT_fgDisplay').val( $('#IPT_fgDisplayCurrVal').val() );	
+}
+
+// 추후에 지원 언어가 추가되었을 경우, 해당 언어가 추가되기 이전에 저장된 데이터는 그 정보가 없으므로 추가된 언어분만큼 더 표시하기 위한 함수
+function insertAddedLangInfo() 
+{
+	var pastLangCnt = document.getElementsByName("productNameLangDetailSeqs").length;
+	var currLangCnt = document.getElementsByName("productLangKindSeqs").length;
+	
+	if (pastLangCnt < currLangCnt) 
+	{	
+		var addLangNameInfoStr = '';
+		var addLangDescInfoStr = '';
+		$("input[name=productLangKindSeqs]").each(function(index, item)	
+		{
+			if ( index  < pastLangCnt) 
+			{
+				return;
+			} else 
+			{
+				// 추가 다국어 상품명 입력란 생성
+				addLangNameInfoStr += '<tr><th><span>[[#{DIVEU_LB_0081}]](' + item.id.substring(11) + ')<img src="/portal/img/icon_required.png" class="required" /></span></th>';
+				addLangNameInfoStr += '<td><input type="text" name="productNames" class="custom-ui" />';
+				addLangNameInfoStr += '<input type="hidden" name="productNameLangDetailSeqs" value="0" />';	// ld_seq 값이 0일 경우 새로 추가된 언어의 데이터로 간주하여, 수정 로직을 실행할 때 해당 0 데이터는 삽입 처리를 한다.
+				addLangNameInfoStr += '</td></tr>';
+
+				// 추가 다국어 상품설명 입력란 생성
+				addLangDescInfoStr += '<tr><th><span>[[#{DIVEU_LB_0082}]](' + item.id.substring(11) + ')<img src="/portal/img/icon_required.png" class="required" /></span></th>';
+				addLangDescInfoStr += '<td><textarea name="productDescs" class="custom-ui"></textarea>';
+				addLangDescInfoStr += '<input type="hidden" name="productDescLangDetailSeqs" value="0" />';	// ld_seq 값이 0일 경우 새로 추가된 언어의 데이터로 간주하여, 수정 로직을 실행할 때 해당 0 데이터는 삽입 처리를 한다.
+				addLangDescInfoStr += '</td></tr>';				
+			}	
+		});
+		
+		// 추가 다국어 상품명 입력영역 끼워넣기
+		var existPrdnameTrArr = $('.mall-addPrdNametrafters');
+		existPrdnameTrArr.each(function(index) {
+			var isLastItem = (index == (existPrdnameTrArr.length - 1));
+			if (isLastItem) $(this).after(addLangNameInfoStr);
+		});
+		
+		$(".mall-addPrdDesctrbefore").eq(-1).before(addLangDescInfoStr);	// 추가 다국어 상품설명 입력영역 끼워넣기		
+	}
+}
+
+
+$('.prdModBtn').click(function() 
+{	
+	if (validCheck()) 
+	{
+		isPrdCdValid();		
+	}	
+});
+function isPrdCdValid()	// 상품코드 정확하게 입력했는지 SAP에 조회하여 확인	
+{
+// 	checkFile('FORM_modify');	
+	
+	$.ajax({
+	    url:'/portal/corp/eu/scm/parts/merchandize/product/prdCdValidChk',
+	    type:'post',
+		data: $("#FORM_modify").serialize(),
+	    success: function(data) {
+		    	var resultCd = data.RESULT.resultCd;		    	
+		    	if (resultCd == 'OK') 
+		    	{
+					// 첨부파일 체크(확장자, 파일 사이즈) 후, 파일첨부 파일 내에서 저장함수 saveClick() 호출
+					checkFile('FORM_modify');	
+					
+		    	} else if (resultCd == 'NOT_FOUND_MCSEQ') 
+		    	{
+		    		alert("[[#{DIVEU_MSG_0052}]]");	// Category information not found. 
+		    		return false;
+		    	} else if (resultCd == 'NO_MATCH_DATA')
+	    		{
+		    		alert("[[#{DIVEU_MSG_0053}]]");	// Product information not found.
+		    		return false;
+		    	} else 
+		    	{
+		    		alert("SAP:Unknown error");
+		    		return false;
+		    	}
+	    },
+	    error: function(err) {
+	    	alert("Ajax error");
+	    }
+	});
+	
+}
+function saveClick() {	// checkFile 함수에서 이 이름의 함수를 호출	 
+	
+    $("#FORM_modify").attr("target", "_self");
+	$("#FORM_modify").attr("action", "/portal/corp/eu/scm/parts/merchandize/product/save");
+    	
+	var theForm = document.getElementById('FORM_modify');
+	theForm.submit();  
+}
+
+$('.prdCanBtn').click(function() {
+	$("#FORM_view").submit();
+});
+
+
+function validCheck() 
+{
+	if ( $('#materialNo').val() == '' )	// 상품코드 미입력 
+	{
+		alert("[[#{DIVEU_MSG_0033}]]");	// Please Input Product Code.		
+		
+		return false;
+	}
+	
+	var noNameBool = false;
+	$("input[name=productNames]").each(function(index, item)	
+	{
+		if (item.value == '') 	// 상품명 미입력
+		{
+			noNameBool = true;
+			return false;
+		}
+	});	
+	if (noNameBool) 
+	{
+		alert("[[#{DIVEU_MSG_0034}]]");	// Please Input Product Name.
+		return false;
+	}
+	
+	$("textarea[name=productDescs]").each(function(index, item)
+	{
+		if (item.value == '') 		// 상품설명 미입력
+		{
+			noNameBool = true;
+			return false;
+		}
+	});	
+	if (noNameBool) 
+	{
+		alert("[[#{DIVEU_MSG_0035}]]");	// Please Input Product Description.
+		return false;
+	}
+	
+	var fileLen = $("input[name=userFiles]").length;
+	if (fileLen < 1)		// 이미지 파일 미입력
+	{
+		alert("[[#{DIVEU_MSG_0036}]]");	// Please attach Image File.
+		return false;
+	} else 
+	{
+		var deleteFileLen = 0;
+		for(var i = 0; i < fileLen; i++) 		// 이미지 파일 추가 후 삭제하여, 페이지에 파일정보 자체는 있으나 이미 삭제한 파일정보만 있을 경우를 체크
+		{
+	    	var fgFileStatuss = $("input[name='fgFileStatuss']:eq(" + i + ")").val();
+	    	if (fgFileStatuss == 'D') deleteFileLen++;
+		}
+		
+		if (fileLen == deleteFileLen)
+		{
+			alert("[[#{DIVEU_MSG_0036}]]");	// Please attach Image File.
+			return false;
+		}
+	}
+	
+	return true;		
+}
+
+</script>
+
+</th:block>
+</html>

@@ -27,4 +27,21 @@ public class ErpUserContext implements Serializable
 	private String custGrp3;
 	private String custGrp4;
 	private String custGrp5;
+	
+	public String getCorpName()
+	{
+		if (corp != null)
+		{
+			if ("7800".equals(corp))
+			{
+				return "DIVEU";
+			}
+			else if ("7200".equals(corp))
+			{
+				return "DIVUK";
+			}
+		}
+
+		return null;
+	}
 }

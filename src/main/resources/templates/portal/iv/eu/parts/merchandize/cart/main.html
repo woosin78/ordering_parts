@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
+	layout:decorate="~{portal/layout/popup/index_mall}">
+
+<th:block layout:fragment="content">
+
+<!-- <div class="split-row"></div> -->
+
+<form id="FORM_list" method="post" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
+	<input type="hidden" id="IPT_userCorp" name="userCorp" th:value="${userCorp}" />
+</form>
+
+<div class="block-header">
+	<div class="block-title" th:text="#{DIVEU_LB_0060}"></div>
+	<div class="block-button-area">
+		<button class="crtOdrBtn" th:text="#{DIVEU_BTN_0025}"></button>  <!-- Order -->
+		<div class="split"></div>
+		<button class="crtDelBtn" th:text="#{DIVEU_BTN_0010}"></button>  <!-- Delete -->
+		<div class="split"></div>	
+		<button class="crtLisBtn" th:text="#{DIVEU_BTN_0024}"></button>	<!-- List -->	
+	</div>
+</div>
+	
+<div id="sample-grid-area" class="mall-flex-grow mall-grid-area">
+	<table id="sample-grid" class="order-column stripe compact nowrap"></table>
+	<div class="mall-grid-info">
+	<div class="grid-total">
+		<div class="split"></div>
+	</div>
+	<div class="block-button-area">				
+		<span th:text="#{DIVEU_LB_0197}"></span>	<!-- Order total -->
+		<div class="split"></div>
+		<span id="IPT_orderTotalTxt" class="total-number">0</span>		
+	</div>
+</div>
+</div>
+<!-- 데이터 영역 End -->
+
+
+<form id="FORM_save" method="post">
+	<input type="hidden" name="updateFlag" value="UPDATE" />	
+	<div id="cartQtyChangeDiv"></div>
+</form>
+
+<form id="FORM_product" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/main">	
+</form>
+
+<form id="FORM_delete" method="post">
+	<div id="deleteFormDiv"></div>
+</form>
+
+<!-- ------------------------------------------------------------------------------------------------------------------------------------ -->
+
+<script type="application/javascript">
+
+var $tableObj;
+var currRowData;
+
+$(document).ready(function() 
+{
+	makeResultGridData();
+	
+	$('#sample-grid tbody').on( 'click', 'tr', function () 
+	{
+		 currRowData = $tableObj.row(this).data();
+ 	});
+});
+ 
+
+//그리드 관련기능 Start
+function makeResultGridData() 
+{	
+	$tableObj = $("#sample-grid").DataTable({
+		//destroy: true,	// 테이블을 재사용할 필요가 있을 경우 추가(ex: 페이지 생성 시 빈 테이블 생성한 후 사용자가 검색조건 지정 후 검색 시 테이블을 새로 데이터에 맞추어 만들어아 할 경우)
+		select: {
+			selector: 'td:not(.noselect)'	// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true, 		
+		scrollY: 10,				
+		fixedColumns: { leftColumns: 1 },
+		columnDefs: [			
+            { targets: [0, 1], className: 'dt-body-center' },
+            { targets: [2], className: 'dt-body-left dt-nowrap' },
+            { targets: [3, 5], className: 'dt-body-right' }
+		],
+		columns : [
+			// 컬럼에 checkbox 설정
+			{	name: "categoryCheckbox",	     // chk 는  data에 없는 컬럼. 
+				title: '<input type="checkbox" name="categoryCheckbox" class="custom-ui" onclick="allChecked(this)"><label></label>',
+				className:"center noselect", // row selection 기능 막음. 
+				width: 20,  		 // checkbox 컬럼은 width 작게
+				orderable: false,	 // checkbox 는 정렬 불가  
+				defaultContent: '<input type="checkbox" class="custom-ui" onclick="syncInput(this)"><label></label>' // FixedColumns 사용시엔 syncInput 호출 필요함.
+			},
+			{	
+				name: 'productImage',
+				data: 'imageUrl',
+				title: '[[#{DIVEU_LB_0083}]]',	// Image
+				render : function(data, type, row) {	
+					return '<img src="/portal/corp/eu/common/file_load/image_viewer?filePath=' + data.replace("\\", "/") + '" style="width:50px;height:50px;" alt="No Image" />';
+				}
+			},
+			{	
+				data: 'productName',
+				title: '[[#{DIVEU_LB_0195}]]',	// Product
+				width: 400,
+				render : function(data, type, row) {					
+					return '<p style="max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + data + '</p><p style="max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + row.productDescription + '</p>';					
+				}
+			},
+			{	data: "orderPrice", 
+				title: '[[#{DIVEU_LB_0033}]]',	// List Price
+				className:"text-right",
+				render : function(data, type, row) {
+					return '<p style="text-align:right;">' + Number(data).toLocaleString() + '</p>'; 
+				}
+			},
+			{	data: "orderQty",
+				title: '[[#{DIVEU_LB_0141}]]',	// Qty
+				width: 60,
+				orderable: false,
+				className:"center noselect",
+				render : function(data, type, row) {
+					return '<input type="text" style="width:90px;align:center;margin-bottom:5px;text-align:right;" id="IPT_QUANTITY_' + row.mpSeq + '" value="' + data + '" onkeyup="javascript:chkOnlyNum(this);" onchange="syncInput(this);changeQuantity(this,' + row.mcSeq + ',' + row.mpSeq + ');"><br/><button class="small_button" onclick="javascript:saveChangeQty(this,' + row.mcSeq + ',' + row.mpSeq + ');">Change</button>';
+				},
+				defaultContent: '<input type="text" class="custom-ui" value="0" onkeyup="javascript:chkOnlyNum(this);" onchange="syncInput(this);">' // FixedColumns 사용시엔 syncInput 호출 필요함.
+			},			
+			{	 
+				data: "orderTotalPrice",				
+				title: '[[#{DIVEU_LB_0196}]]',	// Price(Sum)
+				render : function(data, type, row) {
+					return '<span id="SPN_PRICESUM_' + row.mpSeq + '"><p style="text-align:right;">' + Number(data).toLocaleString() + '</p></span>';
+				},
+				defaultContent: '<span>0</span>'
+			},
+			{ 	
+				data: "mcSeq", 
+				visible: false
+			},
+			{ 	
+				data: "mpSeq", 
+				visible: false
+			},
+			{ 	
+				data: "materialNo", 
+				visible: false
+			}			
+		],		
+		ajax: {
+			url: "/portal/corp/eu/scm/parts/merchandize/cart/list",
+			data: function(p)
+			{		
+			},
+			dataSrc: function(response) 
+			{				
+				var data = response.RESULT;
+				var returnData = new Array();
+				
+				if (data == null)
+				{
+					return returnData;						
+				} else {
+					return data;
+				}
+			}
+		},
+		paging : false,				// 페이징 기능켬
+		pageLength: 10,    			// 한 페이지에 10개 행
+		initComplete: function(response) // 데이터 온로드 완료시 호출
+		{				
+			calcTotalPrice();
+		}
+	});	
+		
+	// window 리사이즈시 그리드 높이 다시 맞춤. (그리드의 parent 요소의 높이에 맞춤)
+	installDataTableResizer($tableObj, $("#sample-grid-area"));	
+	// dataTable 버그 수정.
+	installDataTableBugFix("sample-grid");
+}
+
+function calcTotalPrice() 
+{
+	var amount = 0;
+	
+	var tableTds = $tableObj.columns(0).nodes()[0];
+	for (var i = 0; i < tableTds.length; i++) 
+	{
+		var $tdInf = $(tableTds[i]);
+		var currTdData = $tableObj.row($tdInf).data();		
+		amount += Number(currTdData.orderTotalPrice);		
+	}
+	
+	$('#IPT_orderTotalTxt').text(amount.toLocaleString());
+}
+
+// 장바구니 수량 변경
+function changeQuantity(obj, mcSeq, mpSeq) 
+{
+	if (obj.value == '') 
+	{
+		alert("[[#{DIVEU_MSG_0027}]]");	// Please input product quantity.
+		obj.value = 1;
+		return false;
+	} else if (Number(obj.value) < 1) {
+		alert("[[#{DIVEU_MSG_0028}]]");	// Cannot change below 1
+		obj.value = 1;	
+		return false;
+	} else {
+		
+		var changeTotalPrice = Number(obj.value) * Number(currRowData.orderPrice);
+		currRowData.orderTotalPrice = changeTotalPrice;
+		$('#SPN_PRICESUM_' + currRowData.mpSeq).html('<p style="text-align:right;">' + changeTotalPrice.toLocaleString() + '</p>');
+		
+		calcTotalPrice();
+		
+// 		$('#cartQtyChangeDiv').empty();
+// 		$('#cartQtyChangeDiv').append('<input type="hidden" name="mcSeq" value="' + mcSeq + '">');
+// 		$('#cartQtyChangeDiv').append('<input type="hidden" name="mpSeq" value="' + mpSeq + '">');
+		
+// 		$.ajax({
+// 		    url:'/portal/corp/eu/scm/parts/merchandize/cart/save',
+// 		    type:'post', 
+// 			data: $("#FORM_save").serialize(),
+// 		    success: function(data) 
+// 		    {		    	
+// 		    	location.reload();    
+// 		    }
+// 		});
+	}
+}
+
+
+//장바구니 수량 변경 저장
+function saveChangeQty(obj, mcSeq, mpSeq) {
+	
+	var qty = $('#IPT_QUANTITY_' + mpSeq).val();	
+	if (qty == '') 
+	{
+		alert("[[#{DIVEU_MSG_0027}]]");	// Please input product quantity.
+		obj.value = 1;
+		return false;
+	} else if (Number(qty) < 1) {
+		alert("[[#{DIVEU_MSG_0028}]]");	// Cannot change below 1
+		return false;
+	} else {
+		$('#cartQtyChangeDiv').empty();
+		$('#cartQtyChangeDiv').append('<input type="hidden" name="mcSeq" value="' + mcSeq + '">');
+		$('#cartQtyChangeDiv').append('<input type="hidden" name="mpSeq" value="' + mpSeq + '">');
+		$('#cartQtyChangeDiv').append('<input type="hidden" name="orderQty" value="' + qty + '">');
+		
+		$.ajax({
+		    url:'/portal/corp/eu/scm/parts/merchandize/cart/save',
+		    type:'post', 
+			data: $("#FORM_save").serialize(),
+		    success: function(data) 
+		    {		    	
+		    	location.reload();    
+		    }
+		});
+	}
+}
+
+// 바로 주문 버튼 클릭
+$('.crtOdrBtn').click(function() 
+{
+	var isChecked = false;
+	var tds = $tableObj.columns(0).nodes()[0];
+	for (var i = 0; i < tds.length; i++) 
+	{
+		var $td = $(tds[i]);
+		if ($td.find("input").attr("checked"))
+		{
+			isChecked = true;
+			break;
+		}
+	}
+	if (!isChecked) 
+ 	{
+		alert("[[#{DIVEU_MSG_0028}]]");	// Please select targets to order.
+   		return false;
+ 	} else 
+ 	{
+ 		var materialNoArr = new Array();
+ 		var quantityArr = new Array();
+ 		for (var j = 0; j < tds.length; j++) 
+    	{
+ 			var $td2 = $(tds[j]);
+    		if ($td2.find("input").attr("checked"))
+    		{
+    			var data = $tableObj.row($td2).data();
+				var quantityVal = $('#IPT_QUANTITY_' + data.mpSeq).val();
+    			if ( quantityVal == '' || Number(quantityVal) < 1 )		
+    	 		{    				
+    	 			isValidQtyFlag = false;
+    	 			break;
+    	 		}    	
+
+    			materialNoArr.push(data.materialNo);
+    			quantityArr.push(Number(quantityVal));    			
+    		}
+    	}
+ 	    
+	 	if (!isValidQtyFlag) 
+	 	{
+	 		alert("[[#{DIVEU_MSG_0027}]]");	// Please input product quantity.
+	 		return false;
+	 	} else 
+ 		{
+	 		deleteProcessFunc(tds, 'no_reload');	// 장바구니 선택제품 삭제
+	 		
+	 		var userCorp = $("#IPT_userCorp").val();
+			var matAddStr = '';
+			var qtyAddStr = '';
+			var userCorpParam = userCorp.substring(userCorp.length -2, userCorp.length).toLowerCase();	
+			var odrUrlParam = '/portal/corp/' + userCorpParam + '/scm/parts/order/create/order_form?from=MERCHANDIZE&materialNosFrom=';
+			
+			for (var l = 0; l < materialNoArr.length; l++) {
+				l > 0 ? matAddStr += '^' + materialNoArr[l] : matAddStr += materialNoArr[l];
+				l > 0 ? qtyAddStr += '^' + quantityArr[l] : qtyAddStr += quantityArr[l];
+			}
+			
+			odrUrlParam += matAddStr + "&orderQtiesFrom=" + qtyAddStr;
+			window.opener.location.href = odrUrlParam;
+			self.close();
+ 		}
+ 	}	
+});
+
+// 장바구니 삭제 버튼 클릭
+$('.crtDelBtn').click(function() 
+{
+	var isChecked = false;
+	var tds = $tableObj.columns(0).nodes()[0];
+	for (var i = 0; i < tds.length; i++) 
+	{
+		var $td = $(tds[i]);
+		if ($td.find("input").attr("checked"))
+		{
+			isChecked = true;
+			break;
+		}
+	}
+	
+    if(!isChecked) 
+    {
+    	alert("[[#{DIVEU_MSG_0021}]]");	// Please select targets to delete.
+      return false;
+    } else 
+    {
+    	deleteProcessFunc(tds, 'reload');
+    }	
+});
+
+function deleteProcessFunc(tds, reloadFlag)
+{
+	$('#deleteFormDiv').empty();	
+	for (var j = 0; j < tds.length; j++) 
+	{
+		var $td2 = $(tds[j]);
+		if ($td2.find("input").attr("checked"))
+		{
+			var data = $tableObj.row($td2).data();
+			$('#deleteFormDiv').append('<input type="hidden" name="mpSeq" value="' + data.mpSeq + '">');
+			$('#deleteFormDiv').append('<input type="hidden" name="mcSeq" value="' + data.mcSeq + '">');
+		}
+	}    	
+	
+	$.ajax({
+	    url:'/portal/corp/eu/scm/parts/merchandize/cart/delete',
+	    type:'post', 
+		data: $("#FORM_delete").serialize(),
+	    success: function(data) 
+	    {		 
+	    	if (reloadFlag == 'reload')
+    		{
+	    		location.reload();
+    		} else 
+   			{
+    			return true;
+   			} 
+	    }
+	});
+}
+
+// 상품 목록 화면 이동
+$('.crtLisBtn').click(function() 
+{	
+	$("#FORM_product").submit();
+});
+
+</script>
+
+</th:block>
+</html>

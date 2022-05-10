@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EuBackorderService extends OrderGeneralService
+public class EuBackorderService
 {
 	@Autowired
 	private SimpleRfcTemplate simpleRfcTemplate;
