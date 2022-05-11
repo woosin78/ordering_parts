@@ -18,7 +18,6 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.core.util.Formatter;
-import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
@@ -259,7 +258,6 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		DataMap mainHeadResult = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");
 
 		//PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(mainHeadResult, new String[] {"CREDIT", "NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
-		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(mainHeadResult, new String[] {"NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
 
 		FormatBuilder.with(mainHeadResult).decimalFormat(new String[] {"CREDIT", "NETWR"});
 		FormatBuilder.with(mainHeadResult).weightFormat("TOTAL_WEIGHT");
@@ -284,7 +282,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 
 			PricingResultDto pricingResult = new PricingResultDto();
 			pricingResult.setName(dataMap.getString("NAME"));
-			pricingResult.setNetValue(dataMap.getString("NEWR"));
+			pricingResult.setNetValue(Formatter.getDefDecimalFormat(dataMap.getString("NEWR")));
 			pricingResult.setCurrency(dataMap.getString("WAERK"));
 
 			pricingResults.add(pricingResult);
@@ -298,7 +296,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 
 		if (CollectionUtils.isNotEmpty(items))
 		{
-			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
+			//PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
 
 			FormatBuilder.with(items)
 				.qtyFormat(new String[] {"REQ_QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY"})

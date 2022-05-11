@@ -298,14 +298,19 @@ tree.pasteItem = function(key, pKey)
 	
 	if (previousCommand.COMMAND == "COPY")
 	{
+		/*
 		url = "/platform/mgmt/content/copy";
 		
-		if (tree.isSubItems())
+		if (tree.hasSubItems(key))
 		{
 			JpUiDimmer.confirm("Do you want to copy including the sub items?", function() {
 				doPaste("/platform/mgmt/content/copy_with_sub_items");
 			});
 		};
+		*/
+		JpUiDimmer.confirm("Do you want to copy?", function() {
+			doPaste("/platform/mgmt/content/copy_with_sub_items");
+		});		
 	}
 	else if (previousCommand.COMMAND == "CUT")
 	{
