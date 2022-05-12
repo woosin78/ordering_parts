@@ -18,6 +18,7 @@
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/main.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/jquery.bxslider.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"/>
 	
 	<!-- JavaScript -->
@@ -62,8 +63,8 @@
 				</div>
 				<div class="gnb-wrap">
 					<div class="gnb-container">
-						<div class="gnb-menu-area">
-							<ul class="gnb-menu-list" style="display:none;"></ul>					
+						<div class="gnb-menu-area">				
+							<ul class="gnb-menu-list2" style="display:none;"></ul>	
 							<ul class="gnb-menu-sub-list"></ul>
 						</div>
 					</div>
@@ -135,9 +136,11 @@
 		<div class="bottom-area">
 			<div class="copy-right">
 				<span th:text="#{PTL_T_COPY_RIGHT}"></span>
+				
 			</div>
 		</div>
 	</div>
+
 	<!-- Logout -->
 	<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>	
 	<!-- iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe -->
@@ -154,7 +157,9 @@ $(function(){
 	resizeView();
 
 	//상단 메뉴 생성 공통함수
-	makeGnb();
+	//makeGnb();
+	makeGnb2();
+	
 	
 	$(".top-header .logo-doobizplus").on("click", function() {
 		goHome()
@@ -179,6 +184,8 @@ $(function(){
 	$("#BTN_goOrder").on("click", function() {
 		document.location.href = "[[${BASE_PATH}]]/order/create/write";
 	});
+	
+	
 	
 	//Get last login information
 	JpUtilsAjax.get({
@@ -314,6 +321,17 @@ function resizeView()
 		$("#mainImg").height(RESIZING_MIN_HEIGHT);
 	}
 };
+
+
+//$(document).ready(function(){
+//		$(". bx-controls-direction .bx-next").addClass('disabled');	
+//});
+//$(". bx-controls-direction .bx-next").addClass('disabled');	
+//$(".bx-controls-direction .bx-next").on("click", function() {    		
+//});
+
 </script>
+
+
 </body>
 </html>
