@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/popup/index_mall}">
+
+<th:block layout:fragment="content">
+
+<div class="block-header">
+	<div class="block-title" th:text="#{DIVEU_LB_0086}"></div>	<!-- Register Recommend Product -->
+	<div class="block-button-area">
+		<button id="BTN_search" th:text="#{DIVEU_BTN_0002}"></button>  <!-- Search -->
+		<div class="split"></div>
+		<button onclick="document.location.reload()" th:text="#{DIVEU_BTN_0017}"></button>
+	</div>
+</div>
+
+<div class="mallsearch-area"> 
+<form id="FORM_search" autocomplete="off" onsubmit="return false;">
+	<input type="hidden" id="IPT_currentCount" name="currCount" th:value="${currentCount}"/>
+	<input type="hidden" id="IPT_currentLimitCount" name="currLimitCount" th:value="${currentLimitCount}"/>
+	
+		
+	<table class="mallcondition">
+	<tbody>
+		<tr>
+			<th th:text="#{DIVEU_LB_0063}"></th>	<!-- Category -->
+			<td>
+				<select id="SLT_categoryCode" name="categoryCode" class="custom-ui">
+					<option th:each="categoryDto : ${categoryList}"
+						th:value="${categoryDto.mcSeq}"
+						th:text="${categoryDto.categoryName}">
+					</option>
+				</select>				
+			</td>
+			<th th:text="#{DIVEU_LB_0076}"></th>	<!-- Product Code/Name -->
+			<td><input type="text" id="IPT_productCodeOrName" name="productCodeOrName" class="custom-ui"></td>						
+		</tr>
+	</tbody>
+	</table>
+</form>
+</div>	
+
+<div class="split-row"></div>
+
+<!-- 데이터 영역 Start -->
+<div class="mall-grid-info">
+	<div class="grid-total">
+		<span>total</span>
+		<div class="split"></div>
+		<span id="IPT_totalCountTxt" class="total-number">000</span>
+		<div class="split"></div>
+	</div>
+	<div class="block-button-area">		
+		<button class="prdRegBtn" th:text="#{DIVEU_BTN_0023}"></button>  <!-- Select -->				
+	</div>
+</div>
+
+<div id="sample-grid-area" class="mall-flex-grow mall-grid-area">
+	<table id="sample-grid" class="order-column stripe compact"></table>
+</div>
+<!-- 데이터 영역 End -->
+
+<form id="FORM_insert" method="post" class="ui form" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
+	<div id="insertFormDiv"></div>
+</form>	
+
+<!-- ------------------------------------------------------------------------------------------------ -->
+
+<script type="application/javascript">
+
+var $tableObj;
+
+$(function()
+{
+	makeResultGridData();
+});
+
+var currCount = 0;
+var maxCount = 0;
+
+$(document).ready(function() 
+{	
+	currCount = Number($('#IPT_currentCount').val());
+	maxCount = Number($('#IPT_currentLimitCount').val());
+	
+// 	var data = []; 
+// 	makeResultGridData(data);
+	
+	// window 리사이즈시 그리드 높이 다시 맞춤. (그리드의 parent 요소의 높이에 맞춤)
+// 	installDataTableResizer($tableObj, $("#sample-grid-area"));	
+	// dataTable 버그 수정.
+// 	installDataTableBugFix("sample-grid");
+});
+
+// 동작확인용 dummy
+function checkboxProc(thisVal) {
+//	alert(thisVal);
+}
+
+// 검색
+$('#BTN_search').click(function() 
+{
+	ProgressBar.show();
+	$tableObj.ajax.reload();
+});
+
+
+//그리드 관련기능 Start
+function makeResultGridData(resultData) 
+{
+	$tableObj = $("#sample-grid").DataTable({
+		responsive: true,
+		destroy: true,	// 테이블을 재사용할 필요가 있을 경우 추가(ex: 페이지 생성 시 빈 테이블 생성한 후 사용자가 검색조건 지정 후 검색 시 테이블을 새로 데이터에 맞추어 만들어아 할 경우)
+		select: {
+			selector: 'td:not(.noselect)'	// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
+	    },
+		ordering: true, 		
+		scrollY: 40,				
+		fixedColumns: { leftColumns: 1 },   
+		columns : [
+			// 컬럼에 checkbox 설정
+			{	name: "productCheckbox",	     // chk 는  data에 없는 컬럼. 
+				title: '<input type="checkbox" class="custom-ui" onclick="allChecked(this)"><label></label>',
+				className:"center noselect", // row selection 기능 막음. 
+				width: 20,  		 // checkbox 컬럼은 width 작게
+				orderable: false,	 // checkbox 는 정렬 불가  
+				defaultContent: '<input type="checkbox" class="custom-ui " onclick="syncInput(this)"><label></label>' // FixedColumns 사용시엔 syncInput 호출 필요함.
+			},
+			{	
+				//name: 'productImageUrl',
+				data: "imageUrl", 
+				title: '[[#{DIVEU_LB_0083}]]',	// Image
+				render : function(data, type, row) {
+// 					return '<img src="/portal/img/tmpimage/testJavaImage.png" style="width:30px;height:30px;" alt="No Image" />';
+					return '<img src="/portal/corp/eu/common/file_load/image_viewer?filePath=' + data.replace("\\", "/") + '" style="width:30px;height:30px;" alt="No Image" />';
+				}
+			},
+			{	data: "categoryName", 
+				title: '[[#{DIVEU_LB_0063}]]'	// Category
+			},
+			{	data: "materialNo", 
+				title: '[[#{DIVEU_LB_0195}]]'	// Product
+			},
+			{	data: "productName", 
+				title: '[[#{DIVEU_LB_0081}]]'	// Product Name
+			},
+			{ 	
+				data: "mpSeq", 
+				visible: false
+			}
+		],
+		ajax: {
+			url:'/portal/corp/eu/scm/parts/merchandize/recommendproduct/list_admin',
+			type:'post', 
+			data: function(p)
+			{
+				// ajax로 넘길 파라미터
+				p.categoryCode = $("#SLT_categoryCode").val();
+				p.productCodeOrName = $("#IPT_productCodeOrName").val();
+			},
+			dataSrc: function(response)
+			{
+				if (response.RESULT.productList != null)
+				{
+					return response.RESULT.productList;
+				} else
+				{
+					return new Array();
+				}	
+			}
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		},
+// 		data : resultData,
+		paging : true,				// 페이징 기능 켬
+		pageLength: 20    			
+	});
+
+	// Datatable onload event
+	$("#sample-grid").on("draw.dt", function () {
+		ProgressBar.hide();
+	});		
+
+	// window 리사이즈시 그리드 높이 다시 맞춤. (그리드의 parent 요소의 높이에 맞춤)
+	installDataTableResizer($tableObj, $("#sample-grid-area"));	
+	// dataTable 버그 수정.
+	installDataTableBugFix("sample-grid");	
+}
+//그리드 관련기능 End
+
+
+// 추천상품 등록
+$('.prdRegBtn').click(function() 
+{
+	var checkedCnt = 0;
+	var tds = $tableObj.columns(0).nodes()[0];
+	for (var i = 0; i < tds.length; i++) 
+	{
+		var $td = $(tds[i]);
+		if ($td.find("input").attr("checked"))
+		{	
+			checkedCnt++;
+		}
+	}
+	if (checkedCnt < 1) 
+    {
+		alert("[[#{DIVEU_MSG_0021}]]");	// Please select targets to delete.
+      	return false;
+    } else if ( (maxCount - currCount) < checkedCnt )	// 추천상품 최대갯수 초과
+    {
+    	var message = "[[#{DIVEU_MSG_0037}]]".replace("{0}", (checkedCnt - (maxCount - currCount)));
+    	alert(message);	// Recommend product limit exceeded: XX ea.
+    	return false;
+    } else
+ 	{	
+    	$('#insertFormDiv').empty();
+    	for (var j = 0; j < tds.length; j++) 
+    	{
+    		var $td2 = $(tds[j]);
+    		if ($td2.find("input").attr("checked"))
+    		{
+    			var data = $tableObj.row($td2).data();
+    			$('#insertFormDiv').append('<input type="hidden" name="mpSeq" value="' + data.mpSeq + '">');
+    		}
+    	}
+    	    		
+ 		$.ajax({
+		    url:'/portal/corp/eu/scm/parts/merchandize/recommendproduct/select',
+		    type:'post', 
+			data: $("#FORM_insert").serialize(),
+		    success: function(data) 
+		    {		    	
+		    	window.parent.location.reload();
+		    	self.close();
+		    }
+		});
+ 	}
+});
+
+</script>
+
+</th:block>
+</html>

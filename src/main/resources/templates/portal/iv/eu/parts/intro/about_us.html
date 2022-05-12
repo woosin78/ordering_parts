@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+	
+<th:block layout:fragment="content">
+	<style>
+		.about-link {
+			text-decoration: underline;
+			color: #4183C4; 
+			cursor: pointer;
+		}		
+	</style>
+	<div class="block-header">
+		<div class="block-title" th:text="#{DIVEU_TXT_0083}"></div><!-- ABOUT US -->
+	</div>	
+	<div class="condition-area flex-grow">
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th th:text="#{DIVEU_LB_0184}"></th><!-- INTRODUCTION -->
+				<th id="location" class="about-link" th:text="#{DIVEU_LB_0185}"></th><!-- LOCATION -->	
+				<th id="contact" class="about-link" th:text="#{DIVEU_LB_0186}"></th><!-- CONTACT -->						 		
+			</tr>		
+			<tr>
+				<td colspan="3" style="padding: 10px 10px;"><img src="/portal/img/intro/aboutus-1.jpg" align="left" style="margin-right:10px;" />Doosan Industrial Vehicle (DIV) has established as a new corporation since Forklifts division was separated from Doosan Infracore on July, 2011. And we have started to have DIV’s own Parts Distribution Center(PDC) since 16th of April, 2012.<br><br>DIV PDC is located in Incheon Aham Logistics Park which is 12km away from Incheon International Airport. It’s much closer than the previous PDC in Ansan.<br><br>We are trying to have stronger competitiveness with DIV’s own PDC collaborating with DIV’s overseas PDCs in Belgium, United Kingdom, USA and China.<br><br>We have the capability to stock over 80,000 SKU with 20,700 sq meters to ensure a stable supply of all service parts of DIV’s Forklift. Throughout our world-class services and global PDC network, we are fully dedicated to provide over 95% parts fill rate to more than 130 dealers in the world.<br><br><img src="/portal/img/intro/aboutus-2.jpg" align="right" style="margin-left:10px;">Since December in 2008, PDC has equipped with PDA storage system and Unmanned parts vertical transporting system. Also, SAP ERP system applied to all parts operation system in order to provide world class service and operational excellence.<br><br>Over 40 warehouse workers are dedicated to ensure efficient full-service parts operations at all times, from receiving to picking up, packing and shipment.<br><br>The state-of-the-art parts management system based on SAP ERP in Master PDC can handle thousands of orders from dealers and regional PDCs and send thousands of shipments in the fast way every month. DIV Parts On-Line System (Doobiz / <a href="http://doobizplus.doosan-iv.com" style="font-color:blue; font-size:13px;" target="_blank" onfocus="this.blur();">http://doobizplus.doosan-iv.com</a>) is available to DIV dealers via the internet. Doobiz gives convenient user interface and the most updated parts information for all DIV Forklifts. And Doobiz provides electronic parts catalogues of all DIV Forklifts with easy navigation of parts numbers and illustrations.<br><br>▷ Location<br>DOOSAN INDUSTRIAL VEHICLE CO.,LTD<br>69-2, 3-KA, SHINHEUNG-DONG,<br>CHUNG-GU, INCHEON, KOREA<br><br>
+				</td>
+			</tr>		
+		</tbody>
+	</table>	
+	</div>
+	<script type="application/javascript">
+	$(window).load(function() {
+		ProgressBar.hide();
+	});
+	
+	$("#location").on("click", function(){
+		Modal.show("", 850, 650, loc);		
+	});
+	
+	$("#contact").on("click", function(){
+		Modal.show("", 1200, 377, contact);		
+	});
+	
+	<!-- GLOBAL PARTS ENGINEERING -->
+	var loc = "";
+	loc += "<div class='block-header'>	";
+	loc += "<div class='block-title'>LOCATION</div>	"; //LOCATION
+	loc += "</div>	";
+	loc += "	<div class='condition-area'>	";
+	loc += "	<table class='condition'>	";
+	loc += "		<tr>	";
+	loc += "			<td>	";
+	loc += "			<div>DOOSAN INDUSTRIAL VEHICLE CO.,LTD</div>	";
+	loc += "			<div>69-2, 3-KA, SHINHEUNG-DONG, CHUNG-GU, INCHEON, KOREA</div><br/>	";			
+	loc += "			<div>	";
+	loc += "DIV PDC is located in Logistics park area in Incheon where is specialized in	"; 
+	loc += "Logistics and PDC is 22Km away from Incheon International Airport 	";
+	loc += "and 8Km away from Incheon Forklift Factory.				";
+	loc += "			</div>	";
+	loc += "			</td>	";
+	loc += "		</tr>	";
+	loc += "		<tr>	";
+	loc += "			<td><img src='/portal/img/intro/aboutus-location.jpg' style='margin-left:12px;width:673px;' /></td>	";
+	loc += "		</tr>	";
+	loc += "	</table>	";
+	loc += "	</div>	";
+	
+	<!-- CONTACT (7816/10/60)-->
+	var contact = "";
+	contact += "<div class='block-header'>	";
+	contact += "<div class='block-title'>CONTACT</div>	"; // CONTACT
+	contact += "</div>	";
+	contact += "<div class='condition-area'>	";
+	contact += "<table class='condition'>	";
+	contact += "<tr>	";
+	contact += "<th th:text='#{DIVEU_LB_0160}'>Name</th>		";	//Name
+	contact += "<th th:text='#{DIVEU_LB_0187}'>Job duty</th>	";	//Job duty
+	contact += "<th th:text='#{DIVEU_LB_0188}'>Email</th>		";	//Email
+	contact += "<th th:text='#{DIVEU_LB_0189}'>Phone</th>		";	//Phone							 		
+	contact += "</tr>			";
+				
+	contact += "<tr>	";
+	contact += "<td>Salvatore Leo</td>	";
+	contact += "<td>Aftersales Manager</td>	";
+	contact += "<td>salvatore.leo@doosan.com</td>	";
+	contact += "<td>M +32(0)490 577 470</td>	";
+	contact += "</tr>	";
+		
+	contact += "<tr>	";
+	contact += "<td>Elke Silkens</td>	";
+	contact += "<td>Parts Operations Teamleader</td>	";
+	contact += "<td>elke.silkens@doosan.com</td>	";
+	contact += "<td>+32 (0)3 780 30 81</td>	";
+	contact += "</tr>	";
+		
+	contact += "<tr>	";
+	contact += "<td>Svetlozar Ianakiev</td>	";
+	contact += "<td>Aftermarket Developer (EE)</td>	";
+	contact += "<td>svetlozar.ianakiev@doosan.com</td>	";
+	contact += "<td>M +32(0)493 400 831</td>	";
+	contact += "</tr>	";
+		
+	contact += "<tr>	";
+	contact += "<td>Franco Ievolella</td>	";
+	contact += "<td>Aftermarket Developer (IT)</td>	";
+	contact += "<td>franco.ievolella@doosan.com</td>	";
+	contact += "<td>+39 039 2457140</td>	";
+	contact += "</tr>	";
+		
+	contact += "<tr>	";
+	contact += "<td>Yannick Bonvoisin</td>	";
+	contact += "<td>Aftermarket Developer (FR)</td>	";
+	contact += "<td>yannick.bonvoisin@doosan.com</td>	";
+	contact += "<td>M +33(0) 7 72 35 34 54</td>	";
+	contact += "</tr>	";
+		
+	contact += "<tr>	";
+	contact += "<td>Shana Pintens</td>	";
+	contact += "<td>Customer Service</td>	";
+	contact += "<td>diveu.CSparts@doosan.com</td>	";
+	contact += "<td>+32 (0)3 780 30 80</td>	";
+	contact += "</tr>	";
+		
+	contact += "<tr>	";
+	contact += "<td>Nathalie De Clerq</td>	";
+	contact += "<td>Customer Service</td>	";
+	contact += "<td>diveu.CSparts@doosan.com</td>	";
+	contact += "<td>+32 (0)3 760 09 80</td>	";
+	contact += "</tr>	";
+	
+	contact += "</table>	";
+	contact += "</div>	";
+	
+	</script>
+</th:block>
+								

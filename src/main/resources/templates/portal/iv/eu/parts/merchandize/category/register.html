@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
+	layout:decorate="~{portal/layout/popup/index_mall}">
+
+<th:block layout:fragment="content">
+
+<div class="block-header">
+	<div class="block-title" th:text="#{DIVEU_LB_0067}"></div>	<!-- Register Category -->
+	<div class="block-button-area">		
+		<button class="catRegBtn" th:text="#{DIVEU_BTN_0009}"></button>
+		<div class="split"></div>
+		<button class="catCanBtn" th:text="#{DIVEU_BTN_0014}"></button>
+	</div>
+</div>
+
+<div class="mallcondition-area">
+<form id="FORM_register" method="post" class="ui form" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
+	
+	<div th:each="langKindEntity : ${langKindEntityList}">
+		<input type="hidden" name="categoryNameFields" th:id="${langKindEntity.lkSeq}" th:value="${langKindEntity.name}" />				
+	</div>
+	
+<!-- 	<div id="categoryNameDiv"></div> -->
+	
+	<table class="mallcondition">
+		<tbody>
+			<tr>
+				<th><span>[[#{DIVEU_LB_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
+				<td>
+					<select name="categoryCode" class="custom-ui">
+						<option th:each="sapCategory : ${sapCategoryList}" th:value="${sapCategory.PRODH}" th:text="${sapCategory.PRODH}"></option>
+					</select>
+				</td>						
+			</tr>
+<!-- 			<th:block id="categoryNameDiv"></th:block> -->
+			
+			<tr th:each="langKindEnt : ${langKindEntityList}">
+				<th><span>[[#{DIVEU_LB_0064}]]([[${langKindEnt.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></span></th>
+				<td><input type="text" th:id="|_${langKindEnt.lkSeq}|" name="categoryNames" class="custom-ui" />
+				<input type="hidden" th:value="${langKindEnt.lkSeq}" name="categoryLangKindSeqs"/>
+				</td>				
+			</tr>
+			
+			<tr>
+				<th th:text="#{DIVEU_LB_0065}"></th>	<!-- Sort -->
+				<td><input type="text" id="sort" name="sort" th:value="${categoryDto.sort}" class="custom-ui" /></td>
+			</tr>			
+			<tr>
+				<th><span>[[#{DIVEU_LB_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
+				<td>
+					<select name="fgDisplay" class="custom-ui">
+						<option value="Y" selected="selected">Y</option>
+						<option value="N">N</option>
+					</select>
+				</td>						
+			</tr>
+		</tbody>	
+	</table>
+	
+</form>
+</div>
+
+<form id="FORM_main" method="post" action="/portal/corp/eu/scm/parts/merchandize/category/main_admin"></form>
+
+
+<!-- --------------------------------------------------------------------------------------------------------------------------- -->
+
+<script type="application/javascript">
+$(document).ready(function() 
+{	
+	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0067}]]' );	// 카테고리 등록
+	$("#sort").attr("readonly", true);
+});
+
+
+// 시스템에서 지원하는 다국어 갯수만큼 카테고리명 영역 추가
+function makeCategoryNameFieldArea() {
+	
+	$("#categoryNameDiv").empty();
+	
+	var innerHtmlStr = '';	
+	$("input[name=categoryNameFields]").each(function(index, item){		
+		innerHtmlStr += '<tr><th>[[#{DIVEU_LB_0064}]](' + item.value + ')<img src="/portal/img/icon_required.png" class="required" /></th>';
+		innerHtmlStr += '<td><input type="text" id="_' + item.id + '" name="categoryNames" class="custom-ui" />'; 
+		innerHtmlStr += '<input type="hidden" value="' + item.id + '" name="categoryLangKindSeqs"/></td></tr>';	// 다국어 종류 시퀀스(lk_seq)
+	});
+	
+	$("#categoryNameDiv").html(innerHtmlStr);
+}
+
+
+$('.catRegBtn').click(function() 
+{	
+	if (validCheck()) 
+	{	
+		$.ajax({
+		    url:'/portal/corp/eu/scm/parts/merchandize/category/save',
+		    type:'post',
+			data: $("#FORM_register").serialize(),
+		    success: function(data) 
+		    {
+		    	$("#FORM_main").submit();
+		    },
+		    error: function(err) 
+		    {
+		    	alert("Ajax error");
+		    }
+		});
+	}
+	
+});
+
+$('.catCanBtn').click(function() 
+{
+	$("#FORM_main").submit();
+});
+
+function validCheck() 
+{	
+	var noNameBool = false;
+	$("input[name=categoryNames]").each(function(index, item)
+	{
+		if (item.value == '') 
+		{
+			noNameBool = true;
+			return false;
+		}
+	});
+	
+	if (noNameBool) 
+	{
+		alert("[[#{DIVEU_MSG_0030}]]");	// Please Input the Category Name.		
+		return false;
+	} else {
+		return true;
+	}	
+}
+
+
+</script>
+
+</th:block>
+</html>

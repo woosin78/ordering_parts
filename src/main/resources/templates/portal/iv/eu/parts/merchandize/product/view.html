@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
+	layout:decorate="~{portal/layout/popup/index_mall}">
+
+<th:block layout:fragment="content">
+
+<div class="block-header">
+	<div class="block-title" th:text="#{DIVEU_LB_0085}"></div>
+	<div class="block-button-area">		
+		<button class="prdModBtn" th:text="#{DIVEU_BTN_0022}"></button>  <!-- Modify -->
+		<div class="split"></div>
+		<button class="prdDelBtn" th:text="#{DIVEU_BTN_0010}"></button>  <!-- Delete -->
+		<div class="split"></div>
+		<button class="prdLisBtn" th:text="#{DIVEU_BTN_0004}"></button>  <!-- Back -->
+	</div>
+</div>
+
+<div class="mallcondition-area">
+<form id="FORM_view" method="post" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
+	<table class="mallcondition">
+		<tbody>
+			<tr>
+				<th th:text="#{DIVEU_LB_0063}"></th>	<!-- Category -->
+				<td th:text="${productDto.categoryCode}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0080}"></th>	<!-- Product Code -->
+				<td th:text="${productDto.materialNo}"></td>
+			</tr>
+			
+			<tr th:each="langDto : ${productNameLangDtos}">
+				<th th:text="|#{DIVEU_LB_0081}(${langDto.name})|"></th>	<!-- Product Name -->				
+				<td th:text="${langDto.text}"></td>					
+			</tr>
+			
+			<tr th:each="langDto : ${productDescLangDtos}">
+				<th th:text="|#{DIVEU_LB_0082}(${langDto.name})|"></th>	<!-- Product Description -->
+				<td><textarea name="productDescs" class="custom-ui" readonly>[[${langDto.text}]]</textarea></td>					
+			</tr>
+			
+			<tr>
+				<th th:text="#{DIVEU_LB_0066}"></th>	<!-- Display Y/N -->
+				<td th:text="${productDto.fgDisplay}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0069}"></th>	<!-- Reg.User -->
+				<td th:text="${productDto.regUsername}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0070}"></th>	<!-- Reg.Date -->
+				<td th:text="${#temporals.format(productDto.regDate, 'yyyy.MM.dd')}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0071}"></th>	<!-- Mod.User -->
+				<td th:text="${productDto.modUsername}"></td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0072}"></th>	<!-- Mod.Date -->
+				<td th:text="${#temporals.format(productDto.modDate, 'yyyy.MM.dd')}"></td>
+			</tr>			
+			<tr>
+				<th th:text="#{DIVEU_LB_0083}"></th>	<!-- Image -->
+				<td>					
+					<div id="attachFile">
+						<article th:replace="/portal/corp/eu/common/bbs/attach_file :: attachFileView(${fileUploads})"></article>	
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</form>
+</div>
+
+<form id="FORM_modify" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/modify">
+	<input type="hidden" name="mpSeq" th:value="${productDto.mpSeq}" />
+</form>
+
+<form id="FORM_delete" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/delete">
+	<input type="hidden" name="mpSeq" th:value="${productDto.mpSeq}" />
+</form>
+
+<form id="FORM_main" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/main_admin"></form>
+		
+		
+<script type="application/javascript">
+$(document).ready(function() 
+{
+// 	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0085}]]' );	// Product Details
+});
+
+// 수정 화면 이동
+$('.prdModBtn').click(function() 
+{
+	$("#FORM_modify").submit();
+});
+
+
+// 삭제 처리
+$('.prdDelBtn').click(function() 
+{	
+	if (confirm("Do you want to delete this product?"))
+	{
+		$.ajax(
+		{
+		    url:'/portal/corp/eu/scm/parts/merchandize/product/delete',
+		    type:'post', 
+			data: $("#FORM_delete").serialize(),
+		    success: function(data) 
+		    {	
+		    	$("#FORM_main").submit();
+		    },
+		    error: function(request,status,error)
+		    {
+		    	alert("Ajax error");		    	   
+		    }
+		});
+	}
+});
+
+// 목록 화면 이동
+$('.prdLisBtn').click(function() 
+{
+	$("#FORM_main").submit();
+});
+
+
+</script>
+
+</th:block>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="#{DIVEU_TXT_0075}"></div><!-- Shipment Status  -->
+		<div class="block-button-area">
+			<button id="BTN_search" type="button" th:text="#{DIVEU_BTN_0002}"></button><!-- Search -->
+		</div>
+	</div>
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+	<input type="hidden" id="shipmentNo" name="shipmentNo">
+	<input type="hidden" id="realShipmentDate" name="realShipmentDate">
+	<input type="hidden" id="invoiceNo" name="invoiceNo">
+	<input type="hidden" id="freightForwardRef" name="freightForwardRef">
+	
+	<table class="condition">
+		<tbody>
+			<tr style="display:none">
+				<th th:text="#{DIVEU_LB_0120}"></th><!-- User Id  -->
+				<td colspan="3">
+				<div class="input-area">			
+					<input type="text" id="adminUserID" name="adminUserID" class="custom-ui" th:value="${adminUserID}">
+				</div>							
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0016}"></th><!-- Period  -->
+				<td>
+					<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+					<div class="split"></div>
+					<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar" th:value="${pToDate}">				
+				</td>
+				<th th:text="#{DIVEU_LB_0134}"></th><!--Parts No  -->
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui" th:value="${pPartsNo}">
+					</div>			
+				</td>			
+			</tr>
+			<tr>
+				<th th:text="#{DIVEU_LB_0015}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+					</div>			
+				</td>
+				<th th:text="#{DIVEU_LB_0013}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
+					</div>			
+				</td>	
+			</tr>	
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>	
+	</div>
+	<script type="application/javascript">
+	let $tableObj;
+	
+	$(function(){
+		Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+		
+		$tableObj = $("#TBL_grid").DataTable({
+			select: true,   			
+			ordering: true, 
+			scrollY: 100,
+			columns : [					
+				{data: "TKNUM", 		title: "[[#{DIVEU_LB_0135}]]" ,className:'link'},	// Shipment No.
+				{data: "BSTKD", 		title: "[[#{DIVEU_LB_0136}]]" },	// Dealer P.O No.	
+				{data: "DTABF", 		title: "[[#{DIVEU_LB_0137}]]" },	// Shipping date
+				{data: "BRGEW", 		title: "[[#{DIVEU_LB_0130}]]" },	// Weight		
+				{data: "GEWEI_MAX", 	title: "[[#{DIVEU_LB_0049}]]" },	// UoM
+				{data: "COUNT", 		title: "[[#{DIVEU_LB_0138}]]" },	// Line Items		
+				{data: "VSBED_TEXT", 	title: "[[#{DIVEU_LB_0017}]]" },	// Shipping Condition 
+				{data: "EXTI1", 		title: "[[#{DIVEU_LB_0131}]]" },	// Freight Forward Ref	
+				{data: "NAME1", 		title: "[[#{DIVEU_LB_0087}]]" }		// Customer Name
+			],
+			ajax: {
+				url: "/portal/corp/eu/scm/parts/order/shipment/shipment_status/data",
+				data: function(p)
+				{				
+					p.pPoNo = $("#pPoNo").val();
+					p.pType = $("#pType").val();
+					p.pInvoiceNo = $("#pInvoiceNo").val();				
+					p.pPartsNo = $("#pPartsNo").val();
+					p.pOrderNo = $("#pOrderNo").val();				
+					p.pFromDate = $("#pFromDate").val();
+					p.pToDate = $("#pToDate").val();					
+				},
+				dataSrc: function(response) 
+				{				
+					let data = response.RESULT;
+					
+					for (let i=0, length=data.length; i<length; i++)
+					{
+						let dtabf = $.trim(data[i].DTABF);
+						console.log(i + " : " + dtabf);
+						
+						data[i].DTABF = (dtabf != "") ? dtabf : "0000-00-00";
+					}
+					
+					$("#totalRows").html(data.length + " row(s).");
+					
+					return data;
+				}
+			},
+			initComplete:function(settings, json) 
+			{			
+				ProgressBar.hide();
+			}
+		});	
+		
+		// Datatable grid 초기 설정 셋업
+		initGridTable($tableObj);
+	
+		// Search 버튼 클릭
+		$("#BTN_search").on("click", function(){		
+			doSearch(); 
+		});			
+		
+		$('#TBL_grid tbody').on('click', 'tr', function (e){				
+		    let tblGrid = $('#TBL_grid').DataTable();	    
+		    let index = $('#TBL_grid').dataTable().api().cell($(e.target).closest('td')).index().column;	    	    
+			let rowData = tblGrid.row(this).data();
+			
+			let shipmentNo = rowData.TKNUM;			// SHIPMENT_NO		
+			let realShipmentDate = rowData.DTABF;	// REAL_SHIPMENT_DATE
+			let invoiceNo = rowData.VBELN;			// INVOICE_NUMBER
+			let freightForwardRef = rowData.EXTI1; 	// Freight Forward Ref
+	
+			if (index == 0)
+			{	
+				if (shipmentNo != null)
+				{			
+					$("#shipmentNo").val(shipmentNo);
+					$("#realShipmentDate").val(realShipmentDate);
+					$("#invoiceNo").val(invoiceNo);
+					$("#freightForwardRef").val(freightForwardRef);										
+					$("#FORM_search").attr("action", "/portal/corp/eu/scm/parts/order/shipment/shipment_status_detail").submit();
+				};	
+			}
+		});	
+	});	
+	
+	function doSearch()
+	{
+		$tableObj.ajax.reload();
+	}
+	</script>	
+</th:block>

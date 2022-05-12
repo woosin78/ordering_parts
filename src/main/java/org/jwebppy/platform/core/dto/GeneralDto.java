@@ -19,6 +19,7 @@ public abstract class GeneralDto implements Serializable
 {
 	private static final long serialVersionUID = -2141681838401701675L;
 
+	protected String corp;
 	protected String fgDelete;
 	protected String regUsername;
 	protected LocalDateTime regDate;

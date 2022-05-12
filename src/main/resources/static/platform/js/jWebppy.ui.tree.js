@@ -410,13 +410,6 @@ let JpUiTree = function(object)
 		return false;
 	};
 	
-	this.isSubItems = function()
-	{
-		let count = $(this.getSelectedItem()).parent().find(".item").length;
-		
-		return (count > 0) ? true : false;
-	};
-	
 	this.menu = function()
 	{
 		let menu = "";

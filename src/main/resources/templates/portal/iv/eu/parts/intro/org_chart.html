@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text='#{DIVEU_TXT_0086}'></div><!-- AM ORGANIZATION CHART -->
+	</div>		
+	<div class="condition-area flex-grow">
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th th:text='#{DIVEU_LB_0160}'></th><!-- Name  -->
+				<th th:text='#{DIVEU_LB_0187}'></th><!-- Job duty  -->	
+				<th th:text='#{DIVEU_LB_0188}'></th><!-- Email  -->
+				<th th:text='#{DIVEU_LB_0189}'></th><!-- Phone  -->									 		
+			</tr>
+			<tr>
+				<td>Salvatore Leo</td>
+				<td>Aftersales Manager</td>
+				<td>salvatore.leo@doosan.com</td>
+				<td>M +32(0)490 577 470</td>
+			</tr>
+			<tr>
+				<td>Elke Silkens</td>
+				<td>Parts Operations Teamleader</td>
+				<td>elke.silkens@doosan.com</td>
+				<td>+32 (0)3 780 30 81</td>
+			</tr>
+			<tr>
+				<td>Svetlozar Ianakiev</td>
+				<td>Aftermarket Developer (EE)</td>
+				<td>svetlozar.ianakiev@doosan.com</td>
+				<td>M +32(0)493 400 831</td>
+			</tr>
+			<tr>
+				<td>Franco Ievolella</td>
+				<td>Aftermarket Developer (IT)</td>
+				<td>franco.ievolella@doosan.com</td>
+				<td>+39 039 2457140</td>
+			</tr>
+			<tr>
+				<td>Yannick Bonvoisin</td>
+				<td>Aftermarket Developer (FR)</td>
+				<td>yannick.bonvoisin@doosan.com</td>
+				<td>M +33(0) 7 72 35 34 54</td>
+			</tr>
+			<tr>
+				<td>Shana Pintens</td>
+				<td>Customer Service</td>
+				<td>diveu.CSparts@doosan.com</td>
+				<td>+32 (0)3 780 30 80</td>
+			</tr>
+			<tr>
+				<td>Nathalie De Clerq</td>
+				<td>Customer Service</td>
+				<td>diveu.CSparts@doosan.com</td>
+				<td>+32 (0)3 760 09 80</td>
+			</tr>
+		</tbody>
+	</table>	
+	</div>
+<script type="application/javascript">
+$(window).load(function() {
+	ProgressBar.hide();
+});
+</script>
+</th:block>

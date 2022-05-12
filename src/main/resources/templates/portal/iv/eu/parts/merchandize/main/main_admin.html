@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/popup/index_mall}">
+
+<th:block layout:fragment="content">
+
+<div id="DIV_mallTitle" class="mall_page_title" th:text="#{DIVEU_LB_0074}"></div>
+	
+<div class="split-row"></div>		
+	
+<!-- 화면 2분할 영역 중 상단 div Start -->
+<div id="DIV_upperArea" style="border:none; float:center; width:100%; height:535px;">	
+	
+	<input type="hidden" id="IPT_mainTitle" name="mainTitleText"  th:value="#{DIVEU_LB_0074}">
+		
+	<!-- 위쪽  div: 좌상단 메뉴 영역 Start -->
+	<div id="DIV_upperAreaLeft" class="mall_upper_left_menu" style="float:left;">
+		<div class="mall_upper_left_menu_text"><a class="item" th:href="@{/portal/corp/eu/scm/parts/merchandize/category/main_admin}" th:text="#{DIVEU_LB_0061}"></a></div>	<!-- Manage Category -->
+		<div class="mall_upper_left_menu_text"><a class="item" th:href="@{/portal/corp/eu/scm/parts/merchandize/product/main_admin}" th:text="#{DIVEU_LB_0073}"></a></div>	<!-- Manage Product -->
+	</div>
+	<!-- 위쪽  div: 좌상단 메뉴 영역 End -->
+			
+	<!-- 위쪽  div: 메인 우상단 이미지 영역 Start -->
+	<div id="DIV_upperAreaRight" style="border:none; float:right; width:715px;">
+		<table style="text-align:center;margin:auto;width:99%;">
+			<tr>
+				<td>
+					<div id="DIV_upperAreaRightTitle" style="width:715px;height:30px;margin:5px 0px;" >
+						<div class="block-header">
+							<div class="mall_part_title"></div>
+							<div class="block-button-area">
+								<button id="BTN_fileUpload">[[#{DIVEU_LB_0198}]]</button>  <!-- 메인 이미지 변경 버튼 -->
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>				
+					<table style="text-align:center;width:100%;height:506px;border: solid 1px #dddddd;border-radius: 4px;object-fit: contain;">
+						<tr>
+							<td>
+								<div th:if="${fileUploads == null }">
+									<img src="/portal/img/tmpimage/epMallMainImgTemp.jpg" style="width:680px;height:480px;" alt="No Image" />
+								</div>
+								<div id="DIV_mainImageView" th:if="${fileUploads != null }">
+									<img th:src="|/portal/corp/eu/common/file_load/image_viewer?filePath=${fileUploads.storagePath}${fileUploads.savedName}|" style="width:680px;height:480px;" alt="No Image" />
+								</div>
+	   						</td>
+	   					</tr>
+	   				</table>	
+   				</td>
+			</tr>
+		</table>
+			
+	</div>
+	<!-- 위쪽  div: 메인 우상단 이미지 영역 End -->			
+</div>
+<!-- 화면 2분할 영역 중 상단 div End -->
+	
+	
+<p style="font-size: 12px">&nbsp;</p>	<!-- 여백용 -->
+
+<div id="DIV_lowerArea" style="border:none; float:left; width:100%;">
+
+	<!-- 화면 2분할 영역 중 하단 div Start -->
+	<div class="block-header">
+		<div class="block-ㅡmallmaintitle" style="padding-top: 15px;" th:text="#{DIVEU_LB_0075}"></div>	<!-- Recommend Product -->
+		<div class="block-button-area">
+			<button class="prdAddBtn" th:text="#{DIVEU_BTN_0009}"></button>  <!-- Add -->
+			<div class="split"></div>
+			<button class="prdDelBtn" th:text="#{DIVEU_BTN_0010}"></button>  <!-- Delete -->
+		</div>
+	</div>
+
+	<form id="FORM_list" method="post" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
+		
+		<input type="hidden" id="IPT_sortStrings"  th:value="${recommendSortStrings}">
+		
+		<table id="TBL_mainLowerPrdList" style="width:100%;height:300px;">
+			<tbody>
+			<tr>
+				<td style="width:100%;height:300px;">
+					<div id="DIV_prdListDiv" style="text-overflow: ellipsis;"> 
+						<ul class="mall-main_ul">
+
+							<li class="mall-main_li" th:each="productDto : ${productList}">
+								<th:block th:if="(${productDtoStat.index}+1) % 4 != 0">
+									<div data-name="afterRightMargin20Div"></div>
+								</th:block>
+								<th:block th:unless="(${productDtoStat.index}+1) % 4 != 0">
+									<div data-name="afterRightMargin1Div"></div>
+								</th:block>
+								
+								<table class="mall_main_reproduct_table" style="padding: 5px;">
+
+								<colgroup>
+									<col style="width:60px;">
+									<col style="width:105px;">
+									<col style="width:60px;">
+								</colgroup>
+								<tbody>			  				
+				  					<tr>
+										<td style="text-align:left;vertical-align:middle;padding: 1px 10px 0px 30px;" >
+				  							<span><input type="checkbox" class="custom-ui-mall" style="float:left;" name="productCheckbox" th:id="${productDto.mpSeq}" th:value="${productDto.mrpSeq}" />
+				  							<label th:for="${productDto.mpSeq}"></label>
+				  							</span>
+				  						</td>
+										
+<!-- 				  						<td style="text-align:left;vertical-align:middle;padding: 1px 10px 0px 30px;" > -->
+<!-- 				  							<span><input type="checkbox" class="custom-ui" style="float:right;" name="productCheckbox" th:id="${mpSeq}" th:value="${mrpSeq}" th:onclick="|checkboxProc('${productDto.mpSeq}')|" /> -->
+<!-- 				  							<label></label></span> -->
+<!-- 				  						</td> -->
+										
+				  						<td>
+				  							<th:block th:with="x=${recommendListSize}, xMin=${recommendSortMin}, xMax=${recommendSortMax}">
+				  								<select class="form-control"  th:id="|SLT_sort_${productDto.mpSeq}|" name="sortSelect" style="float:left;width:100px;">								
+													<th:block th:each="num : ${#numbers.sequence(xMin,xMax)}">
+														 <option th:value="${num}" th:selected="(${num} == ${productDto.sort})" th:text="${num}" ></option>		
+													</th:block>								
+												</select>
+				  							</th:block>
+				  						</td>
+				  						<td></td>
+				  					</tr>				  							  				
+					  				<tr style="height:110px;padding: 0px 0px 10px 0px;">
+					  					<td></td>
+					  					<td><img class="mall_main_recommandproduct_image" th:src="|/portal/corp/eu/common/file_load/image_viewer?filePath=${productDto.imageUrl}|" alt="No Image" /></td>
+					  					<td></td>
+					  				</tr>
+					  				<tr>
+										<td colspan="3" th:text="${productDto.productName}" class="mall_main_recommandproduct_name" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" ></td>
+									</tr>
+									<tr>
+										<td colspan="3" th:text="${productDto.productDescription}" class="mall_main_recommandproduct_desc" style="max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;height:29px;"></td>
+									</tr>
+									<tr>
+										<td colspan="3" class="mall_main_recommandproduct_price" th:text="${productDto.currency} == 'KRW' ? |${productDto.currency} ${#numbers.formatInteger(productDto.price,3,'COMMA')}| : |${productDto.currency} ${#numbers.formatDecimal(productDto.price,3,'COMMA', 2,'POINT')}| "></td>
+									</tr>
+				  				</tbody>	
+								</table>				
+							</li>	
+						</ul>
+					</div>
+				</td>
+			</tr>	
+			</tbody>
+		</table>
+	</form>
+</div>	
+
+<form id="FORM_delete" method="post" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
+	<div id="deleteFormDiv"></div>
+</form>	
+
+<!-- ----------------------------------------------------------------------------------------------------------------------------------- -->
+
+<script type="application/javascript">
+
+var clickedSortNumCls = 0;	// 마지막으로 눌러진 정렬번호 숫자
+// var changedSortNumCls = 0;	// 마지막으로 변경시킨 정렬번호 숫자
+var win;	// 팝업 변수
+
+$(document).ready(function() 
+{
+// 	$('#DIV_mallTitle').text( $('#IPT_mainTitle').val() );	// 메인 타이틀명 Merchandize
+	$('div [data-name=afterRightMargin20Div]').each(function() {		
+		$(this).closest("li").css("margin-right", "12px");		
+	});
+	$('div [data-name=afterRightMargin1Div]').each(function() {
+		$(this).closest("li").css("margin-right", "1px");
+	});
+	
+	removeDeletedSortOptions();
+});
+
+// 최대 sort수치만큼 option값을 생성한 sort select box들에서, 유효하지 않은 sort 값을 제거
+function removeDeletedSortOptions()
+{	
+	var validSortStrs = $('#IPT_sortStrings').val();
+	if (validSortStrs.substring(0,1) != '0') 
+	{	
+		var validSortStrArr = validSortStrs.split(',');	// 유효한 sort번호들
+		var maxValidSortNum = Number( validSortStrArr[validSortStrArr.length - 1] );	// 가장 마지막 유효한 번호를 숫자로 변환
+
+		var removeNumArr = new Array();
+		for (var i = 1; i <= maxValidSortNum.length; i++) 
+		{
+			var addFlag = true;
+			for (var j = 1; j <= validSortStrArr.length; j++) 
+			{
+				if (validSortStrArr[j-1] == j)
+				{
+					addFlag = false;
+					break;
+				}				
+			}	
+			if (addFlag) removeNumArr.push(j);
+		}
+				
+		// 모든 추천상품의 select option에서 유효하지 않은 숫자 제외
+		for (var k = 0; k < removeNumArr.length; k++) 
+		{
+			$('.sortSelect option').each(function() 
+			{
+			    if ($(this).val() == removeNumArr[i]) 
+			    {
+			        $(this).remove();
+			    }
+			});
+		}
+	}
+}
+
+
+$("input:checkbox[name='productCheckbox']").click(function() 
+{	
+	if ( $(this).is(":checked") ) 
+	{	
+		$(this).closest("table").css("border", "solid 1px #003081");
+	} else 
+	{
+		$(this).closest("table").css("border", "solid 1px #dddddd");
+	}	
+});
+
+
+// 파일 업로드 2차 팝업
+$('#BTN_fileUpload').click(function() 
+{	
+	var url = '/portal/corp/eu/scm/parts/merchandize/main/main_fileupload';	
+	win = window.open(url, "FileUploadPopup", "width=720,height=250");
+});
+
+
+// 추천상품 추가 팝업
+$('.prdAddBtn').click(function() 
+{	
+	var url = '/portal/corp/eu/scm/parts/merchandize/recommendproduct/main_admin';	
+	var win2 = window.open(url, "RecommendProductPopup", "width=820,height=880");
+});
+
+// 다건 삭제
+$('.prdDelBtn').click(function() 
+{
+	$('#deleteFormDiv').empty();
+	
+	var checkedLen = $("input[name=productCheckbox]:checked").length;	
+ 	if (checkedLen < 1) 
+ 	{
+ 		alert("[[#{DIVEU_MSG_0021}]]");	// Please select targets to delete.
+   		return false;
+ 	} else 
+ 	{
+ 		$("input[name=productCheckbox]:checked").each(function() 
+		{
+			$('#deleteFormDiv').append('<input type="hidden" name="mrpSeq" value="' + this.value + '">');			
+ 		});
+ 	    	
+ 		$.ajax(
+		{
+		    url:'/portal/corp/eu/scm/parts/merchandize/recommendproduct/delete',
+		    type:'post', 
+			data: $("#FORM_delete").serialize(),
+		    success: function(data) 
+		    {
+		    	location.reload();		        
+		    }
+		});
+ 	}
+});
+
+// 정렬 변경을 위해 Select Box 를 클릭했을 경우 원래 표시값을 저장해두기 위한 함수
+$("select[name='sortSelect']").click(function() 
+{    
+    clickedSortNumCls = this.value;
+});
+
+// 정렬 변경을 위해 Select Box의 숫자를 바꾸었을 경우 영향이 있는 모든 정렬값을 바꾸는 처리를 수행하는 함수
+// (Ex: 추천상품 10개가 1부터 10까의 정렬번호를 가지고 있었는데 8번을 2번으로 바꾸었으면, 현재 바꾼 Select Box의 정렬번호는 8번에서 2번으로 바뀌고, 기존의 2번에서 7번까지는 각각 3번에서 8번까지로 갱신됨)
+$("select[name='sortSelect']").change(function() 
+{		
+	var orgNum = clickedSortNumCls;	// 정렬숫자 변경 전 기본값을 저장해둠(change event 다음 바로 click event가 실행되기 때문에 저장해두지 않으면 click event value값이 change event value값으로 자동으로 변경됨)	
+	changedSortNumCls = this.value;	// change된 값
+	var targetSeqid = ($(this).closest("select").attr('id')).substring(9);	//	변경 대상 요소 테이블 식별자   
+	$('#sortFormDiv').empty();
+	$('#sortFormDiv').html( makeSortUpdateInfo(orgNum, this.value, targetSeqid, 'EPMALL_RECOMMENDPRODUCT') );
+	
+	updateSortNum();	
+});
+function updateSortNum() 
+{
+	$.ajax(
+	{
+	    url:'/portal/corp/eu/scm/parts/merchandize/general/changeSortNumber',
+	    type:'post', 
+		data: $("#FORM_list").serialize(),
+	    success: function(data) 
+	    {
+	    	location.reload();		        
+	    }
+	});	
+}
+
+
+// 메인 파일 이미지가 변경될 때 파일 선택 팝업 자식창에서 호출되어, 메인 이미지 url을 받아 이미지를 다시 표현한다.
+function refreshMainImage(imageUrl)
+{
+	$("#DIV_mainImageView").empty();
+	var newImageUrl = '<img src="/portal/corp/eu/common/file_load/image_viewer?filePath=' + imageUrl + '" style="width:680px;height:480px;" alt="No Image" />';
+	$("#DIV_mainImageView").html(newImageUrl);
+}
+
+</script>
+
+</th:block>
+</html>
