@@ -114,6 +114,14 @@ function makeGnb2()
 	    			};
 	    		};
 	    	};		
+
+			if (level1.length > 0 && level1.length % GNB_MENU_PER_PAGE > 0)
+			{
+		    	for (let i=0; i<(GNB_MENU_PER_PAGE - (level1.length % GNB_MENU_PER_PAGE)); i++)
+		    	{
+					//level1.push("<li>&nbsp;</li>");
+				};
+			};
 	    	
 	    	$(".gnb-menu-list2").html(level1.join(""));
 	    	$(".gnb-menu-list2").show();

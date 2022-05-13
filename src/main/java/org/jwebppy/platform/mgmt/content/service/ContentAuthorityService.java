@@ -141,10 +141,7 @@ public class ContentAuthorityService extends GeneralService
 
 					if (CollectionUtils.isNotEmpty(subRoles))
 					{
-						for (CItemDto subRole : subRoles)
-						{
-							roles.add(subRole);
-						}
+						roles.addAll(subRoles);
 					}
 				}
 				else
