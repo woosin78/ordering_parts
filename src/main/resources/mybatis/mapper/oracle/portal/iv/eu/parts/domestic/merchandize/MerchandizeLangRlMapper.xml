@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.doosan.iv.portal.corp.eu.scm.parts.merchandize.mapper.MerchandizeLangRlMapper">
+	
+	<!-- 이름 관련 다국어 정보 리스트 취득  -->
+	<select id="findSupportLangsModify" resultType="MerchandizeLangRlEntity" parameterType="MerchandizeLangRlEntity">
+		with
+	   	rlInf as (
+	    	select ld_seq
+	          from ep_mall_lang_rl
+	         where type = #{type}   
+	           and t_seq = #{tSeq}          
+	  	)
+	   	select pld.l_seq, pld.ld_seq, pld.lk_seq, pld.text, plk.code, plk.name
+          from pltf_lang pl,
+     	       pltf_lang_detail pld,
+        	   pltf_lang_kind plk
+      	 where pl.corp = plk.corp
+           and pl.corp = #{corp}
+           and pld.ld_seq in (select ld_seq from rlInf)
+           and pl.l_seq = pld.l_seq
+           and pld.lk_seq = plk.lk_seq
+           and pl.fg_delete != 'Y'
+           and pld.fg_delete != 'Y'
+           and plk.fg_delete != 'Y'
+         order by plk.sort
+	</select>	
+		
+	<!-- 다국어 정보 등록 -->
+	<insert id="insertItemDescription" parameterType="MerchandizeLangRlEntity">
+		insert into ep_mall_lang_rl (
+			mlr_seq, t_seq, ld_seq, type, reg_username, reg_date, mod_username, mod_date
+		) values (
+			ep_mlr_seq.nextval, #{tSeq}, #{ldSeq}, #{type}, #{regUsername}, #{regDate}, #{modUsername}, #{modDate}
+		)
+	</insert>
+	
+	
+	<!-- 다국어 관련정보 삭제를 위한 관련 키 취득 -->
+	<select id="findLangDetailSeqsForDelete" parameterType="MerchandizeLangRlEntity" resultType="MerchandizeLangRlEntity" >
+		select mlr_seq
+    	     , ld_Seq
+    	     , t_seq
+    	     , type
+          from ep_mall_lang_rl
+         where t_seq = #{tSeq}
+           and type = #{type}
+	</select>
+	
+			
+	<!-- 다국어 상세정보 삭제(삭제플래그 처리) -->
+	<update id="deleteLangDetail" parameterType="MerchandizeLangRlEntity">
+	    update pltf_lang_detail 
+	       set mod_date = #{modDate}		     
+     		 , mod_username = #{modUsername}     		 
+       	     , fg_delete = 'Y'       	     
+		 where ld_seq = #{ldSeq}
+	</update>
+	
+	
+	<!-- 다국어 정보 삭제(삭제플래그 처리) -->
+	<update id="deleteLang" parameterType="LangDetailEntity">	    
+	    update pltf_lang
+	       set mod_date = #{modDate}		     
+     		 , mod_username = #{modUsername}     		 
+       	     , fg_delete = 'Y'       	     
+		 where l_seq in (select l_seq from pltf_lang_detail where ld_seq = #{ldSeq})
+	</update>
+	
+	
+</mapper>

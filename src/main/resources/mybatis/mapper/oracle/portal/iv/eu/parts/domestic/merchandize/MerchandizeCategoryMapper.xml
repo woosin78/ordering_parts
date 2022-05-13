@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.doosan.iv.portal.corp.eu.scm.parts.merchandize.mapper.MerchandizeCategoryMapper">
+	
+	<!-- 카테고리 리스트 검색 -->
+	<select id="findCategoryItems" resultType="MerchandizeCategoryEntity" parameterType="MerchandizeCategoryEntity">
+	<include refid="PaginationMapper.header"/>
+		select a.*
+		     , pack_pltf_lang.func_get_lang('DIVEU', null, null, (a.ld_seq)) category_name
+		  from     
+		  ( 
+			select mc_seq 
+				 , corp	 
+				 , category_code	
+	             , (
+		                select ld.ld_seq
+		                  from pltf_lang_detail ld, pltf_lang_kind lk
+		                 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mc.mc_seq and type='CATEGORY_NAME')
+		                   and ld.lk_seq = lk.lk_seq
+		                   and lk.corp = #{corp}
+		                   and lk.code = lower(#{categoryLang})
+		           ) ld_seq  
+				 , sort	 
+				 , fg_display	 
+				 , fg_delete
+				 , reg_username	 
+				 , reg_date	 
+				 , mod_username	 
+				 , mod_date
+			  from ep_mall_category mc
+			 where 1 = 1		   
+			   and corp = #{corp}		   		   
+			   and fg_delete != 'Y'	
+		  ) a 
+	  	 order by sort
+  	<include refid="PaginationMapper.footer"/>	 	
+	</select>
+	
+	
+	<!-- 카테고리 리스트 갯수 취득 (카테고리 sort option list 에서 유효한 option들만 만들기 위함) -->
+	<select id="findCategoryItemsMainCount" parameterType="MerchandizeCategoryDto" resultType="MerchandizeCategoryEntity">		
+		select nvl(listagg(a.sort, ',') within group (ORDER by a.sort) , 0) as sort_strings
+		  from
+		  (
+		    select mc.mc_seq
+		         , mc.sort
+		      from ep_mall_category mc
+		     where mc.fg_delete != 'Y' 
+		  ) a
+	</select>
+	
+	
+	<!-- 카테고리 1건 상세 검색 -->
+	<select id="findCategoryItem" resultType="MerchandizeCategoryEntity" parameterType="MerchandizeCategoryEntity">
+		select mc_seq
+			 , corp	 
+			 , category_code	 
+			 , sort	 
+			 , fg_display	 
+			 , fg_delete
+			 , reg_username	 
+			 , reg_date	 
+			 , mod_username	 
+			 , mod_date			 
+			 , 5 total_count 			  
+		  from ep_mall_category
+		 where mc_seq = #{mcSeq}		   
+		   and corp = #{corp}
+	</select>
+	
+	
+	<!-- 카테고리 등록 시 현재 지원하는 언어 목록 취득 -->
+	<select id="findSupportLangs" resultType="LangKindEntity" parameterType="LangKindEntity">
+		select lk_seq 
+			 , corp	 
+			 , name	
+             , code 
+			 , sort	 
+			 , fg_default	 
+			 , fg_delete
+			 , reg_username	 
+			 , reg_date	 
+			 , mod_username	 
+			 , mod_date
+		  from pltf_lang_kind
+		 where 1 = 1		   
+		   and corp = #{corp}
+		   and fg_delete != 'Y'
+		 order by sort  
+	</select>
+	
+	
+	<!-- 카테고리 등록 시 정렬번호 취득 -->
+	<select id="findCategoryNewSortNumber" resultType="MerchandizeCategoryEntity" parameterType="MerchandizeCategoryEntity">
+		select nvl(max(sort), 0)+1 sort 
+		  from ep_mall_category 
+		 where corp = #{corp} 
+		   and fg_delete != 'Y'
+	</select>
+	
+	
+	<!-- 카테고리코드 중복 체크 -->
+	<select id="findCategoryDuplicateCode" resultType="MerchandizeCategoryEntity" parameterType="MerchandizeCategoryEntity">
+		select max(category_code) category_code
+		  from ep_mall_category 
+		 where corp = #{corp} 
+		   and category_code = #{categoryCode}
+		   and fg_delete != 'Y'
+	</select>
+	
+	
+	<!-- 카테고리 등록 -->
+	<insert id="insertCategoryItem" parameterType="MerchandizeCategoryEntity">
+		
+		<selectKey keyProperty="mcSeq" resultType="Integer" order="BEFORE">
+			select ep_mc_seq.nextval from dual
+		</selectKey>
+		
+		insert into ep_mall_category (
+			mc_seq, corp, category_code, sort, fg_display, fg_delete, reg_username, reg_date, mod_username, mod_date
+		) values (
+			#{mcSeq}, #{corp}, #{categoryCode}, #{sort}, #{fgDisplay}, 'N', #{regUsername}, #{regDate}, #{modUsername}, #{modDate}
+		)
+	</insert>
+	
+	
+	<!-- 카테고리 수정 , 삭제 -->
+	<update id="updateCategoryItem" parameterType="MerchandizeCategoryEntity">
+		update ep_mall_category
+		   set mod_date = #{modDate}		     
+     		 , mod_username = #{modUsername}
+     		 <if test="categoryCode != null and categoryCode != ''">
+     		 , category_code = #{categoryCode}
+     		 </if>     		 
+     		 <if test="sort != null and sort != ''">
+     		 , sort = #{sort}
+     		 </if>
+     		 <if test="fgDisplay != null and fgDisplay != ''">
+       	     , fg_display = #{fgDisplay}
+       	     </if>
+       	     <if test="fgDelete != null and fgDelete != ''">
+       	     , fg_delete = #{fgDelete}
+       	     </if>	
+		 where mc_seq = #{mcSeq}	
+	</update>	
+	
+</mapper>

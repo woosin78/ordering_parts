@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.doosan.iv.portal.corp.eu.scm.parts.merchandize.mapper.MerchandizeRecommendProductMapper">
+	
+	<!-- 추천상품 리스트 갯수를 추천상품 테이블에서 검색(메인화면의 각 추천상품 sort list 에서 유효한 option들만 만들기 위함) -->
+	<select id="findRecommendProductItemsMainCount" parameterType="MerchandizeRecommendProductDto" resultType="MerchandizeRecommendProductEntity">		
+		select nvl(listagg(a.sort, ',') within group (ORDER by a.sort) , 0) as sort_strings
+		     , min(a.sort) sort_min
+		     , max(a.sort) sort_max   
+		  from
+		  (
+			select mrp.mrp_seq
+				 , mrp.mp_seq			 
+				 , mp.material_no
+				 , pack_pltf_lang.func_get_lang
+               	   (
+               			#{corp},
+               			null, 
+               			null,
+			   			(
+		                	select ld.ld_seq
+		                  	  from pltf_lang_detail ld, pltf_lang_kind lk
+		                 	 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mrp.mp_seq and type='PRODUCT_NAME')
+		                       and ld.lk_seq = lk.lk_seq
+		                       and lk.corp = #{corp}
+		                       and lk.code = 'en'
+		                ) 
+           	      ) product_name				 
+				 , pack_pltf_lang.func_get_lang
+               	   (
+               			#{corp},
+               			null, 
+               			null,
+			   			(
+		                	select ld.ld_seq
+		                  	  from pltf_lang_detail ld, pltf_lang_kind lk
+		                 	 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mrp.mp_seq and type='PRODUCT_DESCRIPTION')
+		                       and ld.lk_seq = lk.lk_seq
+		                       and lk.corp = #{corp}
+		                       and lk.code = 'en'
+		                ) 
+           	      ) product_description
+				 , mrp.sort
+			  from ep_mall_recommend_product mrp
+				 , ep_mall_product mp
+			 where 1 = 1
+			   and mrp.mp_seq = mp.mp_seq
+			   and mrp.fg_delete != 'Y'
+			   and mp.fg_delete != 'Y'
+			   and mp.fg_display = 'Y' 
+		  ) a
+	</select>
+	
+	<!-- 추천상품 리스트를 추천상품 테이블에서 검색(메인화면의 추천상품) -->
+	<select id="findRecommendProductItemsMain" parameterType="MerchandizeRecommendProductDto" resultType="MerchandizeRecommendProductEntity">
+		select mrp.mrp_seq
+			 , mrp.mp_seq			 
+			 , mp.material_no
+			 , pack_pltf_lang.func_get_lang
+           	   (
+           			#{corp},
+           			null, 
+           			null,
+		   			(
+	                	select ld.ld_seq
+	                  	  from pltf_lang_detail ld, pltf_lang_kind lk
+	                 	 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mrp.mp_seq and type='PRODUCT_NAME')
+	                       and ld.lk_seq = lk.lk_seq
+	                       and lk.corp = #{corp}
+	                       and lk.code = 'en'
+	                ) 
+          	   ) product_name				 
+			 , pack_pltf_lang.func_get_lang
+           	   (
+           			#{corp},
+           			null, 
+           			null,
+		   			(
+	                	select ld.ld_seq
+	                  	  from pltf_lang_detail ld, pltf_lang_kind lk
+	                 	 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mrp.mp_seq and type='PRODUCT_DESCRIPTION')
+	                       and ld.lk_seq = lk.lk_seq
+	                       and lk.corp = #{corp}
+	                       and lk.code = 'en'
+	                ) 
+          	   ) product_description
+			 , 0 price
+			 , mrp.sort
+			 , #{productImagePath} || (select storage_path || saved_name as image_url from ep_file_upload where t_seq = mrp.mp_seq and target = 'MALL' and type = 'THUMBNAIL' and fg_delete != 'Y') image_url 	
+		  from ep_mall_recommend_product mrp
+			 , ep_mall_product mp
+		 where 1 = 1
+		   and mrp.mp_seq = mp.mp_seq
+		   and mrp.fg_delete != 'Y'
+		   and mp.fg_delete != 'Y'
+		   and mp.fg_display = 'Y' 
+		 order by mrp.sort
+	</select>
+	
+	<!-- 추천상품 리스트를 상품 테이블에서 검색(기 등록된 추천상품 제외)  -->
+	<select id="findRecommendProductItems" parameterType="MerchandizeProductSearchDto" resultType="MerchandizeProductEntity">
+		select a.mp_seq 
+			 , a.mc_seq
+			 , a.category_name			 
+			 , a.material_no
+			 , a.product_name
+			 , a.sort
+			 , #{productImagePath} || (select storage_path || saved_name as image_url from ep_file_upload where t_seq = a.mp_seq and target = 'MALL' and type = 'THUMBNAIL' and fg_delete != 'Y') image_url
+		  from 	  
+		  (
+			select mp.mp_seq 
+				 , mp.mc_seq
+				 , pack_pltf_lang.func_get_lang
+	           	   (
+	           			#{corp},
+	           			null, 
+	           			null,
+			   			(
+		                	select ld.ld_seq
+		                  	  from pltf_lang_detail ld, pltf_lang_kind lk
+		                 	 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mp.mc_seq and type='CATEGORY_NAME')
+		                       and ld.lk_seq = lk.lk_seq
+		                       and lk.corp = #{corp}
+		                       and lk.code = 'en'
+		                ) 
+	          	   ) category_name	 			 
+				 , mp.material_no
+				 , pack_pltf_lang.func_get_lang
+	           	   (
+	           			#{corp},
+	           			null, 
+	           			null,
+			   			(
+		                	select ld.ld_seq
+		                  	  from pltf_lang_detail ld, pltf_lang_kind lk
+		                 	 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mp.mp_seq and type='PRODUCT_NAME')
+		                       and ld.lk_seq = lk.lk_seq
+		                       and lk.corp = #{corp}
+		                       and lk.code = 'en'
+		                ) 
+	          	   ) product_name
+				 , mp.sort
+			  from ep_mall_product mp, ep_mall_category mc
+			 where 1 = 1
+			   and mp.mc_seq = mc.mc_seq		   
+			   and mc.corp = #{corp} 
+			   and mp.fg_delete != 'Y'
+			   and mc.fg_delete != 'Y'				   
+			 <if test="categoryCode != null and categoryCode != ''">
+			   and mc.mc_seq = #{categoryCode}
+			 </if>
+			 <if test="fgDisplay != null and fgDisplay != ''">
+			   and mp.fg_display = #{fgDisplay}
+			 </if>
+		  ) a
+		 where 1 = 1 
+		   and a.mp_seq not in (select mp_seq from ep_mall_recommend_product where fg_delete != 'Y')
+		 <if test="productCodeOrName != null and productCodeOrName != ''">		   
+		   and ( upper(a.material_no) like '%' || upper(#{productCodeOrName}) || '%' or upper(a.product_name) like '%' || upper(#{productCodeOrName}) || '%')
+		 </if> 
+		 order by mc_seq, sort
+	</select>
+		
+	
+	<!-- 추천상품 등록(이미 존재하는 상품일 경우 수정자, 수정일시만 갱신 -->
+	<update id="insertRecommendProductItem" parameterType="MerchandizeRecommendProductEntity">
+		merge into ep_mall_recommend_product
+		using dual
+		   on (mp_seq = #{mpSeq})
+		 when matched then
+		      update set
+		             mod_username = #{modUsername}
+		           , mod_date = sysdate
+		       where mp_seq = #{mpSeq}    
+		 when not matched then
+		      insert (mrp_seq, mp_seq, sort, fg_delete, reg_username, reg_date) 
+		      values (ep_mrp_seq.nextval, #{mpSeq}, (select nvl(max(sort), 0) + 1 from ep_mall_recommend_product where fg_delete != 'Y'), #{fgDelete}, #{regUsername}, #{regDate})
+	</update>
+		
+	
+	<!-- 추천상품 수정/삭제 -->
+	<update id="updateRecommendProductItem" parameterType="MerchandizeRecommendProductEntity">
+		update ep_mall_recommend_product
+		   set mod_date = #{modDate}		     
+     		 , mod_username = #{modUsername}
+     		 <if test="sort != null and sort != ''">
+     		 , sort = #{sort}
+     		 </if>
+       	     <if test="fgDelete != null and fgDelete != ''">
+       	     , fg_delete = #{fgDelete}
+       	     </if>	
+		 where
+		 <trim prefixOverrides="and">
+			 <if test="mrpSeq != null and mrpSeq != ''">  
+			   and mrp_seq = #{mrpSeq}	
+			 </if>
+			 <if test="mpSeq != null and mpSeq != ''">  
+			   and mp_Seq = #{mpSeq}	
+			 </if>
+		 </trim>
+	</update>
+	
+	
+	<!-- 추천상품 갯수 체크(추천상품 등록 화면에서 등록 한계 갯수 설정을 위함) -->
+	<select id="checkRecommendProductItem" resultType="MerchandizeRecommendProductEntity" parameterType="MerchandizeRecommendProductDto">
+		select count(mp.mp_seq) as total_count
+		  from ep_mall_recommend_product mrp, ep_mall_product mp
+		 where mrp.mp_seq = mp.mp_seq
+		   and mrp.fg_delete != 'Y'
+		   and mp.fg_delete != 'Y'
+		   and (select corp from ep_mall_category where mc_seq = mp.mc_seq) = #{corp}
+	</select>	
+	
+	
+	
+</mapper>
