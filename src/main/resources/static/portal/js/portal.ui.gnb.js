@@ -94,8 +94,6 @@ function makeGnb2()
 			let items = data.RESULT;
 			let level1 = [];
 
-	    	for (let z=0; z<3; z++)
-	    	{
 	    	for (let i=0, length=items.length; i<length; i++)
 	    	{
 	    		if (items[i].TYPE == "R")
@@ -116,7 +114,6 @@ function makeGnb2()
 	    			};
 	    		};
 	    	};		
-			};
 	    	
 	    	$(".gnb-menu-list2").html(level1.join(""));
 	    	$(".gnb-menu-list2").show();
