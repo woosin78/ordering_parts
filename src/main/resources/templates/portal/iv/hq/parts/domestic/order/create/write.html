@@ -218,6 +218,7 @@ function triggerPasteFromClipload(event)
 	
 	let rows = event.originalEvent.clipboardData.getData("Text").split(String.fromCharCode(13));//13:CR
 	let items = [];
+	let isValid = true;
 	
 	$.each(rows, function(index, element) {
 		let item = element.split(String.fromCharCode(9));//9:tab
@@ -225,11 +226,11 @@ function triggerPasteFromClipload(event)
 		if (item[0].trim() != null && item[0].trim() != "")
 		{
 			initialMaterialNos.push(JpUtilsString.replaceAll(item[0], String.fromCharCode(13), ""));
-			initialOrderQties.push(JpUtilsString.replaceAll(item[1], String.fromCharCode(13), ""));
+			initialOrderQties.push(JpUtilsString.replaceAll(JpUtilsString.defaultString(item[1], "1"), String.fromCharCode(13), ""));
 		};
 	});
 	
-	doSimulation();
+	doSimulation();	
 };
 
 $(".dropzone-click-zone").dropzone({
@@ -758,7 +759,6 @@ $(function(){
 				orderable: false,
 				render: function(data, type, row)
 				{
-					//return "<button class='btn-popup' type='button'></button><input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 					return "<input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},
@@ -898,8 +898,8 @@ $(function(){
 				if (JpUtilsString.isNotEmpty($("#fileName").val()))
 				{
 					alert("[[#{HQP_M_ORDER_INVALID_EXCEL_FORMAT}]]");
-					reload();	
 				};
+				reload();
 			}				
 		}			
 	});
@@ -915,10 +915,6 @@ $(function(){
 		$("#fileName").val("");
 		$("#simulationFrom").val("");
 		
-		$("#TBL_grid .btn-popup").on("click", function(event) {
-			_showPartSearch($(this).siblings("input[name=materialNo]").val());
-		});
-		
 		$.each($("#TBL_grid input[name=materialNo]"), function(index, item) {
 			_setPartAutocomplete(item);	
 		});
@@ -926,6 +922,8 @@ $(function(){
 		initGridTable($tableObj);
 
 		ProgressBar.hide();
+		
+		$("#TBL_grid input[name=materialNo][value='']:first").focus();
 	});
 });
 </script>

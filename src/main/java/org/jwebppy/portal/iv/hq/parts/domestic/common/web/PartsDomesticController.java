@@ -45,12 +45,4 @@ public class PartsDomesticController extends PartsDomesticGeneralController
 
 		return DEFAULT_VIEW_URL;
 	}
-
-	@RequestMapping("/preload")
-	public String preload(Model model, WebRequest webRequest)
-	{
-		addAllAttributeFromRequest(model, webRequest);
-
-		return DEFAULT_VIEW_URL;
-	}
 }

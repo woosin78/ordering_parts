@@ -1,4 +1,4 @@
-package org.jwebppy.portal.iv.hq.parts.domestic.order.create.service;
+package org.jwebppy.portal.iv.hq.parts.export.order.create.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,14 +20,15 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.PricingResultDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.SimulationResultDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderItemDto;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderSimulationService extends PartsDomesticGeneralService
+public class ExOrderSimulationService extends PartsDomesticGeneralService
 {
 	public RfcResponse getItemsFromGpes(ErpDataMap paramMap)
 	{
@@ -39,7 +40,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	public DataList getLotQties(OrderDto order)
+	public DataList getLotQties(ExOrderDto order)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY");
 
@@ -53,7 +54,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 
 		List<Map<String, Object>> items = new LinkedList<>();
 
-		for (OrderItemDto orderItem : order.getOrderItems())
+		for (ExOrderItemDto orderItem : order.getOrderItems())
 		{
 			Map<String, Object> itemMap = new HashMap<>();
 			itemMap.put("ITEM", orderItem.getLineNo());
@@ -68,7 +69,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest).getTable("LT_ITEM");
 	}
 
-	public SimulationResultDto simulation(OrderDto order)
+	public SimulationResultDto simulation(ExOrderDto order)
 	{
 		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
 		{
@@ -132,11 +133,11 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		return null;
 	}
 
-	protected void adjustOrderQty(OrderDto order)
+	protected void adjustOrderQty(ExOrderDto order)
 	{
 		DataList lotQties = getLotQties(order);
 
-		for (OrderItemDto orderItem : order.getOrderItems())
+		for (ExOrderItemDto orderItem : order.getOrderItems())
 		{
 			for (Object data : lotQties)
 			{
@@ -151,11 +152,11 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		}
 	}
 
-	protected List<Map<String, Object>> convertToLtItem(List<OrderItemDto> orderItems)
+	protected List<Map<String, Object>> convertToLtItem(List<ExOrderItemDto> orderItems)
 	{
 		List<Map<String, Object>> items = new LinkedList<>();
 
-		for (OrderItemDto orderItem : orderItems)
+		for (ExOrderItemDto orderItem : orderItems)
 		{
 			if (CmStringUtils.isEmpty(orderItem.getMaterialNo()))
 			{

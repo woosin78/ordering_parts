@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="org.jwebppy.portal.iv.hq.parts.domestic.order.create.mapper.OrderCreateMapper">
-	<resultMap type="OrderHistoryHeaderEntity" id="orderHistoryHeaderMap">
+<mapper namespace="org.jwebppy.portal.iv.hq.parts.export.order.create.mapper.ExOrderCreateMapper">
+	<resultMap type="ExOrderHistoryHeaderEntity" id="orderHistoryHeaderMap">
 		<id property="ohhSeq" column="ohh_seq" />
 		<result property="corp" column="corp" />
 		<result property="docType" column="doc_type" />
@@ -21,10 +21,10 @@
 		<result property="duplOhhSeq" column="dupl_ohh_seq" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
-		<collection property="orderHistoryItems" foreignColumn="ohh_seq" column="ohh_seq" javaType="java.util.ArrayList" ofType="OrderHistoryItemEntity" select="findAllOrderHistoryItems" />
+		<collection property="orderHistoryItems" foreignColumn="ohh_seq" column="ohh_seq" javaType="java.util.ArrayList" ofType="ExOrderHistoryItemEntity" select="findAllOrderHistoryItems" />
 	</resultMap>
 	
-	<insert id="insertOrderHistoryHeader" parameterType="OrderHistoryHeaderEntity" useGeneratedKeys="true" keyProperty="ohhSeq">
+	<insert id="insertOrderHistoryHeader" parameterType="ExOrderHistoryHeaderEntity" useGeneratedKeys="true" keyProperty="ohhSeq">
 		<selectKey keyProperty="ohhSeq" resultType="Integer" order="BEFORE">
 			select pltf_ohh_seq.nextval from dual
 		</selectKey>
@@ -34,25 +34,25 @@
 		)
 	</insert>
 	
-	<insert id="insertOrderHistoryItem" parameterType="OrderHistoryItemEntity">
+	<insert id="insertOrderHistoryItem" parameterType="ExOrderHistoryItemEntity">
 		insert into ep_order_history_item (ohh_seq, material_no, order_qty) values (
 			#{ohhSeq}, #{materialNo}, #{orderQty}
 		)
 	</insert>
 
-	<update id="updateSuccessOrderHistoryHeader" parameterType="OrderHistoryHeaderEntity">
+	<update id="updateSuccessOrderHistoryHeader" parameterType="ExOrderHistoryHeaderEntity">
 		update ep_order_history_header set so_no=#{soNo}, ordered_date=#{modDate}
 		where
 		ohh_seq=#{ohhSeq}		
 	</update>
 
-	<update id="updateFailOrderHistoryHeader" parameterType="OrderHistoryHeaderEntity">
+	<update id="updateFailOrderHistoryHeader" parameterType="ExOrderHistoryHeaderEntity">
 		update ep_order_history_header set dupl_ohh_seq=#{duplOhhSeq}, error_msg=#{errorMsg}
 		where
 		ohh_seq=#{ohhSeq}		
 	</update>
 	
-	<select id="findAllOrderHistoryHeader" parameterType="OrderHistoryHeaderDto" resultMap="orderHistoryHeaderMap">
+	<select id="findAllOrderHistoryHeader" parameterType="ExOrderHistoryHeaderDto" resultMap="orderHistoryHeaderMap">
 		select
 		*
 		from
@@ -68,7 +68,7 @@
 		order by ohh_seq
 	</select>
 
-	<select id="findAllOrderHistoryItems" parameterType="Integer" resultType="OrderHistoryItemEntity">
+	<select id="findAllOrderHistoryItems" parameterType="Integer" resultType="ExOrderHistoryItemEntity">
 		select
 		*
 		from

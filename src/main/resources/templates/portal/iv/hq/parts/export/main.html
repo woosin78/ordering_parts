@@ -12,7 +12,7 @@
 		"DELIMITER": "[[${DELIMITER}]]"
 	};
 	</script>
-	
+
 	<title th:text="#{PTL_T_DOOBIZ_PLUS}"></title>
 	<!-- Meta -->
 	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/meta"></th:block>
@@ -21,16 +21,16 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/main.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"/>
-
+	
 	<!-- JavaScript -->
 	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/js"></th:block>
 </head>
 <body>
 	<!-- Progress bar end -->
 	<div class="wrap">
-		<div class="body-area">
-			<div class="main-back-img">
-				<img th:src="@{/portal/img/main/main.png}" />
+		<div style="position:absolute"><img id="mainImg" th:src="@{/portal/img/main/main.png}" /></div>
+		<div class="body-area">			
+			<div class="main-back-img">				
 				<div class="intro-area">
 					<div class="app-name">DOOBIZ</div>
 					<div class="vision">Global Leader Doosan</div>
@@ -64,8 +64,8 @@
 				</div>
 				<div class="gnb-wrap">
 					<div class="gnb-container">
-						<div class="gnb-menu-area">
-							<ul class="gnb-menu-list" style="display:none;"></ul>					
+						<div class="gnb-menu-area">				
+							<ul class="gnb-menu-list2" style="display:none;"></ul>	
 							<ul class="gnb-menu-sub-list"></ul>
 						</div>
 					</div>
@@ -80,74 +80,52 @@
 							<tr>
 								<td>
 									<table class="bulletin-1">
-										<colgroup>
-											<col width="32%"></col>
-											<col width="48%"></col>
-											<col width="20%"></col>
-										</colgroup>
-										<tbody>
-											<th:block th:if="${#lists.isEmpty(noticeList)}">
-												<tr>
-													<td rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_NOTICE}"></div> <img
-														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
-													/></td>
-													<td colspan="2" th:text="|・  #{HQP_M_EMPTY_RESULT}|"></td>
-												</tr>
-												<tr th:each="i : ${#numbers.sequence(0, 3)}">
-													<td colspan="2">&nbsp;</td>
-												</tr>
-											</th:block>
-											<th:block th:unless="${#lists.isEmpty(noticeList)}">
-												<tr th:each="bbsContent, i : ${noticeList}">
-													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_NOTICE}"></div> <img
-														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
-													/></td>
-													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|"
-															th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"
-														></div></td>
-													<td class="bbs-date" th:text="${#temporals.format(bbsContent.regDate, 'yyyy.MM.dd')}"></td>
-												</tr>
-												<tr th:each="i : ${#numbers.sequence(#lists.size(noticeList), 4)}">
-													<td colspan="2">&nbsp;</td>
-												</tr>
-											</th:block>
-										</tbody>
+									<th:block th:if="${#lists.isEmpty(bbs1)}">
+										<tr>
+											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="${bbs1Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(1);" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-date">&nbsp;</td>
+										</tr>
+										<tr th:each="i: ${#numbers.sequence(1, 3)}">
+											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-date">&nbsp;</td>
+										</tr>
+									</th:block>
+									<th:block th:unless="${#lists.isEmpty(bbs1)}">
+										<tr th:each="content, i: ${bbs1}">
+											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="${bbs1Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(1);" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.board.bSeq}">[[${content.title}]]</a></td>
+											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
+										</tr>
+										<tr th:if="${#lists.size(bbs1) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(bbs1)-4)}">
+											<td colspan="2">&nbsp;</td>
+										</tr>											
+									</th:block>
 									</table>
 								</td>
 								<td>
 									<table class="bulletin-2">
-										<colgroup>
-											<col width="32%"></col>
-											<col width="48%"></col>
-											<col width="20%"></col>
-										</colgroup>
-										<tbody>
-											<th:block th:if="${#lists.isEmpty(promotionList)}">
-												<tr>
-													<td rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img
-														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"
-													/></td>
-													<td colspan="2" th:text="|・  #{HQP_M_EMPTY_RESULT}|"></td>
-												</tr>
-												<tr th:each="i : ${#numbers.sequence(0, 3)}">
-													<td colspan="2">&nbsp;</td>
-												</tr>
-											</th:block>
-											<th:block th:unless="${#lists.isEmpty(promotionList)}">
-												<tr th:each="bbsContent, i : ${promotionList}">
-													<td th:if="${i.index == 0}" rowspan="4" style="vertical-align: top; text-align: left;"><div class="bulletin-title-text" th:text="#{HQP_T_PROMOTION}"></div> <img
-														src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(1);" style="cursor: pointer; margin-top: 20px;"
-													/></td>
-													<td style="text-align: left; cursor: pointer;"><div class="bbs-title" style="max-width: 220px;" th:text="|・  ${bbsContent.title}|"
-															th:onclick="|javascript:goBbsPopFromMain(1, '${bbsContent.bcSeq}');|"
-														></div></td>
-													<td class="bbs-date" th:text="${#temporals.format(bbsContent.regDate, 'yyyy.MM.dd')}"></td>
-												</tr>
-												<tr th:each="i : ${#numbers.sequence(#lists.size(promotionList), 4)}">
-													<td colspan="2">&nbsp;</td>
-												</tr>
-											</th:block>
-										</tbody>
+									<th:block th:if="${#lists.isEmpty(bbs2)}">
+										<tr>
+											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="${bbs2Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(2);" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-date">&nbsp;</td>
+										</tr>
+										<tr th:each="i: ${#numbers.sequence(1, 3)}">
+											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-date">&nbsp;</td>
+										</tr>
+									</th:block>
+									<th:block th:unless="${#lists.isEmpty(bbs2)}">
+										<tr th:each="content, i: ${bbs2}">
+											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="${bbs2Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(2);" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.board.bSeq}">[[${content.title}]]</a></td>
+											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
+										</tr>
+										<tr th:if="${#lists.size(bbs2) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(bbs2)-4)}">
+											<td colspan="2">&nbsp;</td>
+										</tr>											
+									</th:block>
 									</table>
 								</td>
 							</tr>
@@ -162,39 +140,48 @@
 			</div>
 		</div>
 	</div>
-	<form id="FORM_logout" method="post" th:action="@{/platform/security/authentication/logout}"></form>
-	<iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe>
+	<!-- Logout -->
+	<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>	
+	<!-- iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe -->
 <script>
 $(window).on("load", function() {
 	ProgressBar.hide();
 });
 
+$(window).resize($.debounce(100, function(e){
+	resizeView();
+}));
+
 $(function(){
+	resizeView();
+
 	//상단 메뉴 생성 공통함수
-	makeGnb();
+	//makeGnb();
+	makeGnb2();
 	
-	$(".header .logo-doobizplus").on("click", function() {
+	
+	$(".top-header .logo-doobizplus").on("click", function() {
 		goHome()
 	});
 	
-	$(".header li.new-window").on("click", function() {
+	$(".top-header li.new-window").on("click", function() {
 		window.open("/portal/forward/entry_point", "");
 	});
 	
-	$(".header li.dealer-info").on("click", function() {
-		clickDealerInfo();	    		
+	$(".top-header li.dealer-info").on("click", function() {
+		clickDealerInfo();
 	});
 	
-	$(".header li.username").on("click", function() {
+	$(".top-header li.username").on("click", function() {
 		clickUserInfo();
 	});
 	
-	$(".header .logout-button").on("click", function() {
+	$(".top-header .logout-button").on("click", function() {
 		clickLogout();	    		
 	});	
 
 	$("#BTN_goOrder").on("click", function() {
-		document.location.href = "/portal/corp/eu/scm/parts/order/create/order_form";
+		document.location.href = "[[${BASE_PATH}]]/order/create/write";
 	});
 	
 	//Get last login information
@@ -214,6 +201,31 @@ $(function(){
 	    	};	    	
 	    }	
 	});
+	
+	JpUtilsAjax.get({
+		url: "/portal/iv/board/popup/list/data",
+		global: false,
+		success: function(data, textStatus, jqXHR)
+		{
+			let result = data.RESULT;
+			
+			$.each(result, function(index, element) {
+				let fgNotShow = JpUtilsString.defaultString($.cookie(element.bcSeq), "N");
+				
+				if (JpUtilsString.equals(fgNotShow, "N"))
+				{
+					let url = "/portal/iv/board/popup/view2?bSeq=" + element.board.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
+					
+					let width = JpUtilsString.defaultString(element.width, "700");
+					let height = JpUtilsString.defaultString(element.height, "600");
+					
+					Popup.open(url, width, height, "Y", "Y");					
+				};
+			});
+		}
+	});	
+	
+	checkExpiredPassword();
 });
 
 function goHome()
@@ -223,12 +235,12 @@ function goHome()
 
 function clickUserInfo()
 {
-	Popup.open("/portal/corp/eu/common/info/user/account_form", 600, 250);
+	Popup.open("/portal/iv/user/write", 700, 300);
 };
 
 function clickDealerInfo()
 {
-	Popup.open("/portal/scm/parts/common/info/dealer/detail", 1024, 700);
+	Popup.open("[[${BASE_PATH}]]/dealer_info/view", 1100, 800);
 };
 
 function clickLogout()
@@ -236,14 +248,77 @@ function clickLogout()
 	$("#FORM_logout").submit();
 };
 
-function goBbsFromMain(bSeq)	// 게시판 +버튼
+function goToBoard(type)
 {
-	location.href="/portal/corp/eu/common/bbs/list?bSeq=" + bSeq;	
+	let bSeq = (type == 1) ? "[[${bSeq1}]]": "[[${bSeq2}]]";
+	
+	location.href = "/portal/iv/board/list?bSeq=" + bSeq;	
 };
 
-function goBbsPopFromMain(bSeq, bcSeq)	// 게시판 게시물 링크(팝업)
+$(".bulletin-area a.link").on("click", function() {
+	let url = "/portal/iv/board/popup/view?bSeq=" + $(this).attr("bSeq") + "&bcSeq=" + $(this).attr("data-key") + "&fgFrom=M";
+	Popup.open(url, 1024, 730, "Y", "Y");
+});
+
+function checkExpiredPassword()
 {
-	Popup.open("/portal/corp/eu/common/bbs/detail_popup?bSeq=" + bSeq + "&bcSeq=" + bcSeq);
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/check/expired_password",
+		global: false,
+		success: function(data, textStatus, jqXHR)
+		{
+			let result = data.RESULT;
+			
+			let difference = parseInt(result.difference);
+			
+			if (difference < 15)
+			{
+				if (difference < 0)
+				{
+					JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
+						document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});
+				}
+				else
+				{
+					let message = "[[#{PLTF_M_PASSWORD_EXPIRE_DATE_NOTICE}]]".replace("{0}", result.expiredDate);
+					
+					JpUiDimmer.confirm(message, function() {
+						document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});					
+				};
+
+			};
+		}
+	});
+};
+
+let RESIZING_MIN_WIDTH = 1280;
+let RESIZING_MIN_HEIGHT = 720;
+
+function resizeView()
+{
+	let width = $(window).width();
+	let height = $(window).height();
+	
+	if (width > RESIZING_MIN_WIDTH)
+	{
+		$("#mainImg").width(width);
+		
+		if (height > RESIZING_MIN_HEIGHT)
+		{
+			$("#mainImg").height(height);
+		}
+		else
+		{
+			$("#mainImg").height(height);
+		};
+	}
+	else
+	{
+		$("#mainImg").width(RESIZING_MIN_WIDTH);
+		$("#mainImg").height(RESIZING_MIN_HEIGHT);
+	}
 };
 </script>
 </body>
