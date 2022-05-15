@@ -13,7 +13,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.config.RedisConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
@@ -22,8 +21,8 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.portal.common.service.PortalGeneralService;
 import org.jwebppy.portal.iv.eu.common.EuCommonVo;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.service.EuPartsDomesticGeneralService;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOnetimeAddressDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderHistoryHeaderDto;
@@ -39,15 +38,11 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Service
-public class EuOrderCreationService extends PortalGeneralService
+public class EuOrderCreationService extends EuPartsDomesticGeneralService
 {
 	@Autowired
 	private EuOrderCreationMapper orderCreationMapper;
-
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
 
 	public DataMap getHeaderInfo(ErpDataMap paramMap)
 	{

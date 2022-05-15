@@ -2,18 +2,14 @@ package org.jwebppy.portal.iv.eu.parts.domestic.complaint.service;
 
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.service.EuPartsDomesticGeneralService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UkComplaintDisplayService
+public class UkComplaintDisplayService extends EuPartsDomesticGeneralService
 {
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDERLIST");

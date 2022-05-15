@@ -10,7 +10,7 @@ import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.jwebppy.portal.iv.eu.parts.common.web.EuPartsGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.web.EuPartsDomesticGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.complaint.service.UkComplaintDisplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/portal/corp/uk/scm/parts/complaint/display")
-public class UkComplaintDisplayFileDownloadController extends EuPartsGeneralController
+public class UkComplaintDisplayFileDownloadController extends EuPartsDomesticGeneralController
 {
 	@Autowired
 	private UkComplaintDisplayService complaintDisplayService;

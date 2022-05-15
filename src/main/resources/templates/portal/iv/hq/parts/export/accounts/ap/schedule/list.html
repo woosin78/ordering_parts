@@ -31,10 +31,8 @@
 let $tableObj;
 $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
-		select: true,   			// row 선택 기능 켬
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
-		//fixedColumns: {leftColumns: 8},
 		columns : [
 			{data: "FAEDT", title: "[[#{HQP_L_DUE_DATE}]]"},			
 			{data: "WRBTR", title: "[[#{HQP_L_AP_AMOUNT}]]"},				

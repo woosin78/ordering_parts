@@ -15,9 +15,10 @@ $(function(){
 		scrollY : false,
 		scrollCollapse: true,
 		select: {
-			style : 'single',
+			style : 'single',//single or multi
 			blurable : false,
-			toggleable: false
+			toggleable: false,
+			selector: 'td:not(.noselect)'
 		},
 		processing: true,
 		lengthChange: false,

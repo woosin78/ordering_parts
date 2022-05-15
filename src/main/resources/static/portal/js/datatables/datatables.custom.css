@@ -83,7 +83,7 @@ table.dataTable.stripe tbody tr.odd, table.dataTable.display tbody tr.odd {
 
 /* 선택 색상 : 밝음 */
 table.dataTable tbody tr.selected {
-	background-color: #b2e4d7;
+	background-color: #b2e4d7 !important;
 }
 table.dataTable tbody > tr.selected,
 table.dataTable tbody > tr > .selected {

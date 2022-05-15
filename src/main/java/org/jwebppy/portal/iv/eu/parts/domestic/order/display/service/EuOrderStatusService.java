@@ -9,20 +9,16 @@ import java.util.Map;
 import org.jwebppy.config.RedisConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.portal.iv.eu.common.EuCommonVo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.service.EuPartsDomesticGeneralService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EuOrderStatusService 
+public class EuOrderStatusService extends EuPartsDomesticGeneralService
 {
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	@Cacheable(value = RedisConfig.ORDER_STATUS, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.jwebppy.portal.iv.eu.parts.domestic.order.OrderGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.display.service.EuOrderDisplayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/portal/corp/eu/scm/parts/order/display")
-public class EuFileDownloadController extends OrderGeneralController
+public class EuFileDownloadController extends EuOrderGeneralController
 {
 	@Autowired
 	private EuOrderDisplayService orderDisplayService;

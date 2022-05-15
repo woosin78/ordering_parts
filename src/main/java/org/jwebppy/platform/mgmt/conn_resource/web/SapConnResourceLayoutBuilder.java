@@ -119,12 +119,8 @@ public class SapConnResourceLayoutBuilder
 		Input loDescription = new Input("description", sapConnResource.getDescription());
 		loDescription.setLabel("Description");
 
-		Input loSystemId = new Input("systemId", sapConnResource.getSystemId());
-		loSystemId.setLabel("System ID");
-
 		document.addElement(loName);
 		document.addElement(loDescription);
-		document.addElement(loSystemId);
 
 		if (SapConnType.C.equals(sapConnResource.getType()))
 		{
@@ -151,6 +147,9 @@ public class SapConnResourceLayoutBuilder
 			document.addElement(loMsgServer);
 			document.addElement(logGrpServer);
 		}
+
+		Input loSystemId = new Input("systemId", sapConnResource.getSystemId());
+		loSystemId.setLabel("System ID");
 
 		Input loClient = new Input("client", sapConnResource.getClient());
 		loClient.setLabel("Client");
@@ -180,6 +179,7 @@ public class SapConnResourceLayoutBuilder
 		Element loFgUse = new Checkbox("fgUse", PlatformCommonVo.YES, sapConnResource.getFgUse());
 		loFgUse.setLabel("Use");
 
+		document.addElement(loSystemId);
 		document.addElement(loClient);
 		document.addElement(loUsername);
 		document.addElement(loPassword);

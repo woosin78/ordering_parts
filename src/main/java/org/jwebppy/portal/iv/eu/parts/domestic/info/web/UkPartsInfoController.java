@@ -13,7 +13,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.jwebppy.portal.iv.eu.parts.domestic.info.service.EuPartsInfoService;
-import org.jwebppy.portal.iv.eu.parts.domestic.order.OrderGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping("/portal/corp/uk/scm/parts/info")
-public class UkPartsInfoController extends OrderGeneralController
+public class UkPartsInfoController extends EuOrderGeneralController
 {
 	@Autowired
 	private LangService langService;

@@ -12,6 +12,7 @@ import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.jwebppy.portal.common.PortalConfigVo;
@@ -29,6 +30,9 @@ public class PortalIndexController extends PlatformGeneralController
 {
 	@Autowired
 	private ContentAuthorityService contentAuthorityService;
+
+	@Autowired
+	private I18nMessageSource i18nMessageSource;
 
 	@Autowired
 	private UserService userService;
@@ -54,7 +58,7 @@ public class PortalIndexController extends PlatformGeneralController
 
 		if (cItem == null)
 		{
-			return new ResponseEntity<>("<script>alert('You don′t have an authority.'); document.location.href = '" + PortalConfigVo .FORM_LOGOUT_PROCESSING_URL + "';</script>", HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>("<script>alert('" + i18nMessageSource.getMessage("PLTF_M_NOT_AUTHORIZED") + "'); document.location.href = '" + PortalConfigVo .FORM_LOGOUT_PROCESSING_URL + "';</script>", HttpStatus.UNAUTHORIZED);
 		}
 
 		UserDto user = userService.getUserByUsername(getUsername());

@@ -14,7 +14,7 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.portal.iv.eu.parts.domestic.order.OrderGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderItemDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuSimulationResultDto;
@@ -32,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 @RequestMapping("/portal/corp/eu/scm/parts/order/create")
 @PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
-public class EuOrderSimulationController extends OrderGeneralController
+public class EuOrderSimulationController extends EuOrderGeneralController
 {
 	@Autowired
 	private EuOrderSimulationService euOrderSimulationService;

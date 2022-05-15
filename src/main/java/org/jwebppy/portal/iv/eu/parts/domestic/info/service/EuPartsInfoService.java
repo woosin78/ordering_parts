@@ -8,19 +8,15 @@ import java.util.Map;
 import org.jwebppy.config.RedisConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.service.EuPartsDomesticGeneralService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EuPartsInfoService
+public class EuPartsInfoService extends EuPartsDomesticGeneralService
 {
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	public RfcResponse getItemSubList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ITEM_SUB_LIST");
@@ -88,14 +84,14 @@ public class EuPartsInfoService
 		{
 			plant = "7860";  // EU
 		}
-		
+
 		rfcRequest.addField("I_VKORG", paramMap.getSalesOrg());
 		rfcRequest.addField("I_MATNR", paramMap.getString("partsNo"));
 		rfcRequest.addField("I_WERKS", plant);
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
-	
+
 	public RfcResponse getAppliedModelList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_APP_MODEL_LIST");

@@ -6,15 +6,15 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.portal.iv.eu.common.service.EuGeneralService;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.service.EuPartsDomesticGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OrderGeneralService extends EuGeneralService
+public class EuOrderCommonService extends EuPartsDomesticGeneralService
 {
 	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
+	protected SimpleRfcTemplate simpleRfcTemplate;
 
 	//@Cacheable(value = RedisConfig.ORDER_TYPE, key = "#paramMap", unless="#result == null")
 	public DataList getOrderType(ErpDataMap paramMap)

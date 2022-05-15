@@ -5,12 +5,21 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+	<script>
+	const GLOBAL_CONST = {
+		"DATE_FORMAT": "[[${DATE_FORMAT}]]",
+		"TIME_FORMAT": "[[${TIME_FORMAT}]]",
+		"DELIMITER": "[[${DELIMITER}]]"
+	};
+	</script>
+	
 	<title th:text="#{PTL_T_DOOBIZ_PLUS}"></title>
 	<!-- Meta -->
 	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/meta"></th:block>
 	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/jquery/jquery.bxslider.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/main.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"/>
 
 	<!-- JavaScript -->

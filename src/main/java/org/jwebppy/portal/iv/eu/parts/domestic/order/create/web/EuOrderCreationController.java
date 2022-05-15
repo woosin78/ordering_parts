@@ -11,8 +11,8 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
-import org.jwebppy.portal.iv.eu.parts.domestic.order.OrderGeneralController;
-import org.jwebppy.portal.iv.eu.parts.domestic.order.OrderGeneralService;
+import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderCommonService;
+import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderItemDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.service.EuOrderCreationService;
@@ -30,10 +30,10 @@ import org.springframework.web.context.request.WebRequest;
 @Controller
 @RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH + "/parts/order/create")
 @PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
-public class EuOrderCreationController extends OrderGeneralController
+public class EuOrderCreationController extends EuOrderGeneralController
 {
 	@Autowired
-	private OrderGeneralService orderGeneralService;
+	private EuOrderCommonService orderCommonService;
 
 	@Autowired
 	private EuOrderCreationService euOrderCreationService;
@@ -72,7 +72,7 @@ public class EuOrderCreationController extends OrderGeneralController
 		ErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.putAll(paramMap);
 
-		return orderGeneralService.getOrderType(rfcParamMap);
+		return orderCommonService.getOrderType(rfcParamMap);
 	}
 
 	@PostMapping("/save")

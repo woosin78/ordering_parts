@@ -84,10 +84,8 @@ $(function(){
 	JpUiForm.checkbox.checkByValue($("input[name=pFgComplete]"), JpUtilsString.defaultString("[[${pFgComplete}]]", "C"));
 		
 	$tableObj = $("#TBL_grid").DataTable({
-		select: true,   			// row 선택 기능 켬
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
-		//fixedColumns: {leftColumns: 8},
 		columns : [
 			{data: "MATNR", title: "[[#{HQP_T_PART_NO}]]"},
 			{data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"},

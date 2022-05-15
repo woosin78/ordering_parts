@@ -38,12 +38,8 @@ $(document).ready(function() {
 let $tableObj;
 $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
-		select: {
-			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
-	    },
 		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
-		//fixedColumns: {leftColumns: 5},
 		columns : [
 			{data: "ZFCIVNO", 		title: "[[#{HQP_L_INVOICE_NO}]]"},
 			{data: "TKNUM", 		title: "[[#{HQP_L_SHIPMENT_NO}]]"},

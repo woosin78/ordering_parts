@@ -71,7 +71,11 @@ let JpUiDimmer = {
 		showDimmer: function(onShow) {
 			$("#jsUiDimmer").dimmer({
 				closable: false,
-				onShow: onShow
+				onShow: onShow,
+				duration: {
+					show: 0,
+					hide: 0
+				}
 			}).dimmer("show");
 			
 			$(document).find("input, select").blur();

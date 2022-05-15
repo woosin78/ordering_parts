@@ -1,11 +1,11 @@
 package org.jwebppy.portal.iv.eu.parts.domestic.common.web;
 
-import org.jwebppy.portal.iv.hq.parts.common.web.PartsGeneralController;
-import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
+import org.jwebppy.portal.iv.eu.parts.common.web.EuPartsGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.springframework.ui.Model;
 import org.springframework.web.context.request.WebRequest;
 
-public abstract class EuPartsDomesticGeneralController extends PartsGeneralController
+public abstract class EuPartsDomesticGeneralController extends EuPartsGeneralController
 {
 	protected final static String[] MANAGER_AUTHORITES = {"DP_IVDO_PARTS_MANAGER"};
 
@@ -14,6 +14,6 @@ public abstract class EuPartsDomesticGeneralController extends PartsGeneralContr
 	{
 		super.addAllAttributeFromRequest(model, webRequest);
 
-		model.addAttribute("BASE_PATH", PartsDomesticCommonVo.REQUEST_PATH);
+		model.addAttribute("BASE_PATH", EuPartsDomesticCommonVo.REQUEST_PATH);
 	}
 }

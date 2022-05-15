@@ -126,6 +126,11 @@ $(document).ready(function() {
 				$("#FORM_write").form(formValidCheck);
 				
 				$(JpUiForm.checkbox.checkedRadio(type)).checkbox("check");
+				
+				if (JpUtilsString.equals("[[${type}]]", "copy"))
+				{
+					$("#scrSeq").val("");
+				};
 			}
 		});
 	};
@@ -154,7 +159,14 @@ $(document).ready(function() {
 						opener.doSearch();
 					};
 					
-					goBack();
+					if (JpUtilsString.equals("[[${type}]]", "copy"))
+					{
+						window.close();						
+					}
+					else
+					{
+						goBack();	
+					};
 				}
 			});
 		};

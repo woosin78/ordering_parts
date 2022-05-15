@@ -9,7 +9,7 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.eu.common.EuCommonVo;
-import org.jwebppy.portal.iv.eu.parts.domestic.order.OrderGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.display.service.EuOrderStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping("/portal/corp/eu/scm/parts/order/display")
-public class EuOrderStatusController extends OrderGeneralController
+public class EuOrderStatusController extends EuOrderGeneralController
 {
 	@Autowired
 	private EuOrderStatusService orderStatusService;

@@ -218,7 +218,7 @@ $(document).ready(function() {
 
 							JpUtilsAjax.get({
 								url: "/platform/mgmt/content/list/layout",
-								data: {"type" : "R"},
+								data: {"type" : "R", "fgVisible": "Y"},
 								global: false,
 								success: function(data, textStatus, jqXHR)
 								{

@@ -10,7 +10,8 @@ import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.eu.common.EuCommonVo;
-import org.jwebppy.portal.iv.eu.parts.domestic.order.OrderGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.web.EuPartsDomesticGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.backorder.service.EuBackorderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,9 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/order/backorder")
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH + "/order/backorder")
 @PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
-public class EuBackorderController extends OrderGeneralController
+public class EuBackorderController extends EuPartsDomesticGeneralController
 {
 	@Autowired
 	private EuBackorderService backorderService;

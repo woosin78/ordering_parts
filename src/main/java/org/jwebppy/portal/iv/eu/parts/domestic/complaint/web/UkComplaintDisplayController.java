@@ -10,8 +10,8 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.eu.common.EuCommonVo;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.web.EuPartsDomesticGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.complaint.service.UkComplaintDisplayService;
-import org.jwebppy.portal.iv.eu.parts.domestic.order.OrderGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -24,7 +24,7 @@ import org.springframework.web.context.request.WebRequest;
 @Controller
 @RequestMapping("/portal/corp/uk/scm/parts/complaint/display")
 @PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
-public class UkComplaintDisplayController extends OrderGeneralController
+public class UkComplaintDisplayController extends EuPartsDomesticGeneralController
 {
 	@Autowired
 	private UkComplaintDisplayService complaintDisplayService;

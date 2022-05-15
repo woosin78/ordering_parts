@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
@@ -20,20 +19,16 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.core.util.Formatter;
-import org.jwebppy.portal.common.service.PortalGeneralService;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.service.EuPartsDomesticGeneralService;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderItemDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuPricingResultDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuSimulationResultDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EuOrderSimulationService extends PortalGeneralService
+public class EuOrderSimulationService extends EuPartsDomesticGeneralService
 {
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	public RfcResponse getItemsFromGpes(ErpDataMap paramMap)
 	{
 		//RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_GET_SHOPPING_CART");

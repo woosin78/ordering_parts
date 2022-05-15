@@ -73,10 +73,8 @@ $(function(){
 	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 	
 	$tableObj = $("#TBL_grid").DataTable({
-		select: true,   			// row 선택 기능 켬
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
-		//fixedColumns: {leftColumns: 8},
 		columns : [
 			{data: "SALEDT", title: "[[#{HQP_L_AP_SCHEDULE_006}]]"},//매입월		
 			{data: "BUDAT", title: "[[#{HQP_L_AP_SCHEDULE_007}]]"},//입금일자

@@ -7,8 +7,6 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.jwebppy.config.PortalCacheConfig;
-import org.jwebppy.platform.core.cache.CacheHelper;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -34,11 +32,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrderCreateService extends PartsDomesticGeneralService
 {
-	@Autowired
-	private CacheHelper cacheHelper;
+	//@Autowired
+	//private CacheHelper cacheHelper;
 
-	@Autowired
-	private PortalCacheConfig portalCacheConfig;
+	//@Autowired
+	//private PortalCacheConfig portalCacheConfig;
 
 	@Autowired
 	private OrderCreateMapper orderCreateMapper;

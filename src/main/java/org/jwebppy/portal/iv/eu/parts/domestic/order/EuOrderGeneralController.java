@@ -16,7 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.portal.iv.eu.parts.common.web.EuPartsGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.web.EuPartsDomesticGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderItemDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuSimulationResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-public class OrderGeneralController extends EuPartsGeneralController
+public class EuOrderGeneralController extends EuPartsDomesticGeneralController
 {
 	@Autowired
 	private Environment environment;

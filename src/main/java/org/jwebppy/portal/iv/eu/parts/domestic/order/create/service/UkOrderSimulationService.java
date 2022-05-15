@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.IDataList;
 import org.jwebppy.platform.core.util.CmNumberUtils;
@@ -19,15 +18,11 @@ import org.jwebppy.portal.iv.eu.common.EuCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderItemDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuSimulationResultDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UkOrderSimulationService extends EuOrderSimulationService
 {
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	@Override
 	public EuSimulationResultDto simulation(EuOrderDto order)
 	{

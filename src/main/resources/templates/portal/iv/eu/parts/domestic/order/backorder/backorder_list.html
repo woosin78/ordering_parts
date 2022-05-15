@@ -2,15 +2,13 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/eu/parts/common/index}">
 <th:block layout:fragment="content">
-	<script type="application/javascript" th:src="@{/portal/js/portal.utils.order.js}"></script>
-	
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVEU_TXT_0041}"></div><!-- Backorder List -->
+		<div class="block-title" th:text="#{EUP_T_0041}"></div><!-- Backorder List -->
 		<div class="block-button-area">
-			<button id="BTN_download" type="button" th:text="#{DIVEU_BTN_0003}"></button><!-- Download -->
-			<button id="BTN_search" type="button" th:text="#{DIVEU_BTN_0002}"></button><!-- Search -->				
+			<button id="BTN_download" type="button" th:text="#{EUP_B_0003}"></button><!-- Download -->
+			<button id="BTN_search" type="button" th:text="#{EUP_B_0002}"></button><!-- Search -->				
 		</div>
 	</div>
 	<div class="condition-area">
@@ -18,25 +16,25 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DIVEU_LB_0013}"></th>
+				<th th:text="#{EUP_L_0013}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
 					</div>			
 				</td>
-				<th th:text="#{DIVEU_LB_0014}"></th>
+				<th th:text="#{EUP_L_0014}"></th>
 				<td>
 				<div class="input-area order-type"></div>
 				</td>			
 			</tr>
 			<tr>
-				<th th:text="#{DIVEU_LB_0015}"></th>
+				<th th:text="#{EUP_L_0015}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
 					</div>		
 				</td>
-				<th th:text="#{DIVEU_LB_0029}"></th>
+				<th th:text="#{EUP_L_0029}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
@@ -44,7 +42,7 @@
 				</td>			
 			</tr>		
 			<tr>
-				<th th:text="#{DIVEU_LB_0016}"></th><!-- Period -->
+				<th th:text="#{EUP_L_0016}"></th><!-- Period -->
 				<td colspan="3">
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -83,22 +81,22 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 9 },
 			columns : [
-				{data: "KONDA_T", 		title: "[[#{DIVEU_LB_0014}]]"},	//Order<br>Type
-				{data: "BSTKD", 		title: "[[#{DIVEU_LB_0015}]]"},	//P.O. No.
-				{data: "AUDAT", 		title: "[[#{DIVEU_LB_0108}]]"},	//Order Date
-				{data: "PRETD",			title: "[[#{DIVEU_LB_0109}]]"},	//ETD Comment
-				{data: "VBELN", 		title: "[[#{DIVEU_LB_0013}]]"},	//Order No.
-				{data: "POSNR", 		title: "[[#{DIVEU_LB_0019}]]"},	//Line Item 
-				{data: "MATNR_SO", 		title: "[[#{DIVEU_LB_0029}]]"},	//Order Part No.
-				{data: "MATNR_SH", 		title: "[[#{DIVEU_LB_0030}]]"},	//Supply Part No
-				{data: "MAKTX", 		title: "[[#{DIVEU_LB_0031}]]"},	//Description
-				{data: "KWMENG_SO", 	title: "[[#{DIVEU_LB_0111}]]"},	//Order Qty
-				{data: "KWMENG_SH", 	title: "[[#{DIVEU_LB_0112}]]"},	//S.Completion Qty
-				{data: "KWMENG", 		title: "[[#{DIVEU_LB_0113}]]"},	//Backorder quantity
-				{data: "VRKME", 		title: "[[#{DIVEU_LB_0049}]]"}	//UoM
+				{data: "KONDA_T", 		title: "[[#{EUP_L_0014}]]"},	//Order<br>Type
+				{data: "BSTKD", 		title: "[[#{EUP_L_0015}]]"},	//P.O. No.
+				{data: "AUDAT", 		title: "[[#{EUP_L_0108}]]"},	//Order Date
+				{data: "PRETD",			title: "[[#{EUP_L_0109}]]"},	//ETD Comment
+				{data: "VBELN", 		title: "[[#{EUP_L_0013}]]"},	//Order No.
+				{data: "POSNR", 		title: "[[#{EUP_L_0019}]]"},	//Line Item 
+				{data: "MATNR_SO", 		title: "[[#{EUP_L_0029}]]"},	//Order Part No.
+				{data: "MATNR_SH", 		title: "[[#{EUP_L_0030}]]"},	//Supply Part No
+				{data: "MAKTX", 		title: "[[#{EUP_L_0031}]]"},	//Description
+				{data: "KWMENG_SO", 	title: "[[#{EUP_L_0111}]]"},	//Order Qty
+				{data: "KWMENG_SH", 	title: "[[#{EUP_L_0112}]]"},	//S.Completion Qty
+				{data: "KWMENG", 		title: "[[#{EUP_L_0113}]]"},	//Backorder quantity
+				{data: "VRKME", 		title: "[[#{EUP_L_0049}]]"}	//UoM
 			],
 			ajax: {
-				url: "/portal/corp/eu/scm/parts/order/backorder/backorder_list/data",
+				url: "[[${BASE_PATH}]]/order/backorder/backorder_list/data",// /portal/iv/eu/parts/domestic/order/backorder/backorder_list
 				data: function(p)
 				{
 					p.pOrderNo 		= $("#pOrderNo").val();

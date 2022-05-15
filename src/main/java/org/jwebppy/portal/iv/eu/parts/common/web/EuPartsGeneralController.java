@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class EuPartsGeneralController extends EuGeneralController
 {
+	protected final String[] MANAGER_AUTHORITIES = {"DP_EUDO_PARTS_MANAGER", "DP_UKDO_PARTS_MANAGER"};
+
 	@Autowired
-	private EuPartsGeneralService partsGeneralService;
+	private EuPartsGeneralService euPartsGeneralService;
 
 	public PartsErpDataMap getErpUserInfo()
 	{
@@ -26,7 +28,7 @@ public class EuPartsGeneralController extends EuGeneralController
 
 		if (erpUserContext == null)
 		{
-	        RfcResponse response = partsGeneralService.getErpUserInfo();
+	        RfcResponse response = euPartsGeneralService.getErpUserInfo();
 	        DataList userList = response.getTable("T_USER");
 
 	        if (CollectionUtils.isNotEmpty(userList))

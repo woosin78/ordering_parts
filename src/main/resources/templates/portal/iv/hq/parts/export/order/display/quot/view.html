@@ -143,9 +143,6 @@ $(function(){
 	    	$("#TOTAL_WEIGHT").html(mainHeadResult.TOTAL_WEIGHT + " " + mainHeadResult.GEWEI);
 	    	
 	    	$tableObj = $("#TBL_grid").DataTable({
-	    		select: {
-	    			selector: "td:not(.noselect)"// noselect class 컬럼은 select 하지 않도록 한다. (input과 충돌 발생)
-	    	    },
 	    		ordering: true,// 정렬 기능 켬
 	    		scrollY: 100,
 	    		columns : [

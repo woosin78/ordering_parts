@@ -13,7 +13,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.jwebppy.portal.iv.eu.parts.domestic.info.service.EuPartsInfoService;
-import org.jwebppy.portal.iv.eu.parts.domestic.order.OrderGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping("/portal/corp/eu/scm/parts/info")
-public class EuPartsInfoController extends OrderGeneralController
+public class EuPartsInfoController extends EuOrderGeneralController
 {
 	@Autowired
 	private LangService langService;
@@ -75,7 +75,7 @@ public class EuPartsInfoController extends OrderGeneralController
 		if (CollectionUtils.isNotEmpty(items))
 		{
 			DataMap dataMap = (DataMap)items.get(0);
-			
+
 			if (CollectionUtils.isNotEmpty(plants))
 			{
 				DataMap plantMap = (DataMap)plants.get(0);
@@ -112,12 +112,12 @@ public class EuPartsInfoController extends OrderGeneralController
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("items", items);
 
-		
+
 		// Certified Program 구함.
 		// parameters : partsNo, plant
 		RfcResponse rfcResponse = partsInfoService.getAmPartList(rfcParamMap);
 		DataList dataList = rfcResponse.getTable("LT_ITEM");
-		
+
 		if (CollectionUtils.isNotEmpty(dataList)) {
 			for (int i = 0; i<dataList.size(); i++){
 				DataMap dataMap = (DataMap)dataList.get(i);
@@ -126,9 +126,9 @@ public class EuPartsInfoController extends OrderGeneralController
 					break;
 				}
 			}
-			
+
 		}
-		
+
 		return resultMap;
 	}
 
@@ -222,8 +222,8 @@ public class EuPartsInfoController extends OrderGeneralController
 
 		return dataList;
 	}
-	
-	
+
+
 	@RequestMapping("/applied_model_popup_list")
 	public String appliedModelList(Model model, WebRequest webRequest)
 	{

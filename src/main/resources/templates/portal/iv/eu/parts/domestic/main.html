@@ -8,7 +8,8 @@
 	<script>
 	const GLOBAL_CONST = {
 		"DATE_FORMAT": "[[${DATE_FORMAT}]]",
-		"TIME_FORMAT": "[[${TIME_FORMAT}]]"
+		"TIME_FORMAT": "[[${TIME_FORMAT}]]",
+		"DELIMITER": "[[${DELIMITER}]]"
 	};
 	</script>
 
@@ -16,13 +17,13 @@
 	<!-- Meta -->
 	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/meta"></th:block>
 	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/jquery/jquery.bxslider.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/main.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">
-	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/jquery.bxslider.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"/>
 	
 	<!-- JavaScript -->
-	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/js"></th:block>
+	<th:block th:replace="portal/layout/iv/eu/parts/common/fragments/js"></th:block>
 </head>
 <body>
 	<!-- Progress bar end -->
@@ -79,9 +80,9 @@
 							<tr>
 								<td>
 									<table class="bulletin-1">
-									<th:block th:if="${#lists.isEmpty(notice)}">
+									<th:block th:if="${#lists.isEmpty(bbs1)}">
 										<tr>
-											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="#{PLTF_L_1650718139552}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goBbsFromMain(2);" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="${bbs1Name}" th:title="${bbs1Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(1)" style="cursor: pointer; margin-top: 20px;"/></td>
 											<td class="bbs-title">&nbsp;</td>
 											<td class="bbs-date">&nbsp;</td>
 										</tr>
@@ -90,13 +91,13 @@
 											<td class="bbs-date">&nbsp;</td>
 										</tr>
 									</th:block>
-									<th:block th:unless="${#lists.isEmpty(notice)}">
-										<tr th:each="content, i: ${notice}">
-											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="#{PLTF_L_1650718139552}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goToBoard('1-07008bda-f80b-4f6c-8397-c382bc344273');" style="cursor: pointer; margin-top: 20px;"/></td>
+									<th:block th:unless="${#lists.isEmpty(bbs1)}">
+										<tr th:each="content, i: ${bbs1}">
+											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="${bbs1Name}" th:title="${bbs1Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(1)" style="cursor: pointer; margin-top: 20px;"/></td>
 											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.board.bSeq}">[[${content.title}]]</a></td>
 											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
 										</tr>
-										<tr th:if="${#lists.size(notice) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(notice)-4)}">
+										<tr th:if="${#lists.size(bbs1) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(bbs1)-4)}">
 											<td colspan="2">&nbsp;</td>
 										</tr>											
 									</th:block>
@@ -104,9 +105,9 @@
 								</td>
 								<td>
 									<table class="bulletin-2">
-									<th:block th:if="${#lists.isEmpty(market)}">
+									<th:block th:if="${#lists.isEmpty(bbs2)}">
 										<tr>
-											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="#{PLTF_L_1650717788574}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goToBoard('1-92953403-226b-494e-9c63-55763f8bbb8b');" style="cursor: pointer; margin-top: 20px;"/></td>
+											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="${bbs2Name}" th:title="${bbs2Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(2)" style="cursor: pointer; margin-top: 20px;"/></td>
 											<td class="bbs-title">&nbsp;</td>
 											<td class="bbs-date">&nbsp;</td>
 										</tr>
@@ -115,13 +116,13 @@
 											<td class="bbs-date">&nbsp;</td>
 										</tr>
 									</th:block>
-									<th:block th:unless="${#lists.isEmpty(market)}">
-										<tr th:each="content, i: ${market}">
-											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="#{PLTF_L_1650717788574}"></div><img src="/portal/img/icon/more.png" onclick="javascript:goToBoard('1-92953403-226b-494e-9c63-55763f8bbb8b');" style="cursor: pointer; margin-top: 20px;"/></td>
+									<th:block th:unless="${#lists.isEmpty(bbs2)}">
+										<tr th:each="content, i: ${bbs2}">
+											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="${bbs2Name}" th:title="${bbs2Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(2)" style="cursor: pointer; margin-top: 20px;"/></td>
 											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.board.bSeq}">[[${content.title}]]</a></td>
 											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
 										</tr>
-										<tr th:if="${#lists.size(market) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(market)-4)}">
+										<tr th:if="${#lists.size(bbs2) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(bbs2)-4)}">
 											<td colspan="2">&nbsp;</td>
 										</tr>											
 									</th:block>
@@ -136,11 +137,9 @@
 		<div class="bottom-area">
 			<div class="copy-right">
 				<span th:text="#{PTL_T_COPY_RIGHT}"></span>
-				
 			</div>
 		</div>
 	</div>
-
 	<!-- Logout -->
 	<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>	
 	<!-- iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe -->
@@ -251,8 +250,10 @@ function clickLogout()
 	$("#FORM_logout").submit();
 };
 
-function goToBoard(bSeq)
+function goToBoard(type)
 {
+	let bSeq = (type == 1) ? "[[${bSeq1}]]": "[[${bSeq2}]]";
+	
 	location.href = "/portal/iv/board/list?bSeq=" + bSeq;	
 };
 

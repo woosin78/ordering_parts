@@ -22,10 +22,8 @@
 		console.log(JSON.stringify(opener.errorOrderItems));
 		
 		$tableObj = $("#TBL_grid").DataTable({
-			select: true,// row 선택 기능 켬
 			ordering: false,// 정렬 기능 켬
 			scrollY: 100,
-			//fixedColumns: {leftColumns: 1},// 컬럼 고정 켬. (왼쪽 2개 컬럼 고정)
 			columns : [
 				{name: "materialNo", data: "materialNo", title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Parts No.
 				{

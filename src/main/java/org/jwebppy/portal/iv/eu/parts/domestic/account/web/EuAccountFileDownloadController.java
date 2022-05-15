@@ -20,7 +20,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.eu.common.EuCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.account.service.EuAccountStatementService;
-import org.jwebppy.portal.iv.hq.parts.common.web.PartsGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.web.EuPartsDomesticGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 @Controller
 @RequestMapping("/portal/corp/eu/scm/parts/account/download")
-public class EuAccountFileDownloadController extends PartsGeneralController
+public class EuAccountFileDownloadController extends EuPartsDomesticGeneralController
 {
 	/*
 	 EXCEL

@@ -8,7 +8,7 @@
 		</selectKey>	
 	
 		insert into pltf_sap_conn_resource (scr_seq, type, name, description, app_server, instance_no, system_id, router_string, msg_server, router, grp_server, client, username, password, pool_capacity, peak_limit, language, fg_use_user_lang, fg_use, fg_delete, reg_username, reg_date) values (
-			#{scrSeq}, #{type}, #{name}, #{description}, #{appServer}, #{instanceNo}, #{systemId}, #{routerString}, #{msgServer}, #{router}, #{grpServer}, #{client}, #{username}, #{password}, #{poolCapacity}, #{peakLimit}, #{language}, #{fgUseUserLang}, 'N', 'N', #{regUsername}, #{regDate}
+			#{scrSeq}, #{type}, #{name}, #{description}, #{appServer}, #{instanceNo}, #{systemId}, #{routerString}, #{msgServer}, #{router}, #{grpServer}, #{client}, #{username}, #{password}, #{poolCapacity}, #{peakLimit}, #{language}, #{fgUseUserLang}, #{fgUse}, 'N', #{regUsername}, #{regDate}
 		) 
 	</insert>
 

@@ -13,11 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.jwebppy.config.RedisConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.service.EuPartsDomesticGeneralService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,11 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sapportals.connector.ConnectorException;
 
 @Service
-public class UkComplaintCreationService 
+public class UkComplaintCreationService extends EuPartsDomesticGeneralService
 {
-	@Autowired
-	private SimpleRfcTemplate simpleRfcTemplate;
-
 	public RfcResponse getInvoiceInfoBySap(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest();

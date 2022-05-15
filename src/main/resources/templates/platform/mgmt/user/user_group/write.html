@@ -140,6 +140,8 @@ $(document).ready(function() {
 	$(".BTN_save").on("click", function() {
 		if ($("#FORM_write").form("validate form"))
 		{
+			JpUiDimmer.show();
+			
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/user_group/save",
 				data: $("#FORM_write").serialize(),
@@ -163,6 +165,10 @@ $(document).ready(function() {
 					};
 					
 					goBack();
+				},
+				error: function(jqXHR, textStatus, errorThrown)
+				{
+					JpUiDimmer.hide();
 				}
 			});
 		};

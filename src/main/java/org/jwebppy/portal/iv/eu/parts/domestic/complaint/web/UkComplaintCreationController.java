@@ -12,7 +12,7 @@ import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.portal.iv.eu.parts.common.web.EuPartsGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.web.EuPartsDomesticGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.complaint.service.UkComplaintCreationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -31,7 +31,7 @@ import com.sapportals.connector.ConnectorException;
 @Controller
 @RequestMapping("/portal/corp/uk/scm/parts/complaint/create")
 @PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
-public class UkComplaintCreationController extends EuPartsGeneralController
+public class UkComplaintCreationController extends EuPartsDomesticGeneralController
 {
 	@Autowired
 	private UkComplaintCreationService ukComplaintCreationService;
