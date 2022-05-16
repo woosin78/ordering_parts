@@ -25,7 +25,7 @@ public class PartsExportController extends PartsExportGeneralController
 	public String main(Model model, WebRequest webRequest)
 	{
 		//공지사항
-		String bSeq1 = "1-07008bda-f80b-4f6c-8397-c382bc344273";
+		String bSeq1 = "0-72bbeac8-8723-4175-ac94-da4e483c7943";
 		EpBoardContentSearchDto boardContentSearch = new EpBoardContentSearchDto();
 		boardContentSearch.setBSeq(bSeq1);
 		boardContentSearch.setRowPerPage(4);
@@ -34,8 +34,8 @@ public class PartsExportController extends PartsExportGeneralController
 		model.addAttribute("bbs1Name", i18nMessageSource.getMessage("PLTF_T_" + bSeq1));
 		model.addAttribute("bbs1", ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch)));
 
-		//부품장터
-		String bSeq2 = "1-92953403-226b-494e-9c63-55763f8bbb8b";
+		//프로모션&마케팅
+		String bSeq2 = "1-fce249eb-f5ac-4818-b89c-2c970a1e5224";
 		boardContentSearch.setBSeq(bSeq2);
 		model.addAttribute("bSeq2", bSeq2);
 		model.addAttribute("bbs2Name", i18nMessageSource.getMessage("PLTF_T_" + bSeq2));

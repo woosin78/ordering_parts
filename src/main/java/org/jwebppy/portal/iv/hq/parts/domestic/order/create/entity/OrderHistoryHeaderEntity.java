@@ -3,7 +3,7 @@ package org.jwebppy.portal.iv.hq.parts.domestic.order.create.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.jwebppy.portal.iv.hq.parts.common.entity.PartsGeneralEntity;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.entity.PartsDomesticGeneralEntity;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryItemDto;
 
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class OrderHistoryHeaderEntity extends PartsGeneralEntity
+public class OrderHistoryHeaderEntity extends PartsDomesticGeneralEntity
 {
 	private static final long serialVersionUID = -6805752046058134209L;
 

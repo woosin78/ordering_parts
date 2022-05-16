@@ -1,7 +1,7 @@
 package org.jwebppy.portal.iv.hq.parts.export.order.create.dto;
 
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.portal.iv.hq.parts.common.dto.PartsGeneralDto;
+import org.jwebppy.portal.iv.hq.parts.export.common.dto.PartsExportGeneralDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class ExOrderItemDto extends PartsGeneralDto
+public class ExOrderItemDto extends PartsExportGeneralDto
 {
 	private static final long serialVersionUID = 3626800808368640264L;
 

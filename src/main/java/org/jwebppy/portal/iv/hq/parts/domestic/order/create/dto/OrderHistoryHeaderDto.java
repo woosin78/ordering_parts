@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.portal.iv.hq.parts.common.dto.PartsGeneralDto;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.dto.PartsDomesticGeneralDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class OrderHistoryHeaderDto extends PartsGeneralDto
+public class OrderHistoryHeaderDto extends PartsDomesticGeneralDto
 {
 	private static final long serialVersionUID = 1933350773842695212L;
 

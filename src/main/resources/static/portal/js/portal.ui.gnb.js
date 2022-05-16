@@ -104,7 +104,7 @@ function makeGnb2()
 	    				setGnbLevel2(element);
 	    			});
 	    		}
-	    		else
+	    		else 
 	    		{
 	    			level1.push(makeGnbItem(items[i]));
 	    			

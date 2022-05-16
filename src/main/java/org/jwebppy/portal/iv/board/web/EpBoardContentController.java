@@ -55,6 +55,7 @@ public class EpBoardContentController extends IvGeneralController
 
 	public static void main(String[] args)
 	{
+		System.err.println(UidGenerateUtils.generate());
 		System.err.print(UidGenerateUtils.generate());
 	}
 

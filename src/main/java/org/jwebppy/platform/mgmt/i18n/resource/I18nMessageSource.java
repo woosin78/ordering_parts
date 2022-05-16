@@ -50,6 +50,8 @@ public class I18nMessageSource extends AbstractMessageSource
 	@Cacheable(value = CacheConfig.LANG, key = "{#key, #locale}", unless="#result == null")
 	public String getMessage(String key, Locale locale)
 	{
+		key = CmStringUtils.upperCase(key);
+
 		String[] codes = CmStringUtils.split(key, "_");
 
 		String lang = locale.toLanguageTag();

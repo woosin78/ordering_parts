@@ -83,7 +83,7 @@
 									<th:block th:if="${#lists.isEmpty(bbs1)}">
 										<tr>
 											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="${bbs1Name}" th:title="${bbs1Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(1)" style="cursor: pointer; margin-top: 20px;"/></td>
-											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-title">・[[#{HQP_T_EMPTY_RESULT}]]</td>
 											<td class="bbs-date">&nbsp;</td>
 										</tr>
 										<tr th:each="i: ${#numbers.sequence(1, 3)}">
@@ -108,7 +108,7 @@
 									<th:block th:if="${#lists.isEmpty(bbs2)}">
 										<tr>
 											<td rowspan="4" class="bbs-name"><div class="bulletin-title-text" th:text="${bbs2Name}" th:title="${bbs2Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(2)" style="cursor: pointer; margin-top: 20px;"/></td>
-											<td class="bbs-title">&nbsp;</td>
+											<td class="bbs-title">・[[#{HQP_T_EMPTY_RESULT}]]</td>
 											<td class="bbs-date">&nbsp;</td>
 										</tr>
 										<tr th:each="i: ${#numbers.sequence(1, 3)}">
