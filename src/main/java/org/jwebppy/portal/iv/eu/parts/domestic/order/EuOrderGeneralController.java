@@ -16,18 +16,29 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.common.web.EuPartsDomesticGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuOrderItemDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.create.dto.EuSimulationResultDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 public class EuOrderGeneralController extends EuPartsDomesticGeneralController
 {
 	@Autowired
 	private Environment environment;
+	
+	@Override
+	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
+	{
+		super.addAllAttributeFromRequest(model, webRequest);
+
+		model.addAttribute("BASE_PATH", EuPartsDomesticCommonVo.REQUEST_PATH);
+	}
 
 	protected String getOrderUploadFilePath()
 	{

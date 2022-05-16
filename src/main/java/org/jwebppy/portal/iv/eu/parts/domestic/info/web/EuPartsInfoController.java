@@ -12,6 +12,7 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.info.service.EuPartsInfoService;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/info")
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/info")
 public class EuPartsInfoController extends EuOrderGeneralController
 {
 	@Autowired

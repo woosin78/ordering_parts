@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/eu/parts/common/index}">
 <th:block layout:fragment="content">
 
 <style>
@@ -20,9 +20,9 @@
 </style>
 
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVEU_TXT_0078}"></div><!-- Parts Info. -->
+		<div class="block-title" th:text="#{EUP_T_0078}"></div><!-- Parts Info. -->
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{DIVEU_BTN_0002}"></button><!-- Search -->	
+			<button id="BTN_search" type="button" th:text="#{EUP_B_0002}"></button><!-- Search -->	
 		</div>
 	</div>
 	<form id="FORM_search" name="FORM_search" onsubmit="return false;">
@@ -30,7 +30,7 @@
 		<table class="condition table-fixed">
 			<tbody>
 				<tr>
-					<th style="width:150px" th:text="#{DIVEU_LB_0102}"></th><!--Parts No.  -->
+					<th style="width:150px" th:text="#{EUP_L_0102}"></th><!--Parts No.  -->
 					<td> 			
 						<div class="input-area">
 							<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" style="text-transform: uppercase;" tabindex="1">
@@ -38,7 +38,7 @@
 							<button class="btn-popup2" type="button" onclick="searchParts();"></button>					
 						</div>
 					</td>
-					<th style="width:150px" th:text="#{DIVEU_LB_0144}"></th><!-- Req Qty -->
+					<th style="width:150px" th:text="#{EUP_L_0144}"></th><!-- Req Qty -->
 					<td>
 						<div class="input-area">
 						<input type="text" id="pReqQty" name="pReqQty" class="custom-ui" tabindex="2">
@@ -54,15 +54,15 @@
 		<table class="condition table-fixed">
 			<tbody>
 				<tr>
-					<th style="width:150px" th:text="#{DIVEU_LB_0145}"></th><!-- Part No Desc -->
+					<th style="width:150px" th:text="#{EUP_L_0145}"></th><!-- Part No Desc -->
 					<td id="MAKTX"></td>
-					<th style="width:150px" th:text="#{DIVEU_LB_0146}"></th><!-- Stock -->
+					<th style="width:150px" th:text="#{EUP_L_0146}"></th><!-- Stock -->
 					<td id="AVA_FLAG"></td>			
 				</tr>		
 				<tr>
-					<th th:text="#{DIVEU_LB_0101}"></th><!--Serviceable  -->
+					<th th:text="#{EUP_L_0101}"></th><!--Serviceable  -->
 					<td id="SVRCD"></td>
-					<th th:text="#{DIVEU_LB_0147}"></th><!--Not Service Reason  -->
+					<th th:text="#{EUP_L_0147}"></th><!--Not Service Reason  -->
 					<td>
 						<span id="NOT_SERVICE"></span>
 						
@@ -72,9 +72,9 @@
 					</td>			
 				</tr>		
 				<tr>
-					<th th:text="#{DIVEU_LB_0050}"></th><!--Sales Lot  -->
+					<th th:text="#{EUP_L_0050}"></th><!--Sales Lot  -->
 					<td id="AUMNG"></td>
-					<th th:text="#{DIVEU_LB_0148}"></th><!--Model  -->
+					<th th:text="#{EUP_L_0148}"></th><!--Model  -->
 					<td>						
 						<div id="AREA_appliedModel" style="display:none;">
 						<span id="M_MATNR" class="custom-ui"></span>
@@ -83,26 +83,26 @@
 					</td>			
 				</tr>			
 				<tr>
-					<th th:text="#{DIVEU_LB_0149}"></th><!--Product Hierarchy  -->
+					<th th:text="#{EUP_L_0149}"></th><!--Product Hierarchy  -->
 					<td id="PRODH_T"></td>
-					<th th:text="#{DIVEU_LB_0150}"></th><!--Open Qty  -->
+					<th th:text="#{EUP_L_0150}"></th><!--Open Qty  -->
 					<td id="KWMENG"></td>			
 				</tr>	
 				<tr>
-					<th th:text="#{DIVEU_LB_0151}"></th><!--Net Weight  -->
+					<th th:text="#{EUP_L_0151}"></th><!--Net Weight  -->
 					<td id="NTGEW"></td>
-					<th th:text="#{DIVEU_LB_0152}"></th><!-- List Price Cost Code -->
+					<th th:text="#{EUP_L_0152}"></th><!-- List Price Cost Code -->
 					<td id="KONDM"></td>			
 				</tr>
 				<tr>
-					<th th:text="#{DIVEU_LB_0153}"></th><!-- Supply Part Number -->
+					<th th:text="#{EUP_L_0153}"></th><!-- Supply Part Number -->
 					<td>			
 						<div id="AREA_subItem" style="display:none;">			
 						<span id="REPNR" class="custom-ui"></span>
 						<button id="BTN_subItem" class="btn-popup2" type="button" onclick="showMoreInfoPop(this);"></button>
 						</div>								
 					</td>
-					<th th:text="#{DIVEU_LB_0154}"></th><!-- Stock of Supply Part -->
+					<th th:text="#{EUP_L_0154}"></th><!-- Stock of Supply Part -->
 					<td id="STOCKP"></td>			
 				</tr>
 				<tr>
@@ -122,12 +122,12 @@
 		<table class="condition">
 		     <tbody>
 				<tr>
-					<th rowspan="2" th:text="#{DIVEU_LB_0033}"></th><!--List Price  -->
-					<th colspan="2" th:text="#{DIVEU_LB_0034}"></th><!--Net Price  -->			
+					<th rowspan="2" th:text="#{EUP_L_0033}"></th><!--List Price  -->
+					<th colspan="2" th:text="#{EUP_L_0034}"></th><!--Net Price  -->			
 				</tr>		
 		        <tr>
-		            <th th:text="#{DIVEU_LB_0155}"></th><!--Stock Order  -->
-		            <th th:text="#{DIVEU_LB_0156}"></th><!--Emergency Order  -->                        
+		            <th th:text="#{EUP_L_0155}"></th><!--Stock Order  -->
+		            <th th:text="#{EUP_L_0156}"></th><!--Emergency Order  -->                        
 		        </tr>
 				<tr>
 					<td id="LPRICE"></td>
@@ -138,22 +138,22 @@
 		</table>	
 	</div>
 <script type="application/javascript">
-$(window).load(function() {
-	ProgressBar.hide();
+$(document).ready(function() {
+	ProgressBar.hide();	
 });
 
 function doSearch()
 {
 	if (CmStringUtils.isEmpty($("#pPartsNo").val()))
 	{
-		alert("[[#{DIVEU_MSG_0038}]]");
+		alert("[[#{EUP_M_0038}]]");
 		return;
 	}
 	
 	$("#pPartsNo").val($("#pPartsNo").val().toUpperCase());
 	
 	$.ajax({
-		url: "/portal/corp/eu/scm/parts/info/part_info_list/data",
+		url: "[[${BASE_PATH}]]/info/part_info_list/data",
 		data: {	"pPartsNo": $("#pPartsNo").val(), "pReqQty": $("#pReqQty").val() },
 		beforeSend: function(jqXHR, settings)
 		{
@@ -166,7 +166,7 @@ function doSearch()
 	    	
 	    	if (items.length == 0)
 	    	{
-	    		alert("[[#{DIVEU_MSG_0015}]]");
+	    		alert("[[#{EUP_M_0015}]]");
 	    		document.location.reload();
 	    	};
 	    	
@@ -300,7 +300,7 @@ $("#pPartsNo, #pReqQty").on("keydown", function(event) {
 $("#pPartsNo").autocomplete({	
 	source: function(request, response) {
 		$.ajax({
-			url: "/portal/corp/eu/scm/parts/info/autocompete/data",
+			url: "[[${BASE_PATH}]]/info/autocompete/data",
 			data: {	"pPartsNo": $("#pPartsNo").val() },			
 			success: function(data, textStatus, jqXHR)
 			{
@@ -329,7 +329,7 @@ $("#pPartsNo").autocomplete({
  */ 	
 function searchParts()
 {
-	Popup.open("/portal/corp/eu/scm/parts/info/parts_number_popup_list?pPartsNo=" + $("#pPartsNo").val(), 700, 600);
+	Popup.open("[[${BASE_PATH}]]/info/parts_number_popup_list?pPartsNo=" + $("#pPartsNo").val(), 700, 600);
 };
 
 /**
@@ -348,22 +348,22 @@ function showMoreInfoPop(obj)
 	{
 		if ("BTN_subItem" == id)
 		{
-			url = "/portal/corp/eu/scm/parts/info/sub_item_popup_list";	
+			url = "[[${BASE_PATH}]]/info/sub_item_popup_list";	
 		}
 		else if ("BTN_appliedModel" == id)
 		{
-			url = "/portal/corp/eu/scm/parts/info/applied_model_popup_list";
+			url = "[[${BASE_PATH}]]/info/applied_model_popup_list";
 			width = 800;
 		}
 		else if ("BTN_notServReason" == id)
 		{
-			url = "/portal/corp/eu/scm/parts/info/alternative_popup_list";
+			url = "[[${BASE_PATH}]]/info/alternative_popup_list";
 			width = 700;
 		}
 		else if ("BTN_amItem" == id)
 		{
 			param = param + "&pPlant=" + $("#pPlant") .val();
-			url = "/portal/corp/eu/scm/parts/info/am_part_popup_list";
+			url = "[[${BASE_PATH}]]/info/am_part_popup_list";
 			width = 700;
 		}
 		

@@ -1,0 +1,180 @@
+<!-- bottom.html begin -->
+<div class="footer-area">	
+	<div class="footer">
+		<div class="split-row-compact"></div>
+		<div class="logo-area">
+			<!-- img class="footer-logo" th:src="@{/portal/img/logo-s.png}" alt="Doosan"/>
+			<div class="split"></div -->
+			<div class="copyright" th:text="#{PTL_T_COPY_RIGHT}"></div>
+		</div>
+		<div>
+			<button th:text="#{HQP_B_LANGUAGE}"></button>
+		</div>
+		<div class="split-row-compact"></div>
+	</div>
+</div>
+<!-- bottom.html end -->
+
+<!-- Logout -->
+<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
+
+<script>
+$(document).ready(function() {
+	//상단 메뉴 생성 공통함수
+	makeGnb2();
+	
+	$(".top-header .logo-doobizplus").on("click", function() {
+		_goHome()
+	});
+	
+	$(".top-header li.new-window").on("click", function() {
+		window.open("/portal/forward/entry_point", "");
+	});
+	
+	$(".top-header li.dealer-info").on("click", function() {
+		_clickDealerInfo();	    		
+	});
+	
+	$(".top-header li.username").on("click", function() {
+		_clickUserInfo();
+	});
+	
+	$(".top-header .logout-button").on("click", function() {
+		_clickLogout();
+	});
+	
+	//Get last login information
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/login/history/last_login_info",		
+	    success: function(response, textStatus, jqXHR) 
+	    {
+	    	let data = response.RESULT;
+	    	
+	    	if (data != null && JpUtilsString.isNotEmpty(data.displayZonedRegDate))
+	    	{
+	    		$(".last-login-time").html(data.displayZonedRegDate + " / " + data.ip);
+	    	}
+	    	else
+	    	{
+	    		$(".last-login-time").html("-/-");
+	    	};
+	    }	
+	});
+});
+
+/*
+ * Ajax global settings.
+ */
+$(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+	if (jqXHR.status == "401" || jqXHR.status == "403")
+	{
+		document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}]]";
+	}
+	else
+	{
+		//document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).ERROR_PAGE_URL}]]";
+	};
+	
+	try
+	{
+		ProgressBar.hide();
+	}
+	catch (e) {}
+});
+
+$(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
+	jqXHR.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
+});
+</script>
+
+<script>
+/*
+ * 공통 페이지
+ */
+ function _goHome()
+ {
+ 	document.location.href = "/portal/forward/entry_point";
+ };
+
+ function _clickUserInfo()
+ {
+ 	Popup.open("/portal/iv/user/write", 700, 300);
+ };
+
+ function _clickDealerInfo()
+ {
+ 	Popup.open("/portal/iv/hq/parts/domestic/dealer_info/view", 1100, 800);
+ };
+
+ function _clickLogout()
+ {
+ 	$("#FORM_logout").submit();
+ }; 
+ 
+//품번 검색
+function _showPartSearch(partNo)
+{
+	Popup.open("[[${BASE_PATH}]]/info/popup/part_search?pPartNo=" + partNo, 700, 600);
+};
+
+//대체품 조회
+function _showSubPartList(partNo)
+{
+	Popup.open("[[${BASE_PATH}]]/info/popup/sub_part_list?pPartNo=" + partNo, 900, 500);
+};
+
+//부품 별 적용 모델
+function _showAppliedModelList(partNo)
+{
+	Popup.open("[[${BASE_PATH}]]/info/popup/applied_model_list?pPartNo=" + partNo, 600, 500);
+};
+
+//서비스불가사유 - MUL
+function _showNotServiableReason(partNo)
+{
+	Popup.open("[[${BASE_PATH}]]/info/popup/alternative_list?pPartNo=" + partNo, 800, 500);
+};
+
+//Download Grid
+function _gridDownload(grid, fileName)
+{
+	let gridFileDownload = new GridFileDownload(grid);
+
+	gridFileDownload.fileName = fileName;
+	gridFileDownload.excelDownload();				
+};
+
+//품번 자동완성
+function _setPartAutocomplete(target)
+{
+	$(target).autocomplete({
+		source: function(request, response) {
+			JpUtilsAjax.get({
+				url: "[[${BASE_PATH}]]/info/autocompete/data",
+				data: {	"pPartNo": $(target).val() },
+				success: function(data, textStatus, jqXHR)
+				{
+					let result = data.RESULT;
+					
+					if (JpUtilsObject.isNotNull(result))
+					{
+						response(
+								$.map(result, function(item) {
+									if (JpUtilsString.isNotEmpty(item.MATERIAL_TEXT))
+									{
+										return {
+											label: item.MATERIAL + " | " + item.MATERIAL_TEXT,
+											value: item.MATERIAL
+										}								
+									};
+								})
+						);					
+					};
+				}
+			});
+		},
+		//delay: 50,
+		minLength: 3
+	});
+};
+</script>

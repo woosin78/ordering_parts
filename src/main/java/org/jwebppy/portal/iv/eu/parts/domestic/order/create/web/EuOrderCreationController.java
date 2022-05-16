@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH + "/parts/order/create")
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH + "/order/create")
 @PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
 public class EuOrderCreationController extends EuOrderGeneralController
 {
@@ -138,8 +138,9 @@ public class EuOrderCreationController extends EuOrderGeneralController
 	}
 
 	@RequestMapping("/ship_to_party_list")
-	public Object shipToPartyList(@RequestParam Map<String, Object> paramMap)
+	public Object shipToPartyList(Model model, WebRequest webRequest)
 	{
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 

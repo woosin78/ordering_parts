@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index}">	
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 <th:block layout:fragment="content">
 <style>
 .error {
@@ -11,9 +11,9 @@
 }  
 </style>
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_TXT_0079}"></div><!--Substitution Part  -->
+	<div class="block-title" th:text="#{EUP_T_0079}"></div><!--Substitution Part  -->
 	<div class="block-button-area">
-		<button id="BTN_search" type="button" th:text="#{DIVEU_BTN_0002}"></button><!-- Search -->
+		<button id="BTN_search" type="button" th:text="#{EUP_B_0002}"></button><!-- Search -->
 		<!-- button id="BTN_close" type="button" th:text="#{DIVUK_BTN_0005}"></button><!-- Close -->		
 	</div>	
 </div>	
@@ -22,7 +22,7 @@
 <table class="condition">
 	<tbody>
 		<tr>
-			<th th:text="#{DIVEU_LB_0134}"></th><!-- Parts No -->
+			<th th:text="#{EUP_L_0134}"></th><!-- Parts No -->
 			<td>
 				<div class="input-area">
 					<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" th:value="${pPartsNo}" style="text-transform: uppercase;">
@@ -71,9 +71,9 @@ $(function(){
 					return '<input type="radio" name="RAD_MATNR" id="RAD_MATNR" class="custom-ui" value="' + row.MATNR + '" onchange="syncInput(this)"><label for="RAD_MATNR"></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},			
-			{name: "MATNR", 	data: "MATNR", 		title: "[[#{DIVEU_LB_0134}]]"		},	// Parts No
-			{name: "MAKTX1", 	data: "MAKTX1", 	title: "[[#{DIVEU_LB_0145}]]"	},	// Part No Desc
-			{name: "AVA_FLAG", 	data: "AVA_FLAG", 	title: "[[#{DIVEU_LB_0036}]]"	},	// Availability		
+			{name: "MATNR", 	data: "MATNR", 		title: "[[#{EUP_L_0134}]]"		},	// Parts No
+			{name: "MAKTX1", 	data: "MAKTX1", 	title: "[[#{EUP_L_0145}]]"	},	// Part No Desc
+			{name: "AVA_FLAG", 	data: "AVA_FLAG", 	title: "[[#{EUP_L_0036}]]"	},	// Availability		
 			{name: "SEQ", 		data: "SEQ", 		title: "SEQ(Hidden)"	},
 			{name: "LABST1", 	data: "LABST1", 	title: "LABST1(Hidden)"	},
 			{name: "ITCCD", 	data: "ITCCD", 		title: "ITCCD(Hidden)"	}			
@@ -85,7 +85,7 @@ $(function(){
 			}			
 		],
 		ajax: {
-			url: "/portal/corp/eu/scm/parts/info/sub_item_popup_list/data",
+			url: "[[${BASE_PATH}]]/info/sub_item_popup_list/data",
 			data: function(p)
 			{				
 				p.pPartsNo = $("#pPartsNo").val();
@@ -163,7 +163,7 @@ function doSearch()
  */ 	
 function searchParts(){
 	var param = "pPartsNo=" + $("#pPartsNo").val();
-	Popup.open("/portal/corp/eu/scm/parts/info/parts_number_popup_list?" + param, 700, 600);	
+	Popup.open("[[${BASE_PATH}]]/info/parts_number_popup_list?" + param, 700, 600);	
 }
 
 function checkValidation(){	
@@ -174,7 +174,7 @@ function checkValidation(){
     
     if (pPartsNo.length < 1) {
 //    	$('#pPartsNo').after('<span class="error">You have to input the material.</span>');
-    	alert("[[#{DIVEU_MSG_0065}]]");	// MSG_0065 You have to input the material.
+    	alert("[[#{EUP_M_0065}]]");	// MSG_0065 You have to input the material.
     	rtnValue = -1;
    	}
     

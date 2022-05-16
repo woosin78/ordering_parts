@@ -2,14 +2,14 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/eu/parts/common/index}">
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVEU_TXT_0077}"></div><!-- Statement of Account -->
+		<div class="block-title" th:text="#{EUP_T_0077}"></div><!-- Statement of Account -->
 		<div class="block-button-area">
-			<button id="BTN_pdfDownload" th:text="#{DIVEU_BTN_0008}"></button>		
-			<button id="BTN_excelDownload" th:text="#{DIVEU_BTN_0003}"></button>		
+			<button id="BTN_pdfDownload" th:text="#{EUP_B_0008}"></button>		
+			<button id="BTN_excelDownload" th:text="#{EUP_B_0003}"></button>		
 		</div>		
 	</div>	
 	
@@ -17,7 +17,7 @@
 	<table class="condition">
 		<tbody>
 			<tr style="display:none">
-				<th th:text="#{DIVEU_LB_0120}"></th><!-- User ID -->
+				<th th:text="#{EUP_L_0120}"></th><!-- User ID -->
 				<td>
 					<div class="input-area">			
 						<input type="text" id="adminUserID" name="adminUserID" class="custom-ui" th:value="${adminUserID}">
@@ -25,7 +25,7 @@
 				</td>
 			</tr>				
 			<tr>				
-				<th th:text="#{DIVEU_LB_0143}"></th><!-- Cut Off Date -->
+				<th th:text="#{EUP_L_0143}"></th><!-- Cut Off Date -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pDate" name="pDate" class="custom-ui-calendar" th:value="pDate">
@@ -37,20 +37,17 @@
 	</div>		
 	
 <script type="application/javascript">
-
 $(function(){
+	ProgressBar.hide();
+	
 	Calendar.makeCalendar($("#pDate"), "[[${pDate}]]");	
 	
 	$("#BTN_pdfDownload").on("click", function() {
-		document.location.href = "/portal/corp/eu/scm/parts/account/download/pdf_download?pDate=[[${pDate}]]";
+		document.location.href = "[[${BASE_PATH}]]/account/download/pdf_download?pDate=[[${pDate}]]";
 	});
 	
 	$("#BTN_excelDownload").on("click", function() {
-		document.location.href = "/portal/corp/eu/scm/parts/account/download/excel_download?pDate=[[${pDate}]]";
+		document.location.href = "[[${BASE_PATH}]]/account/download/excel_download?pDate=[[${pDate}]]";
 	});
-});
-
-$(window).load(function() {
-	ProgressBar.hide();
 });
 </script>

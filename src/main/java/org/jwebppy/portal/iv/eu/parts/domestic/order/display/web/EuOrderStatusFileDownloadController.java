@@ -18,6 +18,7 @@ import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.eu.common.EuCommonVo;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.display.service.EuOrderStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/order/display/order_status")
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH + "/order/display/order_status")
 public class EuOrderStatusFileDownloadController extends EuOrderGeneralController
 {
 	@Autowired

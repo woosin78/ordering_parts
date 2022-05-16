@@ -2,20 +2,20 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/eu/parts/common/index}">
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text='#{DIVEU_TXT_0086}'></div><!-- AM ORGANIZATION CHART -->
+		<div class="block-title" th:text='#{EUP_T_0086}'></div><!-- AM ORGANIZATION CHART -->
 	</div>		
 	<div class="condition-area flex-grow">
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<th th:text='#{DIVEU_LB_0160}'></th><!-- Name  -->
-				<th th:text='#{DIVEU_LB_0187}'></th><!-- Job duty  -->	
-				<th th:text='#{DIVEU_LB_0188}'></th><!-- Email  -->
-				<th th:text='#{DIVEU_LB_0189}'></th><!-- Phone  -->									 		
+				<th th:text='#{EUP_L_0160}'></th><!-- Name  -->
+				<th th:text='#{EUP_L_0187}'></th><!-- Job duty  -->	
+				<th th:text='#{EUP_L_0188}'></th><!-- Email  -->
+				<th th:text='#{EUP_L_0189}'></th><!-- Phone  -->									 		
 			</tr>
 			<tr>
 				<td>Salvatore Leo</td>
@@ -63,8 +63,8 @@
 	</table>	
 	</div>
 <script type="application/javascript">
-$(window).load(function() {
-	ProgressBar.hide();
+$(document).ready(function() {
+	ProgressBar.hide();	
 });
 </script>
 </th:block>

@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/uk/parts/popup/index}">
+	
+<th:block layout:fragment="content">
+	<script type="application/javascript" th:src="@{/portal/js/portal.utils.order.js}"></script>
+	<script type="application/javascript" th:src="@{/portal/js/dropzone/dropzone.min.js}"></script>
+	<link rel="stylesheet" type="text/css" class="ui" th:href="@{/portal/css/dropzone/dropzone.min.css}">
+	
+	<!-- Modal for upload complaint file Start -->	
+	<div class="dropzone-dimmer dimmer"></div>		
+	<div class="dropzone-area">
+		<div class="dropzone-area-top"></div>
+		<div class="dropzone-body dropzone-click-zone">
+			<div class="dropzone-click-zone" style="height:40.5px"></div>
+			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/upload_file.png"/>
+			<div class="dropzone-body-content dropzone-click-zone" th:text="#{EUP_M_0002}"></div>
+		</div>
+		<div class="dropzone-bottom dropzone-click-zone">
+			<button type="button" onclick="UploadModal.hide()">[[#{EUP_B_0014}]]</button>
+		</div>
+	</div>
+	<!-- Modal for upload complaint file End -->
+	
+
+	<div class="block-header">
+		<div class="block-title" th:text="#{EUP_T_0088}"></div>	<!-- Complaint Create -->
+		<div class="block-button-area">
+			<button id="BTN_save" th:text="#{EUP_B_0005}"></button>	<!-- Save -->	
+		</div>
+	</div>
+	
+	<div class="condition-area">
+	<form id="FORM_search" name="FORM_search">
+
+	<table class="condition">
+		<colgroup>
+			<col width="10%">
+			<col width="24%">
+			<col width="10%">
+			<col width="23%">
+			<col width="10%">
+			<col width="23%">
+		</colgroup>
+		<tbody>
+			<tr>
+				<th th:text="#{EUP_L_0133}"></th>	<!-- Invoice No. -->
+				<td> 
+					<input type="text" id="IPT_pInvoiceNo" name="pInvoiceNo" class="custom-ui" style="width: 60%;" th:value="${pInvoiceNo}">
+					&nbsp;
+					<button id="BTN_invoiceSearch" type="button" th:text="#{EUP_B_0002}" class="small_button"></button>
+				</td>
+				<th th:text="#{EUP_L_0015}"></th>	<!-- P.O No. -->
+				<td colspan="3" >
+					<input type="text" id="TD_poNoTxt" name="pInvoiceNo" class="custom-ui" style="width:40%;" th:value="${pInvoiceNo}">
+				</td>
+			</tr>			
+		</tbody>
+	</table>
+	</form>
+	</div>
+
+	<div class="split-row"></div>
+
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="SPN_invoiceResultTxt"></span>
+		</div>
+		<div class="block-button-area">		
+			<button id="BTN_delete" th:text="#{EUP_B_0010}"></button>	<!-- Delete -->			
+		</div>
+	</div>
+
+	<div id="AREA_grid" class="flex-grow grid-bottom-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+
+	<!-- file list -->
+	<div id="fileListDiv" style="z-index:100; border:1px solid gray; width:400px; backgroud:grey; display:none;">
+	    <div id="table_type1" style="padding:10px">
+	        <table class="scroll" style="width:100%;">
+	        	<colgroup>
+	        		<col width="50px" />
+	        		<col width="" />
+	        		<col width="60px" />        		
+	        	</colgroup>
+	            <thead>
+	                <tr>
+	                	<th th:text="#{EUP_L_0159}"></th>	<!-- No -->
+	                    <th th:text="#{EUP_L_0171}"></th>	<!-- File Name -->
+	                    <th th:text="#{EUP_L_0166}"></th>	<!-- Delete -->
+	                </tr>
+	            </thead>
+	            <tbody id="fileListTbody">
+	            <tr>
+	            	<td>1</td>
+	                <td><a href="#">image.jpg</a></td>
+	                <td><a href="#"><img src="/portal/img/x.png" style="width:10px;height:10px;" /></a></td>
+	            </tr>
+	            </tbody>
+	        </table>
+	    </div>
+	
+	    <!-- Btn -->
+	    <div id="btn_area" style="z-index:100; margin-right: 20px;">
+	        <div class="fr">
+	            <div style="float:right;" class="btn" onclick="javascript:$('#fileListDiv').css('display','none')"><span></span><p><strong onfocus="this.blur()"><a href="#" onfocus="this.blur()">Close</a></strong></p></div>
+	        </div>
+	    </div>
+	    <!-- /Btn -->
+	</div>
+	<!-- /file list -->
+
+	<!-- /Text Area(File name save storage) -->
+	<div id="output" style="display:none;"></div>
+
+	<div id="DIV_reason1Div" style="display:none;"><select class="custom-ui"></select></div>	<!-- 반품사유1 데이터를 페이지 로딩 시 미리 가지고 있는 영역 -->
+
+	<form id="FORM_save" method="post">
+		<!-- 반품 메인 데이터 생성 영역 -->
+		<div id="complaintCreateDiv"></div>
+	</form>
+
+	<form id="FORM_deleteFile" method="post">
+		<!-- 반품 삭제파일정보 생성 영역 -->
+		<div id="complaintFileDeleteDiv"></div>
+	</form>
+	
+<script type="application/javascript">
+
+var $tableObj;
+var reason1AjaxData;
+var invoiceData = new Array();
+var targetTrIdCls = '';	// 파일 업로드 버튼을 눌렀을 때 현재 선택된 TR 정보를 알기 위한 전역변수(실제 파일 업로드 후 파일 정보를 화면상에 저장해 두기 위해 필요)
+var fileInfoArrCls = new Array();	// 모든 행의 파일 정보를 저장해 두는 배열. 행번호(ITEM NO 와 PART NO 의 조합)를 기준으로 하는 Object 객체의 배열이 담긴다.
+
+var checkedTrsArrCls = new Array();	// DataTable의 행 자체를 삭제할 경우, 어떤 행들이 삭제되는지 해당 TR객체 정보를 담아 두기 위한 배열. (화면에서 행을 지우기 전, child row의 파일 리스트에 존재하는 파일들을 실제 서버에서 지울 때까지 충분한 시간 여유를 둔 다음, 화면에서 행을 삭제하기 위함)
+var delFileArrayCls = new Array();	// 삭제 파일명(서버 저장 파일명)이 담긴 배열(파일리스트에서 1개씩 삭제할 경우와, 데이터테이블 행을 모두 삭제하여 복수개 삭제할 경우 2가지 상황에서 공용으로 사용하기 위함)
+
+var checkedRowArrayCls = new Array();	// 체크박스 체크여부 정보를 화면 전역에서 알기 위한 배열(datatable add row로 row를 생성했을 경우 checkbox의 checked 여부가 동작하지 않아 임시조치) 
+
+var fileUpCntCls = 0;
+var fileNmCheckCls = '';
+
+// as-is 변수 Start
+// var currentObject;	// 파일을 업로드 하는 경우 그 리턴 값을 저장 할 위치지정 기준 변수
+// as-is 변수 End
+
+// 파일 Drop 관련 처리 Start
+var UploadModal = {};
+UploadModal.show = function() 
+{
+	var width = 480;
+	var height = 250;
+	var left = ($(window).innerWidth() - width) * 0.5;
+	var top = ($(window).innerHeight() - height) * 0.5;
+
+	$(".dropzone-area").css({
+		"width": width,
+		"height": height,
+		"left": left,
+		"top": top
+	});
+
+	$(".dropzone-dimmer, .dropzone-area").show();
+};
+
+UploadModal.hide = function()
+{
+	$(".dropzone-dimmer, .dropzone-area").hide();
+};
+
+$(".dropzone-click-zone").dropzone({
+	url: "[[${BASE_PATH}]]/complaint/create/complaint_file_upload",
+	maxFilesize: 5, //MB
+// 	acceptedFiles: ".xls,.xlsx",
+	accept: function(file, done)
+	{
+		done();
+	},
+	addedfile: function(file)
+	{
+	},
+	sending: function(file, xhr, formData)
+	{
+	},
+	success: function(file, response)
+	{
+		fileAttachResponse(response.RESULT);	// 첨부파일 정보를 화면에 적재
+	},
+	complete: function(file)
+	{
+	},
+	error: function(file, error, xhr)
+	{
+	},
+	drop: function()
+	{
+	},
+	dragenter: function(e)
+	{
+	},
+	dragover: function(e)
+	{
+	},
+	dragleave: function(e)
+	{
+	}
+});
+// 파일 Drop 관련 처리 End
+
+$(document).ready(function() 
+{	
+	getReasonInfo();	// 반품사유 정보 가져오기 & 그리드 테이블 최초 1회 생성
+});
+
+function getReasonInfo() 
+{
+	$.ajax(
+	{
+	    url:'[[${BASE_PATH}]]/complaint/create/reason_search1',
+	    type:'post', 
+	    dataType: 'json',
+	    data : "complaintReason1=1",	// dummy data
+	    success: function(response) 
+	    {
+	    	reason1AjaxData = response.RESULT.returnReasonList1;		
+	    	makeGridTable();
+	    },
+	    complete: function(jqXHR, textStatus)
+	    {
+	    	ProgressBar.hide();
+	    }
+	});
+}
+
+// 그리드 테이블 생성
+function makeGridTable()
+{	
+	$tableObj = $("#TBL_grid").DataTable(
+	{
+		select: true,   			
+		ordering: true, 
+		scrollY: 100,				
+// 		fixedColumns: { leftColumns: 1 },    	// child row 사용 시에는 fixedColumn 설정 불가
+		columnDefs: [			
+	         { targets: [0, 6, 7], className: 'dt-body-center' },
+	         { targets: [1, 2, 3, 4], className: 'dt-body-left dt-nowrap' },
+	         { targets: [5, 8, 9], className: 'dt-body-right' }
+			],   
+		columns : [
+			// 컬럼에 checkbox 설정
+			{	name: "productCheckbox",	     // chk 는  data에 없는 컬럼. 
+				title: '<input type="checkbox" class="custom-ui" onclick="allChecked(this);chkAllFix(this);"><label></label>',
+				className:"center noselect", // row selection 기능 막음. 
+				width: 30,  		 // checkbox 컬럼은 wi`dth 작게
+				orderable: false,	 // checkbox 는 정렬 불가  
+				defaultContent: '<input type="checkbox" class="custom-ui datatableChkbox" onclick="syncInput(this);chkAllChkbox(this);"><label></label>' // FixedColumns 사용시엔 syncInput 호출 필요함.
+			},
+			{	data: "orderno", title: 'Invoice No.'
+			},
+			{	data: "item", title: 'Line Item'
+			},
+			{	data: "partno", title: 'Order Part No.'
+			},
+			{	data: "desc", title: 'Description', width: 400,
+				render : function(data, type, row) {					
+					return '<p style="max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + data + '</p>';					
+				}
+			},
+			{	name: "quantity", 		// input은  data에 없는 컬럼.
+				title: 'Order Qty', width: 80, orderable: false, className:"center noselect",
+				render : function(data, type, row) {
+					return '<input type="text" class="custom-ui" style="text-align:right;" id="IPT_QUANTITY_' + row.item + '" value="' + row.qty + '" oriQty="' + row.qty + '" onkeyup="javascript:chkOnlyNum(this);" onchange="syncInput(this)">';
+				},
+				defaultContent: '<input type="text" class="custom-ui" value="0" onkeyup="javascript:chkOnlyNum(this);" onchange="syncInput(this)">' // FixedColumns 사용시엔 syncInput 호출 필요함.
+			},
+			{	data: "uom", title: 'UoM'
+			},
+			{	data: "WAERS", title: 'Currency'
+			},
+			{	data: "netprice", title: 'Net Price'
+			},
+			{	data: "netvalue", title: 'Net Value'
+			},
+			{	data: "date", visible: false
+			}			
+		],
+		data : invoiceData,
+		initComplete:function( settings, json ) {			
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable onload event
+	$("#TBL_grid").on("draw.dt", function() 
+	{	
+		// TR하나당 Child Row (Complaint Input Area) 생성
+		$('input[id^="IPT_QUANTITY_"]').each(function(index, item)	
+		{	
+			var tr = $(this).closest('tr');
+	        var row = $tableObj.row(tr);	        
+	        row.child( makeDtChildRow(row.data(), reason1AjaxData) ).show();	        
+            tr.addClass('shown');
+		});
+		
+		$("select[name=complaintReason1]").bind("change",doChangeReason2);
+		
+		// 구매한 수량을 초과하여 입력할 수 없음.
+		var oriQty = 0;
+		$('input[id^="IPT_QUANTITY_"]').bind("focus",function(e) {
+			oriQty = $(this).attr("oriQty");				
+		});	
+		$('input[id^="IPT_QUANTITY_"]').bind("change",function(e) {
+			if (parseInt($(this).val()) > oriQty) 
+			{	
+				alert("[[#{EUP_M_0054}]]");	// Cannot input more than the quantity you purchased.
+				$(this).val(oriQty);
+			}		
+		});
+		
+		$('.fileLinkClass').bind("click",function(e) {
+			fileUploadDivShow($(this));
+		});
+		
+	});		
+	
+	/*
+	$(".fileListALinkCls").on("click", function() {
+		showFileList($(this));
+	});
+	*/
+	
+	// window 리사이즈시 그리드 높이 다시 맞춤. (그리드의 parent 요소의 높이에 맞춤)
+	installDataTableResizer($tableObj, $("body"));
+	// dataTable 버그 수정.
+	installDataTableBugFix("TBL_grid");	
+}
+
+// DataTable의 헤더 체크박스를 클릭할 때, 현재 행이 모두 체크되었는지 아닌지 판단하여 해당 action에 맞게 현재 선택된 tr id 배열의 정보를 더하거나 삭제한다.
+function chkAllFix(obj)
+{	
+	checkedRowArrayCls = [];	// 초기화	
+	if (obj.checked)	// all check가 되었을 경우
+	{
+		var tds = $tableObj.columns(0).nodes()[0];
+		for (var i = 0; i < tds.length; i++) 
+    	{
+    		var $td = $(tds[i]);
+    		var data = $tableObj.row($td).data();
+    		checkedRowArrayCls.push(data.orderno + '_' + data.item);
+    	}
+	}
+}
+function chkAllChkbox(obj)
+{
+// 	console.log('default clicked?');
+}
+
+function checkboxChecked($thisObj)
+{
+	var thisTrId = $thisObj.parent().next().text() + '_' + $thisObj.parent().next().next().text();	// orderno_item
+	if ( $thisObj.is(":checked") )	// 체크되었을 경우 배열에 tr id 추가
+	{
+		checkedRowArrayCls.push(thisTrId);	
+	} else 	// 체크 해제되었을 경우 배열에서 tr id 제거
+	{
+		for (var i = 0; i < checkedRowArrayCls.length; i++)
+		{
+			if (checkedRowArrayCls[i] == thisTrId)
+			{
+				checkedRowArrayCls.splice(i, 1);
+			}
+		}
+	}
+}
+
+// 인보이스 팝업 오픈
+function doSearch()
+{	
+	var url = '[[${BASE_PATH}]]/complaint/create/invoice_search_form?pInvoiceNo=' + $('#IPT_pInvoiceNo').val();	
+	var win = window.open(url, "InvoiceSearchPopup", "width=1000,height=480");
+}
+function addComplaintItems(resData, poNo)	// 인보이스 데이터 받아 그리드 작성
+{	
+	for (var i = 0; i < resData.length; i++)
+	{
+		addGridTableRows(resData[i]);
+	}	
+	
+	$('input.datatableChkbox:checkbox').unbind("click",function(e) {	// add row로 row를 생성했을 때 checkbox checked가 동작하지 않아 수동 bind 처리하여 체크여부를 알아냄.
+		checkboxChecked($(this));
+	});	
+	
+	$('input.datatableChkbox:checkbox').bind("click",function(e) {	// add row로 row를 생성했을 때 checkbox checked가 동작하지 않아 수동 bind 처리하여 체크여부를 알아냄.
+		checkboxChecked($(this));
+	});		
+}
+function addGridTableRows(rowData)	// 팝업에서 넘어온 데이터를 그리드 테이블에 추가한다.
+{
+	$tableObj.row.add({
+		productCheckbox : "",
+		orderno	: rowData.orderno,
+		item   	: rowData.item,
+		partno 	: rowData.partno,		
+		desc 	: rowData.desc,
+		qty   	: rowData.qty,			
+		uom   	: rowData.uom,
+		WAERS   : rowData.WAERS,
+		netprice   : rowData.netprice,
+		netvalue   : rowData.netvalue,
+		date   	: rowData.date
+	}).draw();
+}
+
+/**
+ * 	addGridTableRows 함수에서 draw 가 호출될 때마다 $("#TBL_grid").on("draw.dt" 이후에 정의한 함수가 자동실행되면서, 한 Row마다 반품정보를 입력하는 Child Row를 해당 Row 아래쪽 라인에 생성한다.
+ 	data : DataTable row의 Object data	
+ 	reasonData1 : SAP에서 가져와서 전역변수에 저장해 놓은 [반품사유1] 옵션 리스트
+ */ 
+function makeDtChildRow(data, reasonData1) 
+{
+	var rtnStr = '';
+	rtnStr += '<table class="condition">';
+	rtnStr += 	'<tbody><tr>'+
+					//'<th rowspan="2">Complaint</th>' +
+				    '<th style="text-align:center;">Reason1</th>' +
+				    '<th style="text-align:center;">Reason2</th>' +
+				    '<th>Text</th>' +
+				    '<th>Origin Doc.Date</th>' +
+				    '<th>File</th>'
+				'</tr>';
+	rtnStr += 	'<tr id="TRCHILD_' + data.orderno + '_' + data.item + '">'+ 	// 파일 업로드 시 현재 행을 알기 위한 임시 ID를 제작함.
+				'<td><select class="custom-ui" name="complaintReason1">' + 
+					'<option value="" selected="selected">Reason1</option>';	
+	for (var i = 0; i < reasonData1.length; i++)	
+	{
+		rtnStr += 	'<option value="' + reasonData1[i].ZZCMPCD + '">' + reasonData1[i].VTEXT + '</option>';
+	}	
+	rtnStr +=	'</select></td>' + 
+				'<td><select class="custom-ui" name="complaintReason2"><option value="" selected="selected">Reason2</option></select></td>' +
+				'<td><textarea name="complaintDescs" class="custom-ui"></textarea></td>' +
+				'<td class="salesDatesCls" ">' + getDateFormat( new Date(data.date), 'yyyyMMdd') + '</td>' +
+				'<td class="input">' +
+				
+				// as-is 파일 정보를 알기 위한 부분(drag & drop 파일창을 사용하면서 이 부분은 사용하지 않게 됨)
+// 				'	<div id="fileAttachDiv" class="file_find">' +						
+// 				'		<input type="hidden" id="file_name" name="file_name">' +
+// 				'		<input type="hidden" id="file_ori_name" name="file_ori_name">' +
+// 				'		<input type="hidden" id="file_count" name="file_count">' +				
+// 				'	</div>' +
+				
+				'	<a href="#"><img class="fileLinkClass" src="/portal/img/btn_popup.png" /></a><a href="#" id="TRCHILD_FILECNT_' + data.orderno + '_' + data.item + '" class="fileListALinkCls">0</a></p>' +
+				'</td>';
+	rtnStr += 	'</tr></tbody></table>';
+	return rtnStr;
+}
+ 
+$('#BTN_delete').click(function()
+{	
+	deleteGridTableRows($(this) );
+});
+
+// 그리드 TR Row 다건 삭제
+function deleteGridTableRows($thisObj)
+{	
+	var isChecked = false;
+	if (checkedRowArrayCls.length > 0) isChecked = true;
+	
+	var tds = $tableObj.columns(0).nodes()[0];
+	
+    if (!isChecked) 
+    {
+    	alert("[[#{EUP_M_0021}]]");	// Please select targets to delete.
+      	return false;
+    } else 
+    {	
+    	checkedTrsArrCls = new Array();	// 지우는 행 TR ID 배열정보 초기화
+    	delFileArrayCls = new Array();	// 지우는 파일명 배열정보 초기화
+    	for (var j = 0; j < tds.length; j++) 
+    	{
+    		var $td2 = $(tds[j]);
+    		var data = $tableObj.row($td2).data();
+    		var thisTrid = data.orderno + '_' + data.item;
+    		
+    		// 삭제 TR ID 정보가 담겨 있는 체크박스 정보 배열 크기만큼 루프
+    		for (var i = 0; i < checkedRowArrayCls.length; i++) 
+    		{
+    			if (checkedRowArrayCls[i] == thisTrid)
+   				{
+    				checkedTrsArrCls.push( $td2.closest('tr') );
+    				deleteFileInfSet(thisTrid);
+   				}
+    		}
+    		
+    	}
+    	
+    	serverFileDelete(delFileArrayCls, 'FROM_TR');	// 실제 파일 삭제
+    	
+    	for (var k = checkedTrsArrCls.length; k > 0 ; k--) 
+    	{
+    		$tableObj.row( checkedTrsArrCls[k] ).remove().draw();	// 적재된 TR element 객체로 row 정보를 얻어와서 행 제거
+    	}
+    }
+}
+
+
+// 파일 정보 배열 객체에서 삭제 대상 파일정보를 없앤다.
+function deleteFileInfSet(delTrId)
+{
+	for (var i = 0; i < fileInfoArrCls.length; i++)
+	{	
+		var currFileObj = fileInfoArrCls[i];
+		if (currFileObj.fileTr == delTrId)
+		{
+			var currFileNms = currFileObj.fileNm.split(":");
+			for (var j = 0; j < currFileNms.length; j++)
+			{
+				delFileArrayCls.push(currFileNms[j]);
+			}
+			
+			fileInfoArrCls.splice(i, 1);
+		}
+	}
+}
+
+
+// reason1값이 변경되었을 경우 reason2 값을 가져오는 처리 
+function doChangeReason2() 
+{
+	var reason1Value   = $(this).val();
+	var reason2Element = $(this).closest("tr").find("select[name=complaintReason2]");
+	//var reason2Element = $(this).next();
+	//var reason2ElementVal = $(this).next().val();
+	
+	ProgressBar.show();
+	
+	$.ajax(
+	{
+	    url:'[[${BASE_PATH}]]/complaint/create/reason_search2',
+	    type:'post', 
+	    dataType: 'json',
+	    data : "complaintReason1=" + reason1Value,
+	    success: function(data) 
+	    {
+	    	makeReason2Element(reason1Value, reason2Element, data.RESULT.returnReasonList2);		        
+	    }
+	});
+}
+
+function makeReason2Element(reasonCd1, element, reason2List)
+{
+	$(element).empty();
+	element.append("<option value=''>Reason2</option>");
+	
+	for (var i = 0 ; i < reason2List.length; i++) 
+	{
+		if (reason2List[i].ZZCMPCD == reasonCd1)
+		{
+			element.append("<option value=" + reason2List[i].REASON + ">" + reason2List[i].DESCRIPT + "</option>");
+		}
+	}
+	ProgressBar.hide();
+	
+	// TODO 한번 검색한 데이터는 저장해두고 다음에 RFC요청하지 않도록?
+}
+
+$("#BTN_invoiceSearch").click(function()
+{	
+	doSearch();
+});
+
+$("#BTN_save").click(function(event)
+{
+// 	console.log('반품 생성 로직 시작');	
+	var returnFlag = true;
+	
+	if ( $("#TD_poNoTxt").val() == '')	// P.O.No 입력 체크 
+	{	
+		alert("[[#{EUP_M_0055}]]");	// Please input P.O.No.
+		returnFlag = false;
+	}
+	
+	$("select[name=complaintReason2]").each(function(index, item) 	// 각 행 반품사유 입력 체크		
+	{	
+		if ( this.value == '' )
+		{
+			alert("[[#{EUP_M_0056}]]");	// Please select complaint reason.
+			returnFlag = false;
+		}
+	});
+	
+	$("textarea[name=complaintDescs]").each(function(index, item)	// 각 행 반품상세설명 입력 체크
+	{
+		if (item.value == '') 		
+		{
+			alert("[[#{EUP_M_0057}]]");	// Please input complaint description.
+			returnFlag = false;
+		}
+	});
+	
+	$('input[id^="IPT_QUANTITY_"]').each(function(index, item)		// 각 행 반품수량 입력 체크
+	{
+		if (item.value == '') 		
+		{
+			alert("[[#{EUP_M_0027}]]");	// Please input product quantity.
+			returnFlag = false;
+		}
+	});
+	
+	if (returnFlag)
+	{	
+		$('#complaintCreateDiv').empty();
+		
+		// 고정파라미터 적재 Start
+		$('#complaintCreateDiv').append('<input type="hidden" name="poNo" value="' + $("#TD_poNoTxt").val() + '">');
+		// 고정파라미터 적재 End
+		
+		// 동적파라미터 적재 Start		
+		var tds = $tableObj.columns(0).nodes()[0];
+		var complaintParamArr = new Array();
+		
+		$('input[id^="IPT_QUANTITY_"]').each(function(index, item) 
+		{	
+			var data = $tableObj.row( $(tds[index]) ).data();
+			
+			var complainObj = new Object();
+			complainObj.orderno	= data.orderno;
+			complainObj.item	= data.item;
+			complainObj.partno	= data.partno;
+			complainObj.quantity = this.value;
+			complainObj.reason1 = $("select[name=complaintReason1]").eq(index).val();
+			complainObj.reason2 = $("select[name=complaintReason2]").eq(index).val();
+			complainObj.description = $("textarea[name=complaintDescs]").eq(index).val();
+			complainObj.salesDate = $("tbody tr td.salesDatesCls").eq(index).text();
+			
+			complaintParamArr.push();
+			
+			$('#complaintCreateDiv').append('<input type="hidden" name="orderno" value="' + complainObj.orderno + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="item" value="' + complainObj.item + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="partno" value="' + complainObj.partno + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="quantity" value="' + complainObj.quantity + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="reason1" value="' + complainObj.reason1 + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="reason2" value="' + complainObj.reason2 + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="description" value="' + complainObj.description + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="salesDate" value="' + complainObj.salesDate + '">');
+			
+			// 첨부파일 정보 적재			
+			var fileTr 		= 'NO';
+			var orgFileNm 	= 'NO';
+			var fileNm 		= 'NO';
+			var fileType 	= 'NO';
+			var fileSize 	= '0';			
+			for (var i = 0; i < fileInfoArrCls.length; i++)
+			{
+				var currFileInfObj = fileInfoArrCls[i];
+				if ( currFileInfObj.fileTr == (data.orderno + '_' + data.item) )
+				{
+					fileTr 		= currFileInfObj.fileTr;
+					orgFileNm 	= currFileInfObj.orgFileNm;
+					fileNm 		= currFileInfObj.fileNm;
+					fileType 	= currFileInfObj.fileType;
+					fileSize 	= currFileInfObj.fileSize;
+					break;
+				}
+			}
+			
+			$('#complaintCreateDiv').append('<input type="hidden" name="fileTr" value="' + fileTr + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="orgFileNm" value="' + orgFileNm + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="fileNm" value="' + fileNm + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="fileType" value="' + fileType + '">');
+			$('#complaintCreateDiv').append('<input type="hidden" name="fileSize" value="' + fileSize + '">');
+			
+		});
+		// 동적파라미터 적재 End
+		
+		$.ajax(
+		{	
+			url: "[[${BASE_PATH}]]/complaint/create/complaint_create",
+		    type:'post',
+			data: $("#FORM_save").serialize(),
+			beforeSend: function(jqXHR, settings)
+			{
+				ProgressBar.show();
+			},
+		    success: function(response) 
+		    {
+		    	console.log(JSON.stringify(response));
+		    	/*
+		    	if (gubunFlag == 'FROM_TR')
+	    		{
+		    		checkedRowArrayCls = [];	// 체크박스 체크여부 정보 초기화
+	    		}
+		    	*/
+		    	
+		    	checkedRowArrayCls = [];	// 체크박스 체크여부 정보 초기화
+		    	
+		    	var retStrsDocNo = response.RESULT.complaintNo;
+		    	var retErrMsg = response.RESULT.errorMsg;
+		    	
+		    	if (retErrMsg != '')
+	    		{
+	    			//alert(retErrMsg[1]);
+	    		}
+		    	else if (retStrsDocNo == 'NO_LV_VENLR')
+	    		{
+	    			alert('get complaint_no failure');
+	    		}
+		    	else 
+    			{	
+//     				console.log('반품생성완료(반품정보조회 화면으로 이동 로직 구현)');
+    				location.href = "[[${BASE_PATH}]]/complaint/display/complaint_list?pComplaintNo=" + retStrsDocNo;
+    			}
+		    	
+		    },
+		    error: function(jqXHR, textStatus, errorThrown)
+		    {
+		    	//alert("Ajax error");
+		    },
+		    complete: function(jqXHR, textStatus)
+		    {
+		    	ProgressBar.hide();
+		    }
+		});
+		
+	}
+	
+// 	console.log('반품 생성 로직 끝');
+});
+
+// 파일 업로드 popup 디스플레이
+function fileUploadDivShow($thisObj)
+{
+	$("#fileListDiv").hide();
+
+	targetTrIdCls = ($thisObj.closest("tr").attr('id')).substring(8);	// 현재 TR 식별자  취득
+	UploadModal.show();
+}
+
+/*
+ * 첨부된 파일 리스트 조회
+ */
+function showFileList($thisObj)
+{
+	var currText = $thisObj.text();	// 현재 화면에 표시된 첨부파일 갯수	
+	if (currText != '' && Number(currText) > 0) 
+	{
+		var fileListDiv = $("#fileListDiv");
+		var fileListTbody = $("#fileListDiv tbody");
+		var tmpAppendStr = "";
+		
+		fileListTbody.empty();
+		fileListDiv.css(
+		{
+			//"display":"block",
+			"position":"absolute",
+			"top": $thisObj.offset().top + 20,
+			"left": $thisObj.offset().left,
+			"background-color": "white",
+			"opacity" : 1
+		});
+		
+		var currTrId = ($thisObj.closest("tr").attr('id')).substring(8);	// 현재 TR 판별자
+		
+		for (var i = 0; i < fileInfoArrCls.length; i++)
+		{
+			var currLoopObj = fileInfoArrCls[i];
+			if (currLoopObj.fileTr == currTrId)
+			{	
+				var tmpLoopNum = currLoopObj.orgFileNm.split(":").length;
+				for (var j = 0; j < tmpLoopNum; j++)
+				{
+					tmpAppendStr += '<tr id="FILELIST_' + currTrId + '_' + j + '" >';	// FILELIST_TR식별자_번호
+					tmpAppendStr += '<td>' + (j + 1) + '</td>';	// No
+					tmpAppendStr += '<td>' + currLoopObj.orgFileNm.split(":")[j] + '</td>';
+					tmpAppendStr += '<td style="text-align:center;"><a href="#" onclick="javascript:deleteFile(' + j + ', \'' + currTrId + '\');"><img src="/portal/img/x.png" style="width:10px;height:10px;" /></a></td>';
+					tmpAppendStr += "</tr>";
+				}
+				
+				fileListTbody.append(tmpAppendStr);
+				break;
+			}
+		};
+		
+		//alert(fileListDiv.css("display"));
+		
+		if (fileListDiv.css("display") == "none")
+		{
+			//fileListDiv.show();
+			//fileListDiv.css("display", "block");
+		}
+		else
+		{
+			//fileListDiv.hide();
+			//fileListDiv.css("display", "none");
+		};
+	} else 
+	{
+		fileListDiv.hide();
+		//fileListDiv.css("display", "none");
+	}	
+}
+
+/*
+ * 등록 첨부 파일 삭제(childrow의 첨부파일 리스트 화면에서 1건씩 delete 버튼을 눌렀을 경우 호출)
+ */
+function deleteFile(delID, trId)
+{
+	$("#fileListDiv").hide();
+	
+	var deleteFileRowLen = 0;	// 삭제 대상 행의 파일 수
+	var deleteFileNm = '';	// 삭제 대상 행의 파일 이름
+	
+	// 1. 화면상에서 파일을 지운다.	
+	var fileListDiv = $("#fileListDiv");
+	var fileListTbody = $("#fileListDiv tbody");
+	var tmpAppendStr = "";
+	
+	var newFileInfoArr = new Array();
+	for (var i = 0; i < fileInfoArrCls.length; i++)
+	{
+// 		console.log(i + '번째 TR의 delete check');
+		
+		var currLoopObj = fileInfoArrCls[i];
+		if (currLoopObj.fileTr != trId)	// 삭제 대상 TR 행이 아니면 해당 행의 모든 파일정보를 그대로 복사  
+		{
+// 			console.log(i + ':삭제대상 행 아님');
+			
+			newFileInfoArr.push(currLoopObj);
+		} else		// 삭제 대상 TR 행이면 해당 TR행의 복수 파일 중 어느 파일인지 찾아내어 그 행 정보를 삭제함
+		{
+// 			console.log(i + ':삭제대상 행');
+			
+			deleteFileRowLen = currLoopObj.fileNm.split(":").length;	// 삭제할 파일 갯수(구분자 [:]으로 구분함)
+			if (deleteFileRowLen == 1)	// 특정된 TR행에서 삭제할 파일 갯수가 하나뿐이면 그 행의 모든 파일이 지워지므로, 현재 리스트를 닫고 파일 갯수를 0으로 표시한다.
+			{
+				$("#TRCHILD_FILECNT_" + trId).text(0);
+				deleteFileNm = currLoopObj.fileNm.split(":")[0];
+				
+// 				console.log('삭제대상 행의 파일갯수는 1임. 파일명:' + deleteFileNm);
+				
+				fileListDiv.css("display","none");
+				continue;
+			} else 	// 특정된 TR행에 복수의 파일이 존재하므로, 어떤 파일을 지울 것인지 찾는다.
+			{	
+				var newObj = new Object();	// 새로운 파일 객체 정보를 만들어, 기존 파일 객체 정보를 새 것으로 바꾸고 새 파일 객체로부터 파일 리스트를 새로 만들어서 화면에 표시한다.
+				newObj.fileTr = trId;
+				
+// 				console.log('삭제대상 행의 파일명 갯수:' + currLoopObj.fileNm.split(":").length);
+				
+				for (var j = 0; j < currLoopObj.fileNm.split(":").length; j++)
+				{
+					if (j == Number(delID))	// 삭제 대상 파일일 경우, 해당 파일정보는 새 객체에 복사하지 않고 (=파일 리스트에서 제외하고), 실제 파일을 서버에서 지움. 
+					{
+						deleteFileNm = currLoopObj.fileNm.split(":")[j];
+						
+// 						console.log('삭제대상 행의 파일갯수는 1보다 큼. 파일명:' + deleteFileNm);
+						
+					} else	// 삭제 대상 파일이 아닐 경우 그대로 파일정보 복사
+					{	
+// 						console.log('삭제대상 행의 파일이지만 삭제대상이 아님:' + currLoopObj.fileNm.split(":")[j]);
+						
+						if (newObj.orgFileNm == null || newObj.orgFileNm == 'undefined') 
+						{
+							newObj.orgFileNm = currLoopObj.orgFileNm.split(":")[j];
+							newObj.fileNm = currLoopObj.fileNm.split(":")[j];
+							newObj.fileType = currLoopObj.fileType.split(":")[j];
+							newObj.fileSize = currLoopObj.fileSize.split(":")[j];
+						} else 
+						{
+							newObj.orgFileNm = newObj.orgFileNm + ":" + currLoopObj.orgFileNm.split(":")[j];
+							newObj.fileNm = newObj.fileNm + ":" + currLoopObj.fileNm.split(":")[j];
+							newObj.fileType = newObj.fileType + ":" + currLoopObj.fileType.split(":")[j];
+							newObj.fileSize = newObj.fileSize + ":" + currLoopObj.fileSize.split(":")[j];
+						}
+					}
+				}
+				
+				newFileInfoArr.push(newObj);
+			}
+		}
+	}
+	
+	fileInfoArrCls = newFileInfoArr;	// 반품 생성 화면의 모든 반품리스트 TR에 존재하는 모든 파일 객체 정보를 새로 만든 정보로 교체.
+	fileListTbody.empty();	// 기존 파일리스트를 지운다.
+	
+// 	console.log('삭제처리 후 총 파일정보객체 length:' + fileInfoArrCls.length);
+	
+	if (fileInfoArrCls.length == 0)
+	{
+		fileListDiv.css("display","none");	// 리스트 감추기 방어코딩
+	}
+	
+	for (var i = 0; i < fileInfoArrCls.length; i++)	// 리스트 새로 작성하여 표시함.
+	{
+		var currLoopObj = fileInfoArrCls[i];
+		if (currLoopObj.fileTr == trId)
+		{	
+			var tmpLoopNum = currLoopObj.orgFileNm.split(":").length;
+			for (var j = 0; j < tmpLoopNum; j++)
+			{
+				tmpAppendStr += '<tr id="FILELIST_' + trId + '_' + j + '" >';	// FILELIST_TR식별자_번호
+				tmpAppendStr += '<td>' + (j + 1) + '</td>';	// No
+				tmpAppendStr += '<td>' + currLoopObj.orgFileNm.split(":")[j] + '</td>';
+				tmpAppendStr += '<td style="text-align:center;"><a href="javascript:deleteFile(' + j + ', \"' + currLoopObj.fileTr + '\");"><img src="/portal/img/x.png" style="width:10px;height:10px;" /></a></td>';
+				tmpAppendStr += "</tr>";
+			}
+			
+			fileListTbody.append(tmpAppendStr);
+		}
+		break;
+	}	
+	
+	// 2. 실제 서버에서 파일을 지운다.
+	delFileArrayCls = new Array();	// serverFileDelete 함수는 행 자체를 지울 경우와 공용으로 사용하므로 삭제대상 파일명을 배열에 담아 전송함. 
+	delFileArrayCls.push(deleteFileNm);
+	serverFileDelete( delFileArrayCls, '' );
+}
+
+
+// 실제 파일 업로드 수행 후 callback
+function fileAttachResponse(responseText)  
+{
+	// 1. 컨트롤러에서 넘어온 파일 정보를 수납
+	var fileInfoStr = responseText.split(":");	// OrinalFileName:FileName:FileType:FileSize 의 구조로 넘어온다.
+	var fileInfObj = new Object();
+	
+	fileInfObj.fileTr = targetTrIdCls;
+	fileInfObj.orgFileNm = fileInfoStr[0];
+	fileInfObj.fileNm = fileInfoStr[1];
+	fileInfObj.fileType = fileInfoStr[2];
+	fileInfObj.fileSize = fileInfoStr[3];
+	
+	// 아무 파일 정보도 없을 경우
+	if (fileInfoArrCls.length == 0)
+	{
+		fileInfoArrCls.push(fileInfObj);
+	// 파일 정보가 하나라도 있을 경우	
+	} else 
+	{
+		var isDuplTr = false;
+		for (var i = 0; i < fileInfoArrCls.length; i++)
+		{
+			var thisFileInfObj = fileInfoArrCls[i];
+			if (thisFileInfObj.fileTr == targetTrIdCls)	// 만약 파일 정보 배열에 기존 행의 파일 정보가 있는 상황에서 추가할 경우
+			{	
+				isDuplTr = true;
+				thisFileInfObj.orgFileNm = thisFileInfObj.orgFileNm + ":" + fileInfoStr[0];
+				thisFileInfObj.fileNm = thisFileInfObj.fileNm + ":" + fileInfoStr[1];
+				thisFileInfObj.fileType = thisFileInfObj.fileType + ":" + fileInfoStr[2];
+				thisFileInfObj.fileSize = thisFileInfObj.fileSize + ":" + fileInfoStr[3];
+				
+				var deletedObj = fileInfoArrCls.splice(i, 1, thisFileInfObj);
+				break;
+			}
+		}
+		
+		if (!isDuplTr)	// 만약 파일 정보 배열에 기존 행의 파일 정보가 없는 상황에서 추가할 경우, 컨트롤러에서 반환된 파일 정보 추가 
+		{
+			fileInfoArrCls.push(fileInfObj);
+		}
+	}
+	
+	// 2. 화면 파일 리스트 수  + 1
+	var currentFileCount = $("#TRCHILD_FILECNT_" + targetTrIdCls).text();
+	$("#TRCHILD_FILECNT_" + targetTrIdCls).text( Number(currentFileCount) + 1);
+	
+	$(".fileListALinkCls").off("click").on("click", function() {
+		showFileList($(this));
+		
+		$("#fileListDiv").toggle();
+	});
+	
+	fileUpCntCls = fileUpCntCls - 1;
+	
+// 	ProgressBar.hide();
+	UploadModal.hide();	// 파일첨부 모달 창 닫음
+	$(".btn").show();	
+} 
+
+
+// 실제 파일 삭제 수행
+function serverFileDelete(fileNameArr, gubunFlag)
+{
+	if (fileNameArr.length > 0)
+	{
+		ProgressBar.show();
+
+		$('#complaintFileDeleteDiv').empty();
+		for (var i = 0; i < fileNameArr.length; i++)
+		{
+			var fileName = fileNameArr[i];
+			$('#complaintFileDeleteDiv').append('<input type="hidden" name="delfileName" value="' + fileName + '">');
+		}
+			
+		var paramData = $("#FORM_deleteFile").serialize();
+		
+		$.ajax(
+		{	
+			url: "[[${BASE_PATH}]]/complaint/create/complaint_file_delete",
+		    type:'post',
+			data: paramData,
+		    success: function(response) 
+		    {	    	
+		    	if (gubunFlag == 'FROM_TR')
+	    		{
+		    		checkedRowArrayCls = [];	// 체크박스 체크여부 정보 초기화
+	    		}
+		    },
+		    error: function(err) {
+		    	//alert("Ajax error");
+		    },
+		    complete: function(jqXHR, textStatus)
+		    {
+		    	ProgressBar.hide();
+		    }
+		});
+	}
+}
+
+
+// 공옹으로 사용 가능한 함수 Start
+function chkOnlyNum(obj)	// 숫자만 입력가능하게 
+{
+	var regNumber = /^[0-9]*$/;
+	v = obj.value;
+	if ( !regNumber.test(v) ) 
+	{
+		obj.value = v.replace(/[^0-9]/g,"");
+	}
+}
+
+function getDateFormat(dateObj, format) 
+{
+	if (format == 'yyyyMMdd') 
+	{
+		var year = dateObj.getFullYear();
+	    var month = dateObj.getMonth() + 1;
+	    var day = dateObj.getDate();
+	    if (month < 10)
+	    {
+	        month = "0" + month;
+	    }
+	    if (day < 10) 
+	    {
+	        day = "0" + day;
+	    }	 
+	    return year + "." + month + "." + day;
+	}	
+}
+// 공옹으로 사용 가능한 함수 End
+
+</script>
+</th:block>	

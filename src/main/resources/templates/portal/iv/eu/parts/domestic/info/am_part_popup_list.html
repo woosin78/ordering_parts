@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index}">	
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">	
 <th:block layout:fragment="content">
 <style>
 .error {
@@ -13,7 +13,7 @@
 <div class="block-header">
 	<div class="block-title">Certified Program</div><!--TODO 다국어  -->
 	<div class="block-button-area">
-		<button id="BTN_search" type="button" th:text="#{DIVEU_BTN_0002}"></button><!-- Search -->
+		<button id="BTN_search" type="button" th:text="#{EUP_B_0002}"></button><!-- Search -->
 		<!-- button id="BTN_close" type="button" th:text="#{DIVUK_BTN_0005}"></button><!-- Close -->		
 	</div>	
 </div>	
@@ -22,7 +22,7 @@
 <table class="condition">
 	<tbody>
 		<tr>
-			<th th:text="#{DIVEU_LB_0134}"></th><!-- Parts No -->
+			<th th:text="#{EUP_L_0134}"></th><!-- Parts No -->
 			<td>
 				<div class="input-area">
 					<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" th:value="${pPartsNo}" style="text-transform: uppercase;">
@@ -72,7 +72,7 @@ $(function(){
 					return '<input type="radio" name="RAD_MATNR" id="RAD_MATNR" class="custom-ui" value="' + row.AM_PART_NO + '"><label for="RAD_MATNR"></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},			
-			{name: "AM_PART_NO", 	 data: "AM_PART_NO", 	title: "[[#{DIVEU_LB_0134}]]"	},	// Part No Desc
+			{name: "AM_PART_NO", 	 data: "AM_PART_NO", 	title: "[[#{EUP_L_0134}]]"	},	// Part No Desc
 			{name: "ORIGIN_PART_NO", data: "ORIGIN_PART_NO",title: "Original Part No"		},	// TODO 다국어
 			{name: "ORIGIN_COUNTRY", data: "ORIGIN_COUNTRY",title: "Country of Origin",  class: "center"	},	// TODO 다국어		
 			{name: "SEQ", 			 data: "SEQ", 			title: "SEQ(Hidden)"	}
@@ -84,7 +84,7 @@ $(function(){
 			}			
 		],
 		ajax: {
-			url: "/portal/corp/eu/scm/parts/info/am_part_popup_list/data",
+			url: "[[${BASE_PATH}]]/info/am_part_popup_list/data",
 			data: function(p)
 			{				
 				p.pPartsNo = $("#pPartsNo").val();
@@ -163,7 +163,7 @@ function doSearch()
  */ 	
 function searchParts(){
 	var param = "pPartsNo=" + $("#pPartsNo").val();
-	Popup.open("/portal/corp/eu/scm/parts/info/parts_number_popup_list?" + param, 700, 600);	
+	Popup.open("[[${BASE_PATH}]]/info/parts_number_popup_list?" + param, 700, 600);	
 }
 
 function checkValidation(){	
@@ -174,7 +174,7 @@ function checkValidation(){
     
     if (pPartsNo.length < 1) {
 //    	$('#pPartsNo').after('<span class="error">You have to input the material.</span>');
-    	alert("[[#{DIVEU_MSG_0065}]]");	// MSG_0065 You have to input the material.
+    	alert("[[#{EUP_M_0065}]]");	// MSG_0065 You have to input the material.
     	rtnValue = -1;
    	}
     

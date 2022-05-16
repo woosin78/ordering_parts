@@ -12,6 +12,7 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.invoice.service.EuInvoiceStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/order/invoice")
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH + "/order/invoice")
 public class EuInvoiceFileDownloadController extends EuOrderGeneralController
 {
 	@Autowired

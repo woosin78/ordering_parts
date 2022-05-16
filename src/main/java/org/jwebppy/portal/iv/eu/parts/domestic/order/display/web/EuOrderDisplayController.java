@@ -11,6 +11,7 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.eu.common.EuCommonVo;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.EuOrderGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.order.display.service.EuOrderDisplayService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/order/display")
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH + "/order/display")
 @PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
 public class EuOrderDisplayController extends EuOrderGeneralController
 {

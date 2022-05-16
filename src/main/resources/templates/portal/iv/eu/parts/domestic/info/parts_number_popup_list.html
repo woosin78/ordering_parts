@@ -2,13 +2,13 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 	
 <th:block layout:fragment="content">	
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVEU_TXT_0080}"></div><!-- Parts No -->
+		<div class="block-title" th:text="#{EUP_T_0080}"></div><!-- Parts No -->
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{DIVEU_BTN_0002}"></button><!-- Search -->
+			<button id="BTN_search" type="button" th:text="#{EUP_B_0002}"></button><!-- Search -->
 			<!-- button id="BTN_close" type="button" th:text="#{DIVUK_BTN_0005}"></button><!-- Close -->
 		</div>	
 	</div>	
@@ -17,7 +17,7 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DIVEU_LB_0102}"></th><!--Parts No.  -->
+				<th th:text="#{EUP_L_0102}"></th><!--Parts No.  -->
 				<td>			
 					<div class="input-area">			
 						<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui" th:value="${pPartsNo}" style="text-transform: uppercase;">
@@ -25,7 +25,7 @@
 				</td>
 			</tr>
 			<tr>			
-				<th th:text="#{DIVEU_LB_0145}"></th><!--Part No Desc  -->
+				<th th:text="#{EUP_L_0145}"></th><!--Part No Desc  -->
 				<td>
 					<div class="input-area">			
 						<input type="text" id="pPartsNoDesc" name="pPartsNoDesc" class="custom-ui" th:value="${pPartsNoDesc}">
@@ -52,6 +52,8 @@
 	let totalRows = 0;
 	
 	$(function(){
+		ProgressBar.hide();
+		
 		$("#pPartsNo, #pPartsNoDesc").on("keydown", function(event) {
 			
 			$("#pPartsNo").val($("#pPartsNo").val().toUpperCase());
@@ -83,11 +85,11 @@
 						return '<input type="radio" name="RAD_MATNR" id="RAD_MATNR" class="custom-ui" value="' + row.MATNR + '" onclick="clickParts(this)"><label for="RAD_MATNR"></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "MATNR", data: "MATNR", title: "[[#{DIVEU_LB_0102}]]"},	// Parts No.
-				{name: "MAKTX", data: "MAKTX", title: "[[#{DIVEU_LB_0031}]]"}		// Description
+				{name: "MATNR", data: "MATNR", title: "[[#{EUP_L_0102}]]"},	// Parts No.
+				{name: "MAKTX", data: "MAKTX", title: "[[#{EUP_L_0031}]]"}		// Description
 			],
 			ajax: {
-				url: "/portal/corp/eu/scm/parts/info/parts_number_popup_list/data",
+				url: "[[${BASE_PATH}]]/info/parts_number_popup_list/data",
 				type: "POST",
 				data: function(p)
 				{				
