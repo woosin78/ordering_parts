@@ -2,16 +2,16 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0086}"></div>	<!-- Register Recommend Product -->
+	<div class="block-title" th:text="#{EUP_L_0086}"></div>	<!-- Register Recommend Product -->
 	<div class="block-button-area">
-		<button id="BTN_search" th:text="#{DIVEU_BTN_0002}"></button>  <!-- Search -->
+		<button id="BTN_search" th:text="#{EUP_B_0002}"></button>  <!-- Search -->
 		<div class="split"></div>
-		<button onclick="document.location.reload()" th:text="#{DIVEU_BTN_0017}"></button>
+		<button onclick="document.location.reload()" th:text="#{EUP_B_0017}"></button>
 	</div>
 </div>
 
@@ -24,7 +24,7 @@
 	<table class="mallcondition">
 	<tbody>
 		<tr>
-			<th th:text="#{DIVEU_LB_0063}"></th>	<!-- Category -->
+			<th th:text="#{EUP_L_0063}"></th>	<!-- Category -->
 			<td>
 				<select id="SLT_categoryCode" name="categoryCode" class="custom-ui">
 					<option th:each="categoryDto : ${categoryList}"
@@ -33,7 +33,7 @@
 					</option>
 				</select>				
 			</td>
-			<th th:text="#{DIVEU_LB_0076}"></th>	<!-- Product Code/Name -->
+			<th th:text="#{EUP_L_0076}"></th>	<!-- Product Code/Name -->
 			<td><input type="text" id="IPT_productCodeOrName" name="productCodeOrName" class="custom-ui"></td>						
 		</tr>
 	</tbody>
@@ -52,7 +52,7 @@
 		<div class="split"></div>
 	</div>
 	<div class="block-button-area">		
-		<button class="prdRegBtn" th:text="#{DIVEU_BTN_0023}"></button>  <!-- Select -->				
+		<button class="prdRegBtn" th:text="#{EUP_B_0023}"></button>  <!-- Select -->				
 	</div>
 </div>
 
@@ -130,20 +130,20 @@ function makeResultGridData(resultData)
 			{	
 				//name: 'productImageUrl',
 				data: "imageUrl", 
-				title: '[[#{DIVEU_LB_0083}]]',	// Image
+				title: '[[#{EUP_L_0083}]]',	// Image
 				render : function(data, type, row) {
 // 					return '<img src="/portal/img/tmpimage/testJavaImage.png" style="width:30px;height:30px;" alt="No Image" />';
 					return '<img src="/portal/corp/eu/common/file_load/image_viewer?filePath=' + data.replace("\\", "/") + '" style="width:30px;height:30px;" alt="No Image" />';
 				}
 			},
 			{	data: "categoryName", 
-				title: '[[#{DIVEU_LB_0063}]]'	// Category
+				title: '[[#{EUP_L_0063}]]'	// Category
 			},
 			{	data: "materialNo", 
-				title: '[[#{DIVEU_LB_0195}]]'	// Product
+				title: '[[#{EUP_L_0195}]]'	// Product
 			},
 			{	data: "productName", 
-				title: '[[#{DIVEU_LB_0081}]]'	// Product Name
+				title: '[[#{EUP_L_0081}]]'	// Product Name
 			},
 			{ 	
 				data: "mpSeq", 
@@ -151,7 +151,7 @@ function makeResultGridData(resultData)
 			}
 		],
 		ajax: {
-			url:'/portal/corp/eu/scm/parts/merchandize/recommendproduct/list_admin',
+			url:'[[${BASE_PATH}]]/merchandize/recommendproduct/list_admin',
 			type:'post', 
 			data: function(p)
 			{
@@ -207,11 +207,11 @@ $('.prdRegBtn').click(function()
 	}
 	if (checkedCnt < 1) 
     {
-		alert("[[#{DIVEU_MSG_0021}]]");	// Please select targets to delete.
+		alert("[[#{EUP_M_0021}]]");	// Please select targets to delete.
       	return false;
     } else if ( (maxCount - currCount) < checkedCnt )	// 추천상품 최대갯수 초과
     {
-    	var message = "[[#{DIVEU_MSG_0037}]]".replace("{0}", (checkedCnt - (maxCount - currCount)));
+    	var message = "[[#{EUP_M_0037}]]".replace("{0}", (checkedCnt - (maxCount - currCount)));
     	alert(message);	// Recommend product limit exceeded: XX ea.
     	return false;
     } else
@@ -228,7 +228,7 @@ $('.prdRegBtn').click(function()
     	}
     	    		
  		$.ajax({
-		    url:'/portal/corp/eu/scm/parts/merchandize/recommendproduct/select',
+		    url:'[[${BASE_PATH}]]/merchandize/recommendproduct/select',
 		    type:'post', 
 			data: $("#FORM_insert").serialize(),
 		    success: function(data) 

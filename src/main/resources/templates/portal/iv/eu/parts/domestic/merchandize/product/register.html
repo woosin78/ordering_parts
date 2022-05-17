@@ -2,17 +2,17 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 <link rel="stylesheet" type="text/css" th:href="@{/portal/css/bbs_basic.css}">
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0084}"></div>
+	<div class="block-title" th:text="#{EUP_L_0084}"></div>
 	<div class="block-button-area">		
-		<button class="prdRegBtn" th:text="#{DIVEU_BTN_0009}"></button>	<!-- Add -->
+		<button class="prdRegBtn" th:text="#{EUP_B_0009}"></button>	<!-- Add -->
 		<div class="split"></div>
-		<button class="prdCanBtn" th:text="#{DIVEU_BTN_0014}"></button>	<!-- Cancel -->
+		<button class="prdCanBtn" th:text="#{EUP_B_0014}"></button>	<!-- Cancel -->
 	</div>
 </div>
 
@@ -24,7 +24,7 @@
 	<table class="mallcondition">
 	<tbody>
 		<tr>
-			<th><span>[[#{DIVEU_LB_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
+			<th><span>[[#{EUP_L_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
 			<td>
 				<select name="mcSeq" class="custom-ui">
 					<option th:each="categoryDto : ${categoryList}"
@@ -35,24 +35,24 @@
 			</td>						
 		</tr>
 		<tr>
-			<th><span>[[#{DIVEU_LB_0080}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Code -->
+			<th><span>[[#{EUP_L_0080}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Code -->
 			<td><input type="text" id="materialNo" name="materialNo" class="custom-ui"/></td>						
 		</tr>
 		
 		<tr th:each="langKindEnt : ${langKindEntityList}">
-			<th><span>[[#{DIVEU_LB_0081}]]([[${langKindEnt.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Name -->
+			<th><span>[[#{EUP_L_0081}]]([[${langKindEnt.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Name -->
 			<td><input type="text" name="productNames" class="custom-ui" />
 				<input type="hidden" th:value="${langKindEnt.lkSeq}" name="productLangKindSeqs"/>
 			</td>				
 		</tr>
 				
 		<tr th:each="langKindEnt : ${langKindEntityList}">
-			<th><span>[[#{DIVEU_LB_0082}]]([[${langKindEnt.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Name -->
+			<th><span>[[#{EUP_L_0082}]]([[${langKindEnt.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Name -->
 			<td><textarea name="productDescs" class="custom-ui"></textarea></td>				
 		</tr>
 					
 		<tr>
-			<th><span>[[#{DIVEU_LB_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
+			<th><span>[[#{EUP_L_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
 			<td>
 				<select name="fgDisplay" class="custom-ui">
 					<option value="Y" selected="selected">Y</option>
@@ -62,7 +62,7 @@
 		</tr>
 		
 		<tr>
-			<th><span>[[#{DIVEU_LB_0083}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Image -->
+			<th><span>[[#{EUP_L_0083}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Image -->
 			<td>
 				<span id="SPN_imageSizeText">Image Size: 500 x 500 Pixel</span>
 				<div id="DIV_addFileArea" style="">
@@ -76,9 +76,9 @@
 </form>
 </div>
 
-<form id="FORM_main" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/main_admin"></form>
+<form id="FORM_main" method="post" action="[[${BASE_PATH}]]/merchandize/product/main_admin"></form>
 		
-<form id="FORM_view" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/view">			
+<form id="FORM_view" method="post" action="[[${BASE_PATH}]]/merchandize/product/view">			
 	<input type="hidden" name="mpSeq" value="1">
 </form>
 
@@ -87,7 +87,7 @@
 <script type="application/javascript">
 $(document).ready(function() 
 {
-// 	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0084}]]' );	// Register Product 		
+// 	$('#DIV_mallTitle').text( '[[#{EUP_L_0084}]]' );	// Register Product 		
 });
 
 $('.prdRegBtn').click(function() 
@@ -102,7 +102,7 @@ function isPrdCdValid()
 // 	checkFile('FORM_register');	
 	
 	$.ajax({
-	    url:'/portal/corp/eu/scm/parts/merchandize/product/prdCdValidChk',
+	    url:'[[${BASE_PATH}]]/merchandize/product/prdCdValidChk',
 	    type:'post',
 		data: $("#FORM_register").serialize(),
 	    success: function(data) {
@@ -113,11 +113,11 @@ function isPrdCdValid()
 					checkFile('FORM_register');	
 		    	} else if (resultCd == 'NOT_FOUND_MCSEQ') 
 		    	{
-		    		alert("[[#{DIVEU_MSG_0052}]]");	// Category information not found. 
+		    		alert("[[#{EUP_M_0052}]]");	// Category information not found. 
 		    		return false;
 		    	} else if (resultCd == 'NO_MATCH_DATA')
 	    		{
-		    		alert("[[#{DIVEU_MSG_0053}]]");	// Product information not found.
+		    		alert("[[#{EUP_M_0053}]]");	// Product information not found.
 		    		return false;
 		    	} else 
 		    	{
@@ -134,7 +134,7 @@ function isPrdCdValid()
 function saveClick() 
 {
 	$("#FORM_register").attr("target", "_self");
-	$("#FORM_register").attr("action", "/portal/corp/eu/scm/parts/merchandize/product/save");
+	$("#FORM_register").attr("action", "[[${BASE_PATH}]]/merchandize/product/save");
     	
 	var theForm = document.getElementById('FORM_register');
 	theForm.submit();  
@@ -150,7 +150,7 @@ function validCheck()
 {
 	if ( $('#materialNo').val() == '' )	// 상품코드 미입력 
 	{
-		alert("[[#{DIVEU_MSG_0033}]]");	// Please Input Product Code.	
+		alert("[[#{EUP_M_0033}]]");	// Please Input Product Code.	
 		return false;
 	}
 	
@@ -165,7 +165,7 @@ function validCheck()
 	});	
 	if (noNameBool) 
 	{
-		alert("[[#{DIVEU_MSG_0034}]]");	// Please Input Product Name.
+		alert("[[#{EUP_M_0034}]]");	// Please Input Product Name.
 		return false;
 	}
 	
@@ -179,14 +179,14 @@ function validCheck()
 	});	
 	if (noNameBool) 
 	{
-		alert("[[#{DIVEU_MSG_0035}]]");	// Please Input Product Description.
+		alert("[[#{EUP_M_0035}]]");	// Please Input Product Description.
 		return false;
 	}
 	
 	var fileLen = $("input[name=userFiles]").length;
 	if (fileLen < 1)		// 이미지 파일 미입력
 	{
-		alert("[[#{DIVEU_MSG_0036}]]");	// Please attach Image File.
+		alert("[[#{EUP_M_0036}]]");	// Please attach Image File.
 		return false;
 	} else 
 	{
@@ -199,7 +199,7 @@ function validCheck()
 		
 		if (fileLen == deleteFileLen)
 		{
-			alert("[[#{DIVEU_MSG_0036}]]");	// Please attach Image File.
+			alert("[[#{EUP_M_0036}]]");	// Please attach Image File.
 			return false;
 		}
 	}

@@ -75,7 +75,8 @@ public class EuMerchandizeGeneralController extends EuPartsGeneralController
 			return true;
 		}
 
-		return false;
+		//return false;
+		return true;
 	}
 	
 	

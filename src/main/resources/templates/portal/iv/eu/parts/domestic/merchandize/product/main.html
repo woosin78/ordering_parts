@@ -2,18 +2,18 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0077}"></div>
+	<div class="block-title" th:text="#{EUP_L_0077}"></div>
 	<div class="block-button-area">
-		<button id="BTN_search" th:text="#{DIVEU_BTN_0002}"></button>	<!-- Search -->
+		<button id="BTN_search" th:text="#{EUP_B_0002}"></button>	<!-- Search -->
 		<div class="split"></div>
-		<button onclick="document.location.reload()" th:text="#{DIVEU_BTN_0017}"></button>		<!-- Reset -->
+		<button onclick="document.location.reload()" th:text="#{EUP_B_0017}"></button>		<!-- Reset -->
 		<div class="split"></div>
-		<button id="BTN_cart" th:text="#{DIVEU_BTN_0018}"></button>		<!-- Cart -->
+		<button id="BTN_cart" th:text="#{EUP_B_0018}"></button>		<!-- Cart -->
 	</div>
 </div>
 
@@ -31,7 +31,7 @@
 <table class="mallcondition">
 	<tbody>
 		<tr>
-			<th th:text="#{DIVEU_LB_0063}"></th>	<!-- Category -->
+			<th th:text="#{EUP_L_0063}"></th>	<!-- Category -->
 			<td>
 				<select id="SLT_categoryCode" name="categoryCode" class="custom-ui">
 					<option th:each="categoryDto : ${categoryList}"
@@ -40,7 +40,7 @@
 					</option>
 				</select>
 			</td>
-			<th th:text="#{DIVEU_LB_0076}"></th>	<!-- Product Code/Name -->
+			<th th:text="#{EUP_L_0076}"></th>	<!-- Product Code/Name -->
 			<td><input type="text" id="IPT_productCodeOrName" name="productCodeOrName" class="custom-ui"></td>			
 		</tr>
 	</tbody>
@@ -59,9 +59,9 @@
 		<span id="IPT_totalCountTxt" class="total-number">000</span>
 	</div>
 	<div class="block-button-area">		
-		<button class="prdCrtBtn" th:text="#{DIVEU_BTN_0019}"></button>	<!-- Add to Cart -->
+		<button class="prdCrtBtn" th:text="#{EUP_B_0019}"></button>	<!-- Add to Cart -->
 		<div class="split"></div>
-		<button class="prdOdrBtn" th:text="#{DIVEU_BTN_0020}"></button>	<!-- Buy Now -->			
+		<button class="prdOdrBtn" th:text="#{EUP_B_0020}"></button>	<!-- Buy Now -->			
 	</div>
 </div>
 
@@ -72,13 +72,13 @@
 
 <form id="FORM_list" class="ui form" autocomplete="off" onsubmit="return false;"></form>
 
-<form id="FORM_cart_main" method="post" action="/portal/corp/eu/scm/parts/merchandize/cart/main">	
+<form id="FORM_cart_main" method="post" action="[[${BASE_PATH}]]/merchandize/cart/main">	
 </form>
-<form id="FORM_cart" method="post" action="/portal/corp/eu/scm/parts/merchandize/cart">
+<form id="FORM_cart" method="post" action="[[${BASE_PATH}]]/merchandize/cart">
 	<div id="cartFormDiv"></div>
 </form>
 
-<form id="FORM_view" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/view">
+<form id="FORM_view" method="post" action="[[${BASE_PATH}]]/merchandize/product/view">
 	<input type="hidden" id="IPT_mpSeqView" name="mpSeq">
 </form>
 
@@ -87,7 +87,7 @@
 	<div class="mall-popup-upperline"></div>
 	<div style="padding:0px 20px 20px 20px;">
 		<div class="block-header-mall-popup">
-			<div class="block-title-mall-layer" th:text="#{DIVEU_LB_0078}"></div>	<!-- View Image -->
+			<div class="block-title-mall-layer" th:text="#{EUP_L_0078}"></div>	<!-- View Image -->
 			<div class="block-button-area">
 				<img id="IMG_popLayerClose" src="/portal/img/x_gray_18px.png" style="padding-top: 15px;" />
 			</div>
@@ -155,27 +155,27 @@ function makeResultGridData(resultData) {
 			{	
 				name: 'productImage',
 				data: "imageUrl", 
-				title: '[[#{DIVEU_LB_0083}]]',	// Image
+				title: '[[#{EUP_L_0083}]]',	// Image
 				render : function(data, type, row) {
 					return '<img src="/portal/corp/eu/common/file_load/image_viewer?filePath=' + data.replace("\\", "/") + '" style="width:30px;height:30px;" alt="No Image" onclick="javascript:showImageLayerPopup(' + row.mpSeq + ');" />';
 				}
 			},
 			{	data: "productName", 
-				title: '[[#{DIVEU_LB_0195}]]',	// Product
+				title: '[[#{EUP_L_0195}]]',	// Product
 				width: 400,
 				render : function(data, type, row) {					
 					return '<p style="max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + data + '</p>';					
 				}
 			},
 			{	data: "price", 
-				title: '[[#{DIVEU_LB_0033}]]',	// List Price
+				title: '[[#{EUP_L_0033}]]',	// List Price
 				width: 150,
 				render : function(data, type, row) {
 					return Number(data).toLocaleString();
 				}
 			},
 			{	name: "quantity", 		// input은  data에 없는 컬럼.
-				title: '[[#{DIVEU_LB_0141}]]',	// Qty
+				title: '[[#{EUP_L_0141}]]',	// Qty
 				width: 60,
 				orderable: false,
 				className:"center noselect",
@@ -187,7 +187,7 @@ function makeResultGridData(resultData) {
 			},			
 			{	 
 				name: 'gridPriceSum',
-				title: '[[#{DIVEU_LB_0196}]]',	// Price(Sum)
+				title: '[[#{EUP_L_0196}]]',	// Price(Sum)
 				width: 150,
 				render : function(data, type, row) {
 					return '<span id="SPN_PRICESUM_' + row.mpSeq + '">0</span>';
@@ -204,7 +204,7 @@ function makeResultGridData(resultData) {
 			}
 		],
 		ajax: {
-			url: "/portal/corp/eu/scm/parts/merchandize/product/list",
+			url: "[[${BASE_PATH}]]/merchandize/product/list",
 			type:'post', 
 			data: function(p)
 			{
@@ -281,7 +281,7 @@ function addCartFunc(identifier)
 			
  	if (!isChecked) 
  	{
- 		alert("[[#{DIVEU_MSG_0031}]]");	// Please select product.
+ 		alert("[[#{EUP_M_0031}]]");	// Please select product.
    		return false;
  	} else 
  	{	
@@ -310,7 +310,7 @@ function addCartFunc(identifier)
  		 	    
 	 	if (!isValidQtyFlag) 
 	 	{
-	 		alert("[[#{DIVEU_MSG_0027}]]");	// Please input product quantity.
+	 		alert("[[#{EUP_M_0027}]]");	// Please input product quantity.
 	 		return false;
 	 	} else 
  		{
@@ -322,7 +322,7 @@ function addCartFunc(identifier)
 	 				$('#cartFormDiv').append('<input type="hidden" name="mpSeq" value="' + mpSeqArr[k] + '">' + '<input type="hidden" name="quantity" value="' + quantityArr[k] + '">');
 	 			}
 	 			
-		 		var urlStr = '/portal/corp/eu/scm/parts/merchandize/cart/' +  identifier;
+		 		var urlStr = '[[${BASE_PATH}]]/merchandize/cart/' +  identifier;
 		 		$.ajax(
 				{
 				    url: urlStr,
@@ -372,7 +372,7 @@ function showImageLayerPopup(mpSeq)
 	$("#merchandizeBodyDiv").css("opacity: 0.25;background-color: #000000;");
 	
 	$.ajax({
-	    url:'/portal/corp/eu/scm/parts/merchandize/product/previewImage', 
+	    url:'[[${BASE_PATH}]]/merchandize/product/previewImage', 
 	    type:'post', 
 		data: {
 			tSeq : mpSeq

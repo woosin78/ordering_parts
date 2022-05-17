@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 <link rel="stylesheet" type="text/css" th:href="@{/portal/css/bbs_basic.css}">
@@ -10,7 +10,7 @@
 <div class="block-header">
 	<div class="block-title">Main Image File Upload</div>
 	<div class="block-button-area">
-		<button id="BTN_saveFile" th:text="#{DIVEU_BTN_0005}"></button>  <!-- Save -->
+		<button id="BTN_saveFile" th:text="#{EUP_B_0005}"></button>  <!-- Save -->
 	</div>
 </div>
 
@@ -50,7 +50,7 @@ function saveClick()
 	{
         type: "POST",
         enctype: 'multipart/form-data',
-        url: "/portal/corp/eu/scm/parts/merchandize/main/save_main_file",
+        url: "[[${BASE_PATH}]]/merchandize/main/save_main_file",
         data: data,
         processData: false,
         contentType: false,

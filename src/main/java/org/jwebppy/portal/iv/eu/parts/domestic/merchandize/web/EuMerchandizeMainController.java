@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/main")
@@ -145,9 +146,10 @@ public class EuMerchandizeMainController extends EuMerchandizeGeneralController
 
 	// 관리자 메인이미지 팝업 등록 화면 호출
 	@RequestMapping("/main_fileupload")
-	public String mainFileuploadPop(Model model)
+	public String mainFileuploadPop(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("fileValidStr", EuMerchandizeCommonVo.FILECHECK_MALL_MAIN_ID);
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 	

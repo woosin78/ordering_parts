@@ -2,17 +2,17 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 <link rel="stylesheet" type="text/css" th:href="@{/portal/css/bbs_basic.css}">
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0079}"></div>
+	<div class="block-title" th:text="#{EUP_L_0079}"></div>
 	<div class="block-button-area">		
-		<button class="prdModBtn" th:text="#{DIVEU_BTN_0022}"></button>	<!-- Modify -->
+		<button class="prdModBtn" th:text="#{EUP_B_0022}"></button>	<!-- Modify -->
 		<div class="split"></div>
-		<button class="prdCanBtn" th:text="#{DIVEU_BTN_0014}"></button>	<!-- Cancel -->
+		<button class="prdCanBtn" th:text="#{EUP_B_0014}"></button>	<!-- Cancel -->
 	</div>
 </div>
 
@@ -33,7 +33,7 @@
 	<table class="mallcondition">
 		<tbody>
 			<tr>
-				<th><span>[[#{DIVEU_LB_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
+				<th><span>[[#{EUP_L_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
 				<td>
 					<select id="SLT_category" name="mcSeq" class="custom-ui">
 						<option th:each="categoryDto : ${categoryList}"
@@ -44,13 +44,13 @@
 				</td>						
 			</tr>			
 			<tr>
-				<th><span>[[#{DIVEU_LB_0080}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Code -->
+				<th><span>[[#{EUP_L_0080}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Code -->
 				<td><input type="text" id="IPT_materialNo" name="materialNo" th:value="${productDto.materialNo}" class="custom-ui"/></td>						
 			</tr>
 			
 			<!-- DB에 저장되어 있는 다국어 정보만큼 상품명 수정영역 생성 -->
 			<tr th:each="langDto : ${productNameLangDtos}" class="mall-addPrdNametrafters">
-				<th><span>[[#{DIVEU_LB_0081}]]([[${langDto.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Name -->
+				<th><span>[[#{EUP_L_0081}]]([[${langDto.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Name -->
 				<td><input type="text" name="productNames" th:value="${langDto.text}" class="custom-ui" />
 					<input type="hidden" th:value="${langDto.ldSeq}" name="productNameLangDetailSeqs"/>
 				</td>				
@@ -58,21 +58,21 @@
 			
 			<!-- DB에 저장되어 있는 다국어 정보만큼 상품설명 수정영역 생성 -->			
 			<tr th:each="langDescDto : ${productDescLangDtos}">
-				<th><span>[[#{DIVEU_LB_0082}]]([[${langDescDto.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Description -->
+				<th><span>[[#{EUP_L_0082}]]([[${langDescDto.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Product Description -->
 				<td><textarea name="productDescs" th:text="${langDescDto.text}" class="custom-ui"></textarea>
 					<input type="hidden" th:value="${langDescDto.ldSeq}" name="productDescLangDetailSeqs"/>
 				</td>				
 			</tr>
 				
 			<tr class="mall-addPrdDesctrbefore">
-				<th><span>[[#{DIVEU_LB_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
+				<th><span>[[#{EUP_L_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
 				<td>
 					<select id="SLT_fgDisplay" name="fgDisplay" class="custom-ui"></select>
 				</td>						
 			</tr>
 						
 			<tr>
-				<th><span>[[#{DIVEU_LB_0083}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Image -->
+				<th><span>[[#{EUP_L_0083}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Image -->
 				<td>
 					<span id="SPN_imageSizeText">Image Size: 500 x 500 Pixel</span>
 					<div id="DIV_addFileArea" style="">
@@ -87,7 +87,7 @@
 </form>
 </div>
 
-<form id="FORM_view" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/view">
+<form id="FORM_view" method="post" action="[[${BASE_PATH}]]/merchandize/product/view">
 	<input type="hidden" name="mpSeq" th:value="${productDto.mpSeq}" />		
 </form>
 
@@ -95,7 +95,7 @@
 <script type="application/javascript">
 $(document).ready(function() 
 {
-// 	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0079}]]' );	// Modify Product
+// 	$('#DIV_mallTitle').text( '[[#{EUP_L_0079}]]' );	// Modify Product
 // 	$(".numeric").numeric();
 	$('#SLT_category').val( $('#IPT_mcSeqCurrVal').val() );	
 	addFgDisplayOption();
@@ -138,13 +138,13 @@ function insertAddedLangInfo()
 			} else 
 			{
 				// 추가 다국어 상품명 입력란 생성
-				addLangNameInfoStr += '<tr><th><span>[[#{DIVEU_LB_0081}]](' + item.id.substring(11) + ')<img src="/portal/img/icon_required.png" class="required" /></span></th>';
+				addLangNameInfoStr += '<tr><th><span>[[#{EUP_L_0081}]](' + item.id.substring(11) + ')<img src="/portal/img/icon_required.png" class="required" /></span></th>';
 				addLangNameInfoStr += '<td><input type="text" name="productNames" class="custom-ui" />';
 				addLangNameInfoStr += '<input type="hidden" name="productNameLangDetailSeqs" value="0" />';	// ld_seq 값이 0일 경우 새로 추가된 언어의 데이터로 간주하여, 수정 로직을 실행할 때 해당 0 데이터는 삽입 처리를 한다.
 				addLangNameInfoStr += '</td></tr>';
 
 				// 추가 다국어 상품설명 입력란 생성
-				addLangDescInfoStr += '<tr><th><span>[[#{DIVEU_LB_0082}]](' + item.id.substring(11) + ')<img src="/portal/img/icon_required.png" class="required" /></span></th>';
+				addLangDescInfoStr += '<tr><th><span>[[#{EUP_L_0082}]](' + item.id.substring(11) + ')<img src="/portal/img/icon_required.png" class="required" /></span></th>';
 				addLangDescInfoStr += '<td><textarea name="productDescs" class="custom-ui"></textarea>';
 				addLangDescInfoStr += '<input type="hidden" name="productDescLangDetailSeqs" value="0" />';	// ld_seq 값이 0일 경우 새로 추가된 언어의 데이터로 간주하여, 수정 로직을 실행할 때 해당 0 데이터는 삽입 처리를 한다.
 				addLangDescInfoStr += '</td></tr>';				
@@ -175,7 +175,7 @@ function isPrdCdValid()	// 상품코드 정확하게 입력했는지 SAP에 조�
 // 	checkFile('FORM_modify');	
 	
 	$.ajax({
-	    url:'/portal/corp/eu/scm/parts/merchandize/product/prdCdValidChk',
+	    url:'[[${BASE_PATH}]]/merchandize/product/prdCdValidChk',
 	    type:'post',
 		data: $("#FORM_modify").serialize(),
 	    success: function(data) {
@@ -187,11 +187,11 @@ function isPrdCdValid()	// 상품코드 정확하게 입력했는지 SAP에 조�
 					
 		    	} else if (resultCd == 'NOT_FOUND_MCSEQ') 
 		    	{
-		    		alert("[[#{DIVEU_MSG_0052}]]");	// Category information not found. 
+		    		alert("[[#{EUP_M_0052}]]");	// Category information not found. 
 		    		return false;
 		    	} else if (resultCd == 'NO_MATCH_DATA')
 	    		{
-		    		alert("[[#{DIVEU_MSG_0053}]]");	// Product information not found.
+		    		alert("[[#{EUP_M_0053}]]");	// Product information not found.
 		    		return false;
 		    	} else 
 		    	{
@@ -208,7 +208,7 @@ function isPrdCdValid()	// 상품코드 정확하게 입력했는지 SAP에 조�
 function saveClick() {	// checkFile 함수에서 이 이름의 함수를 호출	 
 	
     $("#FORM_modify").attr("target", "_self");
-	$("#FORM_modify").attr("action", "/portal/corp/eu/scm/parts/merchandize/product/save");
+	$("#FORM_modify").attr("action", "[[${BASE_PATH}]]/merchandize/product/save");
     	
 	var theForm = document.getElementById('FORM_modify');
 	theForm.submit();  
@@ -223,7 +223,7 @@ function validCheck()
 {
 	if ( $('#materialNo').val() == '' )	// 상품코드 미입력 
 	{
-		alert("[[#{DIVEU_MSG_0033}]]");	// Please Input Product Code.		
+		alert("[[#{EUP_M_0033}]]");	// Please Input Product Code.		
 		
 		return false;
 	}
@@ -239,7 +239,7 @@ function validCheck()
 	});	
 	if (noNameBool) 
 	{
-		alert("[[#{DIVEU_MSG_0034}]]");	// Please Input Product Name.
+		alert("[[#{EUP_M_0034}]]");	// Please Input Product Name.
 		return false;
 	}
 	
@@ -253,14 +253,14 @@ function validCheck()
 	});	
 	if (noNameBool) 
 	{
-		alert("[[#{DIVEU_MSG_0035}]]");	// Please Input Product Description.
+		alert("[[#{EUP_M_0035}]]");	// Please Input Product Description.
 		return false;
 	}
 	
 	var fileLen = $("input[name=userFiles]").length;
 	if (fileLen < 1)		// 이미지 파일 미입력
 	{
-		alert("[[#{DIVEU_MSG_0036}]]");	// Please attach Image File.
+		alert("[[#{EUP_M_0036}]]");	// Please attach Image File.
 		return false;
 	} else 
 	{
@@ -273,7 +273,7 @@ function validCheck()
 		
 		if (fileLen == deleteFileLen)
 		{
-			alert("[[#{DIVEU_MSG_0036}]]");	// Please attach Image File.
+			alert("[[#{EUP_M_0036}]]");	// Please attach Image File.
 			return false;
 		}
 	}

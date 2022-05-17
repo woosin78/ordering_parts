@@ -2,18 +2,18 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0073}"></div>	
+	<div class="block-title" th:text="#{EUP_L_0073}"></div>	
 	<div class="block-button-area">
-		<button id="BTN_search" th:text="#{DIVEU_BTN_0002}"></button>	<!-- Search -->
+		<button id="BTN_search" th:text="#{EUP_B_0002}"></button>	<!-- Search -->
 		<div class="split"></div>
-		<button onclick="document.location.reload()" th:text="#{DIVEU_BTN_0017}"></button>	<!-- Reset -->
+		<button onclick="document.location.reload()" th:text="#{EUP_B_0017}"></button>	<!-- Reset -->
 		<div class="split"></div>
-		<button class="prdLisBtn" th:text="#{DIVEU_BTN_0004}"></button>		<!-- Back -->	
+		<button class="prdLisBtn" th:text="#{EUP_B_0004}"></button>		<!-- Back -->	
 	</div>
 </div>
 
@@ -27,7 +27,7 @@
 	<table class="mallcondition">
 	<tbody>
 		<tr>
-			<th th:text="#{DIVEU_LB_0063}"></th>	<!-- Category -->
+			<th th:text="#{EUP_L_0063}"></th>	<!-- Category -->
 			<td>
 				<select id="SLT_categoryCode" name="categoryCode" class="custom-ui">
 					<option th:each="categoryDto : ${categoryList}"
@@ -36,11 +36,11 @@
 					</option>
 				</select>				
 			</td>
-			<th th:text="#{DIVEU_LB_0076}"></th>	<!-- Product Code/Name -->
+			<th th:text="#{EUP_L_0076}"></th>	<!-- Product Code/Name -->
 			<td><input type="text" id="IPT_productCodeOrName" name="productCodeOrName" class="custom-ui"></td>						
 		</tr>
 		<tr>
-			<th th:text="#{DIVEU_LB_0066}"></th>	<!-- Display Y/N -->
+			<th th:text="#{EUP_L_0066}"></th>	<!-- Display Y/N -->
 			<td>
 				<select id="SLT_fgDisplay" name="fgDisplay" class="custom-ui">
 					<option value="Y" selected="selected">Y</option>
@@ -67,9 +67,9 @@
 		<div class="split"></div>
 	</div>
 	<div class="block-button-area">		
-		<button class="prdRegBtn" th:text="#{DIVEU_BTN_0009}"></button>		<!-- Add -->
+		<button class="prdRegBtn" th:text="#{EUP_B_0009}"></button>		<!-- Add -->
 		<div class="split"></div>
-		<button class="prdDelBtn" th:text="#{DIVEU_BTN_0010}"></button>		<!-- Delete -->
+		<button class="prdDelBtn" th:text="#{EUP_B_0010}"></button>		<!-- Delete -->
 	</div>
 </div>
 
@@ -84,7 +84,7 @@
 	<div id="deleteFormDiv"></div>
 </form>		
 		
-<form id="FORM_view" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/view">
+<form id="FORM_view" method="post" action="[[${BASE_PATH}]]/merchandize/product/view">
 	<input type="hidden" id="IPT_mpSeqView" name="mpSeq">
 </form>
 
@@ -98,7 +98,7 @@ $(function(){
 
 $(document).ready(function() 
 {
-// 	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0073}]]' );	// Manage Product	
+// 	$('#DIV_mallTitle').text( '[[#{EUP_L_0073}]]' );	// Manage Product	
 // 	var data = []; 
 // 	makeResultGridData(data);
 	
@@ -122,7 +122,7 @@ $('#BTN_search').click(function()
 	
 // 	console.log('BTN_search clicked');
 // 	$.ajax({
-// 	    url:'/portal/corp/eu/scm/parts/merchandize/product/list_admin',
+// 	    url:'[[${BASE_PATH}]]/merchandize/product/list_admin',
 // 	    type:'post', 
 // 		data: $("#FORM_search").serialize(),
 // 	    success: function(data) {
@@ -175,31 +175,31 @@ function makeResultGridData(resultData)
 			{	
 				//name: 'productImageUrl',
 				data: "imageUrl", 
-				title: '[[#{DIVEU_LB_0083}]]',	// Image
+				title: '[[#{EUP_L_0083}]]',	// Image
 				render : function(data, type, row) {	// path에 \가 들어가면 url인식을 못 하는 문제가 있어, /로 치환해서 request 보냄 
 					return '<img src="/portal/corp/eu/common/file_load/image_viewer?filePath=' + data.replace("\\", "/") + '" style="width:30px;height:30px;" alt="No Image" onclick="javascript:showImageLayerPopup(' + row.mpSeq + ');" />';
 				}
 			},
 			{	data: "categoryName", 
-				title: '[[#{DIVEU_LB_0063}]]'	// Category
+				title: '[[#{EUP_L_0063}]]'	// Category
 			},
 			{	data: "materialNo", 
-				title: '[[#{DIVEU_LB_0195}]]'	// Product
+				title: '[[#{EUP_L_0195}]]'	// Product
 			},
 			{	data: "productName", 
-				title: '[[#{DIVEU_LB_0081}]]',	// Product Name
+				title: '[[#{EUP_L_0081}]]',	// Product Name
 				render : function(data, type, row) {
 					return '<a onclick="javascript:goView(' + row.mpSeq + ');" style="cursor:pointer" class="link_mall">' + data + '</a>';
 				}
 			},			
 			{	data: "fgDisplay", 
-				title: '[[#{DIVEU_LB_0066}]]'	// Display Y/N
+				title: '[[#{EUP_L_0066}]]'	// Display Y/N
 			},			
 			{	data: "regUsername", 
-				title: '[[#{DIVEU_LB_0069}]]'	// Reg.User
+				title: '[[#{EUP_L_0069}]]'	// Reg.User
 			},
 			{ 	data: "regDate", 
-				title: '[[#{DIVEU_LB_0070}]]',	// Reg.Date
+				title: '[[#{EUP_L_0070}]]',	// Reg.Date
 				render : function(data, type, row) {
 					var d1 = new Date(data);
 		    		return getDateFormat(d1, 'yyyyMMdd');	
@@ -211,7 +211,7 @@ function makeResultGridData(resultData)
 			}
 		],
 		ajax: {
-			url: "/portal/corp/eu/scm/parts/merchandize/product/list_admin",
+			url: "[[${BASE_PATH}]]/merchandize/product/list_admin",
 			type:'post', 
 			data: function(p)
 			{
@@ -271,7 +271,7 @@ $('.prdDelBtn').click(function()
 	
     if(!isChecked) 
     {
-    	alert("[[#{DIVEU_MSG_0021}]]");	// Please select targets to delete.
+    	alert("[[#{EUP_M_0021}]]");	// Please select targets to delete.
       	return false;
     } else 
     {
@@ -288,7 +288,7 @@ $('.prdDelBtn').click(function()
     	}
     	    	
     	$.ajax({
-    		url:'/portal/corp/eu/scm/parts/merchandize/product/delete',
+    		url:'[[${BASE_PATH}]]/merchandize/product/delete',
 		    type:'post', 
 			data: $("#FORM_delete").serialize(),
 		    success: function(data) 
@@ -303,13 +303,13 @@ $('.prdDelBtn').click(function()
 // 등록 화면 이동
 $('.prdRegBtn').click(function() 
 {
-	location.href = "/portal/corp/eu/scm/parts/merchandize/product/register";
+	location.href = "[[${BASE_PATH}]]/merchandize/product/register";
 });
 
 // 목록 화면 이동
 $('.prdLisBtn').click(function() 
 {
-	location.href = "/portal/corp/eu/scm/parts/merchandize/main/main_admin";
+	location.href = "[[${BASE_PATH}]]/merchandize/main/main_admin";
 });
 
 
