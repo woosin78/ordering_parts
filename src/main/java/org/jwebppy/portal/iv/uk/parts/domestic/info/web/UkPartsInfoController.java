@@ -80,7 +80,7 @@ public class UkPartsInfoController extends UkOrderGeneralController
 			{
 				if (dataMap.isEquals("STOCKP", "P") || dataMap.isEquals("STOCKP", "N"))
 				{
-					String leadMsg = langService.getText("DIVUK_MSG_E0011"); // TODO
+					String leadMsg = langService.getText("UKP_M_E0011"); // TODO
 
 					if (dataMap.isEquals("LIFNR", "PF160"))
 					{
@@ -91,9 +91,9 @@ public class UkPartsInfoController extends UkOrderGeneralController
 
 						if (reqQty <= stockQty)
 						{
-							leadMsg = langService.getText("DIVUK_MSG_E0009"); // TODO
+							leadMsg = langService.getText("UKP_M_E0009"); // TODO
 
-							dataMap.put("LEAD_EXTRA_MSG", langService.getText("DIVUK_MSG_E0010")); // TODO
+							dataMap.put("LEAD_EXTRA_MSG", langService.getText("UKP_M_E0010")); // TODO
 						}
 					}
 

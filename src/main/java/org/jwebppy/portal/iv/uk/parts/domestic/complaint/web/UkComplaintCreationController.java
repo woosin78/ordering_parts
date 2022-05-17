@@ -44,6 +44,7 @@ public class UkComplaintCreationController extends UkPartsDomesticGeneralControl
 	public String complaintForm(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("currUserName", getErpUserInfo().getUsername());
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
