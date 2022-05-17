@@ -25,7 +25,6 @@ JpUtilsFile.displaySize = function(size)
 	}
 	else
 	{
-		alert(size);
 		result.push(size);
 		result.push("B");
 	};

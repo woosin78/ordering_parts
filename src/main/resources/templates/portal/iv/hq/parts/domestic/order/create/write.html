@@ -755,15 +755,14 @@ $(function(){
 				name: "materialNo",
 				data: "materialNo",
 				title: "[[#{HQP_L_ORDER_PART_NO}]]",				
-				width: 200,
 				orderable: false,
 				render: function(data, type, row)
 				{
-					return "<input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
+					return "<input type='text' name='materialNo' class='custom-ui' style='width: 150px;' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},
-			{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{HQP_L_SUPPLY_PART_NO}]]", width: 200},//Supply Part No
-			{name: "description", data: "description", title: "[[#{HQP_L_DESCRIPTION}]]"},//Description
+			{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{HQP_L_SUPPLY_PART_NO}]]", width: "150px"},//Supply Part No
+			{name: "description", data: "description", title: "[[#{HQP_L_DESCRIPTION}]]", width: "250px"},//Description
 			{
 				name: "orderQty",
 				data: "orderQty",
@@ -784,7 +783,7 @@ $(function(){
 		],
 		columnDefs: [
 			{targets: [0], className: "skip-download dt-body-center"},
-			{targets: [1, 5, 6, 7, 8, 12], className: "dt-body-center"},
+			{targets: [1, 2, 5, 6, 7, 8, 12], className: "dt-body-center"},
 			{targets: [10, 11], className: "dt-body-right"}
 		],				
 		ajax: {

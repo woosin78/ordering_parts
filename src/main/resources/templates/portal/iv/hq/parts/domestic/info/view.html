@@ -21,7 +21,7 @@
 			<td colspan="3">
 				<div class="input-area">
 					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" style="text-transform: uppercase;" autofocus />
-					<button class="btn-popup2" type="button" onclick="_showPartSearch($('#pPartNo').val());"></button>					
+					<!-- button class="btn-popup2" type="button" onclick="_showPartSearch($('#pPartNo').val());"></button -->					
 				</div>
 			</td>
 		</tr>		
@@ -166,7 +166,7 @@ function doSearch()
 	    	let currency = partInfo.WAERS;
 	    	
 			$("#MAKTX").html(partInfo.MAKTX);// Part No Desc
-			$("#STOCK").html(partInfo.STOCK);// Stock
+			$("#STOCK").html(partInfo.DIV);// Stock
 			$("#SVRCD").html(partInfo.SVRCD);// Serviceable
 			
 			// Not Service Reason

@@ -69,7 +69,7 @@
 				<th colspan="4">
 					<div class="input-area">
 						<input type="radio" class="custom-ui" id="docType1" name="docType" value="C" checked />
-						<label th:text="#{HQP_L_ORDER}"></label>
+						<label th:text="#{HQP_L_ORDER}"></label>						
 						<input type="radio" class="custom-ui" id="docType2" name="docType" value="A" />
 						<label th:text="#{HQP_L_INQUIRY}"></label>
 					</div>
@@ -89,13 +89,13 @@
 				</th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="poNo" name="poNo" class="custom-ui" readonly th:value="${poNo}"/>
+						<input type="text" id="poNo" name="poNo" class="custom-ui"/>
 					</div>
 				</td>
-				<th rowspan="2">
+				<th rowspan="3">
 					[[#{HQP_L_SHIPPING_INFO}]] <button id="BTN_shippingInfo" type="button" th:text="#{HQP_B_GET_DATA}" class="small_button"></button>
 				</th>
-				<td rowspan="2">
+				<td rowspan="3">
 					<table class="table-inner table-fixed shippin-info">
 						<thead>
 							<tr>
@@ -123,6 +123,17 @@
 				<td>
 					<div class="input-area">
 						<input type="text" id="rdd" name="rdd" class="custom-ui" readonly />
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_COMPLETE_DELIVERY}"></th>
+				<td>
+					<div class="input-area">
+						<input type="radio" class="custom-ui" id=compleDelivery1 name="compleDelivery" value="X"/>
+						<label for="compleDelivery1" th:text="#{HQP_L_YES}"></label>
+						<input type="radio" class="custom-ui" id="compleDelivery2" name="compleDelivery" value="" checked/>
+						<label for="compleDelivery2" th:text="#{HQP_L_NO}"></label>
 					</div>
 				</td>
 			</tr>
@@ -755,15 +766,14 @@ $(function(){
 				name: "materialNo",
 				data: "materialNo",
 				title: "[[#{HQP_L_ORDER_PART_NO}]]",				
-				width: 200,
 				orderable: false,
 				render: function(data, type, row)
 				{
-					return "<input type='text' name='materialNo' class='custom-ui' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
+					return "<input type='text' name='materialNo' class='custom-ui' style='width: 150px;' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},
-			{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{HQP_L_SUPPLY_PART_NO}]]", width: 200},//Supply Part No
-			{name: "description", data: "description", title: "[[#{HQP_L_DESCRIPTION}]]"},//Description
+			{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{HQP_L_SUPPLY_PART_NO}]]", width: "150px"},//Supply Part No
+			{name: "description", data: "description", title: "[[#{HQP_L_DESCRIPTION}]]", width: "250px"},//Description
 			{
 				name: "orderQty",
 				data: "orderQty",
@@ -784,7 +794,7 @@ $(function(){
 		],
 		columnDefs: [
 			{targets: [0], className: "skip-download dt-body-center"},
-			{targets: [1, 5, 6, 7, 8, 12], className: "dt-body-center"},
+			{targets: [1, 2, 5, 6, 7, 8, 12], className: "dt-body-center"},
 			{targets: [10, 11], className: "dt-body-right"}
 		],				
 		ajax: {

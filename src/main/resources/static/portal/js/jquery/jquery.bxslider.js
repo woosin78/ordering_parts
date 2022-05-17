@@ -888,6 +888,7 @@
      * Updates the direction controls (checks if either should be hidden)
      */
     var updateDirectionControls = function() {
+	
       if (getPagerQty() === 1) {
         slider.controls.prev.addClass('disabled');
         slider.controls.next.addClass('disabled');
@@ -1492,6 +1493,7 @@
 	  if (slider.working === true){ return ;}
       var pagerIndex = parseInt(slider.active.index) + 1;
       el.goToSlide(pagerIndex, 'next');
+      
     };
 
     /**

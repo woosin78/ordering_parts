@@ -28,11 +28,11 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.SimulationResultDto;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderSimulationService;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderItemDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExSimulationResultDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.service.ExOrderSimulationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -73,7 +73,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
     }
 
 	@Autowired
-	private OrderSimulationService orderSimulationService;
+	private ExOrderSimulationService orderSimulationService;
 
 	@PostMapping("/simulation/upload")
 	@ResponseBody
@@ -100,7 +100,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 	@PostMapping("/simulation")
 	@ResponseBody
-	public Object simulation(@ModelAttribute OrderDto order)
+	public Object simulation(@ModelAttribute ExOrderDto order)
 	{
 		ErpDataMap userInfoMap = getErpUserInfo();
 
@@ -131,13 +131,13 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 			DataList dataList = rfcResponse.getTable("T_SHOPPING_CART");
 
-			List<OrderItemDto> orderItems = new LinkedList<>();
+			List<ExOrderItemDto> orderItems = new LinkedList<>();
 
 			for (int i=0, size=dataList.size(); i<size; i++)
 			{
 				DataMap dataMap = (DataMap)dataList.get(i);
 
-				OrderItemDto orderItem = new OrderItemDto();
+				ExOrderItemDto orderItem = new ExOrderItemDto();
 				orderItem.setMaterialNo(dataMap.getString("MATNR"));
 				orderItem.setOrderQty(dataMap.getString("QTY", "1"));
 				orderItem.setUom(dataMap.getString("MEINS"));
@@ -151,7 +151,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		{
 			if (CmStringUtils.isNotEmpty(order.getMaterialNo()))
 			{
-				List<OrderItemDto> orderItems = new LinkedList<>();
+				List<ExOrderItemDto> orderItems = new LinkedList<>();
 
 				String[] materialNos = order.getMaterialNo().split("\\" + PortalCommonVo.DELIMITER);
 				String[] orderQtyies = order.getOrderQty().split("\\" + PortalCommonVo.DELIMITER);
@@ -160,7 +160,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 				{
 					if (CmStringUtils.isNotEmpty(materialNos[i]))
 					{
-						OrderItemDto orderItem = new OrderItemDto();
+						ExOrderItemDto orderItem = new ExOrderItemDto();
 						orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 						orderItem.setMaterialNo(materialNos[i]);
 						orderItem.setOrderQty(orderQtyies[i]);
@@ -173,7 +173,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 			}
 		}
 
-		SimulationResultDto simulationResult = new SimulationResultDto();
+		ExSimulationResultDto simulationResult = new ExSimulationResultDto();
 
 		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
 		{
@@ -185,7 +185,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		return simulationResult;
 	}
 
-	protected List<OrderItemDto> getItemsFromUploadedFile(@RequestParam("file") MultipartFile multipartFile)
+	protected List<ExOrderItemDto> getItemsFromUploadedFile(@RequestParam("file") MultipartFile multipartFile)
 	{
 		try
 		{
@@ -212,7 +212,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		return null;
 	}
 
-	protected List<OrderItemDto> getOrderItemsFromExcelFile(String fileName, InputStream inputStream)
+	protected List<ExOrderItemDto> getOrderItemsFromExcelFile(String fileName, InputStream inputStream)
 	{
 		String extension = FilenameUtils.getExtension(fileName);
 
@@ -224,10 +224,10 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		return getOrderItemsInXlsxFormat(inputStream);
 	}
 
-	private List<OrderItemDto> getOrderItemsInXlsFormat(InputStream inputStream)
+	private List<ExOrderItemDto> getOrderItemsInXlsFormat(InputStream inputStream)
 	{
 		HSSFWorkbook hssfWorkbook = null;
-		List<OrderItemDto> orderItems = new LinkedList<>();
+		List<ExOrderItemDto> orderItems = new LinkedList<>();
 
 		try
 		{
@@ -236,7 +236,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 			for (int i=0, size=hssfSheet.getPhysicalNumberOfRows(); i<size; i++)
 			{
-				OrderItemDto orderItem = new OrderItemDto();
+				ExOrderItemDto orderItem = new ExOrderItemDto();
 				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 				orderItem.setMaterialNo(getValueFromExcel(hssfSheet.getRow(i).getCell(0)));
 				orderItem.setOrderQty(getValueFromExcel(hssfSheet.getRow(i).getCell(1)));
@@ -270,10 +270,10 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		return orderItems;
 	}
 
-	private List<OrderItemDto> getOrderItemsInXlsxFormat(InputStream inputStream)
+	private List<ExOrderItemDto> getOrderItemsInXlsxFormat(InputStream inputStream)
 	{
 		XSSFWorkbook xssfWorkbook = null;
-		List<OrderItemDto> orderItems = new LinkedList<>();
+		List<ExOrderItemDto> orderItems = new LinkedList<>();
 
 		try
 		{
@@ -282,7 +282,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 			for (int i=0, size=xssfSheet.getPhysicalNumberOfRows(); i<size; i++)
 			{
-				OrderItemDto orderItem = new OrderItemDto();
+				ExOrderItemDto orderItem = new ExOrderItemDto();
 				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 				orderItem.setMaterialNo(getValueFromExcel(xssfSheet.getRow(i).getCell(0)));
 				orderItem.setOrderQty(getValueFromExcel(xssfSheet.getRow(i).getCell(1)));
@@ -381,21 +381,21 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		return false;
 	}
 
-	protected void makeOrderItemForm(SimulationResultDto simulationResult)
+	protected void makeOrderItemForm(ExSimulationResultDto simulationResult)
 	{
-		List<OrderItemDto> normalOrderItems = simulationResult.getNormalOrderItems();
+		List<ExOrderItemDto> normalOrderItems = simulationResult.getNormalOrderItems();
 		int size = normalOrderItems.size();
 		int lineNo = 1;
 
 		if (size > 0)
 		{
-			OrderItemDto orderItem = normalOrderItems.get(size-1);
+			ExOrderItemDto orderItem = normalOrderItems.get(size-1);
 			lineNo = CmNumberUtils.toInt(orderItem.getLineNo(), 10) / 10 + 1;
 		}
 
 		for (int i=0, count=DEFAULT_ROW_COUNT-lineNo; i<=count; i++)
 		{
-			OrderItemDto orderItem = new OrderItemDto();
+			ExOrderItemDto orderItem = new ExOrderItemDto();
 			orderItem.setLineNo(CmStringUtils.leftPad(lineNo*10, 6, "0"));
 
 			normalOrderItems.add(orderItem);

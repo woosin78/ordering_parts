@@ -290,7 +290,9 @@ $("#BTN_save").on("click", function() {
 				$("#BTN_back").trigger("click");
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
-				alert("[[#{HQP_M_FAIL_SAVE}]]");
+				let response = JSON.parse(jqXHR.responseText);
+				
+				alert("[[#{HQP_M_FAIL_SAVE}]]\n" + response.MESSAGE);
 				
 				ProgressBar.hide();
 			}

@@ -13,6 +13,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.portal.iv.common.service.IvGeneralService;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileListDto;
@@ -35,6 +36,9 @@ public class EpUploadFileListService extends IvGeneralService
 
     @Value("${file.upload.invalidExtension}")
     private String invalidExtension;
+
+    @Autowired
+    private I18nMessageSource i18nMessageSource;
 
     @Autowired
     private EpUploadFileService uploadFileService;
@@ -67,7 +71,7 @@ public class EpUploadFileListService extends IvGeneralService
 
 			if (ObjectUtils.isNotEmpty(validCheckResult))
 			{
-				throw new InvalidFileNameException(validCheckResult, "[" + validCheckResult + "] Invalid File Extension");
+				throw new InvalidFileNameException(validCheckResult, i18nMessageSource.getMessage("PTL_M_INVALID_FILE_EXTENSION", new String[] {validCheckResult}));
 			}
 
 			String path = uploadFile.getPath();

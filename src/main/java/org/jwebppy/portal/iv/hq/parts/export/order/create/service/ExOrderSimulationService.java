@@ -1,6 +1,5 @@
 package org.jwebppy.portal.iv.hq.parts.export.order.create.service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -19,16 +18,15 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.core.util.Formatter;
-import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.PricingResultDto;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.SimulationResultDto;
+import org.jwebppy.portal.iv.hq.parts.export.common.service.PartsExportGeneralService;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderItemDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExPricingResultDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExSimulationResultDto;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExOrderSimulationService extends PartsDomesticGeneralService
+public class ExOrderSimulationService extends PartsExportGeneralService
 {
 	public RfcResponse getItemsFromGpes(ErpDataMap paramMap)
 	{
@@ -69,7 +67,7 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest).getTable("LT_ITEM");
 	}
 
-	public SimulationResultDto simulation(ExOrderDto order)
+	public ExSimulationResultDto simulation(ExOrderDto order)
 	{
 		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
 		{
@@ -91,6 +89,7 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 			errorIgnore.put("IGNORE_DIVISION", "X");
 			errorIgnore.put("IGNORE_PURCHASE", "X");
 
+			/*
 			Map<String, String> option = new HashMap<>();
 			option.put("STOCK", "X");
 
@@ -99,7 +98,7 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 
 			List<Map<String, Object>> plants = new ArrayList<>();
 			plants.add(divMap);
-
+			*/
 			RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SIMUL_UPLOAD");
 
 			rfcRequest
@@ -117,11 +116,11 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 					.add(new Object[][] {
 						{"LS_GENERAL", general},
 						{"LS_MAIN_HEAD", mainHead},
-						{"LS_ERROR_IGNORE", errorIgnore},
-						{"LS_OPTION", option}
-					})
-				.table("LT_STOCK")
-					.add(plants);
+						{"LS_ERROR_IGNORE", errorIgnore}
+						//{"LS_OPTION", option}
+					});
+				//.table("LT_STOCK")
+					//	.add(plants);
 
 			adjustOrderQty(order);
 
@@ -174,15 +173,15 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 		return items;
 	}
 
-	protected SimulationResultDto makeSimulationResult(RfcResponse rfcResponse)
+	protected ExSimulationResultDto makeSimulationResult(RfcResponse rfcResponse)
 	{
-		SimulationResultDto simulationResult = new SimulationResultDto();
+		ExSimulationResultDto simulationResult = new ExSimulationResultDto();
 
 		//Make header info
 		makeHeaderInfo(rfcResponse, simulationResult);
 
 		//Make pricing result
-		List<PricingResultDto> pricingResults = simulationResult.getPricingResults();
+		List<ExPricingResultDto> pricingResults = simulationResult.getPricingResults();
 
 		makePricingResult(rfcResponse.getTable("LT_PRICING_01"), pricingResults);
 		makePricingResult(rfcResponse.getTable("LT_PRICING_02"), pricingResults);
@@ -199,7 +198,7 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 	}
 
 	// Make error order items
-	protected void makeErrorOrderItems(RfcResponse rfcResponse, SimulationResultDto simulationResult)
+	protected void makeErrorOrderItems(RfcResponse rfcResponse, ExSimulationResultDto simulationResult)
 	{
 		Map<String, IDataList> itemMap = new HashMap<>();
 		itemMap.put("NON_EXIST", rfcResponse.getTable("LT_NON_EXIST"));
@@ -218,13 +217,13 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 
 			if (CollectionUtils.isNotEmpty(items))
 			{
-				List<OrderItemDto> errorOrderItems = simulationResult.getErrorOrderItems();
+				List<ExOrderItemDto> errorOrderItems = simulationResult.getErrorOrderItems();
 
 				for (int i=0, size=items.size(); i<size; i++)
 				{
 					DataMap dataMap = (DataMap)items.get(i);
 
-					OrderItemDto orderItem = new OrderItemDto();
+					ExOrderItemDto orderItem = new ExOrderItemDto();
 					orderItem.setMaterialNo(CmStringUtils.trimToEmpty(dataMap.getString("ERROR_MATNR")));
 					orderItem.setSupplyMaterialNo(dataMap.getString("MATERIAL"));
 					orderItem.setErrorType(entry.getKey());
@@ -237,7 +236,7 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 		}
 	}
 
-	protected void makeHeaderInfo(RfcResponse rfcResponse, SimulationResultDto simulationResult)
+	protected void makeHeaderInfo(RfcResponse rfcResponse, ExSimulationResultDto simulationResult)
 	{
 		/* Make Header Info */
 		DataMap mainHeadResult = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");
@@ -259,13 +258,13 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 		simulationResult.setRdd(Formatter.getDefDateFormat(generalResult.getDate("VDATU")));
 	}
 
-	protected void makePricingResult(IDataList dataList, List<PricingResultDto> pricingResults)
+	protected void makePricingResult(IDataList dataList, List<ExPricingResultDto> pricingResults)
 	{
 		for (Object obj : dataList)
 		{
 			DataMap dataMap = new DataMap(obj);
 
-			PricingResultDto pricingResult = new PricingResultDto();
+			ExPricingResultDto pricingResult = new ExPricingResultDto();
 			pricingResult.setName(dataMap.getString("NAME"));
 			pricingResult.setNetValue(Formatter.getDefDecimalFormat(dataMap.getString("NEWR")));
 			pricingResult.setCurrency(dataMap.getString("WAERK"));
@@ -275,7 +274,7 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 	}
 
 	// Make normal order items
-	protected void makeNormalOrderItems(RfcResponse rfcResponse, SimulationResultDto simulationResult)
+	protected void makeNormalOrderItems(RfcResponse rfcResponse, ExSimulationResultDto simulationResult)
 	{
 		IDataList items = rfcResponse.getTable("LT_ITEM");
 
@@ -287,7 +286,7 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 				.qtyFormat(new String[] {"REQ_QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY", "DIV"})
 				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"});
 
-			List<OrderItemDto> normalOrderItems = new LinkedList<>();
+			List<ExOrderItemDto> normalOrderItems = new LinkedList<>();
 
 			for (int i=0, size=items.size(); i<size; i++)
 			{
@@ -307,7 +306,7 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 					lotQty = 1;
 				}
 
-				OrderItemDto orderItem = new OrderItemDto();
+				ExOrderItemDto orderItem = new ExOrderItemDto();
 				orderItem.setLineNo(dataMap.getString("ITEM"));
 				orderItem.setHigherLineNo(dataMap.getString("HILV"));
 				orderItem.setMaterialNo(CmStringUtils.defaultIfEmpty(dataMap.getString("MATERIAL_ENT"), dataMap.getString("MATERIAL")));
@@ -315,7 +314,7 @@ public class ExOrderSimulationService extends PartsDomesticGeneralService
 				orderItem.setDescription(dataMap.getString("MATERIAL_TEXT"));
 				orderItem.setOrderQty(dataMap.getString("REQ_QTY"));
 				orderItem.setSupplyQty(dataMap.getString("QTY"));
-				orderItem.setAvailability(dataMap.getString("DIV"));
+				orderItem.setAvailability(dataMap.getString("AVAILABILITY"));
 				orderItem.setMinOrderQty(Integer.toString(minQty));
 				orderItem.setLotQty(Integer.toString(lotQty));
 				orderItem.setUom(dataMap.getString("UOM"));

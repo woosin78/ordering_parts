@@ -54,7 +54,14 @@ public class LoginHistoryController extends UserGeneralController
 
 		if (CollectionUtils.isNotEmpty(loginHistories))
 		{
-			return loginHistories.get(0);
+			if (loginHistories.size() > 1)
+			{
+				return loginHistories.get(1);
+			}
+			else
+			{
+				return loginHistories.get(0);
+			}
 		}
 
 		return null;

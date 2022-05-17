@@ -23,8 +23,8 @@
 			<tr>
 				<th th:text="#{HQP_L_PO_NO}"></th>
 				<td id="BSTNK"></td>
-				<th th:text="#{HQP_L_SHIPPING_INFO}" rowspan="2"></th>
-				<td rowspan="2">
+				<th rowspan="3" th:text="#{HQP_L_SHIPPING_INFO}"></th>
+				<td rowspan="3">
 					<table class="table-inner table-fixed">
 						<thead>
 							<tr>
@@ -51,6 +51,10 @@
 				<th th:text="#{HQP_L_RDD}"></th>
 				<td id="VDATU"></td>
 			</tr>
+			<tr>
+				<th th:text="#{HQP_L_COMPLETE_DELIVERY}"></th>
+				<td id="COMPLETE_DELIVERY"></td>
+			</tr>			
 			<tr>
 				<th th:text="#{HQP_L_REMARKS}"></th>				
 				<td colspan="3" id="REMARK"></td>
@@ -135,6 +139,7 @@ $(function(){
 	    	$("#INCO1").html(general.INCO1);
 	    	$("#INCO2").html(general.INCO2);
 	    	$("#VDATU").html(general.VDATU);
+	    	$("#COMPLETE_DELIVERY").html((general.COMPLETE_DELIVERY == "X") ? "[[#{HQP_L_YES}]]" : "[[#{HQP_L_NO}]]");
 	    	$("#REMARK").html(result.remark);
 	    	$("#NETWR").html(mainHeadResult.NETWR + " " + mainHeadResult.WAERK);
 	    	$("#CREDIT").html(mainHeadResult.CREDIT + " " + mainHeadResult.CREDIT_WAERK);

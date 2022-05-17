@@ -16,6 +16,7 @@ import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.core.util.XssHandleUtils;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentSearchDto;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentTargetDto;
@@ -72,6 +73,7 @@ public class EpBoardContentService extends IvGeneralService
 		boardContent.setBcSeq(bcSeq);
 		boardContent.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		boardContent.setWriter(UserAuthenticationUtils.getUserDetails().getName());
+		boardContent.setHtmlContent(XssHandleUtils.removeInvalidTagAndEvent(boardContent.getHtmlContent()));
 
 		EpBoardContentEntity boardContentEntity = CmModelMapperUtils.mapToEntity(EpBoardContentObjectMapper.INSTANCE, boardContent);
 
@@ -112,6 +114,8 @@ public class EpBoardContentService extends IvGeneralService
 
 	public String modify(EpBoardContentDto boardContent) throws IOException
 	{
+		boardContent.setHtmlContent(XssHandleUtils.removeInvalidTagAndEvent(boardContent.getHtmlContent()));
+
 		if (boardContentMapper.update(CmModelMapperUtils.mapToEntity(EpBoardContentObjectMapper.INSTANCE, boardContent)) > 0)
 		{
 			EpBoardDto board = boardService.getBoard(boardContent.getBSeq());

@@ -16,9 +16,9 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
+import org.jwebppy.portal.iv.hq.parts.export.common.service.PartsExportGeneralService;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderHistoryHeaderDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderHistoryItemDto;
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ExOrderCreateService extends PartsDomesticGeneralService
+public class ExOrderCreateService extends PartsExportGeneralService
 {
 	//@Autowired
 	//private CacheHelper cacheHelper;

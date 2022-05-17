@@ -22,7 +22,7 @@
 						<td>
 							<div class="input-area">
 								<select id="pYear" name="pYear" class="custom_ui">
-									<option th:each="year: ${#numbers.sequence(thisYear, thisYear-1)}" th:value="${year}" th:text="${year}" th:selected="${year}==${pYear}"></option>
+									<option th:each="year: ${#numbers.sequence(thisYear, 2012)}" th:value="${year}" th:text="${year}" th:selected="${year}==${pYear}"></option>
 								</select>
 							</div>
 						</td>
@@ -43,20 +43,40 @@
 		</form>
 	</div>	
 	
+	<!-- div class="condition-area">
+		<div class="condition-title right"><span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span></div>
+		<table class="condition table-fixed order-report">
+			<thead>
+				<tr><th>&nbsp;</th></tr>
+			</thead>
+			<tbody></tbody>
+		</table>
+	</div-->
 	<div class="condition-area">
 		<div class="condition-title right"><span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span></div>
-			<table class="condition table-fixed order-report">
+		<div style="height:250px; overflow-y: auto; border: 1px solid #003081;">
+			<table class="condition table-fixed order-report table-none-border">
 				<thead>
 					<tr><th>&nbsp;</th></tr>
 				</thead>
 				<tbody></tbody>
 			</table>
-	</div>
-	<div id="AREA_chart" style="width:60%; margin: auto; "></div>
+		</div>
+	</div>	
+	<div class="split-row-compact"></div>
+	<!-- div id="AREA_chart" style="width:60%; margin: auto; "></div -->
 	
 <script>
 $(document).ready(function() {
 	ProgressBar.hide();
+	
+	function init()
+	{
+		$("table.order-report thead").html("<tr><th class='center'>&nbsp;</th></tr>");
+		$("table.order-report tbody").html("<tr><td class='center'>[[#{HQP_T_EMPTY_RESULT}]]</td></tr>");
+		
+		$("#curr").html("");
+	};
 	
 	function drawTable(result)
 	{
@@ -66,93 +86,107 @@ $(document).ready(function() {
 		
 		let thead = [];
 		let tbody = [];
-		let currency;
+		let currency = "";
 		
-		thead.push("<tr><th></th>");
-		
-		$.each(column, function(index, item) {
-			thead.push("<th class='center text-ellipsis' title='" + item.CAPTION + "'>");
-			thead.push(item.CAPTION);
-			thead.push("</th>");
-		});
-		
-		thead.push("</tr>");
-		
-		$.each(axis, function(index1, item1) {
-			tbody.push("<tr>");
-			tbody.push("<td class='text-ellipsis' title='" + axis[index1].CAPTION + "'>" + axis[index1].CAPTION + "</td>");
+		if (JpUtilsObject.isNotNull(column))
+		{
+			thead.push("<tr><th style='position: sticky; top:0'>&nbsp;</th>");
+			//thead.push("<tr><th></th>");			
 			
-			$.each(data[index1], function(index2, item2) {
-				let value = item2.VALUE;
-
-				if (item2.MWKZ == "%")
-				{
-					value = Number(value).toFixed(2);
-				};
-				
-				let formattedValue = JpUtilsNumber.addComma(value);
-				
-				tbody.push("<td class='right text-ellipsis' title='" + formattedValue + "'>");
-				tbody.push(formattedValue);
-				tbody.push("</td>");
-				
-				console.log()
-				
-				if (JpUtilsString.isEmpty(currency) && JpUtilsString.isNotEmpty(item2.CURRENCY))
-				{
-					currency = item2.CURRENCY; 
-				};
+			$.each(column, function(index, item) {
+				//thead.push("<th class='center text-ellipsis' title='" + item.CAPTION + "'>");
+				thead.push("<th style='position: sticky; top:0' class='center text-ellipsis' title='" + item.CAPTION + "'>");
+				thead.push(item.CAPTION);
+				thead.push("</th>");
 			});
 			
-			tbody.push("</tr>");
-		});
+			thead.push("</tr>");
+			
+			$.each(axis, function(index1, item1) {
+				tbody.push("<tr>");
+				tbody.push("<td class='text-ellipsis' title='" + axis[index1].CAPTION + "'>" + axis[index1].CAPTION + "</td>");
+				
+				$.each(data[index1], function(index2, item2) {
+					let value = item2.VALUE;
 
-		$("table.order-report > thead").html(thead.join(""));
-		$("table.order-report > tbody").html(tbody.join(""));
+					if (item2.MWKZ == "%")
+					{
+						value = Number(value).toFixed(2);
+					};
+					
+					let formattedValue = JpUtilsNumber.addComma(value);
+					
+					tbody.push("<td class='right text-ellipsis' title='" + formattedValue + "'>");
+					tbody.push(formattedValue);
+					tbody.push("</td>");
+					
+					console.log()
+					
+					if (JpUtilsString.isEmpty(currency) && JpUtilsString.isNotEmpty(item2.CURRENCY))
+					{
+						currency = item2.CURRENCY; 
+					};
+				});
+				
+				tbody.push("</tr>");
+			});
+		}
+		else
+		{
+			thead.push("<tr><th class='center'>&nbsp;</th></tr>");
+			tbody.push("<tr><td class='center'>[[#{HQP_T_EMPTY_RESULT}]]</td></tr>");
+		};
 		
-		$("#curr").html(currency);
+		$("table.order-report thead").html(thead.join(""));
+		$("table.order-report tbody").html(tbody.join(""));
+
+		$("#curr").html(currency);		
+		
 	};
 	
 	function drawChart(result)
 	{
 		let column = result.BW_COLUMN;
-		let data = result.BW_DATA;
-		let axis = result.BW_AXIS;
-		let axisLength = axis.length;
-		
 		let chartData = [];
 		let xAxis = [];
 		let groups = new Array();
-		groups.push(new Array());
+		groups.push(new Array());		
 		
-		$.each(column, function(index, item) {
-			if (index >=0 && index <= 11)
-			{
-				xAxis.push(item.CAPTION);	
-			};
-		});
+		if (JpUtilsObject.isNotNull(column))
+		{
+			let data = result.BW_DATA;
+			let axis = result.BW_AXIS;
+			let axisLength = axis.length;
 
-		$.each(axis, function(index1, item1) {
-			
-			if (index1 >= 0 && index1 <= axisLength-4 && index1%2 == 0)
-			{
-				let chartColumn = [];
-				chartColumn.push(axis[index1].CAPTION);
+			$.each(column, function(index, item) {
+				if (index >=0 && index <= 11)
+				{
+					xAxis.push(item.CAPTION);	
+				};
+			});
+
+			$.each(axis, function(index1, item1) {
 				
-				$.each(data[index1], function(index2, item2) {
-					if (index2 >= 0 && index2 <= 11)
-					{
-						let value = (item2.MWKZ == "%") ? Number(item2.VALUE).toFixed(2) : item2.VALUE;
-						
-						chartColumn.push(value);						
-					};
-				});
-				
-				chartData.push(chartColumn);
-				
-				groups[0].push(axis[index1].CAPTION);
-			};
-		});			
+				if (index1 >= 0 && index1 <= axisLength-4 && index1%2 == 0)
+				{
+					let chartColumn = [];
+					chartColumn.push(axis[index1].CAPTION);
+					
+					$.each(data[index1], function(index2, item2) {
+						if (index2 >= 0 && index2 <= 11)
+						{
+							let value = (item2.MWKZ == "%") ? Number(item2.VALUE).toFixed(2) : item2.VALUE;
+							
+							chartColumn.push(value);						
+						};
+					});
+					
+					chartData.push(chartColumn);
+					
+					groups[0].push(axis[index1].CAPTION);
+				};
+			});			
+		}
 
 		let chart = c3.generate({
 			bindto: "#AREA_chart",
@@ -197,9 +231,10 @@ $(document).ready(function() {
 				let result = response.RESULT;
 				
 				drawTable(result);
-				drawChart(result);
+				//drawChart(result);
 			},
-			complete(jqXHR, textStatus) {
+			complete: function(jqXHR, textStatus)
+			{
 				ProgressBar.hide();
 			}
 		});		

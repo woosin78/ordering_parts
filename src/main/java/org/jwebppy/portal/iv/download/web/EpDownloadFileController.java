@@ -17,6 +17,7 @@ import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.download.dto.EpDownloadFileHistoryDto;
@@ -43,6 +44,9 @@ public class EpDownloadFileController extends IvGeneralController
 	private EpDownloadFileHistoryService downloadFileHistoryService;
 
 	@Autowired
+	private I18nMessageSource i18nMessageSource;
+
+	@Autowired
 	private EpUploadFileService uploadFileService;
 
 	@Autowired
@@ -56,12 +60,12 @@ public class EpDownloadFileController extends IvGeneralController
 
 		if (decodedKey.length != 2)
 		{
-			throw new Exception("Invalid download information.");
+			throw new Exception(i18nMessageSource.getMessage("PTL_M_INVALID_REQUEST"));
 		}
 
 		if (Duration.between(LocalDateTime.parse(decodedKey[0], DateTimeFormatter.ofPattern(CmDateFormatUtils.getDateTimeFormat())), LocalDateTime.now()).toMinutes() > 30)
 		{
-			throw new Exception("Exceeded the download available time. Please refresh this page and try to download again.");
+			throw new Exception(i18nMessageSource.getMessage("PTL_M_EXCEEDED_DOWNLOAD_AVAIL_TIME"));
 		}
 
 		EpUploadFileListDto uploadFileList = uploadFileListService.getUploadFileList(decodedKey[1]);
@@ -80,7 +84,7 @@ public class EpDownloadFileController extends IvGeneralController
 
 		if (!file.exists())
 		{
-			throw new Exception("There is no file.");
+			throw new Exception(i18nMessageSource.getMessage("PTL_M_NO_DOWNLOAD_FILE"));
 		}
 
 		httpServletResponse.reset();

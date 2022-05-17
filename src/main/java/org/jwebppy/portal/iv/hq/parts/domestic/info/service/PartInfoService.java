@@ -1,12 +1,12 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.info.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.springframework.stereotype.Service;
@@ -102,19 +102,25 @@ public class PartInfoService extends PartsDomesticGeneralService
 	}
 
 	//@Cacheable(cacheManager = "portalCacheManager", value = PortalCacheConfig.PARTS_INFO_AUTOCOMPLETE, unless="#result == null")
-	public DataList getSimplePartInfo(Map<String, Object> paramMap)
+	public DataList getSimplePartInfo(ErpDataMap paramMap)
 	{
+		Map<String, Object> partMap = new HashMap<>();
+		partMap.put("MATERIAL", paramMap.get("partNo"));
+		partMap.put("MATERIAL_TEXT", paramMap.get("partDesc"));
+
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY2");
 
 		rfcRequest
-			.field(new Object[][] {
-				{"I_BGTYP", "P"},//상수
-				{"I_LANGU", paramMap.get("lang")},
-				{"I_USERID", UserAuthenticationUtils.getUsername()}
-			})
+			.structure("I_INPUT")
+				.add(new String[][] {
+					{"STATUS", "X"},
+					{"VKORG", paramMap.getSalesOrg()},
+					{"VTWEG", paramMap.getDistChannel()},
+					{"SPART", paramMap.getDivision()}
+				})
 			.and()
 			.table("LT_ITEM")
-				.add("MATERIAL", paramMap.get("partNo"))
+				.add(partMap)
 			.and()
 			.output("LT_ITEM");
 

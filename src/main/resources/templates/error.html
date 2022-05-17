@@ -71,7 +71,6 @@
 			<div th:case="${401}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
 			<div th:case="${403}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
 			<div th:case="${999}" th:text="#{HQP_T_SESSION_EXPIRED}"></div>
-			<div th:case="${404}" th:text="#{HQP_T_PAGE_NOT_FOUND}"></div>
 			<div th:case="*" th:text="#{HQP_T_ERROR}"></div>
 		</th:block>
 	</div>
@@ -90,7 +89,6 @@
 		</div>
 	</div>
 </div>
-
 <!-- Logout -->
 <form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}" style="display:none;"></form>
 

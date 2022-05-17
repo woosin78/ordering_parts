@@ -14,11 +14,13 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.hq.common.HqCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
-import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderCreateService;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
+import org.jwebppy.portal.iv.hq.parts.export.common.web.PartsExportGeneralController;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderItemDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.service.ExOrderCreateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,10 +33,10 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(PartsExportCommonVo.REQUEST_PATH + "/order/create")
-public class ExOrderCreateController extends PartsDomesticGeneralController
+public class ExOrderCreateController extends PartsExportGeneralController
 {
 	@Autowired
-	private OrderCreateService orderCreateService;
+	private ExOrderCreateService orderCreateService;
 
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest)
@@ -109,7 +111,7 @@ public class ExOrderCreateController extends PartsDomesticGeneralController
 
 	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@ModelAttribute OrderDto order)
+	public Object save(@ModelAttribute ExOrderDto order)
 	{
 		if (CmStringUtils.isNotEmpty(order.getMaterialNo()))
 		{
@@ -124,7 +126,7 @@ public class ExOrderCreateController extends PartsDomesticGeneralController
 			order.setSoldToNo(userInfoMap.getCustomerNo());
 			order.setSoldToName(userInfoMap.getCustomerName());
 
-			List<OrderItemDto> orderItems = new LinkedList<>();
+			List<ExOrderItemDto> orderItems = new LinkedList<>();
 
 			String[] lineNos = CmStringUtils.splitPreserveAllTokens(order.getLineNo(), HqCommonVo.DELIMITER);
 			String[] materialNos = CmStringUtils.splitPreserveAllTokens(order.getMaterialNo(), HqCommonVo.DELIMITER);
@@ -137,7 +139,7 @@ public class ExOrderCreateController extends PartsDomesticGeneralController
 			{
 				if (CmStringUtils.isNotEmpty(materialNos[i]))
 				{
-					OrderItemDto orderItem = new OrderItemDto();
+					ExOrderItemDto orderItem = new ExOrderItemDto();
 					orderItem.setLineNo(lineNos[i]);
 					orderItem.setMaterialNo(materialNos[i]);
 					orderItem.setOrderQty(orderQtyies[i]);

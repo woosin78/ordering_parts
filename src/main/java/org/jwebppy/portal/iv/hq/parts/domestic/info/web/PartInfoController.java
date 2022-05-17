@@ -99,7 +99,7 @@ public class PartInfoController extends PartsDomesticGeneralController
 				.decimalFormat(new String[] {"LPRICE", "FINAL_LPRICE"});
 
 			FormatBuilder.with(resultList)
-				.qtyFormat(new String[] {"OPENQ", "EXP_AVQ"})
+				.qtyFormat(new String[] {"OPENQ", "EXP_AVQ", "DIV"})
 				.decimalFormat(new String[] {"NTGEW", "BRGEW", "PLIFZ"})
 				.dateFormat("DATAB");
 
@@ -117,15 +117,16 @@ public class PartInfoController extends PartsDomesticGeneralController
 	@ResponseBody
 	public Object autocompleteData(@RequestParam Map<String, Object> paramMap)
 	{
-		String pPartNo = CmStringUtils.trimToEmpty(paramMap.get("pPartNo"));
+		String pPartNo = CmStringUtils.upperCase(CmStringUtils.trimToEmpty(paramMap.get("pPartNo")));
 
 		if ("".equals(pPartNo))
 		{
 			return EMPTY_RETURN_VALUE;
 		}
 
-		Map<String, Object> rfcParamMap = new HashMap<>();
+		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.put("partNo", pPartNo);
+		rfcParamMap.put("partDesc", pPartNo);
 		rfcParamMap.put("lang", getErpUserInfo().getLangForSap());
 
 		return partsInfoService.getSimplePartInfo(rfcParamMap);

@@ -2588,3 +2588,29 @@ COUNTER     1002176
     Return code: RFCIO_ERROR_SYSERROR(5)<
 
 
+
+**** Error file opened at 20220517 074922 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Tue May 17 07:49:22,530<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 74706490
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-88.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Tue May 17 07:49:22 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.88:3300; L=10.249.10.61:18306
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     1196558
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
