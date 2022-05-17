@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/iv/eu/parts/common/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/common/index}">
 
 <th:block layout:fragment="content">
 	<script type="application/javascript" th:src="@{/portal/js/portal.utils.order.js}"></script>
@@ -17,6 +17,7 @@
 			<div class="dropzone-click-zone" style="height:40.5px"></div>
 			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/upload_file.png"/>
 			<div class="dropzone-body-content dropzone-click-zone" th:text="#{EUP_M_0002}"></div>
+			<div style="margin-left:15px;"><input type="checkbox" id="fgShowListPrice" name="fgShowListPrice" class="custom-ui" value="Y" checked><label>Show List Price</label></div>
 		</div>
 		<div class="dropzone-bottom dropzone-click-zone">
 			<button type="button" onclick="UploadModal.hide()">[[#{EUP_B_0014}]]</button>
@@ -35,6 +36,7 @@
 	<div class="condition-area">
 	<form id="FORM_order">
 	<input type="hidden" id="soldToNo" name="soldToNo"/><!-- KUNNR -->
+	<input type="hidden" id="soldToName" name="soldToName"/><!-- KUNNR_NAME -->
 	<input type="hidden" id="shipToNo" name="shipToNo"/><!-- KUNAG -->
 	<input type="hidden" id="shipToName" name="shipToName"/><!-- KUNAG_NAME -->
 	<input type="hidden" id="shipToStreet" name="shipToStreet"/><!-- KUNAG_STREET -->
@@ -55,25 +57,25 @@
 	<input type="hidden" id="availability" name="availability"/>
 	<input type="hidden" id="blockReason" name="blockReason"/>
 	<input type="hidden" id="message" name="message"/>
-	<input type="hidden" id="fgChargeDocumentFree" name="fgChargeDocumentFree"/>
 	<input type="hidden" id="pricingInfo" name="pricingInfo"/>
 	<input type="hidden" id="simulationFrom" name="simulationFrom"/>	
 	<input type="hidden" id="tmpShippingCondition" name="tmpShippingCondition"/><!-- Shipping Condition 변경 시 이전 값을 저장해 두기 위한 용도 -->
 	<input type="hidden" id="tmpShippingConditionName" name="tmpShippingConditionName"/><!-- Shipping Condition 변경 시 이전 값을 저장해 두기 위한 용도 -->
 	<input type="hidden" id="from" name="from" th:value="${from}"/><!-- from Merchandize or other views -->
 	<input type="hidden" id="materialNosFrom" th:value="${materialNosFrom}"/>
-	<input type="hidden" id="orderQtiesFrom" th:value="${orderQtiesFrom}"/>
+	<input type="hidden" id="orderQtiesFrom" th:value="${orderQtiesFrom}"/>	
+	<input type="hidden" id="oaSeq" name="oaSeq"/><!-- Onetime Address 식별자  -->
 	
 	<table class="condition">
 		<tbody>
 			<tr>
 				<th colspan="4">
 					<div class="input-area">
-						<input type="radio" class="custom-ui" id="docType1" name="docType" value="C" checked />
+						<input type="radio" class="custom-ui" id="docType1" name="docType" value="C" checked/>
 						<label th:text="#{EUP_L_0037}"></label>
 						&nbsp;&nbsp;
-						<input type="radio" class="custom-ui" id="docType2" name="docType" value="A" style="display:none" />
-						<label id="LB_docType2" th:text="#{EUP_L_0038}" style="display:none"></label>
+						<input type="radio" class="custom-ui" id="docType2" name="docType" value="A"/>
+						<label th:text="#{EUP_L_0038}"></label>
 					</div>
 				</th>
 			</tr>
@@ -84,7 +86,8 @@
 				</td>
 				<th th:text="#{EUP_L_0022}"></th><!-- Ship To Party -->
 				<td>
-					<div><button id="BTN_shipToParty" type="button" th:text="#{EUP_B_0006}" class="small_button"></button></div><span id="AREA_shipToAddress"></span>
+					<div><button id="BTN_shipToParty" type="button" th:text="#{EUP_B_0006}" class="small_button"></button><div class="split2"></div><button id="BTN_onetimeAddress" type="button" th:text="#{EUP_B_0026}" class="small_button"></button></div>
+					<div id="AREA_shipToAddress"></div>
 				</td>
 			</tr>
 			<tr>
@@ -134,10 +137,6 @@
 	<div class="split-row"></div>
 
 	<div class="grid-info">
-		<div id="freeTransportMsg" class="grid-total" style="color: #ee8814; font-weight: bold;"></div>		
-	</div>
-
-	<div class="grid-info">
 		<div class="block-button-area">
 			<button id="BTN_addRow" type="button">[[#{EUP_B_0009}]]</button>
 			<div class="split"></div>
@@ -171,29 +170,16 @@
 	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
-	
-	<form id="FORM_validCheck">
-	<input type="hidden" id="materialNo" name="materialNo"/>
-	</form>
-	
+
 	<script type="application/javascript">
-	let customerType = "[[${erpUserInfo.get("TYPE")}]]";
-	
-	//Y06 : Sub Dealer
-	if (customerType != "Y06")
-	{
-		$("#docType2, #LB_docType2").show();
-	};
-	
 	$("input:radio[name=docType][value='[[${docType}]]']").prop("checked", true);
 	
 	var errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
-	let isFreeTransportTarget = false;
 	
 	let UploadModal = {};
 	UploadModal.show = function() {
 		let width = 480;
-		let height = 250;
+		let height = 280;
 		let left = ($(window).innerWidth() - width) * 0.5;
 		let top = ($(window).innerHeight() - height) * 0.5;
 	
@@ -205,6 +191,8 @@
 		});
 	
 		$(".dropzone-dimmer, .dropzone-area").show();
+		
+		$("#fgShowListPrice").prop("checked", true);
 	};
 	
 	UploadModal.hide = function()
@@ -214,7 +202,7 @@
 	
 	$(".dropzone-click-zone").dropzone({
 		url: "[[${BASE_PATH}]]/order/create/simulation/upload",
-		maxFilesize: 5, //MB
+		maxFilesize: 5,//MB
 		acceptedFiles: ".xls,.xlsx",
 		accept: function(file, done)
 		{
@@ -265,17 +253,13 @@
 			changeOrderType();
 		});
 	};
-	orderComponent.makeOrderType($(".order-type"), "orderType", null, false, "docType=" + $("input:radio[name=docType]:checked").val() + "&from=" + $("#from").val());
+	orderComponent.makeOrderType($(".order-type"), "orderType", null, false, "docType=" + $("input:radio[name=docType]:checked").val());
 	
 	function changeOrderType()
 	{
 		$.ajax({
 			url: "[[${BASE_PATH}]]/order/create/header_info",
-			data: "orderType=" + orderComponent.getSelectedOrderType() 
-				+ "&priceGroup=" + orderComponent.getSelectedPriceGroup() 
-				+ "&docType=" + orderComponent.getSelectedDocType()
-				+ "&shipToNo=" + $("#shipToNo").val()
-				,
+			data: "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&docType=" + orderComponent.getSelectedDocType(),
 		    success: function(response, textStatus, jqXHR)
 		    {
 		    	let result = response.RESULT;
@@ -287,10 +271,6 @@
 		    	$("#allowableNetValue").val(Number(result.ZZORAMT));
 	
 		    	$("#priceGroup").val(orderComponent.getSelectedPriceGroup());
-		    	
-		    	isFreeTransportTarget = (result.ZZORAMT == 0) ? false : true;
-		    	
-		    	checkFreeTransport(0);
 		    	
 		    	resetDoneSimulationHistory();
 		    }
@@ -304,10 +284,17 @@
 		$("#shipToStreet").val(shipToStreet);
 	
 		$("#AREA_shipToAddress").html(shipToName + " " + shipToStreet);
-
-		resetDoneSimulationHistory();
 		
-		changeOrderType();
+		//Onetime Address 선택한 정보 삭제
+		$("#oaSeq").val("");
+		
+		resetDoneSimulationHistory();
+	};
+	
+	function changeShipToPartyByOnetimeAddress(oaSeq, shipToName, shipToStreet)
+	{
+		$("#oaSeq").val(oaSeq);
+		$("#AREA_shipToAddress").html(shipToName + " " + shipToStreet);
 	};
 	
 	function changeShippingInfo(shippingCondition, shippingConditionName)
@@ -331,8 +318,9 @@
 		    success: function(response, textStatus, jqXHR)
 		    {
 		    	let result = response.RESULT;
-	
+		    	
 		    	$("#soldToNo").val(result.KUNNR);
+		    	$("#soldToName").val(result.KUNNR_NAME);
 		    	$("#incoterms1").val(result.INCO1);
 		    	$("#incoterms2").val(result.INCO2);
 		    	$("#currency").val(result.WAERS);
@@ -341,6 +329,8 @@
 		    	
 		    	let shipToNo = (result.KUNAG == null || result.KUNAG == "") ? result.KUNNR : result.KUNAG;
 		    	changeShipToParty(shipToNo, result.KUNAG_NAME, result.KUNAG_STREET);
+	
+		    	changeOrderType();
 		    }
 		});
 	};
@@ -369,9 +359,8 @@
 		items.uoms = [];
 		items.availabilities = [];
 	
-//		try
-//		{
-		if (typeof $tableObj != 'undefined') {
+		try
+		{
 			let tds = $tableObj.columns(0).nodes()[0];
 	
 			for (let i=0, length=tds.length; i<length; i++)
@@ -387,19 +376,10 @@
 				let node = $(row.node());
 				let materialNo = node.find("input[name=materialNo]").val();
 				let orderQty = node.find("input[name=orderQty]").val();
-				
+	
 				// orderQty trim, 소숫점 제거
 				orderQty = Math.floor($.trim(orderQty));
-				if (materialNo !='' && orderQty == 0) {
-					alert('Req Qty is not entered. Please enter and try again.');
-					items = null;
-					break;
-				}
-				if (orderQty != 0){
-					node.find("input[name=orderQty]").val(orderQty);
-				} else {
-					node.find("input[name=orderQty]").val('');
-				}
+				node.find("input[name=orderQty]").val(orderQty);
 				
 				if ($.trim(materialNo) != "" && $.trim(orderQty) != "")
 				{
@@ -407,13 +387,12 @@
 					items.materialNos.push(materialNo);
 					items.orderQties.push(orderQty);
 					items.lotQties.push(data.lotQty);
-					items.uoms.push(data.uom);
-					items.availabilities.push(JpUtilsString.defaultString(data.availability, "^"));
+					items.uoms.push(data.uom);					
+					items.availabilities.push(CmStringUtils.defaultString(data.availability, "^"));
 				};
 			};
 		}
-//		}
-//		catch (e) {}
+		catch (e) {}
 	
 		return items;
 	};
@@ -423,14 +402,7 @@
 		//직접 입력한 후 시뮬레이션 했을 경우
 		if ($("#fileName").val() == "" && $("#simulationFrom").val() == "")
 		{
-			if ($("#shippingCondition").val() == "")
-			{
-				alert("[[#{EUP_M_0068}]]");
-				return;
-			};
-			
 			let itemParameter = makeItemParameter();
-			if (itemParameter == null) return;
 	
 			let materialNos = itemParameter.materialNos;
 			let orderQties = itemParameter.orderQties;
@@ -454,7 +426,7 @@
 		$tableObj.ajax.reload();
 		
 		UploadModal.hide();
-		ProgressBar.show();	
+		ProgressBar.show();
 	};
 	
 	function resetDoneSimulationHistory()
@@ -471,42 +443,6 @@
 		}
 		
 		return true;
-	};
-	
-	function checkFreeTransport(totalAmount)
-	{
-		$("#freeTransportMsg").html("");
-		
-		if ($("#docType1").is(":checked"))
-		{
-			if (isFreeTransportTarget)
-			{
-				let allowableNetValue = Number($.trim($("#allowableNetValue").val()));		
-				
-				let remainder = (allowableNetValue - Number(totalAmount)).toFixed(2);
-				remainder = (remainder < 0) ? 0 : remainder;
-				
-				let msg = "[[#{EUP_T_0056}]]".replace("{0}", remainder).replace("{1}", $("#currency").val());
-				
-				$("#freeTransportMsg").html(msg);
-				
-				if (remainder == 0)
-				{
-					$("#freeTransportMsg").append(" | Free Transport.");
-					
-					$("#shippingCondition").val("CF");
-					$("#AREA_shippingCondition").html("Free Transport.");			
-				}
-				else
-				{
-					if ($("#shippingCondition").val() == "CF")
-					{
-						$("#shippingCondition").val($("#tmpShippingCondition").val());
-						$("#AREA_shippingCondition").html($("#tmpShippingConditionName").val());
-					};
-				};			
-			};
-		};
 	};
 	
 	let targetToBeChanged;
@@ -530,12 +466,12 @@
 		Popup.open("[[${BASE_PATH}]]/order/create/ship_to_party_list");
 	});
 	
+	$("#BTN_onetimeAddress").on("click", function() {
+		Popup.open("[[${BASE_PATH}]]/order/create/onetime_address_list", 1200, 600);
+	});
+	
 	$("#BTN_shippingInfo").on("click", function(event) {
-		let param = "orderType=" + orderComponent.getSelectedOrderType() 
-		          + "&priceGroup=" + orderComponent.getSelectedPriceGroup() 
-		          + "&customerNo=" + $("#soldToNo").val()
-		          + "&shipToNo=" + $("#shipToNo").val()
-		          ;
+		let param = "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&customerNo=" + $("#soldToNo").val();
 	
 		Popup.open("[[${BASE_PATH}]]/order/create/shipping_info_list?" + param, 700, 500);
 	});
@@ -544,18 +480,13 @@
 	
 		for (let i=0; i<10; i++)
 		{
-			let lastRow = $.extend({}, $tableObj.row(":last").data());
-			let lastLineNo = Number(lastRow.lineNo);
-			let nextLineNo = JpUtilsString.padLeft((parseInt(lastLineNo * 0.1) + 1) * 10, "0", 6);
-			// 맵 초기화
-			for (var j in lastRow){
-				lastRow[j] = null;
-			}
-			lastRow.materialNo = "";
-			lastRow.orderQty = "";
-			lastRow.availability = "";
-			lastRow.lineNo = nextLineNo;
+			let lastRow = $tableObj.row(":last").data();
+			let lastLineNo = Number(lastRow.lineNo);			
+			let nextLineNo = CmStringUtils.padLeft((parseInt(lastLineNo * 0.1) + 1) * 10, "0", 6);
+	
 			$tableObj.row.add(lastRow).draw();
+	
+			$tableObj.cell($tableObj.rows().count()-1, 1).data(nextLineNo);
 		};
 	});
 	
@@ -602,12 +533,6 @@
 	});
 	
 	$("#BTN_upload").on("click", function() {
-		if ($("#shippingCondition").val() == "")
-		{
-			alert("[[#{EUP_M_0068}]]");
-			return;
-		};		
-		
 		UploadModal.show();
 	});
 	
@@ -651,116 +576,68 @@
 			alert($("#blockMessage").val());
 		};
 		
-		if ($("#fgChargeDocumentFree").val() != "")
-		{
-			alert("[[#{EUP_M_0007}]]");
-		};	
-		
 		if (!confirm("[[#{EUP_M_0006}]]"))
 		{
 			return;
 		};
 		
 		let itemParameter = makeItemParameter();
-		
+	
 		$("#lineNo").val(itemParameter.lineNos.join("^"));
 		$("#materialNo").val(itemParameter.materialNos.join("^"));
 		$("#orderQty").val(itemParameter.orderQties.join("^"));
 		$("#lotQty").val(itemParameter.lotQties.join("^"));
 		$("#uom").val(itemParameter.uoms.join("^"));
 		$("#availability").val(itemParameter.availabilities.join("^"));
-	
-		if (isValidPartsToOrder())
-		{
-			$.ajax({
-				url: "[[${BASE_PATH}]]/order/create/save",
-				method: "POST",
-				data: $("#FORM_order").serialize(),
-				beforeSend: function(jqXHR, settings)
-				{
-					ProgressBar.show();
-				},		
-			    success: function(response, textStatus, jqXHR)
-			    {
-			    	let result = response.RESULT;
-			    	
-			    	let orderNo = $.trim(result.orderNo);
-			    	
-			    	if (orderNo != "")
-			    	{
-			    		let url = "order_detail";
-			    		let message = "[[#{EUP_M_0005}]]".replace("{0}", orderNo);
-			    		
-			    		if ($("#docType2").is(":checked"))
-			    		{
-			    			url = "inquiry_list";
-			    		};
-			    		
-			    		alert(message);
-	
-			    		document.location.href = "[[${BASE_PATH}]]/order/display/" + url + "?orderNo=" + orderNo;
-			    	}
-			    	else
-			    	{
-			    		let errorMsg = $.trim(result.errorMsg);
-			    		
-			    		if (errorMsg == "DUPLICATED_ORDER")
-			    		{
-			    			errorMsg = "[[#{EUP_M_DUPLICATED_ORDER}]]";
-			    		};
-
-			    		alert(errorMsg);
-
-			    		ProgressBar.hide();
-			    	};
-			    },
-			    error: function(jqXHR, textStatus, errorThrown)
-		    	{
-		    		ProgressBar.hide();
-		    	}
-			});		
-		};
-	});
-	
-	function isValidPartsToOrder()
-	{
-		let itemParameter = makeItemParameter();
-		let isValid = true;
 		
 		$.ajax({
-			url: "[[${BASE_PATH}]]/order/create/valid_check",
+			url: "[[${BASE_PATH}]]/order/create/save",
 			method: "POST",
-			async: false,
-			data: {
-				materialNo : itemParameter.materialNos.join("^")
-			},
+			data: $("#FORM_order").serialize(),
 			beforeSend: function(jqXHR, settings)
 			{
-				ProgressBar.show("[[#{EUP_T_0101}]]");
-			},		
+				ProgressBar.show();
+			},
 		    success: function(response, textStatus, jqXHR)
 		    {
 		    	let result = response.RESULT;
 		    	
-		    	if ($.trim(result) != "")
+		    	let orderNo = $.trim(result.orderNo);
+		    	
+		    	if (orderNo != "")
 		    	{
-		    		alert(result);
+		    		let url = "order_detail";
+		    		let message = "[[#{EUP_M_0005}]]".replace("{0}", orderNo);
 		    		
-		    		isValid = false;
+		    		if ($("#docType2").is(":checked"))
+		    		{
+		    			url = "inquiry_list";
+		    		};
+		    		
+		    		alert(message);
+	
+		    		document.location.href = "[[${BASE_PATH}]]/order/display/" + url + "?orderNo=" + orderNo;
 		    	}
-		    }, 
+		    	else
+		    	{
+		    		let errorMsg = $.trim(result.errorMsg);
+		    		
+		    		if (errorMsg == "DUPLICATED_ORDER")
+		    		{
+		    			errorMsg = "[[#{EUP_M_DUPLICATED_ORDER}]]";
+		    		};
+
+		    		alert(errorMsg);
+
+		    		ProgressBar.hide();		    		
+		    	};
+		    },
 		    error: function(jqXHR, textStatus, errorThrown)
 		    {
-		    	isValid = false;
-		    },
-		    complete: function(jqXHR, textStatus)
-	    	{
-	    		ProgressBar.hide();
-	    	}
+		    	ProgressBar.hide();
+		    }
 		});
-		
-		return isValid;
-	};
+	});
 	
 	$("#BTN_shoppingCart").on("click", function() {	
 		$("#simulationFrom").val("GPES");
@@ -783,10 +660,10 @@
 			//fixedColumns: { leftColumns: 5 },
 			columns: [
 				{// 컬럼에 checkbox 설정
-					name: "chk",
+					name: "chk",					
 					className:"center noselect skip-download",// row selection 기능 막음.
 					orderable: false,// checkbox 는 정렬 불가
-					title:"<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)' onclick='allChecked(this)'><label></label>",
+					title: "<input type='checkbox' class='custom-ui check-all' onclick='allChecked(this)'><label></label>",
 					render: function(data, type, row)
 					{
 						//대체품일 경우
@@ -795,10 +672,10 @@
 							return "";
 						}
 	
-						return '<input type="checkbox" class="custom-ui check-all" onchange="syncInput(this)"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
+						return '<input type="checkbox" class="custom-ui" onchange="syncInput(this)"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "lineNo", data: "lineNo", title: "[[#{EUP_L_0028}]]", className:"center"},//Item
+				{name: "lineNo", data: "lineNo", title: "[[#{EUP_L_0028}]]"},//Item
 				{
 					name: "materialNo",
 					data: "materialNo",
@@ -821,23 +698,16 @@
 					className:"center noselect",
 					render: function(data, type, row)
 					{
-						return '<input type="text" class="custom-ui center" name="orderQty" style="width:70px" value="' + row.orderQty + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onkeyup="doSimulationByEnter(this)" onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
+						return '<input type="text" class="custom-ui" name="orderQty" style="width:70px" value="' + row.orderQty + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onkeyup="doSimulationByEnter(this)" onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},//Req Qty
-				{name: "lotQty", data: "lotQty", title: "[[#{EUP_L_0050}]]", className:"center"},//Sales Lot
-				{name: "uom", data: "uom", title: "[[#{EUP_L_0049}]]", className:"center"},//UoM
-				{name: "netPrice", data: "netPrice", title: "[[#{EUP_L_0034}]]", className:"center"},//Net Price
-				{name: "netValue", data: "netValue", title: "[[#{EUP_L_0035}]]", className:"center"},//Net Value
-				{
-					name: "availabilityMsg",
-					data: "availability",
-					title: "[[#{EUP_L_0036}]]",
-					className: "cursor-pointer",
-					render: function(data, type, row)
-					{
-						return "<span title='" + row.availabilityMsg + "'>" +  row.availability + "</span>";
-					}
-				}//Availability
+				{name: "lotQty", data: "lotQty", title: "[[#{EUP_L_0050}]]"},//Sales Lot
+				{name: "uom", data: "uom", title: "[[#{EUP_L_0049}]]"},//UoM
+				{name: "netPrice", data: "netPrice", title: "[[#{EUP_L_0034}]]"},//Net Price
+				{name: "netValue", data: "netValue", title: "[[#{EUP_L_0035}]]"},//Net Value
+				{name: "listPrice", data: "listPrice", title: "[[#{EUP_L_0033}]]"},//List Price
+				{name: "costCode", data: "costCode", title: "[[#{EUP_L_0093}]]"},//Cost Code
+				{name: "stockDivuk", data: "stockDivuk", title: "[[#{EUP_L_0204}]]"}//Stock-DIVUK
 			],
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/create/simulation",
@@ -845,7 +715,7 @@
 				beforeSend: function()
 				{
 					tabIndex = 1;
-				},
+				},			
 				data: function(p)
 				{
 					// ajax로 넘길 파라미터
@@ -853,12 +723,14 @@
 					p.orderType = $("#orderType").val();
 					p.incoterms1 = $("#incoterms1").val();
 					p.incoterms2 = $("#incoterms2").val();
+					p.paymentTerms = $("#paymentTerms").val();
 					p.shippingCondition = $("#shippingCondition").val();
 					p.priceGroup = $("#priceGroup").val();
 					p.soldToNo = $("#soldToNo").val();
 					p.shipToNo = $("#shipToNo").val();
 					p.simulationFrom = $("#simulationFrom").val();
-	
+					p.fgShowListPrice = $.trim($("#fgShowListPrice:checked").val());
+					
 					//Item
 					if ($("#fileName").val() == "")
 					{
@@ -889,10 +761,6 @@
 					$("#credit").html(result.credit + result.creditCurrency);
 					$("#totalWeight").html(result.totalWeight + result.weightUnit);
 					$("#totalAmount").html(result.totalAmount + result.currency);
-					
-					checkFreeTransport(Number($.trim(result.totalAmount).replace(/,/gi, "")));
-					
-					$("#fgChargeDocumentFree").val(result.fgChargeDocumentFree);
 					
 					$("#blockReason").val(result.blockReason);
 					$("#blockMessage").val(result.blockMessage);
@@ -934,34 +802,6 @@
 						{
 							item.disabled = "disabled";
 						};
-						
-						let availability = $.trim(item.availability);
-						let availabilityMsg = "";
-						
-						if (item.availability == "P" || item.availability == "N")
-						{
-							if (item.vendor == "PF160")
-							{
-								let stockQty = Number(item.stockDiv) + Number(item.stockDiveu);
-								
-								if (Number(item.orderQty) <= stockQty)
-								{
-									availability += " ([[#{EUP_M_0009}]])";
-									availabilityMsg = "[[#{EUP_M_0010}]]";
-								}
-								else
-								{
-									availability += " ([[#{EUP_M_0011}]])";
-								};
-							}
-							else
-							{
-								availabilityMsg = " ([[#{EUP_M_0011}]])";
-							};
-						};
-						
-						item.availability = availability;
-						item.availabilityMsg = availabilityMsg;
 					};
 					
 					errorOrderItems = result.errorOrderItems;
@@ -971,22 +811,11 @@
 					{
 						alert("[[#{EUP_M_0047}]]".replace("{0}", errorCnt));
 					};
-	
+					
 					return normalOrderItems;
-				}
+				}			
 			}
 		});
-		
-		// Datatable error event
-		$.fn.dataTable.ext.errMode = 'none';
-		$("#TBL_grid").on("error.dt", function () {
-			if ($("#fileName").val()==""){
-				alert("An error occurred in the system. Please contact system representative.");
-			} else {
-				alert("An error occurred while processing the excel file. Please check the contents of the excel file.");
-			}
-		});
-		
 		
 		// Datatable onload event
 		$("#TBL_grid").on("draw.dt", function () {
@@ -995,11 +824,9 @@
 			
 			// Datatable grid 초기 설정 셋업
 			initGridTable($tableObj, true);
-	
+			
 			ProgressBar.hide();
-		});
-		
-		
+		});	
 	});
 	</script>
 </th:block>

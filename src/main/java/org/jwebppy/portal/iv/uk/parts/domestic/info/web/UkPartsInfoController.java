@@ -12,6 +12,7 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
+import org.jwebppy.portal.iv.uk.parts.domestic.common.UkPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.uk.parts.domestic.info.service.UkPartsInfoService;
 import org.jwebppy.portal.iv.uk.parts.domestic.order.UkOrderGeneralController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping("/portal/corp/uk/scm/parts/info")
+@RequestMapping(UkPartsDomesticCommonVo.REQUEST_PATH + "/info")
 public class UkPartsInfoController extends UkOrderGeneralController
 {
 	@Autowired
@@ -193,5 +194,27 @@ public class UkPartsInfoController extends UkOrderGeneralController
 		DataList dataList = rfcResponse.getTable("T_MODEL");
 
 		return dataList;
+	}
+	
+	@RequestMapping("/autocompete/data")
+	@ResponseBody
+	public Object autocomplete(@RequestParam Map<String, Object> paramMap)
+	{
+		String pPartsNo = CmStringUtils.trimToEmpty(paramMap.get("pPartsNo"));
+
+		if ("".equals(pPartsNo))
+		{
+			return null;
+		}
+
+		ErpDataMap rfcParamMap = getErpUserInfo();
+		rfcParamMap.put("partsNo", pPartsNo.toUpperCase());//PartsNo
+
+		DataList dataList = partsInfoService.getSimplePartsInfo(rfcParamMap);
+
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("items", dataList);
+
+		return resultMap;
 	}
 }

@@ -2,36 +2,36 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/popup/index}">
 
 <th:block layout:fragment="content">
 	<script type="application/javascript" th:src="@{/portal/js/portal.utils.order.js}"></script>
 	
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVEU_TXT_0058}"></div>
+		<div class="block-title" th:text="#{EUP_T_0058}"></div>
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{DIVEU_BTN_0002}"></button>
-			<button id="BTN_select" type="button" th:text="#{DIVEU_BTN_0023}"></button>
-			<button id="BTN_add" type="button" th:text="#{DIVEU_BTN_0009}"></button>
-			<button id="BTN_delete" type="button" th:text="#{DIVEU_BTN_0010}"></button>
+			<button id="BTN_search" type="button" th:text="#{EUP_B_0002}"></button>
+			<button id="BTN_select" type="button" th:text="#{EUP_B_0023}"></button>
+			<button id="BTN_add" type="button" th:text="#{EUP_B_0009}"></button>
+			<button id="BTN_delete" type="button" th:text="#{EUP_B_0010}"></button>
 		</div>
 	</div>
 	
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search">
 	<input type="hidden" id="country" name="country" value="GB">
-	<input type="hidden" id="countryName" name="countryName" th:value="#{DIVEU_TXT_0059}">
+	<input type="hidden" id="countryName" name="countryName" th:value="#{EUP_T_0059}">
 	<input type="hidden" id="transportZone" name="transportZone">
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DIVEU_LB_0087}"></th>
+				<th th:text="#{EUP_L_0087}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="name" name="name" class="custom-ui" tabindex="1">
 					</div>
 				</td>
-				<th th:text="#{DIVEU_LB_0090}"></th>
+				<th th:text="#{EUP_L_0090}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="street" name="street" class="custom-ui" tabindex="2">
@@ -39,26 +39,26 @@
 				</td>				
 			</tr>
 			<tr>
-				<th th:text="#{DIVEU_LB_0088}"></th>
+				<th th:text="#{EUP_L_0088}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="city" name="city" class="custom-ui" tabindex="3">
 					</div>				
 				</td>
-				<th th:text="#{DIVEU_LB_0089}"></th>
+				<th th:text="#{EUP_L_0089}"></th>
 				<td>
-					<div class="input-area">[[#{DIVEU_TXT_0059}]]</div>				
+					<div class="input-area">[[#{EUP_T_0059}]]</div>				
 				</td>
 			</tr>
 			<tr>
-				<th th:text="#{DIVEU_LB_0091}"></th>
+				<th th:text="#{EUP_L_0091}"></th>
 				<td>
 					<div>
-						<div><button id="BTN_tZone" type="button" th:text="#{DIVEU_BTN_0027}" class="small_button"></button></div>
+						<div><button id="BTN_tZone" type="button" th:text="#{EUP_B_0027}" class="small_button"></button></div>
 						<input type="text" id="postalCode" name="postalCode" class="custom-ui" tabindex="4">						
 					</div>
 				</td>
-				<th th:text="#{DIVEU_LB_0092}"></th>
+				<th th:text="#{EUP_L_0092}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="transportZoneName" name="transportZoneName" class="custom-ui" tabindex="5" readonly>
@@ -104,15 +104,15 @@ $(function(){
 					return '<input type="checkbox" name="oaSeq" class="custom-ui" value="' + row.oaSeq + '" onchange="syncInput(this)"><label></label>';
 				}				
 			},		
-			{data: "name", title: "[[#{DIVEU_LB_0087}]]"},//Customer Name
-			{data: "postalCode", title: "[[#{DIVEU_LB_0091}]]"},//Postal Code
-			{data: "street", title: "[[#{DIVEU_LB_0090}]]"},//Street
-			{data: "city", title: "[[#{DIVEU_LB_0088}]]"},//City
-			{data: "countryName", title: "[[#{DIVEU_LB_0089}]]"},//Country Name
-			{data: "transportZoneName", title: "[[#{DIVEU_LB_0092}]]"}//Transportation Zone
+			{data: "name", title: "[[#{EUP_L_0087}]]"},//Customer Name
+			{data: "postalCode", title: "[[#{EUP_L_0091}]]"},//Postal Code
+			{data: "street", title: "[[#{EUP_L_0090}]]"},//Street
+			{data: "city", title: "[[#{EUP_L_0088}]]"},//City
+			{data: "countryName", title: "[[#{EUP_L_0089}]]"},//Country Name
+			{data: "transportZoneName", title: "[[#{EUP_L_0092}]]"}//Transportation Zone
 		],
 		ajax: {
-			url: "/portal/corp/uk/scm/parts/order/create/onetime_address_list/data",
+			url: "[[${BASE_PATH}]]/order/create/onetime_address_list/data",
 			data: function(p)
 			{
 				// ajax로 넘길 파라미터
@@ -157,13 +157,13 @@ $(function(){
 		
 		if (selectedCount == 0)
 		{
-			alert("[[#{DIVEU_MSG_0019}]]");
+			alert("[[#{EUP_M_0019}]]");
 			return;
 		};
 		
 		if (selectedCount > 1)
 		{
-			alert("[[#{DIVEU_MSG_0020}]]");
+			alert("[[#{EUP_M_0020}]]");
 			return;
 		};
 		
@@ -178,41 +178,41 @@ $(function(){
 	$("#BTN_add").on("click", function() {
 		if ($.trim($("#name").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0018}]]");
+			alert("[[#{EUP_M_0018}]]");
 			$("#name").focus();
 			return;
 		};
 		
 		if ($.trim($("#street").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0017}]]");
+			alert("[[#{EUP_M_0017}]]");
 			$("#street").focus();
 			return;
 		};
 		
 		if ($.trim($("#city").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0016}]]");
+			alert("[[#{EUP_M_0016}]]");
 			$("#city").focus();
 			return;
 		};
 		
 		if ($.trim($("#postalCode").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0014}]]");
+			alert("[[#{EUP_M_0014}]]");
 			$("#postalCode").focus();
 			return;
 		};
 		
 		if ($.trim($("#transportZone").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0012}]]");
+			alert("[[#{EUP_M_0012}]]");
 			$("#transportZone").focus();
 			return;
 		};
 
 		$.ajax({
-			url: "/portal/corp/uk/scm/parts/order/create/onetime_address/duplication_check",			
+			url: "[[${BASE_PATH}]]/order/create/onetime_address/duplication_check",			
 			data: $("#FORM_search").serialize(),
 			method: "POST",
 		    success: function(response, textStatus, jqXHR)
@@ -224,7 +224,7 @@ $(function(){
 		    	if (result == null)
 		    	{
 					$.ajax({
-						url: "/portal/corp/uk/scm/parts/order/create/onetime_address/save",
+						url: "[[${BASE_PATH}]]/order/create/onetime_address/save",
 						data: $("#FORM_search").serialize(),						
 						method: "POST",
 					    success: function(response, textStatus, jqXHR)
@@ -240,7 +240,7 @@ $(function(){
 		    	{
 		    		doSearch();
 		    		
-		    		if (confirm("[[#{DIVEU_MSG_0013}]]"))
+		    		if (confirm("[[#{EUP_M_0013}]]"))
 		    		{
 		    			opener.changeShipToPartyByOnetimeAddress(result.oaSeq, $("#name").val(), address);
 		    			window.close();
@@ -255,14 +255,14 @@ $(function(){
 		
 		if (selectedTargets.length == 0)
 		{
-			alert("[[#{DIVEU_MSG_0021}]]");
+			alert("[[#{EUP_M_0021}]]");
 			return;
 		};
 		
-		if (confirm("[[#{DIVEU_MSG_0022}]]"))
+		if (confirm("[[#{EUP_M_0022}]]"))
 		{
 			$.ajax({
-				url: "/portal/corp/uk/scm/parts/order/create/onetime_address/delete",
+				url: "[[${BASE_PATH}]]/order/create/onetime_address/delete",
 				method: "POST",
 				data: $("#FORM_onetimeAddress").serialize(),
 			    success: function(response, textStatus, jqXHR)
@@ -290,13 +290,13 @@ $(function(){
 	{
 		if ($.trim($("#postalCode").val()) == "")
 		{
-			alert("[[#{DIVEU_MSG_0014}]]");
+			alert("[[#{EUP_M_0014}]]");
 			$("#postalCode").focus();
 			return;
 		};
 		
 		$.ajax({
-			url: "/portal/corp/uk/scm/parts/order/create/onetime_address/postal_code",
+			url: "[[${BASE_PATH}]]/order/create/onetime_address/postal_code",
 			data: "country=" + $("#country").val() + "&postalCode=" + $("#postalCode").val(),
 		    success: function(response, textStatus, jqXHR)
 		    {
@@ -305,7 +305,7 @@ $(function(){
 		    	if (transportZone != "")
 		    	{
 		    		$.ajax({
-		    			url: "/portal/corp/uk/scm/parts/order/create/onetime_address/tzone_list",
+		    			url: "[[${BASE_PATH}]]/order/create/onetime_address/tzone_list",
 		    			data: "country=" + $("#country").val() + "&transportZone=" + transportZone,
 		    		    success: function(response, textStatus, jqXHR)
 		    		    {
@@ -318,14 +318,14 @@ $(function(){
 		    		    	}
 		    		    	else
 		    		    	{
-		    		    		alert("[[#{DIVEU_MSG_0015}]]");
+		    		    		alert("[[#{EUP_M_0015}]]");
 		    		    	};
 		    		    }
 		    		});			    		
 		    	}
 		    	else
 		    	{
-		    		alert("[[#{DIVEU_MSG_0015}]]");
+		    		alert("[[#{EUP_M_0015}]]");
 		    	};
 		    }
 		});		

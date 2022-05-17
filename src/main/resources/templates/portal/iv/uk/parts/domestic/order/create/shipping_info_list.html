@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/iv/eu/parts/common/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/common/index}">
 
 <th:block layout:fragment="content">
 	<script type="application/javascript" th:src="@{/portal/js/portal.utils.order.js}"></script>
@@ -13,7 +13,7 @@
 	
 	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
-	</div>		
+	</div>	
 	
 <script type="application/javascript">
 
@@ -49,7 +49,6 @@ $(function(){
 				p.orderType = "[[${orderType}]]";
 				p.priceGroup = "[[${priceGroup}]]";
 				p.customerNo = "[[${customerNo}]]";
-				p.shipToNo = "[[${shipToNo}]]";
 			},
 			dataSrc: function(response)
 			{
@@ -64,7 +63,7 @@ $(function(){
 	
 	$("#TBL_grid").on("draw.dt", function () {
 		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);		
+		initGridTable($tableObj);
 	});
 	
 	$("#TBL_grid tbody").on("click", "td", function() {

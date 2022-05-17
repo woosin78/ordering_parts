@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index}">	
+	layout:decorate="~{portal/layout/iv/uk/parts/popup/index}">	
 <th:block layout:fragment="content">
 	<style>
 	.error {
@@ -11,11 +11,11 @@
 	}  
 	</style>
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVUK_TXT_0025}"></div><!-- Substitution Part -->
+		<div class="block-title" th:text="#{UKP_T_0025}"></div><!-- Substitution Part -->
 		<div class="block-button-area">
-			<button id="BTN_download" type="button" th:text="#{DIVUK_BTN_0013}"></button><!-- Download -->
-			<button id="BTN_search" type="button" th:text="#{DIVUK_BTN_0012}"></button><!-- Search -->
-			<!-- button id="BTN_close" type="button" th:text="#{DIVUK_BTN_0005}"></button><!-- Close -->						
+			<button id="BTN_download" type="button" th:text="#{UKP_B_0013}"></button><!-- Download -->
+			<button id="BTN_search" type="button" th:text="#{UKP_B_0012}"></button><!-- Search -->
+			<!-- button id="BTN_close" type="button" th:text="#{UKP_B_0005}"></button><!-- Close -->						
 		</div>		
 	</div>	
 	<div class="condition-area">
@@ -23,7 +23,7 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DIVUK_LB_0042}"></th><!--Parts No  -->
+				<th th:text="#{UKP_L_0042}"></th><!--Parts No  -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" th:value="${pPartsNo}" style="text-transform: uppercase;">
@@ -72,9 +72,9 @@
 						return '<input type="radio" name="RAD_MATNR" id="RAD_MATNR" class="custom-ui" value="' + row.MATNR + '" onchange="syncInput(this)"><label for="RAD_MATNR"></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},			
-				{name: "MATNR", 	data: "MATNR", 		title: "[[#{DIVUK_LB_0042}]]"	},	// Parts No
-				{name: "MAKTX1", 	data: "MAKTX1", 	title: "[[#{DIVUK_LB_0062}]]"	},	// Part No Desc
-				{name: "AVA_FLAG", 	data: "AVA_FLAG", 	title: "[[#{DIVUK_LB_0079}]]"	},	// Availability			
+				{name: "MATNR", 	data: "MATNR", 		title: "[[#{UKP_L_0042}]]"	},	// Parts No
+				{name: "MAKTX1", 	data: "MAKTX1", 	title: "[[#{UKP_L_0062}]]"	},	// Part No Desc
+				{name: "AVA_FLAG", 	data: "AVA_FLAG", 	title: "[[#{UKP_L_0079}]]"	},	// Availability			
 				{name: "SEQ", 		data: "SEQ", 		title: "SEQ(Hidden)"	},
 				{name: "LABST1", 	data: "LABST1", 	title: "LABST1(Hidden)"	},
 				{name: "ITCCD", 	data: "ITCCD", 		title: "ITCCD(Hidden)"	}			
@@ -86,7 +86,7 @@
 				}			
 			],
 			ajax: {
-				url: "/portal/corp/uk/scm/parts/info/sub_item_popup_list/data",
+				url: "[[${BASE_PATH}]]/info/sub_item_popup_list/data",
 				data: function(p)
 				{				
 					p.pPartsNo = $("#pPartsNo").val();
@@ -164,7 +164,7 @@
 	 */ 	
 	function searchParts(){
 		let param = "pPartsNo=" + $("#pPartsNo").val();
-		Popup.open("/portal/corp/uk/scm/parts/info/parts_number_popup_list?" + param, 700, 600);	
+		Popup.open("[[${BASE_PATH}]]/info/parts_number_popup_list?" + param, 700, 600);	
 	}
 	
 	function checkValidation(){	
@@ -175,7 +175,7 @@
 	    
 	    if (pPartsNo.length < 1)
 	    {
-			alert("[[#{DIVEU_MSG_0020}]]");	 // You have to input the material.
+			alert("[[#{EUP_M_0020}]]");	 // You have to input the material.
 	    	rtnValue = -1;
 	   	}
 	    

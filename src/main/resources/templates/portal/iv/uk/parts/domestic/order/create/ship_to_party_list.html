@@ -2,9 +2,11 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/popup/index}">
 
 <th:block layout:fragment="content">
+	<script type="application/javascript" th:src="@{/portal/js/portal.utils.order.js}"></script>
+	
 	<div class="block-header">
 		<div class="block-title" th:text="#{EUP_T_0053}"></div>
 		<div class="block-button-area">
@@ -84,12 +86,12 @@ $(function(){
 		initComplete:function(settings, json) 
 		{			
 			ProgressBar.hide();
-		}
+		}	
 	});
 	
 	$("#TBL_grid").on("draw.dt", function () {
 		// Datatable grid 초기 설정 셋업
-		initGridTable($tableObj);		
+		initGridTable($tableObj);
 	});
 	
 	$("#BTN_search").on("click", function() {
@@ -101,7 +103,7 @@ $(function(){
 		{
 			doSearch();
 		};
-	});	
+	});
 	
 	function doSearch()
 	{

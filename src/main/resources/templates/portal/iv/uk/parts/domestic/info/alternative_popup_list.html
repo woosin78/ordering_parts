@@ -2,14 +2,14 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/popup/index}">
 	
 <th:block layout:fragment="content">	
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVUK_TXT_0028}"></div><!-- Alternative List  -->
+	<div class="block-title" th:text="#{UKP_T_0028}"></div><!-- Alternative List  -->
 	<div class="block-button-area">
-		<button id="BTN_search" type="button" th:text="#{DIVUK_BTN_0012}"></button><!-- Search -->
-		<!-- button id="BTN_close" type="button" th:text="#{DIVUK_BTN_0005}"></button><!-- Close -->
+		<button id="BTN_search" type="button" th:text="#{UKP_B_0012}"></button><!-- Search -->
+		<!-- button id="BTN_close" type="button" th:text="#{UKP_B_0005}"></button><!-- Close -->
 	</div>	
 </div>	
 <div class="condition-area">
@@ -17,7 +17,7 @@
 <table class="condition">
 	<tbody>
 		<tr>
-			<th th:text="#{DIVUK_LB_0042}"></th><!--Parts No.  -->
+			<th th:text="#{UKP_L_0042}"></th><!--Parts No.  -->
 			<td colspan="3">			
 				<div class="input-area">
 					<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" th:value="${pPartsNo}">
@@ -52,12 +52,12 @@ $(function(){
 		ordering: true, 
 		scrollY: 100,
 		columns : [						
-			{data: "NMATNR", 		title: "[[#{DIVUK_LB_0042}]]"	},	//Parts No 
-			{data: "AMATNR", 		title: "[[#{DIVUK_LB_0082}]]"	},	//Alternative
-			{data: "AQTY", 			title: "[[#{DIVUK_LB_0056}]]"	}	//Qty
+			{data: "NMATNR", 		title: "[[#{UKP_L_0042}]]"	},	//Parts No 
+			{data: "AMATNR", 		title: "[[#{UKP_L_0082}]]"	},	//Alternative
+			{data: "AQTY", 			title: "[[#{UKP_L_0056}]]"	}	//Qty
 		],
 		ajax: {
-			url: "/portal/corp/uk/scm/parts/info/alternative_popup_list/data",
+			url: "[[${BASE_PATH}]]/info/alternative_popup_list/data",
 			data: function(p)
 			{				
 				p.pPartsNo = $("#pPartsNo").val();
@@ -98,7 +98,7 @@ function doSearch()
  */ 	
 function searchParts(){
 	var param = "pPartsNo=" + $("#pPartsNo").val();
-	Popup.open("/portal/corp/uk/scm/parts/info/parts_number_popup_list?" + param, 700, 600);	
+	Popup.open("[[${BASE_PATH}]]/info/parts_number_popup_list?" + param, 700, 600);	
 }
 
 $("#BTN_close").on("click", function(){

@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/iv/eu/parts/common/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/popup/index}">
 
 <th:block layout:fragment="content">
 	<div class="block-header">
@@ -16,77 +16,93 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
-	<script type="application/javascript">
-	$(function(){
-		ProgressBar.hide();
-		
-		$tableObj = $("#TBL_grid").DataTable({
-			select: true,// row 선택 기능 켬
-			ordering: false,// 정렬 기능 켬
-			scrollY: 100,
-			fixedColumns: { leftColumns: 1 },// 컬럼 고정 켬. (왼쪽 2개 컬럼 고정)
-			columns : [
-				{name: "materialNo", data: "materialNo", title: "[[#{EUP_L_0029}]]"},//Parts No.
-				{
-					name: "nonExist",
-					title: "[[#{EUP_L_0102}]]",
-					render: function(data, type, row)
-					{
-						if (row.errorType == "NON_EXIST")
-						{
-							return "X";
-						}
-						
-						return "";
-					}
-				},
-				{
-					name: "wrongDivision",
-					title: "[[#{EUP_L_0105}]]",
-					render: function(data, type, row)
-					{
-						if (row.errorType == "WRONG_DIVISION")
-						{
-							return "X";
-						}
-						
-						return "";
-					}
-				},			
-				{
-					name: "nonPurchase",
-					title: "[[#{EUP_L_0101}]]",
-					render: function(data, type, row)
-					{
-						if (row.errorType == "NON_PURCHASE")
-						{
-							return "X";
-						}
-						
-						return "";
-					}
-				},				
-				{name: "errorCode", data: "errorCode", title: "[[#{EUP_L_0103}]]"},//Not Code
-				{name: "errorMessage", data: "errorMessage", title: "[[#{EUP_L_0104}]]"}//Not Text	
-			],
-			data: opener.errorOrderItems,
-			drawCallback: function(settings)
+<script type="application/javascript">
+
+//화면중 일부 area 를 채우는 그리드 예제. 상위 div #sample-grid-area 영역을 100% 채움.
+//컬럼 width 자동. scroller 자동.
+//고정된 맵 데이터 사용. 페이지 생성시 데이터 넘겨서 그리드 만드는 방식
+
+$(function(){
+	$tableObj = $("#TBL_grid").DataTable({
+		select: true,   			// row 선택 기능 켬
+		ordering: false, 			// 정렬 기능 켬
+		scrollY: 100,				
+		fixedColumns: { leftColumns: 1 },         // 컬럼 고정 켬. (왼쪽 2개 컬럼 고정)
+		columns : [
+			{name: "materialNo", data: "materialNo", title: "[[#{EUP_L_0029}]]"},//Parts No.
 			{
-				ProgressBar.hide();
-			}
-		});	
-		
-		// window 리사이즈시 그리드 높이 다시 맞춤. (그리드의 parent 요소의 높이에 맞춤)
-		installDataTableResizer($tableObj, $("#AREA_grid"));
-		
-		// dataTable 버그 수정.
-		installDataTableBugFix("TBL_grid");
-		
-		$("#BTN_download").on("click", function() {
-			var gridFileDownload = new GridFileDownload($tableObj);
-			gridFileDownload.fileName = "error_report";
-			gridFileDownload.excelDownload();
-		});	
-	});
-	</script>	
+				name: "duplicated",
+				title: "[[#{EUP_L_0100}]]",
+				render: function(data, type, row)
+				{
+					if (row.errorType == "DUPLICATED")
+					{
+						return "X";
+					}
+					
+					return "";
+				}
+			},
+			{
+				name: "nonExist",
+				title: "[[#{EUP_L_0102}]]",
+				render: function(data, type, row)
+				{
+					if (row.errorType == "NON_EXIST")
+					{
+						return "X";
+					}
+					
+					return "";
+				}
+			},
+			{
+				name: "wrongDivision",
+				title: "[[#{EUP_L_0105}]]",
+				render: function(data, type, row)
+				{
+					if (row.errorType == "WRONG_DIVISION")
+					{
+						return "X";
+					}
+					
+					return "";
+				}
+			},			
+			{
+				name: "nonPurchase",
+				title: "[[#{EUP_L_0101}]]",
+				render: function(data, type, row)
+				{
+					if (row.errorType == "NON_PURCHASE")
+					{
+						return "X";
+					}
+					
+					return "";
+				}
+			},				
+			{name: "errorCode", data: "errorCode", title: "[[#{EUP_L_0103}]]"},//Not Code
+			{name: "errorMessage", data: "errorMessage", title: "[[#{EUP_L_0104}]]"}//Not Text	
+		],
+		data: opener.errorOrderItems,
+		drawCallback: function(settings)
+		{
+			ProgressBar.hide();
+		}
+	});	
+	
+	// window 리사이즈시 그리드 높이 다시 맞춤. (그리드의 parent 요소의 높이에 맞춤)
+	installDataTableResizer($tableObj, $("#AREA_grid"));
+	
+	// dataTable 버그 수정.
+	installDataTableBugFix("TBL_grid");
+	
+	$("#BTN_download").on("click", function() {
+		var gridFileDownload = new GridFileDownload($tableObj);
+		gridFileDownload.fileName = "error_report";
+		gridFileDownload.excelDownload();
+	});	
+});
+</script>	
 </th:block>

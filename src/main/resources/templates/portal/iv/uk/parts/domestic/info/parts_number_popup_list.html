@@ -2,14 +2,14 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/popup/index}">
 	
 <th:block layout:fragment="content">	
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVUK_TXT_0026}"></div><!-- Parts No. -->
+		<div class="block-title" th:text="#{UKP_T_0026}"></div><!-- Parts No. -->
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{DIVUK_BTN_0012}"></button><!-- Search -->
-			<!-- button id="BTN_close" type="button" th:text="#{DIVUK_BTN_0005}"></button><!-- Close -->				
+			<button id="BTN_search" type="button" th:text="#{UKP_B_0012}"></button><!-- Search -->
+			<!-- button id="BTN_close" type="button" th:text="#{UKP_BTN_0005}"></button><!-- Close -->				
 		</div>	
 	</div>	
 	<div class="condition-area">
@@ -17,7 +17,7 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DIVUK_LB_0042}"></th><!--Parts No.  -->
+				<th th:text="#{UKP_L_0042}"></th><!--Parts No.  -->
 				<td>			
 					<div class="input-area">			
 						<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui" th:value="${pPartsNo}" style="text-transform: uppercase;">
@@ -25,7 +25,7 @@
 				</td>
 			</tr>
 			<tr>			
-				<th th:text="#{DIVUK_LB_0080}"></th><!--Description  -->
+				<th th:text="#{UKP_L_0080}"></th><!--Description  -->
 				<td>
 					<div class="input-area">			
 						<input type="text" id="pPartsNoDesc" name="pPartsNoDesc" class="custom-ui" th:value="${pPartsNoDesc}">
@@ -83,11 +83,11 @@
 						return '<input type="radio" name="RAD_MATNR" id="RAD_MATNR" class="custom-ui" value="' + row.MATNR + '" onclick="clickParts(this)"><label for="RAD_MATNR"></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "MATNR", data: "MATNR", title: "[[#{DIVUK_LB_0042}]]"},		//Parts No. 
-				{name: "MAKTX", data: "MAKTX", title: "[[#{DIVUK_LB_0080}]]"}	//Description	
+				{name: "MATNR", data: "MATNR", title: "[[#{UKP_L_0042}]]"},		//Parts No. 
+				{name: "MAKTX", data: "MAKTX", title: "[[#{UKP_L_0080}]]"}	//Description	
 			],
 			ajax: {
-				url: "/portal/corp/uk/scm/parts/info/parts_number_popup_list/data",
+				url: "[[${BASE_PATH}]]/info/parts_number_popup_list/data",
 				type: "POST",
 				data: function(p)
 				{				

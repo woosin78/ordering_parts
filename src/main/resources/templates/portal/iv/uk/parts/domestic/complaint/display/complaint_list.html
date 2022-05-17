@@ -2,13 +2,13 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/common/index}">
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVUK_TXT_0030}"></div>
+		<div class="block-title" th:text="#{UKP_T_0030}"></div>
 		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{DIVUK_BTN_0012}"></button><!-- Search -->		
+			<button id="BTN_search" type="button" th:text="#{UKP_B_0012}"></button><!-- Search -->		
 		</div>
 	</div>	
 	<div class="condition-area">
@@ -19,13 +19,13 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DIVUK_LB_0040}"></th><!-- Complaint No. -->
+				<th th:text="#{UKP_L_0040}"></th><!-- Complaint No. -->
 				<td> 
 					<div class="input-area">
 						<input type="text" id="pComplaintNo" name="pComplaintNo" class="custom-ui" th:value="${pComplaintNo}">
 					</div>							
 				</td>
-				<th th:text="#{DIVUK_LB_0041}"></th><!--Reference No.  -->
+				<th th:text="#{UKP_L_0041}"></th><!--Reference No.  -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pReferenceNo" name="pReferenceNo" class="custom-ui" th:value="${pReferenceNo}">
@@ -33,13 +33,13 @@
 				</td>			
 			</tr>
 			<tr>
-				<th th:text="#{DIVUK_LB_0042}"></th><!-- Parts No. -->
+				<th th:text="#{UKP_L_0042}"></th><!-- Parts No. -->
 				<td> 		
 					<div class="input-area">
 						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
 					</div>					
 				</td>
-				<th th:text="#{DIVUK_LB_0043}"></th><!-- Period -->
+				<th th:text="#{UKP_L_0043}"></th><!-- Period -->
 				<td>
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
@@ -79,19 +79,19 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 3 },
 			columns : [
-				{data: "VBELN", 		title: "[[#{DIVUK_LB_0040}]]", className:"link"},	//Complaint No.
-				{data: "POSNR", 		title: "[[#{DIVUK_LB_0044}]]"},		// Seq.
-				{data: "TEXT", 			title: "[[#{DIVUK_LB_0045}]]"},	// Reason
-				{data: "ERDAT", 		title: "[[#{DIVUK_LB_0046}]]"},	// Doc. Date
-				{data: "VBELN2", 		title: "[[#{DIVUK_LB_0047}]]"},	// Sales Document
-				{data: "T_NETWR", 		title: "[[#{DIVUK_LB_0048}]]"},		// Total Amount
-				{data: "WAERK", 		title: "[[#{DIVUK_LB_0049}]]"},			// Curr.
-				{data: "RFGSK_TX_T", 	title: "[[#{DIVUK_LB_0050}]]"},	// Process Result						
-				{data: "RFGSK_TX_T1", 	title: "[[#{DIVUK_LB_0051}]]"},	// Return Status			
-				{data: "VBELN3", 		title: "[[#{DIVUK_LB_0052}]]", className:"link"}		// Final Document		
+				{data: "VBELN", 		title: "[[#{UKP_L_0040}]]", className:"link"},	//Complaint No.
+				{data: "POSNR", 		title: "[[#{UKP_L_0044}]]"},		// Seq.
+				{data: "TEXT", 			title: "[[#{UKP_L_0045}]]"},	// Reason
+				{data: "ERDAT", 		title: "[[#{UKP_L_0046}]]"},	// Doc. Date
+				{data: "VBELN2", 		title: "[[#{UKP_L_0047}]]"},	// Sales Document
+				{data: "T_NETWR", 		title: "[[#{UKP_L_0048}]]"},		// Total Amount
+				{data: "WAERK", 		title: "[[#{UKP_L_0049}]]"},			// Curr.
+				{data: "RFGSK_TX_T", 	title: "[[#{UKP_L_0050}]]"},	// Process Result						
+				{data: "RFGSK_TX_T1", 	title: "[[#{UKP_L_0051}]]"},	// Return Status			
+				{data: "VBELN3", 		title: "[[#{UKP_L_0052}]]", className:"link"}		// Final Document		
 			],
 			ajax: {
-				url: "/portal/corp/uk/scm/parts/complaint/display/complaint_list/data",
+				url: "[[${BASE_PATH}]]/complaint/display/complaint_list/data",
 				data: function(p)
 				{
 					p.pComplaintNo 	= $("#pComplaintNo").val();
@@ -165,7 +165,7 @@
 					$("#orderNo").val(orderNo);			
 					$("#detailDate").val(detailDate);
 					$("#docType").val(docType);			
-					$("#FORM_search").attr("action", "/portal/corp/uk/scm/parts/complaint/display/complaint_detail").submit();
+					$("#FORM_search").attr("action", "[[${BASE_PATH}]]/complaint/display/complaint_detail").submit();
 				}			    		    	
 			}
 			
@@ -181,7 +181,7 @@
 						param = param+"&"+"pFromDate=1900-01-01";
 						param = param+"&"+"pToDate=2900-12-31";
 						
-					Popup.open("/portal/corp/eu/scm/parts/order/invoice/invoice_status_popup_list?" + param, 1000, 600);				
+					Popup.open("[[${BASE_PATH}]]/order/invoice/invoice_status_popup_list?" + param, 1000, 600);				
 				}	
 			}			
 		});			

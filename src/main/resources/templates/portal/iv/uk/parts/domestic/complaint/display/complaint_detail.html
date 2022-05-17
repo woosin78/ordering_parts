@@ -2,14 +2,14 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/common/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/common/index}">
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="#{DIVUK_TXT_0031}"></div><!-- Complaint Detail Information -->
+		<div class="block-title" th:text="#{UKP_T_0031}"></div><!-- Complaint Detail Information -->
 		<div class="block-button-area">
-			<button id="BTN_pdfDownload" type="button" th:text="#{DIVUK_BTN_0011}"></button><!-- Print -->
-			<button id="BTN_back" type="button" th:text="#{DIVUK_BTN_0010}"></button><!-- Back -->
+			<button id="BTN_pdfDownload" type="button" th:text="#{UKP_B_0011}"></button><!-- Print -->
+			<button id="BTN_back" type="button" th:text="#{UKP_B_0010}"></button><!-- Back -->
 		</div>		
 	</div>
 	
@@ -17,11 +17,11 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th th:text="#{DIVUK_LB_0040}"></th><!--Complaint No  -->
+				<th th:text="#{UKP_L_0040}"></th><!--Complaint No  -->
 				<td id="COMPLAINT_NO"><span th:text="${orderNo}"></span></td>
-				<th th:text="#{DIVUK_LB_0053}"></th><!--Doc date  -->
+				<th th:text="#{UKP_L_0053}"></th><!--Doc date  -->
 				<td id="DOC_DATE"><span th:text="${detailDate}"></span></td>
-				<th th:text="#{DIVUK_LB_0054}"></th><!--Item Count  -->
+				<th th:text="#{UKP_L_0054}"></th><!--Item Count  -->
 				<td id="ITEM_COUNT"></td>				
 			</tr>
 		</tbody>
@@ -65,7 +65,7 @@
 	let seq = 0;
 	
 	$.ajax({
-		url: "/portal/corp/uk/scm/parts/complaint/display/complaint_detail/data",
+		url: "[[${BASE_PATH}]]/complaint/display/complaint_detail/data",
 		data: { "pOrderNo": "[[${orderNo}]]",
 				"pDocType": "[[${docType}]]"
 				},		
@@ -125,15 +125,15 @@
 	    		scrollY: 100,
 	    		columns : [
 	    			//{data: "SEQ",	 		title: "Seq."			},
-	    			{data: "REF_ORD", 		title: "[[#{DIVUK_LB_0041}]]"	},	// Reference No
-	    			{data: "MATERIAL", 		title: "[[#{DIVUK_LB_0055}]]"	},	// Part No
-	    			{data: "QTY", 			title: "[[#{DIVUK_LB_0056}]]"	},	// Qty	
-	    			{data: "TEXT", 			title: "[[#{DIVUK_LB_0057}]]"	},	// Complaint
-	    			{data: "TEXT2", 		title: "[[#{DIVUK_LB_0045}]]"	},	// Reason																										
-	    			{data: "COMPLAINT_DESC",title: "[[#{DIVUK_LB_0058}]]"	},	// Text
-	    			{data: "RCOMMENT", 		title: "[[#{DIVUK_LB_0059}]]"	},	// Reply
-	    			{data: "FILE_NAME", 	title: "[[#{DIVUK_LB_0060}]]", className:'link'},	// File	
-	    			{data: "ZZDEALDT", 		title: "[[#{DIVUK_LB_0061}]]"},			// Origin Doc. Date
+	    			{data: "REF_ORD", 		title: "[[#{UKP_B_0041}]]"	},	// Reference No
+	    			{data: "MATERIAL", 		title: "[[#{UKP_B_0055}]]"	},	// Part No
+	    			{data: "QTY", 			title: "[[#{UKP_B_0056}]]"	},	// Qty	
+	    			{data: "TEXT", 			title: "[[#{UKP_B_0057}]]"	},	// Complaint
+	    			{data: "TEXT2", 		title: "[[#{UKP_B_0045}]]"	},	// Reason																										
+	    			{data: "COMPLAINT_DESC",title: "[[#{UKP_B_0058}]]"	},	// Text
+	    			{data: "RCOMMENT", 		title: "[[#{UKP_B_0059}]]"	},	// Reply
+	    			{data: "FILE_NAME", 	title: "[[#{UKP_B_0060}]]", className:'link'},	// File	
+	    			{data: "ZZDEALDT", 		title: "[[#{UKP_B_0061}]]"},			// Origin Doc. Date
 	    			{data: "INT_NO", 		title: "INT_NO(Hidden)"},
 	    			{data: "DOCU_ITEM",		title: "DOCU_ITEM(Hidden)"}    			
 	    		],  	
@@ -156,11 +156,11 @@
 	});
 	
 	$("#BTN_pdfDownload").on("click", function() {
-		document.location.href = "/portal/corp/uk/scm/parts/complaint/display/pdf_download?pOrderNo=[[${orderNo}]]&pDocType=[[${docType}]]";
+		document.location.href = "[[${BASE_PATH}]]/complaint/display/pdf_download?pOrderNo=[[${orderNo}]]&pDocType=[[${docType}]]";
 	});
 	
 	$("#BTN_back").on("click", function() {
-		$("#FORM_search").attr("action", "/portal/corp/uk/scm/parts/complaint/display/complaint_list").submit();
+		$("#FORM_search").attr("action", "[[${BASE_PATH}]]/complaint/display/complaint_list").submit();
 	});
 	
 	$('#TBL_grid tbody').on('click', 'tr', function (e){				
@@ -181,7 +181,7 @@
 				$("#orderNo").val(orderNo);		
 				$("#intNo").val(intNo);
 				$("#docuItem").val(docuItem);										
-				$("#FORM_download").attr("action", "/portal/corp/uk/scm/parts/complaint/display/file_download").submit();
+				$("#FORM_download").attr("action", "[[${BASE_PATH}]]/complaint/display/file_download").submit();
 			}
 		}
 	});

@@ -2,15 +2,15 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/popup/index}">
+	layout:decorate="~{portal/layout/iv/uk/parts/common/index}">
 
 <th:block layout:fragment="content">
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0191}"></div>	<!-- Invoice Search -->
+	<div class="block-title" th:text="#{EUP_L_0191}"></div>	<!-- Invoice Search -->
 	<div class="block-button-area">
-		<button id="BTN_confirm" th:text="#{DIVEU_BTN_0029}"></button>  <!-- Confirm -->
-		<button id="BTN_search" th:text="#{DIVEU_BTN_0002}"></button>  <!-- Search -->
+		<button id="BTN_confirm" th:text="#{EUP_B_0029}"></button>  <!-- Confirm -->
+		<button id="BTN_search" th:text="#{EUP_B_0002}"></button>  <!-- Search -->
 	</div>
 </div>
 
@@ -19,7 +19,7 @@
 	<table class="condition">
 	<tbody>
 		<tr>
- 			<th th:text="#{DIVEU_LB_0133}"></th>	<!-- Invoice No. -->
+ 			<th th:text="#{EUP_L_0133}"></th>	<!-- Invoice No. -->
 			<td><input type="text" id="IPT_pInvoiceNo" name="pInvoiceNo" class="custom-ui" th:value="${pInvoiceNo}"></td>						
 		</tr>
 	</tbody>
@@ -119,7 +119,7 @@ $(function(){
 			}
 		],
 		ajax: {
-			url: "/portal/corp/uk/scm/parts/complaint/create/invoice_search",
+			url: "[[${BASE_PATH}]]/complaint/create/invoice_search",
 			data: function(p)
 			{	
 				p.pInvoiceNo = $("#IPT_pInvoiceNo").val();
@@ -165,7 +165,7 @@ $('#BTN_search').click(function()
 		doSearch();	
 	} else 
 	{
-		alert("[[#{DIVEU_MSG_0058}]]");	// Please input invoice number.
+		alert("[[#{EUP_M_0058}]]");	// Please input invoice number.
 		return false;
 	}	
 });
@@ -191,7 +191,7 @@ $("#BTN_confirm").click(function()
 	}
 	if (checkedCnt < 1) 
     {
-		alert("[[#{DIVEU_MSG_0059}]]");	// Please select targets to create complaint.
+		alert("[[#{EUP_M_0059}]]");	// Please select targets to create complaint.
       	return false;
     } else
  	{	

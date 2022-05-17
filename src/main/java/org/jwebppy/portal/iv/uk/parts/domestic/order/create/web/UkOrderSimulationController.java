@@ -7,14 +7,12 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
-
 import org.jwebppy.portal.iv.uk.parts.domestic.common.UkPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.uk.parts.domestic.order.UkOrderGeneralController;
 import org.jwebppy.portal.iv.uk.parts.domestic.order.create.dto.UkOrderDto;
@@ -31,13 +29,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+
 @Controller
 @RequestMapping(UkPartsDomesticCommonVo.REQUEST_PATH + "/order/create")
 @PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
 public class UkOrderSimulationController extends UkOrderGeneralController
 {
 	@Autowired
-	private UkOrderSimulationService ukOrderSimulationService;
+	private UkOrderSimulationService orderSimulationService;
 
 	@PostMapping("/simulation/upload")
 	@ResponseBody
@@ -91,7 +90,7 @@ public class UkOrderSimulationController extends UkOrderGeneralController
 		}
 		else if (CmStringUtils.equals(order.getSimulationFrom(), "GPES"))//GPES 쇼핑카드로 시뮬레이션 실행
 		{
-			RfcResponse rfcResponse = ukOrderSimulationService.getItemsFromGpes(userInfoMap);
+			RfcResponse rfcResponse = orderSimulationService.getItemsFromGpes(userInfoMap);
 
 			DataList dataList = rfcResponse.getTable("T_SHOPPING_CART");
 
@@ -137,12 +136,7 @@ public class UkOrderSimulationController extends UkOrderGeneralController
 			}
 		}
 
-		UkSimulationResultDto simulationResult = new UkSimulationResultDto();
-
-		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
-		{
-			simulationResult = ukOrderSimulationService.simulation(order);
-		}
+		UkSimulationResultDto simulationResult = orderSimulationService.simulation(order);
 
 		makeOrderItemForm(simulationResult);
 
