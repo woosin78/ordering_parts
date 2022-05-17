@@ -16,6 +16,7 @@ import org.jwebppy.portal.iv.eu.common.file_upload.dto.FileUploadInfoDto;
 import org.jwebppy.portal.iv.eu.common.file_upload.entity.FileUploadEntity;
 import org.jwebppy.portal.iv.eu.common.file_upload.service.EuFileUploadInfoService;
 import org.jwebppy.portal.iv.eu.common.file_upload.service.EuFileUploadService;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeGeneralService;
@@ -35,8 +36,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/merchandize/main")
-public class MerchandizeMainController extends EuMerchandizeGeneralController
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/main")
+public class EuMerchandizeMainController extends EuMerchandizeGeneralController
 {
 	@Autowired
 	private EuFileUploadService fileUploadService;

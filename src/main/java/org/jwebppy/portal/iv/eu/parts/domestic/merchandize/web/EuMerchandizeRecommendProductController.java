@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.dto.MerchandizeProductDto;
@@ -23,8 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/merchandize/recommendproduct")
-public class MerchandizeRecommendProductController extends EuMerchandizeGeneralController
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/recommendproduct")
+public class EuMerchandizeRecommendProductController extends EuMerchandizeGeneralController
 {
 	@Autowired
 	private EuMerchandizeRecommendProductService recommendProductService;

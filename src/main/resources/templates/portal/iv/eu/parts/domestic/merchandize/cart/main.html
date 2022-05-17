@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 
@@ -13,13 +13,13 @@
 </form>
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0060}"></div>
+	<div class="block-title" th:text="#{EUP_L_0060}"></div>
 	<div class="block-button-area">
-		<button class="crtOdrBtn" th:text="#{DIVEU_BTN_0025}"></button>  <!-- Order -->
+		<button class="crtOdrBtn" th:text="#{EUP_B_0025}"></button>  <!-- Order -->
 		<div class="split"></div>
-		<button class="crtDelBtn" th:text="#{DIVEU_BTN_0010}"></button>  <!-- Delete -->
+		<button class="crtDelBtn" th:text="#{EUP_B_0010}"></button>  <!-- Delete -->
 		<div class="split"></div>	
-		<button class="crtLisBtn" th:text="#{DIVEU_BTN_0024}"></button>	<!-- List -->	
+		<button class="crtLisBtn" th:text="#{EUP_B_0024}"></button>	<!-- List -->	
 	</div>
 </div>
 	
@@ -30,7 +30,7 @@
 		<div class="split"></div>
 	</div>
 	<div class="block-button-area">				
-		<span th:text="#{DIVEU_LB_0197}"></span>	<!-- Order total -->
+		<span th:text="#{EUP_L_0197}"></span>	<!-- Order total -->
 		<div class="split"></div>
 		<span id="IPT_orderTotalTxt" class="total-number">0</span>		
 	</div>
@@ -44,7 +44,7 @@
 	<div id="cartQtyChangeDiv"></div>
 </form>
 
-<form id="FORM_product" method="post" action="/portal/corp/eu/scm/parts/merchandize/product/main">	
+<form id="FORM_product" method="post" action="[[${BASE_PATH}]]/merchandize/product/main">	
 </form>
 
 <form id="FORM_delete" method="post">
@@ -60,6 +60,8 @@ var currRowData;
 
 $(document).ready(function() 
 {
+	ProgressBar.hide();
+	
 	makeResultGridData();
 	
 	$('#sample-grid tbody').on( 'click', 'tr', function () 
@@ -97,28 +99,28 @@ function makeResultGridData()
 			{	
 				name: 'productImage',
 				data: 'imageUrl',
-				title: '[[#{DIVEU_LB_0083}]]',	// Image
+				title: '[[#{EUP_L_0083}]]',	// Image
 				render : function(data, type, row) {	
 					return '<img src="/portal/corp/eu/common/file_load/image_viewer?filePath=' + data.replace("\\", "/") + '" style="width:50px;height:50px;" alt="No Image" />';
 				}
 			},
 			{	
 				data: 'productName',
-				title: '[[#{DIVEU_LB_0195}]]',	// Product
+				title: '[[#{EUP_L_0195}]]',	// Product
 				width: 400,
 				render : function(data, type, row) {					
 					return '<p style="max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + data + '</p><p style="max-width:380px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + row.productDescription + '</p>';					
 				}
 			},
 			{	data: "orderPrice", 
-				title: '[[#{DIVEU_LB_0033}]]',	// List Price
+				title: '[[#{EUP_L_0033}]]',	// List Price
 				className:"text-right",
 				render : function(data, type, row) {
 					return '<p style="text-align:right;">' + Number(data).toLocaleString() + '</p>'; 
 				}
 			},
 			{	data: "orderQty",
-				title: '[[#{DIVEU_LB_0141}]]',	// Qty
+				title: '[[#{EUP_L_0141}]]',	// Qty
 				width: 60,
 				orderable: false,
 				className:"center noselect",
@@ -129,7 +131,7 @@ function makeResultGridData()
 			},			
 			{	 
 				data: "orderTotalPrice",				
-				title: '[[#{DIVEU_LB_0196}]]',	// Price(Sum)
+				title: '[[#{EUP_L_0196}]]',	// Price(Sum)
 				render : function(data, type, row) {
 					return '<span id="SPN_PRICESUM_' + row.mpSeq + '"><p style="text-align:right;">' + Number(data).toLocaleString() + '</p></span>';
 				},
@@ -149,7 +151,7 @@ function makeResultGridData()
 			}			
 		],		
 		ajax: {
-			url: "/portal/corp/eu/scm/parts/merchandize/cart/list",
+			url: "[[${BASE_PATH}]]/merchandize/cart/list",
 			data: function(p)
 			{		
 			},
@@ -200,11 +202,11 @@ function changeQuantity(obj, mcSeq, mpSeq)
 {
 	if (obj.value == '') 
 	{
-		alert("[[#{DIVEU_MSG_0027}]]");	// Please input product quantity.
+		alert("[[#{EUP_M_0027}]]");	// Please input product quantity.
 		obj.value = 1;
 		return false;
 	} else if (Number(obj.value) < 1) {
-		alert("[[#{DIVEU_MSG_0028}]]");	// Cannot change below 1
+		alert("[[#{EUP_M_0028}]]");	// Cannot change below 1
 		obj.value = 1;	
 		return false;
 	} else {
@@ -220,7 +222,7 @@ function changeQuantity(obj, mcSeq, mpSeq)
 // 		$('#cartQtyChangeDiv').append('<input type="hidden" name="mpSeq" value="' + mpSeq + '">');
 		
 // 		$.ajax({
-// 		    url:'/portal/corp/eu/scm/parts/merchandize/cart/save',
+// 		    url:'[[${BASE_PATH}]]/merchandize/cart/save',
 // 		    type:'post', 
 // 			data: $("#FORM_save").serialize(),
 // 		    success: function(data) 
@@ -238,11 +240,11 @@ function saveChangeQty(obj, mcSeq, mpSeq) {
 	var qty = $('#IPT_QUANTITY_' + mpSeq).val();	
 	if (qty == '') 
 	{
-		alert("[[#{DIVEU_MSG_0027}]]");	// Please input product quantity.
+		alert("[[#{EUP_M_0027}]]");	// Please input product quantity.
 		obj.value = 1;
 		return false;
 	} else if (Number(qty) < 1) {
-		alert("[[#{DIVEU_MSG_0028}]]");	// Cannot change below 1
+		alert("[[#{EUP_M_0028}]]");	// Cannot change below 1
 		return false;
 	} else {
 		$('#cartQtyChangeDiv').empty();
@@ -251,7 +253,7 @@ function saveChangeQty(obj, mcSeq, mpSeq) {
 		$('#cartQtyChangeDiv').append('<input type="hidden" name="orderQty" value="' + qty + '">');
 		
 		$.ajax({
-		    url:'/portal/corp/eu/scm/parts/merchandize/cart/save',
+		    url:'[[${BASE_PATH}]]/merchandize/cart/save',
 		    type:'post', 
 			data: $("#FORM_save").serialize(),
 		    success: function(data) 
@@ -278,7 +280,7 @@ $('.crtOdrBtn').click(function()
 	}
 	if (!isChecked) 
  	{
-		alert("[[#{DIVEU_MSG_0028}]]");	// Please select targets to order.
+		alert("[[#{EUP_M_0028}]]");	// Please select targets to order.
    		return false;
  	} else 
  	{
@@ -304,7 +306,7 @@ $('.crtOdrBtn').click(function()
  	    
 	 	if (!isValidQtyFlag) 
 	 	{
-	 		alert("[[#{DIVEU_MSG_0027}]]");	// Please input product quantity.
+	 		alert("[[#{EUP_M_0027}]]");	// Please input product quantity.
 	 		return false;
 	 	} else 
  		{
@@ -314,7 +316,7 @@ $('.crtOdrBtn').click(function()
 			var matAddStr = '';
 			var qtyAddStr = '';
 			var userCorpParam = userCorp.substring(userCorp.length -2, userCorp.length).toLowerCase();	
-			var odrUrlParam = '/portal/corp/' + userCorpParam + '/scm/parts/order/create/order_form?from=MERCHANDIZE&materialNosFrom=';
+			var odrUrlParam = '/portal/iv/' + userCorpParam + '/parts/domestic/order/create/order_form?from=MERCHANDIZE&materialNosFrom=';
 			
 			for (var l = 0; l < materialNoArr.length; l++) {
 				l > 0 ? matAddStr += '^' + materialNoArr[l] : matAddStr += materialNoArr[l];
@@ -345,7 +347,7 @@ $('.crtDelBtn').click(function()
 	
     if(!isChecked) 
     {
-    	alert("[[#{DIVEU_MSG_0021}]]");	// Please select targets to delete.
+    	alert("[[#{EUP_M_0021}]]");	// Please select targets to delete.
       return false;
     } else 
     {
@@ -368,7 +370,7 @@ function deleteProcessFunc(tds, reloadFlag)
 	}    	
 	
 	$.ajax({
-	    url:'/portal/corp/eu/scm/parts/merchandize/cart/delete',
+	    url:'[[${BASE_PATH}]]/merchandize/cart/delete',
 	    type:'post', 
 		data: $("#FORM_delete").serialize(),
 	    success: function(data) 

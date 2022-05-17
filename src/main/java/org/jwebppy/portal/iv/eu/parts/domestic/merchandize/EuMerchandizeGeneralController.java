@@ -7,6 +7,7 @@ import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.i18n.entity.LangKindEntity;
 import org.jwebppy.portal.iv.eu.parts.common.web.EuPartsGeneralController;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.dto.MerchandizeCategoryDto;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.service.EuMerchandizeCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/merchandize/general")
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/general")
 public class EuMerchandizeGeneralController extends EuPartsGeneralController
 {
 	//@Autowired
@@ -45,6 +47,13 @@ public class EuMerchandizeGeneralController extends EuPartsGeneralController
 	}	
 	*/
 	
+	@Override
+	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
+	{
+		super.addAllAttributeFromRequest(model, webRequest);
+
+		model.addAttribute("BASE_PATH", EuPartsDomesticCommonVo.REQUEST_PATH);
+	}
 	
 	// Setting Category Select Box Info
 	protected void setCategorySelectCode(Model model) 

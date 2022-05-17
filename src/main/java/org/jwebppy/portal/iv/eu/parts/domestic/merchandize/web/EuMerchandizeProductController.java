@@ -17,6 +17,7 @@ import org.jwebppy.portal.iv.eu.common.file_upload.dto.FileUploadDto;
 import org.jwebppy.portal.iv.eu.common.file_upload.dto.FileUploadInfoDto;
 import org.jwebppy.portal.iv.eu.common.file_upload.service.EuFileUploadInfoService;
 import org.jwebppy.portal.iv.eu.common.file_upload.service.EuFileUploadService;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeGeneralService;
@@ -39,8 +40,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/merchandize/product")
-public class MerchandizeProductController extends EuMerchandizeGeneralController
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/product")
+public class EuMerchandizeProductController extends EuMerchandizeGeneralController
 {
 	@Autowired
 	private EuMerchandizeProductService productService;

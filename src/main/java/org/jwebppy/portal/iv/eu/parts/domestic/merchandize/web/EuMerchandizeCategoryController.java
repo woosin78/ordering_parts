@@ -10,6 +10,7 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.i18n.entity.LangKindEntity;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeGeneralService;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/merchandize/category")
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/category")
 public class EuMerchandizeCategoryController extends EuMerchandizeGeneralController
 {
 	@Autowired

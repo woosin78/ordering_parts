@@ -2,7 +2,7 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 
@@ -11,13 +11,13 @@
 </form>	
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0061}"></div>
+	<div class="block-title" th:text="#{EUP_L_0061}"></div>
 	<div class="block-button-area">
-		<button class="catRegBtn" th:text="#{DIVEU_BTN_0009}"></button>  <!-- Add -->
+		<button class="catRegBtn" th:text="#{EUP_B_0009}"></button>  <!-- Add -->
 		<div class="split"></div>
-		<button class="catDelBtn" th:text="#{DIVEU_BTN_0010}"></button>  <!-- Delete -->	
+		<button class="catDelBtn" th:text="#{EUP_B_0010}"></button>  <!-- Delete -->	
 		<div class="split"></div>
-		<button class="prdLisBtn" th:text="#{DIVEU_BTN_0004}"></button>		<!-- Back -->	
+		<button class="prdLisBtn" th:text="#{EUP_B_0004}"></button>		<!-- Back -->	
 	</div>
 </div>
 	
@@ -32,11 +32,11 @@
 	<div id="deleteFormDiv"></div>
 </form>		
 		
-<form id="FORM_view" method="post" action="/portal/corp/eu/scm/parts/merchandize/category/view">
+<form id="FORM_view" method="post" action="[[${BASE_PATH}]]/merchandize/category/view">
 	<input type="hidden" id="mcSeqView" name="mcSeq">
 </form>
 
-<form id="FORM_register" method="post" action="/portal/corp/eu/scm/parts/merchandize/category/register">	
+<form id="FORM_register" method="post" action="[[${BASE_PATH}]]/merchandize/category/register">	
 </form>
 
 <!-- --------------------------------------------------------------------------------------------------- -->
@@ -49,7 +49,7 @@ var maxlength;
 
 $(document).ready(function() 
 {	
-// 	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0061}]]' );	// Manage Category
+// 	$('#DIV_mallTitle').text( '[[#{EUP_L_0061}]]' );	// Manage Category
 	makeResultGridData();	
 });
 
@@ -79,12 +79,12 @@ function makeResultGridData()
 				defaultContent: '<input type="checkbox" class="custom-ui" onclick="syncInput(this)"><label></label>' // FixedColumns 사용시엔 syncInput 호출 필요함.
 			},
 			{	data: "fgDisplay", 
-				title: '[[#{DIVEU_LB_0066}]]'	// Display Y/N
+				title: '[[#{EUP_L_0066}]]'	// Display Y/N
 			},
 			// 컬럼에 select box			
 			{	data: "sort",
 				name: "sortSelect",
-				title: '[[#{DIVEU_LB_0065}]]',	// Sort
+				title: '[[#{EUP_L_0065}]]',	// Sort
 				width: 100,
 				orderable: false,
 				className:"center noselect",
@@ -103,20 +103,20 @@ function makeResultGridData()
 				defaultContent: '<select class="custom-ui" onchange="syncInput(this)" name="sortSelect"></select>'				
 			},
 			{ 	data: "categoryCode", 
-				title: '[[#{DIVEU_LB_0063}]]'	// Category
+				title: '[[#{EUP_L_0063}]]'	// Category
 			},
 			{	data: "categoryName", 
-				title: '[[#{DIVEU_LB_0064}]]',	// Category Name
+				title: '[[#{EUP_L_0064}]]',	// Category Name
 				render : function(data, type, row) {
 					return '<a href="#" onclick="javascript:goView(' + row.mcSeq + ')" style="cursor:pointer" class="link_mall">' + data + '</a>';
 				},
 				defaultContent: ''
 			},
 			{ 	data: "regUsername", 
-				title: '[[#{DIVEU_LB_0069}]]'	// Reg.User
+				title: '[[#{EUP_L_0069}]]'	// Reg.User
 			},
 			{ 	data: "regDate", 
-				title: '[[#{DIVEU_LB_0070}]]',	// Reg.Date
+				title: '[[#{EUP_L_0070}]]',	// Reg.Date
 				render : function(data, type, row) {
 					var d1 = new Date(data);
 		    		return getDateFormat(d1, 'yyyyMMdd');	
@@ -128,7 +128,7 @@ function makeResultGridData()
 			}
 		],		
 		ajax: {
-			url: "/portal/corp/eu/scm/parts/merchandize/category/list",
+			url: "[[${BASE_PATH}]]/merchandize/category/list",
 			data: function(p)
 			{								
 			},
@@ -228,7 +228,7 @@ $('.catRegBtn').click(function()
 // 메인 화면 이동
 $('.prdLisBtn').click(function() 
 {
-	location.href = "/portal/corp/eu/scm/parts/merchandize/main/main_admin";
+	location.href = "[[${BASE_PATH}]]/merchandize/main/main_admin";
 });
 
 
@@ -249,7 +249,7 @@ $('.catDelBtn').click(function()
 	
     if(!isChecked) 
     {
-		alert("[[#{DIVEU_MSG_0021}]]");	// Please select targets to delete.
+		alert("[[#{EUP_M_0021}]]");	// Please select targets to delete.
         return false;
     } else 
     {
@@ -266,7 +266,7 @@ $('.catDelBtn').click(function()
     	}
     	    	
     	$.ajax({
-		    url:'/portal/corp/eu/scm/parts/merchandize/category/delete',
+		    url:'[[${BASE_PATH}]]/merchandize/category/delete',
 		    type:'post', 
 			data: $("#FORM_delete").serialize(),
 		    success: function(data) 
@@ -306,7 +306,7 @@ function updateSortNum()
 {
 	$.ajax(
 	{
-	    url:'/portal/corp/eu/scm/parts/merchandize/general/changeSortNumber',
+	    url:'[[${BASE_PATH}]]/merchandize/general/changeSortNumber',
 	    type:'post', 
 		data: $("#FORM_list").serialize(),
 	    success: function(data) 

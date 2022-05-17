@@ -2,16 +2,16 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0062}"></div>	<!-- Modify Category -->
+	<div class="block-title" th:text="#{EUP_L_0062}"></div>	<!-- Modify Category -->
 	<div class="block-button-area">		
-		<button class="catModBtn" th:text="#{DIVEU_BTN_0022}"></button>	<!-- Modify -->
+		<button class="catModBtn" th:text="#{EUP_B_0022}"></button>	<!-- Modify -->
 		<div class="split"></div>
-		<button class="catCanBtn" th:text="#{DIVEU_BTN_0014}"></button>	<!-- Cancel -->
+		<button class="catCanBtn" th:text="#{EUP_B_0014}"></button>	<!-- Cancel -->
 	</div>
 </div>
 
@@ -28,7 +28,7 @@
 	<table class="mallcondition">
 		<tbody>
 			<tr>
-				<th><span>[[#{DIVEU_LB_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
+				<th><span>[[#{EUP_L_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
 				<td>
 					<select name="categoryCode" class="custom-ui">
 						<option th:each="sapCategory : ${sapCategoryList}" th:value="${sapCategory.PRODH}" th:text="${sapCategory.PRODH}"></option>
@@ -37,7 +37,7 @@
 			</tr>
 						
 			<tr th:each="langDto : ${categoryLangDtos}">
- 				<th><span>[[#{DIVEU_LB_0064}]]([[${langDto.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category Name --> 
+ 				<th><span>[[#{EUP_L_0064}]]([[${langDto.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category Name --> 
 				<td><input type="text" th:value="${langDto.text}" name="categoryNames" class="custom-ui" />
 					<input type="hidden" th:value="${langDto.ldSeq}" name="categoryNameLangDetailSeqs"/>
 				</td>				
@@ -46,8 +46,8 @@
 <!-- 			<div id="DIV_addCategoryName"></div> -->
 			
 			<tr class="mall-addtrbefore">	<!-- 다국어가 x개만 있었을 때 추가된 다국어가 있다면 x개의 다국어가 표시된 뒤 후처리로 x+1개의 다국어를 끼워넣기 위한 class선언 -->
-<!-- 				<th th:text="|#{DIVEU_LB_0065}*|"></th>	Sort -->
-				<th><span>[[#{DIVEU_LB_0065}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Sort -->
+<!-- 				<th th:text="|#{EUP_L_0065}*|"></th>	Sort -->
+				<th><span>[[#{EUP_L_0065}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Sort -->
 				<td>
 					<th:block th:with="x= ${categoryDto.totalCount}">
 						<select id="SLT_sort" name="sort" class="custom-ui">								
@@ -59,7 +59,7 @@
 				</td>
 			</tr>	
 			<tr>
-				<th><span>[[#{DIVEU_LB_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
+				<th><span>[[#{EUP_L_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
 				<td>
 					<select id="SLT_fgDisplay" name="fgDisplay" class="custom-ui"></select>
 				</td>						
@@ -69,7 +69,7 @@
 	
 </form>
 
-<form id="FORM_view" method="post" action="/portal/corp/eu/scm/parts/merchandize/category/view">
+<form id="FORM_view" method="post" action="[[${BASE_PATH}]]/merchandize/category/view">
 	<input type="hidden" name="mcSeq" th:value="${categoryDto.mcSeq}" />		
 </form>
 
@@ -79,7 +79,7 @@
 <script type="application/javascript">
 $(document).ready(function() 
 {	
-	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0062}]]' );	// Modify Category
+	$('#DIV_mallTitle').text( '[[#{EUP_L_0062}]]' );	// Modify Category
 	$('#SLT_categoryCode').val( $('#IPT_categoryCodeCurrVal').val() );
 // 	$(".numeric").numeric(); 
 	addFgDisplayOption();
@@ -121,7 +121,7 @@ function insertAddedLangInfo()
 			} else 
 			{
 				// 추가 다국어 입력란 생성
-				addLangNameInfoStr += '<tr><th>[[#{DIVEU_LB_0064}]](' + item.id.substring(11) + ')<img src="/portal/img/icon_required.png" class="required" /></th>';
+				addLangNameInfoStr += '<tr><th>[[#{EUP_L_0064}]](' + item.id.substring(11) + ')<img src="/portal/img/icon_required.png" class="required" /></th>';
 				addLangNameInfoStr += '<td><input type="text" name="categoryNames" class="custom-ui">';
 				addLangNameInfoStr += '<input type="hidden" name="categoryNameLangDetailSeqs" value="0" />';	// ld_seq 값이 0일 경우 새로 추가된 언어의 데이터로 간주하여, 수정 로직을 실행할 때 해당 0 데이터는 삽입 처리를 한다.
 				addLangNameInfoStr += '</td></tr>';
@@ -139,7 +139,7 @@ $('.catModBtn').click(function() {
 	if (validCheck()) {
 		
 		$.ajax({
-		    url:'/portal/corp/eu/scm/parts/merchandize/category/save',
+		    url:'[[${BASE_PATH}]]/merchandize/category/save',
 		    type:'post',
 			data: $("#FORM_modify").serialize(),
 		    success: function(data) {
@@ -179,7 +179,7 @@ function validCheck() {
 	});
 	
 	if (noNameBool) {
-		alert("[[#{DIVEU_MSG_0030}]]");	// Please Input the Category Name.		
+		alert("[[#{EUP_M_0030}]]");	// Please Input the Category Name.		
 		return false;
 	} else {
 		return true;

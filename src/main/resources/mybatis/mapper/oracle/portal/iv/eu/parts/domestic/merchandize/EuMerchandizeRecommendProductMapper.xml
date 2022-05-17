@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.doosan.iv.portal.corp.eu.scm.parts.merchandize.mapper.MerchandizeRecommendProductMapper">
+<mapper namespace="org.jwebppy.portal.iv.eu.parts.domestic.merchandize.mapper.EuMerchandizeRecommendProductMapper">
 	
 	<!-- 추천상품 리스트 갯수를 추천상품 테이블에서 검색(메인화면의 각 추천상품 sort list 에서 유효한 option들만 만들기 위함) -->
 	<select id="findRecommendProductItemsMainCount" parameterType="MerchandizeRecommendProductDto" resultType="MerchandizeRecommendProductEntity">		

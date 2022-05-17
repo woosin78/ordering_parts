@@ -2,16 +2,16 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"	
-	layout:decorate="~{portal/layout/popup/index_mall}">
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
 
 <th:block layout:fragment="content">
 
 <div class="block-header">
-	<div class="block-title" th:text="#{DIVEU_LB_0067}"></div>	<!-- Register Category -->
+	<div class="block-title" th:text="#{EUP_L_0067}"></div>	<!-- Register Category -->
 	<div class="block-button-area">		
-		<button class="catRegBtn" th:text="#{DIVEU_BTN_0009}"></button>
+		<button class="catRegBtn" th:text="#{EUP_B_0009}"></button>
 		<div class="split"></div>
-		<button class="catCanBtn" th:text="#{DIVEU_BTN_0014}"></button>
+		<button class="catCanBtn" th:text="#{EUP_B_0014}"></button>
 	</div>
 </div>
 
@@ -27,7 +27,7 @@
 	<table class="mallcondition">
 		<tbody>
 			<tr>
-				<th><span>[[#{DIVEU_LB_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
+				<th><span>[[#{EUP_L_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
 				<td>
 					<select name="categoryCode" class="custom-ui">
 						<option th:each="sapCategory : ${sapCategoryList}" th:value="${sapCategory.PRODH}" th:text="${sapCategory.PRODH}"></option>
@@ -37,18 +37,18 @@
 <!-- 			<th:block id="categoryNameDiv"></th:block> -->
 			
 			<tr th:each="langKindEnt : ${langKindEntityList}">
-				<th><span>[[#{DIVEU_LB_0064}]]([[${langKindEnt.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></span></th>
+				<th><span>[[#{EUP_L_0064}]]([[${langKindEnt.name}]])<img src="/portal/img/icon_required.png" class="required" /></span></span></th>
 				<td><input type="text" th:id="|_${langKindEnt.lkSeq}|" name="categoryNames" class="custom-ui" />
 				<input type="hidden" th:value="${langKindEnt.lkSeq}" name="categoryLangKindSeqs"/>
 				</td>				
 			</tr>
 			
 			<tr>
-				<th th:text="#{DIVEU_LB_0065}"></th>	<!-- Sort -->
+				<th th:text="#{EUP_L_0065}"></th>	<!-- Sort -->
 				<td><input type="text" id="sort" name="sort" th:value="${categoryDto.sort}" class="custom-ui" /></td>
 			</tr>			
 			<tr>
-				<th><span>[[#{DIVEU_LB_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
+				<th><span>[[#{EUP_L_0066}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Display Y/N -->
 				<td>
 					<select name="fgDisplay" class="custom-ui">
 						<option value="Y" selected="selected">Y</option>
@@ -62,7 +62,7 @@
 </form>
 </div>
 
-<form id="FORM_main" method="post" action="/portal/corp/eu/scm/parts/merchandize/category/main_admin"></form>
+<form id="FORM_main" method="post" action="[[${BASE_PATH}]]/merchandize/category/main_admin"></form>
 
 
 <!-- --------------------------------------------------------------------------------------------------------------------------- -->
@@ -70,7 +70,7 @@
 <script type="application/javascript">
 $(document).ready(function() 
 {	
-	$('#DIV_mallTitle').text( '[[#{DIVEU_LB_0067}]]' );	// 카테고리 등록
+	$('#DIV_mallTitle').text( '[[#{EUP_L_0067}]]' );	// 카테고리 등록
 	$("#sort").attr("readonly", true);
 });
 
@@ -82,7 +82,7 @@ function makeCategoryNameFieldArea() {
 	
 	var innerHtmlStr = '';	
 	$("input[name=categoryNameFields]").each(function(index, item){		
-		innerHtmlStr += '<tr><th>[[#{DIVEU_LB_0064}]](' + item.value + ')<img src="/portal/img/icon_required.png" class="required" /></th>';
+		innerHtmlStr += '<tr><th>[[#{EUP_L_0064}]](' + item.value + ')<img src="/portal/img/icon_required.png" class="required" /></th>';
 		innerHtmlStr += '<td><input type="text" id="_' + item.id + '" name="categoryNames" class="custom-ui" />'; 
 		innerHtmlStr += '<input type="hidden" value="' + item.id + '" name="categoryLangKindSeqs"/></td></tr>';	// 다국어 종류 시퀀스(lk_seq)
 	});
@@ -96,7 +96,7 @@ $('.catRegBtn').click(function()
 	if (validCheck()) 
 	{	
 		$.ajax({
-		    url:'/portal/corp/eu/scm/parts/merchandize/category/save',
+		    url:'[[${BASE_PATH}]]/merchandize/category/save',
 		    type:'post',
 			data: $("#FORM_register").serialize(),
 		    success: function(data) 
@@ -131,7 +131,7 @@ function validCheck()
 	
 	if (noNameBool) 
 	{
-		alert("[[#{DIVEU_MSG_0030}]]");	// Please Input the Category Name.		
+		alert("[[#{EUP_M_0030}]]");	// Please Input the Category Name.		
 		return false;
 	} else {
 		return true;

@@ -10,6 +10,7 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.iv.eu.parts.domestic.common.EuPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeCommonVo;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeGeneralController;
 import org.jwebppy.portal.iv.eu.parts.domestic.merchandize.EuMerchandizeGeneralService;
@@ -24,10 +25,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 
 @Controller
-@RequestMapping("/portal/corp/eu/scm/parts/merchandize/cart")
+@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/cart")
 public class EuMerchandizeCartController extends EuMerchandizeGeneralController
 {
 	@Autowired
@@ -41,9 +43,10 @@ public class EuMerchandizeCartController extends EuMerchandizeGeneralController
 	
 		
 	@RequestMapping("/main")
-	public String main(Model model)
+	public String main(Model model, WebRequest webRequest)
 	{	
-		model.addAttribute("userCorp", getErpUserInfo().getCorpName());		
+		model.addAttribute("userCorp", getErpUserInfo().getCorpName());
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
