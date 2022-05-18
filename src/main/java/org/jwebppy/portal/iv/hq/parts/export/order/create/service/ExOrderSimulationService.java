@@ -284,7 +284,8 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 
 			FormatBuilder.with(items)
 				.qtyFormat(new String[] {"REQ_QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY", "DIV"})
-				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"});
+				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"})
+				.weightFormat("BRGEW");
 
 			List<ExOrderItemDto> normalOrderItems = new LinkedList<>();
 
@@ -321,6 +322,7 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 				orderItem.setNetPrice(dataMap.getString("NET_PRICE"));
 				orderItem.setNetValue(dataMap.getString("NET_VALUE"));
 				orderItem.setListPrice(dataMap.getString("NETPR"));
+				orderItem.setNetWeight(dataMap.getString("BRGEW"));
 				orderItem.setMessage(dataMap.getString("MSG"));
 				orderItem.setVendor(dataMap.getString("LIFNR"));
 				orderItem.setPlant(dataMap.getString("PLANT"));

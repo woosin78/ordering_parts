@@ -34,6 +34,7 @@ public class ExOrderItemDto extends PartsExportGeneralDto
 	private String amDevPart;
 	private String boQty;
 	private String stockDiv;
+	private String netWeight;
 	private int subCount;//대체품 수
 	private String message;
 	private String errorType;

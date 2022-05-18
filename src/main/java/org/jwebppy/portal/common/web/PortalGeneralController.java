@@ -59,6 +59,8 @@ public class PortalGeneralController extends GeneralController
 			{
 				DataMap dataMap = (DataMap)dataList.get(i);
 
+				System.err.println(dataMap);
+
 				bufferOutputStream.write((byte[])dataMap.get(key));
 			}
 

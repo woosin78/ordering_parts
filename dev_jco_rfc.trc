@@ -2614,3 +2614,10 @@ COUNTER     1196558
     Return code: RFCIO_ERROR_SYSERROR(5)<
 
 
+
+**** Error file opened at 20220518 085946 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error: [1] >Wed May 18 08:59:46,541<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: connection closed without message (CM_NO_DATA_RECEIVED)
+    return code: RFC_CLOSED (6)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

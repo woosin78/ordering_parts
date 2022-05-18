@@ -43,10 +43,10 @@ $(function(){
 			{targets: [0, 2], className: "dt-body-center"},
 			{targets: [1, 3], className: "dt-body-right"}
 		],
-		createdRow: function (row, data, dataIndex) {
-			if (dataIndex == 0)
+		rowCallback: function(row, data, index) {
+			if (index == 0)
 			{
-				$(row).addClass("grid-total-row");
+				$(row).find("td").addClass("summary");
 			};
 		},
 		ajax: {

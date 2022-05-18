@@ -9,7 +9,6 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
-import org.jwebppy.portal.iv.common.utils.PriceAdjustmentByCurrencyUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.common.web.PartsExportGeneralController;
@@ -57,52 +56,16 @@ public class ExPartInfoController extends PartsExportGeneralController
 		if (CollectionUtils.isNotEmpty(resultList))
 		{
 			DataMap partMap = (DataMap)resultList.get(0);
-			DataList scaleList = rfcResponse.getTable("T_SCALES");
-			double kbetr = partMap.getDouble("KBETR");//Condition Percentage
 
-			if (CollectionUtils.isEmpty(scaleList))
-			{
-				DataMap scaleMap = new DataMap();
-				scaleMap.put("OPENQ", "0");
-				scaleMap.put("LPRICE", partMap.getString("LPRICE"));
-				scaleMap.put("FINAL_LPRICE", partMap.getString("LPRICE"));
-				scaleMap.put("MEINS", partMap.getString("MEINS"));
-				scaleMap.put("WAERS", partMap.getString("WAERS"));
-
-				scaleList.add(scaleMap);
-			}
-			else
-			{
-				for (int i=0, size=scaleList.size(); i<size; i++)
-				{
-					DataMap scaleMap = (DataMap)scaleList.get(i);
-
-					scaleMap.put("FINAL_LPRICE", scaleMap.getString("LPRICE"));
-					scaleMap.put("MEINS", partMap.getString("MEINS"));
-					scaleMap.put("WAERS", partMap.getString("WAERS"));
-				}
-			}
-
-			double rate = 1.25;
-
-			if (kbetr > 0)
-			{
-				rate = 1 + kbetr * 0.01;
-			}
-
-			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, rate);
-
-			FormatBuilder.with(scaleList)
-				.qtyFormat(new String[] {"OPENQ"})
-				.decimalFormat(new String[] {"LPRICE", "FINAL_LPRICE"});
+			partMap.put("YUSO_TOT", partMap.getDouble("YUSO") + partMap.getDouble("YUSO_F") + partMap.getDouble("YUSO_P"));
+			partMap.put("YUEO_TOT", partMap.getDouble("YUEO") + partMap.getDouble("YUEO_F") + partMap.getDouble("YUEO_P"));
+			partMap.put("YUMO_TOT", partMap.getDouble("YUMO") + partMap.getDouble("YUMO_F") + partMap.getDouble("YUMO_P"));
 
 			FormatBuilder.with(resultList)
 				.qtyFormat(new String[] {"OPENQ", "EXP_AVQ"})
-				.decimalFormat(new String[] {"NTGEW", "BRGEW", "PLIFZ"})
-				.dateFormat("DATAB");
+				.decimalFormat(new String[] {"YUSO_TOT", "YUEO_TOT", "YUMO_TOT"});
 
 			Map<String, Object> resultMap = new HashMap<>();
-			resultMap.put("scaleList", scaleList);
 			resultMap.put("partInfo", partMap);
 
 			return resultMap;

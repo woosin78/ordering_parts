@@ -29,27 +29,27 @@
 				</td>			
 			</tr>
 			<tr>
+				<th th:text="#{HQP_L_PO_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+					</div>
+				</td>			
 				<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
 					</div>		
 				</td>
+			</tr>		
+			<tr>
 				<th th:text="#{HQP_L_ORDER_DATE}"></th><!-- Period -->
-				<td>
+				<td colspan="3">
 					<div class="input-area">
 						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
 						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">					
 					</div>
-				</td>
-			</tr>		
-			<tr>
-				<th th:text="#{HQP_L_PO_NO}"></th>
-				<td colspan="3">
-					<div class="input-area">
-						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
-					</div>
-				</td>
+				</td>			
 			</tr>
 		</tbody>
 	</table>
@@ -84,7 +84,8 @@ $(function(){
 		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
 		columns : [
-			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},//Order<br>Type				
+			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},//Order<br>Type
+			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
 			{data: "AUDAT", 		title: "[[#{HQP_L_ORDER_DATE}]]"},//Order Date				
 			{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]"},//Order No.
 			{data: "POSNR", 		title: "[[#{HQP_L_LINE_ITEM}]]"},//Line Item 
@@ -95,11 +96,10 @@ $(function(){
 			{data: "KWMENG_SH", 	title: "[[#{HQP_L_SHIPMENT_COMPLETE_QTY}]]"},//S.Completion Qty
 			{data: "KWMENG", 		title: "[[#{HQP_L_BACKORDER_QTY}]]"},//B/O Quantity
 			{data: "VRKME", 		title: "[[#{HQP_L_UOM}]]"},//UoM,
-			{data: "PRETD",			title: "[[#{HQP_L_ETD}]]"},//ETD Comment
-			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"}//P.O. No.
+			{data: "PRETD",			title: "[[#{HQP_L_ETD}]]"}//ETD Comment			
 		],
 		columnDefs: [
-			{targets: [1, 2, 3, 7, 8, 9, 10, 11, 12], className: "dt-body-center"}
+			{targets: [2, 3, 4, 8, 9, 10, 11, 12], className: "dt-body-center"}
 		],		
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/backorder/list/data",

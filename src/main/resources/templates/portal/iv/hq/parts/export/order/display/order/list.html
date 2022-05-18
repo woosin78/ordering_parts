@@ -95,9 +95,15 @@ $(function(){
 		],
 		columnDefs: [
 			{targets: 0, className: "link dt-body-center"},
-			{targets: [3, 4, 5, 7], className: "dt-body-center"},
+			{targets: [4, 5, 7], className: "dt-body-center"},
 			{targets: 6, className: "dt-body-right"},
 		],
+		rowCallback: function(row, data, index) {
+			if (index == 0)
+			{
+				$(row).find("td").addClass("summary");
+			};
+		},
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/display/order/list/data",
 			data: function(p)
@@ -116,7 +122,7 @@ $(function(){
 				
 				for (let i=0, length=result.length; i<length; i++)
 				{
-					result[i].ERDAT2 = result[i].ERDAT + " " + result[i].ERZET;
+					result[i].ERDAT2 = JpUtilsString.trimToEmpty(result[i].ERDAT) + " " + JpUtilsString.trimToEmpty(result[i].ERZET);
 				};
 				
 				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");

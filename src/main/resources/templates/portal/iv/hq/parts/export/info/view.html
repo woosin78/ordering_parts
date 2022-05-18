@@ -8,7 +8,7 @@
 <div class="block-header">
 	<div class="block-title" th:text="#{HQP_T_PARTS_INFO}"></div><!-- Parts Info. -->
 	<div class="block-button-area">
-		<button id="BTN_calc" type="button" th:text="#{HQP_B_CALCULATE}"></button><!-- Calculate -->
+		<!-- button id="BTN_calc" type="button" th:text="#{HQP_B_CALCULATE}"></button --><!-- Calculate -->
 		<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 	</div>	
 </div>	
@@ -21,7 +21,7 @@
 			<td colspan="3">
 				<div class="input-area">
 					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" style="text-transform: uppercase;" autofocus />
-					<button class="btn-popup2" type="button" onclick="_showPartSearch($('#pPartNo').val());"></button>					
+					<!--button class="btn-popup2" type="button" onclick="_showPartSearch($('#pPartNo').val());"></button-->					
 				</div>
 			</td>
 		</tr>		
@@ -75,20 +75,8 @@
 			<td id="PLIFZ"></td>			
 		</tr>
 		<tr>
-			<th th:text="#{HQP_L_GROSS_WEIGHT}"></th><!-- Gross Weight -->
-			<td id="BRGEW"></td>
-			<th th:text="#{HQP_L_DIRECT_DELIVERY}"></th><!-- Direct Delivery -->
-			<td id="C_MTPOS"></td>			
-		</tr>
-		<tr>
-			<th th:text="#{HQP_L_PRICE_APPLIED_DATE}"></th><!-- Price Applied Date -->
-			<td id="DATAB"></td>
-			<th th:text="#{HQP_L_STOCK_LOCATION}"></th><!-- Stock Location -->
-			<td id="LADGR"></td>			
-		</tr>	
-		<tr>
 			<th th:text="#{HQP_L_SUPPLY_PART_NO}"></th><!-- Supply Part No. -->
-			<td>				
+			<td>
 				<div id="AREA_substitution" style="display:none;">			
 				<span id="REPNR" class="custom-ui"></span>
 				<button class="btn-popup2" type="button" onclick="_showSubPartList($('#pPartNo').val());"></button>
@@ -102,8 +90,6 @@
 			<td id="BULLETIN"></td>
 			<th th:text="#{HQP_L_AM_DEV_PART}"></th><!-- AM Development Part -->
 			<td id="AM_PART_NO"></td>			
-			<!-- th th:text="#{HQP_L_KIT_AVAILABILITY}"></th><!-- KIT Availability -->
-			<!-- td id="EXP_AVQ"></td -->
 		</tr>		
 	</tbody>
 </table>	
@@ -111,17 +97,42 @@
 
 <div class="split-row"></div>
 <div class="condition-area">
-	<div class="condition-title" th:text="#{HQP_L_SUPPLY_PART_PRICE_INFO}"></div>
+	<div class="condition-title">[[#{HQP_L_SUPPLY_PART_PRICE_INFO}]] <span id="WAERS"></span></div>
 	<table class="condition table_fixed">
 		<thead>
 	        <tr>
-	        	<th th:text="#{HQP_L_ORDER_SCALE_QTY}" class="center"></th><!-- Scale Quantity -->
-	            <th th:text="#{HQP_L_UOM}" class="center"></th><!-- UoM -->
-	            <th th:text="#{HQP_L_LIST_PRICE}" class="center"></th><!--List Price  -->                        
-	            <th th:text="#{HQP_L_STOCK_ORDER_NET_PRICE}" class="center"></th><!--Stock Order (Stock Order)  -->
+	        	<th></th>
+	        	<th th:text="#{HQP_L_PRICE_INFO_PRICE1}" class="center"></th><!-- Stock Order (SEA) -->
+	            <th th:text="#{HQP_L_PRICE_INFO_PRICE2}" class="center"></th><!-- Emergency Order (AIR) -->
+	            <th th:text="#{HQP_L_PRICE_INFO_PRICE3}" class="center"></th><!-- Machine Down Order (Courier) -->
 	        </tr>
 	     </thead>
-	     <tbody class="scale-list"></tbody>
+	     <tbody>
+	     	<tr>
+	     		<td th:text="#{HQP_L_TOTAL}"></td>
+	     		<td class="right" id="PRICE_INFO_11"></td>
+	     		<td class="right" id="PRICE_INFO_12"></td>
+	     		<td class="right" id="PRICE_INFO_13"></td>
+	     	</tr>
+	     	<tr>
+	     		<td th:text="#{HQP_L_NET_PRICE}"></td>
+	     		<td class="right" id="PRICE_INFO_21"></td>
+	     		<td class="right" id="PRICE_INFO_22"></td>
+	     		<td class="right" id="PRICE_INFO_23"></td>
+	     	</tr>
+	     	<tr>
+	     		<td th:text="#{HQP_L_SURCHARGE}"></td>
+	     		<td class="right" id="PRICE_INFO_31"></td>
+	     		<td class="right" id="PRICE_INFO_32"></td>
+	     		<td class="right" id="PRICE_INFO_33"></td>
+	     	</tr>
+	     	<tr>
+	     		<td th:text="#{HQP_L_FREIGHT_COST}"></td>
+	     		<td class="right" id="PRICE_INFO_41"></td>
+	     		<td class="right" id="PRICE_INFO_42"></td>
+	     		<td class="right" id="PRICE_INFO_43"></td>
+	     	</tr>
+	     </tbody>
 	</table>	
 </div>	
 <script>
@@ -147,7 +158,6 @@ function doSearch()
 		beforeSend: function(jqXHR, settings)
 		{
 			$("#pPartNo").val($("#pPartNo").val().toUpperCase());
-			$("#YUSO").hide();
 			
 			ProgressBar.show();
 		},
@@ -163,7 +173,6 @@ function doSearch()
 	    	};
 	    	
 	    	let uom = partInfo.MEINS;
-	    	let currency = partInfo.WAERS;
 	    	
 			$("#MAKTX").html(partInfo.MAKTX);// Part No Desc
 			$("#STOCK").html(partInfo.STOCK);// Stock
@@ -219,18 +228,6 @@ function doSearch()
 			// Purchase Lead Time
 			$("#PLIFZ").html(partInfo.PLIFZ);			
 			
-			// Gross Weight
-			$("#BRGEW").html(partInfo.BRGEW + " " + partInfo.GEWEI);			
-			
-			//Direct Delivery
-			$("#C_MTPOS").html(partInfo.C_MTPOS);
-			
-			//Price Applied Date
-			$("#DATAB").html(partInfo.DATAB);
-			
-			//Stock Location
-			$("#LADGR").html(partInfo.LADGR);
-
 			//Supply Part No.
 			let supplyPartsNo = JpUtilsString.trimToEmpty(partInfo.SUPNR);
 			$("#REPNR").html("");
@@ -263,23 +260,23 @@ function doSearch()
 			//AM Development Part
 			$("#AM_PART_NO").html(JpUtilsString.trimToEmpty(partInfo.AM_PART_NO));
 			
-			//KIT Availability
-			$("#EXP_AVQ").html(JpUtilsString.trimToEmpty(partInfo.EXP_AVQ));
+			$("#WAERS").html("(" + partInfo.WAERS + ")");
 			
-			/*
-			 * Scale List
-			 */
-			let scale = "";
-			$.each(result.scaleList.reverse(), function(index, item) {
-				scale += "<tr>";
-				scale += "	<td class='center'>" + item.OPENQ + "</td>";
-				scale += "	<td class='center'>" + item.MEINS + "</td>";
-				scale += "	<td class='right'>" + item.FINAL_LPRICE + " " + currency + "</td>";
-				scale += "	<td class='right'><span class='hidden LPRICE'>" + item.LPRICE + " " + currency + "</span></td>";
-				scale += "</tr>";
-			});
+			$("#PRICE_INFO_11").html(JpUtilsString.trimToEmpty(partInfo.YUSO_TOT));
+			$("#PRICE_INFO_12").html(JpUtilsString.trimToEmpty(partInfo.YUEO_TOT));
+			$("#PRICE_INFO_13").html(JpUtilsString.trimToEmpty(partInfo.YUMO_TOT));
 			
-			$(".scale-list").html(scale);
+			$("#PRICE_INFO_21").html(JpUtilsString.trimToEmpty(partInfo.YUSO));
+			$("#PRICE_INFO_22").html(JpUtilsString.trimToEmpty(partInfo.YUEO));
+			$("#PRICE_INFO_23").html(JpUtilsString.trimToEmpty(partInfo.YUMO));
+			
+			$("#PRICE_INFO_31").html(JpUtilsString.trimToEmpty(partInfo.YUSO_P));
+			$("#PRICE_INFO_32").html(JpUtilsString.trimToEmpty(partInfo.YUEO_P));
+			$("#PRICE_INFO_33").html(JpUtilsString.trimToEmpty(partInfo.YUMO_P));
+			
+			$("#PRICE_INFO_41").html(JpUtilsString.trimToEmpty(partInfo.YUSO_F));
+			$("#PRICE_INFO_42").html(JpUtilsString.trimToEmpty(partInfo.YUEO_F));
+			$("#PRICE_INFO_43").html(JpUtilsString.trimToEmpty(partInfo.YUMO_F));			
     	},
     	complete: function(jqXHR, textStatus)
     	{
@@ -287,10 +284,6 @@ function doSearch()
     	}
 	});				
 }
-
-$("#BTN_calc").on("click", function() {
-	$(".scale-list .LPRICE").toggle();
-});	
 
 //Search 버튼 클릭
 $("#BTN_search").on("click", function(){

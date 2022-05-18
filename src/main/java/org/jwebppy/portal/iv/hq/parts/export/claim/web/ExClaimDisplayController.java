@@ -64,8 +64,8 @@ public class ExClaimDisplayController extends PartsExportGeneralController
 		DataList dataList = rfcResponse.getTable("LT_SEARCH2");
 
 		FormatBuilder.with(dataList)
-			.dateFormat("ERDAT")
-			.decimalFormat("T_NETWR");
+			.dateFormat("ERDAT");
+			//.decimalFormat("T_NETWR");
 
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("claimReason1List", claimDisplayService.getClaimReasonList(rfcParamMap));

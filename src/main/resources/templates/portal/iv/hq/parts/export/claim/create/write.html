@@ -25,35 +25,7 @@
 		<div class="block-button-area">
 			<button id="BTN_create" type="button" th:text="#{HQP_B_CREATE}"></button>
 		</div>
-	</div>	
-	<div class="condition-area">
-		<div class="condition-title" th:text="#{HQP_T_CLAIM_SUMMARY_EXPLAIN}"></div>
-		<table class="condition table-fixed">
-			<tbody>
-				<tr>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY1}" class="center"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY2}" class="center"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY3}" class="center"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY4}" class="center"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY5}" class="center"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY6}" class="center"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY7}" class="center"></th>
-					<th th:text="#{HQP_L_CLAIM_SUMMARY8}" class="center"></th>
-				</tr>
-				<tr>
-					<td data-key="summary1" class="center"></td>
-					<td data-key="summary2" class="right"></td>
-					<td data-key="summary3" class="right"></td>
-					<td data-key="summary4" class="center"></td>
-					<td data-key="summary5" class="right"></td>
-					<td data-key="summary6" class="center"></td>
-					<td data-key="summary7" class="right"></td>
-					<td data-key="summary8" class="center"></td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
-	<div class="split-row"></div>
 	<div class="condition-area">
 		<table class="condition table-fixed">
 			<tbody>
@@ -164,35 +136,7 @@ $(window).on("load", function() {
 	ProgressBar.hide();
 });
 
-$(function(){
-	JpUtilsAjax.get({
-		url: "[[${BASE_PATH}]]/claim/create/summary",
-		beforeSend: function(jqXHR, settings)
-		{
-			ProgressBar.show();
-		},		
-	    success: function(response, textStatus, jqXHR)
-	    {
-	    	let result = response.RESULT;
-	    	
-	    	$("[data-key=summary1]").text(result.B_AMT);
-	    	$("[data-key=summary2]").text(result.L_AMT);
-	    	$("[data-key=summary3]").text(result.A_AMT);
-	    	$("[data-key=summary4]").text(result.A_ROW);
-	    	$("[data-key=summary5]").text(result.A_PRICE);
-	    	$("[data-key=summary6]").text(result.A_ROW);
-	    	$("[data-key=summary7]").text(result.AO_AMT);
-	    	$("[data-key=summary8]").text(result.AO_ROW);
-	    },
-	    error: function(jqXHR, textStatus, errorThrown)
-    	{
-    	},
-	    complete: function(jqXHR, textStatus)
-	    {
-	    	ProgressBar.hide();
-	    }
-	});		
-	
+$(function(){	
 	$("#BTN_add").on("click", function(){
 		Popup.open("[[${BASE_PATH}]]/claim/create/reference/order/popup/list", 1200, 600); 
 	});
