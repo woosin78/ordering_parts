@@ -56,7 +56,7 @@
 			<table id="TBL_grid" class="order-column stripe compact"></table>
 		</div>	
 		
-	<form id="FORM_search" name="FORM_search" method="post">
+	<form id="FORM_search" name="FORM_search" method="get">
 		<input type='hidden' id="pFromDate" name="pFromDate" 	th:value="${pFromDate}">
 		<input type='hidden' id="pToDate" 	name="pToDate" 		th:value="${pToDate}">
 		<input type='hidden' id="pPartsNo" 	name="pPartsNo" 	th:value="${pPartsNo}">
@@ -67,9 +67,10 @@
 	     <input type='hidden' id="TKNUM" name="TKNUM" th:value="${TKNUM}">		
 	</form>	
 	<script type="application/javascript">
-	$(window).load(function(){
+	$(document).ready(function() 
+	{	
 		ProgressBar.hide();
-	}); 
+	});
 	
 	let $tableObj;
 	

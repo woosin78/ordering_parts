@@ -159,7 +159,6 @@ public class EuOrderCreationController extends EuOrderGeneralController
 	public Object shippingInfoList(Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
-
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -177,8 +176,9 @@ public class EuOrderCreationController extends EuOrderGeneralController
 	}
 
 	@RequestMapping("/transfer_order")
-	public Object transferOrder(@RequestParam Map<String, Object> paramMap)
+	public Object transferOrder(Model model, WebRequest webRequest, @RequestParam Map<String, Object> paramMap)
 	{
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -207,8 +207,9 @@ public class EuOrderCreationController extends EuOrderGeneralController
 	}
 
 	@RequestMapping("/error_report")
-	public String errorReport()
+	public String errorReport(Model model, WebRequest webRequest)
 	{
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 

@@ -268,6 +268,10 @@ public class UkOrderGeneralController extends UkPartsDomesticGeneralController
 
 	protected void makeOrderItemForm(UkSimulationResultDto simulationResult)
 	{
+		if (!CmStringUtils.isNotEmpty(simulationResult))
+		{
+			return;
+		}
 		int DEFAULT_ROW_COUNT = 20;
 
 		List<UkOrderItemDto> normalOrderItems = simulationResult.getNormalOrderItems();

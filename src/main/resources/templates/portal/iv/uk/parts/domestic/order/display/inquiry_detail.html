@@ -5,8 +5,6 @@
 	layout:decorate="~{portal/layout/iv/uk/parts/common/index}">
 
 <th:block layout:fragment="content">
-	<script type="application/javascript" th:src="@{/portal/js/portal.utils.grid.download.js}"></script>
-
 	<div class="block-header">
 		<div class="block-title" th:text="#{EUP_T_0047}"></div>
 		<div id="BTN_search" class="block-button-area">
@@ -69,7 +67,7 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
-	<form id="FORM_search" name="FORM_search" action="[[${BASE_PATH}]]/order/display/inquiry_list">
+	<form id="FORM_search" name="FORM_search" th:action="|${BASE_PATH}/order/display/inquiry_list|">
 		<input type="hidden" name="pDocType" th:value="${pDocType}">
 		<input type="hidden" name="pOrderType" th:value="${pOrderType}">
 		<input type="hidden" name="pOrderNo" th:value="${pOrderNo}">

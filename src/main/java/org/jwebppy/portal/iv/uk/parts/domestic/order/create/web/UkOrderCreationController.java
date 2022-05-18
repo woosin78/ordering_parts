@@ -25,6 +25,8 @@ import org.jwebppy.portal.iv.uk.parts.domestic.order.create.dto.UkOrderDto;
 import org.jwebppy.portal.iv.uk.parts.domestic.order.create.dto.UkOrderItemDto;
 import org.jwebppy.portal.iv.uk.parts.domestic.order.create.service.UkOrderCreationService;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
+import org.jwebppy.platform.core.dao.support.DataList;
+import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 
@@ -126,8 +128,9 @@ public class UkOrderCreationController extends UkOrderGeneralController
 	}
 
 	@RequestMapping("/ship_to_party_list")
-	public Object shipToPartyList(@RequestParam Map<String, Object> paramMap)
+	public Object shipToPartyList(Model model, WebRequest webRequest, @RequestParam Map<String, Object> paramMap)
 	{
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -146,7 +149,6 @@ public class UkOrderCreationController extends UkOrderGeneralController
 	public Object shippingInfoList(Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
-
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -163,8 +165,9 @@ public class UkOrderCreationController extends UkOrderGeneralController
 	}
 
 	@RequestMapping("/onetime_address_list")
-	public Object onetimeAddressList(@RequestParam Map<String, Object> paramMap)
+	public Object onetimeAddressList(Model model, WebRequest webRequest, @RequestParam Map<String, Object> paramMap)
 	{
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -251,8 +254,40 @@ public class UkOrderCreationController extends UkOrderGeneralController
 	}
 
 	@RequestMapping("/error_report")
-	public String errorReport()
+	public String errorReport(Model model, WebRequest webRequest)
 	{
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
+	}
+	
+	@RequestMapping("/transfer_order")
+	public Object transferOrder(Model model, WebRequest webRequest, @RequestParam Map<String, Object> paramMap)
+	{
+		addAllAttributeFromRequest(model, webRequest);
+		return DEFAULT_VIEW_URL;
+	}
+
+	@RequestMapping("/transfer_order/save")
+	@ResponseBody
+	public Object saveTransferOrder(@RequestParam Map<String, Object> paramMap)
+	{
+		DataMap rfcParamMap = new DataMap(paramMap);
+
+		RfcResponse rfcResponse = orderCreationService.transferOrder(rfcParamMap);
+		DataList dataList = rfcResponse.getTable("RETURN");
+
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("TYPE", "S");
+		resultMap.put("SALESDOCUMENT_EX", rfcResponse.getString("SALESDOCUMENT_EX"));
+
+		if (!dataList.isEmpty())
+		{
+			DataMap dataMap = new DataMap(dataList.get(0));
+
+			resultMap.put("TYPE", dataMap.getString("TYPE"));
+			resultMap.put("MESSAGE", dataMap.getString("MESSAGE"));
+		}
+
+		return resultMap;
 	}
 }
