@@ -88,7 +88,7 @@ public class EuPartsInfoController extends EuOrderGeneralController
 			{
 				if (dataMap.isEquals("STOCKP", "P") || dataMap.isEquals("STOCKP", "N"))
 				{
-					String leadMsg = langService.getText("DIVEU_MSG_0011");
+					String leadMsg = langService.getText("EUP_M_0011");
 
 					if (dataMap.isEquals("LIFNR", "PF160"))
 					{
@@ -99,9 +99,9 @@ public class EuPartsInfoController extends EuOrderGeneralController
 
 						if (reqQty <= stockQty)
 						{
-							leadMsg = langService.getText("DIVEU_MSG_0009");
+							leadMsg = langService.getText("EUP_M_0009");
 
-							dataMap.put("LEAD_EXTRA_MSG", langService.getText("DIVEU_MSG_0010"));
+							dataMap.put("LEAD_EXTRA_MSG", langService.getText("EUP_M_0010"));
 						}
 					}
 

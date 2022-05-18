@@ -121,7 +121,7 @@ $(document).ready(function() {
 
 function doSearch()
 {
-	if (CmStringUtils.isEmpty($("#pPartsNo").val()))
+	if (JpUtilsString.isEmpty($("#pPartsNo").val()))
 	{
 		alert("[[#{EUP_M_0038}]]");
 		return;
@@ -206,7 +206,7 @@ function doSearch()
 			{
 				$("#STOCKP").html(items[0].STOCKP + " (" + leadMsg + ")");// Stock of Supply Part
 				
-				if (CmStringUtils.isNotEmpty(items[0].LEAD_EXTRA_MSG))
+				if (JpUtilsString.isNotEmpty(items[0].LEAD_EXTRA_MSG))
 				{
 					$("#STOCKP").append("<p style='color:red;'>" + items[0].LEAD_EXTRA_MSG + "</p>");
 				};
@@ -261,7 +261,7 @@ $("#pPartsNo").autocomplete({
 				
 				response(
 						$.map(result.items, function(item) {
-							if (CmStringUtils.isNotEmpty(item.MATERIAL_TEXT))
+							if (JpUtilsString.isNotEmpty(item.MATERIAL_TEXT))
 							{
 								return {
 									label: item.MATERIAL + " | " + item.MATERIAL_TEXT,

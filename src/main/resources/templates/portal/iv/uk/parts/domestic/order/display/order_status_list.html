@@ -5,8 +5,6 @@
 	layout:decorate="~{portal/layout/iv/uk/parts/common/index}">
 	
 <th:block layout:fragment="content">
-	<script type="application/javascript" th:src="@{/portal/js/portal.utils.order.js}"></script>
-
 	<div class="block-header">
 		<div class="block-title" th:text="#{EUP_T_0071}"></div><!-- Order Status -->	
 		<div class="block-button-area">		
@@ -16,7 +14,7 @@
 		</div>
 	</div>
 	<div class="condition-area">
-	<form id="totalExcelForm" name="totalExcelForm" method="post">
+	<form id="totalExcelForm" name="totalExcelForm" method="get">
 		<input type="hidden" id="detailVBELN" name="detailVBELN">
 		<input type="hidden" id="detailFDATE" name="detailFDATE">
 		<input type="hidden" id="detailTDATE" name="detailTDATE">
