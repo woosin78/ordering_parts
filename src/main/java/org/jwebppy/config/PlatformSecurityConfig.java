@@ -73,6 +73,7 @@ public class PlatformSecurityConfig extends WebSecurityConfigurerAdapter
 				.requestCache(requestCache)
 			.and()
 			.exceptionHandling()
+				.accessDeniedPage(PlatformConfigVo.ERROR_PAGE_URL)
 				.authenticationEntryPoint(loginUrlAuthenticationEntryPoint());
 	}
 

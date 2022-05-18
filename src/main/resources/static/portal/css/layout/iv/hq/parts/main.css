@@ -538,6 +538,7 @@ input {
 .tooltip {
   position: relative;
   display: inline-block;
+  z-index: 999999;
   /*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 

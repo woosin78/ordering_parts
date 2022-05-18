@@ -65,6 +65,7 @@ public class PortalSecurityConfig extends WebSecurityConfigurerAdapter
 				.requestCache(requestCache)
 			.and()
 			.exceptionHandling()
+				.accessDeniedPage(PortalConfigVo.ERROR_PAGE_URL)
 				.authenticationEntryPoint(loginUrlAuthenticationEntryPoint());
 	}
 
