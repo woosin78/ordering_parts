@@ -983,14 +983,13 @@
 			}
 		});
 		
-		
 		// Datatable onload event
 		$("#TBL_grid").on("draw.dt", function () {
 			$("#fileName").val("");
 			$("#simulationFrom").val("");
 			
 			// Datatable grid 초기 설정 셋업
-			initGridTable($tableObj, true);
+			initGridTable($tableObj);
 	
 			ProgressBar.hide();
 		});
