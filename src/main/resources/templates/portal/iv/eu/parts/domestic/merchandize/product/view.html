@@ -23,48 +23,48 @@
 		<tbody>
 			<tr>
 				<th th:text="#{EUP_L_0063}"></th>	<!-- Category -->
-				<td th:text="${productDto.categoryCode}"></td>
+				<td th:text="${productDto?.categoryCode}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0080}"></th>	<!-- Product Code -->
-				<td th:text="${productDto.materialNo}"></td>
+				<td th:text="${productDto?.materialNo}"></td>
 			</tr>
 			
 			<tr th:each="langDto : ${productNameLangDtos}">
-				<th th:text="|#{EUP_L_0081}(${langDto.name})|"></th>	<!-- Product Name -->				
-				<td th:text="${langDto.text}"></td>					
+				<th th:text="|#{EUP_L_0081}(${langDto?.name})|"></th>	<!-- Product Name -->				
+				<td th:text="${langDto?.text}"></td>					
 			</tr>
 			
 			<tr th:each="langDto : ${productDescLangDtos}">
-				<th th:text="|#{EUP_L_0082}(${langDto.name})|"></th>	<!-- Product Description -->
-				<td><textarea name="productDescs" class="custom-ui" readonly>[[${langDto.text}]]</textarea></td>					
+				<th th:text="|#{EUP_L_0082}(${langDto?.name})|"></th>	<!-- Product Description -->
+				<td><textarea name="productDescs" class="custom-ui" readonly>[[${langDto?.text}]]</textarea></td>					
 			</tr>
 			
 			<tr>
 				<th th:text="#{EUP_L_0066}"></th>	<!-- Display Y/N -->
-				<td th:text="${productDto.fgDisplay}"></td>
+				<td th:text="${productDto?.fgDisplay}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0069}"></th>	<!-- Reg.User -->
-				<td th:text="${productDto.regUsername}"></td>
+				<td th:text="${productDto?.regUsername}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0070}"></th>	<!-- Reg.Date -->
-				<td th:text="${#temporals.format(productDto.regDate, 'yyyy.MM.dd')}"></td>
+				<td th:text="${#temporals.format(productDto?.regDate, 'yyyy.MM.dd')}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0071}"></th>	<!-- Mod.User -->
-				<td th:text="${productDto.modUsername}"></td>
+				<td th:text="${productDto?.modUsername}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0072}"></th>	<!-- Mod.Date -->
-				<td th:text="${#temporals.format(productDto.modDate, 'yyyy.MM.dd')}"></td>
+				<td th:text="${#temporals.format(productDto?.modDate, 'yyyy.MM.dd')}"></td>
 			</tr>			
 			<tr>
 				<th th:text="#{EUP_L_0083}"></th>	<!-- Image -->
 				<td>					
 					<div id="attachFile">
-						<article th:replace="/portal/corp/eu/common/bbs/attach_file :: attachFileView(${fileUploads})"></article>	
+						<!-- <article th:replace="/portal/corp/eu/common/bbs/attach_file :: attachFileView(${fileUploads})"></article> -->	
 					</div>
 				</td>
 			</tr>
@@ -73,20 +73,21 @@
 </form>
 </div>
 
-<form id="FORM_modify" method="post" action="[[${BASE_PATH}]]/merchandize/product/modify">
-	<input type="hidden" name="mpSeq" th:value="${productDto.mpSeq}" />
+<form id="FORM_modify" method="post" th:action="|${BASE_PATH}/merchandize/product/modify|">
+	<input type="hidden" name="mpSeq" th:value="${productDto?.mpSeq}" />
 </form>
 
-<form id="FORM_delete" method="post" action="[[${BASE_PATH}]]/merchandize/product/delete">
-	<input type="hidden" name="mpSeq" th:value="${productDto.mpSeq}" />
+<form id="FORM_delete" method="post" th:action="|${BASE_PATH}/merchandize/product/delete|">
+	<input type="hidden" name="mpSeq" th:value="${productDto?.mpSeq}" />
 </form>
 
-<form id="FORM_main" method="post" action="[[${BASE_PATH}]]/merchandize/product/main_admin"></form>
+<form id="FORM_main" method="post" th:action="|${BASE_PATH}/merchandize/product/main_admin|"></form>
 		
 		
 <script type="application/javascript">
 $(document).ready(function() 
 {
+	ProgressBar.hide();
 // 	$('#DIV_mallTitle').text( '[[#{EUP_L_0085}]]' );	// Product Details
 });
 

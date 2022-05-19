@@ -28,8 +28,8 @@
 			<td>
 				<select id="SLT_categoryCode" name="categoryCode" class="custom-ui">
 					<option th:each="categoryDto : ${categoryList}"
-						th:value="${categoryDto.mcSeq}"
-						th:text="${categoryDto.categoryName}">
+						th:value="${categoryDto?.mcSeq}"
+						th:text="${categoryDto?.categoryName}">
 					</option>
 				</select>				
 			</td>

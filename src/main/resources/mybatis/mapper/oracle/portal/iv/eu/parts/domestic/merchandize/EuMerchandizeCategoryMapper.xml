@@ -18,7 +18,7 @@
 		                  from pltf_lang_detail ld, pltf_lang_kind lk
 		                 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mc.mc_seq and type='CATEGORY_NAME')
 		                   and ld.lk_seq = lk.lk_seq
-		                   and lk.corp = #{corp}
+		                   and lk.basename = #{corp}
 		                   and lk.code = lower(#{categoryLang})
 		           ) ld_seq  
 				 , sort	 
@@ -73,7 +73,7 @@
 	<!-- 카테고리 등록 시 현재 지원하는 언어 목록 취득 -->
 	<select id="findSupportLangs" resultType="LangKindEntity" parameterType="LangKindEntity">
 		select lk_seq 
-			 , corp	 
+			 , basename	 
 			 , name	
              , code 
 			 , sort	 
@@ -85,7 +85,7 @@
 			 , mod_date
 		  from pltf_lang_kind
 		 where 1 = 1		   
-		   and corp = #{corp}
+		   and basename = #{corp}
 		   and fg_delete != 'Y'
 		 order by sort  
 	</select>

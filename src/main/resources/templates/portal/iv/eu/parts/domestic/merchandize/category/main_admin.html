@@ -36,7 +36,7 @@
 	<input type="hidden" id="mcSeqView" name="mcSeq">
 </form>
 
-<form id="FORM_register" method="post" action="[[${BASE_PATH}]]/merchandize/category/register">	
+<form id="FORM_register" method="post" th:action="|${BASE_PATH}/merchandize/category/register|">	
 </form>
 
 <!-- --------------------------------------------------------------------------------------------------- -->
@@ -147,7 +147,12 @@ function makeResultGridData()
 		},
 		
 		paging : false,				// 페이징 기능켬
-		pageLength: 20    			// 한 페이지에 20개 행
+		pageLength: 20,    			// 한 페이지에 20개 행
+		initComplete:function(settings, json)
+		{
+			ProgressBar.hide();
+			//this.api().page(2).draw("page");
+		}
 	});	
 	
 	// window 리사이즈시 그리드 높이 다시 맞춤. (그리드의 parent 요소의 높이에 맞춤)

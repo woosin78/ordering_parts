@@ -73,7 +73,7 @@ public class EuMerchandizeMainController extends EuMerchandizeGeneralController
 	
 	// 관리자 메인페이지
 	@RequestMapping("/main_admin")
-	public String mainAdmin(Model model, @RequestParam(value = "fuSeq", required = false) Integer fuSeq) throws Exception
+	public String mainAdmin(Model model, WebRequest webRequest, @RequestParam(value = "fuSeq", required = false) Integer fuSeq) throws Exception
 	{
 		if (!isPartsManager())
 		{
@@ -139,6 +139,7 @@ public class EuMerchandizeMainController extends EuMerchandizeGeneralController
 		model.addAttribute("recommendSortMax", recommandDto.getSortMax());
 
 		model.addAttribute("fileValidStr", EuMerchandizeCommonVo.FILECHECK_MALL_MAIN_ID);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -209,7 +210,7 @@ public class EuMerchandizeMainController extends EuMerchandizeGeneralController
 
 	// 사용자 메인페이지
 	@RequestMapping("/main")
-	public String main(Model model)
+	public String main(Model model, WebRequest webRequest)
 	{
 		ErpDataMap paramMap = getErpUserInfo();
 
@@ -262,6 +263,7 @@ public class EuMerchandizeMainController extends EuMerchandizeGeneralController
 
 		model.addAttribute("userCorp", getErpUserInfo().getCorpName());	// [바로 주문]버튼이 있는 페이지에서 어떤 법인의 주문 화면으로 이동할지 알려주기 위한 처리
 
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 

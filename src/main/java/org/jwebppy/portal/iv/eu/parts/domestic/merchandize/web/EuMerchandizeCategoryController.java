@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/category")
@@ -52,7 +53,7 @@ public class EuMerchandizeCategoryController extends EuMerchandizeGeneralControl
 	
 	
 	@RequestMapping("/main_admin")
-	public String mainAdmin(Model model)
+	public String mainAdmin(Model model, WebRequest webRequest)
 	{
 		if (!isPartsManager())
 		{
@@ -73,11 +74,12 @@ public class EuMerchandizeCategoryController extends EuMerchandizeGeneralControl
 		MerchandizeCategoryDto sortCountDto = categoryService.getCategoryItemsMainCount(categoryDto);
 		model.addAttribute("categorySortStrings", sortCountDto.getSortStrings());
 
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
 	@RequestMapping("/register")
-	public String register(Model model)
+	public String register(Model model, WebRequest webRequest)
 	{
 		ErpDataMap paramMap = getErpUserInfo();
 		
@@ -128,7 +130,8 @@ public class EuMerchandizeCategoryController extends EuMerchandizeGeneralControl
 			}
 		}
 		
-		model.addAttribute("sapCategoryList", sapCategoryList);		
+		model.addAttribute("sapCategoryList", sapCategoryList);
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -155,7 +158,7 @@ public class EuMerchandizeCategoryController extends EuMerchandizeGeneralControl
 
 	// 카테고리 1건 조회
 	@RequestMapping("/view")
-	public String view(Model model, @ModelAttribute MerchandizeCategoryDto categoryDto)
+	public String view(Model model, WebRequest webRequest, @ModelAttribute MerchandizeCategoryDto categoryDto)
 	{
 		ErpDataMap paramMap = getErpUserInfo();
 		
@@ -171,13 +174,14 @@ public class EuMerchandizeCategoryController extends EuMerchandizeGeneralControl
 		model.addAttribute("categoryDto", categoryResultDto);
 		model.addAttribute("categoryLangDtos", categoryLangDtos);
 
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
 	
 	// 카테고리 1건 수정
 	@RequestMapping("/modify")
-	public String modify(Model model, @ModelAttribute MerchandizeCategoryDto categoryDto)
+	public String modify(Model model, WebRequest webRequest, @ModelAttribute MerchandizeCategoryDto categoryDto)
 	{
 		ErpDataMap paramMap = getErpUserInfo();
 		
@@ -224,7 +228,7 @@ public class EuMerchandizeCategoryController extends EuMerchandizeGeneralControl
 			sapCategoryList.remove(removeIntArr[j]);
 		}		
 		model.addAttribute("sapCategoryList", sapCategoryList);		
-
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 

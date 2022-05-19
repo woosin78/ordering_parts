@@ -136,7 +136,7 @@
 </div>
 <!-- 화면 2분할 영역 중 하단 div End -->	
 		
-<form id="FORM_cart" method="post" autocomplete="off" action="[[${BASE_PATH}]]/merchandize/cart/main">
+<form id="FORM_cart" method="post" autocomplete="off" th:action="|${BASE_PATH}/merchandize/cart/main|">
 	<div id="cartFormDiv"></div>
 </form>
 <form id="FORM_order" method="post" autocomplete="off">
@@ -157,6 +157,8 @@ $(document).ready(function()
 	{
 		$(this).closest("li").css("margin-right", "1px");
 	});
+	
+	ProgressBar.hide();
 });
 
 

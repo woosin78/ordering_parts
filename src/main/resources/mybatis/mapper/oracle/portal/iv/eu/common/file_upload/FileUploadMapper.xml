@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.portal.iv.eu.common.file_upload.mapper.EuFileUploadMapper">
+
+	<resultMap type="FileUploadEntity" id="fileUploadMap">
+		<id property="fuSeq" column="fu_seq" />
+		<id property="tSeq" column="t_seq" />		
+		<result property="fuSeq"			 column="fu_seq" />           
+		<result property="target"			 column="target" />           
+		<result property="tSeq"				 column="t_seq" />            
+		<result property="originName"		 column="origin_name" />      
+		<result property="savedName"		 column="saved_name" />       
+		<result property="extension"		 column="extension" />        
+		<result property="fileSize"			 column="file_size" />        
+		<result property="storagePath"		 column="storage_path" />        
+		<result property="fgDelete"			 column="fg_delete" />        
+		<result property="type"				 column="type" />                  
+		<result property="regUsername" 		 column="reg_username" />        
+		<result property="regDate" 			 column="reg_date" />            
+		<result property="modUsername" 		 column="mod_username" />        
+		<result property="modDate" 			 column="mod_date" />        
+	</resultMap>
+
+	<insert id="insertFileUpload" parameterType="fileUploadEntity">
+		<selectKey keyProperty="fuSeq" resultType="Integer" order="BEFORE">
+			select ep_fu_seq.nextval from dual
+		</selectKey>
+			
+		insert into ep_file_upload 
+		( fu_seq, target, t_seq, origin_name, saved_name, extension
+		, file_size, storage_path, fg_delete, type
+		, reg_username, reg_date) 
+		values
+		(
+			 #{fuSeq}, #{target}, #{tSeq}, #{originName}, #{savedName}, #{extension}
+			,#{fileSize}, #{storagePath}, 'N', #{type} 
+			,#{regUsername}, #{regDate} 
+		)				
+	</insert>
+	
+	<select id="findFileUploads" parameterType="FileUploadDto" resultMap="fileUploadMap">
+		select
+		a.*
+		from
+		ep_file_upload a
+		where 1=1
+		and a.fg_delete = 'N'
+		and a.t_seq = #{tSeq}		
+		<if test="target != null">
+			and a.target = #{target} 				 
+		</if>
+		<if test="type != null">
+			and a.type = #{type} 				 
+		</if>						
+        order by fu_seq asc            		
+	</select>	
+	
+	<select id="findFileUpload" parameterType="int" resultMap="fileUploadMap">
+		select
+		a.*
+		from ep_file_upload a		
+		where 1=1		
+		and a.fg_delete = 'N'
+		and a.fu_seq=#{fuSeq}		
+	</select>	
+		
+	<update id="deleteEpFileUpload" parameterType="fileUploadEntity">
+		update ep_file_upload a set
+			a.fg_delete='Y',
+			a.mod_username=#{modUsername},
+			a.mod_date=#{modDate}
+		where 1=1
+		and a.fg_delete='N'
+		
+		<if test="bbsCorp != null and bbsCorp != ''">
+			and #{bbsCorp} = #{userCorp}
+		</if>
+		
+		and a.fu_seq=#{fuSeq}		
+	</update>		
+	
+	<!-- 머천다이즈 커스텀 Start -->
+	<!-- 하나의 상품 시퀀스에 연결된 모든 파일 정보 삭제(썸네일 정보 포함) -->
+	<update id="deleteFileUploadImageMerchandize" parameterType="fileUploadEntity">
+		update ep_file_upload
+		   set fg_delete = 'Y'
+		     , mod_username = #{modUsername}
+			 , mod_date = #{modDate}
+		 where 1 = 1
+		   and fu_seq in ( select fu_seq from ep_file_upload where t_seq = #{tSeq} and target = #{target} )
+	</update>		
+		
+	<select id="findFuSeq" parameterType="FileUploadDto" resultMap="fileUploadMap">
+		select /*+ index_asc(a ep_fu_pk)  */ 
+		a.*
+		from ep_file_upload a		
+		where 1=1		
+		and a.fg_delete = 'N'
+		and a.t_seq = #{tSeq}		
+		<if test="target != null">
+			and a.target = #{target} 				 
+		</if>
+		<if test="type != null">
+			and a.type = #{type} 				 
+		</if>	        
+        and rownum = 1		
+	</select>		
+	<!-- 머천다이즈 커스텀 End -->		
+</mapper>

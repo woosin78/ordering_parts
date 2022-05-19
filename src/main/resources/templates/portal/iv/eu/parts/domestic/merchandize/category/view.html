@@ -26,37 +26,37 @@
 		<tbody>
 			<tr>
 				<th th:text="#{EUP_L_0063}"></th>	<!-- Category -->
-				<td th:text="${categoryDto.categoryCode}"></td>
+				<td th:text="${categoryDto?.categoryCode}"></td>
 			</tr>
 			<tr th:each="langDto : ${categoryLangDtos}">
 								
-				<th th:text="|#{EUP_L_0064}(${langDto.name})|"></th>	<!-- Category Name -->
-				<!-- 				<th>Category Name(<span th:text="${langDto.name}"></span>)</th> -->
-				<td th:text="${langDto.text}"></td>					
+				<th th:text="|#{EUP_L_0064}(${langDto?.name})|"></th>	<!-- Category Name -->
+				<!-- 				<th>Category Name(<span th:text="${langDto?.name}"></span>)</th> -->
+				<td th:text="${langDto?.text}"></td>					
 			</tr>			
 			<tr>
 				<th th:text="#{EUP_L_0065}"></th>	<!-- Sort -->
-				<td th:text="${categoryDto.sort}"></td>
+				<td th:text="${categoryDto?.sort}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0066}"></th>	<!-- Display Y/N -->
-				<td th:text="${categoryDto.fgDisplay}"></td>
+				<td th:text="${categoryDto?.fgDisplay}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0069}"></th>	<!-- Reg.User -->
-				<td th:text="${categoryDto.regUsername}"></td>
+				<td th:text="${categoryDto?.regUsername}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0070}"></th>	<!-- Reg.Date -->
-				<td th:text="${#temporals.format(categoryDto.regDate, 'yyyy.MM.dd')}"></td>
+				<td th:text="${#temporals.format(categoryDto?.regDate, 'yyyy.MM.dd')}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0071}"></th>	<!-- Mod.User -->
-				<td th:text="${categoryDto.modUsername}"></td>
+				<td th:text="${categoryDto?.modUsername}"></td>
 			</tr>
 			<tr>
 				<th th:text="#{EUP_L_0072}"></th>	<!-- Mod.Date -->
-				<td th:text="${#temporals.format(categoryDto.modDate, 'yyyy.MM.dd')}"></td>
+				<td th:text="${#temporals.format(categoryDto?.modDate, 'yyyy.MM.dd')}"></td>
 			</tr>
 			
 		</tbody>	
@@ -64,21 +64,22 @@
 	
 </form>
 
-<form id="FORM_modify" method="post" action="[[${BASE_PATH}]]/merchandize/category/modify">
-	<input type="hidden" name="mcSeq" th:value="${categoryDto.mcSeq}" />
+<form id="FORM_modify" method="post" th:action="|${BASE_PATH}/merchandize/category/modify|">
+	<input type="hidden" name="mcSeq" th:value="${categoryDto?.mcSeq}" />
 </form>
 
-<form id="FORM_delete" method="post" action="[[${BASE_PATH}]]/merchandize/category/delete">
-	<input type="hidden" name="mcSeq" th:value="${categoryDto.mcSeq}" />
+<form id="FORM_delete" method="post" th:action="|${BASE_PATH}/merchandize/category/delete|">
+	<input type="hidden" name="mcSeq" th:value="${categoryDto?.mcSeq}" />
 </form>
 
-<form id="FORM_main" method="post" action="[[${BASE_PATH}]]/merchandize/category/main_admin"></form>
+<form id="FORM_main" method="post" th:action="|${BASE_PATH}/merchandize/category/main_admin|"></form>
 
 </div>
 
 <script type="application/javascript">
 $(document).ready(function() 
 {
+	ProgressBar.hide();
 // 	$('#DIV_mallTitle').text( '[[#{EUP_L_0068}]]' );	// Category Details
 });
 

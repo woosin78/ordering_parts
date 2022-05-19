@@ -28,8 +28,8 @@
 			<td>
 				<select name="mcSeq" class="custom-ui">
 					<option th:each="categoryDto : ${categoryList}"
-							th:value="${categoryDto.mcSeq}"
-							th:text="${categoryDto.categoryName}">
+							th:value="${categoryDto?.mcSeq}"
+							th:text="${categoryDto?.categoryName}">
 					</option>
 				</select>
 			</td>						
@@ -66,8 +66,8 @@
 			<td>
 				<span id="SPN_imageSizeText">Image Size: 500 x 500 Pixel</span>
 				<div id="DIV_addFileArea" style="">
-					<article th:replace="/portal/corp/eu/common/bbs/attach_file :: attachFile()"></article>
-					<article th:replace="${fileUploadInfo} != null ? ~{/portal/corp/eu/common/bbs/attach_file :: attachFileScript('5', ${fileUploadInfo.fileLimitSize})} : ~{/portal/corp/eu/common/bbs/attach_file :: attachFileScript('5', '1048576')}"></article>	
+					<!-- <article th:replace="/portal/corp/eu/common/bbs/attach_file :: attachFile()"></article>
+					<article th:replace="${fileUploadInfo} != null ? ~{/portal/corp/eu/common/bbs/attach_file :: attachFileScript('5', ${fileUploadInfo.fileLimitSize})} : ~{/portal/corp/eu/common/bbs/attach_file :: attachFileScript('5', '1048576')}"></article> -->	
 				</div>
 			</td>
 		</tr>
@@ -76,9 +76,9 @@
 </form>
 </div>
 
-<form id="FORM_main" method="post" action="[[${BASE_PATH}]]/merchandize/product/main_admin"></form>
+<form id="FORM_main" method="post" th:action="|${BASE_PATH}/merchandize/product/main_admin|"></form>
 		
-<form id="FORM_view" method="post" action="[[${BASE_PATH}]]/merchandize/product/view">			
+<form id="FORM_view" method="post" th:action="|${BASE_PATH}/merchandize/product/view|">			
 	<input type="hidden" name="mpSeq" value="1">
 </form>
 
@@ -87,6 +87,7 @@
 <script type="application/javascript">
 $(document).ready(function() 
 {
+	ProgressBar.hide();
 // 	$('#DIV_mallTitle').text( '[[#{EUP_L_0084}]]' );	// Register Product 		
 });
 

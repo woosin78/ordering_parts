@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/recommendproduct")
@@ -35,7 +36,7 @@ public class EuMerchandizeRecommendProductController extends EuMerchandizeGenera
 	
 		
 	@RequestMapping("/main_admin")
-	public String mainAdmin(Model model)
+	public String mainAdmin(Model model, WebRequest webRequest)
 	{
 		if (!isPartsManager())
 		{
@@ -48,6 +49,7 @@ public class EuMerchandizeRecommendProductController extends EuMerchandizeGenera
 		model.addAttribute("currentCount", currentCntDto.getTotalCount());
 		model.addAttribute("currentLimitCount", EuMerchandizeCommonVo.REPRODUCT_MALL_ITEM_LIMIT);	// 현재 설정된 최대 추천상품 갯수
 		
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 		
 	}

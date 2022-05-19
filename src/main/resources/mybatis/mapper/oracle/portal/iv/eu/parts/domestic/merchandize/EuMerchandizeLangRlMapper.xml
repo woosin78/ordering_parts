@@ -16,8 +16,8 @@
           from pltf_lang pl,
      	       pltf_lang_detail pld,
         	   pltf_lang_kind plk
-      	 where pl.corp = plk.corp
-           and pl.corp = #{corp}
+      	 where pl.basename = plk.basename
+           and pl.basename = #{corp}
            and pld.ld_seq in (select ld_seq from rlInf)
            and pl.l_seq = pld.l_seq
            and pld.lk_seq = plk.lk_seq

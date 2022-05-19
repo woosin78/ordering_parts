@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -63,7 +64,7 @@ public class EuMerchandizeProductController extends EuMerchandizeGeneralControll
 	
 
 	@RequestMapping("/main")
-	public String main(Model model, MerchandizeProductDto dto)
+	public String main(Model model, WebRequest webRequest, MerchandizeProductDto dto)
 	{
 		setCategorySelectCode(model);
 
@@ -75,13 +76,13 @@ public class EuMerchandizeProductController extends EuMerchandizeGeneralControll
 		model.addAttribute("userCorp", getErpUserInfo().getCorpName());
 		model.addAttribute("previewLimitCnt", EuMerchandizeCommonVo.PRODUCT_IMAGE_PREVIEW_LIMIT);
 		
-		
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 	
 	
 	@RequestMapping("/main_admin")
-	public String mainAdmin(Model model)
+	public String mainAdmin(Model model, WebRequest webRequest)
 	{
 		if (!isPartsManager())
 		{
@@ -89,6 +90,8 @@ public class EuMerchandizeProductController extends EuMerchandizeGeneralControll
 		}
 		
 		setCategorySelectCode(model);
+		
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -125,7 +128,7 @@ public class EuMerchandizeProductController extends EuMerchandizeGeneralControll
 	
 	// 상품 1건 상세조회
 	@RequestMapping("/view")
-	public String view(Model model, @ModelAttribute MerchandizeProductDto productDto, @RequestParam(value="mpSeq", required=false) Integer mpSeq)
+	public String view(Model model, WebRequest webRequest, @ModelAttribute MerchandizeProductDto productDto, @RequestParam(value="mpSeq", required=false) Integer mpSeq)
 	{
 		ErpDataMap paramMap = getErpUserInfo();
 		
@@ -158,13 +161,14 @@ public class EuMerchandizeProductController extends EuMerchandizeGeneralControll
 		model.addAttribute("productDescLangDtos", productDescLangDtos);
 		model.addAttribute("fileUploads", fileUploads);
 
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 
 
 	// 상품 1건 수정
 	@RequestMapping("/modify")
-	public String modify(Model model, @ModelAttribute MerchandizeProductDto productDto)
+	public String modify(Model model, WebRequest webRequest, @ModelAttribute MerchandizeProductDto productDto)
 	{
 		ErpDataMap paramMap = getErpUserInfo();
 		
@@ -204,13 +208,14 @@ public class EuMerchandizeProductController extends EuMerchandizeGeneralControll
 		model.addAttribute("fileUploadInfo", fileUploadInfo);
 		model.addAttribute("fileValidStr", EuMerchandizeCommonVo.FILECHECK_MALL_PRODUCT_ID);
 
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 	
 
 	// 상품 등록
 	@RequestMapping("/register")
-	public String register(Model model)
+	public String register(Model model, WebRequest webRequest)
 	{
 		// 1. 카테고리 코드 Select Box 에 탑재되는 정보 취득
 		setCategorySelectCode(model);
@@ -222,6 +227,7 @@ public class EuMerchandizeProductController extends EuMerchandizeGeneralControll
 
 		model.addAttribute("fileValidStr", EuMerchandizeCommonVo.FILECHECK_MALL_PRODUCT_ID);
 
+		addAllAttributeFromRequest(model, webRequest);
 		return DEFAULT_VIEW_URL;
 	}
 

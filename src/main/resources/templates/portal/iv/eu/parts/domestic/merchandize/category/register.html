@@ -62,7 +62,7 @@
 </form>
 </div>
 
-<form id="FORM_main" method="post" action="[[${BASE_PATH}]]/merchandize/category/main_admin"></form>
+<form id="FORM_main" method="post" th:action="|${BASE_PATH}/merchandize/category/main_admin|"></form>
 
 
 <!-- --------------------------------------------------------------------------------------------------------------------------- -->
@@ -70,6 +70,7 @@
 <script type="application/javascript">
 $(document).ready(function() 
 {	
+	ProgressBar.hide();
 	$('#DIV_mallTitle').text( '[[#{EUP_L_0067}]]' );	// 카테고리 등록
 	$("#sort").attr("readonly", true);
 });

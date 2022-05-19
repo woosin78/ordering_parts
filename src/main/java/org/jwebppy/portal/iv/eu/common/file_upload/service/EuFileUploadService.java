@@ -35,8 +35,12 @@ public class EuFileUploadService extends EuGeneralService
 	@Autowired
 	private EuFileUploadMapper fileUploadMapper;
 
+	/*
+	 * @Autowired Environment env;
+	 */
+	
 	@Autowired
-	Environment env;
+	private Environment environment;
 
 	//파일등록
 	public int fileInsert(FileUploadDto fileUpload) throws IOException
@@ -69,7 +73,8 @@ public class EuFileUploadService extends EuGeneralService
         File destinationFile = null;
         String destinationFileName = null;
         String fileUrl = storagePath;								// FILE_STORAGE\\EU\\NOTICE\\
-		String rootPath = env.getProperty("file.upload.rootPath");	// C:\\
+		//String rootPath = env.getProperty("file.upload.rootPath");	// C:\\
+        String rootPath = environment.getProperty("file.upload.rootPath");
 		fileUrl = rootPath+fileUrl;		// C:\\FILE_STORAGE\\EU\\NOTICE\\
 
 		fileFullName = userFile.getOriginalFilename();
@@ -146,7 +151,8 @@ public class EuFileUploadService extends EuGeneralService
 	public int realFileDelete(int fuSeq) {
 		int rtn;
 		FileUploadDto fileUploadDto = this.getFileUpload(fuSeq);
-		String rootPath = env.getProperty("file.upload.rootPath");
+		//String rootPath = env.getProperty("file.upload.rootPath");
+		String rootPath = environment.getProperty("file.upload.rootPath");
 		String filePath = fileUploadDto.getStoragePath() + fileUploadDto.getSavedName(); 	// C:/tmp/test.txt
 		filePath = rootPath+filePath;
 		boolean delYn = true;
@@ -173,7 +179,8 @@ public class EuFileUploadService extends EuGeneralService
 	{
 		String changeFileSize = "";
 		List<FileUploadEntity> fileUploads = fileUploadMapper.findFileUploads(fileUpload);
-		String rootPath = env.getProperty("file.upload.rootPath");
+		//String rootPath = env.getProperty("file.upload.rootPath");
+		String rootPath = environment.getProperty("file.upload.rootPath");
 		String storagePath = "";
 		for(int i=0; i<fileUploads.size(); i++) {
 			storagePath = rootPath + fileUploads.get(i).getStoragePath();
@@ -209,7 +216,8 @@ public class EuFileUploadService extends EuGeneralService
 	{
        	request.setCharacterEncoding("UTF-8");
         FileUploadDto fileUploadDto = this.getFileUpload(fuSeq);
-		String rootPath = env.getProperty("file.upload.rootPath");	// C:\\
+		//String rootPath = env.getProperty("file.upload.rootPath");	// C:\\
+        String rootPath = environment.getProperty("file.upload.rootPath");
 
         //파일 업로드된 경로
         try{
@@ -314,7 +322,8 @@ public class EuFileUploadService extends EuGeneralService
 		String fileFullName = null;					//C:\Users\jungho.min\Documents\연지동.txt
 		String fileName = null;
 		String fileNameExtension = null;
-		String checkFileExtension = env.getProperty("file.upload.invalidExtension");	//html,jsp,exe,com,js
+		//String checkFileExtension = env.getProperty("file.upload.invalidExtension");	//html,jsp,exe,com,js
+		String checkFileExtension = environment.getProperty("file.upload.invalidExtension");
 		String fileAllowExtension = fileUploadInfo.getFileAllowExt();
 		FileUploadDto fileUploadDto = new FileUploadDto();
 		int k = 0;

@@ -24,7 +24,7 @@
 		                  from pltf_lang_detail ld, pltf_lang_kind lk
 		                 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mca.mp_seq and type='PRODUCT_NAME')
 		                   and ld.lk_seq = lk.lk_seq
-		                   and lk.corp = #{corp}
+		                   and lk.basename = #{corp}
 		                   and lk.code = 'en'
 		           ) 
            	   ) product_name 
@@ -38,7 +38,7 @@
 		                  from pltf_lang_detail ld, pltf_lang_kind lk
 		                 where ld.ld_seq in (select ld_seq from ep_mall_lang_rl where t_seq = mca.mp_seq and type='PRODUCT_DESCRIPTION')
 		                   and ld.lk_seq = lk.lk_seq
-		                   and lk.corp = #{corp}
+		                   and lk.basename = #{corp}
 		                   and lk.code = 'en'
 		           )
 		   	   ) product_description	 

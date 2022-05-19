@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jwebppy.portal.iv.eu.common.file_upload.mapper.EuFileDownloadHistoryMapper">
+		
+	<insert id="insertFileDownloadHistory" parameterType="fileDownloadHistoryEntity">
+		<selectKey keyProperty="fdhSeq" resultType="Integer" order="BEFORE">
+			select ep_fdh_seq.nextval from dual
+		</selectKey>	
+	
+		insert into ep_file_download_history 
+		(fdh_seq, fu_seq, reg_username, reg_date) 
+		values 
+		(
+			#{fdhSeq}, #{fuSeq}, #{regUsername}, #{regDate}
+		)
+	</insert>	
+		
+</mapper>

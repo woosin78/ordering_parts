@@ -17,8 +17,8 @@
 		
 	<!-- 위쪽  div: 좌상단 메뉴 영역 Start -->
 	<div id="DIV_upperAreaLeft" class="mall_upper_left_menu" style="float:left;">
-		<div class="mall_upper_left_menu_text"><a class="item" th:href="@{[[${BASE_PATH}]]/merchandize/category/main_admin}" th:text="#{EUP_L_0061}"></a></div>	<!-- Manage Category -->
-		<div class="mall_upper_left_menu_text"><a class="item" th:href="@{[[${BASE_PATH}]]/merchandize/product/main_admin}" th:text="#{EUP_L_0073}"></a></div>	<!-- Manage Product -->
+		<div class="mall_upper_left_menu_text"><a class="item" th:href="|${BASE_PATH}/merchandize/category/main_admin|" th:text="#{EUP_L_0061}"></a></div>	<!-- Manage Category -->
+		<div class="mall_upper_left_menu_text"><a class="item" th:href="|${BASE_PATH}/merchandize/product/main_admin|" th:text="#{EUP_L_0073}"></a></div>	<!-- Manage Product -->
 	</div>
 	<!-- 위쪽  div: 좌상단 메뉴 영역 End -->
 			
@@ -174,6 +174,8 @@ $(document).ready(function()
 	});
 	
 	removeDeletedSortOptions();
+	
+	ProgressBar.hide();
 });
 
 // 최대 sort수치만큼 option값을 생성한 sort select box들에서, 유효하지 않은 sort 값을 제거

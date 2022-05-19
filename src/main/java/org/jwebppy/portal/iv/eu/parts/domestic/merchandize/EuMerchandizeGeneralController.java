@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
-@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/general")
+//@RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH  + "/merchandize/general")
 public class EuMerchandizeGeneralController extends EuPartsGeneralController
 {
 	//@Autowired

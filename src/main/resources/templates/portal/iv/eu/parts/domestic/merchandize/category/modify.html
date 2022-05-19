@@ -17,12 +17,12 @@
 
 <div class="mallcondition-area">
 <form id="FORM_modify" method="post" autocomplete="off" onsubmit="return false;" enctype="multipart/form-data">
-	<input type="hidden" name="mcSeq" th:value="${categoryDto.mcSeq}" />
-	<input type="hidden" id="IPT_fgDisplayCurrVal" th:value="${categoryDto.fgDisplay}" />
-	<input type="hidden" id="IPT_categoryCodeCurrVal" th:value="${categoryDto.categoryCode}" />
+	<input type="hidden" name="mcSeq" th:value="${categoryDto?.mcSeq}" />
+	<input type="hidden" id="IPT_fgDisplayCurrVal" th:value="${categoryDto?.fgDisplay}" />
+	<input type="hidden" id="IPT_categoryCodeCurrVal" th:value="${categoryDto?.categoryCode}" />
 		
 	<div th:each="langKindEntity : ${langKindEntityList}">
-		<input type="hidden" name="categoryLangKindSeqs" th:id="|IPT_lkinfo_${langKindEntity.name}|" th:value="${langKindEntity.lkSeq}" />
+		<input type="hidden" name="categoryLangKindSeqs" th:id="|IPT_lkinfo_${langKindEntity?.name}|" th:value="${langKindEntity?.lkSeq}" />
 	</div>
 		
 	<table class="mallcondition">
@@ -31,7 +31,7 @@
 				<th><span>[[#{EUP_L_0063}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Category -->
 				<td>
 					<select name="categoryCode" class="custom-ui">
-						<option th:each="sapCategory : ${sapCategoryList}" th:value="${sapCategory.PRODH}" th:text="${sapCategory.PRODH}"></option>
+						<option th:each="sapCategory : ${sapCategoryList}" th:value="${sapCategory?.PRODH}" th:text="${sapCategory?.PRODH}"></option>
 					</select>
 				</td>						
 			</tr>
@@ -49,10 +49,10 @@
 <!-- 				<th th:text="|#{EUP_L_0065}*|"></th>	Sort -->
 				<th><span>[[#{EUP_L_0065}]]<img src="/portal/img/icon_required.png" class="required" /></span></th>	<!-- Sort -->
 				<td>
-					<th:block th:with="x= ${categoryDto.totalCount}">
+					<th:block th:with="x= ${categoryDto == null ? 0 : categoryDto.totalCount}">
 						<select id="SLT_sort" name="sort" class="custom-ui">								
 							<th:block th:each="num : ${#numbers.sequence(1,x)}">
-								 <option th:value="${num}" th:selected="(${num} == ${categoryDto.sort})" th:text="${num}" ></option>		
+								 <option th:value="${num}" th:selected="(${num} == ${categoryDto?.sort})" th:text="${num}" ></option>		
 							</th:block>								
 						</select>
 					</th:block>
@@ -69,8 +69,8 @@
 	
 </form>
 
-<form id="FORM_view" method="post" action="[[${BASE_PATH}]]/merchandize/category/view">
-	<input type="hidden" name="mcSeq" th:value="${categoryDto.mcSeq}" />		
+<form id="FORM_view" method="post" th:action="|${BASE_PATH}/merchandize/category/view|">
+	<input type="hidden" name="mcSeq" th:value="${categoryDto?.mcSeq}" />		
 </form>
 
 </div>
@@ -84,7 +84,9 @@ $(document).ready(function()
 // 	$(".numeric").numeric(); 
 	addFgDisplayOption();
 	
-	insertAddedLangInfo(); 
+	insertAddedLangInfo();
+	
+	ProgressBar.hide();
 });
 
 function addFgDisplayOption() 
