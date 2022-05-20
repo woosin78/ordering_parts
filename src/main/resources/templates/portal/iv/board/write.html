@@ -18,9 +18,10 @@
 	<form id="FORM_write" method="post" th:action="|${BASE_PATH}/board/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
 	<input type="hidden" name="bSeq" id="bSeq" th:value="${bSeq}"/>
 	<input type="hidden" name="bcSeq" id="bcSeq" th:value="${boardContent?.bcSeq}"/>
+	<input type="hidden" name="pSeq" id="pSeq" th:value="${pSeq}"/>
 	<input type="hidden" name="textContent" id="textContent" th:value="${boardContent?.textContent}"/>
-	<input type="hidden" name="htmlContent" id="htmlContent" th:value="${boardContent?.htmlContent}"/>
-	<input type="file" id="files" name="files" multiple style="display:none;"/>
+	<input type="hidden" name="htmlContent" id="htmlContent" th:value="${boardContent?.htmlContent}"/>	
+	<input type="file" name="files" id="files" multiple style="display:none;"/>
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
@@ -314,7 +315,10 @@ let xfe = new XFE({
 	width: "100%",
 	height: "100%",
 	onLoad: function() {
-		xfe.setBodyValue($("#htmlContent").val());
+		if (JpUtilsString.isEmpty($("#pSeq").val()))
+		{
+			xfe.setBodyValue($("#htmlContent").val());	
+		}
 	},
 	language: "english",
 	initFontFamily: "Arial"

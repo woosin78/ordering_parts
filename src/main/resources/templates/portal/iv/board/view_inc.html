@@ -8,7 +8,8 @@
 	<div class="block-header">
 		<div class="block-title" th:text="${boardName}"></div>
 		<div class="block-button-area">
-			<th:block th:if="${isManager}">
+			<button id="BTN_reply" type="button" th:text="#{HQP_B_REPLY}" th:if="${board.fgUseReply == T(org.jwebppy.portal.iv.common.IvCommonVo).YES}"></button>
+			<th:block th:if="${isManager} or ${boardContent.isMyContent}">
 				<button id="BTN_modify" type="button" th:text="#{HQP_B_MODIFY}"></button>
 				<button id="BTN_delete" type="button" th:text="#{HQP_B_DELETE}"></button>
 			</th:block>
@@ -41,7 +42,7 @@
 							<span th:text="${boardContentTarget.code}"></span><div class='split2'></div><span th:text="${boardContentTarget.description}"></span>
 						</div>				
 					</td>			
-				</tr>			
+				</tr>
 				<tr th:style="${(board.fgSetPeriod == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
 					<th th:text="#{HQP_L_VISIBLE_PERIOD}"/>
 					<td colspan="5">
@@ -70,13 +71,14 @@
 	<form id="FORM_search" th:action="|${BASE_PATH}/board/list|" th:object="${boardContentSearch}">
 	<input type="hidden" name="bSeq" th:value="*{bSeq}"/>
 	<input type="hidden" name="bcSeq" th:value="${boardContent.bcSeq}"/>
+	<input type="hidden" name="pSeq"/>
 	<input type="hidden" name="title" th:value="*{title}"/>
 	<input type="hidden" name="writer" th:value="*{writer}"/>
 	<input type="hidden" name="fromRegDate" th:value="*{fromRegDate}"/>
 	<input type="hidden" name="toRegDate" th:value="*{toRegDate}"/>
 	<input type="hidden" name="pageNumber" th:value="*{pageNumber}"/>
 	</form>
-	<textarea id="htmlContent" th:text="${boardContent?.htmlContent}" style="display:none;"></textarea>
+	<textarea id="htmlContent" th:text="${boardContent.htmlContent}" style="display:none;"></textarea>
 <script>
 $(window).on("load", function() {
 	ProgressBar.hide();
@@ -113,10 +115,17 @@ function installBoardViewResizer($area, $content)
 	xfe.setHeight($content.height() + "px");
 };
 
+$("#BTN_reply").on("click", function() {
+	$("#FORM_search input[name=pSeq]").val("[[${boardContent.bcSeq}]]");
+	$("#FORM_search")
+		.attr("action", "[[${BASE_PATH}]]/board/write")
+		.submit();
+});	
 
 $("#BTN_modify").on("click", function() {
-	$("#FORM_search").attr("action", "[[${BASE_PATH}]]/board/write");
-	$("#FORM_search").submit();
+	$("#FORM_search")
+		.attr("action", "[[${BASE_PATH}]]/board/write")
+		.submit();
 });
 
 $("#BTN_delete").on("click", function() {

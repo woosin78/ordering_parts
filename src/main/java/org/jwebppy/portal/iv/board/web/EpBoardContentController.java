@@ -25,7 +25,6 @@ import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.service.EpUploadFileListService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -133,7 +132,6 @@ public class EpBoardContentController extends IvGeneralController
 	}
 
 	@RequestMapping("/write")
-	@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 	public String write(Model model, WebRequest webRequest, EpBoardContentSearchDto boardContentSearch)
 	{
 		model.addAttribute("boardContent", boardContentService.getBoardContent(boardContentSearch.getBcSeq()));
@@ -145,7 +143,6 @@ public class EpBoardContentController extends IvGeneralController
 
 	@PostMapping("/save")
 	@ResponseBody
-	@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 	public Object save(@ModelAttribute EpBoardContentDto boardContent, @RequestParam(name = "targetCode", required = false) String[] targetCodes, @RequestParam(name = "targetDescription", required = false) String[] targetDescriptions)
 	{
 		if (ArrayUtils.isNotEmpty(targetCodes))
@@ -192,7 +189,6 @@ public class EpBoardContentController extends IvGeneralController
 
 	@PostMapping("/delete")
 	@ResponseBody
-	@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 	public Object delete(@RequestParam("bcSeq") List<String> bcSeqs)
 	{
 		return boardContentService.delete(bcSeqs);
@@ -200,7 +196,6 @@ public class EpBoardContentController extends IvGeneralController
 
 	@GetMapping("/target/data")
 	@ResponseBody
-	@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 	public Object targetData(@RequestParam("name") String name, @RequestParam("dealerCode") String dealerCode)
 	{
 		ErpDataMap rfcParamMap = getErpUserInfoByUsername();

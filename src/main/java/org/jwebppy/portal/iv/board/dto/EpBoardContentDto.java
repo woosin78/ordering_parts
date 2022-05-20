@@ -6,6 +6,7 @@ import java.util.List;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.util.XssHandleUtils;
 import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
@@ -113,5 +114,10 @@ public class EpBoardContentDto extends IvGeneralDto
 		}
 
 		return null;
+	}
+
+	public boolean isMyContent()
+	{
+		return CmStringUtils.equals(UserAuthenticationUtils.getUsername(), regUsername);
 	}
 }
