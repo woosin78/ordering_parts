@@ -117,6 +117,7 @@ function installBoardViewResizer($area, $content)
 
 $("#BTN_reply").on("click", function() {
 	$("#FORM_search input[name=pSeq]").val("[[${boardContent.bcSeq}]]");
+	
 	$("#FORM_search")
 		.attr("action", "[[${BASE_PATH}]]/board/write")
 		.submit();

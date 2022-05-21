@@ -6,7 +6,7 @@
 		<id property="bcSeq" column="bc_seq" />
 		<result property="bSeq" column="b_seq" />
 		<result property="pSeq" column="p_seq" />
-		<result property="order" column="order" />
+		<result property="topSeq" column="top_seq" />
 		<result property="depth" column="depth" />
 		<result property="uSeq" column="u_seq" />
 		<result property="title" column="title" />
@@ -35,8 +35,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="EpBoardContentEntity">
-		insert into ep_board_content (bc_seq, b_seq, p_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date, width, height) values (
-			#{bcSeq}, #{bSeq}, nvl(#{pSeq}, #{bcSeq}), 0, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, #{etc1}, #{etc2}, #{etc3}, #{etc4}, #{etc5}, #{etc6}, 'N', #{regUsername}, #{regDate}, #{width}, #{height}
+		insert into ep_board_content (bc_seq, b_seq, p_seq, top_seq, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date, width, height) values (
+			#{bcSeq}, #{bSeq}, #{pSeq}, #{topSeq}, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, #{etc1}, #{etc2}, #{etc3}, #{etc4}, #{etc5}, #{etc6}, 'N', #{regUsername}, #{regDate}, #{width}, #{height}
 		)
 	</insert>
 	
@@ -65,16 +65,16 @@
 		where
 			bc_seq=#{bcSeq}
 	</update>
-	
+
 	<update id="updateForReply">
 		update ep_board_content set
-			sort=sort+1,
-			depth=depth+1				
+			top_seq=#{topSeq},
+			p_seq=#{pSeq},
+			depth=#{depth}
 		where
-			p_seq=#{pSeq}
-			and bc_seq>#{pSeq}
+			bc_seq=#{bcSeq}
 	</update>
-	
+
 	<update id="delete" parameterType="EpBoardContentEntity">
 		update ep_board_content set
 			fg_delete='Y',
@@ -163,7 +163,7 @@
 				)				
 			</if>
 	
-			order by a.p_seq desc, a.sort, a.depth
+			order by a.top_seq desc, a.p_seq, a.depth
 		) z
 
 		<include refid="PaginationMapper.footer"/>

@@ -27,7 +27,7 @@
 			<tr>
 				<th>[[#{HQP_L_TITLE}]]<img src="/portal/img/icon/required.png" class="required" /></th>
 				<td>
-					<input type="text" id="title" name="title" class="custom-ui" autofocus="autofocus" th:value="${boardContent?.title}"/>
+					<input type="text" id="title" name="title" class="custom-ui" th:value="${boardContent?.title}"/>
 				</td>
 			</tr>
 			<tr>
@@ -35,7 +35,7 @@
 				<td><div id="xfe"></div></td>
 			</tr>
 			
-			<tr th:style="${(board.fgSetTarget == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
+			<tr th:style="${(board?.fgSetTarget == T(org.jwebppy.portal.iv.common.IvCommonVo).YES) ? '' : 'display:none;'}">
 				<th th:text="#{HQP_L_VISIBLE_TARGET}"/>
 				<td>
 					<div class="split-row-more-compact"></div>
@@ -175,7 +175,6 @@ $(window).on("load", function() {
 		},
 		select: function(event, ui)
 		{
-			 console.log(ui.item.label + "," + ui.item.value);
 			 addTarget(ui.item.label, ui.item.value);
 			 
 			 $(this).val("");
@@ -183,14 +182,12 @@ $(window).on("load", function() {
 		},
 		//delay: 50,
 		minLength: 3
-	});		
+	});
 });
 
 function addTarget(label, value)
 {
 	let str = label.split("|");
-	
-	console.log(str.length + "," + JpUtilsString.trimToEmpty(str[0]) + " , " + JpUtilsString.trimToEmpty(str[1]));
 	
 	let dealerCode = str[0];
 	let dealerName = str[1];
@@ -246,20 +243,15 @@ function installBoardViewResizer($area, $content)
 };
 
 $("#BTN_back").on("click", function() {
+	let action = (JpUtilsString.isNotEmpty("[[${boardContent?.bcSeq}]]")) ? "[[${BASE_PATH}]]/board/view" : "[[${BASE_PATH}]]/board/list";
 	
-	let action = "[[${BASE_PATH}]]/board/list";
-	
-	if (JpUtilsString.isNotEmpty("[[${boardContent?.bcSeq}]]"))
-	{
-		action = "[[${BASE_PATH}]]/board/view";
-	};
-	
-	$("#FORM_search").attr("action", action);
-	$("#FORM_search").submit();
+	$("#FORM_search")
+		.attr("action", action)
+		.submit();
 });
 
 $("#BTN_save").on("click", function() {
-	if (JpUtilsString.isEmpty($("#FORM_write input[name=title]").val()))
+	if (JpUtilsString.isEmpty($("#title").val()))
 	{
 		alert("[[#{HQP_M_EMPTY_TITLE}]]");
 		$("#title").focus();
@@ -276,6 +268,11 @@ $("#BTN_save").on("click", function() {
 	$("#htmlContent").val(xfe.getBodyValue());
 	
 	ProgressBar.show();
+
+	if (isReply())
+	{
+		$("#bcSeq").val("");
+	};
 
 	let options = {
 			enctype: "multipart/form-data",
@@ -315,10 +312,10 @@ let xfe = new XFE({
 	width: "100%",
 	height: "100%",
 	onLoad: function() {
-		if (JpUtilsString.isEmpty($("#pSeq").val()))
+		if (!isReply())
 		{
 			xfe.setBodyValue($("#htmlContent").val());	
-		}
+		};
 	},
 	language: "english",
 	initFontFamily: "Arial"
@@ -381,5 +378,10 @@ function addFile(name, size, uflSeq)
 	
 	$("#attachedFiles").append(html.join(""));
 };
+
+function isReply()
+{
+	return JpUtilsString.isNotEmpty($("#pSeq").val());
+}
 </script>
 </th:block>								

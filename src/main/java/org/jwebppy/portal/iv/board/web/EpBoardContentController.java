@@ -70,7 +70,8 @@ public class EpBoardContentController extends IvGeneralController
 	@ResponseBody
 	public Object listData(@ModelAttribute EpBoardContentSearchDto boardContentSearch, WebRequest webRequest)
 	{
-		boardContentSearch.setCorp(getCorp());
+		//boardContentSearch.setCorp(getCorp());
+		boardContentSearch.setCorp("F110");
 
 		return ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch));
 	}

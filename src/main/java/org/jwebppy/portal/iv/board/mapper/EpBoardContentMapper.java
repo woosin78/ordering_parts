@@ -12,9 +12,8 @@ public interface EpBoardContentMapper
 {
 	public int insert(EpBoardContentEntity boardContent);
 	public int update(EpBoardContentEntity boardContent);
-	public int updatePSeq(EpBoardContentEntity boardContent);
 	public int updatePlusViews(String bcSeq);
-	public int updateForReply(String pSeq);
+	public int updateForReply(EpBoardContentEntity boardContent);
 	public int delete(EpBoardContentEntity boardContent);
 	public EpBoardContentEntity findBoardContent(String bcSeq);
 	public List<EpBoardContentEntity> findBoardContents(EpBoardContentSearchDto boardContentSearch);

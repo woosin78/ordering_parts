@@ -98,6 +98,16 @@ $(function(){
 			dataSrc: function(response) 
 			{
 				let result = response.RESULT;
+				
+				for (let i=0, length=result.length; i<length; i++)
+				{
+					let depth = result[i].depth;
+					
+					if (depth > 0)
+					{
+						result[i].displayTitle = "<span style='margin-left:" + depth + "em;'>└ </span>" + result[i].displayTitle;
+					};
+				}
 
 				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
 

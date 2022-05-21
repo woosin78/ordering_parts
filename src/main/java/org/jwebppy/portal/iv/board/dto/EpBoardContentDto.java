@@ -28,7 +28,7 @@ public class EpBoardContentDto extends IvGeneralDto
 	private String bcSeq;
 	private String bSeq;
 	private String pSeq;
-	private int sort;
+	private String topSeq;
 	private int depth;
 	private Integer uSeq;
 	private String title;
