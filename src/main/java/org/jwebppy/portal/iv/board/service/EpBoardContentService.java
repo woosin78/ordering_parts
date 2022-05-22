@@ -69,11 +69,11 @@ public class EpBoardContentService extends IvGeneralService
 		}
 
 		String bcSeq = System.currentTimeMillis() + "-" + UidGenerateUtils.generate();
-		String pSeq = boardContent.getPSeq();
+		String pSeq = CmStringUtils.defaultIfEmpty(boardContent.getPSeq(), bcSeq);
 
 		boardContent.setBcSeq(bcSeq);
-		boardContent.setPSeq(bcSeq);
-		boardContent.setTopSeq(bcSeq);
+		boardContent.setPSeq(pSeq);
+		boardContent.setTopSeq(pSeq);
 		boardContent.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		boardContent.setWriter(UserAuthenticationUtils.getUserDetails().getName());
 		boardContent.setHtmlContent(XssHandleUtils.removeInvalidTagAndEvent(boardContent.getHtmlContent()));
@@ -84,15 +84,15 @@ public class EpBoardContentService extends IvGeneralService
 
 		if (CmStringUtils.equals(board.getFgUseReply(), PlatformCommonVo.YES))
 		{
-			if (CmStringUtils.isNotEmpty(pSeq))
+			if (CmStringUtils.notEquals(pSeq, bcSeq))
 			{
+				boardContentMapper.updatePlusSort(boardContentEntity);
+
 				EpBoardContentDto pBoardContent = getBoardContent(pSeq);
 
+				boardContentEntity.setSort(pBoardContent.getSort());
+				boardContentEntity.setDepth(pBoardContent.getDepth()+1);
 				boardContentEntity.setTopSeq(pBoardContent.getTopSeq());
-				boardContentEntity.setPSeq(pBoardContent.getBcSeq());
-				boardContentEntity.setDepth(pBoardContent.getDepth() + 1);
-
-				System.err.println("boardContentEntity:" + boardContentEntity);
 
 				boardContentMapper.updateForReply(boardContentEntity);
 			}

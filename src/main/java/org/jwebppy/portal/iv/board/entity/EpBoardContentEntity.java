@@ -23,6 +23,7 @@ public class EpBoardContentEntity extends IvGeneralEntity
 	private String bSeq;
 	private String pSeq;
 	private String topSeq;
+	private int sort;
 	private int depth;
 	private Integer uSeq;
 	private String title;

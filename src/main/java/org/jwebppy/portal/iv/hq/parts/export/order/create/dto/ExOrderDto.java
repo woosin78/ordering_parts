@@ -1,7 +1,11 @@
 package org.jwebppy.portal.iv.hq.parts.export.order.create.dto;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.portal.iv.hq.parts.export.common.dto.PartsExportGeneralDto;
 
 import lombok.Getter;
@@ -53,6 +57,10 @@ public class ExOrderDto extends PartsExportGeneralDto
 	private String fgShowCredit;
 	private String fgShowListPrice;
 	private List<ExOrderItemDto> orderItems;
+	private List<ExOrderItemDto> duplicateOrderItems;
+	private List<ExOrderItemDto> invalidSalesLotOrderItems;
+	private String fgFilteringDuplicateItem;
+	private String fgFilteringInvalidSalesLotItem;
 
 	//시뮬레이션 시 주문 화면에서 전달 받는 파라미터. 구분자 '^'
 	private String lineNo;
@@ -63,4 +71,54 @@ public class ExOrderDto extends PartsExportGeneralDto
 	private String uom;
 	private String availability;
 
+	public void filteringDuplicateItems()
+	{
+		if (CollectionUtils.isNotEmpty(orderItems))
+		{
+			duplicateOrderItems = new ArrayList<>();
+			List<ExOrderItemDto> tempOrderItems = new ArrayList<>();
+
+			Set<String> itemSet = new HashSet<>();
+
+			for (ExOrderItemDto orderItem: orderItems)
+			{
+				String materialNo = orderItem.getMaterialNo();
+
+				if (itemSet.contains(materialNo))
+				{
+					orderItem.setErrorType("DUPL_MATNR");
+
+					duplicateOrderItems.add(orderItem);
+				}
+				else
+				{
+					tempOrderItems.add(orderItem);
+				}
+
+				itemSet.add(materialNo);
+			}
+
+			orderItems = tempOrderItems;
+		}
+	}
+
+	public void filteringInvalidSalesLotOrderItems()
+	{
+		invalidSalesLotOrderItems = new ArrayList<>();
+		List<ExOrderItemDto> tempOrderItems = new ArrayList<>();
+
+		for (ExOrderItemDto orderItem: orderItems)
+		{
+			if (Double.parseDouble(orderItem.getOrderQty()) % Double.parseDouble(orderItem.getLotQty()) > 0)
+			{
+				invalidSalesLotOrderItems.add(orderItem);
+			}
+			else
+			{
+				tempOrderItems.add(orderItem);
+			}
+		}
+
+		orderItems = tempOrderItems;
+	}
 }

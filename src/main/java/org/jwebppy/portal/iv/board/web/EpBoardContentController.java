@@ -12,6 +12,7 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentDto;
@@ -25,6 +26,7 @@ import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.service.EpUploadFileListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -70,8 +72,7 @@ public class EpBoardContentController extends IvGeneralController
 	@ResponseBody
 	public Object listData(@ModelAttribute EpBoardContentSearchDto boardContentSearch, WebRequest webRequest)
 	{
-		//boardContentSearch.setCorp(getCorp());
-		boardContentSearch.setCorp("F110");
+		boardContentSearch.setCorp(getCorp());
 
 		return ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch));
 	}
@@ -214,6 +215,13 @@ public class EpBoardContentController extends IvGeneralController
 	{
 		String bSeq = webRequest.getParameter("bSeq");
 
+		EpBoardDto board = boardService.getBoard(webRequest.getParameter("bSeq"));
+
+		if (!UserAuthenticationUtils.hasRole(CmStringUtils.split(board.getReadAuth(), IvCommonVo.DELIMITER)))
+		{
+			throw new AccessDeniedException("");
+		}
+
 		EpBoardContentSearchDto boardContentSearch = new EpBoardContentSearchDto();
 		boardContentSearch.setBSeq(bSeq);
 		boardContentSearch.setBcSeq(webRequest.getParameter("bcSeq"));
@@ -227,10 +235,11 @@ public class EpBoardContentController extends IvGeneralController
 		boardContentSearch.setRowPerPage(CmNumberUtils.toInt(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
 
 		model.addAttribute("boardContentSearch", boardContentSearch);
-		model.addAttribute("board", boardService.getBoard(webRequest.getParameter("bSeq")));
+		model.addAttribute("board", board);
 		model.addAttribute("boardName", I18nMessageSource.getMessage(CmStringUtils.upperCase("PLTF_T_" + bSeq)));
 		model.addAttribute("isManager", isManager());
-		model.addAttribute("fgFrom", webRequest.getParameter("fgFrom"));//M:main
+		model.addAttribute("fgFrom", webRequest.getParameter("fgFrom"));//M: come from main page
+		model.addAttribute("hasWriteAuth", UserAuthenticationUtils.hasRole(CmStringUtils.split(board.getWriteAuth(), IvCommonVo.DELIMITER)));
 
 		addAllAttributeFromRequest(model, webRequest);
 	}

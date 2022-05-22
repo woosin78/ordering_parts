@@ -13,6 +13,7 @@ public interface EpBoardContentMapper
 	public int insert(EpBoardContentEntity boardContent);
 	public int update(EpBoardContentEntity boardContent);
 	public int updatePlusViews(String bcSeq);
+	public int updatePlusSort(EpBoardContentEntity boardContent);
 	public int updateForReply(EpBoardContentEntity boardContent);
 	public int delete(EpBoardContentEntity boardContent);
 	public EpBoardContentEntity findBoardContent(String bcSeq);

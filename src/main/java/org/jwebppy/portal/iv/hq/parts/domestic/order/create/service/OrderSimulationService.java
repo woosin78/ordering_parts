@@ -119,12 +119,9 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 						{"LS_ERROR_IGNORE", errorIgnore},
 						{"LS_OPTION", option}
 					})
-				.table("LT_STOCK")
-					.add(plants);
-
-			adjustOrderQty(order);
-
-			rfcRequest.addTable("LT_ITEM", convertToLtItem(order.getOrderItems()));
+				.table()
+					.add("LT_STOCK", plants)
+					.add("LT_ITEM", convertToLtItem(order.getOrderItems()));
 
 			return makeSimulationResult(simpleRfcTemplate.response(rfcRequest));
 		}
@@ -132,7 +129,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		return null;
 	}
 
-	protected void adjustOrderQty(OrderDto order)
+	public void setSalesLot(OrderDto order)
 	{
 		DataList lotQties = getLotQties(order);
 
@@ -144,7 +141,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 
 				if (dataMap.isEquals("MATERIAL", orderItem.getMaterialNo()))
 				{
-					orderItem.setLotQty(dataMap.getString("LOT_QTY"));
+					orderItem.setLotQty(Integer.toString(dataMap.getInt("LOT_QTY")));
 					break;
 				}
 			}
@@ -165,7 +162,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 			Map<String, Object> itemMap = new HashMap<>();
 			itemMap.put("ITEM", orderItem.getLineNo());
 			itemMap.put("MATERIAL", CmStringUtils.trimToEmpty(orderItem.getMaterialNo()).toUpperCase());
-			itemMap.put("QTY", orderItem.getAdjustedOrderQty());
+			itemMap.put("QTY", orderItem.getOrderQty());
 
 			items.add(itemMap);
 		}

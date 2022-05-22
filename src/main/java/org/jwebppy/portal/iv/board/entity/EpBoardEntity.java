@@ -23,5 +23,7 @@ public class EpBoardEntity extends GeneralEntity
 	private String fgSetTarget;
 	private String fgSetPopup;
 	private String corp;
+	private String writeAuth;
+	private String readAuth;
 	private EpUploadFileEntity uploadFile;
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -27,6 +28,7 @@ import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.common.PortalCommonVo;
+import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
@@ -104,9 +106,6 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 	{
 		ErpDataMap userInfoMap = getErpUserInfo();
 
-		order.setUsername(userInfoMap.getUsername());
-		order.setLanguage(userInfoMap.getLang());
-
 		if (CmStringUtils.isNotEmpty(order.getFileName()))//파일업로드로 시뮬레이션 실행
 		{
 			File file = null;
@@ -173,12 +172,34 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 			}
 		}
 
+		order.setUsername(userInfoMap.getUsername());
+		order.setLanguage(userInfoMap.getLang());
+
+		//중복 입력된 자재 필터링
+		if (CmStringUtils.equals(order.getFgFilteringDuplicateItem(), IvCommonVo.YES))
+		{
+			order.filteringDuplicateItems();
+		}
+
+		//Sales Lot 오류 필터링
+		if (CmStringUtils.equals(order.getFgFilteringInvalidSalesLotItem(), IvCommonVo.YES))
+		{
+			orderSimulationService.setSalesLot(order);
+			order.filteringInvalidSalesLotOrderItems();
+		}
+
 		SimulationResultDto simulationResult = new SimulationResultDto();
 
 		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
 		{
 			simulationResult = orderSimulationService.simulation(order);
 		}
+
+		//중복 자재 입력 오류는 시뮬레이션 실행 전에 필터링해 둔 것을 넣어준다.
+		simulationResult.getErrorOrderItems().addAll(ListUtils.emptyIfNull(order.getDuplicateOrderItems()));
+
+		//Sales Lot 오류 건과 정상 건을 합친다
+		simulationResult.setNormalOrderItems(ListUtils.union(ListUtils.emptyIfNull(order.getInvalidSalesLotOrderItems()), simulationResult.getNormalOrderItems()));
 
 		makeOrderItemForm(simulationResult);
 

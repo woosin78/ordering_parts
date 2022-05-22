@@ -27,6 +27,14 @@
 			columns : [
 				{name: "materialNo", data: "materialNo", title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Parts No.
 				{
+					name: "duplicate",
+					title: "[[#{HQP_L_SIMULATION_DUPLICATE_MATERIAL}]]",
+					render: function(data, type, row)
+					{
+						return (row.errorType == "DUPL_MATNR") ? "X" : "";
+					}
+				},				
+				{
 					name: "nonExist",
 					title: "[[#{HQP_L_SIMULATION_ERROR_NOT_EXIST}]]",
 					render: function(data, type, row)
@@ -62,6 +70,9 @@
 				{name: "errorMessage", data: "errorMessage", title: "[[#{HQP_L_SIMULATION_ERROR_MSG}]]"}//Text	
 			],
 			data: opener.errorOrderItems,
+			columnDefs: [
+				{targets: [1, 2, 3, 4, 5, 6, 7], className: "dt-body-center"}
+			],			
     		initComplete: function() {
     			ProgressBar.hide();
     		}

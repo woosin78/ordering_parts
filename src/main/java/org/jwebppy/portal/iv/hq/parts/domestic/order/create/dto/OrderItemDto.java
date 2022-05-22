@@ -42,10 +42,10 @@ public class OrderItemDto extends PartsDomesticGeneralDto
 
 	public String getAdjustedOrderQty()
 	{
-		if (CmStringUtils.isNotEmpty(this.orderQty) && CmStringUtils.isNotEmpty(this.lotQty))
+		if (CmStringUtils.isNotEmpty(orderQty) && CmStringUtils.isNotEmpty(lotQty))
 		{
-			int iOrderQty = (int)Double.parseDouble(this.orderQty.replaceAll(",", ""));
-			int iLotQty = (int)Double.parseDouble(this.lotQty.replaceAll(",", ""));
+			int iOrderQty = (int)Double.parseDouble(orderQty.replaceAll(",", ""));
+			int iLotQty = (int)Double.parseDouble(lotQty.replaceAll(",", ""));
 
 			iOrderQty = (iOrderQty == 0) ? 1 : iOrderQty;
 			iLotQty = (iLotQty == 0) ? 1 : iLotQty;
@@ -58,7 +58,7 @@ public class OrderItemDto extends PartsDomesticGeneralDto
 			return Integer.toString(iOrderQty);
 		}
 
-		return null;
+		return orderQty;
 	}
 
 	public void incSubCount()

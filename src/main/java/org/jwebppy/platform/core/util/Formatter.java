@@ -635,23 +635,25 @@ public class Formatter {
 
 	public static String getDisplayFileSize(long fileSize)
 	{
+		String format = "#,##0.00";
+
 		double KB = 1024;
 		double MB = Math.pow(KB, 2);
 		double GB = Math.pow(KB, 3);
 
 		if (fileSize > GB)
 		{
-			return Formatter.getDefDecimalFormat(fileSize / GB) + "GB";
+			return Formatter.getDecimalFormat(fileSize / GB, format) + "GB";
 		}
 		else if (fileSize > MB)
 		{
-			return Formatter.getDefDecimalFormat(fileSize / MB) + "MB";
+			return Formatter.getDecimalFormat(fileSize / MB, format) + "MB";
 		}
 		else if (fileSize > KB)
 		{
-			return Formatter.getDefDecimalFormat(fileSize / KB) + "KB";
+			return Formatter.getDecimalFormat(fileSize / KB, format) + "KB";
 		}
 
-		return Formatter.getDefDecimalFormat(fileSize) + "B";
+		return Formatter.getDecimalFormat(fileSize, format) + "B";
 	}
 }

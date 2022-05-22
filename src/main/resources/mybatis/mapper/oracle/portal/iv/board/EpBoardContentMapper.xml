@@ -7,6 +7,7 @@
 		<result property="bSeq" column="b_seq" />
 		<result property="pSeq" column="p_seq" />
 		<result property="topSeq" column="top_seq" />
+		<result property="sort" column="sort" />
 		<result property="depth" column="depth" />
 		<result property="uSeq" column="u_seq" />
 		<result property="title" column="title" />
@@ -35,8 +36,8 @@
 	</resultMap>
 
 	<insert id="insert" parameterType="EpBoardContentEntity">
-		insert into ep_board_content (bc_seq, b_seq, p_seq, top_seq, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date, width, height) values (
-			#{bcSeq}, #{bSeq}, #{pSeq}, #{topSeq}, 0, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, #{etc1}, #{etc2}, #{etc3}, #{etc4}, #{etc5}, #{etc6}, 'N', #{regUsername}, #{regDate}, #{width}, #{height}
+		insert into ep_board_content (bc_seq, b_seq, p_seq, top_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date, width, height) values (
+			#{bcSeq}, #{bSeq}, #{pSeq}, #{topSeq}, 0, #{depth}, #{uSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, 0, #{writer}, #{etc1}, #{etc2}, #{etc3}, #{etc4}, #{etc5}, #{etc6}, 'N', #{regUsername}, #{regDate}, #{width}, #{height}
 		)
 	</insert>
 	
@@ -55,22 +56,26 @@
 			bc_seq=#{bcSeq}
 	</update>
 	
-	<update id="updatePSeq" parameterType="EpBoardContentEntity">
-		update ep_board_content set p_seq=#{pSeq} where bc_seq=#{bcSeq}
-	</update>	
-	
 	<update id="updatePlusViews">
 		update ep_board_content set
 			views=views+1
 		where
 			bc_seq=#{bcSeq}
 	</update>
-
+	
+	<update id="updatePlusSort">
+		update ep_board_content set
+			sort=sort+1							
+		where
+			b_seq=#{bSeq}
+			and bc_seq>#{pSeq}
+	</update>
+	
 	<update id="updateForReply">
 		update ep_board_content set
-			top_seq=#{topSeq},
-			p_seq=#{pSeq},
-			depth=#{depth}
+			sort=#{sort},
+			depth=#{depth},
+			top_seq=#{topSeq}
 		where
 			bc_seq=#{bcSeq}
 	</update>
@@ -163,7 +168,7 @@
 				)				
 			</if>
 	
-			order by a.top_seq desc, a.p_seq, a.depth
+			order by a.top_seq desc, a.sort, a.depth
 		) z
 
 		<include refid="PaginationMapper.footer"/>

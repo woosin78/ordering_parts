@@ -61,7 +61,7 @@
 	<input type="hidden" id="blockReason" name="blockReason"/>
 	<input type="hidden" id="message" name="message"/>
 	<input type="hidden" id="pricingInfo" name="pricingInfo"/>
-	<input type="hidden" id="simulationFrom" name="simulationFrom"/>	
+	<input type="hidden" id="simulationFrom" name="simulationFrom"/>
 	
 	<table class="condition">
 		<tbody>
@@ -820,6 +820,8 @@ $(function(){
 				p.soldToNo = $("#soldToNo").val();
 				p.shipToNo = $("#shipToNo").val();
 				p.simulationFrom = $("#simulationFrom").val();
+				p.fgFilteringDuplicateItem = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).YES}]]";
+				p.fgFilteringInvalidSalesLotItem = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).YES}]]";
 
 				//Item
 				if ($("#fileName").val() == "")
@@ -910,7 +912,6 @@ $(function(){
 				{
 					alert("[[#{HQP_M_ORDER_INVALID_EXCEL_FORMAT}]]");
 				};
-				reload();
 			}				
 		}			
 	});

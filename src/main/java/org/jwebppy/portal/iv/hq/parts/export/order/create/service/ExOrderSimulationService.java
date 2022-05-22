@@ -1,5 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.export.order.create.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -89,7 +90,6 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 			errorIgnore.put("IGNORE_DIVISION", "X");
 			errorIgnore.put("IGNORE_PURCHASE", "X");
 
-			/*
 			Map<String, String> option = new HashMap<>();
 			option.put("STOCK", "X");
 
@@ -98,7 +98,7 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 
 			List<Map<String, Object>> plants = new ArrayList<>();
 			plants.add(divMap);
-			*/
+
 			RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SIMUL_UPLOAD");
 
 			rfcRequest
@@ -116,15 +116,12 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 					.add(new Object[][] {
 						{"LS_GENERAL", general},
 						{"LS_MAIN_HEAD", mainHead},
-						{"LS_ERROR_IGNORE", errorIgnore}
-						//{"LS_OPTION", option}
-					});
-				//.table("LT_STOCK")
-					//	.add(plants);
-
-			adjustOrderQty(order);
-
-			rfcRequest.addTable("LT_ITEM", convertToLtItem(order.getOrderItems()));
+						{"LS_ERROR_IGNORE", errorIgnore},
+						{"LS_OPTION", option}
+					})
+				.table()
+					.add("LT_STOCK", plants)
+					.add("LT_ITEM", convertToLtItem(order.getOrderItems()));
 
 			return makeSimulationResult(simpleRfcTemplate.response(rfcRequest));
 		}
@@ -132,7 +129,7 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 		return null;
 	}
 
-	protected void adjustOrderQty(ExOrderDto order)
+	public void setSalesLot(ExOrderDto order)
 	{
 		DataList lotQties = getLotQties(order);
 
@@ -144,7 +141,7 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 
 				if (dataMap.isEquals("MATERIAL", orderItem.getMaterialNo()))
 				{
-					orderItem.setLotQty(dataMap.getString("LOT_QTY"));
+					orderItem.setLotQty(Integer.toString(dataMap.getInt("LOT_QTY")));
 					break;
 				}
 			}

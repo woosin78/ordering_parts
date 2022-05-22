@@ -23,5 +23,7 @@ public class EpBoardDto extends IvGeneralDto
 	private String fgSetTarget;
 	private String fgSetPopup;
 	private String corp;
+	private String writeAuth;
+	private String readAuth;
 	private EpUploadFileDto uploadFile;
 }
