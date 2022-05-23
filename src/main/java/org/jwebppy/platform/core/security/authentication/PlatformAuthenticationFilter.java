@@ -103,6 +103,10 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
             DecodedJWT jwt = verifier.verify(token);
 
+            System.err.println("token:" + token);
+            System.err.println("jwt:" + jwt.toString());
+            System.err.println("result:" + ("DOOSAN-SSO-AUTH".equals(jwt.getSubject())));
+
             if("DOOSAN-SSO-AUTH".equals(jwt.getSubject()))
             {
             	return true;
