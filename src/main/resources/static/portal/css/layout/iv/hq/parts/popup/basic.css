@@ -73,6 +73,11 @@ html, body {
 	overflow-x: auto;
 }
 
+.topbd {
+	border-top: 6px solid #003081;
+	height:30px !important;
+}
+
 button {
 	padding: 5px 15px;
 	background: #00a779;
@@ -239,7 +244,7 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 }
 
 .block-title {
-	margin-top: -10px;
+	/*margin-top: -10px;*/
 	display: inline-block;
 	font-weight: bold;
 	font-size: 30px;
