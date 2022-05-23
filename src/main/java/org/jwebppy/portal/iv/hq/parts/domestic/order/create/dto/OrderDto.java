@@ -71,6 +71,7 @@ public class OrderDto extends PartsDomesticGeneralDto
 	private String uom;
 	private String availability;
 
+	//중복 입력된 자재 필터링
 	public void filteringDuplicateItems()
 	{
 		if (CollectionUtils.isNotEmpty(orderItems))
@@ -102,23 +103,27 @@ public class OrderDto extends PartsDomesticGeneralDto
 		}
 	}
 
+	//Sales Lot 에 맞지 않게 수량을 입력한 자재 필터링
 	public void filteringInvalidSalesLotOrderItems()
 	{
-		invalidSalesLotOrderItems = new ArrayList<>();
-		List<OrderItemDto> tempOrderItems = new ArrayList<>();
-
-		for (OrderItemDto orderItem: orderItems)
+		if (CollectionUtils.isNotEmpty(orderItems))
 		{
-			if (Double.parseDouble(orderItem.getOrderQty()) % Double.parseDouble(orderItem.getLotQty()) > 0)
-			{
-				invalidSalesLotOrderItems.add(orderItem);
-			}
-			else
-			{
-				tempOrderItems.add(orderItem);
-			}
-		}
+			invalidSalesLotOrderItems = new ArrayList<>();
+			List<OrderItemDto> tempOrderItems = new ArrayList<>();
 
-		orderItems = tempOrderItems;
+			for (OrderItemDto orderItem: orderItems)
+			{
+				if (Double.parseDouble(orderItem.getOrderQty()) % Double.parseDouble(orderItem.getLotQty()) > 0)
+				{
+					invalidSalesLotOrderItems.add(orderItem);
+				}
+				else
+				{
+					tempOrderItems.add(orderItem);
+				}
+			}
+
+			orderItems = tempOrderItems;
+		}
 	}
 }

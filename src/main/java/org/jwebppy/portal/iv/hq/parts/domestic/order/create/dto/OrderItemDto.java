@@ -1,5 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto;
 
+import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.dto.PartsDomesticGeneralDto;
 
@@ -64,5 +65,10 @@ public class OrderItemDto extends PartsDomesticGeneralDto
 	public void incSubCount()
 	{
 		subCount++;
+	}
+
+	public boolean isInvalidLotQty()
+	{
+		return (CmNumberUtils.toInt(orderQty, 1) % CmNumberUtils.toInt(lotQty, 1) > 0);
 	}
 }

@@ -1,5 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.export.order.create.dto;
 
+import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.hq.parts.export.common.dto.PartsExportGeneralDto;
 
@@ -65,5 +66,10 @@ public class ExOrderItemDto extends PartsExportGeneralDto
 	public void incSubCount()
 	{
 		subCount++;
+	}
+
+	public boolean isInvalidLotQty()
+	{
+		return (CmNumberUtils.toInt(orderQty, 1) % CmNumberUtils.toInt(lotQty, 1) > 0);
 	}
 }

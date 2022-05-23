@@ -129,20 +129,25 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 		return null;
 	}
 
-	public void setSalesLot(ExOrderDto order)
+	public void setLotQty(ExOrderDto order)
 	{
-		DataList lotQties = getLotQties(order);
-
-		for (ExOrderItemDto orderItem : order.getOrderItems())
+		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
 		{
-			for (Object data : lotQties)
-			{
-				DataMap dataMap = new DataMap(data);
+			DataList lotQties = getLotQties(order);
 
-				if (dataMap.isEquals("MATERIAL", orderItem.getMaterialNo()))
+			for (ExOrderItemDto orderItem : order.getOrderItems())
+			{
+				for (Object data : lotQties)
 				{
-					orderItem.setLotQty(Integer.toString(dataMap.getInt("LOT_QTY")));
-					break;
+					DataMap dataMap = new DataMap(data);
+
+					if (dataMap.isEquals("MATERIAL", orderItem.getMaterialNo()))
+					{
+
+						orderItem.setLineNo("999990");
+						orderItem.setLotQty(Integer.toString(dataMap.getInt("LOT_QTY")));
+						break;
+					}
 				}
 			}
 		}

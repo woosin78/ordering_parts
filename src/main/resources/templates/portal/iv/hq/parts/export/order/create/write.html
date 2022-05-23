@@ -14,6 +14,13 @@
 			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/icon/upload_file.png"/>
 			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_HOW_TO_UPLOAD_SIMULATION}"></div>
 			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_ITEMS_COPY_PASTE}"></div>
+			<hr style="width:95%;"/>
+			<div class="dropzone-body-content dropzone-click-zone">
+				<span class="bold">*[[#{HQP_T_GUIDE_ORDER_UPLOAD_FORM1}]]</span><br/>
+				- A: [[#{HQP_T_GUIDE_ORDER_UPLOAD_FORM2}]]<br/>
+				- B: [[#{HQP_T_GUIDE_ORDER_UPLOAD_FORM3}]]
+				<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/iv/hq/parts/order/upload_form.png"/>
+			</div>
 		</div>
 		<div class="dropzone-bottom dropzone-click-zone">
 			<button type="button" onclick="UploadModal.hide()">[[#{HQP_B_CANCEL}]]</button>
@@ -187,7 +194,7 @@ var initialOrderQties = [];
 let UploadModal = {};
 UploadModal.show = function() {
 	let width = 480;
-	let height = 250;
+	let height = 450;
 	let left = ($(window).innerWidth() - width) * 0.5;
 	let top = ($(window).innerHeight() - height) * 0.5;
 
@@ -635,13 +642,19 @@ $("#BTN_errorReport").on("click", function() {
 });
 
 $("#BTN_create").on("click", function() {
-
-	if ($("#poNo").val() == "")
+	if (JpUtilsString.isEmpty($("#poNo").val()))
 	{
 		alert("[[#{HQP_M_EMPTY_PONO}]]");
 		$("#poNo").focus();
 		return;
 	};	
+	
+	if ($("#TBL_grid input[name=orderQty]").hasClass("warn"))
+	{
+		alert("[[#{HQP_M_INVALID_SALES_LOT}]]");
+		$("#TBL_grid input[name=orderQty].warn:first-child").select();
+		return;
+	};
 	
 	if (!isDoneSimulation())
 	{
@@ -649,7 +662,7 @@ $("#BTN_create").on("click", function() {
 		return;
 	};
 
-	if ($("#blockReason").val() != "")
+	if (JpUtilsString.isNotEmpty($("#blockReason").val()))
 	{
 		alert($("#blockMessage").val());
 	};
@@ -781,7 +794,14 @@ $(function(){
 				orderable: false,
 				render: function(data, type, row)
 				{
-					return "<input type='text' class='custom-ui' name='orderQty' style='width:70px' min='1' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
+					let clazz = "custom-ui";
+					
+					if (row.orderQty % row.lotQty > 0)
+					{
+						clazz += " warn";
+					};					
+					
+					return "<input type='text' class='" + clazz + "' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},//Req Qty
 			{name: "lotQty", data: "lotQty", title: "[[#{HQP_L_SALES_LOT}]]"},//Sales Lot
@@ -911,6 +931,7 @@ $(function(){
 				if (JpUtilsString.isNotEmpty($("#fileName").val()))
 				{
 					alert("[[#{HQP_M_ORDER_INVALID_EXCEL_FORMAT}]]");
+					reload();
 				};
 			}				
 		}			

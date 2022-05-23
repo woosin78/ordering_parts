@@ -883,7 +883,7 @@ input.custom-ui[type="radio"]:checked + label:before {
 }
 .dropzone-bottom {
 	position:relative;
-	bottom: -20px;
+	bottom: -10px;
 	text-align: center;
 	background-color: #ffffff;
 }

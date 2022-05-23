@@ -100,6 +100,10 @@ input {
 	box-sizing: border-box;
 }
 
+input.warn {
+	background-color: #db2828;
+}
+
 /* placeholder 스타일 지정 */
 input::placeholder {
   color: #dddddd;
@@ -890,7 +894,7 @@ input.custom-ui[type="radio"]:checked + label:before {
 }
 .dropzone-bottom {
 	position:relative;
-	bottom: -20px;
+	bottom: -10px;
 	text-align: center;
 	background-color: #ffffff;
 }
@@ -934,4 +938,9 @@ input.custom-ui[type="radio"]:checked + label:before {
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
   visibility: visible;
+}
+
+/* text attribute */
+.bold {
+	font-weight: bold;
 }

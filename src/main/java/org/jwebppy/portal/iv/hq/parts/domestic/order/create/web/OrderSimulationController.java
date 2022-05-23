@@ -181,10 +181,10 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 			order.filteringDuplicateItems();
 		}
 
-		//Sales Lot 오류 필터링
+		//Sales Lot 오류 자재 필터링
 		if (CmStringUtils.equals(order.getFgFilteringInvalidSalesLotItem(), IvCommonVo.YES))
 		{
-			orderSimulationService.setSalesLot(order);
+			orderSimulationService.setLotQty(order);
 			order.filteringInvalidSalesLotOrderItems();
 		}
 
@@ -411,10 +411,14 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 		if (size > 0)
 		{
 			OrderItemDto orderItem = normalOrderItems.get(size-1);
-			lineNo = CmNumberUtils.toInt(orderItem.getLineNo(), 10) / 10 + 1;
+
+			String beginLineNo = (orderItem.isInvalidLotQty()) ? "0": orderItem.getLineNo();
+			lineNo = CmNumberUtils.toInt(beginLineNo, 10) / 10 + 1;
 		}
 
-		for (int i=0, count=DEFAULT_ROW_COUNT-lineNo; i<=count; i++)
+		int rowCount = (size / DEFAULT_ROW_COUNT + 1) * DEFAULT_ROW_COUNT;
+
+		for (int i=0, count=rowCount-lineNo; i<=count; i++)
 		{
 			OrderItemDto orderItem = new OrderItemDto();
 			orderItem.setLineNo(CmStringUtils.leftPad(lineNo*10, 6, "0"));
