@@ -86,6 +86,9 @@
 				{name: "MATNR", data: "MATNR", title: "[[#{UKP_L_0042}]]"},		//Parts No. 
 				{name: "MAKTX", data: "MAKTX", title: "[[#{UKP_L_0080}]]"}	//Description	
 			],
+			columnDefs: [			
+				{targets: [1], className: 'dt-body-center'}
+			],
 			ajax: {
 				url: "[[${BASE_PATH}]]/info/parts_number_popup_list/data",
 				type: "GET",

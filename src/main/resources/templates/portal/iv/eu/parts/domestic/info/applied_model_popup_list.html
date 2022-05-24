@@ -60,10 +60,8 @@
 				{data: "SPART", 	title: "SPART"	}			
 			],
 			columnDefs: [
-				{ 
-					"targets": [ 2,3,4,5 ],
-	                "visible": false,				
-				}			
+				{targets: [0, 1], className: 'dt-body-center'},
+				{targets: [2, 3, 4, 5], visible: false}
 			],
 			ajax: {
 				url: "[[${BASE_PATH}]]/info/applied_model_popup_list/data",

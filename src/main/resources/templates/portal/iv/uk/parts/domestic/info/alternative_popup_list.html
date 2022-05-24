@@ -56,6 +56,9 @@ $(function(){
 			{data: "AMATNR", 		title: "[[#{UKP_L_0082}]]"	},	//Alternative
 			{data: "AQTY", 			title: "[[#{UKP_L_0056}]]"	}	//Qty
 		],
+		columnDefs: [			
+			{targets: [0, 2], className: 'dt-body-center'}
+		], 
 		ajax: {
 			url: "[[${BASE_PATH}]]/info/alternative_popup_list/data",
 			data: function(p)

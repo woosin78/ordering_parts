@@ -113,26 +113,27 @@ $(function(){
 	    		ordering: true,// 정렬 기능 켬
 	    		scrollY: 100,
 	    		columns : [
-	    			{data: "VBELN", title: "[[#{EUP_L_0013}]]"},//Order No.
-	    			{data: "ITEM", title: "[[#{EUP_L_0028}]]"},//Item
-	    			{data: "MATERIAL_ENT", title: "[[#{EUP_L_0029}]]"},//Order Part No.
-	    			{data: "MATERIAL", title: "[[#{EUP_L_0030}]]"},//Supply Part No
-	    			{data: "MATERIAL_TEXT", title: "[[#{EUP_L_0031}]]"},//Description
-	    			{data: "REQ_QTY", title: "[[#{EUP_L_0032}]]"},//Req Qty
-	    			{data: "KBETR", title: "[[#{EUP_L_0033}]]"},//List Price
-	    			{data: "NET_PRICE", title: "[[#{EUP_L_0034}]]"},//Net Price
-	    			{data: "NET_VALUE", title: "[[#{EUP_L_0035}]]"},//Net Value
-	    			{data: "AVAILABILITY", title: "[[#{EUP_L_0036}]]"}//Available
+	    			{data: "VBELN", title: "[[#{EUP_L_0013}]]"},//Order No.	0
+	    			{data: "ITEM", title: "[[#{EUP_L_0028}]]"},//Item 1
+	    			{data: "MATERIAL_ENT", title: "[[#{EUP_L_0029}]]"},//Order Part No. 2
+	    			{data: "MATERIAL", title: "[[#{EUP_L_0030}]]"},//Supply Part No	3
+	    			{data: "MATERIAL_TEXT", title: "[[#{EUP_L_0031}]]"},//Description	4
+	    			{data: "REQ_QTY", title: "[[#{EUP_L_0032}]]"},//Req Qty	5
+	    			{data: "KBETR", title: "[[#{EUP_L_0033}]]"},//List Price 6
+	    			{data: "NET_PRICE", title: "[[#{EUP_L_0034}]]"},//Net Price 7
+	    			{data: "NET_VALUE", title: "[[#{EUP_L_0035}]]"},//Net Value 8
+	    			{data: "AVAILABILITY", title: "[[#{EUP_L_0036}]]"}//Available 9
 	    		],
 	    		columnDefs: [
-	    			{ className: "left", targets: "_all" },
+	    			//{ className: "left", targets: "_all" },
 	    			{
 	    				targets: 0,
 	    				render: function (data, type, row)
 	    				{
 	    					return "[[${orderNo}]]";
 	    				}
-	    			}
+	    			},
+	    			{targets: [0, 1, 2, 3, 5, 6, 7, 8, 9], className: 'dt-body-center'},
 	    		],
 	    		data: item,
 	    		initComplete: function() {

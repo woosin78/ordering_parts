@@ -105,17 +105,20 @@ $(function(){
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
 		columns : [
-			{data: "VBELN", title: "[[#{EUP_L_0013}]]", className:"link"},//Order No.
-			{data: "ZZAUKON", title: "[[#{EUP_L_0014}]]"},//Order Type
-			{data: "VTEXT2", title: "[[#{EUP_L_0017}]]"},//Shipping Condition
-			{data: "BSTKD", title: "[[#{EUP_L_0015}]]"},//P.O. No. // className:"center"}, // 데이터 가운데 정렬. (css 만들어서 사용)
-			{data: "ERDAT2", title: "[[#{EUP_L_0018}]]"},//Create Date // 데이터 오른쪽 정렬.
-			{data: "COUNT", title: "[[#{EUP_L_0019}]]"},//Line Item // className:"center"}
-			{data: "T_NETWR", title: "[[#{EUP_L_0020}]]"},//Order Amt. // className:"center"}
-			{data: "WAERK", title: "[[#{EUP_L_0021}]]"}//Curr. // className:"center"}
+			{data: "VBELN", title: "[[#{EUP_L_0013}]]"},//Order No. 0
+			{data: "ZZAUKON", title: "[[#{EUP_L_0014}]]"},//Order Type 1
+			{data: "VTEXT2", title: "[[#{EUP_L_0017}]]"},//Shipping Condition 2
+			{data: "BSTKD", title: "[[#{EUP_L_0015}]]"},//P.O. No. // className:"center"}, // 데이터 가운데 정렬. (css 만들어서 사용) 3
+			{data: "ERDAT2", title: "[[#{EUP_L_0018}]]"},//Create Date // 데이터 오른쪽 정렬. 4
+			{data: "COUNT", title: "[[#{EUP_L_0019}]]"},//Line Item // className:"center"} 5
+			{data: "T_NETWR", title: "[[#{EUP_L_0020}]]"},//Order Amt. // className:"center"} 6
+			{data: "WAERK", title: "[[#{EUP_L_0021}]]"}//Curr. // className:"center"} 7
 		],
 		columnDefs: [
-			{ className: "left", targets: "_all" }
+			//{ className: "left", targets: "_all" }
+			{targets: [0], className: "dt-body-center link"},
+			{targets: [3, 4, 5, 7], className: "dt-body-center"}, 
+			{targets: [6], className: "dt-body-right"}
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/display/order_list/data",

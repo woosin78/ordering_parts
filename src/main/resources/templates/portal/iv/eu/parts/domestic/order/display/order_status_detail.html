@@ -50,19 +50,22 @@
 			scrollY: 100,
 			fixedColumns: { leftColumns: 5 },
 			columns : [
-				{data: "POSNR", 		title: "[[#{EUP_L_0121}]]"},	// Item No
-				{data: "KONDA_T", 		title: "[[#{EUP_L_0014}]]"},	// Order Type
-				{data: "MATNR_SO", 		title: "[[#{EUP_L_0029}]]"},	// Order Part No.
-				{data: "MATNR_SH", 		title: "[[#{EUP_L_0030}]]"},	// Supply Part No
-				{data: "MAKTX", 		title: "[[#{EUP_L_0031}]]"},	// Description
-				{data: "SO_QTY", 		title: "[[#{EUP_L_0111}]]"},	// Order Qty
-				{data: "RE_QTY", 		title: "[[#{EUP_L_0122}]]"},	// Reserved Qty
-				{data: "PI_QTY", 		title: "[[#{EUP_L_0116}]]"},	// Packed Qty
-				{data: "IN_QTY", 		title: "[[#{EUP_L_0117}]]"},	// Invoiced Qty
-				{data: "SH_QTY", 		title: "[[#{EUP_L_0112}]]"},	// S.Completion Qty
-				{data: "BO_QTY", 		title: "[[#{EUP_L_0123}]]"}, // B/O Qty
-				{data: "LST_ETD", 		title: "[[#{EUP_L_0124}]]"}	// Updated ETD
-			],		
+				{data: "POSNR", 		title: "[[#{EUP_L_0121}]]"},	// Item No 0 
+				{data: "KONDA_T", 		title: "[[#{EUP_L_0014}]]"},	// Order Type 1
+				{data: "MATNR_SO", 		title: "[[#{EUP_L_0029}]]"},	// Order Part No. 2
+				{data: "MATNR_SH", 		title: "[[#{EUP_L_0030}]]"},	// Supply Part No 3
+				{data: "MAKTX", 		title: "[[#{EUP_L_0031}]]"},	// Description 4
+				{data: "SO_QTY", 		title: "[[#{EUP_L_0111}]]"},	// Order Qty 5
+				{data: "RE_QTY", 		title: "[[#{EUP_L_0122}]]"},	// Reserved Qty 6
+				{data: "PI_QTY", 		title: "[[#{EUP_L_0116}]]"},	// Packed Qty 7
+				{data: "IN_QTY", 		title: "[[#{EUP_L_0117}]]"},	// Invoiced Qty 8
+				{data: "SH_QTY", 		title: "[[#{EUP_L_0112}]]"},	// S.Completion Qty 9
+				{data: "BO_QTY", 		title: "[[#{EUP_L_0123}]]"}, // B/O Qty 10
+				{data: "LST_ETD", 		title: "[[#{EUP_L_0124}]]"}	// Updated ETD 11
+			],
+			columnDefs: [
+				{targets: [0, 2, 3, 5, 6, 7, 8, 9, 10, 11], className: "dt-body-center"}
+    		],
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/display/order_status_detail/data",
 				data: function(p)

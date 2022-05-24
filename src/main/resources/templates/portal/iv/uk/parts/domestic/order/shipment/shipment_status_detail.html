@@ -97,16 +97,20 @@
 	    		ordering: true,// 정렬 기능 켬
 	    		scrollY: 100,
 	    		columns : [
-	    			{data: "MATWA", 		title: "[[#{EUP_L_0029}]]"	},	// Order Part No.
-	    			{data: "MATNR", 		title: "[[#{EUP_L_0030}]]"	},	// Supply Part No 
-	    			{data: "ARKTX", 		title: "[[#{EUP_L_0031}]]"	},	// Description
-	    			{data: "LFIMG", 		title: "[[#{EUP_L_0141}]]"	},	// Qty
-	    			{data: "NETPR", 		title: "[[#{EUP_L_0034}]]"	},	// Net Price																											
-	    			{data: "MEINS", 		title: "[[#{EUP_L_0049}]]"	},	// UoM
-	    			{data: "NETWR", 		title: "[[#{EUP_L_0045}]]"	},	// Amount
-	    			{data: "VBELN", 		title: "[[#{EUP_L_0141}]]"	},	// Sales order no
-	    			{data: "BSTKD", 		title: "[[#{EUP_L_0132}]]"	} 	// P.O No.
-	    		],  	
+	    			{data: "MATWA", 		title: "[[#{EUP_L_0029}]]"	},	// Order Part No. 0
+	    			{data: "MATNR", 		title: "[[#{EUP_L_0030}]]"	},	// Supply Part No 1
+	    			{data: "ARKTX", 		title: "[[#{EUP_L_0031}]]"	},	// Description 2
+	    			{data: "LFIMG", 		title: "[[#{EUP_L_0141}]]"	},	// Qty 3
+	    			{data: "NETPR", 		title: "[[#{EUP_L_0034}]]"	},	// Net Price 4																											
+	    			{data: "MEINS", 		title: "[[#{EUP_L_0049}]]"	},	// UoM 5
+	    			{data: "NETWR", 		title: "[[#{EUP_L_0045}]]"	},	// Amount 6
+	    			{data: "VBELN", 		title: "[[#{EUP_L_0141}]]"	},	// Sales order no 7
+	    			{data: "BSTKD", 		title: "[[#{EUP_L_0132}]]"	} 	// P.O No. 8
+	    		],
+	    		columnDefs: [
+	    			{targets: [0, 1, 3, 4, 5, 7, 8], className: 'dt-body-center'},
+	    			{targets: [6], className: 'dt-body-right'}
+	    		],
 	    		data: result.item,
 	    		initComplete:function(settings, json) 
 	    		{			

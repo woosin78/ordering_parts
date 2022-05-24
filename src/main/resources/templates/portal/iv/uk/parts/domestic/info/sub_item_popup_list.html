@@ -80,10 +80,8 @@
 				{name: "ITCCD", 	data: "ITCCD", 		title: "ITCCD(Hidden)"	}			
 			],		
 			columnDefs: [
-				{ 
-					"targets": [ 4,5,6 ],
-	                "visible": false,				
-				}			
+				{targets: [1, 3], className: 'dt-body-center'},
+				{targets: [4,5,6], visible: false}
 			],
 			ajax: {
 				url: "[[${BASE_PATH}]]/info/sub_item_popup_list/data",

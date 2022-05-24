@@ -85,6 +85,9 @@ $(function(){
 			{name: "errorCode", data: "errorCode", title: "[[#{EUP_L_0103}]]"},//Not Code
 			{name: "errorMessage", data: "errorMessage", title: "[[#{EUP_L_0104}]]"}//Not Text	
 		],
+		columnDefs: [			
+			{targets: [0, 4], className: 'dt-body-center'},
+		], 
 		data: opener.errorOrderItems,
 		drawCallback: function(settings)
 		{

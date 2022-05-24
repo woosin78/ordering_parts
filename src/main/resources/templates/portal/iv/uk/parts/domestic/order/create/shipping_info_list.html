@@ -39,6 +39,9 @@ $(function(){
 			{data: "VSBED", title: "[[#{EUP_L_0017}]]"},//Shipping Condition
 			{data: "VSBED_TX", title: "[[#{EUP_L_0031}]]"}//Description
 		],
+		columnDefs: [			
+			{targets: [1], className: 'dt-body-center'},
+		], 
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/create/shipping_info_list/data",
 			data: function(p)

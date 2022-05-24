@@ -115,9 +115,9 @@ $(function(){
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
 		columns : [
-			{data: "VBELN", title: "[[#{EUP_L_0013}]]", className:"link"},//Inuqiry No.
+			{data: "VBELN", title: "[[#{EUP_L_0013}]]"},//Inuqiry No.
 			{data: "BSTKD", title: "[[#{EUP_L_0015}]]"},//P.O. No.
-			{data: "VBELN2", title: "[[#{EUP_L_0043}]]", className:"link"},//Sales Doc. No.
+			{data: "VBELN2", title: "[[#{EUP_L_0043}]]"},//Sales Doc. No.
 			{data: "ERDAT2", title: "[[#{EUP_L_0018}]]"},//Create Date
 			{data: "COUNT", title: "[[#{EUP_L_0019}]]"},//Line Item
 			{data: "T_NETWR", title: "[[#{EUP_L_0045}]]"},//Order Amt.
@@ -125,7 +125,10 @@ $(function(){
 			{data: "RFGSK_TX", title: "[[#{EUP_L_0042}]]"}//Open Status
 		],
 		columnDefs: [
-			{ className: "left", targets: "_all" }
+			//{ className: "left", targets: "_all" }
+			{targets: [0, 2], className: 'link dt-body-center'},
+			{targets: [1, 3, 4, 6, 7], className: 'dt-body-center'},
+			{targets: [5], className: 'dt-body-right'},
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/display/inquiry_list/data",

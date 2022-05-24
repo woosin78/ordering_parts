@@ -109,6 +109,9 @@ $(function(){
 			{data: "countryName", title: "[[#{EUP_L_0089}]]"},//Country Name
 			{data: "transportZoneName", title: "[[#{EUP_L_0092}]]"}//Transportation Zone
 		],
+		columnDefs: [			
+			{targets: [2], className: 'dt-body-center'}
+		], 
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/create/onetime_address_list/data",
 			data: function(p)

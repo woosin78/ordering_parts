@@ -68,6 +68,9 @@ $(function(){
 			{data: "ORT01", title: "[[#{EUP_L_0201}]]"},//Address
 			{data: "VTEXT", title: "[[#{EUP_L_0092}]]"}//Transportation Zone
 		],
+		columnDefs: [			
+			{targets: [1], className: 'dt-body-center'},
+		], 
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/create/ship_to_party_list/data",
 			data: function(p)

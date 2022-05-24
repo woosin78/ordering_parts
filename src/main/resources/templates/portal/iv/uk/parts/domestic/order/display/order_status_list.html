@@ -106,17 +106,21 @@
 			scrollY: 100,
 			fixedColumns: { leftColumns: 5 },
 			columns : [
-				{data: "BSTKD", 		title: "[[#{EUP_L_0132}]]"},	// P.O No.
-				{data: "VBELN", 		title: "[[#{EUP_L_0013}]]", className:"link"},	// Order No.
-				{data: "SO_ITEM", 		title: "[[#{EUP_L_0019}]]"},	// Line Item	
-				{data: "KONDA_T", 		title: "[[#{EUP_L_0014}]]"},	// Order Type	
-				{data: "SO_QTY", 		title: "[[#{EUP_L_0111}]]"},	// Order Qty				
-				{data: "PI_QTY", 		title: "[[#{EUP_L_0116}]]"},	// Packed Qty	
-				{data: "SH_QTY", 		title: "[[#{EUP_L_0112}]]"},	// S.Completion Qty	
-				{data: "IN_QTY", 		title: "[[#{EUP_L_0117}]]"},	// Invoiced Qty			
-				{data: "BO_AMT", 		title: "[[#{EUP_L_0118}]]"},	// B/O Quantity
-				{data: "VSBED_T", 		title: "[[#{EUP_L_0017}]]"},	// Shipping Condition		
-				{data: "WAERK", 		title: "[[#{EUP_L_0021}]]"},	// Curr.
+				{data: "BSTKD", 		title: "[[#{EUP_L_0132}]]"},	// P.O No. 0 
+				{data: "VBELN", 		title: "[[#{EUP_L_0013}]]"},	// Order No. 1
+				{data: "SO_ITEM", 		title: "[[#{EUP_L_0019}]]"},	// Line Item 2
+				{data: "KONDA_T", 		title: "[[#{EUP_L_0014}]]"},	// Order Type 3	
+				{data: "SO_QTY", 		title: "[[#{EUP_L_0111}]]"},	// Order Qty	4 			
+				{data: "PI_QTY", 		title: "[[#{EUP_L_0116}]]"},	// Packed Qty	5
+				{data: "SH_QTY", 		title: "[[#{EUP_L_0112}]]"},	// S.Completion Qty 6	
+				{data: "IN_QTY", 		title: "[[#{EUP_L_0117}]]"},	// Invoiced Qty		7	
+				{data: "BO_AMT", 		title: "[[#{EUP_L_0118}]]"},	// B/O Quantity 8
+				{data: "VSBED_T", 		title: "[[#{EUP_L_0017}]]"},	// Shipping Condition 9		
+				{data: "WAERK", 		title: "[[#{EUP_L_0021}]]"},	// Curr. 10
+			],
+			columnDefs: [
+				{targets: [1], className: 'link dt-body-center'},
+				{targets: [0, 2, 4, 5, 6, 7, 8, 10], className: 'dt-body-center'},
 			],
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/display/order_status/data",

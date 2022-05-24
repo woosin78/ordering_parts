@@ -705,6 +705,9 @@
 				{name: "costCode", data: "costCode", title: "[[#{EUP_L_0093}]]"},//Cost Code
 				{name: "stockDivuk", data: "stockDivuk", title: "[[#{EUP_L_0204}]]"}//Stock-DIVUK
 			],
+			columnDefs: [			
+				{targets: [1, 2, 4, 6, 7, 8, 9], className: 'dt-body-center'}
+			], 
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/create/simulation",
 				type: "POST",

@@ -108,16 +108,22 @@ $(function(){
 					
 	    	      	let key = row.VBELN + "," + row.VBTYP;
 					return '<input type="checkbox" class="custom-ui check-all" onchange="syncInput(this)" name="item_chk" value="'+key+'"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.					
-				}
+				},
+				width: "3%"
 			},
-			{name: "VBELN", data: "VBELN", 		title: "[[#{EUP_L_0127}]]" },	// Invoice number
-			{name: "FKDAT", data: "FKDAT", 		title: "[[#{EUP_L_0128}]]" },	// Invoice Date 
-			{name: "NETWR", data: "NETWR", 		title: "[[#{EUP_L_0129}]]" },	// Invoiced Amt.
-			{name: "CMWAE", data: "CMWAE", 		title: "[[#{EUP_L_0021}]]" },	// Curr.
-			{name: "BRGEW", data: "BRGEW", 		title: "[[#{EUP_L_0130}]]" },	// Weight
-			{name: "EXTI1", data: "EXTI1", 		title: "[[#{EUP_L_0131}]]" },	// Freight Forward Ref			
-			{name: "BSTKD", data: "BSTKD", 		title: "[[#{EUP_L_0132}]]" }		// P.O No.
+			{name: "VBELN", data: "VBELN", 		title: "[[#{EUP_L_0127}]]", width: "10%"},	// Invoice number
+			{name: "FKDAT", data: "FKDAT", 		title: "[[#{EUP_L_0128}]]", width: "12%"},	// Invoice Date 
+			{name: "NETWR", data: "NETWR", 		title: "[[#{EUP_L_0129}]]"},	// Invoiced Amt.
+			{name: "CMWAE", data: "CMWAE", 		title: "[[#{EUP_L_0021}]]", width: "12%"},	// Curr.
+			{name: "BRGEW", data: "BRGEW", 		title: "[[#{EUP_L_0130}]]", width: "12%"},	// Weight
+			{name: "EXTI1", data: "EXTI1", 		title: "[[#{EUP_L_0131}]]", width: "12%"},	// Freight Forward Ref			
+			{name: "BSTKD", data: "BSTKD", 		title: "[[#{EUP_L_0132}]]", width: "12%"}		// P.O No.
 		],		
+		columnDefs: [
+			//{ className: "left", targets: "_all" }
+			{targets: [1, 2, 4, 5, 6, 7], className: "dt-body-center"},
+			{targets: [3], className: "dt-body-right"}
+		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/invoice/invoice_status/data",
 			data: function(p)

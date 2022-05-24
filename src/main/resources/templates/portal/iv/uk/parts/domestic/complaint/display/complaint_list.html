@@ -79,17 +79,22 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 3 },
 			columns : [
-				{data: "VBELN", 		title: "[[#{UKP_L_0040}]]", className:"link"},	//Complaint No.
-				{data: "POSNR", 		title: "[[#{UKP_L_0044}]]"},		// Seq.
-				{data: "TEXT", 			title: "[[#{UKP_L_0045}]]"},	// Reason
-				{data: "ERDAT", 		title: "[[#{UKP_L_0046}]]"},	// Doc. Date
-				{data: "VBELN2", 		title: "[[#{UKP_L_0047}]]"},	// Sales Document
-				{data: "T_NETWR", 		title: "[[#{UKP_L_0048}]]"},		// Total Amount
-				{data: "WAERK", 		title: "[[#{UKP_L_0049}]]"},			// Curr.
-				{data: "RFGSK_TX_T", 	title: "[[#{UKP_L_0050}]]"},	// Process Result						
-				{data: "RFGSK_TX_T1", 	title: "[[#{UKP_L_0051}]]"},	// Return Status			
-				{data: "VBELN3", 		title: "[[#{UKP_L_0052}]]", className:"link"}		// Final Document		
+				{data: "VBELN", 		title: "[[#{UKP_L_0040}]]"},	//Complaint No. 0
+				{data: "POSNR", 		title: "[[#{UKP_L_0044}]]"},		// Seq. 1
+				{data: "TEXT", 			title: "[[#{UKP_L_0045}]]"},	// Reason 2
+				{data: "ERDAT", 		title: "[[#{UKP_L_0046}]]"},	// Doc. Date 3
+				{data: "VBELN2", 		title: "[[#{UKP_L_0047}]]"},	// Sales Document 4
+				{data: "T_NETWR", 		title: "[[#{UKP_L_0048}]]"},		// Total Amount 5
+				{data: "WAERK", 		title: "[[#{UKP_L_0049}]]"},			// Curr. 6
+				{data: "RFGSK_TX_T", 	title: "[[#{UKP_L_0050}]]"},	// Process Result 7						
+				{data: "RFGSK_TX_T1", 	title: "[[#{UKP_L_0051}]]"},	// Return Status 8		
+				{data: "VBELN3", 		title: "[[#{UKP_L_0052}]]"}		// Final Document 9		
 			],
+			columnDefs: [			
+				{ targets: [0, 9], className: 'link dt-body-center' },
+				{ targets: [1, 3, 4, 6], className: 'dt-body-center' },
+				{ targets: [5], className: 'dt-body-right' }
+			],  
 			ajax: {
 				url: "[[${BASE_PATH}]]/complaint/display/complaint_list/data",
 				data: function(p)

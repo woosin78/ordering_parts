@@ -118,6 +118,9 @@ $(function(){
 				data: "WAERS", visible: false
 			}
 		],
+		columnDefs: [			
+	        {targets: [1, 2, 3, 5], className: 'dt-body-center'}
+		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/complaint/create/invoice_search",
 			data: function(p)

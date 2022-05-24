@@ -78,10 +78,8 @@ $(function(){
 			{name: "SEQ", 			 data: "SEQ", 			title: "SEQ(Hidden)"	}
 		],		
 		columnDefs: [
-			{ 
-				"targets": [ 4 ],
-                "visible": false,				
-			}			
+			{targets: [4], visible: false,},
+			{targets: [1, 2], className: "dt-body-center"}
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/info/am_part_popup_list/data",

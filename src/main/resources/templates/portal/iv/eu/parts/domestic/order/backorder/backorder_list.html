@@ -83,19 +83,22 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 9 },
 			columns : [
-				{data: "KONDA_T", 		title: "[[#{EUP_L_0014}]]"},	//Order<br>Type
-				{data: "BSTKD", 		title: "[[#{EUP_L_0015}]]"},	//P.O. No.
-				{data: "AUDAT", 		title: "[[#{EUP_L_0108}]]"},	//Order Date
-				{data: "PRETD",			title: "[[#{EUP_L_0109}]]"},	//ETD Comment
-				{data: "VBELN", 		title: "[[#{EUP_L_0013}]]"},	//Order No.
-				{data: "POSNR", 		title: "[[#{EUP_L_0019}]]"},	//Line Item 
-				{data: "MATNR_SO", 		title: "[[#{EUP_L_0029}]]"},	//Order Part No.
-				{data: "MATNR_SH", 		title: "[[#{EUP_L_0030}]]"},	//Supply Part No
-				{data: "MAKTX", 		title: "[[#{EUP_L_0031}]]"},	//Description
-				{data: "KWMENG_SO", 	title: "[[#{EUP_L_0111}]]"},	//Order Qty
-				{data: "KWMENG_SH", 	title: "[[#{EUP_L_0112}]]"},	//S.Completion Qty
-				{data: "KWMENG", 		title: "[[#{EUP_L_0113}]]"},	//Backorder quantity
+				{data: "KONDA_T", 		title: "[[#{EUP_L_0014}]]"},	//Order<br>Type 0
+				{data: "BSTKD", 		title: "[[#{EUP_L_0015}]]"},	//P.O. No. 1
+				{data: "AUDAT", 		title: "[[#{EUP_L_0108}]]"},	//Order Date 2
+				{data: "PRETD",			title: "[[#{EUP_L_0109}]]"},	//ETD Comment 3 
+				{data: "VBELN", 		title: "[[#{EUP_L_0013}]]"},	//Order No. 4
+				{data: "POSNR", 		title: "[[#{EUP_L_0019}]]"},	//Line Item  5
+				{data: "MATNR_SO", 		title: "[[#{EUP_L_0029}]]"},	//Order Part No. 6
+				{data: "MATNR_SH", 		title: "[[#{EUP_L_0030}]]"},	//Supply Part No 7
+				{data: "MAKTX", 		title: "[[#{EUP_L_0031}]]"},	//Description 8
+				{data: "KWMENG_SO", 	title: "[[#{EUP_L_0111}]]"},	//Order Qty 9
+				{data: "KWMENG_SH", 	title: "[[#{EUP_L_0112}]]"},	//S.Completion Qty 10
+				{data: "KWMENG", 		title: "[[#{EUP_L_0113}]]"},	//Backorder quantity 11
 				{data: "VRKME", 		title: "[[#{EUP_L_0049}]]"}	//UoM
+			],
+			columnDefs: [
+				{targets: [1, 2, 4, 5, 6, 7, 9, 10, 11], className: 'dt-body-center'},
 			],
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/backorder/backorder_list/data",// /portal/iv/eu/parts/domestic/order/backorder/backorder_list

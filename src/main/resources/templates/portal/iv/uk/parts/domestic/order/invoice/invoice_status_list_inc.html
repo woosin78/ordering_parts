@@ -118,6 +118,10 @@ $(function(){
 			{name: "EXTI1", data: "EXTI1", 		title: "[[#{EUP_L_0131}]]" },	// Freight Forward Ref			
 			{name: "BSTKD", data: "BSTKD", 		title: "[[#{EUP_L_0132}]]" }		// P.O No.
 		],		
+		columnDefs: [
+			{targets: [1, 2, 4, 5, 6, 7], className: 'dt-body-center'},
+			{targets: [3], className: 'dt-body-right'},
+		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/invoice/invoice_status/data",
 			data: function(p)

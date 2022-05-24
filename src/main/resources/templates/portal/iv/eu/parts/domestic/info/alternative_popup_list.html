@@ -55,6 +55,9 @@ $(function(){
 			{data: "AMATNR", 		title: "[[#{EUP_L_0190}]]"	},	// Alternative
 			{data: "AQTY", 			title: "[[#{EUP_L_0141}]]"	}	// Qty			
 		],
+		columnDefs: [
+			{targets: [0, 2], className: "dt-body-center"}
+		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/info/alternative_popup_list/data",
 			data: function(p)

@@ -81,16 +81,20 @@
 			ordering: true, 
 			scrollY: 100,
 			columns : [					
-				{data: "TKNUM", 		title: "[[#{EUP_L_0135}]]" ,className:'link'},	// Shipment No.
-				{data: "BSTKD", 		title: "[[#{EUP_L_0136}]]" },	// Dealer P.O No.	
-				{data: "DTABF", 		title: "[[#{EUP_L_0137}]]" },	// Shipping date
-				{data: "BRGEW", 		title: "[[#{EUP_L_0130}]]" },	// Weight		
-				{data: "GEWEI_MAX", 	title: "[[#{EUP_L_0049}]]" },	// UoM
-				{data: "COUNT", 		title: "[[#{EUP_L_0138}]]" },	// Line Items		
-				{data: "VSBED_TEXT", 	title: "[[#{EUP_L_0017}]]" },	// Shipping Condition 
-				{data: "EXTI1", 		title: "[[#{EUP_L_0131}]]" },	// Freight Forward Ref	
-				{data: "NAME1", 		title: "[[#{EUP_L_0087}]]" }		// Customer Name
+				{data: "TKNUM", 		title: "[[#{EUP_L_0135}]]" },	// Shipment No. 0
+				{data: "BSTKD", 		title: "[[#{EUP_L_0136}]]" },	// Dealer P.O No.	1 
+				{data: "DTABF", 		title: "[[#{EUP_L_0137}]]" },	// Shipping date 2
+				{data: "BRGEW", 		title: "[[#{EUP_L_0130}]]" },	// Weight		 3
+				{data: "GEWEI_MAX", 	title: "[[#{EUP_L_0049}]]" },	// UoM 4
+				{data: "COUNT", 		title: "[[#{EUP_L_0138}]]" },	// Line Items 5		
+				{data: "VSBED_TEXT", 	title: "[[#{EUP_L_0017}]]" },	// Shipping Condition 6 
+				{data: "EXTI1", 		title: "[[#{EUP_L_0131}]]" },	// Freight Forward Ref	7
+				{data: "NAME1", 		title: "[[#{EUP_L_0087}]]" }		// Customer Name 8
 			],
+			columnDefs: [
+				{targets: [0], className: "link dt-body-center"},
+				{targets: [1, 2, 3, 4, 5, 7], className: "dt-body-center"}
+    		],
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/shipment/shipment_status/data",
 				data: function(p)
