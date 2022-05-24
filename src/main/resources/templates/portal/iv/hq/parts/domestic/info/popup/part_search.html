@@ -24,7 +24,7 @@
 				</td>
 			</tr>
 			<tr>			
-				<th th:text="#{HQP_L_DESCRIPTION}"></th><!--Description  -->
+				<th th:text="#{HQP_L_PART_DESCRIPTION}"></th><!--Description  -->
 				<td>
 					<div class="input-area">			
 						<input type="text" id="pPartDesc" name="pPartDesc" class="custom-ui" th:value="${pPartDesc}">
@@ -82,7 +82,7 @@ $(function(){
 				}
 			},
 			{name: "MATNR", data: "MATNR", title: "[[#{HQP_L_PART_NO}]]"},//Part No. 
-			{name: "MAKTX", data: "MAKTX", title: "[[#{HQP_L_DESCRIPTION}]]"}//Description	
+			{name: "MAKTX", data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"}//Description	
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/info/part_search/data",

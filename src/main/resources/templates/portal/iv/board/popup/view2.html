@@ -21,10 +21,15 @@
 
 .pop-bottom label.link {color: #fff; cursor: pointer;}
 .pop-bottom label.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
-	
+
+.pop-top {
+	border-top: 6px solid #003081;
+}
+
 </style>
 </head>	
 <body style="overflow: hidden; margin:0; padding:0;">
+<div class="pop-top"></div>
 <div id="xfe"></div>
 <div id="bottom" class="pop-bottom">	
 	<input type="checkbox" class="custom-ui" checked/> <label th:text="#{HQP_T_NOT_SHOW_POPUP_A_DAY}" class="link"></label>
