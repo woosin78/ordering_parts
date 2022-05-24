@@ -16,6 +16,7 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryHeaderDto;
@@ -69,12 +70,13 @@ public class OrderCreateService extends PartsDomesticGeneralService
 
 		rfcRequest.
 			field(new Object[][] {
-				{"I_BGTYP", "P"},
 				{"I_STATUS", "X"},
 				{"I_VBTYP", CmStringUtils.defaultString(paramMap.get("pDocType"), CmStringUtils.defaultString(paramMap.get("docType"), "C"))},
-				{"I_LANGU", paramMap.getLangForSap()},
-				{"I_USERID", paramMap.getUsername()}
-			});
+				{"I_LANGU", paramMap.getLangForSap()}
+			})
+			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 		DataList dataList = simpleRfcTemplate.response(rfcRequest).getTable("T_ZSSV0002");
 
@@ -150,12 +152,10 @@ public class OrderCreateService extends PartsDomesticGeneralService
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_SHIPPINGINFO");
 
 		rfcRequest
-			.field(new Object[][] {
-					{"I_BGTYP", "P"},
-					{"I_LANG", paramMap.getLangForSap()},
-					{"I_USERID", paramMap.getUsername()},
-					{"I_KUNNR", paramMap.getCustomerNo()}
-				});
+			.field("I_LANG", paramMap.getLangForSap())
+			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 		return simpleRfcTemplate.response(rfcRequest).getTable("ZSST9100");
 	}

@@ -7,6 +7,7 @@ import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.export.common.service.PartsExportGeneralService;
 import org.springframework.stereotype.Service;
@@ -21,12 +22,13 @@ public class ExPartInfoService extends PartsExportGeneralService
 		rfcRequest
 			.field()
 				.add(new Object[][] {
-					{"I_BGTYP", "P"},//상수
 					{"I_LANGU", paramMap.getLangForSap()},
-					{"I_USERID", paramMap.getUsername()},
 					{"I_KVGR5", "20"},
 					{"I_REQTY", paramMap.getString("reqQty")}
 			})
+			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap))
 			.and()
 			.table("T_MATNR")
 				.add("MATNR", paramMap.getString("partNo").toUpperCase());
@@ -40,12 +42,13 @@ public class ExPartInfoService extends PartsExportGeneralService
 
 		rfcRequest
 			.field(new Object[][] {
-					{"I_BGTYP", "P"},//상수
 					{"ILANGU", paramMap.getLangForSap()},
-					{"I_USERID", paramMap.getUsername()},
 					{"MATNR", paramMap.getString("partNo").toUpperCase()},
 					{"MAKTX", paramMap.getString("partDesc")}
-				});
+				})
+			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -57,11 +60,12 @@ public class ExPartInfoService extends PartsExportGeneralService
 		rfcRequest
 			.field()
 				.add(new Object[][] {
-					{"I_BGTYP", "P"},//상수
 					{"I_LANGU", paramMap.getLangForSap()},
-					{"I_USERID", paramMap.getUsername()},
 					{"I_MATNR", paramMap.getString("partNo").toUpperCase()}
-				});
+				})
+			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -73,15 +77,16 @@ public class ExPartInfoService extends PartsExportGeneralService
 		rfcRequest
 			.field().with(paramMap)
 				.add(new Object[][] {
-					{"I_BGTYP", "P"},//상수
 					{"I_LANGU", paramMap.getLangForSap()},
-					{"I_USERID", paramMap.getUsername()},
 					{"I_MATNR", paramMap.getString("partNo").toUpperCase()}
 				})
 				.addByKey(new Object[][] {
 					{"I_KVGR5", "productType"},
 					{"I_MVGR3", "productType"}
-				});
+				})
+			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -92,11 +97,12 @@ public class ExPartInfoService extends PartsExportGeneralService
 
 		rfcRequest
 			.field(new Object[][] {
-				{"I_BGTYP", "P"},//상수
 				{"I_LANGU", paramMap.getLangForSap()},
-				{"I_USERID", paramMap.getUsername()},
 				{"I_MATNR", paramMap.getString("partNo").toUpperCase()}
-			});
+			})
+			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -121,7 +127,6 @@ public class ExPartInfoService extends PartsExportGeneralService
 			.and()
 			.table("LT_ITEM")
 				.add(partMap)
-			.and()
 			.output("LT_ITEM");
 
 		return simpleRfcTemplate.response(rfcRequest).getTable("LT_ITEM");

@@ -63,7 +63,7 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_LIST");
 
 		//KRW, JPY 는 가격에 100을 곱해줌
-		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"NETPR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
 
 		FormatBuilder.with(dataList)
 			.decimalFormat("NETWR")

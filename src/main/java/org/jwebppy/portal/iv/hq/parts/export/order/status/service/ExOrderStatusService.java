@@ -14,6 +14,7 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.common.PortalConfigVo;
+import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
 import org.jwebppy.portal.iv.hq.parts.export.common.service.PartsExportGeneralService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,6 @@ public class ExOrderStatusService extends PartsExportGeneralService
         rfcRequest
         	.field().with(paramMap)
         		.add(new Object[][] {
-        			{"I_BGTYP", "P"},
-        			{"I_USERID", paramMap.getUsername()},
-        			{"I_KUNNR", paramMap.getCustomerNo()},
         			{"I_FDATE", fromDate},
         			{"I_TDATE", toDate}
         		})
@@ -50,8 +48,10 @@ public class ExOrderStatusService extends PartsExportGeneralService
         			{"I_BSTKD", "poNo"},
         			{"I_MATNR", "orderPartNo"}
         		})
-        		.and()
-        		.output("T_HEADER");
+			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap))
+        	.output("T_HEADER");
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -68,13 +68,14 @@ public class ExOrderStatusService extends PartsExportGeneralService
 			rfcRequest.
 				field().with(paramMap)
 					.add(new Object[][] {
-						{"I_BGTYP", "P"},
-						{"I_USERID", paramMap.getUsername()},
 						{"I_DROP", "0"},
 						{"I_FDATE", "19700101"},
 						{"I_TDATE", CmDateFormatUtils.unlimitDate(PortalCommonVo.DEFAULT_DATE_FORMAT_YYYYMMDD)},
 						{"I_STATUS", "0"}
-					});
+					})
+				.and()
+	    		.structure("I_INPUT")
+					.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 			if (orderNos.length > 1)
 			{

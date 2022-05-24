@@ -3,6 +3,7 @@ package org.jwebppy.portal.iv.hq.parts.export.accounts.ap.service;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
 import org.jwebppy.portal.iv.hq.parts.export.common.service.PartsExportGeneralService;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,7 @@ public class ExApService extends PartsExportGeneralService
 					{"I_VKORG", paramMap.getSalesOrg()},
 					{"I_VTWEG", paramMap.getDistChannel()},
 					{"I_SPART", paramMap.getDivision()},
-					{"I_KUNNR", paramMap.getCustomerNo()},
-					{"I_USERID", paramMap.getUsername()}
+					{"I_KUNNR", paramMap.getCustomerNo()}
 				})
 				.addByKey(new Object[][] {
 					{"I_F_VBELN", "fromOrderNo"},
@@ -31,6 +31,8 @@ public class ExApService extends PartsExportGeneralService
 					{"I_T_BLDAT", "toDate"}
 				})
 			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap))
 			.output("T_INVOICE1");
 
 		return simpleRfcTemplate.response(rfcRequest);

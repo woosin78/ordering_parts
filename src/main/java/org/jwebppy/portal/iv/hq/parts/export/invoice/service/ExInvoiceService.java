@@ -11,6 +11,7 @@ import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.portal.common.PortalCommonVo;
+import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.export.common.service.PartsExportGeneralService;
 import org.springframework.stereotype.Service;
@@ -33,20 +34,22 @@ public class ExInvoiceService extends PartsExportGeneralService
 
 		rfcRequest
 			.field().with(paramMap)
-			.add(new Object[][] {
-				{"I_USERID", paramMap.getUsername()},
-				{"I_VKORG", paramMap.getSalesOrg()},
-				{"I_VTWEG", paramMap.getDistChannel()},
-				{"I_SPART", paramMap.getDivision()},
-				{"I_KUNAG", paramMap.getCustomerNo()},
-				{"I_F_BLDAT", fromDate},
-				{"I_T_BLDAT", toDate}
-			})
-			.addByKey(new Object[][] {
-				{"I_F_ZFCIVNO", "invoiceNo"},
-				{"I_BSTNK", "poNo"},
-				{"I_MATWA", "orderPartNo"}
-			})
+				.add(new Object[][] {
+					{"I_VKORG", paramMap.getSalesOrg()},
+					{"I_VTWEG", paramMap.getDistChannel()},
+					{"I_SPART", paramMap.getDivision()},
+					{"I_KUNAG", paramMap.getCustomerNo()},
+					{"I_F_BLDAT", fromDate},
+					{"I_T_BLDAT", toDate}
+				})
+				.addByKey(new Object[][] {
+					{"I_F_ZFCIVNO", "invoiceNo"},
+					{"I_BSTNK", "poNo"},
+					{"I_MATWA", "orderPartNo"}
+				})
+			.and()
+    		.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap))
 			.output("T_DETAIL");
 
 		return simpleRfcTemplate.response(rfcRequest);
@@ -59,7 +62,6 @@ public class ExInvoiceService extends PartsExportGeneralService
 		rfcRequest
 			.field().with(paramMap)
 			.add(new Object[][] {
-				{"I_USERID", paramMap.getUsername()},
 				{"I_VKORG", paramMap.getSalesOrg()},
 				{"I_VTWEG", paramMap.getDistChannel()},
 				{"I_SPART", paramMap.getDivision()},
@@ -69,7 +71,10 @@ public class ExInvoiceService extends PartsExportGeneralService
 				{"I_F_ZFCIVNO", "invoiceNo"},
 				{"I_BSTNK", "poNo"},
 				{"I_MATWA", "orderPartNo"}
-			});
+			})
+		.and()
+		.structure("I_INPUT")
+			.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}

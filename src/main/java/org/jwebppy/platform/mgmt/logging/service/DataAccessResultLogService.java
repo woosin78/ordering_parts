@@ -1,5 +1,6 @@
 package org.jwebppy.platform.mgmt.logging.service;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -88,9 +89,16 @@ public class DataAccessResultLogService extends GeneralService
 
 								while (subIt.hasNext())
 								{
-									Entry<String, Object> subEntry = subIt.next();
+									try
+									{
+										Entry<String, Object> subEntry = subIt.next();
 
-									saveDataAccessResultLogParameterDetail(drlpSeq, i, subEntry.getKey(), subEntry.getValue());
+										saveDataAccessResultLogParameterDetail(drlpSeq, i, subEntry.getKey(), subEntry.getValue());
+									}
+									catch (ConcurrentModificationException e)
+									{
+										continue;
+									}
 								}
 							}
 						}

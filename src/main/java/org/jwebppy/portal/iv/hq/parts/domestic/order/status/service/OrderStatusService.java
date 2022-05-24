@@ -66,13 +66,14 @@ public class OrderStatusService extends PartsDomesticGeneralService
 			rfcRequest.
 				field().with(paramMap)
 					.add(new Object[][] {
-						{"I_BGTYP", "P"},
-						{"I_USERID", paramMap.getUsername()},
 						{"I_DROP", "0"},
 						{"I_FDATE", "20080101"},
 						{"I_TDATE", CmDateFormatUtils.unlimitDate(PortalCommonVo.DEFAULT_DATE_FORMAT_YYYYMMDD)},
 						{"I_STATUS", "0"}
-					});
+					})
+				.and()
+	    		.structure("I_INPUT")
+					.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 			if (orderNos.length > 1)
 			{
