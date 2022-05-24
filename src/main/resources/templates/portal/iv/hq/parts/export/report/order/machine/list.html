@@ -67,6 +67,7 @@ $(function(){
 				thead.push("<tr><th></th>");
 				
 				for (let i=from; i<=to; i++)
+				//for (let i=to; i>=from; i--)
 				{
 					thead.push("<th style='position: sticky; top:0' class='center text-ellipsis' title='" + i + "'>" + i + "</th>");
 				};
@@ -78,6 +79,8 @@ $(function(){
 					tbody.push("<tr>");
 					tbody.push("<td class='text-ellipsis' title='" + models[i] + "'>" + models[i] + "</td>");
 					
+					//$(values[i].reverse()).each(function(index, item) {
+					//console.log(Array.from(values[i]).length);
 					$.each(values[i], function(index, item) {
 						let value = (item > 0) ? JpUtilsNumber.addComma(item): "";
 						
@@ -116,11 +119,7 @@ $(function(){
 		
 		function initJpGrid()
 		{
-			initJpGridSize();
-			
-			$(window).resize($.debounce(100, function(e){
-				initJpGridSize();
-			}));
+			setInterval(function() { initJpGridSize(); }, 100);
 		};
 		
 		function getJpGridAreaHeight()
@@ -171,11 +170,13 @@ $(function(){
 			if ($("#AREA_grid").outerHeight(true) > gridAreaHeight)
 			{
 				gridAreaHeight -= scrollVerticalArrowSize;
-			}
+			};
+			/*
 			else
 			{
 				gridAreaHeight = $("#TBL_grid").height(); 
 			};
+			*/
 
 			$("#TBL_grid tbody").css({
 				"width": gridWidth,

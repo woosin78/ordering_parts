@@ -42,8 +42,7 @@
 			</table>
 		</form>
 	</div>	
-	
-	<!-- div class="condition-area">
+	<div class="condition-area">
 		<div class="condition-title right"><span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span></div>
 		<table class="condition table-fixed order-report">
 			<thead>
@@ -51,21 +50,14 @@
 			</thead>
 			<tbody></tbody>
 		</table>
-	</div-->
-	<div class="condition-area">
-		<div class="condition-title right"><span th:text="|#{HQP_L_CURR}:|"></span> <span id="curr"></span></div>
-		<div style="height:250px; overflow-y: auto; border: 1px solid #003081;">
-			<table class="condition table-fixed order-report table-none-border">
-				<thead>
-					<tr><th>&nbsp;</th></tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-		</div>
-	</div>	
+	</div>
 	<div class="split-row-compact"></div>
-	<!-- div id="AREA_chart" style="width:60%; margin: auto; "></div -->
-	
+	<div id="AREA_chart" style="width:60%; margin: auto; "></div>
+<style>
+body {
+	overflow-y: auto;
+}
+</style>	
 <script>
 $(document).ready(function() {
 	ProgressBar.hide();
@@ -90,14 +82,10 @@ $(document).ready(function() {
 		
 		if (JpUtilsObject.isNotNull(column))
 		{
-			thead.push("<tr><th style='position: sticky; top:0'>&nbsp;</th>");
-			//thead.push("<tr><th></th>");			
+			thead.push("<tr><th></th>");
 			
 			$.each(column, function(index, item) {
-				//thead.push("<th class='center text-ellipsis' title='" + item.CAPTION + "'>");
-				thead.push("<th style='position: sticky; top:0' class='center text-ellipsis' title='" + item.CAPTION + "'>");
-				thead.push(item.CAPTION);
-				thead.push("</th>");
+				thead.push("<th class='center text-ellipsis' title='" + item.CAPTION + "'>" + item.CAPTION + "</th>");
 			});
 			
 			thead.push("</tr>");
@@ -116,11 +104,7 @@ $(document).ready(function() {
 					
 					let formattedValue = JpUtilsNumber.addComma(value);
 					
-					tbody.push("<td class='right text-ellipsis' title='" + formattedValue + "'>");
-					tbody.push(formattedValue);
-					tbody.push("</td>");
-					
-					console.log()
+					tbody.push("<td class='right text-ellipsis' title='" + formattedValue + "'>" + formattedValue + "</td>");
 					
 					if (JpUtilsString.isEmpty(currency) && JpUtilsString.isNotEmpty(item2.CURRENCY))
 					{
@@ -231,7 +215,7 @@ $(document).ready(function() {
 				let result = response.RESULT;
 				
 				drawTable(result);
-				//drawChart(result);
+				drawChart(result);
 			},
 			complete: function(jqXHR, textStatus)
 			{

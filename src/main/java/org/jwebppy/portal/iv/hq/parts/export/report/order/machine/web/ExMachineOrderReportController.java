@@ -82,8 +82,8 @@ public class ExMachineOrderReportController extends PartsExportGeneralController
 			{
 				countMap = new LinkedHashMap<>();
 
-				//for (int j=toYear; j>=fromYear; j--)
-				for (int j=fromYear; j<=toYear; j++)
+				for (int j=toYear; j>=fromYear; j--)
+				//for (int j=fromYear; j<=toYear; j++)
 				{
 					countMap.put(j, 0);
 				}
