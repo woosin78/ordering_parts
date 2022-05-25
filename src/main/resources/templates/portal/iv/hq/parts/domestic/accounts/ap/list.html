@@ -97,7 +97,9 @@ $(function(){
 					list[i].CRDAT = JpUtilsString.defaultString(list[i].CRDAT, "[[#{HQP_L_ORDER_IN_PROGRESS}]]");
 				};
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");
+				let rows = (length > 0) ? length-1 : 0;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(rows) + " row(s).");
 				
 				return list;
 			}			

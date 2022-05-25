@@ -25,27 +25,27 @@
 						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
 					</div>
 				</td>
-				<th th:text="#{HQP_L_PO_NO}"></th>
+				<th th:text="#{HQP_L_ORDER_DATE}"></th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">
 					</div>
-				</td>
+				</td>				
+			</tr>
+			<tr>
 				<th th:text="#{HQP_L_PART_NO}"></th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
 					</div>
-				</td>				
-			</tr>
-			<tr>
-				<th th:text="#{HQP_L_ORDER_DATE}"></th>
-				<td colspan="5">
-					<div class="input-area">
-						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
-						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">
-					</div>
 				</td>
+				<th th:text="#{HQP_L_PO_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+					</div>
+				</td>				
 			</tr>
 		</tbody>
 	</table>

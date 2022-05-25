@@ -58,18 +58,15 @@
 	</form>
 	</div>
 	<div class="split-row"></div>
-	
 	<div class="grid-info">
 		<div class="grid-total">
 			<div class="split"></div>
 			<span class="total-number" id="totalRows"></span>
 		</div>
 	</div>	
-	
 	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
-	
 <script>
 $(function(){
 	$("input:radio[name=pDocType][value='[[${pDocType}]]']").prop("checked", true);
@@ -119,13 +116,16 @@ $(function(){
 			dataSrc: function(response)
 			{
 				let result = response.RESULT;
+				let length = result.length;
 				
-				for (let i=0, length=result.length; i<length; i++)
+				for (let i=0; i<length; i++)
 				{
 					result[i].ERDAT2 = JpUtilsString.trimToEmpty(result[i].ERDAT) + " " + JpUtilsString.trimToEmpty(result[i].ERZET);
 				};
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
+				let rows = (length > 0) ? length - 1 : 0;
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(rows) + " row(s).");
 
 				return result;
 			}

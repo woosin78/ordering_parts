@@ -5,7 +5,6 @@ import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
-import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +19,15 @@ public class OrderDisplayService extends PartsDomesticGeneralService
 	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_DISPLAY, unless="#result == null")
 	public RfcResponse getList(PartsErpDataMap paramMap)
 	{
-		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDERLIST");
+		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDERLIST");
 
 		rfcRequest
-			.field()
-				.add("I_LANGU", paramMap.getLangForSap())
+			.field().with(paramMap)
+				.add(new Object[][] {
+					{"I_BGTYP", "P"},
+					{"I_LANGU", paramMap.getLangForSap()},
+					{"I_USERID", paramMap.getUsername()}
+				})
 			.and()
 			.structure("LS_SEARCH").with(paramMap)
 				.add(new Object[][] {
@@ -40,12 +43,9 @@ public class OrderDisplayService extends PartsDomesticGeneralService
 					{"BSTKD", "poNo"},
 					{"MATNR", "orderPartNo"},
 					{"FRDATE", "fromDate"},
-					{"TODATE", "toDate"}
-				})
-			.and()
-    		.structure("I_INPUT")
-				.add(SimpleRfcMakeParameterUtils.me(paramMap))
-			.output("LT_SEARCH");
+					{"TODATE", "toDate"},
+					{"RFGSK", "status"}
+				});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
@@ -58,8 +58,12 @@ public class OrderDisplayService extends PartsDomesticGeneralService
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDER_LOAD");
 
 		rfcRequest
-			.field()
-				.add("I_LANGU", paramMap.getLangForSap())
+			.field().with(paramMap)
+				.add(new Object[][] {
+					{"I_BGTYP", "P"},
+					{"I_LANGU", paramMap.getLangForSap()},
+					{"I_USERID", paramMap.getUsername()},
+				})
 				.addByKey("LV_REF_ORD", "orderNo")
 			.and()
 			.structure("LS_IMPORT_PORTAL")
@@ -67,10 +71,7 @@ public class OrderDisplayService extends PartsDomesticGeneralService
 					{"DOC_CATEGORY", paramMap.getString("docType", "C")},
 					{"COMPLAINT", "N"},
 					{"DOC_MODE", "C"}
-				})
-			.and()
-    		.structure("I_INPUT")
-				.add(SimpleRfcMakeParameterUtils.me(paramMap));
+				});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}

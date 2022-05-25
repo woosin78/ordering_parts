@@ -89,17 +89,20 @@ public class ApController extends PartsDomesticGeneralController
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
 		rfcParamMap.with(paramMap)
-			.add("shipmentNo", CmStringUtils.leftPad((String)paramMap.get("pShipmentNo"), 10, "0"))
 			.addByKey(new Object[][] {
 				{"fromInvoiceNo", "pFromInvoiceNo"},
 				{"toInvoiceNo", "pToInvoiceNo"},
-				{"partNo", "pPartNo"},
-				{"shipmentNo", "pShipmentNo"}
+				{"partNo", "pPartNo"}
 			})
 			.addDateByKey(new Object[][] {
 				{"fromDate", "pFromDate"},
 				{"toDate", "pToDate"}
 			});
+
+		if (CmStringUtils.isNotEmpty(paramMap.get("pShipmentNo")))
+		{
+			rfcParamMap.add("shipmentNo", CmStringUtils.leftPad((String)paramMap.get("pShipmentNo"), 10, "0"));
+		}
 
 		RfcResponse rfcResponse = apService.getView(rfcParamMap);
 

@@ -74,18 +74,15 @@
 	</form>
 	</div>
 	<div class="split-row"></div>
-	
 	<div class="grid-info">
 		<div class="grid-total">
 			<div class="split"></div>
 			<span class="total-number" id="totalRows"></span>
 		</div>
 	</div>		
-	
 	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
-	
 <script>
 
 //화면중 일부 area 를 채우는 그리드 예제. 상위 div #sample-grid-area 영역을 100% 채움.
@@ -96,6 +93,7 @@ $(function(){
 	$("input:radio[name=pDocType][value='[[${pDocType}]]']").prop("checked", true);
 	$("#pOrderType").val("[[${pOrderType}]]");
 	$("#pStatus").val("[[${pStatus}]]");
+	_setPartAutocomplete($("#pOrderPartNo"));
 	
 	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 	

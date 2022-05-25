@@ -74,27 +74,21 @@
 	</form>
 	</div>
 	<div class="split-row"></div>
-	
 	<div class="grid-info">
 		<div class="grid-total">
 			<div class="split"></div>
 			<span class="total-number" id="totalRows"></span>
 		</div>
 	</div>		
-	
 	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
-	
 <script>
-//화면중 일부 area 를 채우는 그리드 예제. 상위 div #sample-grid-area 영역을 100% 채움.
-//컬럼 width 자동. scroller 자동.
-//고정된 맵 데이터 사용. 페이지 생성시 데이터 넘겨서 그리드 만드는 방식
-
 $(function(){
 	$("input:radio[name=pDocType][value='[[${pDocType}]]']").prop("checked", true);
 	$("#pOrderType").val("[[${pOrderType}]]");
 	$("#pStatus").val("[[${pStatus}]]");
+	_setPartAutocomplete($("#pOrderPartNo"));
 	
 	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 	
@@ -207,7 +201,7 @@ $(function(){
 	$("#TBL_grid tbody").on("click", "td:nth-child(3)", function () {
 		let orderNo = $tableObj.row($(this)).data().VBELN2;		
 		
-		Popup.open("[[${BASE_PATH}]]/order/display/order/popup/view1?orderNo=" + orderNo + "&pOrderNo=" + orderNo, 1280, 720);
+		Popup.open("[[${BASE_PATH}]]/order/display/order/popup/view?orderNo=" + orderNo + "&pOrderNo=" + orderNo, 1280, 720);
 	});		
 });
 </script>	

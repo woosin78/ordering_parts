@@ -61,7 +61,7 @@ public class ClearAmountController extends PartsDomesticGeneralController
 		DataList dataList = rfcResponse.getTable("T_LIST");
 
 		FormatBuilder.with(dataMap)
-			.decimalFormat(new String[] {"S_AMOUNT", "TOT_AMOUNT", "T_AMOUNT"});
+			.decimalFormat(new String[] {"S_AMOUNT", "TOT_AMOUNT", "T_AMOUNT"}, "#,###");
 
 		FormatBuilder.with(dataList)
 			.qtyFormat("QTY")

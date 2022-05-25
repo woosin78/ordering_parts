@@ -2698,3 +2698,43 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220526 044014 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Thu May 26 04:40:14,136<    >RfcGetException rc (3) message: CPIC-CALL: CMRCV on convId: 12001836
+
+ERROR       connection to partner 'gsq.doosan-iv.com:3300' broken
+TIME        Thu May 26 04:40:14 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=10.249.27.32:3300; L=10.229.18.2:63729
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+<RfcGetException
+
+Error: [2] >Thu May 26 04:40:14,139<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: CPIC-CALL: CMRCV on convId: 12001836
+
+ERROR       connection to partner 'gsq.doosan-iv.com:3300' broken
+TIME        Thu May 26 04:40:14 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=10.249.27.32:3300; L=10.229.18.2:63729
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+    return code: RFC_SYS_EXCEPTION (3)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

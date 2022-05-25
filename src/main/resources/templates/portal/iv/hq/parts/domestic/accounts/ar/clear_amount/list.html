@@ -43,6 +43,7 @@
 	</div>
 	<div class="split-row"></div>
 	<div class="condition-area">
+		<div class="condition-title right">[[#{HQP_L_CURR}]]: <span id="CURRENCY"></span></div>
 		<table class="condition table-fixed">
 			<thead>
 		        <tr>
@@ -117,7 +118,8 @@ $(function(){
 				{
 					$("#SUMMARY_1").html(JpUtilsString.defaultString(summary.S_AMOUNT, "0"));
 					$("#SUMMARY_2").html(JpUtilsString.defaultString(summary.T_AMOUNT, "0"));
-					$("#SUMMARY_3").html(JpUtilsString.defaultString(summary.TOT_AMOUNT, "0"));					
+					$("#SUMMARY_3").html(JpUtilsString.defaultString(summary.TOT_AMOUNT, "0"));
+					$("#CURRENCY").html(summary.WAERS);
 				}
 				catch (e) {}
 				

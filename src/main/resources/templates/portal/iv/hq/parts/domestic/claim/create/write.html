@@ -194,7 +194,7 @@ $(function(){
 	});		
 	
 	$("#BTN_add").on("click", function(){
-		Popup.open("[[${BASE_PATH}]]/claim/create/reference/order/popup/list", 1200, 600); 
+		Popup.open("[[${BASE_PATH}]]/claim/create/reference/order/popup/list", 1200, 700); 
 	});
 	
 	$("#BTN_delete").on("click", function(){
@@ -324,6 +324,7 @@ $(function(){
 			    },
 			    error: function(jqXHR, textStatus, errorThrown)
 		    	{
+			    	alert("[[HQP_M_FAILED]]");
 		    	},
 			    complete: function(jqXHR, textStatus)
 			    {
