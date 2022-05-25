@@ -87,13 +87,16 @@ public class PlatformAuthenticationManager implements AuthenticationManager
                 {
                 	throw new AccountExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_EXPIRED"));
                 }
-                else if (PlatformCommonVo.YES.equals(user.getUserAccount().getFgAccountLocked()))
+                else if (CmStringUtils.equals(PlatformCommonVo.YES, user.getUserAccount().getFgAccountLocked()))
                 {
                 	throw new LockedException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_LOCKED"));
                 }
-                else if (PlatformCommonVo.YES.equals(user.getUserAccount().getFgPasswordLocked()))
+                else if (CmStringUtils.equals(PlatformCommonVo.YES, user.getUserAccount().getFgPasswordLocked()))
                 {
-                	throw new CredentialsExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_PASSWORD_EXPIRED"));
+                	if (CmStringUtils.notEquals(PlatformCommonVo.YES, userAccount.getFgNoUsePassword()))
+                	{
+                		throw new CredentialsExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_PASSWORD_EXPIRED"));
+                	}
                 }
 
                 return userAuthenticationService.getAuthentication(user);
