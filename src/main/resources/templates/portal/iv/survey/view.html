@@ -157,12 +157,12 @@
 					},		 
 				    success: function(response, textStatus, jqXHR)
 				    {
-				    	alert('삭제되었습니다');
+				    	alert('[[#{HQP_M_DELETED_SUCCESSFULLY}]]');
 				    	BTN.back();
 				    },
 				    error: function(jqXHR, textStatus, errorThrown)
 			    	{
-				    	alert('삭제할 수 없습니다');
+				    	alert('[[#{HQP_M_UNABLE_DELETED}]]');
 				    	BTN.back();
 			    	}
 				});
@@ -180,7 +180,7 @@
 			this.popup('write?sSeq='+Survey.sSeq+'&sqSeq='+this.sqSeq);
 		},
 		remove: function() {
-			if (!confirm ('Do you want to delete?')) return false;
+			if (!confirm ('[[#{HQP_M_CONFIRM_DELETE}]]')) return false;
 			// to-do: survey item exists
 			
 			JpUtilsAjax.post({
