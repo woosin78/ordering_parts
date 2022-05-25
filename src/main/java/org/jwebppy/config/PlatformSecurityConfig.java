@@ -31,7 +31,8 @@ public class PlatformSecurityConfig extends WebSecurityConfigurerAdapter
 			PlatformConfigVo.ERROR_PAGE_URL,
 			PlatformConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL,
 			PlatformConfigVo.FORM_PASSWORD_CHANGE_PROCESSING_URL,
-			PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/in/**"
+			PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/in/**",
+			"/sso/inbound/ad/**"
 			//,"/mail/tracking"
 	};
 
