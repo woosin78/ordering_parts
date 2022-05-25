@@ -157,10 +157,9 @@ $(window).resize($.debounce(100, function(e){
 let Survey = {
 	sSeq: 0,
 	getLatestSurvey: function() {
-		let targetCode = '0001031780';
 		let options = {
 			url: "/portal/iv/survey/latest",
-			data: {targetCode:targetCode},
+			data: {},
 			success: function(data) {
 				let survey = data.RESULT;
 				if (survey == null) return;
