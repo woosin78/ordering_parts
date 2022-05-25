@@ -953,9 +953,9 @@ a.gotop {
 	position: fixed;
 	width: 100%;
 	min-width:1300px;
-	right: 55px;
+	right: 60px;
 	bottom: 50px;
-	/*display: none;*/
+	display: none;
 	text-align: right;
 }
 a.gotop img {

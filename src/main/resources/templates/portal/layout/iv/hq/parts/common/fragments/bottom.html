@@ -63,22 +63,6 @@ $(document).ready(function() {
 	});
 });
 
-$("body").scroll(function() {
-	if ($(this).scrollTop() > 200 )
-	{
-		$(".gotop").fadeIn();
-	}
-	else
-	{
-		$(".gotop").fadeOut();
-	};
-});
-
-$(".gotop").click(function() {
-	$("html, body").animate( { scrollTop : 0 }, 400);
-	return false;
-});	
-
 /*
  * Ajax global settings.
  */
@@ -194,4 +178,20 @@ function _setPartAutocomplete(target)
 		minLength: 3
 	});
 };
+
+$("body").scroll(function() {
+	if ($(this).scrollTop() > 200 )
+	{
+		$(".bt-gotop").fadeIn();
+	}
+	else
+	{
+		$(".bt-gotop").fadeOut();
+	};
+});
+
+$(".gotop").click(function() {
+	$("html, body").animate( { scrollTop : 0 }, 400);
+	return false;
+});	
 </script>
