@@ -932,3 +932,26 @@ input.custom-ui[type="radio"]:checked + label:before {
 .tooltip:hover .tooltiptext {
   visibility: visible;
 }
+
+/* text attribute */
+.bold {
+	font-weight: bold;
+}
+
+/* Go to top */
+a.gotop {
+	display: inline-block;
+}
+.bt-gotop {
+	position: fixed;
+	width: 100%;
+	/*min-width:1300px;*/
+	right: 55px;
+	bottom: 50px;
+	/*display: none;*/
+	text-align: right;
+}
+a.gotop img {
+	width:73px;
+	height:73px;
+}

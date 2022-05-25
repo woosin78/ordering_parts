@@ -11,7 +11,7 @@
 	</div>
 </div>
 <!-- bottom.html end -->
-
+<div class="bt-gotop"><a href="#" class="gotop"><img th:src="@{/portal/iv/common/gotop.png}"></a></div>
 <script>
 /*
  * 공통 페이지
@@ -82,4 +82,20 @@ function _setPartAutocomplete(target)
 		minLength: 3
 	});
 };
+
+$("body").scroll(function() {
+	if ($(this).scrollTop() > 200 )
+	{
+		$("'.gotop").fadeIn();
+	}
+	else
+	{
+		$(".gotop").fadeOut();
+	};
+});
+
+$(".gotop").click(function() {
+	$("html, body").animate( { scrollTop : 0 }, 400);
+	return false;
+});
 </script>

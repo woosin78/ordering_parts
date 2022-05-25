@@ -367,36 +367,43 @@ public class UserController extends UserGeneralController
 
 		UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
 
-		int pwdValidPeriod = user.getUserAccount().getCredentialsPolicy().getPwdValidPeriod();
-
-		if (pwdValidPeriod > 0)
+		if (CmStringUtils.equals(user.getUserAccount().getFgNoUsePassword(), PlatformCommonVo.YES))
 		{
-			UserPasswordChangeHistoryDto inUserPasswordChangeHistory = new UserPasswordChangeHistoryDto();
-			inUserPasswordChangeHistory.setUSeq(UserAuthenticationUtils.getUSeq());
-			inUserPasswordChangeHistory.setPageNumber(1);
-			inUserPasswordChangeHistory.setRowPerPage(1);
+			resultMap.put("difference", "999");
+		}
+		else
+		{
+			int pwdValidPeriod = user.getUserAccount().getCredentialsPolicy().getPwdValidPeriod();
 
-			List<UserPasswordChangeHistoryDto> userPasswordChangeHistories = userPasswordChangeHistoryService.getPageableUserPasswordChangeHistories(inUserPasswordChangeHistory);
-
-			LocalDateTime regDate = null;
-
-			if (CollectionUtils.isNotEmpty(userPasswordChangeHistories))
+			if (pwdValidPeriod > 0)
 			{
-				UserPasswordChangeHistoryDto userPasswordChangeHistory = userPasswordChangeHistories.get(0);
+				UserPasswordChangeHistoryDto inUserPasswordChangeHistory = new UserPasswordChangeHistoryDto();
+				inUserPasswordChangeHistory.setUSeq(UserAuthenticationUtils.getUSeq());
+				inUserPasswordChangeHistory.setPageNumber(1);
+				inUserPasswordChangeHistory.setRowPerPage(1);
 
-				regDate = userPasswordChangeHistory.getRegDate();
+				List<UserPasswordChangeHistoryDto> userPasswordChangeHistories = userPasswordChangeHistoryService.getPageableUserPasswordChangeHistories(inUserPasswordChangeHistory);
+
+				LocalDateTime regDate = null;
+
+				if (CollectionUtils.isNotEmpty(userPasswordChangeHistories))
+				{
+					UserPasswordChangeHistoryDto userPasswordChangeHistory = userPasswordChangeHistories.get(0);
+
+					regDate = userPasswordChangeHistory.getRegDate();
+				}
+				else
+				{
+					regDate = user.getRegDate();
+				}
+
+				String timezone = user.getTimezone();
+				ZonedDateTime zonedRegDate = CmDateTimeUtils.toZonedDateTime(regDate, timezone);
+				ZonedDateTime exiredDate = zonedRegDate.plusDays(pwdValidPeriod);
+
+				resultMap.put("expiredDate", CmDateFormatUtils.format(exiredDate, CmDateFormatUtils.getDateFormat()));
+				resultMap.put("difference", Long.toString(ChronoUnit.DAYS.between(CmDateTimeUtils.now(timezone), exiredDate)));
 			}
-			else
-			{
-				regDate = user.getRegDate();
-			}
-
-			String timezone = user.getTimezone();
-			ZonedDateTime zonedRegDate = CmDateTimeUtils.toZonedDateTime(regDate, timezone);
-			ZonedDateTime exiredDate = zonedRegDate.plusDays(pwdValidPeriod);
-
-			resultMap.put("expiredDate", CmDateFormatUtils.format(exiredDate, PlatformCommonVo.DEFAULT_DATE_FORMAT));
-			resultMap.put("difference", Long.toString(ChronoUnit.DAYS.between(CmDateTimeUtils.now(timezone), exiredDate)));
 		}
 
 		return resultMap;

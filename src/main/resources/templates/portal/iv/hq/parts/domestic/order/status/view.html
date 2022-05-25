@@ -47,9 +47,9 @@
 
 <script>
 let $tableObj;
+let isDownloaded = false;
+
 $(function(){
-	let initCompleted = false;
-	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
@@ -102,17 +102,15 @@ $(function(){
 		},
 		initComplete:function(settings, json) 
 		{
-			initCompleted = true;
-			
 			ProgressBar.hide();
-		},
-		"drawCallback": function( settings ) {
-			if (initCompleted && "[[${fgDownload}]]" == "Y")
+			
+			if (!isDownloaded && "[[${fgDownload}]]" == "Y")
 			{
-				alert($("#orderNo").val());
 				$("#BTN_download").trigger("click");
 				parent.ProgressBar.hide();
-			};
+				
+				isDownloaded = true;
+			};			
 		}
 	});
 	
