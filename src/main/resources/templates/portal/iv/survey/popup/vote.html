@@ -227,14 +227,14 @@ let Vote = {
 			},		
 		    success: function(response, textStatus, jqXHR)
 		    {
-		    	alert('성공적으로 처리되었습니다.');
+		    	alert('[[#{HQP_M_DONE_SUCCESSFULLY}]]');
 		    	opener.callbackAfterVote();
 		    	//opener.location.reload();
 		    	window.close();
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
 	    	{
-		    	alert('처리에 실패하였습니다');
+		    	alert('[[#{HQP_M_FAIL_SAVE}]]');
 		    	opener.callbackAfterVote();
 		    	window.close();
 	    	}

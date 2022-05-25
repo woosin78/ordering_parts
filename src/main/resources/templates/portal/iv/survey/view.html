@@ -146,7 +146,7 @@
 	let Survey = {
 		sSeq: "[[${survey?.sSeq}]]",
 		remove: function() {
-			if (confirm ('Do you want to delete?')) {
+			if (confirm ('[[#{HQP_M_CONFIRM_DELETE}]]')) {
 				JpUtilsAjax.post({
 					url: "[[${BASE_PATH}]]/survey/delete",
 					method: "POST",
@@ -157,12 +157,12 @@
 					},		 
 				    success: function(response, textStatus, jqXHR)
 				    {
-				    	alert('삭제되었습니다');
+				    	alert('[[#{HQP_M_DELETED_SUCCESSFULLY}]]');
 				    	BTN.back();
 				    },
 				    error: function(jqXHR, textStatus, errorThrown)
 			    	{
-				    	alert('삭제할 수 없습니다');
+				    	alert('[[#{HQP_M_UNABLE_DELETED}]]');
 				    	BTN.back();
 			    	}
 				});
@@ -180,7 +180,7 @@
 			this.popup('write?sSeq='+Survey.sSeq+'&sqSeq='+this.sqSeq);
 		},
 		remove: function() {
-			if (!confirm ('Do you want to delete?')) return false;
+			if (!confirm ('[[#{HQP_M_CONFIRM_DELETE}]]')) return false;
 			// to-do: survey item exists
 			
 			JpUtilsAjax.post({
@@ -226,7 +226,8 @@
 			
 			for (let i=0; i<rows.length; i++) {
 				if (!JpUtilsString.isNotEmpty(rows[i]['title'])) {
-					alert('문항보기 텍스트를 입력해주세요');
+					let msg = "[[#{HQP_M_INSERT_SUBJECTIVE}]]";	// 텍스트를 입력해주세요
+					alert(msg.replace("{0}", "[[#{HQP_L_SURVEY_TEXT}]]"));
 					return false;
 				}
 				

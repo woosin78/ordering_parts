@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.survey.dto.SurveyDto;
@@ -44,6 +45,7 @@ public class SurveyController extends IvGeneralController
 	public Object listData(@ModelAttribute SurveySearchDto surveySearchDto)
 	{
 		surveySearchDto.setManager(isManager());
+		surveySearchDto.setCustCode("0001114760");
 		return ListUtils.emptyIfNull(surveyService.getSurveys(surveySearchDto));
 	}
 
@@ -132,6 +134,8 @@ public class SurveyController extends IvGeneralController
 	@ResponseBody
 	public Object latestData(@ModelAttribute SurveySearchDto surveySearchDto)
 	{
+		surveySearchDto.setManager(isManager());
+		surveySearchDto.setCustCode("0001114760");
 		return surveyService.getLatestSurvey(surveySearchDto);
 	}
 

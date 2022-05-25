@@ -60,6 +60,7 @@ public class SurveyService extends PlatformGeneralService
 	
 	public SurveyDto getLatestSurvey(SurveySearchDto surveySearchDto) 
 	{
+		surveySearchDto.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		return CmModelMapperUtils.mapToDto(SurveyObjectMapper.INSTANCE, surveyMapper.findLatestSurvey(surveySearchDto));
 	}
 

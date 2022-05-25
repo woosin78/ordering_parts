@@ -20,4 +20,5 @@ public class SurveySearchDto extends IvGeneralDto
 	private String query;
 	private Integer uSeq;
 	private String targetCode;
+	private String custCode;
 }

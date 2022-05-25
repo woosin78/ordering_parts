@@ -25,7 +25,7 @@
 		</tr>
 		<tr>
 			<th><span th:text="#{HQP_L_SURVEY_PERIOD}"></span></th>
-			<td>[[${survey?.validFrom}]] ~ [[${survey?.validTo}]]</td>
+			<td>[[${survey?.validFromYmdHHMI}]] ~ [[${survey?.validToYmdYmdHHMI}]]</td>
 		</tr>
 	</table>	
 	<br/><br/>
@@ -135,7 +135,7 @@ function callbackSurveyQuestion(result) {
 	ProgressBar.hide();
 	
 	let sSeq = "[[${sqSeq}]]";
-	if (!JpUtilsString.isNotEmpty(sSeq) && confirm('계속 등록하시겠습니까?')) {
+	if (!JpUtilsString.isNotEmpty(sSeq) && confirm('[[#{HQP_M_KEEP_MAKING_QUESTIONS}]]')) {
 		window.location.reload();
 	} else {
 		window.close();
