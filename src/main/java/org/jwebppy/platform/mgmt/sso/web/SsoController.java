@@ -11,6 +11,9 @@ public class SsoController extends MgmtGeneralController
 	{
 		try
 		{
+			System.err.println("username:" + getUsername().toUpperCase());
+			System.err.println("time:" + CmDateFormatUtils.now(null, IvCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
+
 			return new StringEncrypter(key, iv).encrypt(getUsername().toUpperCase() + delimeter + CmDateFormatUtils.now(null, IvCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
 		}
 		catch (Exception e)

@@ -49,12 +49,17 @@
 </form>
 <script>
 $("#BTN_go").on("click", function() {
-	window.open("", "doobiz");
-	$("#FORM_sso").submit();
+	document.location.reload();
 });
 
+function go()
+{
+	window.open("", "doobiz");
+	$("#FORM_sso").submit();	
+};
+
 $(function(){
-	$("#BTN_go").trigger("click");
+	go();
 	ProgressBar.hide();
 });
 

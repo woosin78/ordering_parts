@@ -14,10 +14,10 @@ public class DoobizSsoOutController extends SsoController
 {
 	private final String KEY = "Infracore";
 	private final String IV = "Doosan";
-	private final String PRD_URL = "https://doobiz.doosan-iv.com";
-	private final String DEV_URL = "https://doobiz-edu.doosan-iv.com";
+	private final String PRD_URL = "https://doobiz.doosan-iv.com/irj/portal";
+	private final String DEV_URL = "https://doobiz-edu.doosan-iv.com/irj/portal";
 
-	@RequestMapping("/in/doobiz")
+	@RequestMapping
 	public Object sso(Model model)
 	{
         try
@@ -32,6 +32,6 @@ public class DoobizSsoOutController extends SsoController
 			e.printStackTrace();
 		}
 
-		return "/portal/iv/sso/doobiz/sso";
+		return "/portal/iv/sso/out/doobiz/sso";
 	}
 }

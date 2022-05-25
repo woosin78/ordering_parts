@@ -56,13 +56,19 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
 		String[] credentials = checkSsoUser(request);
 
+		System.err.println("=============================1");
+
 		if (ArrayUtils.isNotEmpty(credentials))
 		{
 			username = credentials[0];
 			password = credentials[1];
+
+			System.err.println("=============================2");
 		}
 		else
 		{
+			System.err.println("=============================3");
+
 			username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
 			password = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_PASSWORD));
 
@@ -82,6 +88,8 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 			}
 		}
 
+		System.err.println("=============================4:password:" + password);
+
 		UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 
 		setDetails(request, usernamePasswordAuthenticationToken);
@@ -91,8 +99,12 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
     private boolean isAdUser(String token)
     {
+    	System.err.println("=============================3.1");
+
     	if (CmStringUtils.isEmpty(token))
     	{
+    		System.err.println("=============================3.2");
+
     		return false;
     	}
 
