@@ -101,6 +101,14 @@
 		
 		<if test="isManager == false">
 			and sysdate between to_date(a.valid_from,'YYYYMMDDHH24MI') and to_date(a.valid_to,'YYYYMMDDHH24MI') and a.fg_open = 'Y'
+			and exists (
+				select 
+				1 
+				from ep_survey_target est 
+				where s_seq = a.s_seq 
+				and est.target = #{custCode}
+				and est.fg_delete = 'N'
+			)
 		</if>
 	
 		<if test="fgStatus != null and fgStatus != ''">
@@ -201,10 +209,20 @@
 		    ep.s_seq, ep.title
 		from ep_survey_target est, ep_survey ep
 		where est.s_seq = ep.s_seq
-		and est.target = #{targetCode}
 		and sysdate between to_date(ep.valid_from,'YYYYMMDDHH24MI') and to_date(ep.valid_to,'YYYYMMDDHH24MI') and ep.fg_open = 'Y'	
 		and ep.fg_delete = 'N'
 		and est.fg_delete = 'N'
+		<if test="isManager == false">
+		and est.target = #{custCode}
+		</if>
+		and not exists (
+			select 
+			1
+			from ep_survey_question esq, ep_survey_apply esa
+			where esq.sq_seq = esa.sq_seq
+			and esq.s_seq = ep.s_seq    
+			and esa.u_seq = #{uSeq}
+		)
 	</select>
 	
 </mapper>
