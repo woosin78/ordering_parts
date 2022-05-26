@@ -46,7 +46,7 @@ public class OrderReportByOrderTypeController extends PartsDomesticGeneralContro
 		rfcParamMap
 			.add(new Object[][] {
 				{"year", CmStringUtils.defaultIfEmpty(paramMap.get("pYear"), CmDateFormatUtils.format(CmDateTimeUtils.now(), "yyyy"))},
-				{"query", "Z_ZSS_M001_Q004_D"}
+				{"query", "Z_ZSS_M001_Q016"}
 			});
 
 		return orderReportService.getList(rfcParamMap);

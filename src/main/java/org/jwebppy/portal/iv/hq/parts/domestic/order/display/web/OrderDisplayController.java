@@ -56,8 +56,7 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 				{"orderNo", "pOrderNo"},
 				{"poNo", "pPoNo"},
 				{"orderPartNo", "pOrderPartNo"},
-				{"status", "pStatus"},
-				{"docType", "pDocType"}
+ 				{"docType", "pDocType"}
 			})
 			.addDate(new Object[][] {
 				{"fromDate", CmStringUtils.defaultIfEmpty(paramMap.get("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth())},

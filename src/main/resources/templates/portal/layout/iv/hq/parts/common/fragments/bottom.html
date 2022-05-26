@@ -8,7 +8,7 @@
 			<div class="copyright" th:text="#{PTL_T_COPY_RIGHT}"></div>
 		</div>
 		<div>
-			<button th:text="#{HQP_B_LANGUAGE}"></button>
+			<button id="i18n" th:text="#{HQP_B_LANGUAGE}"></button>
 		</div>
 		<div class="split-row-compact"></div>
 	</div>
@@ -36,7 +36,7 @@ $(document).ready(function() {
 		_clickDealerInfo();	    		
 	});
 	
-	$(".top-header li.username").on("click", function() {
+	$(".top-header li.username, #i18n").on("click", function() {
 		_clickUserInfo();
 	});
 	

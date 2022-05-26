@@ -1,20 +1,19 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.order.display.service;
 
-import org.jwebppy.platform.core.cache.CacheHelper;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OrderDisplayService extends PartsDomesticGeneralService
 {
-	@Autowired
-	private CacheHelper cacheHelper;
+	//@Autowired
+	//private CacheHelper cacheHelper;
 
 	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_DISPLAY, unless="#result == null")
 	public RfcResponse getList(PartsErpDataMap paramMap)
@@ -22,11 +21,9 @@ public class OrderDisplayService extends PartsDomesticGeneralService
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDERLIST");
 
 		rfcRequest
-			.field().with(paramMap)
+			.field()
 				.add(new Object[][] {
-					{"I_BGTYP", "P"},
-					{"I_LANGU", paramMap.getLangForSap()},
-					{"I_USERID", paramMap.getUsername()}
+					{"COMPLAINT", paramMap.getString("complaint")}
 				})
 			.and()
 			.structure("LS_SEARCH").with(paramMap)
@@ -45,7 +42,11 @@ public class OrderDisplayService extends PartsDomesticGeneralService
 					{"FRDATE", "fromDate"},
 					{"TODATE", "toDate"},
 					{"RFGSK", "status"}
-				});
+				})
+			.and()
+			.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap))
+			.output("LT_SEARCH");
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
