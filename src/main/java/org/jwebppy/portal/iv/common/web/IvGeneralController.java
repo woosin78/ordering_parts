@@ -1,6 +1,7 @@
 package org.jwebppy.portal.iv.common.web;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
@@ -109,6 +110,11 @@ public class IvGeneralController extends PortalGeneralController
 
 	protected ErpUserContext getErpUserContext()
 	{
+		if (ObjectUtils.isEmpty(UserAuthenticationUtils.getUserDetails().getErpUserContext()))
+		{
+			setErpUserInfoByUsername();
+		}
+
 		return UserAuthenticationUtils.getUserDetails().getErpUserContext();
 	}
 

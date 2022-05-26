@@ -945,6 +945,10 @@ input.custom-ui[type="radio"]:checked + label:before {
 	font-weight: bold;
 }
 
+.warn {
+	color: #db2828;
+}
+
 /* Go to top */
 a.gotop {
 	display: inline-block;

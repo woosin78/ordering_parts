@@ -103,6 +103,10 @@ input {
 	box-sizing: border-box;
 }
 
+input.warn {
+	background-color: #db2828;
+}
+
 /* placeholder 스타일 지정 */
 input::placeholder {
   color: #dddddd;
@@ -936,6 +940,10 @@ input.custom-ui[type="radio"]:checked + label:before {
 /* text attribute */
 .bold {
 	font-weight: bold;
+}
+
+.warn {
+	color: #db2828;
 }
 
 /* Go to top */

@@ -40,10 +40,10 @@
 					<table>
 						<tr>
 							<td>
-								<span style="color:blue;" th:text="${rowIndex}+'.'"></span>
-								<span style="color:red;" th:if="${(textAnswers[0]?.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
-								<span style="color:red;" th:unless="${(textAnswers[0]?.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
-								<span style="color:blue;" th:text="${textAnswers[0]?.title}"></span>
+								<span th:text="${rowIndex}+'.'"></span>
+								<span class="warn" th:if="${(textAnswers[0]?.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+								<span class="warn" th:unless="${(textAnswers[0]?.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
+								<span th:text="${textAnswers[0]?.title}"></span>
 							</td>
 						</tr>
 					</table>

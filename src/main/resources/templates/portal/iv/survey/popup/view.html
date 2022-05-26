@@ -44,10 +44,10 @@
 								<table>
 									<tr>
 										<td>
-											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
-											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
-											<span style="color:blue;" th:text="${voteItem.title}"></span>
+											<span th:text="${index.count}+'.'"></span>
+											<span class="warn" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span class="warn" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
+											<span th:text="${voteItem.title}"></span>
 										</td>
 									</tr>
 								</table>
@@ -72,10 +72,10 @@
 								<table>
 									<tr>
 										<td>
-											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
-											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
-											<span style="color:blue;" th:text="${voteItem.title}"></span>
+											<span th:text="${index.count}+'.'"></span>
+											<span class="warn" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span class="warn" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
+											<span th:text="${voteItem.title}"></span>
 											<span>([[#{HQP_L_SELECTION_NUMBER}]] : [[${voteItem.mandatoryCnt}]])</span>
 										</td>
 									</tr>
@@ -101,10 +101,10 @@
 								<table>
 									<tr>
 										<td>
-											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
-											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
-											<span style="color:blue;" th:text="${voteItem.title}"></span>
+											<span th:text="${index.count}+'.'"></span>
+											<span class="warn" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span class="warn" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
+											<span th:text="${voteItem.title}"></span>
 										</td>
 									</tr>
 								</table>
@@ -126,10 +126,10 @@
 								<table>
 									<tr>
 										<td>
-											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
-											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
-											<span style="color:blue;" th:text="${voteItem.title}"></span>
+											<span th:text="${index.count}+'.'"></span>
+											<span class="warn" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span class="warn" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
+											<span th:text="${voteItem.title}"></span>
 											<span>([[#{HQP_L_EXTRA_WEIGHT_SUM}]] : 10[[#{HQP_L_POINT}]])</span>
 										</td>
 									</tr>
@@ -168,10 +168,10 @@
 								<table>
 									<tr>
 										<td>
-											<span style="color:blue;" th:text="${index.count}+'.'"></span>
-											<span style="color:red;" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
-											<span style="color:red;" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
-											<span style="color:blue;" th:text="${voteItem.title}"></span>
+											<span th:text="${index.count}+'.'"></span>
+											<span class="warn" th:if="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_ESSENTIAL}+']'"></span>
+											<span class="warn" th:unless="${(voteItem.fgMandatory == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="'['+#{HQP_L_SELECT_POTENTIAL}+']'"></span>
+											<span th:text="${voteItem.title}"></span>
 										</td>
 									</tr>
 								</table>

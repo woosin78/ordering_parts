@@ -17,7 +17,7 @@
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<td width="13%"> 
+				<th> 
 					<div class="input-area">
 						<select id="fgStatus" name="fgStatus" onchange="doSearch();" class="custom-ui">
 							<option value="0">[[#{HQP_L_ALL}]]</option>
@@ -27,7 +27,7 @@
 							<option value="3">[[#{HQP_L_SURVEY_COMPLETE}]]</option>
 						</select>
 					</div>
-				</td>
+				</th>
 				<td>
 					<div class="input-area">
 						<input type="text" id="query" name="query" class="custom-ui" onkeyup="if(event.keyCode =='13') doSearch();"/>
@@ -52,7 +52,6 @@
 	<form id="FORM_search" th:action="|${BASE_PATH}/survey/list|">
 		<input type="hidden" name="sSeq" id="sSeq"/>
 	</form>
-
 <script>
 let $tableObj;
 $(function(){
