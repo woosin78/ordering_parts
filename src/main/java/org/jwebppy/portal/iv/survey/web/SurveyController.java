@@ -134,7 +134,7 @@ public class SurveyController extends IvGeneralController
 	public Object latestData(@ModelAttribute SurveySearchDto surveySearchDto)
 	{
 		surveySearchDto.setManager(isManager());
-		surveySearchDto.setCustCode("0001114760");
+		surveySearchDto.setCustCode(getErpUserContext().getCustCode());
 		return surveyService.getLatestSurvey(surveySearchDto);
 	}
 
