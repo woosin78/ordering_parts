@@ -17,7 +17,7 @@ public class GpesSsoOutController extends SsoController
 {
 	private final static Map<String, String[]> TARGET = new HashMap<>();
 	private final String PRD_URL = "https://gpes.doosan-iv.com";
-	private final String DEV_URL = "https://gpes.doosan-iv.com";
+	private final String DEV_URL = "http://pesdev.doosan-iv.com:7001";
 
 	static
 	{
