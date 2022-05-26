@@ -49,7 +49,7 @@
 						<div th:each="surveyTarget : ${survey?.surveyTargets}">
 							<input type="checkbox" class="custom-ui visible-target"/><label th:text="${surveyTarget.target}"></label>
 							<div class="split2"></div><span th:text="${surveyTarget.targetName}"></span>
-							<input name="targetCode" type="hidden" th:value="${surveyTarget.stSeq}"/>
+							<input name="targetCode" type="hidden" th:value="${surveyTarget.target}"/>
 							<input name="targetDescription" type="hidden" th:value="${surveyTarget.targetName}"/>
 						</div>						
 					</div>					
