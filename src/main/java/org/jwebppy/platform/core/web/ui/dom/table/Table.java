@@ -54,7 +54,7 @@ public class Table extends Element implements IPagination
 
 	private void setDefaultTableClass()
 	{
-		addAttribute("CLASS", "ui table selectable celled sortable teal");
+		addAttribute("CLASS", "ui table selectable compact celled sortable teal");
 	}
 
 	public void addThead(Element thead)

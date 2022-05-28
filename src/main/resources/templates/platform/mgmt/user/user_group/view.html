@@ -42,16 +42,16 @@ $(document).ready(function() {
 			};
 			
 			$("a.sap-conn-resource").on("click", function() {
-				JpUiPopup.open({
-					url: "/platform/mgmt/conn_resource/view?scrSeq=" + JpUtilsString.trimToEmpty($(this).attr("data-key"))
-				});
+				_showConnectionResource({scrSeq: $(this).attr("data-key")});
 			});
 			
 			$("a.credentials-policy").on("click", function() {
-				JpUiPopup.open({
-					url: "/platform/mgmt/user/credentials/policy/write?cpSeq=" +  + JpUtilsString.trimToEmpty($(this).attr("data-key"))
-				});
-			});			
+				_showCredentialsPolicy({cpSeq: $(this).attr("data-key")});
+			});
+			
+			$("a.user").on("click", function() {
+				_showUser({ugSeq: $(this).attr("data-key")});
+			});
 		}
 	});
 	

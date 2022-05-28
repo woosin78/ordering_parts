@@ -195,9 +195,6 @@
 	</select>		
 	
 	<select id="findPageUsers" parameterType="UserSearchDto" resultMap="userEntityMap">
-		<!-- include refid="PaginationMapper.header">
-			<property name="orderBy" value="u_seq desc"/>
-		</include -->
 		<include refid="PaginationMapper.header"/>
 
 		select

@@ -303,11 +303,11 @@ $(document).ready(function() {
 								
 								if (dataKeyName == "uSeq")
 								{
-									_showUserdata(Key);	
+									_showUser({uSeq: dataKey});	
 								}
 								else
 								{
-									_showUserGroupdata(Key);
+									_showUserGroup({ugSeq: dataKey});
 								};
 							});
 						};

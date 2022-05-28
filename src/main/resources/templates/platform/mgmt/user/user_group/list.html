@@ -58,12 +58,16 @@ $(document).ready(function() {
 				
 				if (columnIndex == 1)
 				{
-					_showUserGroup(key);
+					_showUserGroup({ugSeq: key});
 				}
-				else if (columnIndex == 8)
+				else if (columnIndex == 4)
 				{
-					_showCredentialsPolicy(key);
+					_showCredentialsPolicy({cpSeq: key});
 				}
+				else if (columnIndex == 5)
+				{
+					_showUser({ugSeq: key});
+				}				
 			}
 	};
 

@@ -268,28 +268,36 @@ function _checkExpiredPassword()
  * 공통 함수
  */
 //User
-function _showUser(key)
+function _showUser(params)
 {
 	JpUiPopup.open({
-		url: "/platform/mgmt/user/list?uSeq=" + key,
+		url: "/platform/mgmt/user/list?" + JpUtilsPath.jsonToQueryString(params),
 		width: screen.availWidth * 0.7,
 		height: screen.availHeight * 0.7
 	});
 };
  
 //User Group
-function _showUserGroup(key)
+function _showUserGroup(params)
 {
 	JpUiPopup.open({
-		url: "/platform/mgmt/user/user_group/view?ugSeq=" + JpUtilsString.trimToEmpty(key)
+		url: "/platform/mgmt/user/user_group/view?" + JpUtilsPath.jsonToQueryString(params)
 	});
 };
  
 //Security Policy
-function _showCredentialsPolicy(key)
+function _showCredentialsPolicy(params)
 {
 	JpUiPopup.open({
-		url: "/platform/mgmt/user/credentials/policy/write?cpSeq=" + JpUtilsString.trimToEmpty(key)
+		url: "/platform/mgmt/user/credentials/policy/write?" + JpUtilsPath.jsonToQueryString(params)
+	});	
+};
+
+//Connection Resource
+function _showConnectionResource(params)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/conn_resource/view?" + JpUtilsPath.jsonToQueryString(params)
 	});	
 };
 </script>

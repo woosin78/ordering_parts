@@ -12,11 +12,22 @@ import org.jwebppy.portal.common.PortalCommonVo;
 public class Formatter {
 	static final String defaultDateFormat = PortalCommonVo.DEFAULT_DATE_FORMAT;
 	static final String defaultCurrencyFormat = PortalCommonVo.DEFAULT_CURRENCY_FORMAT;
-	static final String defaultWeightFormat = "#,###.00";
+	static final String defaultWeightFormat = PortalCommonVo.DEFAULT_WEIGHT_FORMAT;
+	static final String defaultQtyFormat = PortalCommonVo.DEFAULT_QTY_FORMAT;
 
 	public static String getCurrencyFormat()
 	{
 		return CmStringUtils.defaultIfEmpty(UserAuthenticationUtils.getUserDetails().getCurrencyFormat(), defaultCurrencyFormat);
+	}
+
+	public static String getWeightFormat()
+	{
+		return CmStringUtils.defaultIfEmpty(UserAuthenticationUtils.getUserDetails().getCurrencyFormat(), defaultWeightFormat);
+	}
+
+	public static String getQtyFormat()
+	{
+		return CmStringUtils.defaultIfEmpty(UserAuthenticationUtils.getUserDetails().getCurrencyFormat(), defaultQtyFormat);
 	}
 
 	/**

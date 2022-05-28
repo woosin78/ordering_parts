@@ -11,6 +11,8 @@
 		<result property="dateFormat2" column="date_format2" />
 		<result property="timeFormat2" column="time_format2" />
 		<result property="currencyFormat" column="currency_format" />
+		<result property="weightFormat" column="weight_format" />
+		<result property="qtyFormat" column="qty_format" />
 		<result property="country" column="country" />
 		<result property="timezone" column="timezone" />
 		<result property="langKind" column="lang_kind" />
@@ -30,8 +32,8 @@
 			select pltf_ug_seq.nextval from dual
 		</selectKey>
 
-		insert into pltf_user_group (ug_seq, name, description, scr_seq, date_format1, time_format1, date_format2, time_format2, country, timezone, currency_format, lang_kind, def_lang, cp_seq, fg_delete, reg_username, reg_date) values (
-			#{ugSeq}, #{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat1}, #{timeFormat1}, #{dateFormat2}, #{timeFormat2}, #{country}, #{timezone}, #{currencyFormat}, #{langKind}, #{defLang}, #{credentialsPolicy.cpSeq}, 'N', #{regUsername}, #{regDate}
+		insert into pltf_user_group (ug_seq, name, description, scr_seq, date_format1, time_format1, date_format2, time_format2, country, timezone, currency_format, weight_format, qty_format, lang_kind, def_lang, cp_seq, fg_delete, reg_username, reg_date) values (
+			#{ugSeq}, #{name}, #{description}, #{sapConnResource.scrSeq}, #{dateFormat1}, #{timeFormat1}, #{dateFormat2}, #{timeFormat2}, #{country}, #{timezone}, #{currencyFormat}, #{weightFormat}, #{qtyFormat}, #{langKind}, #{defLang}, #{credentialsPolicy.cpSeq}, 'N', #{regUsername}, #{regDate}
 		) 
 	</insert>
 
@@ -45,6 +47,8 @@
 			date_format2=#{dateFormat2},
 			time_format2=#{timeFormat2},			
 			currency_format=#{currencyFormat},
+			weight_format=#{weightFormat},
+			qty_format=#{qtyFormat},
 			country=#{country},
 			timezone=#{timezone},
 			lang_kind=#{langKind},

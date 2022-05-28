@@ -39,6 +39,8 @@ public class PlatformUserDetails implements UserDetails
 	private String timeFormat2;//Front-End
 	private String timezone;
 	private String currencyFormat;
+	private String weightFormat;
+	private String qtyFormat;
 
 	private List<CItemDto> cItems;
 
@@ -167,4 +169,13 @@ public class PlatformUserDetails implements UserDetails
 		return CmStringUtils.defaultIfEmpty(currencyFormat, PlatformCommonVo.DEFAULT_CURRENCY_FORMAT);
 	}
 
+	public String getWeightFormat()
+	{
+		return CmStringUtils.defaultIfEmpty(weightFormat, PlatformCommonVo.DEFAULT_WEIGHT_FORMAT);
+	}
+
+	public String getQtyFormat()
+	{
+		return CmStringUtils.defaultIfEmpty(qtyFormat, PlatformCommonVo.DEFAULT_QTY_FORMAT);
+	}
 }

@@ -18,14 +18,14 @@
 		<div class="six wide field">
 			<select name="ugSeq" class="ui search dropdown">
 				<option value="">User Group</option>
-				<option th:each="userGroup : ${userGroups}" th:value="${userGroup.ugSeq}" th:text="|${userGroup.name} - ${userGroup.description}|"></option>
+				<option th:each="userGroup : ${userGroups}" th:value="${userGroup.ugSeq}" th:text="|${userGroup.name} - ${userGroup.description}|" th:selected="${userGroup.ugSeq} == ${ugSeq}"></option>
 			</select>
 		</div>
 	</div>
 	<div class="fields">
 		<div class="twelve wide field">
 			<div class="ui icon input">
-				<input type="text" id="query" name="query" placeholder="Search"> <i class="search icon"></i>
+				<input type="text" id="query" name="query" placeholder="Search" th:value="${query}"> <i class="search icon"></i>
 			</div>
 		</div>
 		<div class="four wide field">
@@ -168,7 +168,7 @@ $(document).ready(function() {
 				}
 				else if (columnIndex == 7)
 				{
-					_showUserGroup(key);
+					_showUserGroup({ugSeq: key});
 				};
 			},
 			editColumns: function(trIndex, tr, tdIndex, td, text)
@@ -214,14 +214,6 @@ $(document).ready(function() {
 					{
 						isValid = true;
 					};
-					
-					/*
-					let message = "";
-					
-					$.each(data.RESULT.MESSAGE, function (index, value) {
-						message += value + "<br/>";
-					});
-					*/
 					
 					let message = JpUtilsString.trimToEmpty(result.MESSAGE);
 
@@ -954,7 +946,7 @@ $(document).ready(function() {
 function doSearch(pageNumber)
 {
 	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
-	$("#rowPerPage").val("10");
+	$("#rowPerPage").val("5");
 
 	usersTable.load();
 };

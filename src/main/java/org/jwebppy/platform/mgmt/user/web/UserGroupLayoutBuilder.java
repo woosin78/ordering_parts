@@ -36,14 +36,11 @@ public class UserGroupLayoutBuilder
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
-		thTr.addTextTh("Name", "two wide");
-		thTr.addTextTh("Description", "two wide");
-		thTr.addTextTh("Date Format<br/>(Back-End / Front-End)", "two wide");
-		thTr.addTextTh("Time Format<br/>(Back-End / Front-End)", "two wide");
-		thTr.addTextTh("Country", "one wide");
-		thTr.addTextTh("Timezone", "two wide");
-		thTr.addTextTh("Language<br/>(Allowable / Default)", "two wide");
-		thTr.addTextTh("Credentials Policy", "two wide");
+		thTr.addTextTh("Name", "three wide");
+		thTr.addTextTh("Description", "four wide");
+		thTr.addTextTh("Language(Allowable / Default)", "four wide");
+		thTr.addTextTh("Credentials Policy", "three wide");
+		thTr.addTextTh("User", "one wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -69,12 +66,9 @@ public class UserGroupLayoutBuilder
 
 			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
 			tbTr.addTextTd(userGroup.getDescription());
-			tbTr.addTextTd(userGroup.getDateFormat1() + " / " + userGroup.getDateFormat2());
-			tbTr.addTextTd(userGroup.getTimeFormat2() + " / " + userGroup.getTimeFormat2());
-			tbTr.addTextTd(userGroup.getDisplayCountry());
-			tbTr.addTextTd(userGroup.getDisplayTimezone());
 			tbTr.addTextTd(userGroup.getDisplayLangKind() + " / " + userGroup.getDisplayDefLang());
 			tbTr.addDataKeyLinkTd(credentialsPolicy.getName(), credentialsPolicy.getCpSeq());
+			tbTr.addDataKeyLinkTd(userCount, userGroup.getUgSeq());
 
 			tbody.addTr(tbTr);
 		}
@@ -98,6 +92,10 @@ public class UserGroupLayoutBuilder
 		Link loCredentialsPolicy = new Link(credentialsPolicy.getName() + " - " + credentialsPolicy.getDescription());
 		loCredentialsPolicy.setClass("credentials-policy");
 		loCredentialsPolicy.setKey(credentialsPolicy.getCpSeq());
+
+		Link loUser = new Link(Integer.toString(userGroup.getUserCount()));
+		loUser.setClass("user");
+		loUser.setKey(userGroup.getUgSeq());
 
 		StringBuilder langKind = new StringBuilder();
 		String[] langKinds = CmStringUtils.split(userGroup.getLangKind(), PlatformConfigVo.DELIMITER);
@@ -125,11 +123,13 @@ public class UserGroupLayoutBuilder
 		document.addDefaultLabelText("Country", userGroup.getDisplayCountry());
 		document.addDefaultLabelText("Timezone", userGroup.getDisplayTimezone());
 		document.addDefaultLabelText("Currency Format", userGroup.getCurrencyFormat());
+		document.addDefaultLabelText("Weight Format", userGroup.getWeightFormat());
+		document.addDefaultLabelText("Quantity Format", userGroup.getQtyFormat());
 		document.addDefaultLabelText("Credentials Policy", loCredentialsPolicy);
 		document.addDefaultLabelText("Allowable Languages", langKind);
 		document.addDefaultLabelText("Default Language", userGroup.getDisplayDefLang());
 		document.addDefaultLabelText("SAP Connection Resource", loSapConnResource);
-		document.addDefaultLabelText("Users", userGroup.getUserCount());
+		document.addDefaultLabelText("Users", loUser);
 		document.addDefaultLabelText("Reg. Username", userGroup.getRegUsername());
 		document.addDefaultLabelText("Reg. Date", userGroup.getDisplayRegDate());
 		document.addDefaultLabelText("Mod. Username", userGroup.getModUsername());
@@ -210,6 +210,14 @@ public class UserGroupLayoutBuilder
 		loCurrencyFormat.setLabel("Currency Format");
 		loCurrencyFormat.setRequired(true);
 
+		Input loWeightFormat = new Input("weightFormat", userGroup.getWeightFormat());
+		loWeightFormat.setLabel("Weight Format");
+		loWeightFormat.setRequired(true);
+
+		Input loQtyFormat = new Input("qtyFormat", userGroup.getQtyFormat());
+		loQtyFormat.setLabel("Quantity Format");
+		loQtyFormat.setRequired(true);
+
 		Select loCredentialPolicy = new Select("cpSeq");
 		loCredentialPolicy.setLabel("Credential Policy");
 		loCredentialPolicy.setRequired(true);
@@ -283,6 +291,8 @@ public class UserGroupLayoutBuilder
 		document.addElement(loCountry);
 		document.addElement(loTimezone);
 		document.addElement(loCurrencyFormat);
+		document.addElement(loWeightFormat);
+		document.addElement(loQtyFormat);
 		document.addElement(loCredentialPolicy);
 		document.addElement(loLangKindFields);
 		document.addElement(loDefLangFields);

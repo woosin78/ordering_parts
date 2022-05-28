@@ -36,6 +36,8 @@ public class UserGroupDto extends GeneralDto implements IPagination
 	private String country;
 	private String timezone;
 	private String currencyFormat;
+	private String weightFormat;
+	private String qtyFormat;
 	private String langKind;
 	private String defLang;
 	private CredentialsPolicyDto credentialsPolicy;

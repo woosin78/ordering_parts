@@ -76,7 +76,7 @@ public class UserLayoutBuilder
 				tbTr.addTextTd(userContactInfo.getEmail());
 				tbTr.addTextTd(user.getCompany());
 				tbTr.addTextTd(user.getDepartment());
-				tbTr.addDataKeyLinkTd(user.getUserGroup().getName() + " - " + user.getUserGroup().getDescription(), user.getUserGroup().getUgSeq());
+				tbTr.addDataKeyLinkTd(user.getUserGroup().getName(), user.getUserGroup().getUgSeq());
 
 				tbody.addTr(tbTr);
 			}
