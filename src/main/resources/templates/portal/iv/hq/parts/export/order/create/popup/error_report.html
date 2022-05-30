@@ -12,14 +12,25 @@
 		</div>		
 	</div>
 	
+	<div class="split-row"></div>
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>	
+	
 	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 	
 	<script>
 	$(function(){
-		
-		console.log(JSON.stringify(opener.errorOrderItems));
+		try
+		{
+			$("#totalRows").html(JpUtilsNumber.addComma(opener.errorOrderItems.length) + " row(s).");			
+		}
+		catch (e) {}
 		
 		$tableObj = $("#TBL_grid").DataTable({
 			ordering: false,// 정렬 기능 켬

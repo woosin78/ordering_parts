@@ -14,6 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -49,6 +50,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping(PartsExportCommonVo.REQUEST_PATH + "/order/create")
 public class ExOrderSimulationController extends PartsDomesticGeneralController
 {
+	private final String[] AVAILABLE_EXCEL_FORMAT = {"application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"};
 	private final int DEFAULT_ROW_COUNT = 10;
 
     @Value("${file.upload.rootPath}")
@@ -303,10 +305,18 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 			for (int i=0, size=xssfSheet.getPhysicalNumberOfRows(); i<size; i++)
 			{
+				String materialNo = getValueFromExcel(xssfSheet.getRow(i).getCell(0));
+				String orderQty = getValueFromExcel(xssfSheet.getRow(i).getCell(1));
+
+				if (CmStringUtils.isEmpty(materialNo) || CmStringUtils.isEmpty(orderQty))
+				{
+					continue;
+				}
+
 				ExOrderItemDto orderItem = new ExOrderItemDto();
 				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
-				orderItem.setMaterialNo(getValueFromExcel(xssfSheet.getRow(i).getCell(0)));
-				orderItem.setOrderQty(getValueFromExcel(xssfSheet.getRow(i).getCell(1)));
+				orderItem.setMaterialNo(materialNo);
+				orderItem.setOrderQty(orderQty);
 
 				orderItems.add(orderItem);
 			}
@@ -385,7 +395,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 	protected boolean isExcelFile(String contentType)
 	{
-		if (CmStringUtils.equals(contentType, "application/vnd.ms-excel") || CmStringUtils.equals(contentType, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+		if (ArrayUtils.contains(AVAILABLE_EXCEL_FORMAT, contentType))
 		{
 			return true;
 		}
@@ -394,7 +404,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 	protected boolean isXlsxFormat(String contentType)
 	{
-		if (CmStringUtils.equals(contentType, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+		if (CmStringUtils.equals(contentType, AVAILABLE_EXCEL_FORMAT[1]))
 		{
 			return true;
 		}

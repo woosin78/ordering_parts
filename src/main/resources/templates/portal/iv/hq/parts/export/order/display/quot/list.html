@@ -103,8 +103,8 @@ $(function(){
 		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
 		columns : [
-			{data: "VBELN", title: "[[#{HQP_L_QUOTATION_NO}]]"},//Inuqiry No.
 			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
+			{data: "VBELN", title: "[[#{HQP_L_QUOTATION_NO}]]"},//Inuqiry No.			
 			{data: "VBELN2", title: "[[#{HQP_L_SALES_DOC_NO}]]"},//Sales Doc. No.
 			{data: "ERDAT2", title: "[[#{HQP_L_QUOTATION_DATE}]]"},//Create Date
 			{data: "COUNT", title: "[[#{HQP_L_ORDER_ITEM_ROWS}]]"},//Line Item
@@ -113,9 +113,9 @@ $(function(){
 			{data: "RFGSK_TX", title: "[[#{	HQP_L_STATUS}]]"}//Open Status
 		],
 		columnDefs: [
-			{targets: [0, 2], className: "link dt-body-center"},
-			{targets: [2, 3, 4, 6, 7], className: "dt-body-center"},
-			{targets: 5, className: "dt-body-right"},
+			{targets: [0, 3], className: "link"},
+			{targets: [1, 2, 3, 4, 6, 7], className: "dt-body-center"},
+			{targets: 5, className: "dt-body-right"},			
 		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/display/quot/list/data",

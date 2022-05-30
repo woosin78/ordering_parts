@@ -18,8 +18,11 @@
 	
 	<script>
 	$(function(){
-		
-		console.log(JSON.stringify(opener.errorOrderItems));
+		try
+		{
+			$("#totalRows").html(JpUtilsNumber.addComma(opener.errorOrderItems.length) + " row(s).");			
+		}
+		catch (e) {}
 		
 		$tableObj = $("#TBL_grid").DataTable({
 			ordering: false,// 정렬 기능 켬

@@ -1,5 +1,5 @@
 let gnbLevel2 = {};
-let GNB_MENU_PER_PAGE = 7;
+const GNB_MENU_PER_PAGE = 9;//한 화면에 보여질 메뉴 개수
 
 function makeGnb()
 {
@@ -9,7 +9,7 @@ function makeGnb()
 		{
 			let items = data.RESULT;
 			let level1 = [];
-			let GNB_MENU_PER_PAGE = 7;
+			let GNB_MENU_PER_PAGE = 9;
 						
 	    	for (let i=0, length=items.length; i<length; i++)
 	    	{
@@ -130,9 +130,9 @@ function makeGnb2()
 			    slideWidth: 10000,  
 			    autoHover: true, 
 			    pager: false, 
-			    moveSlides: 6, 
-			    minSlides: 6,
-			    maxSlides: 6,
+			    moveSlides: GNB_MENU_PER_PAGE, 
+			    minSlides: GNB_MENU_PER_PAGE,
+			    maxSlides: GNB_MENU_PER_PAGE,
 			    slideMargin: 0, 			    
 			    infiniteLoop: false,
 			    hideControlOnEnd:true,
@@ -190,7 +190,7 @@ function makeGnb2()
 		
 			$(".gnb-menu-sub-list").on("mouseover", function() {
 				$(".gnb-menu-area").css("height", 100);
-				if (level1Length > 6)
+				if (level1Length > GNB_MENU_PER_PAGE)
 				{
 					$(".bx-controls-direction").show();       
 				};                     
