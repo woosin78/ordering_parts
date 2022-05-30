@@ -36,7 +36,7 @@
 			</tr>
 			
 			<tr>
-				<th><span th:text="#{HQP_L_SURVEY_TARGET}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
+				<th><span th:text="#{HQP_L_SURVEY_TARGET}"></th>
 				<td>
 					<div class="split-row-more-compact"></div>
 					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui" th:placeholder="#{HQP_L_PLACEHOLD_DEALER_CODE_NAME}"/></div>
@@ -171,13 +171,14 @@ $(function(){
 			return;
 		}
 		
+		/* 0530필수조건제외 
 		let targets = $("input[name=targetCode]");
 		if (targets.length == 0) {
 			//alert("[[#{HQP_L_SURVEY_TARGET}]] 을 선택해주세요");
 			let msg = "[[#{HQP_M_SELECT_EXAMPLE_OF}]]";	// 을 선택해주세요
 			alert(msg.replace("{0}", "[[#{HQP_L_SURVEY_TARGET}]]"));
 			return;
-		}
+		} */
 		
 		let validFromDate = $("#validFromDate").val().replaceAll('.', '');
 		let validFromHours = $("#validFromHours").val();
