@@ -25,7 +25,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(UkPartsDomesticCommonVo.REQUEST_PATH + "/order/display")
-@PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
+@PreAuthorize("!hasRole('ROLE_DP_EUDO_PARTS_READ_ONLY_DEALER')")
 public class UkInquiryDisplayController extends UkOrderGeneralController
 {
 	@Autowired

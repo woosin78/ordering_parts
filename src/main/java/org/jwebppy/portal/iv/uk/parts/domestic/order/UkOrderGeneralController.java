@@ -31,7 +31,7 @@ public class UkOrderGeneralController extends UkPartsDomesticGeneralController
 {
 	@Autowired
 	private Environment environment;
-	
+
 	@Override
 	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
 	{
@@ -268,10 +268,6 @@ public class UkOrderGeneralController extends UkPartsDomesticGeneralController
 
 	protected void makeOrderItemForm(UkSimulationResultDto simulationResult)
 	{
-		if (!CmStringUtils.isNotEmpty(simulationResult))
-		{
-			return;
-		}
 		int DEFAULT_ROW_COUNT = 20;
 
 		List<UkOrderItemDto> normalOrderItems = simulationResult.getNormalOrderItems();

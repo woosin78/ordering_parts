@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -32,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping(UkPartsDomesticCommonVo.REQUEST_PATH + "/order/create")
-@PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
+@PreAuthorize("!hasRole('ROLE_DP_EUDO_PARTS_READ_ONLY_DEALER')")
 public class UkOrderSimulationController extends UkOrderGeneralController
 {
 	@Autowired
@@ -136,7 +137,12 @@ public class UkOrderSimulationController extends UkOrderGeneralController
 			}
 		}
 
-		UkSimulationResultDto simulationResult = orderSimulationService.simulation(order);
+		UkSimulationResultDto simulationResult = new UkSimulationResultDto();
+
+		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
+		{
+			simulationResult = orderSimulationService.simulation(order);
+		}
 
 		makeOrderItemForm(simulationResult);
 

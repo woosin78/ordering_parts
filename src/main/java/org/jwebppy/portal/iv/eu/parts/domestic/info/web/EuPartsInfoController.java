@@ -35,7 +35,7 @@ public class EuPartsInfoController extends EuOrderGeneralController
 	private EuPartsInfoService partsInfoService;
 
 	@RequestMapping("/part_info_list")
-	@PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
+	@PreAuthorize("!hasRole('ROLE_DP_EUDO_PARTS_READ_ONLY_DEALER')")
 	public String partsInfoList(Model model, WebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);

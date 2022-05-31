@@ -19,6 +19,7 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.platform.core.util.Formatter;
+import org.jwebppy.portal.iv.eu.common.EuCommonVo;
 import org.jwebppy.portal.iv.uk.parts.domestic.common.service.UkPartsDomesticGeneralService;
 import org.jwebppy.portal.iv.uk.parts.domestic.order.create.dto.UkOrderDto;
 import org.jwebppy.portal.iv.uk.parts.domestic.order.create.dto.UkOrderItemDto;
@@ -103,16 +104,29 @@ public class UkOrderSimulationService extends UkPartsDomesticGeneralService
 			rfcRequest.addStructure("LS_OPTION", "STOCK", "X");//각 PDC 별 재고 정보 가져오기
 
 			Map<String, String> divMap = new HashMap<>();
-			divMap.put("WERKS", "F160");
-
-			Map<String, String> diveuMap = new HashMap<>();
-			diveuMap.put("WERKS", "7860");
+			divMap.put("WERKS", "7260");
 
 			List<Map<String, String>> plants = new ArrayList<>();
 			plants.add(divMap);
-			plants.add(diveuMap);
 
 			rfcRequest.addTable("LT_STOCK", plants);
+
+			if (CmStringUtils.equals(EuCommonVo.YES, order.getFgShowListPrice()))
+			{
+				rfcRequest.addStructure("LS_OPTION", "PRICE", "X");//X:List Price 정보 가져오기
+			}
+
+			List<Map<String, Object>> items = new LinkedList<>();
+
+			for (UkOrderItemDto orderItem : order.getOrderItems())
+			{
+				Map<String, Object> itemMap = new HashMap<>();
+				itemMap.put("ITEM", orderItem.getLineNo());
+				itemMap.put("MATERIAL", orderItem.getMaterialNo());
+				itemMap.put("QTY", orderItem.getOrderQty());
+
+				items.add(itemMap);
+			}
 
 			adjustOrderQty(order);
 
@@ -121,7 +135,7 @@ public class UkOrderSimulationService extends UkPartsDomesticGeneralService
 			return makeSimulationResult(simpleRfcTemplate.response(rfcRequest));
 		}
 
-		return null;
+		return new UkSimulationResultDto();
 	}
 
 	protected void adjustOrderQty(UkOrderDto order)
@@ -268,7 +282,7 @@ public class UkOrderSimulationService extends UkPartsDomesticGeneralService
 		if (CollectionUtils.isNotEmpty(items))
 		{
 			FormatBuilder.with(items)
-				.integerFormat(new String[] {"QTY", "LOT_QTY", "MIN_QTY"})
+				.integerFormat(new String[] {"QTY", "LOT_QTY", "MIN_QTY", "DIUK"})
 				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"});
 
 			List<UkOrderItemDto> normalOrderItems = new LinkedList<>();
@@ -309,8 +323,7 @@ public class UkOrderSimulationService extends UkPartsDomesticGeneralService
 				orderItem.setMessage(dataMap.getString("MSG"));
 				orderItem.setVendor(dataMap.getString("LIFNR"));
 				orderItem.setPlant(dataMap.getString("PLANT"));
-				orderItem.setStockDiv(dataMap.getString("DIV"));
-				orderItem.setStockDiveu(dataMap.getString("DIEUFL"));
+				orderItem.setStockDivuk(dataMap.getString("DIUK"));
 
 				normalOrderItems.add(orderItem);
 			}

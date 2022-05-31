@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
@@ -16,7 +18,7 @@ import org.jwebppy.portal.iv.uk.parts.domestic.common.UkPartsDomesticCommonVo;
 import org.jwebppy.portal.iv.uk.parts.domestic.common.web.UkPartsDomesticGeneralController;
 import org.jwebppy.portal.iv.uk.parts.domestic.complaint.service.UkComplaintCreationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,14 +33,37 @@ import com.sapportals.connector.ConnectorException;
 
 @Controller
 @RequestMapping(UkPartsDomesticCommonVo.REQUEST_PATH + "/complaint/create")
-@PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
+@PreAuthorize("!hasRole('ROLE_DP_EUDO_PARTS_READ_ONLY_DEALER')")
 public class UkComplaintCreationController extends UkPartsDomesticGeneralController
 {
 	@Autowired
 	private UkComplaintCreationService ukComplaintCreationService;
 
-	@Autowired
-	private Environment environment;
+//	@Autowired
+//	private Environment environment;
+
+    @Value("${file.upload.rootPath}")
+    private String rootPath;
+
+    @Value("${file.upload.claim}")
+    private String claimPath;
+
+    private String uploadPath;
+
+    @PostConstruct
+    public void init()
+    {
+    	uploadPath = rootPath + File.separator + claimPath;
+
+    	try
+    	{
+			FileUtils.forceMkdir(new File(uploadPath));
+		}
+    	catch (IOException e)
+    	{
+			e.printStackTrace();
+		}
+    }
 
 	// 반품생성 메인페이지
 	@RequestMapping("/complaint_form")
@@ -176,6 +201,7 @@ public class UkComplaintCreationController extends UkPartsDomesticGeneralControl
 	// 파일 경로 반환
 	private String getComplaintFileUploadPath()
 	{
+		/*
 		File path = new File(environment.getProperty("file.upload.rootPath") + File.separator + "complaint" + File.separator);
 
 		if (!path.exists())
@@ -183,5 +209,7 @@ public class UkComplaintCreationController extends UkPartsDomesticGeneralControl
 			path.mkdirs();
 		}
 		return path.getAbsolutePath() + File.separator;
+		*/
+		return uploadPath + File.separator;
 	}
 }

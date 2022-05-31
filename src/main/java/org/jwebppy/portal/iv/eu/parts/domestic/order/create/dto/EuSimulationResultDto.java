@@ -15,6 +15,8 @@ import lombok.ToString;
 @ToString
 public class EuSimulationResultDto extends EuOrderDto
 {
+	private static final long serialVersionUID = 1064549984439792363L;
+
 	private String credit;//CREDIT
 	private String creditCurrency;
 	private String totalWeight;//TOTAL_WEIGHT

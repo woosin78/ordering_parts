@@ -61,7 +61,7 @@ public class UkComplaintCreationService extends UkPartsDomesticGeneralService
 	// 반품생성 화면에서 넘어온 파일을 파일서버 지정위치에 업로드하고 파일서버에 저장한 파일명을 반환한다.
 	public String makeComplaintCreateFile(MultipartFile srcFile, String fileUploadPath, String userName) throws IOException
 	{
-		String currTime = CmDateFormatUtils.now("yyyyMMddHHmmss");
+		String currTime = CmDateFormatUtils.now(null, "yyyyMMddHHmmss");
 		String pointExt = srcFile.getOriginalFilename().substring(srcFile.getOriginalFilename().lastIndexOf("."));
 		String destFileNm = userName + "_" + currTime + pointExt;
 		File destinationFile = new File(fileUploadPath + destFileNm);

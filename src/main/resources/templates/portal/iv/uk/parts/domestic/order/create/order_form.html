@@ -135,17 +135,11 @@
 	<div class="grid-info">
 		<div class="block-button-area">
 			<button id="BTN_addRow" type="button">[[#{EUP_B_0009}]]</button>
-			<div class="split"></div>
 			<button id="BTN_deleteRow" type="button">[[#{EUP_B_0010}]]</button>
-			<div class="split"></div>
 			<button id="BTN_simulation" type="button">[[#{EUP_B_0011}]]</button>
-			<div class="split"></div>
 			<button id="BTN_upload" type="button">[[#{EUP_B_0012}]]</button>
-			<div class="split"></div>
 			<button id="BTN_download" type="button">[[#{EUP_B_0003}]]</button>
-			<div class="split"></div>
 			<button id="BTN_priceInfo" type="button">[[#{EUP_B_0013}]]</button>
-			<div class="split"></div>
 			<button id="BTN_errorReport" type="button">[[#{EUP_B_0031}]]</button>			
 		</div>
 		<div class="grid-total">
@@ -209,6 +203,7 @@
 		},
 		sending: function(file, xhr, formData)
 		{
+			xhr.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
 		},
 		success: function(file, response)
 		{
@@ -355,8 +350,9 @@
 		items.uoms = [];
 		items.availabilities = [];
 	
-		try
-		{
+//		try
+//		{
+		if (typeof $tableObj != 'undefined') {
 			let tds = $tableObj.columns(0).nodes()[0];
 	
 			for (let i=0, length=tds.length; i<length; i++)
@@ -372,10 +368,19 @@
 				let node = $(row.node());
 				let materialNo = node.find("input[name=materialNo]").val();
 				let orderQty = node.find("input[name=orderQty]").val();
-	
+				
 				// orderQty trim, 소숫점 제거
 				orderQty = Math.floor($.trim(orderQty));
-				node.find("input[name=orderQty]").val(orderQty);
+				if (materialNo !='' && orderQty == 0) {
+					alert('Req Qty is not entered. Please enter and try again.');
+					items = null;
+					break;
+				}
+				if (orderQty != 0){
+					node.find("input[name=orderQty]").val(orderQty);
+				} else {
+					node.find("input[name=orderQty]").val('');
+				}
 				
 				if ($.trim(materialNo) != "" && $.trim(orderQty) != "")
 				{
@@ -383,12 +388,13 @@
 					items.materialNos.push(materialNo);
 					items.orderQties.push(orderQty);
 					items.lotQties.push(data.lotQty);
-					items.uoms.push(data.uom);					
-					items.availabilities.push(CmStringUtils.defaultString(data.availability, "^"));
+					items.uoms.push(data.uom);
+					items.availabilities.push(JpUtilsString.defaultString(data.availability, "^"));
 				};
 			};
 		}
-		catch (e) {}
+//		}
+//		catch (e) {}
 	
 		return items;
 	};
@@ -706,7 +712,7 @@
 				{name: "stockDivuk", data: "stockDivuk", title: "[[#{EUP_L_0204}]]"}//Stock-DIVUK 12
 			],
 			columnDefs: [			
-				{targets: [1, 5, 6, 7, 11], className: 'dt-body-center'},
+				{targets: [1, 5, 6, 7, 11, 12], className: 'dt-body-center'},
 				{targets: [8, 9, 10], className: 'dt-body-right'}
 			], 
 			ajax: {
@@ -742,9 +748,9 @@
 						else
 						{
 							let itemParameter = makeItemParameter();
-	
+							
 							p.materialNo = itemParameter.materialNos.join("^");
-							p.orderQty = itemParameter.orderQties.join("^");						
+							p.orderQty = itemParameter.orderQties.join("^");
 						};
 					}
 					else

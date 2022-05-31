@@ -182,6 +182,7 @@ $(".dropzone-click-zone").dropzone({
 	},
 	sending: function(file, xhr, formData)
 	{
+		xhr.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
 	},
 	success: function(file, response)
 	{
@@ -449,7 +450,7 @@ function makeDtChildRow(data, reasonData1)
 // 				'		<input type="hidden" id="file_count" name="file_count">' +				
 // 				'	</div>' +
 				
-				'	<a href="#"><img class="fileLinkClass" src="/portal/img/btn_popup.png" /></a><a href="#" id="TRCHILD_FILECNT_' + data.orderno + '_' + data.item + '" class="fileListALinkCls">0</a></p>' +
+				'	<a href="#"><img class="fileLinkClass" src="/portal/img/iv/common/btn_popup.png" /></a><a href="#" id="TRCHILD_FILECNT_' + data.orderno + '_' + data.item + '" class="fileListALinkCls">0</a></p>' +
 				'</td>';
 	rtnStr += 	'</tr></tbody></table>';
 	return rtnStr;
@@ -577,6 +578,7 @@ $("#BTN_save").click(function(event)
 	if ( $("#TD_poNoTxt").val() == '')	// P.O.No 입력 체크 
 	{	
 		alert("[[#{EUP_M_0055}]]");	// Please input P.O.No.
+		$("#TD_poNoTxt").focus();
 		returnFlag = false;
 	}
 	

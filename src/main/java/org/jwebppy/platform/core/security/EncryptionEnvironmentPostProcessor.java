@@ -29,4 +29,10 @@ public class EncryptionEnvironmentPostProcessor implements EnvironmentPostProces
 
 		environment.getPropertySources().addFirst(new PropertiesPropertySource("myProps", props));
 	}
+
+	public static void main(String[] args)
+	{
+		System.out.println(AES256Cipher.getInstance().encode("divdp_01"));
+		System.out.println(AES256Cipher.getInstance().encode("divdp_2205"));
+	}
 }

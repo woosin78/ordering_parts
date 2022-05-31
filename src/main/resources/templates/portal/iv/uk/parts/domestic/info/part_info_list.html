@@ -25,7 +25,7 @@
 <table class="condition table-fixed">
 	<tbody>
 		<tr>
-			<th style="width:150px" th:text="#{UKP_L_0042}"></th><!-- Parts No. -->
+			<th th:text="#{UKP_L_0042}"></th><!-- Parts No. -->
 			<td>
 				<div class="input-area">
 					<input type="text" id="pPartsNo" name="pPartsNo" class="custom-ui-btn" style="text-transform: uppercase;" tabindex="1">
@@ -33,7 +33,7 @@
 					<button class="btn-popup2" type="button" onclick="searchParts();"></button>					
 				</div>
 			</td>
-			<th style="width:150px" th:text="#{UKP_L_0144}"></th><!-- Req Qty -->
+			<th th:text="#{UKP_L_0144}"></th><!-- Req Qty -->
 			<td>
 				<div class="input-area">
 				<input type="text" id="pReqQty" name="pReqQty" class="custom-ui" tabindex="2">
@@ -50,9 +50,9 @@
 <table class="condition table-fixed">
 	<tbody>
 		<tr>
-			<th style="width:150px" th:text="#{UKP_L_0062}"></th><!--Part No Desc  -->
+			<th th:text="#{UKP_L_0062}"></th><!--Part No Desc  -->
 			<td id="MAKTX"></td>
-			<th style="width:150px" th:text="#{UKP_L_0063}"></th><!-- Stock -->
+			<th th:text="#{UKP_L_0063}"></th><!-- Stock -->
 			<td id="AVA_FLAG"></td>			
 		</tr>		
 		<tr>
@@ -109,21 +109,21 @@
 <table class="condition">
 	<thead>
 		<tr>
-			<th style="text-align:center;" rowspan="2" th:text="#{UKP_L_0074}"></th><!--List Price  -->
-			<th style="text-align:center;" colspan="3" th:text="#{UKP_L_0075}"></th><!-- Net Price -->			
+			<th class="center" rowspan="2" th:text="#{UKP_L_0074}"></th><!--List Price  -->
+			<th class="center" colspan="3" th:text="#{UKP_L_0075}"></th><!-- Net Price -->			
 		</tr>		
         <tr>
-            <th style="text-align:center;" th:text="#{UKP_L_0076}"></th><!-- Stock Order -->
-            <th style="text-align:center;" th:text="#{UKP_L_0077}"></th><!-- Machine Down Order -->
-            <th style="text-align:center;" th:text="#{UKP_L_0078}"></th><!--Emergency Order  -->                        
+            <th class="center" th:text="#{UKP_L_0076}"></th><!-- Stock Order -->
+            <th class="center" th:text="#{UKP_L_0077}"></th><!-- Machine Down Order -->
+            <th class="center" th:text="#{UKP_L_0078}"></th><!--Emergency Order  -->                        
         </tr>
      </thead>
      <tbody>
 		<tr style="height:33px;">
-			<td id="LPRICE"></td>
-			<td id="YUSO"></td>
-			<td id="YUMO"></td>
-			<td id="YUEO"></td>						
+			<td id="LPRICE" class="right"></td>
+			<td id="YUSO" class="right"></td>
+			<td id="YUMO" class="right"></td>
+			<td id="YUEO" class="right"></td>						
 		</tr>
 	</tbody>        
 </table>	

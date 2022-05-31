@@ -20,7 +20,7 @@
 	<tbody>
 		<tr>
  			<th th:text="#{EUP_L_0133}"></th>	<!-- Invoice No. -->
-			<td><input type="text" id="IPT_pInvoiceNo" name="pInvoiceNo" class="custom-ui" th:value="${pInvoiceNo}"></td>						
+			<td><input type="text" id="IPT_pInvoiceNo" name="pInvoiceNo" class="custom-ui" th:value="${pInvoiceNo}" autofocus="autofocus"></td>						
 		</tr>
 	</tbody>
 	</table>
@@ -172,12 +172,20 @@ $('#BTN_search').click(function()
 		return false;
 	}	
 });
+
 function doSearch()
 {
 	ProgressBar.show();
 	$tableObj.ajax.reload();	
 }
 
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});	
 
 // 모화면(반품생성 화면)에 정보 보내기
 $("#BTN_confirm").click(function() 
@@ -187,11 +195,12 @@ $("#BTN_confirm").click(function()
 	for (var i = 0; i < tds.length; i++) 
 	{
 		var $td = $(tds[i]);
-		if ($td.find("input").attr("checked"))
-		{	
-			checkedCnt++;
-		}
+		if ($td.find("input:checkbox").is(":checked"))
+		{
+			checkedCnt++;	
+		};
 	}
+	
 	if (checkedCnt < 1) 
     {
 		alert("[[#{EUP_M_0059}]]");	// Please select targets to create complaint.
@@ -203,7 +212,7 @@ $("#BTN_confirm").click(function()
     	for (var j = 0; j < tds.length; j++) 
     	{
     		var $td2 = $(tds[j]);
-    		if ($td2.find("input").attr("checked"))
+    		if ($td2.find("input:checkbox").is(":checked"))
     		{
     			var obj = new Object();    			
     			var data = $tableObj.row($td2).data();
