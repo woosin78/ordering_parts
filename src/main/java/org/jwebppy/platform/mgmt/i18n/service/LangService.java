@@ -231,6 +231,8 @@ public class LangService extends MgmtGeneralService
 		basements.add("PLTF");
 		basements.add("PTL");
 		basements.add("HQP");
+		basements.add("EUP");
+		basements.add("UKP");
 
 		return basements;
 	}

@@ -9,7 +9,6 @@ function makeGnb()
 		{
 			let items = data.RESULT;
 			let level1 = [];
-			let GNB_MENU_PER_PAGE = 9;
 						
 	    	for (let i=0, length=items.length; i<length; i++)
 	    	{
@@ -173,7 +172,7 @@ function makeGnb2()
 	    		};
 	    	});
 
-			if (level1Length >= GNB_MENU_PER_PAGE)
+			if (level1Length > GNB_MENU_PER_PAGE)
 			{
 				$(".gnb-menu-area").on("mouseover", function() {
 					$(".bx-controls-direction").show();          
@@ -181,7 +180,7 @@ function makeGnb2()
 			};
 
 			$(".gnb-menu-area").on("mouseout", function() {
-				if (level1Length >= GNB_MENU_PER_PAGE)
+				if (level1Length > GNB_MENU_PER_PAGE)
 				{       
 					$(".bx-controls-direction").hide();
 				};         
@@ -201,7 +200,7 @@ function makeGnb2()
 			});
 		
 			$(".bx-controls-direction").on("mouseover", function() {   
-				if (level1Length >= GNB_MENU_PER_PAGE)
+				if (level1Length > GNB_MENU_PER_PAGE)
 				{
 					$(".bx-controls-direction").show();   
 				}   

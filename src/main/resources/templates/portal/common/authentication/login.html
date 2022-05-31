@@ -19,6 +19,13 @@
 <script th:src="@{/portal/js/jWebppy.utils.string.js}"></script>
 <script th:src="@{/portal/js/jWebppy.ui.dimmer.js}"></script>
 <script>
+let agent = navigator.userAgent.toLowerCase();
+
+if ((navigator.appName == "Netscape" && agent.indexOf("trident") != -1) || (agent.indexOf("msie") != -1))
+{
+	alert("[[#{PLTF_M_INVALID_BROWSER}]]");
+};
+
 let INDEX_URL = "[[${T(org.jwebppy.portal.common.PortalConfigVo).INDEX_URL}]]";
 
 $(window).resize($.debounce(100, function(e){
