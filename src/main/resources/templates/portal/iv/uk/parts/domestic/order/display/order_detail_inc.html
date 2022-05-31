@@ -133,7 +133,8 @@ $(function(){
 	    		],
 	    		columnDefs: [
 	    			//{ className: "left", targets: "_all" }
-	    			{targets: [0, 1, 2, 3, 5, 6, 7, 8, 9, 10], className: 'dt-body-center'},
+	    			{targets: [0, 1, 5, 6, 7, 10], className: 'dt-body-center'},
+	    			{targets: [8, 9], className: 'dt-body-right'},
 	    		],
 	    		data: item,
 	    		initComplete: function() {

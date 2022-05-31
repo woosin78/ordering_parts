@@ -655,7 +655,7 @@
 			scrollY: 100,
 			//fixedColumns: { leftColumns: 5 },
 			columns: [
-				{// 컬럼에 checkbox 설정
+				{// 컬럼에 checkbox 설정 
 					name: "chk",					
 					className:"center noselect skip-download",// row selection 기능 막음.
 					orderable: false,// checkbox 는 정렬 불가
@@ -671,8 +671,8 @@
 						return '<input type="checkbox" class="custom-ui" onchange="syncInput(this)"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "lineNo", data: "lineNo", title: "[[#{EUP_L_0028}]]"},//Item
-				{
+				{name: "lineNo", data: "lineNo", title: "[[#{EUP_L_0028}]]"},//Item 1
+				{// 2
 					name: "materialNo",
 					data: "materialNo",
 					title: "[[#{EUP_L_0029}]]",				
@@ -684,9 +684,9 @@
 						return '<button class="btn-popup" type="button" onclick="searchParts(this)"></button><input type="text" name="materialNo" class="custom-ui" value="' + row.materialNo + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},
-				{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{EUP_L_0030}]]", width: 200},//Supply Part No
-				{name: "description", data: "description", title: "[[#{EUP_L_0031}]]"},//Description
-				{
+				{name: "supplyMaterialNo", data: "supplyMaterialNo", title: "[[#{EUP_L_0030}]]", width: 200},//Supply Part No 3
+				{name: "description", data: "description", title: "[[#{EUP_L_0031}]]"},//Description 4
+				{	//5
 					name: "orderQty",
 					data: "orderQty",
 					title: "[[#{EUP_L_0032}]]",
@@ -697,16 +697,17 @@
 						return '<input type="text" class="custom-ui" name="orderQty" style="width:70px" value="' + row.orderQty + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onkeyup="doSimulationByEnter(this)" onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},//Req Qty
-				{name: "lotQty", data: "lotQty", title: "[[#{EUP_L_0050}]]"},//Sales Lot
-				{name: "uom", data: "uom", title: "[[#{EUP_L_0049}]]"},//UoM
-				{name: "netPrice", data: "netPrice", title: "[[#{EUP_L_0034}]]"},//Net Price
-				{name: "netValue", data: "netValue", title: "[[#{EUP_L_0035}]]"},//Net Value
-				{name: "listPrice", data: "listPrice", title: "[[#{EUP_L_0033}]]"},//List Price
-				{name: "costCode", data: "costCode", title: "[[#{EUP_L_0093}]]"},//Cost Code
-				{name: "stockDivuk", data: "stockDivuk", title: "[[#{EUP_L_0204}]]"}//Stock-DIVUK
+				{name: "lotQty", data: "lotQty", title: "[[#{EUP_L_0050}]]"},//Sales Lot 6
+				{name: "uom", data: "uom", title: "[[#{EUP_L_0049}]]"},//UoM 7
+				{name: "netPrice", data: "netPrice", title: "[[#{EUP_L_0034}]]"},//Net Price 8
+				{name: "netValue", data: "netValue", title: "[[#{EUP_L_0035}]]"},//Net Value 9
+				{name: "listPrice", data: "listPrice", title: "[[#{EUP_L_0033}]]"},//List Price 10
+				{name: "costCode", data: "costCode", title: "[[#{EUP_L_0093}]]"},//Cost Code 11
+				{name: "stockDivuk", data: "stockDivuk", title: "[[#{EUP_L_0204}]]"}//Stock-DIVUK 12
 			],
 			columnDefs: [			
-				{targets: [1, 2, 4, 6, 7, 8, 9], className: 'dt-body-center'}
+				{targets: [1, 5, 6, 7, 11], className: 'dt-body-center'},
+				{targets: [8, 9, 10], className: 'dt-body-right'}
 			], 
 			ajax: {
 				url: "[[${BASE_PATH}]]/order/create/simulation",
