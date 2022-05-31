@@ -221,6 +221,7 @@
 		},
 		sending: function(file, xhr, formData)
 		{
+			xhr.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
 		},
 		success: function(file, response)
 		{

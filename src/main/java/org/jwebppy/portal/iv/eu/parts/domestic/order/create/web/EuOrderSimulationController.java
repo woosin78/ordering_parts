@@ -32,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping(EuPartsDomesticCommonVo.REQUEST_PATH + "/order/create")
-@PreAuthorize("!hasRole('ROLE_EU_SS_READ-ONLY_DEALER')")
+@PreAuthorize("!hasRole('ROLE_DP_EUDO_PARTS_READ_ONLY_DEALER')")
 public class EuOrderSimulationController extends EuOrderGeneralController
 {
 	@Autowired

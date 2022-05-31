@@ -37,6 +37,8 @@ public class EuPartsGeneralController extends EuGeneralController
 
 	    		DataMap userMap = (DataMap)userList.get(0);
 
+	    		userMap.put("TYPE", response.getString("O_TYPE"));
+
 	    		erpUserContext.setCorp(userMap.getString("BUKRS"));
 	    		erpUserContext.setUsername(userMap.getString("BNAME").toUpperCase());
 	    		erpUserContext.setCustCode(userMap.getString("KUNNR"));
@@ -45,6 +47,7 @@ public class EuPartsGeneralController extends EuGeneralController
 	    		erpUserContext.setDistChl(userMap.getString("VTWEG"));
 	    		erpUserContext.setDivision(userMap.getString("SPART"));
 	    		erpUserContext.setCustGrp5(userMap.getString("KVGR5"));
+	    		erpUserContext.setCustomerType(userMap.getString("TYPE"));
 
 	    		UserAuthenticationUtils.getUserDetails().setErpUserContext(erpUserContext);
 
@@ -66,6 +69,7 @@ public class EuPartsGeneralController extends EuGeneralController
 			erpDataMap.put("VTWEG", erpUserContext.getDistChl());
 			erpDataMap.put("SPART", erpUserContext.getDivision());
 			erpDataMap.put("KVGR5", erpUserContext.getCustGrp5());
+			erpDataMap.put("TYPE", erpUserContext.getCustomerType());
 			erpDataMap.put("LANG", lang);
 
 			return erpDataMap;
