@@ -136,7 +136,12 @@
 		from
 		pltf_user_group
 		where
-		fg_delete='N'		
+		fg_delete='N'
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
+			and (upper(name) like '%'||upper(trim(#{query}))||'%' or upper(description) like '%'||upper(trim(#{query}))||'%')
+		</if>
+		
 		order by ug_seq desc
 
 		<include refid="PaginationMapper.footer"/>

@@ -15,4 +15,5 @@ public class UserGroupSearchDto extends GeneralDto
 
 	private Integer ugSeq;
 	private String name;
+	private String query;
 }
