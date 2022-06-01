@@ -17,5 +17,5 @@ public interface UserGroupMapper
 	public UserGroupEntity findUserGroup(Integer ugSeq);
 	public UserGroupEntity findUserGroupByName(String name);
 	public List<UserGroupEntity> findUserGroups(UserGroupSearchDto userGroupSearch);
-	public List<UserGroupEntity> findfindPageUserGroups(UserGroupSearchDto userGroupSearch);
+	public List<UserGroupEntity> findPageUserGroups(UserGroupSearchDto userGroupSearch);
 }

@@ -116,8 +116,19 @@
 		fg_delete='N'
 		order by ug_seq
 	</select>
+
+	<select id="findUserGroupsByCpSeq" resultType="UserGroupEntity">
+		select 
+		*
+		from
+		pltf_user_group
+		where
+		fg_delete='N'
+		and cp_seq=#{cpSeq}
+		order by ug_seq desc
+	</select>	
 	
-	<select id="findfindPageUserGroups" resultMap="userGroupEntityMap">
+	<select id="findPageUserGroups" resultMap="userGroupEntityMap">
 		<include refid="PaginationMapper.header"/>
 
 		select 
@@ -125,8 +136,7 @@
 		from
 		pltf_user_group
 		where
-		fg_delete='N'
-		
+		fg_delete='N'		
 		order by ug_seq desc
 
 		<include refid="PaginationMapper.footer"/>

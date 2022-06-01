@@ -30,6 +30,7 @@
 <div class="ui one column grid">
 	<div class="column">
 		<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
+		<div id="BTN_copyToCreate" class="ui teal button"><i class="copy outline icon"></i> Copy To Create</div>
 		<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
 	</div>
 </div>	
@@ -66,6 +67,10 @@ $(document).ready(function() {
 				}
 				else if (columnIndex == 5)
 				{
+					_showConnectionResource({scrSeq: key});
+				}				
+				else if (columnIndex == 6)
+				{
 					_showUser({ugSeq: key});
 				}				
 			}
@@ -86,6 +91,27 @@ $(document).ready(function() {
 		JpUiPopup.open({
 			url: "/platform/mgmt/user/user_group/write"
 		});
+	});
+
+	$("#BTN_copyToCreate").on("click", function() {
+		let checkedValues = listTable.getCheckedValues();
+		let length = checkedValues.length; 
+		
+		if (length == 0)
+		{
+			JpUiDimmer.alert("Please choose a target.");
+			return;
+		};		
+
+		if (length > 1)
+		{
+			JpUiDimmer.alert("Please choose one.");
+			return;
+		};
+		
+		JpUiPopup.open({
+			url: "/platform/mgmt/user/user_group/write?ugSeq=" + JpUtilsString.trimToEmpty(checkedValues[0]) + "&mode=copy"
+		});		
 	});
 	
 	$("#BTN_delete").on("click", function() {

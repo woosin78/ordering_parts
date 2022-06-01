@@ -1,5 +1,7 @@
 package org.jwebppy.platform.mgmt.user.dto;
 
+import java.util.List;
+
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
@@ -43,6 +45,7 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private int pwdValidPeriod;
 	private String fgUse = PlatformCommonVo.NO;
 	private String fgDefault = PlatformCommonVo.NO;
+	private List<UserGroupDto> userGroups;
 
 	public CredentialsPolicyDto() {}
 

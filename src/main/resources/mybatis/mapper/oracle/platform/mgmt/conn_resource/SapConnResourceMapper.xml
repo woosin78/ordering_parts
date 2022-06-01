@@ -66,6 +66,16 @@
 		and scr_seq=#{scrSeq}
 	</select>
 	
+	<select id="findSapConnResourceByName" resultType="SapConnResourceEntity">
+		select 
+		*
+		from
+		pltf_sap_conn_resource a
+		where
+		a.fg_delete='N'
+		and name=#{name}
+	</select>		
+	
 	<select id="findPageSapConnResources" parameterType="SapConnResourceSearchDto" resultType="SapConnResourceEntity">
 		<include refid="PaginationMapper.header"/>
 

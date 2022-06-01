@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
@@ -80,6 +81,7 @@ public class UserGroupController extends MgmtGeneralController
 		UserGroupDto userGroup = (ugSeq == null) ? new UserGroupDto() : userGroupService.getUserGroup(ugSeq);
 
 		model.addAttribute("userGroup", userGroup);
+		model.addAttribute("mode", webRequest.getParameter("mode"));
 
 		setDefaultAttribute(model, webRequest);
 
@@ -88,7 +90,7 @@ public class UserGroupController extends MgmtGeneralController
 
 	@GetMapping("/write/layout")
 	@ResponseBody
-	public Object writeLayout(@ModelAttribute UserGroupDto userGroup)
+	public Object writeLayout(@ModelAttribute UserGroupDto userGroup, @RequestParam(required = false, name="mode") String mode)
 	{
 		Integer ugSeq = userGroup.getUgSeq();
 
@@ -100,7 +102,7 @@ public class UserGroupController extends MgmtGeneralController
 		CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
 		credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
 
-		return UserGroupLayoutBuilder.write(userGroup, sapConnResourceService.getAvailableSapConnResources(), credentialsPolicyService.getCredentialPolicies(credentialsPolicySearch));
+		return UserGroupLayoutBuilder.write(userGroup, sapConnResourceService.getAvailableSapConnResources(), credentialsPolicyService.getCredentialsPolicies(credentialsPolicySearch), mode);
 	}
 
 	@PostMapping("/save")
@@ -108,6 +110,7 @@ public class UserGroupController extends MgmtGeneralController
 	@ResponseBody
 	public Object save(@ModelAttribute UserGroupDto userGroup, @ModelAttribute SapConnResourceDto sapConnResource, @ModelAttribute CredentialsPolicyDto credentialsPolicy, @RequestParam List<String> langKind)
 	{
+		userGroup.setName(CmStringUtils.upperCase(userGroup.getName()));
 		userGroup.setSapConnResource(sapConnResource);
 		userGroup.setCredentialsPolicy(credentialsPolicy);
 		userGroup.setLangKind(CmStringUtils.arrayToString(langKind));
@@ -142,5 +145,27 @@ public class UserGroupController extends MgmtGeneralController
 		}
 
 		return langKinds;
+	}
+
+	@GetMapping("/check/valid_name")
+	@ResponseBody
+	public Object checkValidName(@RequestParam(value = "ugSeq", required = false) Integer ugSeq, @RequestParam(value = "name") String name)
+	{
+		UserGroupDto userGroup = userGroupService.getUserGroupByName(CmStringUtils.upperCase(name));
+
+		if (ObjectUtils.isEmpty(userGroup))
+		{
+			return PlatformCommonVo.SUCCESS;
+		}
+
+		if (ObjectUtils.isNotEmpty(ugSeq))
+		{
+			if (ugSeq.equals(userGroup.getUgSeq()))
+			{
+				return PlatformCommonVo.SUCCESS;
+			}
+		}
+
+		return PlatformCommonVo.FAIL;
 	}
 }

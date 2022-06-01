@@ -38,8 +38,9 @@ public class UserGroupLayoutBuilder
 		thTr.addCheckAllTh();
 		thTr.addTextTh("Name", "three wide");
 		thTr.addTextTh("Description", "four wide");
-		thTr.addTextTh("Language(Allowable / Default)", "four wide");
-		thTr.addTextTh("Credentials Policy", "three wide");
+		thTr.addTextTh("Language(Allowable / Default)", "three wide");
+		thTr.addTextTh("Credentials Policy", "two wide");
+		thTr.addTextTh("SAP Connection", "two wide");
 		thTr.addTextTh("User", "one wide");
 
 		Thead thead = new Thead();
@@ -63,11 +64,13 @@ public class UserGroupLayoutBuilder
 			}
 
 			CredentialsPolicyDto credentialsPolicy = userGroup.getCredentialsPolicy();
+			SapConnResourceDto sapConnecConnResource = userGroup.getSapConnResource();
 
 			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
 			tbTr.addTextTd(userGroup.getDescription());
 			tbTr.addTextTd(userGroup.getDisplayLangKind() + " / " + userGroup.getDisplayDefLang());
 			tbTr.addDataKeyLinkTd(credentialsPolicy.getName(), credentialsPolicy.getCpSeq());
+			tbTr.addDataKeyLinkTd(sapConnecConnResource.getName(), sapConnecConnResource.getScrSeq());
 			tbTr.addDataKeyLinkTd(userCount, userGroup.getUgSeq());
 
 			tbody.addTr(tbTr);
@@ -139,7 +142,7 @@ public class UserGroupLayoutBuilder
 		return document;
 	}
 
-	public static Document write(UserGroupDto userGroup, List<SapConnResourceDto> sapConnResources, List<CredentialsPolicyDto> credentialPolicies)
+	public static Document write(UserGroupDto userGroup, List<SapConnResourceDto> sapConnResources, List<CredentialsPolicyDto> credentialPolicies, String mode)
 	{
 		Document document = new Document();
 
@@ -148,17 +151,17 @@ public class UserGroupLayoutBuilder
 
 		Element loName = null;
 
-		if (userGroup.getUserCount() > 0)
-		{
-			document.add(PlatformLayoutBuildUtils.defaultLabelText("Name", userGroup.getName()));
-
-			loName = new InputHidden("name", userGroup.getName());
-		}
-		else
+		if (CmStringUtils.equals(mode, "copy") || userGroup.getUserCount() == 0)
 		{
 			loName = new Input("name", userGroup.getName());
 			loName.setRequired(true);
 			loName.setLabel("Name");
+		}
+		else
+		{
+			document.add(PlatformLayoutBuildUtils.defaultLabelText("Name", userGroup.getName()));
+
+			loName = new InputHidden("name", userGroup.getName());
 		}
 
 		Input loDescription = new Input("description", userGroup.getDescription());

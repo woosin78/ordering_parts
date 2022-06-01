@@ -2,6 +2,7 @@ package org.jwebppy.platform.mgmt.user.web;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -36,7 +37,7 @@ public class CredentialsPolicyLayoutBuilder
 
 			Tr tbTr = new Tr();
 
-			if (CmStringUtils.equals(fgDefault, PlatformCommonVo.YES))
+			if (CmStringUtils.equals(fgDefault, PlatformCommonVo.YES) || CollectionUtils.isNotEmpty(credentialsPolicy.getUserGroups()))
 			{
 				tbTr.addEmptyTd();
 			}

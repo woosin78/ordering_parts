@@ -15,6 +15,7 @@ public interface CredentialsPolicyMapper
 	public int update(CredentialsPolicyEntity credentialsPolicy);
 	public int updateFgDelete(Integer cpSeq);
 	public CredentialsPolicyEntity findCredentialsPolicy(Integer cpSeq);
+	public CredentialsPolicyEntity findCredentialsPolicyByName(String name);
 	public List<CredentialsPolicyEntity> findCredentialsPolicies(CredentialsPolicySearchDto credentialsPolicySearch);
 	public List<CredentialsPolicyEntity> findPageCredentialsPolicies(CredentialsPolicySearchDto credentialsPolicySearch);
 }

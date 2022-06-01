@@ -1,5 +1,7 @@
 package org.jwebppy.platform.mgmt.user.entity;
 
+import java.util.List;
+
 import org.jwebppy.platform.core.entity.GeneralEntity;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
@@ -42,4 +44,5 @@ public class CredentialsPolicyEntity extends GeneralEntity implements IPaginatio
 	private int pwdValidPeriod;
 	private String fgUse;
 	private String fgDefault;
+	private List<UserGroupEntity> userGroups;
 }

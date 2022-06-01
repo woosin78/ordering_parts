@@ -22,13 +22,13 @@ public class PlatformCommonVo
 	public static final String DEFAULT_QTY_FORMAT = "#,###";
 
 	//상태 표시
-	public static final String ALL = "A"; //전체
-	public static final String YES = "Y"; //예
-	public static final String NO = "N"; //아니오
+	public static final String ALL = "A";//전체
+	public static final String YES = "Y";//예
+	public static final String NO = "N";//아니오
 
 	//처리 결과 상태 표시
-	public static final String SUCCESS = "S"; //성공
-	public static final String FAIL = "F"; //실패
+	public static final String SUCCESS = "S";//성공
+	public static final String FAIL = "F";//실패
 
 	//페이징 - 한 화면에 보여 쥴 게시물 수
 	public static final int DEFAULT_ROW_PER_PAGE = 20;

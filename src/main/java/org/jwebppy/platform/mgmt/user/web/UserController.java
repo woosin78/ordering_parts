@@ -198,7 +198,7 @@ public class UserController extends UserGeneralController
 				CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
 				credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
 
-				return UserLayoutBuilder.writeAccountInfo(user.getUserAccount(), credentialsPolicyService.getCredentialPolicies(credentialsPolicySearch));
+				return UserLayoutBuilder.writeAccountInfo(user.getUserAccount(), credentialsPolicyService.getCredentialsPolicies(credentialsPolicySearch));
 			}
 			else
 			{

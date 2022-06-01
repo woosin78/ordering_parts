@@ -81,6 +81,11 @@ public class CredentialsPolicyService extends GeneralService
 		return CmModelMapperUtils.mapToDto(CredentialsPolicyObjectMapper.INSTANCE, credentialsPolicyMapper.findCredentialsPolicy(cpSeq));
 	}
 
+	public CredentialsPolicyDto getCredentialPolicyByName(String name)
+	{
+		return CmModelMapperUtils.mapToDto(CredentialsPolicyObjectMapper.INSTANCE, credentialsPolicyMapper.findCredentialsPolicyByName(name));
+	}
+
 	public CredentialsPolicyDto getDefaultCredentialPolicyIfEmpty(CredentialsPolicySearchDto credentialsPolicySearch)
 	{
 		CredentialsPolicyDto credentialsPolicy = null;
@@ -99,7 +104,7 @@ public class CredentialsPolicyService extends GeneralService
 			credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
 			credentialsPolicySearch.setFgDefault(PlatformCommonVo.YES);
 
-			List<CredentialsPolicyDto> credentialsPolicies = getCredentialPolicies(credentialsPolicySearch);
+			List<CredentialsPolicyDto> credentialsPolicies = getCredentialsPolicies(credentialsPolicySearch);
 
 			if (CollectionUtils.isNotEmpty(credentialsPolicies))
 			{
@@ -114,12 +119,12 @@ public class CredentialsPolicyService extends GeneralService
 		return credentialsPolicy;
 	}
 
-	public List<CredentialsPolicyDto> getCredentialPolicies(CredentialsPolicySearchDto credentialsPolicySearch)
+	public List<CredentialsPolicyDto> getCredentialsPolicies(CredentialsPolicySearchDto credentialsPolicySearch)
 	{
 		return CmModelMapperUtils.mapToDto(CredentialsPolicyObjectMapper.INSTANCE, credentialsPolicyMapper.findCredentialsPolicies(credentialsPolicySearch));
 	}
 
-	public List<CredentialsPolicyDto> getPageableCredentialPolicies(CredentialsPolicySearchDto credentialsPolicySearch)
+	public List<CredentialsPolicyDto> getPageableCredentialsPolicies(CredentialsPolicySearchDto credentialsPolicySearch)
 	{
 		return CmModelMapperUtils.mapToDto(CredentialsPolicyObjectMapper.INSTANCE, credentialsPolicyMapper.findPageCredentialsPolicies(credentialsPolicySearch));
 	}

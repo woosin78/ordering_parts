@@ -2,8 +2,10 @@ package org.jwebppy.platform.mgmt.conn_resource.web;
 
 import java.util.List;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
@@ -87,6 +89,8 @@ public class SapConnResourceController extends MgmtGeneralController
 	@ResponseBody
 	public Object save(@ModelAttribute SapConnResourceDto sapConnResource)
 	{
+		sapConnResource.setName(CmStringUtils.upperCase(sapConnResource.getName()));
+
 		return sapConnResourceService.save(sapConnResource);
 	}
 
@@ -116,6 +120,28 @@ public class SapConnResourceController extends MgmtGeneralController
 		if (sapConnResourceService.modifyFgUse(scrSeqs, PlatformCommonVo.NO) > 0)
 		{
 			return PlatformCommonVo.SUCCESS;
+		}
+
+		return PlatformCommonVo.FAIL;
+	}
+
+	@GetMapping("/check/valid_name")
+	@ResponseBody
+	public Object checkValidName(@RequestParam(value = "scrSeq", required = false) Integer scrSeq, @RequestParam(value = "name") String name)
+	{
+		SapConnResourceDto sapConnResource = sapConnResourceService.getSapConnResourceByName(CmStringUtils.upperCase(name));
+
+		if (ObjectUtils.isEmpty(sapConnResource))
+		{
+			return PlatformCommonVo.SUCCESS;
+		}
+
+		if (ObjectUtils.isNotEmpty(scrSeq))
+		{
+			if (scrSeq.equals(sapConnResource.getScrSeq()))
+			{
+				return PlatformCommonVo.SUCCESS;
+			}
 		}
 
 		return PlatformCommonVo.FAIL;

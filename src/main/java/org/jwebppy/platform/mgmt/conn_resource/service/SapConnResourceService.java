@@ -95,6 +95,11 @@ public class SapConnResourceService extends GeneralService
 		return CmModelMapperUtils.mapToDto(SapConnResourceObjectMapper.INSTANCE, sapConnResourceMapper.findSapConnResource(scrSeq));
 	}
 
+	public SapConnResourceDto getSapConnResourceByName(String name)
+	{
+		return CmModelMapperUtils.mapToDto(SapConnResourceObjectMapper.INSTANCE, sapConnResourceMapper.findSapConnResourceByName(name));
+	}
+
 	public List<SapConnResourceDto> getPageableSapConnResources(SapConnResourceSearchDto sapConnResourceSearch)
 	{
 		return CmModelMapperUtils.mapToDto(SapConnResourceObjectMapper.INSTANCE, sapConnResourceMapper.findPageSapConnResources(sapConnResourceSearch));

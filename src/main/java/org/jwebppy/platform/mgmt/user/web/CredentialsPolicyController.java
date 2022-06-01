@@ -2,6 +2,8 @@ package org.jwebppy.platform.mgmt.user.web;
 
 import java.util.List;
 
+import org.apache.commons.lang3.ObjectUtils;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+import org.thymeleaf.util.ListUtils;
 
 @Controller
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/user/credentials/policy")
@@ -43,23 +46,32 @@ public class CredentialsPolicyController extends UserGeneralController
 	@ResponseBody
 	public Object listLayout(@ModelAttribute CredentialsPolicySearchDto credentialPolicySearch)
 	{
-		return CredentialsPolicyLayoutBuilder.pageableList(new PageableList<>(credentialsPolicyService.getPageableCredentialPolicies(credentialPolicySearch)));
+		return CredentialsPolicyLayoutBuilder.pageableList(new PageableList<>(credentialsPolicyService.getPageableCredentialsPolicies(credentialPolicySearch)));
 	}
 
 	@GetMapping("/write")
-	public String write(Model model, WebRequest webRequest)
+	public String write(Model model, WebRequest webRequest, @RequestParam(value = "cpSeq", required = false) Integer cpSeq)
 	{
+		CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
+		credentialsPolicySearch.setFgDefault(PlatformCommonVo.YES);
+
+		Boolean isShowFgDefault = (ListUtils.isEmpty(credentialsPolicyService.getCredentialsPolicies(credentialsPolicySearch))) ? true : false;
+
 		CredentialsPolicyDto credentialsPolicy = new CredentialsPolicyDto();
 
-		String cpSeq = webRequest.getParameter("cpSeq");
-
-		if (CmStringUtils.isNotEmpty(cpSeq))
+		if (ObjectUtils.isNotEmpty(cpSeq))
 		{
-			credentialsPolicy = credentialsPolicyService.getCredentialPolicy(Integer.valueOf(cpSeq));
+			credentialsPolicy = credentialsPolicyService.getCredentialPolicy(cpSeq);
+
+			if (CmStringUtils.equals(credentialsPolicy.getFgDefault(), PlatformCommonVo.YES))
+			{
+				isShowFgDefault = true;
+			}
 		}
 
 		model.addAttribute("credentialsPolicy", credentialsPolicy);
 		model.addAttribute("userGroups", userGroupService.getUserGroups(null));
+		model.addAttribute("isShowFgDefault", isShowFgDefault);
 
 		setDefaultAttribute(model, webRequest);
 
@@ -68,9 +80,11 @@ public class CredentialsPolicyController extends UserGeneralController
 
 	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@ModelAttribute CredentialsPolicyDto inCredentialsPolicy, WebRequest webRequest)
+	public Object save(@ModelAttribute CredentialsPolicyDto credentialsPolicy, WebRequest webRequest)
 	{
-		return credentialsPolicyService.save(inCredentialsPolicy);
+		credentialsPolicy.setName(CmStringUtils.upperCase(credentialsPolicy.getName()));
+
+		return credentialsPolicyService.save(credentialsPolicy);
 	}
 
 	@PostMapping("/delete")
@@ -78,5 +92,27 @@ public class CredentialsPolicyController extends UserGeneralController
 	public Object delete(@RequestParam("cpSeq") List<Integer> cpSeqs)
 	{
 		return credentialsPolicyService.delete(cpSeqs);
+	}
+
+	@GetMapping("/check/valid_name")
+	@ResponseBody
+	public Object checkValidName(@RequestParam(value = "cpSeq", required = false) Integer cpSeq, @RequestParam(value = "name") String name)
+	{
+		CredentialsPolicyDto credentialsPolicy = credentialsPolicyService.getCredentialPolicyByName(CmStringUtils.upperCase(name));
+
+		if (ObjectUtils.isEmpty(credentialsPolicy))
+		{
+			return PlatformCommonVo.SUCCESS;
+		}
+
+		if (ObjectUtils.isNotEmpty(cpSeq))
+		{
+			if (cpSeq.equals(credentialsPolicy.getCpSeq()))
+			{
+				return PlatformCommonVo.SUCCESS;
+			}
+		}
+
+		return PlatformCommonVo.FAIL;
 	}
 }

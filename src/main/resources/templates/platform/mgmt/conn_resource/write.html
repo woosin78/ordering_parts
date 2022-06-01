@@ -19,6 +19,7 @@
 <div class="ui segment">
 	<form id="FORM_write" class="ui form" autocomplete="off" onsubmit="return false;">
 	<input type="hidden" id="scrSeq" name="scrSeq" th:value="${scrSeq}"/>
+	<input type="hidden" id="mode" name="mode" th:value="${mode}"/>
 	<div class="inline fields">
 		<div class="field" th:each="type: ${T(org.jwebppy.platform.mgmt.conn_resource.dto.SapConnType).values()}">
 			<div class="ui radio checkbox">
@@ -40,6 +41,13 @@
 </div>
 <script>
 $(document).ready(function() {
+	let mode = "[[${mode}]]";
+	
+	if (JpUtilsString.equals(mode, "copy"))
+	{
+		$("#srcSeq").val("");
+	};
+	
 	let type = $("input:radio[name=type]");
 	JpUiForm.checkbox.checkByValue(type, "[[${sapConnResource.type}]]");
 	
@@ -57,6 +65,10 @@ $(document).ready(function() {
 						{
 							type: "empty",
 							prompt: "Please input {name}."
+						},
+						{
+							type: "checkName",
+							prompt: "The name is not available. Please enter another one."
 						}
 					]
 				},
@@ -108,6 +120,30 @@ $(document).ready(function() {
 			}
 	};
 	
+	$.fn.form.settings.rules.checkName = function() {
+		let isValid = false;
+		
+		JpUtilsAjax.get({
+			url: "/platform/mgmt/conn_resource/check/valid_name",
+			data: { scrSeq: $("#scrSeq").val(), name: $("#FORM_write input[name=name]").val() },
+			global: false,
+			async: false,
+			success: function(data, textStatus, jqXHR)
+			{
+				let result = data.RESULT;
+				
+				console.log(result);
+				
+				if (result == "S")
+				{
+					isValid = true;
+				};
+			}
+		});
+
+		return isValid;	
+	};	
+	
 	function clickType()
 	{
 		JpUtilsAjax.get({
@@ -127,10 +163,12 @@ $(document).ready(function() {
 				
 				$(JpUiForm.checkbox.checkedRadio(type)).checkbox("check");
 				
-				if (JpUtilsString.equals("[[${type}]]", "copy"))
+				if (JpUtilsString.equals("[[${mode}]]", "copy"))
 				{
 					$("#scrSeq").val("");
 				};
+				
+				$("#FORM_write input[name=name]").addClass("uppercase");
 			}
 		});
 	};
@@ -159,7 +197,7 @@ $(document).ready(function() {
 						opener.doSearch();
 					};
 					
-					if (JpUtilsString.equals("[[${type}]]", "copy"))
+					if (JpUtilsString.equals("[[${mode}]]", "copy"))
 					{
 						window.close();						
 					}
