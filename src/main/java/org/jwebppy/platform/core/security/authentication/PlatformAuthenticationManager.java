@@ -127,26 +127,41 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 	{
 		String KEY = "Infracore";
 		String IV = "Doosan";
-		String DOOBIZ_URL = "https://doobiz-edu.doosan-iv.com/irj/servlet/prt/portal/prtroot/doobiz.portal.auth.DoobizAuthenticationComponent";
+
+		String protocol = "http";
+		String host = "10.249.27.18";//EPQ AP
+		int port = 50000;
+		String path = "/irj/servlet/prt/portal/prtroot/doobiz.portal.auth.DoobizAuthenticationComponent";
 
 		if (CmStringUtils.equals(PLATFORM_SERVICE, "PRD"))
 		{
-			DOOBIZ_URL = "https://doobiz.doosan-iv.com/irj/servlet/prt/portal/prtroot/doobiz.portal.auth.DoobizAuthenticationComponent";
+			host = "10.249.16.182";//EPP AP2
 		}
 
 		BufferedReader bufferedReader = null;
 
+		System.err.println("====================================================0");
+
         try
 		{
-        	String token = new StringEncrypter(KEY, IV).encrypt(CmStringUtils.upperCase(username) + ":" + password + ":" + System.currentTimeMillis());
+        	path += "?token=" + new StringEncrypter(KEY, IV).encrypt(CmStringUtils.upperCase(username) + ":" + password + ":" + System.currentTimeMillis());
 
-        	URL url = new URL(DOOBIZ_URL + "?token=" + token);
+    		System.err.println("protocol:" + protocol);
+    		System.err.println("host:" + host);
+    		System.err.println("port:" + port);
+    		System.err.println("path:" + path);
+
+
+        	URL url = new URL(protocol, host, port, path);
         	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
-        	conn.setRequestProperty("Accept", "application/json");
         	conn.setRequestMethod("GET");
 
+        	System.err.println("====================================================1");
+
         	conn.connect();
+
+        	System.err.println("====================================================2");
 
 			bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 			StringBuffer response = new StringBuffer();
@@ -159,6 +174,8 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
 			bufferedReader.close();
 			bufferedReader = null;
+
+			System.err.println("====================================================3:" + response.toString());
 
 			if (CmStringUtils.equals(response.toString(), PlatformCommonVo.SUCCESS))
 			{
