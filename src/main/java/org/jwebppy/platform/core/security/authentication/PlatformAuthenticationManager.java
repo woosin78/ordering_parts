@@ -1,9 +1,16 @@
 package org.jwebppy.platform.core.security.authentication;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.service.UserAuthenticationService;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
+import org.jwebppy.platform.mgmt.sso.uitils.StringEncrypter;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
@@ -22,6 +29,9 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 {
 	@Value("${master.password}")
 	private String MASTER_PASSWORD;
+
+	@Value("${platform.service}")
+	private String PLATFORM_SERVICE;
 
 	@Autowired
 	private I18nMessageSource i18nMessageSource;
@@ -78,6 +88,13 @@ public class PlatformAuthenticationManager implements AuthenticationManager
             		{
             			isValidCredentials = true;
             		}
+            		else
+            		{
+                		if (isDoobizUser(username, password))
+                		{
+                			isValidCredentials = true;
+                		}
+            		}
             	}
         	}
 
@@ -104,5 +121,71 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         }
 
         throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
+	}
+
+	private boolean isDoobizUser(String username, String password)
+	{
+		String KEY = "Infracore";
+		String IV = "Doosan";
+		String DOOBIZ_URL = "https://doobiz-edu.doosan-iv.com/irj/servlet/prt/portal/prtroot/doobiz.portal.auth.DoobizAuthenticationComponent";
+
+		if (CmStringUtils.equals(PLATFORM_SERVICE, "PRD"))
+		{
+			DOOBIZ_URL = "https://doobiz.doosan-iv.com/irj/servlet/prt/portal/prtroot/doobiz.portal.auth.DoobizAuthenticationComponent";
+		}
+
+		BufferedReader bufferedReader = null;
+
+        try
+		{
+        	String token = new StringEncrypter(KEY, IV).encrypt(CmStringUtils.upperCase(username) + ":" + password + ":" + System.currentTimeMillis());
+
+        	URL url = new URL(DOOBIZ_URL + "?token=" + token);
+        	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+
+        	conn.setRequestProperty("Accept", "application/json");
+        	conn.setRequestMethod("GET");
+
+        	conn.connect();
+
+			bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			StringBuffer response = new StringBuffer();
+			String readLine = null;
+
+			while ((readLine = bufferedReader.readLine()) != null)
+			{
+				response.append(readLine); //StringBuffer에 응답받은 데이터 순차적으로 저장 실시
+			}
+
+			bufferedReader.close();
+			bufferedReader = null;
+
+			if (CmStringUtils.equals(response.toString(), PlatformCommonVo.SUCCESS))
+			{
+				return true;
+			}
+		}
+        catch (Exception e)
+        {
+			e.printStackTrace();
+		}
+        finally
+        {
+        	if (bufferedReader != null)
+        	{
+        		try
+        		{
+					bufferedReader.close();
+				}
+        		catch (IOException e)
+        		{
+					e.printStackTrace();
+				}
+
+        		bufferedReader = null;
+        	}
+		}
+
+		return false;
 	}
 }
