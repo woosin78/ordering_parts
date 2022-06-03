@@ -173,7 +173,7 @@ $(function(){
 		$tableObj.ajax.reload();
 	}
 	
-	$("#TBL_grid tbody").on("click", "td:first-child", function () {
+	$("#TBL_grid tbody").on("click", "td:nth-child(2)", function () {
 		let orderNo = $tableObj.cell(this).data();
 		
 		if (JpUtilsString.isNotEmpty(orderNo))

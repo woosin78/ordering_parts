@@ -78,7 +78,7 @@ public class ExPartInfoController extends PartsExportGeneralController
 	@ResponseBody
 	public Object autocompleteData(@RequestParam Map<String, Object> paramMap)
 	{
-		String pPartNo = CmStringUtils.trimToEmpty(paramMap.get("pPartNo"));
+		String pPartNo = CmStringUtils.upperCase(CmStringUtils.trimToEmpty(paramMap.get("pPartNo")));
 
 		if ("".equals(pPartNo))
 		{

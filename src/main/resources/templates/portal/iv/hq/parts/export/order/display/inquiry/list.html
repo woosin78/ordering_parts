@@ -204,10 +204,10 @@ $(function(){
 		$("#FORM_search").attr("action", "[[${BASE_PATH}]]/order/display/inquiry/view").submit();
 	});
 	
-	$("#TBL_grid tbody").on("click", "td:nth-child(3)", function () {
+	$("#TBL_grid tbody").on("click", "td:nth-child(4)", function () {
 		let orderNo = $tableObj.row($(this)).data().VBELN2;		
 		
-		Popup.open("[[${BASE_PATH}]]/order/display/order/popup/view1?orderNo=" + orderNo + "&pOrderNo=" + orderNo, 1280, 720);
+		Popup.open("[[${BASE_PATH}]]/order/display/order/popup/view?orderNo=" + orderNo + "&pOrderNo=" + orderNo, 1280, 720);
 	});		
 });
 </script>	
