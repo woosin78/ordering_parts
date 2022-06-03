@@ -51,31 +51,47 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         String username = authentication.getName();
         String password = (String)authentication.getCredentials();
 
+        System.err.println("1. username:" + username + ", password:" + password);
+
         if (CmStringUtils.isEmpty(username) || CmStringUtils.isEmpty(password))
         {
+        	System.err.println("2");
+
         	throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
         }
 
         UserDto user = userService.getUserByUsername(username);
         boolean isValidCredentials = false;
 
+        System.err.println("3:" + user);
+
         //계정이 시스템에 존재하는지 체크
         if (user != null)
         {
+        	System.err.println("4");
+
         	//슈퍼 로그인 비밀번호
         	if (MASTER_PASSWORD.equals(password))
         	{
+        		System.err.println("5");
+
         		return userAuthenticationService.getAuthentication(user);
         	}
+
+        	System.err.println("6");
 
         	UserAccountDto userAccount = user.getUserAccount();
 
         	if (CmStringUtils.equalsAny(password, "AD-USER", "SSO-USER"))
         	{
+        		System.err.println("7");
+
         		isValidCredentials = true;
         	}
         	else
         	{
+        		System.err.println("8");
+
             	/*
             	 * DoobizPlus 자체 계정 인증 허용 여부
             	 * Y: 인증 허용 않음
@@ -83,15 +99,23 @@ public class PlatformAuthenticationManager implements AuthenticationManager
             	 */
             	if (CmStringUtils.equals(userAccount.getFgNoUsePassword(), PlatformCommonVo.NO))
             	{
+            		System.err.println("9");
+
             		//AD 인증에 성공했거나 비밀번호가 동일할 경우
             		if (passwordEncoder.matches(password, userAccount.getPassword()))
             		{
+            			System.err.println("10");
+
             			isValidCredentials = true;
             		}
             		else
             		{
+            			System.err.println("11");
+
                 		if (isDoobizUser(username, password))
                 		{
+                			System.err.println("12");
+
                 			isValidCredentials = true;
                 		}
             		}
@@ -100,24 +124,36 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
         	if (isValidCredentials)
         	{
+        		System.err.println("13");
+
                 if (!userAccount.isValidPeriod())
                 {
+                	System.err.println("14");
+
                 	throw new AccountExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_EXPIRED"));
                 }
                 else if (CmStringUtils.equals(PlatformCommonVo.YES, user.getUserAccount().getFgAccountLocked()))
                 {
+                	System.err.println("15");
+
                 	throw new LockedException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_LOCKED"));
                 }
                 else if (CmStringUtils.equals(PlatformCommonVo.YES, user.getUserAccount().getFgPasswordLocked()))
                 {
+                	System.err.println("16");
+
                 	if (CmStringUtils.notEquals(PlatformCommonVo.YES, userAccount.getFgNoUsePassword()))
                 	{
+                		System.err.println("17");
+
                 		throw new CredentialsExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_PASSWORD_EXPIRED"));
                 	}
                 }
 
                 return userAuthenticationService.getAuthentication(user);
         	}
+
+        	System.err.println("18");
         }
 
         throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
