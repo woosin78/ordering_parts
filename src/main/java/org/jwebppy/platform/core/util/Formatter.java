@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -127,6 +130,14 @@ public class Formatter {
 		if (obj instanceof Date)
 		{
 			return new SimpleDateFormat(CmDateFormatUtils.getDateFormat()).format(obj);
+		}
+		else if (obj instanceof LocalDate)
+		{
+			return CmDateFormatUtils.defaultZonedFormat(((LocalDate)obj).atTime(LocalTime.now()), CmDateFormatUtils.getDateFormat());
+		}
+		else if (obj instanceof LocalDateTime)
+		{
+			return CmDateFormatUtils.defaultZonedFormat((LocalDateTime)obj, CmDateFormatUtils.getDateFormat());
 		}
 
 		if (obj != null && !"".equals(obj.toString()))

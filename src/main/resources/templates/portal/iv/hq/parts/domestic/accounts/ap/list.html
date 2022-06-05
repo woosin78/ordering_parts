@@ -7,9 +7,6 @@
 <th:block layout:fragment="content">
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_T_AP_LIST}"></div>
-		<div class="block-button-area">
-			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
-		</div>
 	</div>
 	<div class="split-row"></div>
 	
@@ -35,13 +32,12 @@
 			</tbody>        
 		</table>
 		<div class="split-row-compact"></div>
-		<div class="condition-normal-sub-title text-alert" th:text="#{HQP_T_AP_LIST_INFO1}"></div>
-		<div class="condition-normal-sub-title text-alert" th:text="#{HQP_T_AP_LIST_INFO2}"></div>
+		<div class="condition-normal-sub-title warn" th:text="#{HQP_T_AP_LIST_INFO1}"></div>
+		<div class="condition-normal-sub-title warn" th:text="#{HQP_T_AP_LIST_INFO2}"></div>
 	</div>
 	
 	<div class="grid-info">
 		<div class="grid-total">
-			<div class="split"></div>
 			<span class="total-number" id="totalRows"></span>
 		</div>
 	</div>

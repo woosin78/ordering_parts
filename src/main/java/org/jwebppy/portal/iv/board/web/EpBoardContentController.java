@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.Formatter;
@@ -29,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -194,20 +192,6 @@ public class EpBoardContentController extends IvGeneralController
 	public Object delete(@RequestParam("bcSeq") List<String> bcSeqs)
 	{
 		return boardContentService.delete(bcSeqs);
-	}
-
-	@GetMapping("/target/data")
-	@ResponseBody
-	public Object targetData(@RequestParam("name") String name, @RequestParam("dealerCode") String dealerCode)
-	{
-		ErpDataMap rfcParamMap = getErpUserInfoByUsername();
-
-		rfcParamMap.add(new Object[][] {
-			{"name", name},
-			{"dealerCode", dealerCode}
-		});
-
-		return boardContentService.getDealers(rfcParamMap);
 	}
 
 	@Override

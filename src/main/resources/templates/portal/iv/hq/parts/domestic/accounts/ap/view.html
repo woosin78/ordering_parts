@@ -54,9 +54,12 @@
 	<div class="split-row"></div>
 	
 	<div class="grid-info">
-		<div class="grid-total">
-			<div class="split"></div>
-			<span class="total-number" id="totalRows"></span>
+		<div class="block-total-area total-number">
+			<span th:text="#{HQP_L_TOTAL_AMOUNT2}"/>
+			<span id="totalAmount"></span>
+		</div>
+		<div class="grid-total">			
+			<div class="total-number" id="totalRows"></div>
 		</div>
 	</div>
 	
@@ -119,10 +122,21 @@ $(function(){
 			dataSrc: function(response) 
 			{				
 				let data = response.RESULT;
+				let list = data.LIST;
+				let sum = data.SUM;
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				$("#totalRows").html(JpUtilsNumber.addComma(list.length) + " row(s).");
 				
-				return data;
+				let amount = "";
+				
+				if (list.length > 0)
+				{
+					amount =  sum._SUM_NETWR + " " + list[0].WAERK;	
+				};
+				
+				$("#totalAmount").html(amount);
+				
+				return list;
 			}			
 		},
 		initComplete:function(settings, json) 

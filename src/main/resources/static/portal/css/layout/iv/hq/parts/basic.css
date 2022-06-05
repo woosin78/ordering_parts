@@ -100,10 +100,6 @@ input {
 	box-sizing: border-box;
 }
 
-input.warn {
-	background-color: #db2828;
-}
-
 /* placeholder 스타일 지정 */
 input::placeholder {
   color: #dddddd;
@@ -253,6 +249,11 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 }
 
 .block-button-area {
+    display: inline-block;
+    vertical-align : middle;
+}
+
+.block-total-area {
     display: inline-block;
     vertical-align : middle;
 }
@@ -645,6 +646,10 @@ input.custom-ui[type="text"], input.custom-ui[type="number"]{
 input.custom-ui[type="text"].uppercase{
 	text-transform: uppercase; 
 }
+input.custom-ui[type="text"].warn{
+	background-color: #db2828;
+	color:#363636; 
+}
 input.custom-ui[type="text"]:read-only, input.custom-ui[type="number"]:read-only{
 	background-color: #cccccc;
 }
@@ -744,14 +749,23 @@ img.required {
 }
 
 /*--- Text style ------------------*/
-.text-alert {
-	color: red;
-}
 .hidden {
 	display: none;
 }
 .visible {
 	display: block;
+}
+.bold {
+	font-weight: bold;
+}
+.info {
+	color: #00a779;
+}
+.warn {
+	color: #db2828;
+}
+.normal {
+	color: #003081;
 }
 .text-ellipsis {
 	text-overflow: ellipsis;
@@ -759,7 +773,6 @@ img.required {
 	word-wrap: normal;
 	overflow: hidden;	
 }
-
 /* 클릭시 border 애니메이션
 @-moz-keyframes borderscale {
   50% {
@@ -938,15 +951,6 @@ input.custom-ui[type="radio"]:checked + label:before {
 /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
   visibility: visible;
-}
-
-/* text attribute */
-.bold {
-	font-weight: bold;
-}
-
-.warn {
-	color: #db2828;
 }
 
 /* Go to top */

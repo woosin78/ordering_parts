@@ -51,70 +51,61 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         String username = authentication.getName();
         String password = (String)authentication.getCredentials();
 
-        System.err.println("1. username:" + username + ", password:" + password);
+        System.err.println("1. Username:" + username + ", Password:" + password);
 
         if (CmStringUtils.isEmpty(username) || CmStringUtils.isEmpty(password))
         {
-        	System.err.println("2");
-
         	throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
         }
 
         UserDto user = userService.getUserByUsername(username);
         boolean isValidCredentials = false;
 
-        System.err.println("3:" + user);
+        System.err.println("2. User:" + user);
 
         //계정이 시스템에 존재하는지 체크
         if (user != null)
         {
-        	System.err.println("4");
-
         	//슈퍼 로그인 비밀번호
         	if (MASTER_PASSWORD.equals(password))
         	{
-        		System.err.println("5");
+        		System.err.println("3. Login by the master password");
 
         		return userAuthenticationService.getAuthentication(user);
         	}
-
-        	System.err.println("6");
 
         	UserAccountDto userAccount = user.getUserAccount();
 
         	if (CmStringUtils.equalsAny(password, "AD-USER", "SSO-USER"))
         	{
-        		System.err.println("7");
+        		System.err.println("4. Login by AD, SSO: " + password);
 
         		isValidCredentials = true;
         	}
         	else
         	{
-        		System.err.println("8");
-
             	/*
             	 * DoobizPlus 자체 계정 인증 허용 여부
             	 * Y: 인증 허용 않음
             	 * N: 인증 허용
             	 */
+
+        		System.err.println("5. Where login by the DoobizPlus's credentials. FgUsePassword:" + userAccount.getFgNoUsePassword());
+
             	if (CmStringUtils.equals(userAccount.getFgNoUsePassword(), PlatformCommonVo.NO))
             	{
-            		System.err.println("9");
-
             		//AD 인증에 성공했거나 비밀번호가 동일할 경우
             		if (passwordEncoder.matches(password, userAccount.getPassword()))
             		{
-            			System.err.println("10");
+            			System.err.println("6. Login Success");
 
             			isValidCredentials = true;
             		}
             		else
             		{
-            			System.err.println("11");
-
                 		if (isDoobizUser(username, password))
                 		{
-                			System.err.println("12");
+                			System.err.println("7. Doobiz Login Success");
 
                 			isValidCredentials = true;
                 		}
@@ -124,36 +115,32 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
         	if (isValidCredentials)
         	{
-        		System.err.println("13");
-
                 if (!userAccount.isValidPeriod())
                 {
-                	System.err.println("14");
+                	System.err.println("8. Account Expired");
 
                 	throw new AccountExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_EXPIRED"));
                 }
                 else if (CmStringUtils.equals(PlatformCommonVo.YES, user.getUserAccount().getFgAccountLocked()))
                 {
-                	System.err.println("15");
+                	System.err.println("9. Account Locked");
 
                 	throw new LockedException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_LOCKED"));
                 }
                 else if (CmStringUtils.equals(PlatformCommonVo.YES, user.getUserAccount().getFgPasswordLocked()))
                 {
-                	System.err.println("16");
-
                 	if (CmStringUtils.notEquals(PlatformCommonVo.YES, userAccount.getFgNoUsePassword()))
                 	{
-                		System.err.println("17");
+                		System.err.println("10. Password Locked");
 
                 		throw new CredentialsExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_PASSWORD_EXPIRED"));
                 	}
                 }
 
+                System.err.println("11. Login Success");
+
                 return userAuthenticationService.getAuthentication(user);
         	}
-
-        	System.err.println("18");
         }
 
         throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
@@ -176,28 +163,22 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
 		BufferedReader bufferedReader = null;
 
-		System.err.println("====================================================0");
-
         try
 		{
         	path += "?token=" + new StringEncrypter(KEY, IV).encrypt(CmStringUtils.upperCase(username) + ":" + password + ":" + System.currentTimeMillis());
 
-    		System.err.println("protocol:" + protocol);
-    		System.err.println("host:" + host);
-    		System.err.println("port:" + port);
-    		System.err.println("path:" + path);
-
+        	System.err.println("7.1. Doobiz Login - protocol: " + protocol + ", host:" + host + ", port:" + port + ", path:" + path);
 
         	URL url = new URL(protocol, host, port, path);
         	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
         	conn.setRequestMethod("GET");
 
-        	System.err.println("====================================================1");
+        	System.err.println("7.2. Doobiz Login - try to connect");
 
         	conn.connect();
 
-        	System.err.println("====================================================2");
+        	System.err.println("7.3. Doobiz Login - connection success");
 
 			bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 			StringBuffer response = new StringBuffer();
@@ -211,7 +192,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 			bufferedReader.close();
 			bufferedReader = null;
 
-			System.err.println("====================================================3:" + response.toString());
+			System.err.println("7.4. Doobiz Login Result:" + response.toString());
 
 			if (CmStringUtils.equals(response.toString(), PlatformCommonVo.SUCCESS))
 			{

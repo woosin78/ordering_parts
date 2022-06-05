@@ -1,12 +1,14 @@
 package org.jwebppy.platform.core.util;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 
 import com.github.vertical_blank.sqlformatter.SqlFormatter;
@@ -55,7 +57,7 @@ public class CmMyBatisQueryUtils
 	}
 
 	/*
-	 * reg_date>'20220301' and reg_date<'20220302'
+	 * reg_date>='20220301' and reg_date<'20220302'
 	 */
 	public static String dateFormat(String date, String type)
 	{
@@ -67,5 +69,12 @@ public class CmMyBatisQueryUtils
 		}
 
 		return localDate.format(DateTimeFormatter.ofPattern(IvCommonVo.DEFAULT_DATE_FORMAT_YYYYMMDD));
+	}
+
+	public static LocalDateTime toDate(String date, String type)
+	{
+		String formattedDate = dateFormat(date, type) + "000000";
+
+		return LocalDateTime.parse(formattedDate, DateTimeFormatter.ofPattern(PortalCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
 	}
 }

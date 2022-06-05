@@ -46,8 +46,8 @@
 					<div class="split-row-more-compact"></div>
 					<div id="addedtargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
 						<div th:each="boardContentTarget : ${boardContent?.boardContentTargets}">
-							<input type="checkbox" class="custom-ui visible-target"/><label th:text="${boardContentTarget.code}"></label>
-							<div class="split2"></div><span th:text="${boardContentTarget.description}"></span>
+							<input type="checkbox" class="custom-ui visible-target"/><label class="dealer-code" th:text="${boardContentTarget.code}"></label>
+							<div class="split2"></div><span class="dealer-name" th:text="${boardContentTarget.description}"></span>
 							<input name="targetCode" type="hidden" th:value="${boardContentTarget.code}"/>
 							<input name="targetDescription" type="hidden" th:value="${boardContentTarget.description}"/>
 						</div>						
@@ -147,41 +147,12 @@ $(window).on("load", function() {
 	
 	initBoardViwer($("#boardViwer"), $("#xfe"));
 	
-	$("#searchVisibleTarget").autocomplete({
-		source: function(request, response) {
-			JpUtilsAjax.get({
-				url: "[[${BASE_PATH}]]/board/target/data",
-				data: {	"name": $("#searchVisibleTarget").val(), "dealerCode": $("#searchVisibleTarget").val() },
-				success: function(data, textStatus, jqXHR)
-				{
-					let result = data.RESULT;
-					
-					if (JpUtilsObject.isNotNull(result))
-					{
-						response(
-								$.map(result, function(item) {
-									if (JpUtilsString.isNotEmpty(item.KUNNR))
-									{
-										return {
-											label: item.KUNNR + " | " + item.NAME1,
-											value: item.KUNNR
-										}
-									};
-								})
-						);					
-					};
-				}
-			});
-		},
-		select: function(event, ui)
-		{
-			 addTarget(ui.item.label, ui.item.value);
+	_setDealerCodeAutocomplete($("#searchVisibleTarget"), {
+		select: function(label, value, event) {
+			addTarget(label, value);
 			 
-			 $(this).val("");
-			 return false;
-		},
-		//delay: 50,
-		minLength: 3
+			$("#searchVisibleTarget").val("");
+		}
 	});
 });
 
@@ -192,19 +163,25 @@ function addTarget(label, value)
 	let dealerCode = str[0];
 	let dealerName = str[1];
 	
-	let html = [];
-	
-	html.push("<div>");
-	html.push("<input type='checkbox' class='custom-ui'/><label>" + dealerCode + "</label>");
-	html.push("<div class='split2'></div><span>" + dealerName + "</span>");
-	html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
-	html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
-	html.push("</div>");
-	
-	$("#addedtargets").append(html.join(""));
+	if ($("#FORM_write label:contains('" + dealerCode + "')").length == 0)
+	{
+		let html = [];
+		
+		html.push("<div>");
+		html.push("<input type='checkbox' class='custom-ui visible-target'/><label class='dealer-code'>" + dealerCode + "</label>");
+		html.push("<div class='split2'></div><span class='dealer-name'>" + dealerName + "</span>");
+		html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
+		html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
+		html.push("</div>");
+		
+		$("#addedtargets").append(html.join(""));		
+	};
 };
 
 $("#BTN_deleteVisibleTarget").on("click", function(event) {
+	
+	console.log(0);
+	
 	$.each($("#FORM_write .visible-target"), function(i, item) {
 		if ($(this).is(":checked"))
 		{

@@ -12,7 +12,6 @@ public class PlatformCommonVo
 	public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
 	public static final String DEFAULT_TIME_FORMAT_MMHH = "HH:mm";
 	public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
-	public static final String DEFAULT_DATE_TIME_YYYYMMDDHHMMSS_FORMAT = "yyyyMMddHHmmss";
 
 	public static final String UNLIMITED_DATE_TIME = "9999-12-31 23:59:59";
 

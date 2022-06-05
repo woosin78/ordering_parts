@@ -14,28 +14,32 @@
 	</div>
 	
 	<div th:if="${isManager == true}" class="condition-area">
-	<table class="condition table-fixed">
-		<tbody>
-			<tr>
-				<th> 
-					<div class="input-area">
-						<select id="fgStatus" name="fgStatus" onchange="doSearch();" class="custom-ui">
-							<option value="0">[[#{HQP_L_ALL}]]</option>
-							<option th:if="${isManager == true}" value="1">[[#{HQP_L_SURVEY_DOING}]]</option>
-							<!-- <option value="2">설문대기중</option> -->
-							<option value="2">[[#{HQP_L_SURVEY_RUNNING}]]</option>
-							<option value="3">[[#{HQP_L_SURVEY_COMPLETE}]]</option>
-						</select>
-					</div>
-				</th>
-				<td>
-					<div class="input-area">
-						<input type="text" id="query" name="query" class="custom-ui" onkeyup="if(event.keyCode =='13') doSearch();"/>
-					</div>				
-				</td>
-			</tr>
-		</tbody>
-	</table>
+		<table class="condition table-fixed">
+			<tbody>
+				<tr>
+					<th th:text="#{HQP_L_STATUS}"></th>
+					<td>
+						<div class="input-area">
+							<select id="fgStatus" name="fgStatus" class="custom-ui">
+								<option value="0"></option>
+								<option th:if="${isManager == true}" value="1">[[#{HQP_L_SURVEY_DOING}]]</option>
+								<!-- <option value="2">설문대기중</option> -->
+								<option value="2">[[#{HQP_L_SURVEY_RUNNING}]]</option>
+								<option value="3">[[#{HQP_L_SURVEY_COMPLETE}]]</option>
+							</select>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>[[#{HQP_L_SURVEY_TITLE}]]/[[#{HQP_L_WRITER}]]</th>
+					<td>
+						<div class="input-area">
+							<input type="text" id="query" name="query" class="custom-ui" onkeyup="if(event.keyCode =='13') doSearch();"/>
+						</div>				
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	
 	<div class="grid-info">
@@ -78,23 +82,13 @@ $(function(){
 			{data:"fgApply",		title: "[[#{HQP_L_PARTICIPATE}]]", 	"width": "15%"},	// 11	
 		],
 		columnDefs: [
-			{targets: [0, 5, 6, 7], className: "dt-body-center"},
+			{targets: [0, 5, 7], className: "dt-body-center"},
 			{targets: 1, className: "dt-body-center", 
 				createdCell: function(td, cellData, rowData, row, col) {
-					let color = '';
-					switch (cellData) {
-					case '1' :
-						color = 'grey';
-					break;
-					case '2' :
-						color = 'blue';
-					break;
-					default :
-						color = 'black';
-					break;
-					}
-					
-					$(td).css('color', color);
+					if (cellData == "2")
+					{
+						$(td).addClass("info");
+					};
 				},
 				render: function(data, type, row) {
 					return {'0': '-', '1': '[[#{HQP_L_SURVEY_DOING}]]', '2':'[[#{HQP_L_SURVEY_RUNNING}]]', '3':'[[#{HQP_L_SURVEY_COMPLETE}]]'}[data];
@@ -102,7 +96,7 @@ $(function(){
 			},
 			{targets: [2,3], className: "dt-body-center", render: function(data, type, row) {
 				//return moment(data.substr(0, 8)).format('YYYY.MM.DD') + ' ~ ' + moment(row['validTo'].substr(0, 8)).format('YYYY.MM.DD');
-				return row['validFromYmd'] + '  ~  ' + row['validToYmd'];
+				return row['validFromYmd'] + '  -  ' + row['validToYmd'];
 			}},
 			{targets: [3, 9, 10, 11], visible: false},
 			{targets: 4, 

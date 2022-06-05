@@ -1,17 +1,10 @@
 package org.jwebppy.portal.iv.board.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.dao.sap.RfcRequest;
-import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.dao.support.DataList;
-import org.jwebppy.platform.core.dao.support.DataMap;
-import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
@@ -177,47 +170,5 @@ public class EpBoardContentService extends IvGeneralService
 	public List<EpBoardContentDto> getBoardContents(EpBoardContentSearchDto boardContentSearch)
 	{
 		return CmModelMapperUtils.mapToDto(EpBoardContentObjectMapper.INSTANCE, boardContentMapper.findBoardContents(boardContentSearch));
-	}
-
-	public List<DataMap> getDealers(ErpDataMap paramMap)
-	{
-		RfcRequest rfcRequest = new RfcRequest("Z_SD_DEALER_LIST");
-
-		rfcRequest
-			.field()
-				.add(new Object[][] {
-					{"I_VTWEG", paramMap.getDistChannel()},
-					{"I_SPART", paramMap.getDivision()}
-				})
-			.and()
-			.table("T_VKORG")
-				.add("VKORG", paramMap.getSalesOrg())
-			.output("T_LIST");
-
-		RfcResponse rfcResponse = simpleRfcTemplate.response(rfcRequest);
-
-		DataList dataList = rfcResponse.getTable("T_LIST");
-
-		if (CollectionUtils.isNotEmpty(dataList))
-		{
-			String name = paramMap.getString("name");
-			String dealerCode = paramMap.getString("dealerCode");
-
-			List<DataMap> resultList = new ArrayList<>();
-
-			for (int i=0, size=dataList.size(); i<size; i++)
-			{
-				DataMap dataMap = (DataMap)dataList.get(i);
-
-				if (CmStringUtils.indexOfIgnoreCaseAndEmpty(dataMap.getString("NAME1"), name) > -1 || CmStringUtils.indexOfIgnoreCaseAndEmpty(dataMap.getString("KUNNR"), dealerCode) > -1)
-				{
-					resultList.add(dataMap);
-				}
-			}
-
-			return resultList;
-		}
-
-		return Collections.emptyList();
 	}
 }

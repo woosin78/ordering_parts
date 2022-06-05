@@ -113,25 +113,6 @@ public class PartInfoController extends PartsDomesticGeneralController
 		return EMPTY_RETURN_VALUE;
 	}
 
-	@RequestMapping("/autocompete/data")
-	@ResponseBody
-	public Object autocompleteData(@RequestParam Map<String, Object> paramMap)
-	{
-		String pPartNo = CmStringUtils.upperCase(CmStringUtils.trimToEmpty(paramMap.get("pPartNo")));
-
-		if ("".equals(pPartNo))
-		{
-			return EMPTY_RETURN_VALUE;
-		}
-
-		PartsErpDataMap rfcParamMap = getErpUserInfo();
-		rfcParamMap.put("partNo", pPartNo);
-		rfcParamMap.put("partDesc", pPartNo);
-		rfcParamMap.put("lang", getErpUserInfo().getLangForSap());
-
-		return partsInfoService.getSimplePartInfo(rfcParamMap);
-	}
-
 	@RequestMapping("/popup/part_search")
 	public String partSearch(Model model, WebRequest webRequest)
 	{

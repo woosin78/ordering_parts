@@ -46,12 +46,15 @@ public class ExInquiryDisplayController extends PartsExportGeneralController
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
 		rfcParamMap.with(paramMap)
+			.add(new Object[][] {
+				{"status", CmStringUtils.defaultString(paramMap.get("pStatus"), "X")},
+				{"complaint", "N"}
+			})
 			.addByKey(new Object[][] {
 				{"orderType", "pOrderType"},
 				{"orderNo", "pOrderNo"},
 				{"poNo", "pPoNo"},
 				{"orderPartNo", "pOrderPartNo"},
-				{"status", "pStatus"},
 				{"docType", "pDocType"}
 			})
 			.addDate(new Object[][] {

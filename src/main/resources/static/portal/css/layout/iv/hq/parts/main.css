@@ -126,11 +126,14 @@ input {
 	height:40px;
 	*/
 	vertical-align: middle;
+	z-index: 9999;
 }
 .logo-doobizplus {
+	position:relative;
 	margin: 8px 0 0 20px;
 	vertical-align: middle;
 	cursor: pointer;
+	z-index: 9999;
 }
 .info-area {
 	padding-top: 4px;

@@ -476,7 +476,7 @@ function doSimulation()
 			
 			let materialNos = itemParameter.materialNos;
 			let orderQties = itemParameter.orderQties;
-	
+			
 			if (materialNo.length == 0 || orderQties.length == 0)
 			{
 				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
@@ -487,7 +487,7 @@ function doSimulation()
 			{
 				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
 				return;
-			};				
+			};
 		};
 		
 		if ($("#shippingCondition").val() == "")
@@ -783,12 +783,7 @@ $(function(){
 				orderable: false,
 				render: function(data, type, row)
 				{
-					let clazz = "custom-ui";
-					
-					if (row.orderQty % row.lotQty > 0)
-					{
-						clazz += " warn";
-					};
+					let clazz = (row.orderQty % row.lotQty > 0) ? "custom-ui warn": "custom-ui";
 
 					return "<input type='text' class='" + clazz + "' name='orderQty' style='width:70px;' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
@@ -799,7 +794,7 @@ $(function(){
 			{name: "amDevPart", data: "amDevPart", title: "[[#{HQP_L_AM_DEV_PART}]]"},//AM Dev. No
 			{name: "netPrice", data: "netPrice", title: "[[#{HQP_L_NET_PRICE}]]"},//Net Price
 			{name: "netValue", data: "netValue", title: "[[#{HQP_L_NET_VALUE}]]"},//Net Value
-			{name: "availability", data: "availability", title: "[[#{HQP_L_AVAILABILITY}]]"},//Availability
+			{name: "availability", data: "availability", title: "[[#{HQP_L_STOCK}]]"},//Availability
 		],
 		columnDefs: [
 			{targets: [0], className: "skip-download dt-body-center"},
@@ -944,7 +939,15 @@ $(function(){
 
 		ProgressBar.hide();
 		
-		$("#TBL_grid input[name=materialNo][value='']:first").focus();
+		JpUiForm.input.on.focus($("#TBL_grid input[name=materialNo][value='']:first"));
+		JpUiForm.input.on.select($("#TBL_grid input[name=orderQty]"), $("#TBL_grid input[name=materialNo]"));
+		
+		JpUiForm.input.on.enter($("#TBL_grid input[name=materialNo]"), function(item) {
+			let orderQtyObj = $(item).closest("tr").find("input[name=orderQty]");
+			
+			orderQtyObj.val(JpUtilsString.defaultString(orderQtyObj.val(), "1"));
+			doSimulation();
+		});
 	});
 });
 </script>

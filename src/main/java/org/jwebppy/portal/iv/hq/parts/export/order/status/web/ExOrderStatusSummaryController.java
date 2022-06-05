@@ -1,12 +1,19 @@
 package org.jwebppy.portal.iv.hq.parts.export.order.status.web;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
+import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
+import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.common.web.PartsExportGeneralController;
@@ -60,10 +67,40 @@ public class ExOrderStatusSummaryController extends PartsExportGeneralController
 
 		DataList dataList = rfcResponse.getTable("T_DETAIL");
 
+		calcEtd(dataList);
+
 		FormatBuilder.with(dataList)
 			.qtyFormat(new String[] {"MENGE", "LFIMG_DL"})
-			.dateFormat(new String[] {"ZFOBDT", "AUDAT"});
+			.dateFormat(new String[] {"ZFOBDT", "AUDAT", "ZFETD"});
 
 		return dataList;
+	}
+
+	private void calcEtd(DataList dataList)
+	{
+		if (CollectionUtils.isNotEmpty(dataList))
+		{
+			for (int i=0, size=dataList.size(); i<size; i++)
+			{
+				DataMap dataMap = (DataMap)dataList.get(i);
+
+				Date etd = dataMap.getDate("ZFETD");
+				String formattedEtd = Formatter.getDefDateFormat(etd);
+
+				if (CmStringUtils.isEmpty(formattedEtd) || formattedEtd.startsWith("00"))
+				{
+					dataMap.put("ZFETD", null);
+
+					continue;
+				}
+
+				LocalDateTime etd2 = CmDateTimeUtils.parse(formattedEtd).plusDays(15);
+
+				if (etd2.compareTo(LocalDateTime.now()) >= 0)
+				{
+					dataMap.put("ZFETD", Timestamp.valueOf(etd2));
+				}
+			}
+		}
 	}
 }

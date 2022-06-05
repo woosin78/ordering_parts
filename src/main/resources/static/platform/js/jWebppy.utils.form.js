@@ -32,7 +32,23 @@ let JpUiForm = function(form)
 	
 	this.val = function(name)
 	{
-		return JpUtilsString.trimToEmpty(this.form.find("[name=" + name + "]").val());
+		let element = this.form.find("[name=" + name + "]");
+		
+		let tagName = element.prop("tagName");
+		let type = element.attr("type").toLowerCase();
+		
+		if  (type == "checkbox")
+		{
+			return JpUiForm.checkbox.checkedValues(element);
+		}
+		else if (type == "radio")
+		{
+			return JpUtilsString.trimToEmpty(JpUiForm.checkbox.checkedRadioValue(element));
+		}
+		else
+		{
+			return JpUtilsString.trimToEmpty(this.form.find("[name=" + name + "]").val());	
+		};
 	};
 	
 	this.submit = function()
@@ -61,7 +77,6 @@ JpUiForm.checkbox = {
 			
 			return element;
 		},
-		
 		check: function(checkbox)
 		{
 			if (JpUtilsObject.isNotNull(checkbox))
@@ -116,6 +131,17 @@ JpUiForm.checkbox = {
 			
 			return elements;
 		},
+		checkedValues: function(checkbox)
+		{
+			let element = JpUiForm.checkbox.checked(checkbox);
+			
+			let values = new Array();
+			let index = 0;
+			
+			$(checkbox).each(function() {
+				values[index++] = $(this).val();
+			});			
+		},
 		checkedRadio: function(radio)
 		{
 			if (JpUtilsObject.isNull(radio))
@@ -145,5 +171,68 @@ JpUiForm.checkbox = {
 			};
 			
 			return null;
+		}
+};
+
+JpUiForm.input = {
+	on: {
+		select: function()
+		{
+			for (let i=0; i<arguments.length; i++)
+			{
+				if (Array.isArray(arguments[i]))
+				{
+					$(arguments[i]).each(function(index, item) {
+						$(this).select();
+					});
+				}
+				else
+				{
+					$(arguments[i]).on("click", function() { $(this).select(); });	
+				};
+			};
+		},
+		focus: function()
+		{
+			for (let i=0; i<arguments.length; i++)
+			{
+				if (Array.isArray(arguments[i]))
+				{
+					$(arguments[i]).each(function(index, item) {
+						$(this).focus();
+					});
+				}
+				else
+				{
+					$(arguments[i]).focus();	
+				};			
+			};
+		},
+		enter: function(element, func)
+		{
+			if (JpUtilsObject.isNotNull(element))
+			{
+				if (Array.isArray(element))
+				{
+					$(element).each(function(index, item) {
+						$(item).on("keydown", function(event) {
+							if (event.keyCode == 13)
+							{
+								func(item);
+							};
+						});
+					});
+				}
+				else
+				{
+					$(element).on("keydown", function(event) {
+						if (event.keyCode == 13)
+						{
+							func(this);
+						};
+					});
+				};			
+			};
 		}		
+	}
 };

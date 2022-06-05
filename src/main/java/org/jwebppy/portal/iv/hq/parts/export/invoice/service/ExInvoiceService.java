@@ -123,7 +123,7 @@ public class ExInvoiceService extends PartsExportGeneralService
 					rfcRequest
 						.field()
 							.add(new Object[][] {
-								{"I_UNAME", paramMap.getUsername()},
+								{"I_USERID", paramMap.getUsername()},
 								{"I_FKDAT", paramMap.getString("fromDate")},
 								{"I_TKDAT", paramMap.getString("toDate")}
 							});

@@ -116,6 +116,15 @@ public class ApController extends PartsDomesticGeneralController
 			.decimalFormat(new String[] {"NETPR", "NETWR", "MWSBP"})
 			.dateFormat("FKDAT");
 
-		return dataList;
+		Map<String, Double> sumMap = PriceAdjustmentByCurrencyUtils.sum(dataList, new String[] {"NETWR"});
+
+		FormatBuilder.with(sumMap)
+			.decimalFormat("_SUM_NETWR");
+
+		Map<String, Object> returnMap = new HashMap<>();
+		returnMap.put("SUM", sumMap);
+		returnMap.put("LIST", dataList);
+
+		return returnMap;
 	}
 }

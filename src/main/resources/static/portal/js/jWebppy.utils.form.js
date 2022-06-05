@@ -173,3 +173,66 @@ JpUiForm.checkbox = {
 			return null;
 		}
 };
+
+JpUiForm.input = {
+	on: {
+		select: function()
+		{
+			for (let i=0; i<arguments.length; i++)
+			{
+				if (Array.isArray(arguments[i]))
+				{
+					$(arguments[i]).each(function(index, item) {
+						$(this).select();
+					});
+				}
+				else
+				{
+					$(arguments[i]).on("click", function() { $(this).select(); });	
+				};
+			};
+		},
+		focus: function()
+		{
+			for (let i=0; i<arguments.length; i++)
+			{
+				if (Array.isArray(arguments[i]))
+				{
+					$(arguments[i]).each(function(index, item) {
+						$(this).focus();
+					});
+				}
+				else
+				{
+					$(arguments[i]).focus();	
+				};			
+			};
+		},
+		enter: function(element, func)
+		{
+			if (JpUtilsObject.isNotNull(element))
+			{
+				if (Array.isArray(element))
+				{
+					$(element).each(function(index, item) {
+						$(item).on("keydown", function(event) {
+							if (event.keyCode == 13)
+							{
+								func(item);
+							};
+						});
+					});
+				}
+				else
+				{
+					$(element).on("keydown", function(event) {
+						if (event.keyCode == 13)
+						{
+							func(this);
+						};
+					});
+				};			
+			};
+		}		
+	}
+};

@@ -128,13 +128,13 @@
 			
 			<choose>
 				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
-					and a.reg_date <![CDATA[>=]]> to_date('${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(fromRegDate, 'FROM')}', 'yyyymmdd') and a.reg_date <![CDATA[<]]> to_date('${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(toRegDate, 'TO')}', 'yyyymmdd')
+					and a.reg_date <![CDATA[>=]]> #{fromRegDateForDb} and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
 				</when>
 				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate)">
-					and a.reg_date <![CDATA[>=]]> to_date('${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(fromRegDate, 'FROM')}', 'yyyymmdd')
+					and a.reg_date <![CDATA[>=]]> #{fromRegDateForDb}
 				</when>
 				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
-					and a.reg_date <![CDATA[<]]> to_date('${@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@dateFormat(toRegDate, 'TO')}', 'yyyymmdd')
+					and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
 				</when>
 			</choose>
 			

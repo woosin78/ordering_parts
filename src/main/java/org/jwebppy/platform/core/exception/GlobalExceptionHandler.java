@@ -17,6 +17,8 @@ public class GlobalExceptionHandler
 	@ExceptionHandler(Exception.class)
 	public Object handleException(HttpServletRequest request, Exception e)
 	{
+		e.printStackTrace();
+
         if (CmStringUtils.equals("XMLHttpRequest", request.getHeader("X-Requested-With")))
         {
         	return new ResponseEntity<>(ResponseMessage.toJson(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage(), ""), HttpStatus.INTERNAL_SERVER_ERROR);

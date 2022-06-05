@@ -76,7 +76,7 @@ public class ExInvoiceController extends PartsExportGeneralController
 			.decimalFormat(new String[] {"NETWR", "T_NETWR"})
 			.weightFormat(new String[] {"VOLUM", "BRGEW"})
 			.qtyFormat(new String[] {"LFIMG", "COUNT1"})
-			.dateFormat(new String[] {"ZFOBDT", "ZFETA"});
+			.dateFormat(new String[] {"ZFOBDT", "ZFETA", "ZFETD"});
 
 		return dataList;
 	}

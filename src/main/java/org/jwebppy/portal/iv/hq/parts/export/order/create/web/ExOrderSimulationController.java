@@ -428,7 +428,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 		int rowCount = (size / DEFAULT_ROW_COUNT + 1) * DEFAULT_ROW_COUNT;
 
-		for (int i=0, count=rowCount-lineNo; i<=count; i++)
+		for (int i=0, count=rowCount-size; i<count; i++)
 		{
 			ExOrderItemDto orderItem = new ExOrderItemDto();
 			orderItem.setLineNo(CmStringUtils.leftPad(lineNo*10, 6, "0"));

@@ -31,7 +31,7 @@ public class OrderDisplayService extends PartsDomesticGeneralService
 					{"KUNNR", paramMap.getCustomerNo()},
 					{"VKORG", paramMap.getSalesOrg()},
 					{"SPART", paramMap.getDivision()},
-					{"KVGR5", paramMap.getCustomerGrp5()}
+					{"KVGR5", "20"}
 				})
 				.addByKey(new Object[][] {
 					{"VBTYP", "docType"},

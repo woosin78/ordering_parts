@@ -15,18 +15,20 @@ public class ExOrderDisplayService extends PartsExportGeneralService
 	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_DISPLAY, unless="#result == null")
 	public RfcResponse getList(PartsErpDataMap paramMap)
 	{
-		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDERLIST");
+		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDERLIST");
 
 		rfcRequest
 			.field()
-				.add("I_LANGU", paramMap.getLangForSap())
+				.add(new Object[][] {
+					{"COMPLAINT", paramMap.getString("complaint")}
+				})
 			.and()
 			.structure("LS_SEARCH").with(paramMap)
 				.add(new Object[][] {
 					{"KUNNR", paramMap.getCustomerNo()},
 					{"VKORG", paramMap.getSalesOrg()},
 					{"SPART", paramMap.getDivision()},
-					{"KVGR5", paramMap.getCustomerGrp5()}
+					{"KVGR5", "20"}
 				})
 				.addByKey(new Object[][] {
 					{"VBTYP", "docType"},
@@ -35,10 +37,11 @@ public class ExOrderDisplayService extends PartsExportGeneralService
 					{"BSTKD", "poNo"},
 					{"MATNR", "orderPartNo"},
 					{"FRDATE", "fromDate"},
-					{"TODATE", "toDate"}
+					{"TODATE", "toDate"},
+					{"RFGSK", "status"}
 				})
 			.and()
-    		.structure("I_INPUT")
+			.structure("I_INPUT")
 				.add(SimpleRfcMakeParameterUtils.me(paramMap))
 			.output("LT_SEARCH");
 

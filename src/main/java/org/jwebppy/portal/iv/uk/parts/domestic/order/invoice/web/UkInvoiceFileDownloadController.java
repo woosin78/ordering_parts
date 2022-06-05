@@ -36,7 +36,7 @@ public class UkInvoiceFileDownloadController extends UkOrderGeneralController
 		rfcParamMap.put("chkCount", paramMap.get("chkCount"));
 		DataList dataList = invoiceStatusService.getPdfDownload(rfcParamMap, itemChks);
 
-		String now = CmDateFormatUtils.now(PlatformCommonVo.DEFAULT_DATE_TIME_YYYYMMDDHHMMSS_FORMAT);
+		String now = CmDateFormatUtils.now(PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
 		String fileName = "InvoicStatus_"+now+".pdf";
 		BufferedOutputStream bufferOutputStream = null;
 

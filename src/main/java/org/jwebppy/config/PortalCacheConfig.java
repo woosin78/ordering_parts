@@ -37,6 +37,7 @@ public class PortalCacheConfig
 	public static final String CLAIM_DISPLAY_DETAIL = "ClaimDisplayDetail";
 	public static final String CLAIM_REASON = "ClaimReason";
 	public static final String PARTS_INFO_AUTOCOMPLETE = "PartsInfoAutoComplete";
+	public static final String DEALER_INFO_AUTOCOMPLETE = "DealerInfoAutoComplete";
 	public static final String BUSINESS_TOOLS = "BusinessTools";
 
 	public static final int TTL_1_MINUTES = 60;
@@ -75,6 +76,7 @@ public class PortalCacheConfig
 		redisCacheConfigurationMap.put(CLAIM_DISPLAY, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(CLAIM_REASON, getTtl(TTL_24_HOURS));
 		redisCacheConfigurationMap.put(PARTS_INFO_AUTOCOMPLETE, getTtl(TTL_24_HOURS));
+		redisCacheConfigurationMap.put(DEALER_INFO_AUTOCOMPLETE, getTtl(TTL_24_HOURS));
 		redisCacheConfigurationMap.put(BUSINESS_TOOLS, getTtl(TTL_1_HOUR));
 
 		return RedisCacheManager.RedisCacheManagerBuilder

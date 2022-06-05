@@ -1,0 +1,150 @@
+<script>
+/*
+ * 공통 페이지
+ */
+ function _goHome()
+ {
+ 	document.location.href = "/portal/forward/entry_point";
+ };
+
+ function _clickUserInfo()
+ {
+ 	Popup.open("/portal/iv/user/write", 700, 300);
+ };
+
+ function _clickDealerInfo()
+ {
+ 	Popup.open("/portal/iv/hq/parts/domestic/dealer_info/view", 1100, 800);
+ };
+
+ function _clickLogout()
+ {
+ 	$("#FORM_logout").submit();
+ }; 
+ 
+//품번 검색
+function _showPartSearch(partNo)
+{
+	Popup.open("[[${BASE_PATH}]]/info/popup/part_search?pPartNo=" + partNo, 700, 600);
+};
+
+//대체품 조회
+function _showSubPartList(partNo)
+{
+	Popup.open("[[${BASE_PATH}]]/info/popup/sub_part_list?pPartNo=" + partNo, 900, 500);
+};
+
+//부품 별 적용 모델
+function _showAppliedModelList(partNo)
+{
+	Popup.open("[[${BASE_PATH}]]/info/popup/applied_model_list?pPartNo=" + partNo, 600, 500);
+};
+
+//서비스불가사유 - MUL
+function _showNotServiableReason(partNo)
+{
+	Popup.open("[[${BASE_PATH}]]/info/popup/alternative_list?pPartNo=" + partNo, 800, 500);
+};
+
+//Download Grid
+function _gridDownload(grid, fileName)
+{
+	let gridFileDownload = new GridFileDownload(grid);
+
+	gridFileDownload.fileName = fileName;
+	gridFileDownload.excelDownload();				
+};
+
+//품번 자동완성
+function _setPartAutocomplete(target)
+{
+	$(target).autocomplete({
+		source: function(request, response) {
+			JpUtilsAjax.get({
+				url: "/portal/iv/parts/search/data",
+				data: {	"pPartNo": $(target).val() },
+				success: function(data, textStatus, jqXHR)
+				{
+					let result = data.RESULT;
+					
+					if (JpUtilsObject.isNotNull(result))
+					{
+						response(
+								$.map(result, function(item) {
+									if (JpUtilsString.isNotEmpty(item.MATERIAL_TEXT))
+									{
+										return {
+											label: item.MATERIAL + " | " + item.MATERIAL_TEXT,
+											value: item.MATERIAL
+										}								
+									};
+								})
+						);					
+					};
+				}
+			});
+		},
+		//delay: 50,
+		minLength: 3
+	});
+};
+
+//딜러코드 or 딜러명 자동완성
+function _setDealerCodeAutocomplete(target, options)
+{
+	$(target).autocomplete({
+		source: function(request, response) {
+			JpUtilsAjax.get({
+				url: "/portal/iv/parts/search/dealer/data",
+				data: {	"pName": $(target).val(), "pCode": $(target).val() },
+				success: function(data, textStatus, jqXHR)
+				{
+					let result = data.RESULT;
+					
+					if (JpUtilsObject.isNotNull(result))
+					{
+						response(
+								$.map(result, function(item) {
+									if (JpUtilsString.isNotEmpty(item.KUNNR))
+									{
+										return {
+											label: item.KUNNR + " | " + item.NAME1,
+											value: item.KUNNR
+										}
+									};
+								})
+						);					
+					};
+				}
+			});
+		},
+		select: function(event, ui)
+		{
+			if (JpUtilsObject.isNotNull(options.select))
+			{
+				options.select(ui.item.label, ui.item.value, event);
+			};
+			return false;
+		},
+		//delay: 50,
+		minLength: 3
+	});
+};
+
+//자동 스크롤 탑
+$("body").scroll(function() {
+	if ($(this).scrollTop() > 200 )
+	{
+		$(".bt-gotop").fadeIn();
+	}
+	else
+	{
+		$(".bt-gotop").fadeOut();
+	};
+});
+
+$(".gotop").click(function() {
+	$("html, body").animate( { scrollTop : 0 }, 400);
+	return false;
+});	
+</script>
