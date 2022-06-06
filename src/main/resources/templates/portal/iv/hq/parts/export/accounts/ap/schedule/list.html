@@ -12,12 +12,8 @@
 		</div>
 	</div>
 	<div class="grid-info">
-		<div class="block-total-area">
-			<span class="total-number" id="totalAmount"></span>
-		</div>
-		<div class="grid-total">
-			<span class="total-number" id="totalRows"></span>
-		</div>
+		<div class="block-total-area total-number" id="totalAmount"></div>
+		<div class="grid-total total-numbe" id="totalRows"></div>
 	</div>
 	
 	<div id="AREA_grid" class="flex-grow grid-area">
@@ -63,7 +59,7 @@ $(function(){
 				
 				$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");
 				
-				$("#totalAmount").html("[[#{HQP_L_TOTAL_AMOUNT}]]: " + totalAmount);
+				$("#totalAmount").html("[[#{HQP_L_TOTAL_AMOUNT}]] " + totalAmount);
 				
 				return apList;
 			}			

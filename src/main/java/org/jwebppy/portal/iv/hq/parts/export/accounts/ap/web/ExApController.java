@@ -47,7 +47,9 @@ public class ExApController extends PartsExportGeneralController
 				{"fromOrderNo", "pFromOrderNo"},
 				{"toOrderNo", "pToOrderNo"},
 				{"fromInvoiceNo", "pFromInvoiceNo"},
-				{"toInvoiceNo", "pToInvoiceNo"}
+				{"toInvoiceNo", "pToInvoiceNo"},
+				{"fromBillingNo", "pFromBillingNo"},
+				{"toBillingNo", "pToBillingNo"}
 			})
 			.addDateByKey(new Object[][] {
 				{"fromDate", "pFromDate"},

@@ -34,7 +34,7 @@ public class ExMachineOrderReportController extends PartsExportGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth()));
+		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateMonth(CmDateTimeUtils.now().minusYears(5))));
 		model.addAttribute("pToDate", CmDateFormatUtils.today());
 
 		addAllAttributeFromRequest(model, webRequest);
@@ -82,8 +82,7 @@ public class ExMachineOrderReportController extends PartsExportGeneralController
 			{
 				countMap = new LinkedHashMap<>();
 
-				for (int j=toYear; j>=fromYear; j--)
-				//for (int j=fromYear; j<=toYear; j++)
+				for (int j=fromYear; j<=toYear; j++)
 				{
 					countMap.put(j, 0);
 				}

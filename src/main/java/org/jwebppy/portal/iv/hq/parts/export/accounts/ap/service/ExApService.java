@@ -23,8 +23,8 @@ public class ExApService extends PartsExportGeneralService
 					{"I_KUNNR", paramMap.getCustomerNo()}
 				})
 				.addByKey(new Object[][] {
-					{"I_F_VBELN", "fromOrderNo"},
-					{"I_T_VBELN", "toOrderNo"},
+					{"I_F_VBELN", "fromBillingNo"},
+					{"I_T_VBELN", "toBillingNo"},
 					{"I_F_ZFCIVNO", "fromInvoiceNo"},
 					{"I_T_ZFCIVNO", "toInvoiceNo"},
 					{"I_F_BLDAT", "fromDate"},

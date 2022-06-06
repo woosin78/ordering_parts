@@ -3,6 +3,7 @@ package org.jwebppy.platform.core.security.authentication.entity;
 import java.time.LocalDateTime;
 
 import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.platform.core.security.authentication.AuthenticationType;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -25,4 +26,5 @@ public class LoginHistoryEntity extends GeneralEntity
 	private Integer uSeq;
 	private String fgResult;
 	private String timezone;
+	private AuthenticationType authenticationType;
 }

@@ -19,11 +19,19 @@
 		<tbody>
 			<tr>
 				<th th:text="#{HQP_L_COMMERCIAL_INVOICE_NO}"></th>
-				<td>
+				<td colspan="3">
 					<div class="input-area">
 						<input type="text" id="pFromInvoiceNo" name="pFromInvoiceNo" class="custom-ui-scope" th:value="${pFromInvoiceNo}"> - <input type="text" id="pToInvoiceNo" name="pToInvoiceNo" class="custom-ui-scope" th:value="${pToInvoiceNo}">
 					</div>			
 				</td>
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_BILLING_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromBillingNo" name="pFromBillingNo" class="custom-ui-scope" th:value="${pFromBillingNo}"> - <input type="text" id="pToBillingNo" name="pToBillingNo" class="custom-ui-scope" th:value="${pToBillingNo}">
+					</div>			
+				</td>				
 				<th th:text="#{HQP_L_BILLING_DATE}"></th>
 				<td>
 					<div class="input-area">
@@ -61,6 +69,7 @@ $(function(){
 			{data: "ZFCIVNO", title: "[[#{HQP_L_COMMERCIAL_INVOICE_NO}]]"},				
 			{data: "ZTERM", title: "[[#{HQP_L_PAYMENT_TERMS}]]"},
 			{data: "BUZEI", title: "[[#{HQP_L_SEQ}]]"},
+			{data: "XBLNR", title: "[[#{HQP_L_BILLING_NO}]]"},
 			{data: "BLDAT", title: "[[#{HQP_L_BILLING_DATE}]]"},
 			{data: "FAEDT", title: "[[#{HQP_L_DUE_DATE}]]"},
 			{data: "WRBTR", title: "[[#{HQP_L_AMOUNT}]]"},
@@ -70,8 +79,8 @@ $(function(){
 			{data: "WRBTR2", title: "[[#{HQP_L_INTEREST}]]"}
 		],
 		columnDefs: [
-			{targets: [0, 1, 2, 3, 4, 6, 8, 9], className: "dt-body-center"},
-			{targets: [5, 7], className: "dt-body-right"}
+			{targets: [0, 1, 2, 3, 4, 5, 7, 9, 10], className: "dt-body-center"},
+			{targets: [6, 8], className: "dt-body-right"}
 		],		
 		ajax: {
 			url: "[[${BASE_PATH}]]/accounts/ap/list/data",
@@ -79,6 +88,8 @@ $(function(){
 			{
 				p.pFromInvoiceNo = $("#pFromInvoiceNo").val();
 				p.pToInvoiceNo = $("#pToInvoiceNo").val();
+				p.pFromBillingNo = $("#pFromBillingNo").val();
+				p.pToBillingNo = $("#pToBillingNo").val();				
 				p.pFromDate = $("#pFromDate").val();
 				p.pToDate = $("#pToDate").val();
 			},

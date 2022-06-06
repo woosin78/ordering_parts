@@ -15,12 +15,13 @@
 		<result property="fgResult" column="fg_result" />
 		<result property="timezone" column="timezone" />
 		<result property="regDate" column="reg_date" />
+		<result property="authenticationType" column="auth_type" />
 	</resultMap>
 
 	<insert id="insertLoginHistory" parameterType="LoginHistoryEntity">
-		insert into pltf_login_history (lh_seq, username, session_id, ip, referer, user_agent, account_locked_date, u_seq, fg_result, timezone, reg_date) values
+		insert into pltf_login_history (lh_seq, username, session_id, ip, referer, user_agent, account_locked_date, u_seq, fg_result, timezone, reg_date, auth_type) values
 		(
-			pltf_lh_seq.nextval, #{username}, #{sessionId}, #{ip}, #{referer}, #{userAgent}, #{accountLockedDate}, #{uSeq}, #{fgResult}, #{timezone}, #{regDate}
+			pltf_lh_seq.nextval, #{username}, #{sessionId}, #{ip}, #{referer}, #{userAgent}, #{accountLockedDate}, #{uSeq}, #{fgResult}, #{timezone}, #{regDate}, #{authenticationType}
 		)
 	</insert>
 	

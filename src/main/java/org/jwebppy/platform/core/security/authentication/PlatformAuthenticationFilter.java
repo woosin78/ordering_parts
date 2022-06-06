@@ -13,7 +13,9 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.sso.uitils.StringEncrypter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -33,6 +35,9 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 {
 	@Value("${sso.ad.domainSecret}")
 	private String DOMAIN_SECRET;
+
+	@Autowired
+	private I18nMessageSource i18nMessageSource;
 
     private final static Map<String, String[]> SSO_ALLOWED_SYSTEMS = new HashMap<>();
 
@@ -68,17 +73,17 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
 			if ("".equals(username))
 			{
-				throw new UsernameNotFoundException("The username or password is incorrect.");
+				throw new UsernameNotFoundException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
 			}
 
 			if ("".equals(password))
 			{
-				throw new BadCredentialsException("The username or password is incorrect.");
+				throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
 			}
 
 			if (isAdUser(CmStringUtils.trimToEmpty(request.getParameter("token"))))
 			{
-				password = "AD-USER";
+				password = AuthenticationType.A.getUniqueName();
 			}
 		}
 
@@ -150,7 +155,7 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 	    		return null;
 	    	}
 
-	    	return new String[] {message[0], "SSO-USER"} ;
+	    	return new String[] {message[0], AuthenticationType.S.getUniqueName()};
 		}
 		catch (Exception e)
 		{

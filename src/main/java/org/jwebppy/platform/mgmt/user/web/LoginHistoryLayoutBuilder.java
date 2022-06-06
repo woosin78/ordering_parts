@@ -21,8 +21,9 @@ public class LoginHistoryLayoutBuilder
 		Tr thTr = new Tr();
 		thTr.addTextTh("Login Time(Local Time)", "two wide");
 		thTr.addTextTh("IP", "two wide");
-		thTr.addTextTh("Referer", "five wide");
-		thTr.addTextTh("User Agent", "six wide");
+		thTr.addTextTh("Referer", "three wide");
+		thTr.addTextTh("User Agent", "five wide");
+		thTr.addTextTh("Authentication Type", "two wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -45,6 +46,7 @@ public class LoginHistoryLayoutBuilder
 				tbTr.addTextTd(loginHistory.getIp());
 				tbTr.addTextTd(loginHistory.getReferer());
 				tbTr.addTextTd(loginHistory.getUserAgent());
+				tbTr.addTextTd(loginHistory.getAuthenticationType().getType());
 
 				if (CmStringUtils.equals(loginHistory.getFgResult(), PlatformCommonVo.NO))
 				{

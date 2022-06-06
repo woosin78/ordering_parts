@@ -300,6 +300,9 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 	table-layout: fixed;
 	/* border-radius: 5px; */
 }
+.table-fixed .selected {
+	background-color: #b2e4d7
+}
 .table-inner {
 	padding: 0px;
 	margin: 0px;
@@ -336,14 +339,15 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 .condition td.wp15{
 	width: 15%;
 }
+.condition th.checkbox { width: 50px; }
 .condition th.order-no { width: 150px; }
 .condition th.item-line { width: 100px; }
 .condition th.material { width: 200px; }
-.condition th.uom { width: 100px; }
-.condition th.qty { width: 100px; }
+.condition th.uom { width: 80px; }
+.condition th.qty { width: 120px; }
 .condition th.weight { width: 150px; }
-.condition th.order-date { width: 100px; }
-.condition th.price { width: 150px; }
+.condition th.order-date { width: 120px; }
+.condition th.price { width: 120px; }
 /* condition 테이블 모서리 라운드 처리*/
 
 .condition tr:first-child th:first-child, .condition tr:first-child td:first-child {

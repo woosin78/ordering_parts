@@ -59,6 +59,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         }
 
         UserDto user = userService.getUserByUsername(username);
+        AuthenticationType authenticationType = AuthenticationType.N;
         boolean isValidCredentials = false;
 
         System.err.println("2. User:" + user);
@@ -76,22 +77,22 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
         	UserAccountDto userAccount = user.getUserAccount();
 
-        	if (CmStringUtils.equalsAny(password, "AD-USER", "SSO-USER"))
+        	if (CmStringUtils.equalsAny(password, AuthenticationType.A.getUniqueName(), AuthenticationType.S.getUniqueName()))
         	{
         		System.err.println("4. Login by AD, SSO: " + password);
 
+        		authenticationType = (password.equals(AuthenticationType.A.getUniqueName())) ? AuthenticationType.A: AuthenticationType.S;
         		isValidCredentials = true;
         	}
         	else
         	{
+        		System.err.println("5. Where login by the DoobizPlus's credentials. FgUsePassword:" + userAccount.getFgNoUsePassword());
+
             	/*
             	 * DoobizPlus 자체 계정 인증 허용 여부
             	 * Y: 인증 허용 않음
             	 * N: 인증 허용
             	 */
-
-        		System.err.println("5. Where login by the DoobizPlus's credentials. FgUsePassword:" + userAccount.getFgNoUsePassword());
-
             	if (CmStringUtils.equals(userAccount.getFgNoUsePassword(), PlatformCommonVo.NO))
             	{
             		//AD 인증에 성공했거나 비밀번호가 동일할 경우
@@ -105,8 +106,9 @@ public class PlatformAuthenticationManager implements AuthenticationManager
             		{
                 		if (isDoobizUser(username, password))
                 		{
-                			System.err.println("7. Doobiz Login Success");
+                			System.err.println("7. Doobiz Login Success by Doobiz Authentication");
 
+                			authenticationType = AuthenticationType.D;
                 			isValidCredentials = true;
                 		}
             		}
@@ -117,13 +119,13 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         	{
                 if (!userAccount.isValidPeriod())
                 {
-                	System.err.println("8. Account Expired");
+                	System.err.println("9. Account Expired");
 
                 	throw new AccountExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_EXPIRED"));
                 }
                 else if (CmStringUtils.equals(PlatformCommonVo.YES, user.getUserAccount().getFgAccountLocked()))
                 {
-                	System.err.println("9. Account Locked");
+                	System.err.println("10. Account Locked");
 
                 	throw new LockedException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_LOCKED"));
                 }
@@ -131,15 +133,15 @@ public class PlatformAuthenticationManager implements AuthenticationManager
                 {
                 	if (CmStringUtils.notEquals(PlatformCommonVo.YES, userAccount.getFgNoUsePassword()))
                 	{
-                		System.err.println("10. Password Locked");
+                		System.err.println("11. Password Locked");
 
                 		throw new CredentialsExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_PASSWORD_EXPIRED"));
                 	}
                 }
 
-                System.err.println("11. Login Success");
+                System.err.println("12. Login Success");
 
-                return userAuthenticationService.getAuthentication(user);
+                return userAuthenticationService.getAuthentication(user, authenticationType);
         	}
         }
 

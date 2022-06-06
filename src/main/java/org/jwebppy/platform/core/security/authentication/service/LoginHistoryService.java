@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.security.authentication.AuthenticationType;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
+import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.security.authentication.entity.LoginHistoryEntity;
 import org.jwebppy.platform.core.security.authentication.mapper.LoginHistoryMapper;
 import org.jwebppy.platform.core.security.authentication.mapper.LoginHistoryObjectMapper;
@@ -16,7 +18,6 @@ import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -65,13 +66,15 @@ public class LoginHistoryService extends GeneralService
 			loginHistory.setReferer(referer);
 			loginHistory.setFgResult(fgResult);
 			loginHistory.setTimezone(PlatformCommonVo.DEFAULT_TIMEZONE);
+			loginHistory.setAuthenticationType(AuthenticationType.N);
 
 			if (UserAuthenticationUtils.isAuthenticated())
 			{
-				UserDto user = userService.getUser(UserAuthenticationUtils.getUserDetails().getUSeq());
+				PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
 
-				loginHistory.setUSeq(user.getUSeq());
-				loginHistory.setTimezone(user.getTimezone());
+				loginHistory.setUSeq(platformUserDetails.getUSeq());
+				loginHistory.setTimezone(platformUserDetails.getTimezone());
+				loginHistory.setAuthenticationType(platformUserDetails.getAuthenticationType());
 			}
 
 			return loginHistoryMapper.insertLoginHistory(loginHistory);

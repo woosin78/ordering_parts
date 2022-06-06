@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
+import org.jwebppy.platform.core.security.authentication.AuthenticationType;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
@@ -29,6 +30,7 @@ public class LoginHistoryDto extends GeneralDto implements IPagination
 	private Integer uSeq;
 	private String fgResult;
 	private String timezone;
+	private AuthenticationType authenticationType;
 
 	public String getRgResult()
 	{

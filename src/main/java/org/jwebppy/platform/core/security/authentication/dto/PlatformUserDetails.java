@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.security.authentication.AuthenticationType;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,6 +42,7 @@ public class PlatformUserDetails implements UserDetails
 	private String currencyFormat;
 	private String weightFormat;
 	private String qtyFormat;
+	private AuthenticationType authenticationType;
 
 	private List<CItemDto> cItems;
 

@@ -16,10 +16,18 @@
 <div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
-			<select name="ugSeq" class="ui search dropdown">
+			<div class="ui fluid search normal selection dropdown user-group">
+				<input type="hidden" name="ugSeq"/>
+				<i class="dropdown icon"></i>
+				<div class="default text">User Group</div>
+				<div class="menu">
+					<div class="item" th:each="userGroup : ${userGroups}" th:data-value="${userGroup.ugSeq}" th:text="|${userGroup.name} - ${userGroup.description}|"></div>
+				</div>
+			</div>
+			<!--select name="ugSeq" class="ui search dropdown">
 				<option value="">User Group</option>
 				<option th:each="userGroup : ${userGroups}" th:value="${userGroup.ugSeq}" th:text="|${userGroup.name} - ${userGroup.description}|" th:selected="${userGroup.ugSeq} == ${ugSeq}"></option>
-			</select>
+			</select-->
 		</div>
 	</div>
 	<div class="fields">
@@ -129,6 +137,16 @@
 let usersTable;
 $(document).ready(function() {
 	usersTable = new JpUiTable($("#TBL_users"));
+	
+	$(".user-group").dropdown({
+		minCharacters: 2,
+		fullTextSearch: true
+	}).on("keydown", function(event) {
+		if (event.keyCode == 13)
+		{
+			doSearch();
+		};
+	});
 
 	usersTable.settings = {
 			ajax: {
@@ -627,8 +645,8 @@ $(document).ready(function() {
 		$("#FORM_copyToCreate").form("reset");
 
 		$("#MDL_coptyToCreate")
-		.modal("setting", "closable", false)
-		.modal("show");
+			.modal("setting", "closable", false)
+			.modal("show");
 	});
 
 	$("#FORM_copyToCreate").form({
@@ -836,6 +854,7 @@ $(document).ready(function() {
 	$("#query").on("keydown", function(event) {
 		if (event.keyCode==13)
 		{
+			initSeq();
 			doSearch();
 			event.preventDefault();
 		};

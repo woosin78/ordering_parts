@@ -52,11 +52,17 @@
 	</div>
 	
 	<div id="AREA_grid" class="flex-grow grid-area" style="overflow-y: auto;">
-		<div id="AREA_template">		
+		<div id="AREA_template">
 			<table class="condition table-fixed template">
 				<tbody>
 					<tr>
-						<th style="width:50px;" class="center"><input type="checkbox" class="custom-ui check-all"><label></label></th>
+						<th class="center checkbox">
+							<input type="checkbox" class="custom-ui check-all"><label></label>
+							<input type="hidden" name="orderNo"/>
+							<input type="hidden" name="lineNo"/>
+							<input type="hidden" name="partNo"/>
+							<input type="hidden" name="orderDate"/>						
+						</th>
 						<th th:text="#{HQP_L_ORDER_NO}" class="center order-no"></th>
 						<th th:text="#{HQP_L_LINE_ITEM}" class="center item-line"></th>
 						<th th:text="#{HQP_L_ORDER_PART_NO}" class="center material"></th>
@@ -107,10 +113,6 @@
 					</tr>				
 				</tbody>
 			</table>
-			<input type="hidden" name="orderNo"/>
-			<input type="hidden" name="lineNo"/>
-			<input type="hidden" name="partNo"/>
-			<input type="hidden" name="orderDate"/>
 		</div>
 		<form id="FORM_claim">
 			<input type="hidden" name="poNo"/>
@@ -149,7 +151,7 @@ $(function(){
 		
 		try
 		{
-			$("#FORM_claim div.split-row-compact")[0].remove();//delete split row
+			$("#FORM_claim table:first").prev("div.split-row-compact").remove();//delete split row
 		}
 		catch (e) {};
 		

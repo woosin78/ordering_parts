@@ -37,15 +37,19 @@ let columns = [];
 let data = [];
 
 $(function(){
-	Calendar.makeBeetweenCalendar($("#pFromDate"), "2012.01.01", $("#pToDate"), "[[${pToDate}]]");
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	
+	doSearch();
 	
 	//Search 버튼 클릭
 	$("#BTN_search").on("click", function(){		
-		doSearch(); 
+		doSearch();
 	});
 	
 	function doSearch()
 	{
+		ProgressBar.show();
+		
 		let defaultGridHeight = 250;
 		let scrollVerticalArrowSize = 10;//스크롤바 화살표 사이즈
 		
@@ -64,32 +68,25 @@ $(function(){
 				let thead = [];
 				let tbody = [];
 				
-				thead.push("<tr><th></th>");
+				thead.push("<tr><th style='position: sticky; top:0;'></th>");
 				
-				for (let i=from; i<=to; i++)
-				//for (let i=to; i>=from; i--)
+				for (let i=to; i>=from; i--)
 				{
-					thead.push("<th style='position: sticky; top:0' class='center text-ellipsis' title='" + i + "'>" + i + "</th>");
+					thead.push("<th style='position: sticky; top:0;' class='center text-ellipsis' title='" + i + "'>" + i + "</th>");
 				};
 				
 				thead.push("</tr>");
 				
 				for (let i=0, length=models.length; i<length; i++)
 				{
-					tbody.push("<tr>");
+					tbody.push("<tr class='div_hover'>");
 					tbody.push("<td class='text-ellipsis' title='" + models[i] + "'>" + models[i] + "</td>");
 					
-					$.each(values[i], function(index, item) {
-						let value = (item > 0) ? JpUtilsNumber.addComma(item): "";
+					$.each(Object.keys(values[i]).reverse(), function(index, item) {
+						let value = values[i][item];
+						let formattedValue = (value > 0) ? JpUtilsNumber.addComma(value): "";
 						
-						tbody.push("<td class='center text-ellipsis'");
-						
-						if (JpUtilsString.isNotEmpty(value))
-						{
-							tbody.push(" title='" + value + "'");
-						};
-						
-						tbody.push(">" + value + "</td>");
+						tbody.push("<td class='center text-ellipsis' title='" + formattedValue + "'>" + formattedValue + "</td>");
 					});
 					
 					tbody.push("</tr>");
@@ -169,16 +166,15 @@ $(function(){
 			{
 				gridAreaHeight -= scrollVerticalArrowSize;
 			};
-			/*
-			else
-			{
-				gridAreaHeight = $("#TBL_grid").height(); 
-			};
-			*/
 
 			$("#TBL_grid tbody").css({
 				"width": gridWidth,
 				"height": gridAreaHeight - $("#TBL_grid thead").outerHeight(),
+			});
+			
+			$("#TBL_grid tbody tr").on("click", function() {
+				$("#TBL_grid tbody tr").removeClass("selected");
+				$(this).addClass("selected");	
 			});
 			
 			$("#AREA_grid").css("height", gridAreaHeight);

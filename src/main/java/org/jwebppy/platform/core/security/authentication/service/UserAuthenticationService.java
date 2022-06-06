@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.common.service.PlatformGeneralService;
+import org.jwebppy.platform.core.security.authentication.AuthenticationType;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.util.CmReflectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -47,28 +48,34 @@ public class UserAuthenticationService extends PlatformGeneralService
 
 	public Authentication getAuthentication(UserDto user)
 	{
+		return getAuthentication(user, null);
+	}
+
+	public Authentication getAuthentication(UserDto user, AuthenticationType authenticationType)
+	{
 		UserAccountDto userAccount = user.getUserAccount();
 		UserGroupDto userGroup = user.getUserGroup();
 
-		String username = userAccount.getUsername();
+		Integer uSeq = user.getUSeq();
+		String language = user.getLanguage();
 
         CItemSearchDto userSearch = new CItemSearchDto();
-        userSearch.setUSeq(user.getUSeq());
-        userSearch.setLang(user.getLanguage());
+        userSearch.setUSeq(uSeq);
+        userSearch.setLang(language);
         userSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
 
         List<CItemDto> cItems = contentAuthorityService.getMyCItems(userSearch);
 
         PlatformUserDetails platformUserDetails = new PlatformUserDetails();
-        platformUserDetails.setUSeq(user.getUSeq());
+        platformUserDetails.setUSeq(uSeq);
         platformUserDetails.setName(user.getName());
-        platformUserDetails.setUsername(username);
+        platformUserDetails.setUsername(userAccount.getUsername());
         platformUserDetails.setPassword(userAccount.getPassword());
         platformUserDetails.setFgAccountLocked(userAccount.getFgAccountLocked());
         platformUserDetails.setFgPasswordLocked(userAccount.getFgPasswordLocked());
         platformUserDetails.setFromValid(userAccount.getFromValid());
         platformUserDetails.setToValid(userAccount.getToValid());
-        platformUserDetails.setLanguage(user.getLanguage());
+        platformUserDetails.setLanguage(language);
         platformUserDetails.setDateFormat1(userGroup.getDateFormat1());
         platformUserDetails.setTimeFormat1(userGroup.getTimeFormat1());
         platformUserDetails.setDateFormat2(userGroup.getDateFormat2());
@@ -78,6 +85,7 @@ public class UserAuthenticationService extends PlatformGeneralService
         platformUserDetails.setWeightFormat(userGroup.getWeightFormat());
         platformUserDetails.setQtyFormat(userGroup.getQtyFormat());
         platformUserDetails.setCItems(cItems);
+        platformUserDetails.setAuthenticationType(authenticationType);
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userAccount.getUsername(), userAccount.getPassword(), platformUserDetails.getAuthorities());
         usernamePasswordAuthenticationToken.setDetails(platformUserDetails);
