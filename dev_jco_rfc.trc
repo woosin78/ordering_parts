@@ -4097,3 +4097,11 @@ COUNTER     2
     return code: RFC_FAILURE (1)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220606 212356 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Mon Jun 06 21:23:56,962<    >RfcGetException rc (7) message: Syntax error in program /1BCDWB/SAPLSF00000306                  .
+<RfcGetException
+
+Error:  >Mon Jun 06 21:25:17,267<    >RfcGetException rc (7) message: Syntax error in program /1BCDWB/SAPLSF00000306                  .
+<RfcGetException
+

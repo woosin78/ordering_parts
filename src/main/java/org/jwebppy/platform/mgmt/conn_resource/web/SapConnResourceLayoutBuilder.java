@@ -32,7 +32,7 @@ public class SapConnResourceLayoutBuilder
 		thTr.addTextTh("Name", "two wide");
 		thTr.addTextTh("Description", "two wide");
 		thTr.addTextTh("Type", "three wide");
-		thTr.addTextTh("Server", "two wide");//Message or Application
+		thTr.addTextTh("Application/Message Server", "two wide");//Message or Application
 		thTr.addTextTh("System ID", "one wide");
 		thTr.addTextTh("R3name", "one wide");
 		thTr.addTextTh("Client", "one wide");

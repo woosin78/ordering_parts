@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/eu/parts/popup/index}">
+<th:block layout:fragment="content">
+<div class="block-header">
+	<div class="block-title">Dealer Master Display</div>
+</div>	
+<div class="condition-area">
+<table class="condition table-fixed">
+		<tr>
+			<th style="width: 150px;">Customer Code</th>
+			<td id="CUSTOMER_CODE"></td>
+			<th style="width: 150px;">Sales area</th>
+			<td id="SALES_AREA"><span id="VKORG"></span>&nbsp;
+								<span id="VTWEG"></span>&nbsp;
+								<span id="SPART"></span>	
+			</td>
+		</tr>		
+</table>
+</div>
+<div class="split-row"></div>
+<div class="block-header">
+	<div class="block-title">Basic info</div>
+</div>
+<div class="condition-area">
+	<table class="condition table-fixed">
+		<tr>
+			<th style="width: 150px;">Tax Number</th>
+			<td id="STCD4"></td>
+			<th style="width: 150px;">Customer Code</th>
+			<td id="KUNNR"></td>
+		</tr>		
+		<tr>
+			<th style="width: 150px;">Personal ID</th>
+			<td id="STCD1"></td>
+			<th style="width: 150px;">Creation Date</th>
+			<td id="ERDAT"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Sales Org.</th>
+			<td id="VKORG_T"></td>
+			<th style="width: 150px;">Distribution Channel</th>
+			<td id="VTWEG_T"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Division</th>
+			<td id="SPART_T"></td>
+			<th style="width: 150px;">Search Term</th>
+			<td id="SORT1"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Name</th>
+			<td id="NAME1"></td>
+			<th style="width: 150px;">Name(EN)</th>
+			<td></td>
+		</tr>									
+	</table>
+	<div class="split-row"></div>
+	<table class="condition table-fixed">
+		<tr>
+			<th style="width: 150px;">Postal code/City</th>
+			<td><span id="POST_CODE1"></span>
+				<span id="CITY1"></span>			
+			</td>
+			<th style="width: 150px;">Address</th>
+			<td id="STREET"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Country/Region</th>
+			<td><span id="COUNTRY"></span>
+				<span id="REGION"></span>
+				<span id="REGION_T"></span>												
+			</td>
+			<th style="width: 150px;">Transportation Zone</th>
+			<td id="TRANSPZONE_T"></td>
+		</tr>	
+		<tr>
+			<th style="width: 150px;">Telephone</th>
+			<td id="TEL_NUMBER"></td>
+			<th style="width: 150px;">Fax</th>
+			<td id="FAX_NUMBER"></td>
+		</tr>	
+		<tr>
+			<th style="width: 150px;">Mobile phone</th>
+			<td id="MOB_NUMBER"></td>
+			<th style="width: 150px;">e-mail</th>
+			<td id="SMTP_ADDR"></td>
+		</tr>	
+		<tr>
+			<th style="width: 150px;">Type of Business</th>
+			<td id="J_1KFTBUS"></td>
+			<th style="width: 150px;">Type of Industry</th>
+			<td id="J_1KFTIND"></td>
+		</tr>	
+		<tr>
+			<th style="width: 150px;">Type of corporation</th>
+			<td id="GFORM"></td>
+			<th style="width: 150px;">Rep's Name</th>
+			<td id="GFORM_T"></td>
+		</tr>	
+		<tr>
+			<th style="width: 150px;">Continent</th>
+			<td id="NIELS_T"></td>
+			<th style="width: 150px;">Language</th>
+			<td id="LANGU_T"></td>
+		</tr>	
+		<tr>
+			<th style="width: 150px;">Bill-to address</th>
+			<td id="STREET_BP"></td>
+			<th style="width: 150px;">Ship-to address</th>
+			<td id="STREET_SH"></td>
+		</tr>																	
+	</table>		
+</div>	
+<div class="split-row"></div>
+<div class="block-header">
+	<div class="block-title">Sales info</div>
+</div>
+<div class="condition-area">
+	<table class="condition table-fixed">
+		<tr>
+			<th style="width: 150px;">Branch</th>
+			<td id="VKGRP_T"></td>
+			<th style="width: 150px;">Subsidiary</th>
+			<td id="VKBUR_T"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Sales District</th>
+			<td id="BZIRK_T"></td>
+			<th style="width: 150px;">Currency</th>
+			<td id="WAERS"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Incoterms</th>
+			<td><span id="INCO1"></span>
+				<span id="INCO2"></span>
+			</td>
+			<th style="width: 150px;">Dilivery Priority</th>
+			<td id="LPRIO_T"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Tax Classification</th>
+			<td id="TAXKD_T"></td>
+			<th style="width: 150px;">Customer Group</th>
+			<td id="KDGRP_T"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Payment Terms</th>
+			<td id="ZTERM_T"></td>
+			<th style="width: 150px;">Bill-to party</th>
+			<td id="NAME1_BP"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Ship-to party</th>
+			<td id="NAME1_SH"></td>
+			<th style="width: 150px;">Sales Resps</th>
+			<td id="NAME1_ZM"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Payer</th>
+			<td id="NAME1_PY"></td>
+			<th style="width: 150px;">Service Dealer</th>
+			<td id="NAME1_Z1"></td>
+		</tr>
+		<tr>
+			<th style="width: 150px;">Credit Resps</th>
+			<td colspan="3" id="NAME1_Z2"></td>
+		</tr>										
+	</table>
+</div>	
+<div class="split-row"></div>
+<div class="split-row"></div>
+<script type="application/javascript">
+$.ajax({
+	url: "[[${BASE_PATH}]]/dealer_info/view/data",
+    success: function(data, textStatus, jqXHR) 
+    {
+    	var result = data.RESULT;		    	
+		$("#CUSTOMER_CODE").html(result.KUNNR);
+		
+		$("#VKORG").html(result.VKORG);
+		$("#VTWEG").html(result.VTWEG);
+		$("#SPART").html(result.SPART);
+		$("#STCD4").html(result.STCD4);
+		$("#KUNNR").html(result.KUNNR);
+		$("#STCD1").html(result.STCD1);
+		$("#ERDAT").html(result.ERDAT);
+		$("#VKORG_T").html(result.VKORG_T);
+		$("#VTWEG_T").html(result.VTWEG_T);
+		$("#SPART_T").html(result.SPART_T);
+		$("#SORT1").html(result.SORT1);
+		$("#NAME1").html(result.NAME1);
+		$("#POST_CODE1").html(result.POST_CODE1);
+		$("#CITY1").html(result.CITY1);
+		$("#STREET").html(result.STREET);
+		$("#COUNTRY").html(result.COUNTRY);
+		$("#REGION").html(result.REGION);
+		$("#REGION_T").html(result.REGION_T);											
+		$("#TRANSPZONE_T").html(result.TRANSPZONE_T);
+		$("#TEL_NUMBER").html(result.TEL_NUMBER);
+		$("#FAX_NUMBER").html(result.FAX_NUMBER);
+		$("#MOB_NUMBER").html(result.MOB_NUMBER);
+		$("#SMTP_ADDR").html(result.SMTP_ADDR);
+		$("#J_1KFTBUS").html(result.J_1KFTBUS);
+		$("#J_1KFTIND").html(result.J_1KFTIND);
+		$("#GFORM").html(result.GFORM);
+		$("#GFORM_T").html(result.GFORM_T);
+		$("#NIELS_T").html(result.NIELS_T);
+		$("#LANGU_T").html(result.LANGU_T);
+		$("#STREET_BP").html(result.STREET_BP);
+		$("#STREET_SH").html(result.STREET_SH);
+		$("#VKGRP_T").html(result.VKGRP_T);
+		$("#VKBUR_T").html(result.VKBUR_T);
+		$("#BZIRK_T").html(result.BZIRK_T);
+		$("#WAERS").html(result.WAERS);
+		$("#INCO1").html(result.INCO1);
+		$("#INCO2").html(result.INCO2);
+		$("#LPRIO_T").html(result.LPRIO_T);
+		$("#TAXKD_T").html(result.TAXKD_T);
+		$("#KDGRP_T").html(result.KDGRP_T);
+		$("#ZTERM_T").html(result.ZTERM_T);
+		$("#NAME1_BP").html(result.NAME1_BP);
+		$("#NAME1_SH").html(result.NAME1_SH);
+		$("#NAME1_ZM").html(result.NAME1_ZM);
+		$("#NAME1_PY").html(result.NAME1_PY);
+		$("#NAME1_Z1").html(result.NAME1_Z1);
+		$("#NAME1_Z2").html(result.NAME1_Z2);
+    },
+    complete: function(jqXHR, textStatus)
+    {
+    	ProgressBar.hide();
+    }
+});
+</script>
+</th:block>

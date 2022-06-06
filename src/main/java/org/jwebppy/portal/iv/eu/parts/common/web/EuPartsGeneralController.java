@@ -9,10 +9,13 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.eu.common.web.EuGeneralController;
+import org.jwebppy.portal.iv.eu.parts.common.EuPartsCommonVo;
 import org.jwebppy.portal.iv.eu.parts.common.service.EuPartsGeneralService;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpUserContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.context.request.WebRequest;
 
 public class EuPartsGeneralController extends EuGeneralController
 {
@@ -76,5 +79,13 @@ public class EuPartsGeneralController extends EuGeneralController
 		}
 
 		return null;
+	}
+
+	@Override
+	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
+	{
+		super.addAllAttributeFromRequest(model, webRequest);
+
+		model.addAttribute("BASE_PATH", EuPartsCommonVo.REQUEST_PATH);
 	}
 }

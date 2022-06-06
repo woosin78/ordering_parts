@@ -32,25 +32,22 @@
 	<form id="FORM_search" name="FORM_search">
 
 	<table class="condition">
-		<colgroup>
-			<col width="10%">
-			<col width="24%">
-			<col width="10%">
-			<col width="23%">
-			<col width="10%">
-			<col width="23%">
-		</colgroup>
 		<tbody>
 			<tr>
 				<th th:text="#{EUP_L_0133}"></th>	<!-- Invoice No. -->
 				<td> 
-					<input type="text" id="IPT_pInvoiceNo" name="pInvoiceNo" class="custom-ui" style="width: 60%;" th:value="${pInvoiceNo}">
-					&nbsp;
-					<button id="BTN_invoiceSearch" type="button" th:text="#{EUP_B_0002}" class="small_button"></button>
+					<div class="input-area">
+						<input type="text" id="IPT_pInvoiceNo" name="pInvoiceNo" class="custom-ui" style="width: 60%;" th:value="${pInvoiceNo}">
+						<button id="BTN_invoiceSearch" type="button" th:text="#{EUP_B_0002}" class="small_button"></button>
+					</div>
 				</td>
+			</tr>
+			<tr>
 				<th th:text="#{EUP_L_0015}"></th>	<!-- P.O No. -->
-				<td colspan="3" >
-					<input type="text" id="TD_poNoTxt" name="pInvoiceNo" class="custom-ui" style="width:40%;" th:value="${pInvoiceNo}">
+				<td>
+					<div class="input-area">
+						<input type="text" id="TD_poNoTxt" name="pInvoiceNo" class="custom-ui" style="width:40%;" th:value="${pInvoiceNo}">
+					</div>
 				</td>
 			</tr>			
 		</tbody>
@@ -70,7 +67,7 @@
 		</div>
 	</div>
 
-	<div id="AREA_grid" class="flex-grow grid-bottom-area">
+	<div id="AREA_grid" class="flex-grow grid-area">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 
