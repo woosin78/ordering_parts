@@ -30,5 +30,5 @@ public class PlatformCommonVo
 	public static final String FAIL = "F";//실패
 
 	//페이징 - 한 화면에 보여 쥴 게시물 수
-	public static final int DEFAULT_ROW_PER_PAGE = 20;
+	public static final int DEFAULT_ROW_PER_PAGE = 10;
 }

@@ -51,6 +51,7 @@ public class JCoConfig
 					.mshost(sapConnResource.getMsgServer())
 					.group(sapConnResource.getGrpServer())
 					.client(sapConnResource.getClient())
+					.r3name(sapConnResource.getR3name())
 					.sysnr(sapConnResource.getInstanceNo())//Instance Number
 					.user(sapConnResource.getUsername())
 					.password(sapConnResource.getPassword())

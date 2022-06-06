@@ -27,6 +27,7 @@ public class SapConnResourceEntity extends GeneralEntity implements IPagination
 	private String router;
 	private String grpServer;
 	private String client;
+	private String r3name;
 	private String username;
 	private String password;
 	private String poolCapacity;
