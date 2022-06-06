@@ -38,7 +38,7 @@ public class PartsExportController extends PartsExportGeneralController
 		String bSeq2 = "1-12886034-ac64-4d5d-a874-3245a127d73c";
 		boardContentSearch.setBSeq(bSeq2);
 		model.addAttribute("bSeq2", bSeq2);
-		model.addAttribute("bbs2Name", i18nMessageSource.getMessage("PLTF_T_" + bSeq2));
+		model.addAttribute("bbs2Name", i18nMessageSource.getMessage("PLTF_T_PROMOTION"));
 		model.addAttribute("bbs2", ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch)));
 
 		addAllAttributeFromRequest(model, webRequest);

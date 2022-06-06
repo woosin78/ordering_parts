@@ -39,7 +39,7 @@ public class EuPartsDomesticController extends EuPartsDomesticGeneralController
 		String bSeq2 = "0-00725a1f-18b6-44c4-89a8-5e5531782769";
 		boardContentSearch.setBSeq(bSeq2);
 		model.addAttribute("bSeq2", bSeq2);
-		model.addAttribute("bbs2Name", i18nMessageSource.getMessage(CmStringUtils.upperCase("PLTF_T_" + bSeq2)));
+		model.addAttribute("bbs2Name", i18nMessageSource.getMessage(CmStringUtils.upperCase("PLTF_T_PROMOTION")));
 		model.addAttribute("bbs2", ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch)));
 
 		addAllAttributeFromRequest(model, webRequest);

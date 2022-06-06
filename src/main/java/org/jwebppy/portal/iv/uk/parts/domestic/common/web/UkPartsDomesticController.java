@@ -26,7 +26,7 @@ public class UkPartsDomesticController extends UkPartsDomesticGeneralController
 	public String main(Model model, WebRequest webRequest)
 	{
 		//공지사항
-		String bSeq1 = "0-0f860c26-098b-4a8c-b3d7-374c293bbc91";
+		String bSeq1 = "0-889a2868-ef2e-481d-a4ff-8ac269ebb800";
 		EpBoardContentSearchDto boardContentSearch = new EpBoardContentSearchDto();
 		boardContentSearch.setBSeq(bSeq1);
 		boardContentSearch.setRowPerPage(4);
@@ -36,10 +36,10 @@ public class UkPartsDomesticController extends UkPartsDomesticGeneralController
 		model.addAttribute("bbs1", ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch)));
 
 		//Promotion&Policy
-		String bSeq2 = "0-00725a1f-18b6-44c4-89a8-5e5531782769";
+		String bSeq2 = "1-78d985aa-3a6c-424d-a38c-8f5ff3ee133e";
 		boardContentSearch.setBSeq(bSeq2);
 		model.addAttribute("bSeq2", bSeq2);
-		model.addAttribute("bbs2Name", i18nMessageSource.getMessage(CmStringUtils.upperCase("PLTF_T_" + bSeq2)));
+		model.addAttribute("bbs2Name", i18nMessageSource.getMessage(CmStringUtils.upperCase("PLTF_T_PROMOTION")));
 		model.addAttribute("bbs2", ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch)));
 
 		addAllAttributeFromRequest(model, webRequest);
