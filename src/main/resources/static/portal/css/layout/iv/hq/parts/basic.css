@@ -338,6 +338,12 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 .condition tr:first-child th, .condition tr:first-child td{
     border-top:none; 
 }
+.condition td.wp10{
+	width: 10%;
+}
+.condition td.wp13{
+	width: 13%;
+}
 .condition td.wp15{
 	width: 15%;
 }
