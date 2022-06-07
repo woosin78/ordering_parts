@@ -21,5 +21,4 @@ public class PortalConfigVo extends PlatformConfigVo
 	public final static String FORM_LOGOUT_SUCCESS_URL = INDEX_URL; //폼 로그인 - 인증 성공 시 default 이동 url
 
 	public final static String FORM_PASSWORD_CHANGE_PAGE_URL = FORM_AUTHENTICATION_PATH + FORM_PASSWORD_CHANGE_PAGE_PATH; //비밀번호 변경 url
-	//public final static String FORM_PASSWORD_CHANGE_PROCESSING_URL = FORM_AUTHENTICATION_PATH + FORM_PASSWORD_CHANGE_PROCESSING_PATH; //비밀번호 변경 처리 url
 }

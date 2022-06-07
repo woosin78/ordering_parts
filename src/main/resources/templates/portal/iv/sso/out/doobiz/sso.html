@@ -54,8 +54,17 @@ $("#BTN_go").on("click", function() {
 
 function go()
 {
-	window.open("", "doobiz");
-	$("#FORM_sso").submit();	
+	let popup = window.open("", "doobiz");
+	$("#FORM_sso").submit();
+	
+	try
+	{
+		popup.focus();   
+	}
+	catch (e)
+	{
+		alert("[[${PTL_M_POPUP_BLOCKED}]]");
+	};	
 };
 
 $(function(){

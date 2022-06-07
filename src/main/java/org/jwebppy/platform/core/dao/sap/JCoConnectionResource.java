@@ -29,7 +29,9 @@ public class JCoConnectionResource
 
     private Map<String, JCoConnectionInfo> connectionInfoMap;
     private SapDestinationDataProvider sapDestinationDataProvider;
-    private String defaultLandscape;
+
+    @Value("${sap.jco.default_resource}")
+    private String DEFAULT_RESOURCE;
 
     public JCoConnectionResource() {}
 
@@ -150,7 +152,7 @@ public class JCoConnectionResource
     {
     	if (destination == null || "".equals(destination))
     	{
-    		destination = defaultLandscape;
+    		destination = DEFAULT_RESOURCE;
     	}
 
         return JCoDestinationManager.getDestination(destination.trim());
@@ -168,6 +170,6 @@ public class JCoConnectionResource
 
     public void setDefaultLandscape(String defaultLandscape)
     {
-    	this.defaultLandscape = defaultLandscape;
+    	this.DEFAULT_RESOURCE = defaultLandscape;
     }
 }

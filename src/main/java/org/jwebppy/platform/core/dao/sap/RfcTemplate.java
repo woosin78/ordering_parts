@@ -54,11 +54,7 @@ public class RfcTemplate extends AbstractDaoTemplate
 
     private String getLandscape(RfcRequest rfcRequest)
     {
-    	System.err.println("=============================================");
-    	System.err.println(rfcRequest.getConnectorName());
-    	System.err.println("=============================================");
-
-    	return CmStringUtils.defaultString(rfcRequest.getConnectorName(), "IV_GSP_P09");
+    	return CmStringUtils.defaultString(rfcRequest.getConnectorName(), "DEFAULT");
     }
 
 	@Override

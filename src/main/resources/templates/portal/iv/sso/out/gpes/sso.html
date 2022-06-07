@@ -46,7 +46,18 @@
 let url = [[${url}]];
 
 $("#BTN_go").on("click", function() {
-	window.open(url);
+	//window.open(url);
+	
+	let popup = window.open(url);
+	
+	try
+	{
+		popup.focus();   
+	}
+	catch (e)
+	{
+		alert("[[${PTL_M_POPUP_BLOCKED}]]");
+	};
 });
 
 $(function(){
