@@ -80,6 +80,7 @@ public class EuOrderDisplayController extends EuOrderGeneralController
 		DataList dataList = rfcResponse.getTable("LT_SEARCH");
 
 		FormatBuilder.with(dataList)
+			.decimalFormat("T_NETWR")
 			.dateFormat("ERDAT")
 			.dateFormat("ERZET", EuCommonVo.DEFAULT_TIME_MMHH_FORMAT);
 
