@@ -40,21 +40,22 @@ public class UkOrderItemDto extends UkGeneralDto
 
 	public String getAdjustedOrderQty()
 	{
-		if (CmStringUtils.isNotEmpty(this.orderQty) && CmStringUtils.isNotEmpty(this.lotQty))
+		if (CmStringUtils.isNotEmpty(orderQty) && CmStringUtils.isNotEmpty(lotQty))
 		{
-			int orderQty = Integer.parseInt(this.orderQty);
-			int lotQty = (int)Double.parseDouble(this.lotQty);
+			int iOrderQty = (int)Double.parseDouble(orderQty.replaceAll(",", ""));
+			int iLotQty = (int)Double.parseDouble(lotQty.replaceAll(",", ""));
 
-			lotQty = (lotQty == 0) ? 1 : lotQty;
+			iOrderQty = (iOrderQty == 0) ? 1 : iOrderQty;
+			iLotQty = (iLotQty == 0) ? 1 : iLotQty;
 
-			if (orderQty % lotQty > 0)
+			if (iOrderQty % iLotQty > 0)
 			{
-				return  Integer.toString(lotQty * ((orderQty / lotQty) + 1));
+				return Integer.toString(iLotQty * ((iOrderQty / iLotQty) + 1));
 			}
 
-			return this.orderQty;
+			return Integer.toString(iOrderQty);
 		}
 
-		return null;
+		return orderQty;
 	}
 }
