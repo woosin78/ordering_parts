@@ -14,6 +14,7 @@ import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.mgmt.account.service.AccountMgmtService;
+import org.jwebppy.portal.iv.mgmt.account.utils.AccountMgmtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,9 +51,11 @@ public class AccountMgmtController extends IvGeneralController
 			return EMPTY_RETURN_VALUE;
 		}
 
-		String bizType = CmStringUtils.trimToEmpty(paramMap.get("bizType"));
+		ErpDataMap rfcParamMap = getErpUserInfoByUsername();
 
-		String[] saleaArea = getSalesArea(bizType);
+		String bizType = CmStringUtils.defaultString(paramMap.get("bizType"), AccountMgmtUtils.getBizTypeBySalesArea(rfcParamMap));
+
+		String[] saleaArea = AccountMgmtUtils.getSalesArea(bizType);
 
 		Map<String, Object> salesAreaMap = new HashMap<>();
 		salesAreaMap.put("VKORG", saleaArea[0]);
@@ -62,13 +65,12 @@ public class AccountMgmtController extends IvGeneralController
 		List<Map<String, Object>> salesAreaList = new ArrayList<>();
 		salesAreaList.add(salesAreaMap);
 
-		ErpDataMap rfcParamMap = getErpUserInfo(null, null)
-				.with(paramMap)
-					.addByKey(new Object[][] {
-						{"dealerCode", "pDealerCode"},
-						{"username", "pUsername"}
-					})
-					.add("salesAreaList", salesAreaList);
+		rfcParamMap = getErpUserInfoByUsername().with(paramMap)
+				.addByKey(new Object[][] {
+					{"dealerCode", "pDealerCode"},
+					{"username", "pUsername"}
+				})
+				.add("salesAreaList", salesAreaList);
 
 		DataList dataList = accountMgmtService.getMappingList(rfcParamMap);
 
@@ -105,6 +107,9 @@ public class AccountMgmtController extends IvGeneralController
 	@ResponseBody
 	public Object save(@RequestParam Map<String, Object> paramMap)
 	{
+		//Default is mine
+		paramMap.put("bizType", CmStringUtils.defaultString(paramMap.get("bizType"), AccountMgmtUtils.getBizTypeBySalesArea(getErpUserInfoByUsername())));
+
 		ErpDataMap rfcParamMap = new ErpDataMap(paramMap);
 
 		int result = accountMgmtService.save(rfcParamMap);
@@ -145,17 +150,5 @@ public class AccountMgmtController extends IvGeneralController
 		userService.resetPassword(uSeqs);
 
 		return IvCommonVo.INITIAL_PASSWORD;
-	}
-
-	protected String[] getSalesArea(String bizType)
-	{
-		Map<String, String[]> salesAreaMap = new HashMap<>();
-
-		salesAreaMap.put("EUDOP", new String[] {"7816", "10", "60"});//EUDOP
-		salesAreaMap.put("UKDOP", new String[] {"7216", "10", "60"});//UKDOP
-		salesAreaMap.put("HQDOP", new String[] {"F116", "10", "60"});//HQDOP
-		salesAreaMap.put("HQEXP", new String[] {"F116", "20", "60"});//HQEXP
-
-		return salesAreaMap.get(bizType);
 	}
 }

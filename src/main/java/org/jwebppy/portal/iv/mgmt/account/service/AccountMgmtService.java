@@ -1,6 +1,5 @@
 package org.jwebppy.portal.iv.mgmt.account.service;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -22,6 +21,7 @@ import org.jwebppy.platform.mgmt.user.service.UserGroupService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.service.IvGeneralService;
+import org.jwebppy.portal.iv.mgmt.account.utils.AccountMgmtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,8 +54,7 @@ public class AccountMgmtService extends IvGeneralService
 				})
 			.and()
 			.table().with(paramMap)
-				.addByKey("T_VKORG", "salesAreaList")
-			.output("T_LIST");
+				.addByKey("T_VKORG", "salesAreaList");
 
 		return simpleRfcTemplate.response(rfcRequest).getTable("T_LIST");
 	}
@@ -122,7 +121,7 @@ public class AccountMgmtService extends IvGeneralService
 		//내부사용자는 임의의 Dealer Code 를 지정함.
 		if ("I".equals(userType))
 		{
-			rfcParamMap.put("dealerCode", getDefaultMappingCode(bizType, userType));
+			rfcParamMap.put("dealerCode", AccountMgmtUtils.getDefaultMappingCode(bizType, userType));
 		}
 
 		String dealerCode = rfcParamMap.getString("dealerCode");
@@ -133,7 +132,7 @@ public class AccountMgmtService extends IvGeneralService
 			return -1;
 		}
 
-		UserGroupDto userGroup = userGroupService.getUserGroupByName(getUserGroupName(bizType));
+		UserGroupDto userGroup = userGroupService.getUserGroupByName(AccountMgmtUtils.getUserGroupName(bizType));
 
 		String dealerName = ((DataMap)dealerInfoList.get(0)).getString("NAME1");
 
@@ -167,7 +166,7 @@ public class AccountMgmtService extends IvGeneralService
 
 		userService.saveUserAccount(userAccount);
 
-		String[] authorities = getAuthorities(bizType, userType);
+		String[] authorities = AccountMgmtUtils.getAuthorities(bizType, userType);
 
 		if (ArrayUtils.isNotEmpty(authorities))
 		{
@@ -182,75 +181,20 @@ public class AccountMgmtService extends IvGeneralService
 			}
 		}
 
-		String[] salesArea = getSalesArea(bizType);
+		String[] salesArea = AccountMgmtUtils.getSalesArea(bizType);
 
 		if (ArrayUtils.isNotEmpty(salesArea))
 		{
-			rfcParamMap.add("salesOrg", salesArea[0]);
-			rfcParamMap.add("distChl", salesArea[1]);
-			rfcParamMap.add("division", salesArea[2]);
-			rfcParamMap.add("dealerCode", CmStringUtils.leftPad(dealerCode, 10, "0"));
+			rfcParamMap.add(new String[][] {
+				{"salesOrg", salesArea[0]},
+				{"distChl", salesArea[1]},
+				{"division", salesArea[2]},
+				{"dealerCode", CmStringUtils.leftPad(dealerCode, 10, "0")},
+			});
 
 			saveMappingInfo(rfcParamMap);
 		}
 
 		return uSeq;
-	}
-
-	protected String getUserGroupName(String bizType)
-	{
-		Map<String, String> userGroupMap = new HashMap<>();
-		userGroupMap.put("HQDOP", "UG_IVHQ");
-
-		return userGroupMap.get(bizType);
-	}
-
-	protected String[] getSalesArea(String bizType)
-	{
-		Map<String, String[]> salesAreaMap = new HashMap<>();
-
-		salesAreaMap.put("EUDOP", new String[] {"7816", "10", "60"});//EUDOP
-		salesAreaMap.put("UKDOP", new String[] {"7216", "10", "60"});//UKDOP
-		salesAreaMap.put("HQDOP", new String[] {"F116", "10", "60"});//HQDOP
-		salesAreaMap.put("HQEXP", new String[] {"F116", "20", "60"});//HQEXP
-
-		return salesAreaMap.get(bizType);
-	}
-
-	protected String getDefaultMappingCode(String bizType, String userType)
-	{
-		Map<String, String> mappingCodeMap = new HashMap<>();
-
-		mappingCodeMap.put("EUDOP_I", "0001075204");//유럽부품
-		mappingCodeMap.put("UKDOP_I", "0001074837");//영국부품
-		mappingCodeMap.put("HQDOP_I", "0001031876");//본사내수부품
-		mappingCodeMap.put("HQEXP_I", "0001040174");//본사수출부품
-
-		return mappingCodeMap.get(bizType + "_" + userType);
-	}
-
-	protected String[] getAuthorities(String bizType, String userType)
-	{
-		Map<String, String[]> authorityMap = new HashMap<>();
-
-		//유럽부품
-		authorityMap.put("EUDOP_I", new String[] {"EU_SS_DEALER", "EU_SS_ADMIN"});//Internal User
-		authorityMap.put("EUDOP_D", new String[] {"EU_SS_DEALER"});//Dealer
-		authorityMap.put("EUDOP_S", new String[] {"EU_SS_DEALER", "EU_SS_ADMIN"});//Sub Dealer
-		authorityMap.put("EUDOP_R", new String[] {"EU_SS_DEALER", "EU_SS_ADMIN"});//Read-Only Dealer
-
-		//영국부품
-		authorityMap.put("UKDOP_I", new String[] {"UK_SS_DEALER", "UK_SS_ADMIN"});//Internal User
-		authorityMap.put("UKDOP_D", new String[] {"UK_SS_DEALER"});//Dealer
-
-		//본사내수부품
-		authorityMap.put("HQDOP_I", new String[] {"DP_IVDO_PARTS_DEALER", "DP_ACCOUNTS_MANAGER"});//Internal User
-		authorityMap.put("HQDOP_D", new String[] {"DP_IVDO_PARTS_DEALER"});//Dealer
-
-		//본사수출부품
-		authorityMap.put("HQEXP_I", new String[] {"UK_SS_DEALER", "UK_SS_ADMIN"});//Internal User
-		authorityMap.put("HQEXP_D", new String[] {"UK_SS_DEALER"});//Dealer
-
-		return authorityMap.get(bizType + "_" + userType);
 	}
 }

@@ -123,8 +123,8 @@ function _setDealerCodeAutocomplete(target, options)
 			if (JpUtilsObject.isNotNull(options.select))
 			{
 				options.select(ui.item.label, ui.item.value, event);
+				return false;
 			};
-			return false;
 		},
 		//delay: 50,
 		minLength: 3

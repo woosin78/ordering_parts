@@ -41,14 +41,9 @@
 		<button id="BTN_go" class="gomain-button"><span th:text="#{PTL_B_MOVE_TO_SYSTEM}"></span> <img src="/portal/img/common/arrow_right.png" /></button>
 	</div>
 </div>
-<script th:inline="javascript">
-/*<![CDATA[*/
-let url = [[${url}]];
-
+<script>
 $("#BTN_go").on("click", function() {
-	//window.open(url);
-	
-	let popup = window.open(url);
+	let popup = window.open("[[${url}]]");
 	
 	try
 	{
@@ -65,6 +60,5 @@ $(function(){
 
 	ProgressBar.hide();
 });
-/*]]>*/
 </script>
 </th:block>

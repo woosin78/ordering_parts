@@ -17,7 +17,6 @@
 	
 	<div class="condition-area">
 	<form id="FORM_search" name="FORM_search" onsubmit="return false;">
-	<input type="hidden" id="bizType" name="bizType" value="HQDOP" />
 	<table class="condition">
 		<tbody>
 			<tr>
@@ -53,6 +52,9 @@
 	
 <script>
 $(function(){
+	$("#FORM_search input[type=text]").on("click", function() {
+		$(this).select();
+	});
 
 	$tableObj = $("#TBL_grid").DataTable({
 		select: {
@@ -74,13 +76,14 @@ $(function(){
 				}
 			},
 			{data: "BNAME", title: "[[#{HQP_L_USERNAME}]]"},//Username
-			{data: "LASTNAME", title: "[[#{HQP_L_LAST_NAME}]]"},//Last Name
-			{data: "FIRSTNAME", title: "[[#{HQP_L_FIRST_NAME}]]"},//First Name
 			{data: "KUNNR", title: "[[#{HQP_L_DEALER_CODE}]]"},//Dealer Code
 			{data: "NAME1", title: "[[#{HQP_L_DEALER_NAME}]]"},//Dealer name
 			{data: "VKORG", title: "[[#{HQP_L_SALES_ORG}]]"},//Sales Org.
 			{data: "VTWEG", title: "[[#{HQP_L_DIST_CHANNEL}]]"}//Dist.Chl.
 		],
+		columnDefs: [
+			{targets: [2, 4, 5], className: "dt-body-center"},
+		],		
 		ajax: {
 			url: "/portal/iv/mgmt/account/list/data",
 			data: function(p)
@@ -117,25 +120,30 @@ $(function(){
 	});	
 
 	$("#BTN_resetPassword").on("click", function() {
-		JpUtilsAjax.post({
-			url: "/portal/iv/mgmt/account/reset/password",
-			data: {"uSeqs" : getCheckedUSeqs().join(",")},
-			beforeSend: function(jqXHR, settings)
-			{
-				ProgressBar.show();
-			},			
-		    success: function(response, textStatus, jqXHR)
-		    {
-		    	if (JpUtilsString.isNotEmpty(response.RESULT))
+		let uSeqs = getCheckedUSeqs();
+		
+		if (uSeqs.length > 0)
+		{
+			JpUtilsAjax.post({
+				url: "/portal/iv/mgmt/account/reset/password",
+				data: {"uSeqs" : getCheckedUSeqs().join(",")},
+				beforeSend: function(jqXHR, settings)
+				{
+					ProgressBar.show();
+				},			
+			    success: function(response, textStatus, jqXHR)
+			    {
+			    	if (JpUtilsString.isNotEmpty(response.RESULT))
+			    	{
+			    		alert("[[#{HQP_M_COMPLETE_RESET_PASSWORD}]]".replace("{0}", response.RESULT));
+			    	};
+			    },
+			    complete: function(jqXHR, textStatus)
 		    	{
-		    		alert("[[#{HQP_M_COMPLETE_RESET_PASSWORD}]]".replace("{0}", response.RESULT));
-		    	};
-		    },
-		    complete: function(jqXHR, textStatus)
-	    	{
-	    		ProgressBar.hide();
-	    	}
-		});
+		    		ProgressBar.hide();
+		    	}
+			});
+		};	
 	});	
 	
 	$("#BTN_create").on("click", function() {
@@ -192,13 +200,6 @@ $(function(){
 
 function doSearch()
 {
-	if (JpUtilsString.isEmpty($("#pUsername").val()) && JpUtilsString.isEmpty($("#pDealerCode").val()))
-	{
-		alert("[[#{HQP_M_EMPTY_QUERY}]]");
-		$("#pUsername").focus();
-		return;
-	};
-	
 	$tableObj.ajax.reload();
 }
 </script>	

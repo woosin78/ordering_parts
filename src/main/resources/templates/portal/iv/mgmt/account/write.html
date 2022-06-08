@@ -14,7 +14,6 @@
 	
 	<div class="condition-area">
 	<form id="FORM_write" name="FORM_write">
-	<input type="hidden" name="bizType" value="HQDOP" />
 	<table class="condition">
 		<tbody>
 			<tr>
@@ -101,7 +100,7 @@ $(function(){
 				return false;
 			};			
 		};
-		
+
 		if (JpUtilsString.isEmpty($("#username").val()))
 		{
 			alert("[[#{HQP_M_EMPTY_USERNAME}]]");
@@ -113,9 +112,17 @@ $(function(){
 		
 		if (JpUtilsString.equals(form.val("userType"), "D"))
 		{
+			let username = form.val("username").toUpperCase();
+			const EUUK_USERNAME_PREFIX = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).EUUK_USERNAME_PREFIX}]]"; 
+			
+			if (username.startsWith(EUUK_USERNAME_PREFIX))
+			{
+				username = JpUtilsString.replaceAll(username, EUUK_USERNAME_PREFIX, "");
+			}
+			
 			JpUtilsAjax.get({
 				url: "/platform/mgmt/user/check/valid_credentials",
-				data: {type: "U", name: "CP_IVHQ", value: form.val("#username").toUpperCase()},
+				data: {type: "U", value: username},
 			    success: function(response, textStatus, jqXHR)
 			    {
 			    	let result = response.RESULT;
@@ -134,7 +141,7 @@ $(function(){
 					{
 						alert(message);	
 					};
-			    }			
+			    }
 			});			
 		}
 		else
