@@ -183,7 +183,7 @@ $("#BTN_totalDownload").on("click", function(){
 	let orderNo = "";
 	let delimiter = "[[${T(org.jwebppy.portal.common.PortalConfigVo).DELIMITER}]]";
 	
-	$("#TBL_grid td:first-child").each(function(){
+	$("#TBL_grid td:nth-child(2)").each(function(){
 		orderNo += $(this).text() + delimiter;
 	});
 	

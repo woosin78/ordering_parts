@@ -63,18 +63,14 @@
 			</td>			
 		</tr>			
 		<tr>
-			<th th:text="#{HQP_L_PRODUCT_HIERARCHY}"></th><!-- Product Hierarchy -->
-			<td id="PRODH_T"></td>
 			<th th:text="#{HQP_L_OPEN_QTY}"></th><!-- Open Qty -->
 			<td id="KWMENG"></td>			
-		</tr>	
-		<tr>
 			<th th:text="#{HQP_L_NET_WEIGHT}"></th><!-- Net Weight -->
 			<td id="NTGEW"></td>
+		</tr>	
+		<tr>
 			<th th:text="#{HQP_L_PURCHASE_LEAD_TIME}"></th><!-- Purchase Lead Time -->
 			<td id="PLIFZ"></td>			
-		</tr>
-		<tr>
 			<th th:text="#{HQP_L_SUPPLY_PART_NO}"></th><!-- Supply Part No. -->
 			<td>
 				<div id="AREA_substitution" style="display:none;">			
@@ -82,14 +78,16 @@
 				<button class="btn-popup2" type="button" onclick="_showSubPartList($('#pPartNo').val());"></button>
 				</div>
 			</td>
-			<th th:text="#{HQP_L_STOCK_OF_SUPPLY_PART}"></th><!-- Stock of Supply Parts -->
-			<td id="STOCKP"></td>			
 		</tr>
 		<tr>
+			<th th:text="#{HQP_L_STOCK_OF_SUPPLY_PART}"></th><!-- Stock of Supply Parts -->
+			<td id="STOCKP"></td>			
 			<th th:text="#{HQP_L_BULLETIN}"></th><!-- Bulletin -->
 			<td id="BULLETIN"></td>
+		</tr>
+		<tr>
 			<th th:text="#{HQP_L_AM_DEV_PART}"></th><!-- AM Development Part -->
-			<td id="AM_PART_NO"></td>			
+			<td id="AM_PART_NO" colspan="3"></td>			
 		</tr>		
 	</tbody>
 </table>	
@@ -209,9 +207,6 @@ function doSearch()
 				$("#M_MATNR").html(model);
 				$("#AREA_model").show();
 			};
-			
-			// Product Hierarchy
-			$("#PRODH_T").html(partInfo.PRODH_T + " [" + partInfo.PRODH + "]");
 			
 			// Open Qty
 			let openQty = JpUtilsString.trimToEmpty(partInfo.OPENQ);
