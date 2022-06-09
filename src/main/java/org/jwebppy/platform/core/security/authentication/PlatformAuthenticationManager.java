@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.service.UserAuthenticationService;
@@ -167,7 +168,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
         try
 		{
-        	path += "?token=" + new StringEncrypter(KEY, IV).encrypt(CmStringUtils.upperCase(username) + ":" + password + ":" + System.currentTimeMillis());
+        	path += "?token=" + URLEncoder.encode(new StringEncrypter(KEY, IV).encrypt(CmStringUtils.upperCase(username) + ":" + password + ":" + System.currentTimeMillis()), "UTF-8");
 
         	System.err.println("7.1. Doobiz Login - protocol: " + protocol + ", host:" + host + ", port:" + port + ", path:" + path);
 
