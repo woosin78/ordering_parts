@@ -19,7 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH + "/mgmt/mapping")
-@PreAuthorize("hasAnyRole('ROLE_DP_ACCOUNTS_MANAGER', 'ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
+@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER', 'ROLE_DP_EUDO_PARTS_MANAGER', 'ROLE_DP_UKDO_PARTS_MANAGER')")
 public class DealerMappingController extends IvGeneralController
 {
 	@Autowired
