@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.portal.iv.uk.parts.domestic.order.create.mapper.UkOrderCreationMapper">
-	<resultMap type="EuOrderHistoryHeaderEntity" id="orderHistoryHeaderMap">
+	<resultMap type="UkOrderHistoryHeaderEntity" id="orderHistoryHeaderMap">
 		<id property="ohhSeq" column="ohh_seq" />
 		<result property="docType" column="doc_type" />
 		<result property="orderType" column="order_type" />
@@ -20,10 +20,10 @@
 		<result property="duplOhhSeq" column="dupl_ohh_seq" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
-		<collection property="orderHistoryItems" foreignColumn="ohh_seq" column="ohh_seq" javaType="java.util.ArrayList" ofType="EuOrderHistoryItemEntity" select="findAllOrderHistoryItem" />
+		<collection property="orderHistoryItems" foreignColumn="ohh_seq" column="ohh_seq" javaType="java.util.ArrayList" ofType="UkOrderHistoryItemEntity" select="findAllOrderHistoryItem" />
 	</resultMap>
 	
-	<insert id="insertOnetimeAddress" parameterType="EuOnetimeAddressEntity">
+	<insert id="insertOnetimeAddress" parameterType="UkOnetimeAddressEntity">
 		<selectKey keyProperty="oaSeq" resultType="Integer" order="BEFORE">
 			select ep_oa_seq.nextval from dual
 		</selectKey>
@@ -33,7 +33,7 @@
 		)
 	</insert>
 	
-	<insert id="insertOrderHistoryHeader" parameterType="EuOrderHistoryHeaderEntity">
+	<insert id="insertOrderHistoryHeader" parameterType="UkOrderHistoryHeaderEntity">
 		<selectKey keyProperty="ohhSeq" resultType="Integer" order="BEFORE">
 			select ep_ohh_seq.nextval from dual
 		</selectKey>
@@ -43,13 +43,13 @@
 		)
 	</insert>
 	
-	<insert id="insertOrderHistoryItem" parameterType="EuOrderHistoryItemEntity">
+	<insert id="insertOrderHistoryItem" parameterType="UkOrderHistoryItemEntity">
 		insert into ep_order_history_item (ohh_seq, material_no, order_qty) values (
 			#{ohhSeq}, #{materialNo}, #{orderQty}
 		)
 	</insert>
 	
-	<update id="updateFgUseOfOnetimeAddress" parameterType="EuOnetimeAddressEntity">
+	<update id="updateFgUseOfOnetimeAddress" parameterType="UkOnetimeAddressEntity">
 		update ep_onetime_address set fg_use=#{fgUse}, mod_username=#{modUsername}, mod_date=#{modDate}
 		where
 		corp=#{corp}
@@ -57,7 +57,7 @@
 		and oa_seq=#{oaSeq}		
 	</update>	
 	
-	<update id="updateFgDeleteOfOnetimeAddress" parameterType="EuOnetimeAddressEntity">
+	<update id="updateFgDeleteOfOnetimeAddress" parameterType="UkOnetimeAddressEntity">
 		update ep_onetime_address set fg_delete=#{fgDelete}, mod_username=#{modUsername}, mod_date=#{modDate}
 		where
 		corp=#{corp}
@@ -74,7 +74,7 @@
 		</if>
 	</update>
 
-	<update id="updateSuccessOrderHistoryHeader" parameterType="EuOrderHistoryHeaderEntity">
+	<update id="updateSuccessOrderHistoryHeader" parameterType="UkOrderHistoryHeaderEntity">
 		update ep_order_history_header set so_no=#{soNo}, ordered_date=sysdate
 		where
 		ohh_seq=#{ohhSeq}		
@@ -86,7 +86,7 @@
 		ohh_seq=#{ohhSeq}		
 	</update>
 
-	<select id="findOnetimeAddressByOaSeq" parameterType="Integer" resultType="EuOnetimeAddressEntity">
+	<select id="findOnetimeAddressByOaSeq" parameterType="Integer" resultType="UkOnetimeAddressEntity">
 		select
 		*
 		from
@@ -95,7 +95,7 @@
 		oa_seq=#{oaSeq}
 	</select>
 
-	<select id="findAllOnetimeAddresses" parameterType="EuOnetimeAddressDto" resultType="EuOnetimeAddressEntity">
+	<select id="findAllOnetimeAddresses" parameterType="UkOnetimeAddressDto" resultType="UkOnetimeAddressEntity">
 		select
 		*
 		from
@@ -128,7 +128,7 @@
 		order by oa_seq desc	
 	</select>
 
-	<select id="findAllOnetimeAddressDuplicationCheck" parameterType="EuOnetimeAddressDto" resultType="EuOnetimeAddressEntity">
+	<select id="findAllOnetimeAddressDuplicationCheck" parameterType="UkOnetimeAddressDto" resultType="UkOnetimeAddressEntity">
 		select
 		*
 		from
@@ -146,7 +146,7 @@
 		and replace(upper(transport_zone), ' ','') = replace(upper(#{transportZone}), ' ', '')
 	</select>
 	
-	<select id="findAllOrderHistoryHeader" parameterType="EuOrderHistoryHeaderDto" resultMap="orderHistoryHeaderMap">
+	<select id="findAllOrderHistoryHeader" parameterType="UkOrderHistoryHeaderDto" resultMap="orderHistoryHeaderMap">
 		select
 		*
 		from
@@ -162,7 +162,7 @@
 		order by ohh_seq
 	</select>
 
-	<select id="findAllOrderHistoryItem" parameterType="Integer" resultType="EuOrderHistoryItemEntity">
+	<select id="findAllOrderHistoryItem" parameterType="Integer" resultType="UkOrderHistoryItemEntity">
 		select
 		*
 		from
