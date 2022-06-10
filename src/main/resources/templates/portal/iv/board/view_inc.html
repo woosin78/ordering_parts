@@ -136,7 +136,20 @@ $("#BTN_delete").on("click", function() {
 			url: "[[${BASE_PATH}]]/board/delete",
 			data: {bcSeq:"[[${boardContent.bcSeq}]]", bSeq:"[[${boardContent.bSeq}]]"},
 			success: function(data, textStatus, jqXHR) {
-				$("#BTN_back").trigger("click");
+				if (JpUtilsString.equals("[[${fgFrom}]]", "M"))
+				{
+					window.close();
+					
+					try
+					{
+						opener.document.location.reload();
+					}
+					catch (e) {}
+				}
+				else
+				{
+					$("#BTN_back").trigger("click");
+				};
 			}		
 		});		
 	};

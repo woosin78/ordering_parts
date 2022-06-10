@@ -43,7 +43,7 @@ public class PriceAdjustmentByCurrencyUtils
 	{
 		if (MapUtils.isNotEmpty(map))
 		{
-			if (CmStringUtils.isEmpty(currKey) || ArrayUtils.contains(targets, CmStringUtils.trimToEmpty(map.get(currKey))))
+			if (ArrayUtils.contains(targets, CmStringUtils.trimToEmpty(map.get(currKey))))
 			{
 				Iterator<String> it = map.keySet().iterator();
 

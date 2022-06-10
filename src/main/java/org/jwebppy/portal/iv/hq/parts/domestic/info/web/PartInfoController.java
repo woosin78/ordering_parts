@@ -59,6 +59,7 @@ public class PartInfoController extends PartsDomesticGeneralController
 			DataMap partMap = (DataMap)resultList.get(0);
 			DataList scaleList = rfcResponse.getTable("T_SCALES");
 			double kbetr = partMap.getDouble("KBETR");//Condition Percentage
+			double rate = (kbetr > 0) ? 1 + kbetr * 0.01 : 1.25;
 
 			if (CollectionUtils.isEmpty(scaleList))
 			{
@@ -68,6 +69,8 @@ public class PartInfoController extends PartsDomesticGeneralController
 				scaleMap.put("FINAL_LPRICE", partMap.getString("LPRICE"));
 				scaleMap.put("MEINS", partMap.getString("MEINS"));
 				scaleMap.put("WAERS", partMap.getString("WAERS"));
+
+				PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleMap, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, rate*100);
 
 				scaleList.add(scaleMap);
 			}
@@ -80,19 +83,10 @@ public class PartInfoController extends PartsDomesticGeneralController
 					scaleMap.put("FINAL_LPRICE", scaleMap.getString("LPRICE"));
 					scaleMap.put("MEINS", partMap.getString("MEINS"));
 					scaleMap.put("WAERS", partMap.getString("WAERS"));
+
+					PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, rate);
 				}
 			}
-
-			double rate = 1.25;
-
-			if (kbetr > 0)
-			{
-				rate = 1 + kbetr * 0.01;
-			}
-
-			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE", "LPRICE"}, "WAERS", new String[] {"KRW"}, 100);
-
-			PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, rate);
 
 			FormatBuilder.with(scaleList)
 				.qtyFormat(new String[] {"OPENQ"})

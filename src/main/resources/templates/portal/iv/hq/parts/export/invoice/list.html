@@ -176,9 +176,17 @@ $(".block-button-area.download button").on("click", function() {
 	}
 	else
 	{
+		let checkboxes = $($tableObj.columns(0).nodes()[0]).find("input:checkbox:checked");
+		
+		if (checkboxes.length == 0)
+		{
+			alert("[[#{HQP_M_ALLOW_DOWNLOAD_ONLY_ONE}]]");			
+			return;
+		};
+		
 		if (mode == "BL")
 		{
-			if ($($tableObj.columns(0).nodes()[0]).find("input:checkbox:checked").length > 1)
+			if (checkboxes.length > 1)
 			{
 				alert("[[#{HQP_M_ALLOW_DOWNLOAD_ONLY_ONE}]]");
 				return;
@@ -189,7 +197,7 @@ $(".block-button-area.download button").on("click", function() {
 		
 		let key = [];
 		
-		$.each($($tableObj.columns(0).nodes()[0]).find("input:checkbox:checked"), function(index, element) {
+		$.each(checkboxes, function(index, element) {
 			let data = $tableObj.row(index).data();
 			
 			key.push("<input type='hidden' name='invoiceNo' value='" +  data.ZFCIVNO  + "' />");
