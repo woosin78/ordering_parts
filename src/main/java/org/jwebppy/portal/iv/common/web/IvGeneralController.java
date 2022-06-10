@@ -20,7 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 
 public class IvGeneralController extends PortalGeneralController
 {
-	protected final String[] MANAGER_AUTHORITIES = {"DP_IVDO_PARTS_MANAGER", "DP_IVEX_PARTS_MANAGER"};
+	protected final String[] MANAGER_AUTHORITIES = {"DP_IVDO_PARTS_MANAGER", "DP_IVEX_PARTS_MANAGER", "DP_EUDO_PARTS_MANAGER", "DP_UKDO_PARTS_MANAGER"};
 
 	@Autowired
 	private IvGeneralService ivGeneralService;

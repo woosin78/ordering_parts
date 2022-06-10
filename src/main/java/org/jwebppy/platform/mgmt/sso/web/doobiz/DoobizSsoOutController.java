@@ -1,7 +1,5 @@
 package org.jwebppy.platform.mgmt.sso.web.doobiz;
 
-import java.net.URLEncoder;
-
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.mgmt.sso.web.SsoController;
 import org.springframework.stereotype.Controller;
@@ -25,7 +23,7 @@ public class DoobizSsoOutController extends SsoController
         	String url = isProduction() ? PRD_URL : DEV_URL;
 
         	model.addAttribute("url", url);
-        	model.addAttribute("token", URLEncoder.encode(encrypt(KEY, IV, ":"), "UTF-8"));
+        	model.addAttribute("token", encrypt(KEY, IV, ":"));
 		}
         catch (Exception e)
         {

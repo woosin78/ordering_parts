@@ -1,7 +1,7 @@
 package org.jwebppy.platform.core.security.authentication;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +44,7 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
     static
     {
     	SSO_ALLOWED_SYSTEMS.put("DIV_DOOBIZ", new String[] {"Infracore", "Doosan"});
+    	SSO_ALLOWED_SYSTEMS.put("GPES", new String[] {"GPES", "everythingisok"});
     }
 
     public PlatformAuthenticationFilter() {}
@@ -141,21 +142,10 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
 			String[] message = CmStringUtils.split(new StringEncrypter(secretInfo[0], secretInfo[1]).decrypt(key), ":");
 
-	    	if (ArrayUtils.isEmpty(message) || message.length != 2)
+	    	if (ArrayUtils.isNotEmpty(message) && message.length == 2 && isValidPeriod(message[1]))
 	    	{
-	    		return null;
+	    		return new String[] {message[0], AuthenticationType.S.getUniqueName()};
 	    	}
-
-	    	LocalDateTime time = CmDateTimeUtils.toLocalDateTime(message[1], PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
-
-	    	long period = ChronoUnit.SECONDS.between(time, LocalDateTime.now());
-
-	    	if (period > 120)
-	    	{
-	    		return null;
-	    	}
-
-	    	return new String[] {message[0], AuthenticationType.S.getUniqueName()};
 		}
 		catch (Exception e)
 		{
@@ -164,4 +154,20 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
     	return null;
     }
+
+	public boolean isValidPeriod(String time)
+	{
+		try
+		{
+			LocalDateTime ssoTime = CmDateTimeUtils.toLocalDateTime(time, PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
+
+			if (ssoTime.plusMinutes(1).compareTo(LocalDateTime.now()) > 0)
+			{
+				return true;
+			}
+		}
+		catch (DateTimeParseException e) {}
+
+		return false;
+	}
 }

@@ -1,6 +1,5 @@
 package org.jwebppy.platform.mgmt.sso.web.gpes;
 
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +33,7 @@ public class GpesSsoOutController extends SsoController
 
         	String[] secret = TARGET.get(target);
 
-        	model.addAttribute("url", url + secret[2] + URLEncoder.encode(encrypt(secret[0], secret[1], "|@"), "UTF-8"));
+        	model.addAttribute("url", url + secret[2] + encrypt(secret[0], secret[1], "|@"));
 		}
         catch (Exception e)
         {
