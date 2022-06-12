@@ -14,5 +14,6 @@ public interface OrderCreateMapper
 	public int insertOrderHistoryItem(OrderHistoryItemEntity orderHistoryItem);
 	public int updateSuccessOrderHistoryHeader(OrderHistoryHeaderEntity orderHistoryHeader);
 	public int updateFailOrderHistoryHeader(OrderHistoryHeaderEntity orderHistoryHeader);
+	public OrderHistoryHeaderEntity findOrderHistoryHeader(Integer ohhSeq);
 	public List<OrderHistoryHeaderEntity> findAllOrderHistoryHeader(OrderHistoryHeaderDto orderHistoryHeader);
 }

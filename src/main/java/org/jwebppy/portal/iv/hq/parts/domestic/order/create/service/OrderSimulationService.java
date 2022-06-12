@@ -243,8 +243,6 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		/* Make Header Info */
 		DataMap mainHeadResult = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");
 
-		//PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(mainHeadResult, new String[] {"CREDIT", "NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
-
 		FormatBuilder.with(mainHeadResult).decimalFormat(new String[] {"CREDIT", "NETWR"});
 		FormatBuilder.with(mainHeadResult).weightFormat("TOTAL_WEIGHT");
 
@@ -282,8 +280,6 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 
 		if (CollectionUtils.isNotEmpty(items))
 		{
-			//PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
-
 			FormatBuilder.with(items)
 				.qtyFormat(new String[] {"REQ_QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY", "DIV"})
 				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"});
@@ -334,7 +330,6 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 			}
 
 			simulationResult.setNormalOrderItems(simulationResult.makeCompactNormalOrderItems(normalOrderItems));
-			//simulationResult.setNormalOrderItems(normalOrderItems);
 		}
 	}
 }

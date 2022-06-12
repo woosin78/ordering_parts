@@ -56,6 +56,9 @@ public class OrderDto extends PartsDomesticGeneralDto
 	private String fgShowAvailability;
 	private String fgShowCredit;
 	private String fgShowListPrice;
+	private Integer ohhSeq;
+	private Integer refSeq;
+	private String refSystem;
 	private List<OrderItemDto> orderItems;
 	private List<OrderItemDto> duplicateOrderItems;
 	private List<OrderItemDto> invalidSalesLotOrderItems;

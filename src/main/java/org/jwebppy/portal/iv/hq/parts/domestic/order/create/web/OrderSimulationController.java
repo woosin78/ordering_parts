@@ -15,6 +15,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -33,8 +34,11 @@ import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
+import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryHeaderDto;
+import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.SimulationResultDto;
+import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderCreateService;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderSimulationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,6 +64,9 @@ public class OrderSimulationController extends PartsDomesticGeneralController
     private String orderPath;
 
     private String uploadPath;
+
+    @Autowired
+    private OrderCreateService orderCreateService;
 
     @PostConstruct
     public void init()
@@ -108,6 +115,8 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 	{
 		ErpDataMap userInfoMap = getErpUserInfo();
 
+		System.err.println("order.getOhhSeq():" + order.getOhhSeq());
+
 		if (CmStringUtils.isNotEmpty(order.getFileName()))//파일업로드로 시뮬레이션 실행
 		{
 			File file = null;
@@ -147,6 +156,37 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 			}
 
 			order.setOrderItems(orderItems);
+		}
+		else if (ObjectUtils.isNotEmpty(order.getOhhSeq()))
+		{
+			System.err.println("=======");
+
+			OrderHistoryHeaderDto orderHistoryHeader = orderCreateService.getOrderHistoryHeader(order.getOhhSeq());
+
+			System.err.println(orderHistoryHeader);
+
+			if (ObjectUtils.isNotEmpty(orderHistoryHeader))
+			{
+				List<OrderHistoryItemDto> orderHistoryItems = orderHistoryHeader.getOrderHistoryItems();
+
+				if (CollectionUtils.isNotEmpty(orderHistoryItems))
+				{
+					List<OrderItemDto> orderItems = new LinkedList<>();
+					int index = 0;
+
+					for (OrderHistoryItemDto orderHistoryItem: orderHistoryItems)
+					{
+						OrderItemDto orderItem = new OrderItemDto();
+						orderItem.setLineNo(CmStringUtils.leftPad(index+1, 6, "0"));
+						orderItem.setMaterialNo(orderHistoryItem.getMaterialNo());
+						orderItem.setOrderQty(orderHistoryItem.getOrderQty());
+
+						orderItems.add(orderItem);
+					}
+
+					order.setOrderItems(orderItems);
+				}
+			}
 		}
 		else
 		{

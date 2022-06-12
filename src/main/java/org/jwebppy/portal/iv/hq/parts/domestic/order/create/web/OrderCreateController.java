@@ -17,6 +17,7 @@ import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
+import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryHeaderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderCreateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +40,19 @@ public class OrderCreateController extends PartsDomesticGeneralController
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest)
 	{
+		String ohhSeq = webRequest.getParameter("ohhSeq");
+		OrderHistoryHeaderDto orderHistoryHeader = new OrderHistoryHeaderDto();
+
+		System.err.println("===================ohhSeq:" + ohhSeq);
+
+		if (CmStringUtils.isNotEmpty(ohhSeq))
+		{
+			orderHistoryHeader = orderCreateService.getOrderHistoryHeader(Integer.valueOf(ohhSeq));
+		}
+
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
+		model.addAttribute("orderHistoryHeader", orderHistoryHeader);
 		model.addAttribute("docType", CmStringUtils.defaultIfEmpty(webRequest.getParameter("docType"), "C"));
 		model.addAttribute("poNo", CmStringUtils.stripStart(rfcParamMap.getCustomerNo(), "0") + CmDateFormatUtils.format(CmDateTimeUtils.now(), PortalCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
 

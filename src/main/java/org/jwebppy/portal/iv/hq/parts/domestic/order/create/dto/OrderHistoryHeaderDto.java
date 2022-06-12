@@ -35,6 +35,8 @@ public class OrderHistoryHeaderDto extends PartsDomesticGeneralDto
 	private String errorMsg;
 	private LocalDateTime orderedDate;
 	private Integer duplOhhSeq;
+	private Integer refSeq;
+	private String refSystem;
 	private List<OrderHistoryItemDto> orderHistoryItems;
 
 	public void setHeader(OrderDto order)
@@ -50,6 +52,8 @@ public class OrderHistoryHeaderDto extends PartsDomesticGeneralDto
 		this.division = order.getDivision();
 		this.shippingCondition = order.getShippingCondition();
 		this.poNo = order.getPoNo();
+		this.refSeq = order.getRefSeq();
+		this.refSystem = order.getRefSystem();
 	}
 
 	public void setItems(Integer ohhSeq, OrderDto order)

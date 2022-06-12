@@ -70,6 +70,11 @@
 	<input type="hidden" id="pricingInfo" name="pricingInfo"/>
 	<input type="hidden" id="simulationFrom" name="simulationFrom"/>
 	
+	<!-- reference Order -->
+	<input type="hidden" id="ohhSeq" name="ohhSeq" th:value="${ohhSeq}"/>
+	<input type="hidden" id="refSeq" name="refSeq" th:value="${refSeq}"/>
+	<input type="hidden" id="refSystem" name="refSystem" th:value="${refSystem}" />
+	
 	<table class="condition">
 		<tbody>
 			<tr>
@@ -825,6 +830,9 @@ $(function(){
 				p.simulationFrom = $("#simulationFrom").val();
 				p.fgFilteringDuplicateItem = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).YES}]]";
 				p.fgFilteringInvalidSalesLotItem = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).YES}]]";
+				p.ohhSeq = $("#ohhSeq").val();
+				p.refSeq = $("#refSeq").val();
+				p.refSystem = $("#refSystem").val();
 
 				//Item
 				if ($("#fileName").val() == "")
@@ -848,6 +856,9 @@ $(function(){
 				{
 					p.fileName = $("#fileName").val();
 				};
+				
+				//처음 한번만 불러오고 이후부터는 입력받은 품번으로 시뮬레이션 실행
+				$("#ohhSeq").val("");
 			},
 			dataSrc: function(response)
 			{

@@ -33,5 +33,6 @@ public class OrderHistoryHeaderEntity extends PartsDomesticGeneralEntity
 	private String errorMsg;
 	private LocalDateTime orderedDate;
 	private Integer duplOhhSeq;
+	private Integer refSeq;
 	private List<OrderHistoryItemDto> orderHistoryItems;
 }

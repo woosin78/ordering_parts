@@ -162,7 +162,7 @@ public class OrderCreateService extends PartsDomesticGeneralService
 
 	public Integer checkDuplicatedOrder(OrderDto order, Integer ohhSeq)
 	{
-		List<OrderHistoryHeaderDto> orderHistoryHeaderList = getOrderHistoryList(UserAuthenticationUtils.getUsername(), ohhSeq);
+		List<OrderHistoryHeaderDto> orderHistoryHeaderList = getOrderHistories(UserAuthenticationUtils.getUsername(), ohhSeq);
 
 		if (CollectionUtils.isNotEmpty(orderHistoryHeaderList))
 		{
@@ -339,7 +339,12 @@ public class OrderCreateService extends PartsDomesticGeneralService
 		return null;
 	}
 
-	public List<OrderHistoryHeaderDto> getOrderHistoryList(String regUsername, Integer ohhSeq)
+	public OrderHistoryHeaderDto getOrderHistoryHeader(Integer ohhSeq)
+	{
+		return CmModelMapperUtils.mapToDto(OrderHistoryHeaderObjectMapper.INSTANCE, orderCreateMapper.findOrderHistoryHeader(ohhSeq));
+	}
+
+	public List<OrderHistoryHeaderDto> getOrderHistories(String regUsername, Integer ohhSeq)
 	{
 		OrderHistoryHeaderDto orderHistoryHeader = new OrderHistoryHeaderDto();
 		orderHistoryHeader.setRegUsername(regUsername);
