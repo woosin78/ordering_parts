@@ -81,7 +81,7 @@ public class SimpleDauMap extends DauGeneralMap
 	{
 		initProp();
 
-        this.connMethod = prop.getProperty("CONNECTION_METHOD", "S");//S:DataSource,M:DriverManager
+        this.connMethod = prop.getProperty("CONNECTION_METHOD", "M");//S:DataSource,M:DriverManager
         this.jndiName = prop.getProperty("JNDI_NAME");
         this.driver = prop.getProperty("DRIVER");
         this.isDebug = new Boolean(prop.getProperty("DEBUG", "false")).booleanValue();
@@ -113,6 +113,10 @@ public class SimpleDauMap extends DauGeneralMap
 		{
 			e.printStackTrace();
 		}
+
+		System.err.println("==========================================");
+		System.err.println(prop);
+		System.err.println("==========================================");
 
 		Iterator it = prop.entrySet().iterator();
 		while (it.hasNext())
