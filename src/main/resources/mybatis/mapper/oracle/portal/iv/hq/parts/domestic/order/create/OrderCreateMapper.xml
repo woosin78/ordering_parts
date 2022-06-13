@@ -76,6 +76,11 @@
 			and ohh_seq <![CDATA[<]]> #{ohhSeq}
 		</if>
 		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(refSeq) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(refSystem)">
+			and ref_seq=#{refSeq}
+			and ref_system=#{refSystem}
+		</if>
+		
 		order by ohh_seq
 	</select>
 
