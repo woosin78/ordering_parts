@@ -115,8 +115,6 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 	{
 		ErpDataMap userInfoMap = getErpUserInfo();
 
-		System.err.println("order.getOhhSeq():" + order.getOhhSeq());
-
 		if (CmStringUtils.isNotEmpty(order.getFileName()))//파일업로드로 시뮬레이션 실행
 		{
 			File file = null;
@@ -157,37 +155,6 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 
 			order.setOrderItems(orderItems);
 		}
-		else if (ObjectUtils.isNotEmpty(order.getOhhSeq()))
-		{
-			System.err.println("=======");
-
-			OrderHistoryHeaderDto orderHistoryHeader = orderCreateService.getOrderHistoryHeader(order.getOhhSeq());
-
-			System.err.println(orderHistoryHeader);
-
-			if (ObjectUtils.isNotEmpty(orderHistoryHeader))
-			{
-				List<OrderHistoryItemDto> orderHistoryItems = orderHistoryHeader.getOrderHistoryItems();
-
-				if (CollectionUtils.isNotEmpty(orderHistoryItems))
-				{
-					List<OrderItemDto> orderItems = new LinkedList<>();
-					int index = 0;
-
-					for (OrderHistoryItemDto orderHistoryItem: orderHistoryItems)
-					{
-						OrderItemDto orderItem = new OrderItemDto();
-						orderItem.setLineNo(CmStringUtils.leftPad(index+1, 6, "0"));
-						orderItem.setMaterialNo(orderHistoryItem.getMaterialNo());
-						orderItem.setOrderQty(orderHistoryItem.getOrderQty());
-
-						orderItems.add(orderItem);
-					}
-
-					order.setOrderItems(orderItems);
-				}
-			}
-		}
 		else
 		{
 			if (CmStringUtils.isNotEmpty(order.getMaterialNo()))
@@ -202,7 +169,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 					if (CmStringUtils.isNotEmpty(materialNos[i]))
 					{
 						OrderItemDto orderItem = new OrderItemDto();
-						orderItem.setLineNo(CmStringUtils.leftPad(i*10, 6, "0"));
+						orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
 						orderItem.setMaterialNo(materialNos[i]);
 						orderItem.setOrderQty(orderQtyies[i]);
 

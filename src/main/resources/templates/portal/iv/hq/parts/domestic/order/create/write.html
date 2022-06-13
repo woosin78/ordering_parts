@@ -851,6 +851,9 @@ $(function(){
 				{
 					p.fileName = $("#fileName").val();
 				};
+				
+				//처음 한번만 불러오고 이후부터는 입력받은 품번으로 시뮬레이션 실행
+				$("#ohhSeq").val("");
 			},
 			dataSrc: function(response)
 			{
