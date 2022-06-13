@@ -70,6 +70,8 @@
 	<input type="hidden" id="pricingInfo" name="pricingInfo"/>
 	<input type="hidden" id="simulationFrom" name="simulationFrom"/>
 	
+	<input type="hidden" id="ohhSeq" name="ohhSeq" th:value="${ohhSeq}"/>
+
 	<table class="condition">
 		<tbody>
 			<tr>
@@ -825,6 +827,7 @@ $(function(){
 				p.simulationFrom = $("#simulationFrom").val();
 				p.fgFilteringDuplicateItem = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).YES}]]";
 				p.fgFilteringInvalidSalesLotItem = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).YES}]]";
+				p.ohhSeq = $("#ohhSeq").val();
 
 				//Item
 				if ($("#fileName").val() == "")

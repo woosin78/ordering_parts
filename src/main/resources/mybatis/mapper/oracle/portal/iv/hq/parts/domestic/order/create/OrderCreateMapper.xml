@@ -19,6 +19,8 @@
 		<result property="errorMsg" column="error_msg" />
 		<result property="orderedDate" column="ordered_date" />
 		<result property="duplOhhSeq" column="dupl_ohh_seq" />
+		<result property="refSeq" column="ref_seq" />
+		<result property="refSystem" column="ref_system" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
 		<collection property="orderHistoryItems" foreignColumn="ohh_seq" column="ohh_seq" javaType="java.util.ArrayList" ofType="OrderHistoryItemEntity" select="findAllOrderHistoryItems" />
@@ -29,8 +31,8 @@
 			select pltf_ohh_seq.nextval from dual
 		</selectKey>
 
-		insert into ep_order_history_header (ohh_seq, corp, doc_type, order_type, sold_to_no, ship_to_no, oa_seq, sales_org, dist_channel, division, shipping_condition, po_no, so_no, error_msg, ordered_date, dupl_ohh_seq, reg_username, reg_date) values (
-			#{ohhSeq}, #{corp}, #{docType}, #{orderType}, #{soldToNo}, #{shipToNo}, #{oaSeq}, #{salesOrg}, #{distChannel}, #{division}, #{shippingCondition}, #{poNo}, #{soNo}, #{errorMsg}, #{orderedDate}, #{duplOhhSeq}, #{regUsername}, #{regDate}
+		insert into ep_order_history_header (ohh_seq, corp, doc_type, order_type, sold_to_no, ship_to_no, oa_seq, sales_org, dist_channel, division, shipping_condition, po_no, so_no, error_msg, ordered_date, dupl_ohh_seq, ref_seq, ref_system, reg_username, reg_date) values (
+			#{ohhSeq}, #{corp}, #{docType}, #{orderType}, #{soldToNo}, #{shipToNo}, #{oaSeq}, #{salesOrg}, #{distChannel}, #{division}, #{shippingCondition}, #{poNo}, #{soNo}, #{errorMsg}, #{orderedDate}, #{duplOhhSeq}, #{refSeq}, #{refSystem}, #{regUsername}, #{regDate}
 		)
 	</insert>
 	
@@ -51,6 +53,15 @@
 		where
 		ohh_seq=#{ohhSeq}		
 	</update>
+	
+	<select id="findOrderHistoryHeader" resultMap="orderHistoryHeaderMap">
+		select
+		*
+		from
+		ep_order_history_header
+		where
+		ohh_seq=#{ohhSeq}
+	</select>	
 	
 	<select id="findAllOrderHistoryHeader" parameterType="OrderHistoryHeaderDto" resultMap="orderHistoryHeaderMap">
 		select

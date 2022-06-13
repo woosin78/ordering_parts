@@ -251,6 +251,11 @@
 			<scope>system</scope>
 			<systemPath>${project.lib.path}/cos.jar</systemPath>
 		</dependency>
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

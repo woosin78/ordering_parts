@@ -41,6 +41,7 @@ public class OrderCreateController extends PartsDomesticGeneralController
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
+		model.addAttribute("ohhSeq", webRequest.getParameter("ohhSeq"));
 		model.addAttribute("docType", CmStringUtils.defaultIfEmpty(webRequest.getParameter("docType"), "C"));
 		model.addAttribute("poNo", CmStringUtils.stripStart(rfcParamMap.getCustomerNo(), "0") + CmDateFormatUtils.format(CmDateTimeUtils.now(), PortalCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
 

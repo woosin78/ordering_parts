@@ -32,7 +32,7 @@ public class PortalSecurityConfig extends WebSecurityConfigurerAdapter
 	private final String[] permitAllRequests = {
 			PortalConfigVo.INDEX_URL,
 			PortalConfigVo.ERROR_PAGE_URL,
-			PortalConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL,
+			PortalConfigVo.FORM_PASSWORD_CHANGE_PAGE_URL
 	};
 
 	@Override

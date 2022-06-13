@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -41,6 +42,9 @@ public class OrderCreateService extends PartsDomesticGeneralService
 
 	@Autowired
 	private OrderCreateMapper orderCreateMapper;
+
+	@Autowired
+	private OrderCreateGateService orderCreateGateService;
 
 	public DataMap getHeaderInfo(ErpDataMap paramMap)
 	{
@@ -238,6 +242,14 @@ public class OrderCreateService extends PartsDomesticGeneralService
 				.table("LT_ITEM")
 					.add(items);
 
+			//이전에 저장한 Order History 조회
+			OrderHistoryHeaderEntity prevOrderHistoryHeader = null;
+
+			if (ObjectUtils.isNotEmpty(order.getOhhSeq()))
+			{
+				prevOrderHistoryHeader = orderCreateMapper.findOrderHistoryHeader(order.getOhhSeq());
+			}
+
 			//Order History 저장
 			Integer ohhSeq = saveOrderHistory(order);
 
@@ -271,6 +283,15 @@ public class OrderCreateService extends PartsDomesticGeneralService
 			if (orderNo.length() > 5)
 			{
 				modifySuccessOrderHistoryHeader(ohhSeq, orderNo);
+
+				if ("C".equals(order.getDocType()))
+				{
+					if (ObjectUtils.isNotEmpty(prevOrderHistoryHeader) && CmStringUtils.equals(prevOrderHistoryHeader.getRefSystem(), "SB"))
+					{
+						//시스뱅크 연동 주문일 경우 상태 업데이트
+						orderCreateGateService.done(order.getPoNo(), prevOrderHistoryHeader.getRefSeq(), order.getSoldToNo());
+					}
+				}
 
 				//cacheHelper.evict(portalCacheConfig.getCacheNames());
 			}
@@ -337,6 +358,11 @@ public class OrderCreateService extends PartsDomesticGeneralService
 		}
 
 		return null;
+	}
+
+	public OrderHistoryHeaderDto getOrderHistory(Integer ohhSeq)
+	{
+		return CmModelMapperUtils.mapToDto(OrderHistoryHeaderObjectMapper.INSTANCE, orderCreateMapper.findOrderHistoryHeader(ohhSeq));
 	}
 
 	public List<OrderHistoryHeaderDto> getOrderHistoryList(String regUsername, Integer ohhSeq)
