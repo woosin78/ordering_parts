@@ -288,8 +288,15 @@ public class OrderCreateService extends PartsDomesticGeneralService
 				{
 					if (ObjectUtils.isNotEmpty(prevOrderHistoryHeader) && CmStringUtils.equals(prevOrderHistoryHeader.getRefSystem(), "SB"))
 					{
-						//시스뱅크 연동 주문일 경우 상태 업데이트
-						orderCreateGateService.done(order.getPoNo(), prevOrderHistoryHeader.getRefSeq(), order.getSoldToNo());
+						try
+						{
+							//시스뱅크 연동 주문일 경우 상태 업데이트
+							orderCreateGateService.done(order.getPoNo(), prevOrderHistoryHeader.getRefSeq(), order.getSoldToNo());
+						}
+						catch (Exception e)
+						{
+							e.printStackTrace();
+						}
 					}
 				}
 
