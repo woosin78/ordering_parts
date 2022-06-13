@@ -1,6 +1,5 @@
 package org.jwebppy.platform.core.util.db;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -26,6 +25,10 @@ import java.util.regex.Pattern;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 public class SimpleDauMap extends DauGeneralMap
 {
@@ -94,29 +97,19 @@ public class SimpleDauMap extends DauGeneralMap
 		StringBuffer content = new StringBuffer();
 		content.append(" ###### Properties load");
 
-		try
-		{
-			prop.load(SimpleDauMap.class.getClassLoader().getResourceAsStream("org/jwebppy/platform/core/util/db/DBInfo_" + this.target + ".properties"));
-		}
-		catch (FileNotFoundException e)
+		Resource resource = new ClassPathResource("/config/db/DBInfo_" + this.target + ".properties");
+
+		if (resource.exists())
 		{
 			try
 			{
-				prop.load(SimpleDauMap.class.getClassLoader().getResourceAsStream("org/jwebppy/platform/core/util/db/DBInfo.properties"));
+				prop = PropertiesLoaderUtils.loadProperties(resource);
 			}
-			catch (IOException e1)
+			catch (IOException e)
 			{
-				e1.printStackTrace();
+				e.printStackTrace();
 			}
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		System.err.println("==========================================");
-		System.err.println(prop);
-		System.err.println("==========================================");
 
 		Iterator it = prop.entrySet().iterator();
 		while (it.hasNext())
