@@ -36,6 +36,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import com.google.common.collect.ImmutableMap;
+
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH  + "/board")
 public class EpBoardContentController extends IvGeneralController
@@ -61,6 +63,9 @@ public class EpBoardContentController extends IvGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest, EpBoardContentSearchDto boardContentSearch)
 	{
+		//Doobiz 에 있는 과거 데이터를 보여주기 위한 용도
+		addOldMenuLink(model, boardContentSearch.getBSeq());
+
 		setDefaultAttribute(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
@@ -226,5 +231,27 @@ public class EpBoardContentController extends IvGeneralController
 		model.addAttribute("hasWriteAuth", UserAuthenticationUtils.hasRole(CmStringUtils.split(board.getWriteAuth(), IvCommonVo.DELIMITER)));
 
 		addAllAttributeFromRequest(model, webRequest);
+	}
+
+	public void addOldMenuLink(Model model, String bSeq)
+	{
+		/*
+		 * DIVK 내수의 경우 공지사항, 부품장버는 과거 데이터(Doobiz)는 보여줌
+		 * 공지사항: 1-07008bda-f80b-4f6c-8397-c382bc344273, /irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_notice_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312
+		 * 부품장터: 1-92953403-226b-494e-9c63-55763f8bbb8b, /irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_market_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312
+		*/
+		ImmutableMap<String, String> oldSystemUrlMap = new ImmutableMap.Builder<String, String>()
+				.put("1-07008bda-f80b-4f6c-8397-c382bc344273", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_notice_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312")
+				.put("1-92953403-226b-494e-9c63-55763f8bbb8b", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_market_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312")
+				.build();
+
+		String oldSystemUrl = oldSystemUrlMap.get(bSeq);
+
+		if (CmStringUtils.isNotEmpty(oldSystemUrl))
+		{
+			oldSystemUrl = getDoobizDomain() + oldSystemUrl;
+		}
+
+		model.addAttribute("oldSystemUrl", oldSystemUrl);
 	}
 }

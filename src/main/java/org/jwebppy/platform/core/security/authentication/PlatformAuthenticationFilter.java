@@ -161,7 +161,7 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 		{
 			LocalDateTime ssoTime = CmDateTimeUtils.toLocalDateTime(time, PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
 
-			if (ssoTime.plusMinutes(1).compareTo(LocalDateTime.now()) > 0)
+			if (ssoTime.plusHours(12).compareTo(LocalDateTime.now()) > 0)
 			{
 				return true;
 			}

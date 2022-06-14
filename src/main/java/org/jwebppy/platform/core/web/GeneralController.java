@@ -55,6 +55,11 @@ public abstract class GeneralController
 		return false;
 	}
 
+	protected String getDoobizDomain()
+	{
+		return (isProduction()) ? "https://doobiz.doosan-iv.com": "https://doobiz-edu.doosan-iv.com";
+	}
+
     protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
     {
         Iterator<?> it = webRequest.getParameterNames();

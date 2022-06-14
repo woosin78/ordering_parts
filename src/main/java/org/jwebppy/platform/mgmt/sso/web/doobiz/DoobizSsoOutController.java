@@ -5,6 +5,7 @@ import org.jwebppy.platform.mgmt.sso.web.SsoController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/sso/out/doobiz")
@@ -12,17 +13,13 @@ public class DoobizSsoOutController extends SsoController
 {
 	private final String KEY = "Infracore";
 	private final String IV = "Doosan";
-	private final String PRD_URL = "https://doobiz.doosan-iv.com/irj/portal";
-	private final String DEV_URL = "https://doobiz-edu.doosan-iv.com/irj/portal";
 
 	@RequestMapping
-	public Object sso(Model model)
+	public Object sso(Model model, WebRequest webRequest)
 	{
         try
 		{
-        	String url = isProduction() ? PRD_URL : DEV_URL;
-
-        	model.addAttribute("url", url);
+        	model.addAttribute("url", getDoobizDomain() + "/irj/portal");
         	model.addAttribute("token", encrypt(KEY, IV, ":"));
 		}
         catch (Exception e)

@@ -141,10 +141,6 @@
 					</tr>				
 				</tbody>
 			</table>
-			<input type="hidden" name="orderNo"/>
-			<input type="hidden" name="lineNo"/>
-			<input type="hidden" name="partNo"/>
-			<input type="hidden" name="orderDate"/>
 		</div>
 		<form id="FORM_claim">
 			<input type="hidden" name="poNo"/>
@@ -330,7 +326,7 @@ $(function(){
 			    },
 			    error: function(jqXHR, textStatus, errorThrown)
 		    	{
-			    	alert("[[HQP_M_FAILED]]");
+			    	alert("[[#{HQP_M_FAILED}]]");
 		    	},
 			    complete: function(jqXHR, textStatus)
 			    {
