@@ -159,7 +159,6 @@ $(function(){
 	//makeGnb();
 	makeGnb2();
 	
-	
 	$(".top-header .logo-doobizplus").on("click", function() {
 		goHome()
 	});
@@ -292,6 +291,26 @@ function checkExpiredPassword()
 		}
 	});
 };
+
+function preLoading()
+{
+	let urls = [
+		"[[${BASE_PATH}]]/order/display/order_list/data",
+		"[[${BASE_PATH}]]/order/backorder/backorder_list/data",
+		"[[${BASE_PATH}]]/order/display/order_status/data",
+		"[[${BASE_PATH}]]/order/invoice/invoice_status/data",
+		"[[${BASE_PATH}]]/order/shipment/shipment_status/data"
+	];
+	
+	$.each(urls, function(index, item) {
+		JpUtilsAjax.get({
+			url: item	
+		});		
+	});
+};
+
+//조회성 페이지의 조회 속도 향상을 위해 먼저 실행시켜 caching 되도록 함
+preLoading();
 
 let RESIZING_MIN_WIDTH = 1280;
 let RESIZING_MIN_HEIGHT = 720;

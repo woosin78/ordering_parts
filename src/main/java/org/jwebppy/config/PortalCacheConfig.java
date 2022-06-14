@@ -62,8 +62,8 @@ public class PortalCacheConfig
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()));//redis 캐시 데이터 저장방식을 StringSeriallizer로 지정
 
 		redisCacheConfigurationMap.put(CUSTOMER, getTtl(TTL_10_MINUTES));
-		redisCacheConfigurationMap.put(ORDER_TYPE, getTtl(TTL_24_HOURS));
-		redisCacheConfigurationMap.put(ORDER_DISPLAY, getTtl(TTL_24_HOURS));
+		redisCacheConfigurationMap.put(ORDER_TYPE, getTtl(TTL_20_MINUTES));
+		redisCacheConfigurationMap.put(ORDER_DISPLAY, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(BACKORDER, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(ORDER_STATUS, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(INVOICE_STATUS, getTtl(TTL_20_MINUTES));
@@ -74,7 +74,7 @@ public class PortalCacheConfig
 		redisCacheConfigurationMap.put(AP_SCHEDULE, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(AR_LIST, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(CLAIM_DISPLAY, getTtl(TTL_20_MINUTES));
-		redisCacheConfigurationMap.put(CLAIM_REASON, getTtl(TTL_24_HOURS));
+		redisCacheConfigurationMap.put(CLAIM_REASON, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(PARTS_INFO_AUTOCOMPLETE, getTtl(TTL_24_HOURS));
 		redisCacheConfigurationMap.put(DEALER_INFO_AUTOCOMPLETE, getTtl(TTL_24_HOURS));
 		redisCacheConfigurationMap.put(BUSINESS_TOOLS, getTtl(TTL_1_HOUR));

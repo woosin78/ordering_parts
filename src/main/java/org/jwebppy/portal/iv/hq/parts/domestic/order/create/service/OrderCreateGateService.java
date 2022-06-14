@@ -19,13 +19,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderCreateGateService extends PartsDomesticGeneralService
 {
-	public static void  main(String[] args)
-	{
-		String a = "1.00";
-
-		System.err.println((int)(Double.parseDouble(a)));
-	}
-
 	@Autowired
 	private OrderCreateService orderCreateService;
 
@@ -86,7 +79,7 @@ public class OrderCreateGateService extends PartsDomesticGeneralService
         	dauMap.clearQuery();
 
         	dauMap.query(" update dorder_master_" + customerNo + " set dor_dbzdt=getdate() where dor_code='" + seq + "' ");
-        	//dauMap.executeUpdate();
+        	dauMap.executeUpdate();
 
         	return ohhSeq;
 
@@ -113,7 +106,7 @@ public class OrderCreateGateService extends PartsDomesticGeneralService
 
         	dauMap.query(" update dorder_master_" + customerNo + " set dor_dbzcode='" + poNo + "' where dor_code='" + customerNo + "' ");
 
-        	//dauMap.executeUpdate();
+        	dauMap.executeUpdate();
 
         }
         catch (Exception e)

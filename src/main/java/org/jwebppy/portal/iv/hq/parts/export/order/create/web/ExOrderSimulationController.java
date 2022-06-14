@@ -28,9 +28,11 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
+import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderCreateService;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderItemDto;
@@ -60,6 +62,9 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
     private String orderPath;
 
     private String uploadPath;
+
+    @Autowired
+    private OrderCreateService orderCreateService;
 
     @PostConstruct
     public void init()
@@ -195,6 +200,21 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		if (CollectionUtils.isNotEmpty(order.getOrderItems()))
 		{
 			simulationResult = orderSimulationService.simulation(order);
+		}
+		else
+		{
+			//시뮬레이션 결과 정상 건이 없을 경우 사용자 정보에서 Credit 을 가져와 넣어준다.
+			ErpDataMap paramMap = getErpUserInfo()
+					.add(new Object[][] {
+						{"orderType", order.getOrderType()},
+						{"priceGroup", order.getPriceGroup()},
+						{"docType", order.getDocType()}
+					});
+
+			DataMap dataMap = orderCreateService.getHeaderInfo(paramMap);
+
+			simulationResult.setCredit(Formatter.getDefDecimalFormat(dataMap.getString("CREDIT")));
+			simulationResult.setCreditCurrency(dataMap.getString("WAERS"));
 		}
 
 		//중복 자재 입력 오류는 시뮬레이션 실행 전에 필터링해 둔 것을 넣어준다.

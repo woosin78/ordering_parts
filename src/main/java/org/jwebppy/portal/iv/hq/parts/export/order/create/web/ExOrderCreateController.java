@@ -11,6 +11,7 @@ import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.hq.common.HqCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
@@ -71,7 +72,12 @@ public class ExOrderCreateController extends PartsExportGeneralController
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 		rfcParamMap.putAll(paramMap);
 
-		return orderCreateService.getHeaderInfo(rfcParamMap);
+		Map<String, Object> headerInfoMap = orderCreateService.getHeaderInfo(rfcParamMap);
+
+		FormatBuilder.with(headerInfoMap)
+			.decimalFormat("CREDIT");
+
+		return headerInfoMap;
 	}
 
 	@RequestMapping("/order_type/data")

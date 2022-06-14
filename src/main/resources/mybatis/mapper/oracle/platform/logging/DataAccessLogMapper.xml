@@ -98,7 +98,7 @@
 			</if>				
 			
 			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(regUsername)">
-				and upper(a.reg_username) like '%'||upper(#{regUsername})||'%')
+				and upper(a.reg_username) like '%'||upper(#{regUsername})||'%'
 			</if>				
 			
 			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(query)">
