@@ -168,6 +168,7 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 			itemMap.put("ITEM", orderItem.getLineNo());
 			itemMap.put("MATERIAL", CmStringUtils.trimToEmpty(orderItem.getMaterialNo()).toUpperCase());
 			itemMap.put("QTY", orderItem.getAdjustedOrderQty());
+			itemMap.put("REQ_QTY", orderItem.getOrderQty());
 
 			items.add(itemMap);
 		}

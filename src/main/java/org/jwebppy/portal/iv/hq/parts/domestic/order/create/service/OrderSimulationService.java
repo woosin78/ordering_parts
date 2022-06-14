@@ -168,6 +168,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 			itemMap.put("ITEM", orderItem.getLineNo());
 			itemMap.put("MATERIAL", CmStringUtils.trimToEmpty(orderItem.getMaterialNo()).toUpperCase());
 			itemMap.put("QTY", orderItem.getOrderQty());
+			itemMap.put("REQ_QTY", orderItem.getOrderQty());
 
 			items.add(itemMap);
 		}
