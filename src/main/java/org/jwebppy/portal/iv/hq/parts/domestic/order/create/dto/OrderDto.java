@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.dto.PartsDomesticGeneralDto;
 
 import lombok.Getter;
@@ -109,24 +111,29 @@ public class OrderDto extends PartsDomesticGeneralDto
 	//Sales Lot 에 맞지 않게 수량을 입력한 자재 필터링
 	public void filteringInvalidSalesLotOrderItems()
 	{
-		if (CollectionUtils.isNotEmpty(orderItems))
+		//Machine Down Order 는 Lot 체크 하지 않음
+		if (CmStringUtils.notEquals(orderType, "YDMO"))
 		{
-			invalidSalesLotOrderItems = new ArrayList<>();
-			List<OrderItemDto> tempOrderItems = new ArrayList<>();
-
-			for (OrderItemDto orderItem: orderItems)
+			if (CollectionUtils.isNotEmpty(orderItems))
 			{
-				if (Double.parseDouble(orderItem.getOrderQty()) % Double.parseDouble(orderItem.getLotQty()) > 0)
-				{
-					invalidSalesLotOrderItems.add(orderItem);
-				}
-				else
-				{
-					tempOrderItems.add(orderItem);
-				}
-			}
+				invalidSalesLotOrderItems = new ArrayList<>();
+				List<OrderItemDto> tempOrderItems = new ArrayList<>();
 
-			orderItems = tempOrderItems;
+				for (OrderItemDto orderItem: orderItems)
+				{
+					if (Double.parseDouble(orderItem.getOrderQty()) % Double.parseDouble(orderItem.getLotQty()) > 0)
+					{
+						orderItem.setFgInvalidSalesLot(PartsDomesticCommonVo.YES);
+						invalidSalesLotOrderItems.add(orderItem);
+					}
+					else
+					{
+						tempOrderItems.add(orderItem);
+					}
+				}
+
+				orderItems = tempOrderItems;
+			}
 		}
 	}
 }

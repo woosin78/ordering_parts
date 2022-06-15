@@ -794,12 +794,7 @@ $(function(){
 				orderable: false,
 				render: function(data, type, row)
 				{
-					let clazz = "custom-ui";
-					
-					if (row.orderQty % row.lotQty > 0)
-					{
-						clazz += " warn";
-					};					
+					let clazz =  (JpUtilsString.equals(row.fgInvalidSalesLot, GLOBAL_CONST.YES)) ? "custom-ui warn": "custom-ui";
 					
 					return "<input type='text' class='" + clazz + "' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
@@ -840,8 +835,8 @@ $(function(){
 				p.soldToNo = $("#soldToNo").val();
 				p.shipToNo = $("#shipToNo").val();
 				p.simulationFrom = $("#simulationFrom").val();
-				p.fgFilteringDuplicateItem = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).YES}]]";
-				p.fgFilteringInvalidSalesLotItem = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).YES}]]";
+				p.fgFilteringDuplicateItem = GLOBAL_CONST.YES;
+				p.fgFilteringInvalidSalesLotItem = GLOBAL_CONST.YES;
 
 				//Item
 				if ($("#fileName").val() == "")

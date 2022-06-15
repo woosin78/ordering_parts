@@ -2,6 +2,7 @@ package org.jwebppy.portal.iv.hq.parts.export.order.create.dto;
 
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.common.dto.PartsExportGeneralDto;
 
 import lombok.Getter;
@@ -41,6 +42,7 @@ public class ExOrderItemDto extends PartsExportGeneralDto
 	private String errorType;
 	private String errorCode;
 	private String errorMessage;
+	private String fgInvalidSalesLot = PortalCommonVo.NO;
 
 	public String getAdjustedOrderQty()
 	{
