@@ -22,9 +22,9 @@ public class AsyncConfig
 	public Executor threadPoolTaskExecutor()
 	{
 		ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-		taskExecutor.setCorePoolSize(100);
-		taskExecutor.setMaxPoolSize(150);
-		taskExecutor.setQueueCapacity(50);
+		taskExecutor.setCorePoolSize(200);
+		taskExecutor.setMaxPoolSize(400);
+		taskExecutor.setQueueCapacity(10);
 		taskExecutor.setThreadNamePrefix("Executor-");
 		taskExecutor.initialize();
 

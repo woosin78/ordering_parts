@@ -77,7 +77,7 @@ public class RfcExecutionAspect
 		{
 			if (isActiveLogging)
 			{
-				//dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
+				dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
 			}
 		}
 
