@@ -136,7 +136,7 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 			.weightFormat("TOTAL_WEIGHT");
 		FormatBuilder.with(itemList)
 			.decimalFormat(new String[] {"KBETR", "NET_PRICE", "NET_VALUE"})
-			.qtyFormat("REQ_QTY");
+			.qtyFormat(new String[] {"REQ_QTY", "COM_QTY"});
 
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("remark", rfcResponse.getString("LV_REMARK"));
