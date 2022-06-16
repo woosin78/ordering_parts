@@ -1,14 +1,16 @@
 package org.jwebppy.platform.mgmt.logging.service;
 
-import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.collections4.list.UnmodifiableList;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
@@ -21,7 +23,6 @@ import org.jwebppy.platform.mgmt.logging.entity.DataAccessResultLogParameterEnti
 import org.jwebppy.platform.mgmt.logging.mapper.DataAccessResultLogMapper;
 import org.jwebppy.platform.mgmt.logging.mapper.DataAccessResultLogObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,10 @@ public class DataAccessResultLogService extends GeneralService
 	@Autowired
 	private DataAccessResultLogMapper dataAccessResultLogMapper;
 
-	@Async("threadPoolTaskExecutor")
+	@Autowired
+	private SqlSessionFactory sqlSessionFactory;
+
+	//@Async("threadPoolTaskExecutor")
 	public void writeLog(String dlSeq, RfcResponse rfcResponse)
 	{
 		if (ObjectUtils.isNotEmpty(rfcResponse))
@@ -41,6 +45,8 @@ public class DataAccessResultLogService extends GeneralService
 
 			if (MapUtils.isNotEmpty(resultMap))
 			{
+				SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+
 				DataAccessResultLogEntity dataAccessResultLog = new DataAccessResultLogEntity();
 				dataAccessResultLog.setDlSeq(dlSeq);
 
@@ -77,7 +83,7 @@ public class DataAccessResultLogService extends GeneralService
 
 					if (ParameterType.T.equals(type))
 					{
-						List<Map<String, Object>> list = ListUtils.emptyIfNull((List)value);
+						List<Map<String, Object>> list = UnmodifiableList.unmodifiableList((List)value);
 
 						for (int i=0, size=list.size(); i<size; i++)
 						{
@@ -89,16 +95,9 @@ public class DataAccessResultLogService extends GeneralService
 
 								while (subIt.hasNext())
 								{
-									try
-									{
-										Entry<String, Object> subEntry = subIt.next();
+									Entry<String, Object> subEntry = subIt.next();
 
-										saveDataAccessResultLogParameterDetail(drlpSeq, i, subEntry.getKey(), subEntry.getValue());
-									}
-									catch (ConcurrentModificationException e)
-									{
-										continue;
-									}
+									addDataAccessResultLogParameterDetail(sqlSession, drlpSeq, i, subEntry.getKey(), subEntry.getValue());
 								}
 							}
 						}
@@ -115,20 +114,24 @@ public class DataAccessResultLogService extends GeneralService
 							{
 								Entry<String, Object> subEntry = subIt.next();
 
-								saveDataAccessResultLogParameterDetail(drlpSeq, 0, subEntry.getKey(), subEntry.getValue());
+								addDataAccessResultLogParameterDetail(sqlSession, drlpSeq, 0, subEntry.getKey(), subEntry.getValue());
 							}
 						}
 					}
 					else
 					{
-						saveDataAccessResultLogParameterDetail(drlpSeq, 0, key, value);
+						addDataAccessResultLogParameterDetail(sqlSession, drlpSeq, 0, key, value);
 					}
 				}
+
+				sqlSession.flushStatements();
+                sqlSession.close();
+                sqlSession.clearCache();
 			}
 		}
 	}
 
-	private void saveDataAccessResultLogParameterDetail(Long drlpSeq, int lineNo, String name, Object value)
+	private void addDataAccessResultLogParameterDetail(SqlSession sqlSession, Long drlpSeq, int lineNo, String name, Object value)
 	{
 		DataAccessResultLogParameterDetailEntity dataAccessResultLogParameterDetail = new DataAccessResultLogParameterDetailEntity();
 
@@ -137,7 +140,7 @@ public class DataAccessResultLogService extends GeneralService
 		dataAccessResultLogParameterDetail.setName(CmStringUtils.trimToEmpty(name));
 		dataAccessResultLogParameterDetail.setValue(CmStringUtils.trimToEmpty(value));
 
-		dataAccessResultLogMapper.insertDataAccessResultLogParameterDetail(dataAccessResultLogParameterDetail);
+		sqlSession.insert("org.jwebppy.platform.mgmt.logging.mapper.DataAccessResultLogMapper.insertDataAccessResultLogParameterDetail", dataAccessResultLogParameterDetail);
 	}
 
 	public DataAccessResultLogDto getResultLog(long drlSeq)
