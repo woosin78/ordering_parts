@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExBackorderService extends PartsExportGeneralService
 {
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.BACKORDER, unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.EX_BACKORDER, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
+		System.err.println("backorder:" + paramMap);
+
 		String fromDate = paramMap.getString("fromDate");
 		String toDate = paramMap.getString("toDate");
 

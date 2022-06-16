@@ -35,12 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ExOrderCreateService extends PartsExportGeneralService
 {
-	//@Autowired
-	//private CacheHelper cacheHelper;
-
-	//@Autowired
-	//private PortalCacheConfig portalCacheConfig;
-
 	@Autowired
 	private ExOrderCreateMapper orderCreateMapper;
 
@@ -50,20 +44,17 @@ public class ExOrderCreateService extends PartsExportGeneralService
 
 		rfcRequest.
 			field().with(paramMap)
-				.add(new Object[][] {
-					{"I_BGTYP", "P"},
-					{"I_LANG", paramMap.getLangForSap()},
-					{"I_USERID", paramMap.getUsername()},
-				})
+				.add("I_LANG", paramMap.getLangForSap())
 				.addByKey(new Object[][] {
 					{"LV_AUART", "orderType"},
 					{"LV_KONDA", "priceGroup"},
 					{"LV_VBTYP", "docType"}
-				});
+				})
+			.and()
+			.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
-		RfcResponse rfcResponse = simpleRfcTemplate.response(rfcRequest);
-
-		return new DataMap(rfcResponse.getStructure("LS_EP002"));
+		return new DataMap(simpleRfcTemplate.response(rfcRequest).getStructure("LS_EP002"));
 	}
 
 	public DataList getOrderType(ErpDataMap paramMap)
@@ -277,8 +268,6 @@ public class ExOrderCreateService extends PartsExportGeneralService
 			if (orderNo.length() > 5)
 			{
 				modifySuccessOrderHistoryHeader(ohhSeq, orderNo);
-
-				//cacheHelper.evict(portalCacheConfig.getCacheNames());
 			}
 			else
 			{

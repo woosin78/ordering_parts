@@ -15,10 +15,8 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
-import org.springframework.stereotype.Component;
 
 @Configuration
-@Component
 public class PortalCacheConfig
 {
 	public static final String CUSTOMER = "Customer";
@@ -26,8 +24,10 @@ public class PortalCacheConfig
 	public static final String ORDER_DISPLAY = "OrderDisplay";
 	public static final String BACKORDER = "Backorder";
 	public static final String ORDER_STATUS = "OrderStatus";
+	public static final String ORDER_DISPLAY_DETAIL = "OrderDisplayDetail";
 	public static final String INVOICE_STATUS = "InvoiceStatus";
 	public static final String SHIPMENT_STATUS = "ShipmentStatus";
+	public static final String SHIPMENT_STATUS_DETAIL = "ShipmentStatusDetail";
 	public static final String DELIVERY_STATUS = "DeliveryStatus";
 	public static final String AP_LIST = "ApList";
 	public static final String AP_DETAIL = "ApDetail";
@@ -39,6 +39,10 @@ public class PortalCacheConfig
 	public static final String PARTS_INFO_AUTOCOMPLETE = "PartsInfoAutoComplete";
 	public static final String DEALER_INFO_AUTOCOMPLETE = "DealerInfoAutoComplete";
 	public static final String BUSINESS_TOOLS = "BusinessTools";
+
+	public static final String EX_ORDER_DISPLAY = "ExOrderDisplay";
+	public static final String EX_BACKORDER = "ExBackorder";
+	public static final String EX_ORDER_STATUS = "ExOrderStatus";
 
 	public static final int TTL_1_MINUTES = 60;
 	public static final int TTL_5_MINUTES = 5*60;
@@ -66,8 +70,10 @@ public class PortalCacheConfig
 		redisCacheConfigurationMap.put(ORDER_DISPLAY, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(BACKORDER, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(ORDER_STATUS, getTtl(TTL_20_MINUTES));
+		redisCacheConfigurationMap.put(ORDER_DISPLAY_DETAIL, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(INVOICE_STATUS, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(SHIPMENT_STATUS, getTtl(TTL_20_MINUTES));
+		redisCacheConfigurationMap.put(SHIPMENT_STATUS_DETAIL, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(DELIVERY_STATUS, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(AP_LIST, getTtl(TTL_20_MINUTES));
 		redisCacheConfigurationMap.put(AP_DETAIL, getTtl(TTL_20_MINUTES));
@@ -78,6 +84,10 @@ public class PortalCacheConfig
 		redisCacheConfigurationMap.put(PARTS_INFO_AUTOCOMPLETE, getTtl(TTL_24_HOURS));
 		redisCacheConfigurationMap.put(DEALER_INFO_AUTOCOMPLETE, getTtl(TTL_24_HOURS));
 		redisCacheConfigurationMap.put(BUSINESS_TOOLS, getTtl(TTL_1_HOUR));
+
+		redisCacheConfigurationMap.put(EX_ORDER_DISPLAY, getTtl(TTL_5_MINUTES));
+		redisCacheConfigurationMap.put(EX_BACKORDER, getTtl(TTL_5_MINUTES));
+		redisCacheConfigurationMap.put(EX_ORDER_STATUS, getTtl(TTL_5_MINUTES));
 
 		return RedisCacheManager.RedisCacheManagerBuilder
 				.fromConnectionFactory(redisConnectionFactory)

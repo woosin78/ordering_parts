@@ -34,12 +34,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrderCreateService extends PartsDomesticGeneralService
 {
-	//@Autowired
-	//private CacheHelper cacheHelper;
-
-	//@Autowired
-	//private PortalCacheConfig portalCacheConfig;
-
 	@Autowired
 	private OrderCreateMapper orderCreateMapper;
 
@@ -52,20 +46,17 @@ public class OrderCreateService extends PartsDomesticGeneralService
 
 		rfcRequest.
 			field().with(paramMap)
-				.add(new Object[][] {
-					{"I_BGTYP", "P"},
-					{"I_LANG", paramMap.getLangForSap()},
-					{"I_USERID", paramMap.getUsername()},
-				})
+				.add("I_LANG", paramMap.getLangForSap())
 				.addByKey(new Object[][] {
 					{"LV_AUART", "orderType"},
 					{"LV_KONDA", "priceGroup"},
 					{"LV_VBTYP", "docType"}
-				});
+				})
+			.and()
+			.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
-		RfcResponse rfcResponse = simpleRfcTemplate.response(rfcRequest);
-
-		return new DataMap(rfcResponse.getStructure("LS_EP002"));
+		return new DataMap(simpleRfcTemplate.response(rfcRequest).getStructure("LS_EP002"));
 	}
 
 	public DataList getOrderType(ErpDataMap paramMap)
@@ -299,8 +290,6 @@ public class OrderCreateService extends PartsDomesticGeneralService
 						}
 					}
 				}
-
-				//cacheHelper.evict(portalCacheConfig.getCacheNames());
 			}
 			else
 			{

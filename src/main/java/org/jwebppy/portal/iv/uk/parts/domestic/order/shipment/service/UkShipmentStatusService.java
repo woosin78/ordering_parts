@@ -1,6 +1,6 @@
 package org.jwebppy.portal.iv.uk.parts.domestic.order.shipment.service;
 
-import org.jwebppy.config.RedisConfig;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UkShipmentStatusService extends UkPartsDomesticGeneralService
 {
-	@Cacheable(value = RedisConfig.SHIPMENT_STATUS, key = "#paramMap", unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.SHIPMENT_STATUS, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SHIPMENT_INFO");
@@ -28,7 +28,7 @@ public class UkShipmentStatusService extends UkPartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(value = RedisConfig.SHIPMENT_STATUS_DETAIL, key = "#paramMap", unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.SHIPMENT_STATUS_DETAIL, key = "#paramMap", unless="#result == null")
 	public RfcResponse getDetail(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_SHIPMENT_INFO");

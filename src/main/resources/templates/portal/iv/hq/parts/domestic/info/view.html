@@ -21,7 +21,6 @@
 			<td colspan="3">
 				<div class="input-area">
 					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" style="text-transform: uppercase;" autofocus />
-					<!-- button class="btn-popup2" type="button" onclick="_showPartSearch($('#pPartNo').val());"></button -->					
 				</div>
 			</td>
 		</tr>		
@@ -131,6 +130,10 @@ $(window).on("load", function() {
 
 $(document).ready(function() {
 	_setPartAutocomplete($("#pPartNo"));
+	
+	$("#pPartNo").on("click", function() {
+		$(this).select();
+	});	
 });
 
 function doSearch()
@@ -302,7 +305,8 @@ $("#pPartNo").on("keydown", function(event) {
 	{
 		if ($.trim($("#pPartNo").val()) != "")
 		{
-			doSearch();	
+			doSearch();
+			$(this).select();
 		};
 	};
 });

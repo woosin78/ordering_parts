@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClaimDisplayService extends PartsDomesticGeneralService
 {
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_DISPLAY, unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDERLIST");
@@ -41,11 +40,23 @@ public class ClaimDisplayService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_DISPLAY, unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDER_LOAD");
 
+		/*
+		rfcRequest
+			.field()
+				.add(new Object[][] {
+					{"I_BGTYP", "P"},//상수
+					{"I_LANGU", paramMap.getLangForSap()},
+					{"I_USERID", paramMap.getUsername()},
+					{"LV_REF_ORD", paramMap.get("orderNo")}
+				})
+			.and()
+			.structure("LS_IMPORT_PORTAL")
+				.add("DOC_CATEGORY", paramMap.get("docType"));
+		*/
 		rfcRequest
 			.field()
 				.add(new Object[][] {
@@ -56,13 +67,12 @@ public class ClaimDisplayService extends PartsDomesticGeneralService
 			.structure("LS_IMPORT_PORTAL")
 				.add("DOC_CATEGORY", paramMap.get("docType"))
 			.and()
-    		.structure("I_INPUT")
+			.structure("I_INPUT")
 				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.CLAIM_REASON, unless="#result == null")
 	public DataList getClaimReasonList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_COMPLAIN_REASON");

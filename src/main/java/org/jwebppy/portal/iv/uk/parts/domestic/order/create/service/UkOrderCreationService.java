@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.jwebppy.config.RedisConfig;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -129,9 +129,9 @@ public class UkOrderCreationService extends UkPartsDomesticGeneralService
 
 	@Caching(
 			evict = {
-					@CacheEvict (value = RedisConfig.ORDER_DISPLAY, allEntries = true),
-					@CacheEvict (value = RedisConfig.BACKORDER, allEntries = true),
-					@CacheEvict (value = RedisConfig.ORDER_STATUS, allEntries = true)
+					@CacheEvict (value = PortalCacheConfig.ORDER_DISPLAY, allEntries = true),
+					@CacheEvict (value = PortalCacheConfig.BACKORDER, allEntries = true),
+					@CacheEvict (value = PortalCacheConfig.ORDER_STATUS, allEntries = true)
 			})
 	public RfcResponse save(UkOrderDto order)
 	{

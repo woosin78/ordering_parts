@@ -107,7 +107,6 @@ public class ExPartInfoService extends PartsExportGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	//@Cacheable(cacheManager = "portalCacheManager", value = PortalCacheConfig.PARTS_INFO_AUTOCOMPLETE, unless="#result == null")
 	public DataList getSimplePartInfo(ErpDataMap paramMap)
 	{
 		Map<String, Object> partMap = new HashMap<>();

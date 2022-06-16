@@ -9,9 +9,9 @@ import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.backorder.service.BackorderService;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.common.web.PartsExportGeneralController;
+import org.jwebppy.portal.iv.hq.parts.export.order.backorder.service.ExBackorderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,7 @@ import org.springframework.web.context.request.WebRequest;
 public class ExBackorderController extends PartsExportGeneralController
 {
 	@Autowired
-	private BackorderService backorderService;
+	private ExBackorderService backorderService;
 
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)

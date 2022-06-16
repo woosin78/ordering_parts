@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class DeliveryStatusService extends PartsDomesticGeneralService
 {
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.DELIVERY_STATUS, unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_SHIPMENT_LIST");
@@ -36,7 +35,6 @@ public class DeliveryStatusService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.DELIVERY_STATUS, unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_SHIPMENT_DETAIL");

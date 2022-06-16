@@ -12,10 +12,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class OrderDisplayService extends PartsDomesticGeneralService
 {
-	//@Autowired
-	//private CacheHelper cacheHelper;
-
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_DISPLAY, unless="#result == null")
 	public RfcResponse getList(PartsErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDERLIST");
@@ -51,28 +47,26 @@ public class OrderDisplayService extends PartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_DISPLAY, unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
-		//cacheHelper.evict(PortalCacheConfig.ORDER_DISPLAY);
-
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDER_LOAD");
 
 		rfcRequest
-			.field().with(paramMap)
+			.field()
 				.add(new Object[][] {
-					{"I_BGTYP", "P"},
 					{"I_LANGU", paramMap.getLangForSap()},
-					{"I_USERID", paramMap.getUsername()},
+					{"LV_REF_ORD", paramMap.getString("orderNo")}
 				})
-				.addByKey("LV_REF_ORD", "orderNo")
 			.and()
 			.structure("LS_IMPORT_PORTAL")
 				.add(new Object[][] {
 					{"DOC_CATEGORY", paramMap.getString("docType", "C")},
 					{"COMPLAINT", "N"},
 					{"DOC_MODE", "C"}
-				});
+				})
+			.and()
+			.structure("I_INPUT")
+				.add(SimpleRfcMakeParameterUtils.me(paramMap));
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}

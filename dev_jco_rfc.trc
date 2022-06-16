@@ -7843,3 +7843,10 @@ Error:  >Wed Jun 08 14:49:45,226<    RfcException:
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:834)
 
+
+**** Error file opened at 20220614 154555 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error: [1] >Tue Jun 14 15:45:55,428<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: connection closed without message (CM_NO_DATA_RECEIVED)
+    return code: RFC_CLOSED (6)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

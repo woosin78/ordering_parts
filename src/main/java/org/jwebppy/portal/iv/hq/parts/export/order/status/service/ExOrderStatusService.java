@@ -22,9 +22,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExOrderStatusService extends PartsExportGeneralService
 {
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_STATUS, unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.EX_ORDER_STATUS, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
+		System.err.println("OrderStatus:" + paramMap);
+
 		String fromDate = paramMap.getString("fromDate");
 		String toDate = paramMap.getString("toDate");
 
@@ -56,7 +58,6 @@ public class ExOrderStatusService extends PartsExportGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_STATUS, unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
 		String[] orderNos = CmStringUtils.split(CmStringUtils.strip(paramMap.getString("orderNo"), PortalConfigVo.DELIMITER), PortalConfigVo.DELIMITER);

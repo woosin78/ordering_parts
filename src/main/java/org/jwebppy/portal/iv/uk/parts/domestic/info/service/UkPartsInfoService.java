@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.jwebppy.config.RedisConfig;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -118,7 +118,7 @@ public class UkPartsInfoService extends UkPartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(value = RedisConfig.PARTS_INFO_AUTOCOMPLETE, key = "#paramMap", unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.PARTS_INFO_AUTOCOMPLETE, key = "#paramMap", unless="#result == null")
 	public DataList getSimplePartsInfo(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY2");

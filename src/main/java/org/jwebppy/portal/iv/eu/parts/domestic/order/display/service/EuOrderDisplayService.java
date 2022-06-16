@@ -1,6 +1,6 @@
 package org.jwebppy.portal.iv.eu.parts.domestic.order.display.service;
 
-import org.jwebppy.config.RedisConfig;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EuOrderDisplayService extends EuPartsDomesticGeneralService
 {
-	@Cacheable(value = RedisConfig.ORDER_DISPLAY, key = "#paramMap", unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.ORDER_DISPLAY, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDERLIST");
@@ -38,7 +38,7 @@ public class EuOrderDisplayService extends EuPartsDomesticGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	@Cacheable(value = RedisConfig.ORDER_DISPLAY_DETAIL, key = "#paramMap", unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.ORDER_DISPLAY_DETAIL, key = "#paramMap", unless="#result == null")
 	public RfcResponse getDetail(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDER_LOAD");

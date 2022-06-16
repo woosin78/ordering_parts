@@ -16,7 +16,7 @@ public class EuOrderCommonService extends EuPartsDomesticGeneralService
 	@Autowired
 	protected SimpleRfcTemplate simpleRfcTemplate;
 
-	//@Cacheable(value = RedisConfig.ORDER_TYPE, key = "#paramMap", unless="#result == null")
+	//@Cacheable(value = PortalCacheConfig.ORDER_TYPE, key = "#paramMap", unless="#result == null")
 	public DataList getOrderType(ErpDataMap paramMap)
 	{
 		String docType = CmStringUtils.defaultString(paramMap.get("pDocType"), CmStringUtils.defaultString(paramMap.get("docType"), "C"));

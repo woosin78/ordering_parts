@@ -13,15 +13,6 @@ public class RedisConfig
 	@Autowired
 	RedisConnectionFactory redisConnectionFactory;
 
-	public static final String ORDER_DISPLAY = "OrderDisplay";
-	public static final String PARTS_INFO_AUTOCOMPLETE = "PartsInfoAutoComplete";
-	public static final String BACKORDER = "Backorder";
-	public static final String ORDER_STATUS = "OrderStatus";
-	public static final String ORDER_DISPLAY_DETAIL = "OrderDisplayDetail";
-	public static final String INVOICE_STATUS = "InvoiceStatus";
-	public static final String SHIPMENT_STATUS = "ShipmentStatus";
-	public static final String SHIPMENT_STATUS_DETAIL = "ShipmentStatusDetail";
-	
 	@Bean
 	public RedisTemplate<?, ?> redisTemplate()
 	{

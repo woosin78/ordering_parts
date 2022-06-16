@@ -219,12 +219,12 @@ public class ErpDataMap extends DataMap implements Serializable
 
 		return false;
 	}
-	
+
 	public String getCustomerGrp5()
 	{
 		return getString("KVGR5");
 	}
-	
+
 	public String getCorpName()
 	{
 		if (isEquals("BUKRS", "7800"))

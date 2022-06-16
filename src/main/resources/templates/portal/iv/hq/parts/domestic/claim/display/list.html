@@ -158,27 +158,19 @@ $(function(){
 	    let index = $("#TBL_grid").dataTable().api().cell($(e.target).closest("td")).index().column;	    	    
 		let rowData = tblGrid.row(this).data();
 		
-		if (index == 0)
+		if (index == 0 || index == 4)
 		{
-			let orderNo = rowData.VBELN;
+			let orderNo = (index == 0) ? rowData.VBELN : rowData.VBELN2;
+			let docType = (index == 0) ? "A" : "C";
 			
 			if (orderNo != null)
 			{
 				$("#orderNo").val(orderNo);			
 				$("#docDate").val(rowData.ERDAT);
-				$("#docType").val("A");
+				$("#docType").val(docType);
 				$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/display/view").submit();
 			}
 		}
-		else if (index == 4)
-		{
-			let soNo = rowData.VBELN2;
-			
-			if (JpUtilsString.isNotEmpty(soNo))
-			{
-				Popup.open("[[${BASE_PATH}]]/order/display/order/popup/view?orderNo=" + soNo);
-			};
-		};
 	});			
 });
 

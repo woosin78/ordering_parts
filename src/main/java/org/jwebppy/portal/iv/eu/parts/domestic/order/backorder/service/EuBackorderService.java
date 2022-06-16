@@ -1,6 +1,6 @@
 package org.jwebppy.portal.iv.eu.parts.domestic.order.backorder.service;
 
-import org.jwebppy.config.RedisConfig;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EuBackorderService extends EuPartsDomesticGeneralService
 {
-	@Cacheable(value = RedisConfig.BACKORDER, key = "#paramMap", unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.BACKORDER, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_BACKORDER_LIST");

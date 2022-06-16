@@ -41,7 +41,10 @@ import org.springframework.stereotype.Component;
 public class RfcExecutionAspect
 {
 	@Value("${if.logging.sap}")
-	private boolean isActiveLogging;
+	private boolean IF_LOGGING_SAP;
+
+	@Value("${platform.service}")
+	private String PLATFORM_SERVICE;
 
 	@Autowired
 	private DataAccessLogService dataAccessLogService;
@@ -64,7 +67,7 @@ public class RfcExecutionAspect
 
 			result = proceedingJoinPoint.proceed();
 
-			if (isActiveLogging)
+			if (IF_LOGGING_SAP)
 			{
 				dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
 			}
@@ -75,9 +78,12 @@ public class RfcExecutionAspect
 		}
 		finally
 		{
-			if (isActiveLogging)
+			if (IF_LOGGING_SAP)
 			{
-				//dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
+				if (CmStringUtils.equals(PLATFORM_SERVICE, "DEV"))
+				{
+					dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
+				}
 			}
 		}
 

@@ -1,5 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.export.order.display.service;
 
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -7,14 +8,17 @@ import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.export.common.service.PartsExportGeneralService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ExOrderDisplayService extends PartsExportGeneralService
 {
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_DISPLAY, unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.EX_ORDER_DISPLAY, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(PartsErpDataMap paramMap)
 	{
+		System.err.println("orderdisplay:" + paramMap);
+
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDERLIST");
 
 		rfcRequest
@@ -48,18 +52,16 @@ public class ExOrderDisplayService extends PartsExportGeneralService
 		return simpleRfcTemplate.response(rfcRequest);
 	}
 
-	//@Cacheable(cacheManager = "portalCacheManager", keyGenerator = "portalCacheKeyGenerator", value = PortalCacheConfig.ORDER_DISPLAY, unless="#result == null")
 	public RfcResponse getView(ErpDataMap paramMap)
 	{
-		//cacheHelper.evict(PortalCacheConfig.ORDER_DISPLAY);
-
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ORDER_LOAD");
 
-		/*
 		rfcRequest
 			.field()
-				.add("I_LANGU", paramMap.getLangForSap())
-				.addByKey("LV_REF_ORD", "orderNo")
+				.add(new Object[][] {
+					{"I_LANGU", paramMap.getLangForSap()},
+					{"LV_REF_ORD", paramMap.getString("orderNo")}
+				})
 			.and()
 			.structure("LS_IMPORT_PORTAL")
 				.add(new Object[][] {
@@ -68,24 +70,8 @@ public class ExOrderDisplayService extends PartsExportGeneralService
 					{"DOC_MODE", "C"}
 				})
 			.and()
-    		.structure("I_INPUT")
+			.structure("I_INPUT")
 				.add(SimpleRfcMakeParameterUtils.me(paramMap));
-		*/
-		rfcRequest
-		.field().with(paramMap)
-			.add(new Object[][] {
-				{"I_BGTYP", "P"},
-				{"I_LANGU", paramMap.getLangForSap()},
-				{"I_USERID", paramMap.getUsername()},
-			})
-			.addByKey("LV_REF_ORD", "orderNo")
-		.and()
-		.structure("LS_IMPORT_PORTAL")
-			.add(new Object[][] {
-				{"DOC_CATEGORY", paramMap.getString("docType", "C")},
-				{"COMPLAINT", "N"},
-				{"DOC_MODE", "C"}
-			});
 
 		return simpleRfcTemplate.response(rfcRequest);
 	}

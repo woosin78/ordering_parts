@@ -293,6 +293,24 @@ function checkExpiredPassword()
 	});
 };
 
+function preLoading()
+{
+	let urls = [
+		"[[${BASE_PATH}]]/order/display/order/list/data",
+		"[[${BASE_PATH}]]/order/backorder/list/data",
+		"[[${BASE_PATH}]]/order/status/list/data"
+	];
+	
+	$.each(urls, function(index, item) {
+		JpUtilsAjax.get({
+			url: item	
+		});		
+	});
+};
+
+//조회성 페이지의 조회 속도 향상을 위해 먼저 실행시켜 caching 되도록 함
+//preLoading();
+
 let RESIZING_MIN_WIDTH = 1280;
 let RESIZING_MIN_HEIGHT = 720;
 
@@ -320,6 +338,9 @@ function resizeView()
 		$("#mainImg").height(RESIZING_MIN_HEIGHT);
 	}
 };
+
+//세션유지
+CmSessionUtils.keepSession();
 </script>
 </body>
 </html>

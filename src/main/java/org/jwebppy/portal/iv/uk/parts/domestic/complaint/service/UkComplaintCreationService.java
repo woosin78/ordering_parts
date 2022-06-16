@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.jwebppy.config.RedisConfig;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
@@ -105,7 +105,7 @@ public class UkComplaintCreationService extends UkPartsDomesticGeneralService
 	}
 
 	// SAP로 반품생성정보를 보낸다.
-	@CacheEvict (value = RedisConfig.ORDER_DISPLAY, allEntries = true)
+	@CacheEvict (value = PortalCacheConfig.ORDER_DISPLAY, allEntries = true)
 	public RfcResponse sendComplaintInfoToSAP(HttpServletRequest request, ErpDataMap paramMap, String filePath) throws ConnectorException, FileNotFoundException, IOException
 	{
 		int readByte = 1024; 	// returnTable row 별로 송신할 파일의 byte size (파일 정보를 1kb씩 끊어서 송신함)
