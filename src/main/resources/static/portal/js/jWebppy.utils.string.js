@@ -68,6 +68,27 @@ JpUtilsString.isEmpty = function(str)
 	return false;
 };
 
+JpUtilsString.isAllEmpty = function(strs)
+{
+	if (strs == null || !Array.isArray(strs) || strs.length == 0)
+	{
+		console.log(1);
+		return false;		
+	};
+	
+	for (let i=0, length=strs.length; i<length; i++)
+	{
+		console.log(strs[i]);
+		
+		if (JpUtilsString.isNotEmpty(strs[i]))
+		{
+			return false;
+		}		
+	};
+	
+	return true;
+};
+
 JpUtilsString.isNotEmpty = function(str)
 {
 	return !JpUtilsString.isEmpty(str);

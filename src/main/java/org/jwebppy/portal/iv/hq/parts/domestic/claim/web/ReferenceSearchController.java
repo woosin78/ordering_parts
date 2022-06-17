@@ -4,8 +4,6 @@ import java.util.Map;
 
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
-import org.jwebppy.platform.core.util.CmDateFormatUtils;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.FormatBuilder;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.domestic.claim.service.ReferenceSearchService;
@@ -29,9 +27,6 @@ public class ReferenceSearchController extends PartsDomesticGeneralController
 	@RequestMapping("/order/popup/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth()));
-		model.addAttribute("pToDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pToDate"), CmDateFormatUtils.today()));
-
 		setDefaultAttribute(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
