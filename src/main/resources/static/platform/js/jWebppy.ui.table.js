@@ -104,6 +104,11 @@ let JpUiTable = function(table)
 		return values;
 	};
 	
+	this.getCheckboxs = function()
+	{
+		return this.table.find("tbody tr td .ui.checkbox.data-key input[type=checkbox]");
+	};	
+	
 	this.isChecked = function()
 	{
 		return (this.getCheckedCount == 0) ? false : true;

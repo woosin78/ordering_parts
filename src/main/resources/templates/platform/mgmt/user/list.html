@@ -147,6 +147,8 @@ $(document).ready(function() {
 			doSearch();
 		};
 	});
+	
+	$(".user-group").dropdown("set selected", "[[${ugSeq}]]");
 
 	usersTable.settings = {
 			ajax: {
@@ -318,6 +320,7 @@ $(document).ready(function() {
 					}
 				]
 			},
+			/*
 			Email: {
 				identifier: "email",
 				rules: [
@@ -331,6 +334,7 @@ $(document).ready(function() {
 					}
 				]
 			},
+			*/
 			tel1: {
 				identifier: "tel1",
 				optional: true,
@@ -504,7 +508,7 @@ $(document).ready(function() {
 							let html = [];
 							html.push("<div class='field'>");
 							html.push("<label>Available Authority</label>");
-							html.push("<select id='availableAutority' name='availableAutority' class='ui fluid search dropdown' multiple=''></select>");
+							html.push("<select id='availableAutority' name='availableAutority' class='ui fluid search dropdown multiple'></select>");
 							html.push("</div>");
 							html.push("<div>");
 							html.push("<div class='ui teal button BTN_grant'> Grant</div>");
@@ -525,7 +529,7 @@ $(document).ready(function() {
 									if (data.RESULT != null)
 									{
 										let options = [];
-
+										
 									    data.RESULT.forEach(function(element, index) {
 									    	options.push("<option value='" + element.cseq + "' data-key='" + element.cseq + "'>" + element.description + " - " + element.name + "</option>");
 									    });
@@ -535,8 +539,9 @@ $(document).ready(function() {
 										$("#availableAutority").dropdown({
 											minCharacters: 2,
 											placeholder: "Search",
-											fullTextSearch: true
-										});
+											fullTextSearch: true,
+											match: "text"
+										}).dropdown("clear");
 
 										$(".ui.tab[data-tab=authority] .ui.dropdown input.search").on("keydown", function(event) {
 											if (event.keyCode == 13)

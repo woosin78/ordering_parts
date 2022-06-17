@@ -9,7 +9,7 @@ let JpUiDimmer = {
 		isMessageDimmerActive: false,
 		obj: null,
 		show: function(message) {
-			let obj = JpUiDimmer.getDimmer(1, message);
+			obj = JpUiDimmer.getDimmer(1, message);
 			
 			JpUiDimmer.showDimmer();
 		},

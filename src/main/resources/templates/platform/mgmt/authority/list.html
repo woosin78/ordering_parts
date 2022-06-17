@@ -204,7 +204,7 @@ $(document).ready(function() {
 						{
 							let html = [];
 							html.push("<div class='field'>");
-							html.push("<label>Available Role</label>");
+							html.push("<label>Available Roles</label>");
 							html.push("<select id='availableAutority' name='availableAutority' class='ui fluid search dropdown' multiple=''></select>");
 							html.push("</div>");
 							html.push("<div>");
@@ -235,18 +235,9 @@ $(document).ready(function() {
 										$("#availableAutority").dropdown({
 											minCharacters: 2,
 											placeholder: "Search",
-											fullTextSearch: true
-										});
-
-										$(".ui.tab[data-tab=authority] .ui.dropdown input.search").on("keydown", function(event) {
-											if (event.keyCode == 13)
-											{
-												if ($(".ui.tab[data-tab=authority] .ui.dropdown a.ui.label.transition.visible").length > 0)
-												{
-													$(".BTN_add").trigger("click");
-												};
-											};
-										});
+											fullTextSearch: true,
+											match: "text"
+										}).dropdown("clear");
 									};
 								}
 							});
@@ -258,7 +249,17 @@ $(document).ready(function() {
 										global: false,
 										traditional : true,
 										form: $("#FORM_modifyAuthority")
-									}
+									},
+									onLoad: function() {
+										let checkboxs = myAuthorityTable.getCheckboxs();
+										let values = [];
+										
+										$.each(checkboxs, function(i, item) {
+											values.push($(item).val());
+										});
+										
+										$("#availableAutority").dropdown("set selected", values);
+									}									
 							};
 							myAuthorityTable.render();
 

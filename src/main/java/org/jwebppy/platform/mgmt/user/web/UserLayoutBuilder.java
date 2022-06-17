@@ -289,7 +289,7 @@ public class UserLayoutBuilder
 	{
 		Input loEmail = new Input("email", userContactInfo.getEmail());
 		loEmail.setLabel("Email");
-		loEmail.setRequired(true);
+		//loEmail.setRequired(true);
 
 		Element loTelephone = new Element("group");
 		loTelephone.addAttribute("type", "form");
