@@ -86,6 +86,8 @@ $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
+		serverSide: true,
+		deferLoading: false,
 		columns : [
 			{data: "MATNR", title: "[[#{HQP_T_PART_NO}]]"},
 			{data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"},

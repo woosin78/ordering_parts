@@ -74,6 +74,8 @@ $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
+		serverSide: true,
+		deferLoading: false,
 		columns : [
 			{data: "EBELN", title: "[[#{HQP_L_PO_NO}]]"},				
 			{data: "SVCMAN_NAME", title: "[[#{HQP_L_IV_BUYER}]]"},

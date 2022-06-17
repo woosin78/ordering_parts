@@ -7,6 +7,9 @@
 <th:block layout:fragment="content">
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_T_AP_LIST}"></div>
+		<div class="block-button-area">
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
+		</div>
 	</div>
 	<div class="split-row"></div>
 	
@@ -52,6 +55,8 @@ $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
+		serverSide: true,
+		deferLoading: false,		
 		columns : [
 			{data: "CRDAT", title: "[[#{HQP_L_PURCHASE_DATE}]]"},				
 			{data: "ENDAT", title: "[[#{HQP_L_PAYMENT_DUE_DATE}]]"},

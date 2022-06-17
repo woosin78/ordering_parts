@@ -88,7 +88,8 @@ $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
-		//fixedColumns: {leftColumns: 5},
+		serverSide: true,
+		deferLoading: false,
 		columns : [
 			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"},
 			{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]"},
@@ -154,7 +155,10 @@ $(function(){
 			"target": "_self",
 			"action": "[[${BASE_PATH}]]/order/status/view"
 		}).submit();
-	});	
+	});
+	
+	//처음 접속 시에는 검색 실행하지 않음. 조회->상세보기->조회로 이동했을 때 화면 로딩과 함께 자동으로 검색이 실행되도록 할 때 사용
+	_defaultLoading({ loaded: function() { doSearch(); } });		
 });
 
 // Search 버튼 클릭
@@ -198,6 +202,6 @@ $("#BTN_totalDownload").on("click", function(){
 	ProgressBar.show();
 	
 	$("#fgDownload").val("");
-});		
+});
 </script>	
 </th:block>

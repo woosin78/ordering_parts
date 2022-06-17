@@ -131,6 +131,36 @@ function _setDealerCodeAutocomplete(target, options)
 	});
 };
 
+function _defaultLoading(option)
+{
+	if (JpUtilsString.isNotEmpty(location.search) && JpUtilsObject.isNotNull(option.loaded))
+	{
+		const urlParams = new URLSearchParams(location.search);
+		let exceptionParams = option.exceptionParams;
+		
+		if (JpUtilsString.isNotEmpty(exceptionParams))
+		{
+			$.each(exceptionParams, function(index, item) {
+				urlParams.delete(item);
+			});
+			
+			/*
+			for (const[key, value] of urlParams)
+			{   
+				console.log(key, value);
+			};
+			*/
+		};
+		
+		//console.log("length:" +  Array.from(urlParams).length);
+		
+		if (Array.from(urlParams).length > 0)
+		{
+			option.loaded();			
+		};
+	};
+};
+
 //자동 스크롤 탑
 $("body").scroll(function() {
 	if ($(this).scrollTop() > 200 )

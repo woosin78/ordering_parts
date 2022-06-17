@@ -37,6 +37,6 @@ public class OrderCreateGateController extends PartsDomesticGeneralController
 		paramMap.put("distChannel", erpUserContext.getDistChl());
 		paramMap.put("division", erpUserContext.getDivision());
 
-		return new RedirectView(PartsDomesticCommonVo.REQUEST_PATH + "/order/create/write?ohhSeq=" + orderCreateGateService.save(paramMap));
+		return new RedirectView(PartsDomesticCommonVo.REQUEST_PATH + "/order/create/write?ohhSeq=" + orderCreateGateService.save(paramMap) + "&simulationFrom=" + from);
 	}
 }

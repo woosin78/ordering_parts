@@ -90,6 +90,8 @@ $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
+		serverSide: true,
+		deferLoading: false,
 		columns : [
 			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
 			{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]"},//Shipment No.				
@@ -139,6 +141,12 @@ $(function(){
 	
 	// Datatable grid 초기 설정 셋업
 	initGridTable($tableObj);
+	
+	//list 상세보기 클릭하여 넘어왔을 경우
+	if (document.referrer.indexOf("[[${BASE_PATH}]]/order/delivery/list") > -1)
+	{
+		doSearch();
+	};
 });
 
 // Search 버튼 클릭

@@ -82,7 +82,8 @@ $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
 		scrollY: 100,
-		//fixedColumns: {leftColumns: 8},
+		serverSide: true,
+		deferLoading: false,
 		columns : [
 			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},//Order<br>Type
 			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.

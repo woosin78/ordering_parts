@@ -74,6 +74,8 @@ $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
 		scrollY: 100,
+		serverSide: true,
+		deferLoading: false,		
 		columns : [
 			{data: "SALEDT", title: "[[#{HQP_L_AP_SCHEDULE_006}]]"},//매입월		
 			{data: "BUDAT", title: "[[#{HQP_L_AP_SCHEDULE_007}]]"},//입금일자
