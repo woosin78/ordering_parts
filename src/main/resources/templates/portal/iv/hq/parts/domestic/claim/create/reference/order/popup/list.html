@@ -22,7 +22,7 @@
 				<th th:text="#{HQP_L_ORDER_NO}"></th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
+						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}" autofocus>
 					</div>
 				</td>
 				<th th:text="#{HQP_L_ORDER_DATE}"></th>
@@ -130,6 +130,13 @@ $(function(){
 	
 	function doSearch()
 	{
+		if (JpUtilsString.isAllEmpty([$("#pOrderNo").val(), $("#pFromDate").val(), $("#pToDate").val(), $("#pPartNo").val(), $("#pPoNo").val()]))
+		{
+			alert("[[#{HQP_M_EMPTY_QUERY}]]");
+			$("#pOrderNo").focus();
+			return;
+		};
+		
 		$tableObj.ajax.reload();
 	};
 
