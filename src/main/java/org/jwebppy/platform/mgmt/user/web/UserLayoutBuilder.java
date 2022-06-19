@@ -44,9 +44,9 @@ public class UserLayoutBuilder
 		thTr.addTextTh("Username", "two wide");
 		thTr.addTextTh("Name", "three wide");
 		thTr.addTextTh("E-mail", "three wide");
-		thTr.addTextTh("Company", "two wide");
-		thTr.addTextTh("Department", "two wide");
 		thTr.addTextTh("User Group", "two wide");
+		thTr.addTextTh("Reg.Username", "two wide");
+		thTr.addTextTh("Reg.Date", "two wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -74,9 +74,9 @@ public class UserLayoutBuilder
 				tbTr.addTextTd(userAccount.getUsername());
 				tbTr.addDataKeyLinkTd(user.getName(), user.getUSeq());
 				tbTr.addTextTd(userContactInfo.getEmail());
-				tbTr.addTextTd(user.getCompany());
-				tbTr.addTextTd(user.getDepartment());
 				tbTr.addDataKeyLinkTd(user.getUserGroup().getName(), user.getUserGroup().getUgSeq());
+				tbTr.addTextTd(user.getRegUsername());
+				tbTr.addTextTd(user.getDisplayRegDate());
 
 				tbody.addTr(tbTr);
 			}
@@ -174,13 +174,13 @@ public class UserLayoutBuilder
 	public static Document viewAccountInfo(UserAccountDto userAccount, CredentialsPolicyDto credentialPolicy)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
+		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getName() + " - " + credentialPolicy.getDescription() : "");
 		elementMap.put("Username", userAccount.getUsername());
 		elementMap.put("Account Locked", userAccount.getFgAccountLocked());
 		elementMap.put("Password Locked", userAccount.getFgPasswordLocked());
 		elementMap.put("No Use Password", userAccount.getFgNoUsePassword());
 		elementMap.put("Valid From", userAccount.getDisplayFromValid());
 		elementMap.put("Valid To", userAccount.getDisplayToValid());
-		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getName() + " - " + credentialPolicy.getDescription() : "");
 		elementMap.put("Reg.Username", userAccount.getRegUsername());
 		elementMap.put("Reg.Date", userAccount.getDisplayRegDate());
 		elementMap.put("Mod.Username", userAccount.getModUsername());
@@ -235,6 +235,7 @@ public class UserLayoutBuilder
 		}
 
 		Document document = new Document();
+		document.addElement(loCredentialPolicy);
 
 		if (CmStringUtils.isEmpty(userAccount.getUsername()))
 		{
@@ -256,7 +257,6 @@ public class UserLayoutBuilder
 		document.addElement(loFgNoUsePassword);
 		document.addElement(loFromValid);
 		document.addElement(loToValid);
-		document.addElement(loCredentialPolicy);
 
 		return document;
 	}

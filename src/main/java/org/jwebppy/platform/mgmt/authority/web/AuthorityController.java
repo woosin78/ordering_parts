@@ -20,6 +20,7 @@ import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/authority")
@@ -42,8 +44,12 @@ public class AuthorityController extends UserGeneralController
 	private UserService userService;
 
 	@RequestMapping("/list")
-	public String list()
+	public String list(Model model, WebRequest webRequest)
 	{
+		model.addAttribute("type", webRequest.getParameter("type"));
+
+		setDefaultAttribute(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 

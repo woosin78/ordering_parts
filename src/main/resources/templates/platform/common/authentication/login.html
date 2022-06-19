@@ -164,6 +164,10 @@ $(document).ready(function() {
 	});
 	
 	resizeView();
+	
+	$("input[type=text], input[type=password]").on("click", function() {
+		$(this).select();
+	});
 });
 
 //인증 실패 후 새로고침 시 인증실패 페이지가 계속 reload 되는 것을 방지 

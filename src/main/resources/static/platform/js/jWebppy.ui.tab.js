@@ -9,6 +9,7 @@ let JpUiTab = function(context)
 	};
 	this.tabSettings = {};
 	this.tables = {};
+	this.traces = [];
 
 	let _this = this;
 
@@ -58,13 +59,16 @@ let JpUiTab = function(context)
 				{
 					let thisTab = $(".ui.tab[data-tab=" + tabPath + "]");
 					
+					//Active checkbox
 					thisTab.find(".ui.dropdown").dropdown({
 						minCharacters: 2,
 						//placeholder: "Search",
-						fullTextSearch: true
+						fullTextSearch: true,
+						clearable: true
 					});
 					thisTab.find(".ui.checkbox").checkbox();
 					
+					//Renerding tables
 					$.each(thisTab.find("table"), function(i, item) {
 						let id = $(this).attr("id");
 						
@@ -79,6 +83,9 @@ let JpUiTab = function(context)
 						
 						_this.tables[id] = table;
 					});
+					
+					//Stack trace in the array
+					_this.traces.push(tabPath);
 					
 					if (JpUtilsObject.isNotNull(_this.settings.tab.onLoaded))
 					{
@@ -152,5 +159,22 @@ let JpUiTab = function(context)
     this.getPath = function()
     {
     	return this.settings.tab.path;
-    }
+    };
+    
+    this.getPreviousTabPath = function()
+    {
+		try
+		{
+			return this.traces[this.traces.length-1];
+		}
+		catch (e)
+		{
+			return null;
+		}
+	};
+	
+	this.clearTrace = function()
+	{
+		this.traces = [];		
+	};
 };

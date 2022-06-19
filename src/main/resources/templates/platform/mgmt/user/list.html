@@ -11,12 +11,13 @@
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
 <input type="checkbox" name="uSeq" style="display:none" checked />
+<input type="hidden" name="cSeq" th:value="${cSeq}"/>
 <input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
 <input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
 <div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
-			<div class="ui fluid search normal selection dropdown user-group">
+			<div class="ui fluid normal search selection dropdown user-group">
 				<input type="hidden" name="ugSeq"/>
 				<i class="dropdown icon"></i>
 				<div class="default text">User Group</div>
@@ -24,10 +25,6 @@
 					<div class="item" th:each="userGroup : ${userGroups}" th:data-value="${userGroup.ugSeq}" th:text="|${userGroup.name} - ${userGroup.description}|"></div>
 				</div>
 			</div>
-			<!--select name="ugSeq" class="ui search dropdown">
-				<option value="">User Group</option>
-				<option th:each="userGroup : ${userGroups}" th:value="${userGroup.ugSeq}" th:text="|${userGroup.name} - ${userGroup.description}|" th:selected="${userGroup.ugSeq} == ${ugSeq}"></option>
-			</select-->
 		</div>
 	</div>
 	<div class="fields">
@@ -134,13 +131,12 @@
 </div>
 
 <script>
-let usersTable;
+let userTable;
 $(document).ready(function() {
-	usersTable = new JpUiTable($("#TBL_users"));
-	
 	$(".user-group").dropdown({
 		minCharacters: 2,
-		fullTextSearch: true
+		fullTextSearch: true,
+		clearable: true
 	}).on("keydown", function(event) {
 		if (event.keyCode == 13)
 		{
@@ -150,7 +146,8 @@ $(document).ready(function() {
 	
 	$(".user-group").dropdown("set selected", "[[${ugSeq}]]");
 
-	usersTable.settings = {
+	userTable = new JpUiTable($("#TBL_users"));
+	userTable.settings = {
 			ajax: {
 				url: "/platform/mgmt/user/list/layout",
 				form: $("#FORM_search"),
@@ -164,8 +161,12 @@ $(document).ready(function() {
 	  				{
 		  				if (JpUtilsString.isNotEmpty(getSeq()))
 		  				{
-			  				usersTable.getBodyCell(0, 3).find("a").trigger("click");
-		  				};
+			  				$("#TBL_users").find("td a[data-key=" + getSeq() + "]").trigger("click");
+		  				}
+		  				else
+		  				{
+							viewUserTab.clearTrace();
+						};
 	  				};
 				}
 			},
@@ -175,9 +176,10 @@ $(document).ready(function() {
 				{
 					if ($(row).hasClass("active"))
 					{
-						setSeq(key);						
-						viewUserTab.changePath("/platform/mgmt/user/view/layout");
+						setSeq(key);
 						$("#AREA_viewDetail .ui.header").html("Details of User, " + $(element).html());
+						
+						changePath("/platform/mgmt/user/view/layout", viewUserTab.getPreviousTabPath());
 						showUserDetailsArea();
 					}
 					else
@@ -320,21 +322,6 @@ $(document).ready(function() {
 					}
 				]
 			},
-			/*
-			Email: {
-				identifier: "email",
-				rules: [
-					{
-						type: "empty",
-						prompt: "Please enter {name}."
-					},
-					{
-						type: "email",
-						prompt: "Please enter a valid {name}."
-					}
-				]
-			},
-			*/
 			tel1: {
 				identifier: "tel1",
 				optional: true,
@@ -508,7 +495,7 @@ $(document).ready(function() {
 							let html = [];
 							html.push("<div class='field'>");
 							html.push("<label>Available Authority</label>");
-							html.push("<select id='availableAutority' name='availableAutority' class='ui fluid search dropdown multiple'></select>");
+							html.push("<select id='availableAutority' name='availableAutority' class='ui fluid search dropdown' multiple=''></select>");
 							html.push("</div>");
 							html.push("<div>");
 							html.push("<div class='ui teal button BTN_grant'> Grant</div>");
@@ -531,26 +518,18 @@ $(document).ready(function() {
 										let options = [];
 										
 									    data.RESULT.forEach(function(element, index) {
-									    	options.push("<option value='" + element.cseq + "' data-key='" + element.cseq + "'>" + element.description + " - " + element.name + "</option>");
+											let typeName = (element.type == 'R') ? "ROLE" : "GROUP";
+										
+									    	options.push("<option value='" + element.cseq + "' data-key='" + element.cseq + "'>[" + typeName + "] " + element.description + " - " + element.name + "</option>");
 									    });
 
 									    $("#availableAutority").html(options.join(""));
-
+									    
 										$("#availableAutority").dropdown({
 											minCharacters: 2,
 											placeholder: "Search",
 											fullTextSearch: true,
-											match: "text"
-										}).dropdown("clear");
-
-										$(".ui.tab[data-tab=authority] .ui.dropdown input.search").on("keydown", function(event) {
-											if (event.keyCode == 13)
-											{
-												if ($(".ui.tab[data-tab=authority] .ui.dropdown a.ui.label.transition.visible").length > 0)
-												{
-													$(".BTN_grant").trigger("click");
-												};
-											};
+											clearable: true
 										});
 									};
 								}
@@ -603,6 +582,7 @@ $(document).ready(function() {
 								{
 									JpUtilsAjax.get({
 										url: "/platform/mgmt/user/user_group/lang_kind",
+										global: false,
 										data: {ugSeq: value},
 										success: function(data, textStatus, jqXHR)
 										{
@@ -614,6 +594,9 @@ $(document).ready(function() {
 								}
 							});
 						};
+						
+						$("#FORM_modify input[type=text]:first").select();
+						$("input[type=text]").on("click", function() { $(this).select(); });						
 					}
 
 					changeButtonStatus();
@@ -630,7 +613,6 @@ $(document).ready(function() {
 	});
 
 	$("#BTN_copyToCreate").on("click", function() {
-
 		let checkedCount = getCheckedUserCount();
 
 		if (checkedCount == 0)
@@ -650,7 +632,7 @@ $(document).ready(function() {
 		$("#FORM_copyToCreate").form("reset");
 
 		$("#MDL_coptyToCreate")
-			.modal("setting", "closable", false)
+			.modal("show dimmer")
 			.modal("show");
 	});
 
@@ -704,7 +686,7 @@ $(document).ready(function() {
 	$("#BTN_saveByCopy").on("click", function() {
 		if ($("#FORM_copyToCreate").form("validate form"))
 		{
-			$("#FORM_copyToCreate input[name=uSeq]").val(usersTable.getCheckedValues().join(""));
+			$("#FORM_copyToCreate input[name=uSeq]").val(userTable.getCheckedValues().join(""));
 
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/copy",
@@ -739,9 +721,7 @@ $(document).ready(function() {
 	});
 
 	$(".BTN_modify").on("click", function() {
-		viewUserTab.changePath("/platform/mgmt/user/write/layout");
-
-		changeTab();
+		changePath("/platform/mgmt/user/write/layout", viewUserTab.getPreviousTabPath());
 	});
 
 	$("#BTN_lock").on("click", function(e) {
@@ -818,7 +798,7 @@ $(document).ready(function() {
 
 	function getCheckedUserCount()
 	{
-		return usersTable.getCheckedCount();
+		return userTable.getCheckedCount();
 	};
 
 	function resetSearchForm()
@@ -826,12 +806,6 @@ $(document).ready(function() {
 		$("#FORM_search")[0].reset();
 	};
 	
-	function doReset()
-	{
-		resetSearchForm();
-		doSearch("1");
-	};	
-
 	function hideUserDetailsArea()
 	{
 		$("#AREA_viewDetail").hide();
@@ -839,8 +813,6 @@ $(document).ready(function() {
 
 	function showUserDetailsArea()
 	{
-		changeTab("general");
-
 		$("#AREA_viewDetail").show();
 	};
 
@@ -850,8 +822,7 @@ $(document).ready(function() {
 
 		initSeq();
 
-		viewUserTab.changePath("/platform/mgmt/user/write/layout");
-		changeTab("general");
+		changePath("/platform/mgmt/user/write/layout");
 		
 		$("#AREA_viewDetail").show();
 	};
@@ -872,7 +843,9 @@ $(document).ready(function() {
 		doSearch();
 	});
 
-	$("#BTN_reset").on("click", doReset);	
+	$("#BTN_reset").on("click", function() {
+		document.location.reload();
+	});	
 	
 	$(".BTN_save").on("click", doSave);
 
@@ -882,7 +855,7 @@ $(document).ready(function() {
 		{
 			let tabPath = viewUserTab.tabPath;
 			
-			if (tabPath == "authority")
+			if (JpUtilsString.equals(tabPath, "authority"))
 			{
 				$("#TBL_myAuthorityList").find(".ui.checkbox").checkbox("check");
 			}
@@ -905,7 +878,7 @@ $(document).ready(function() {
 					}
 					else
 					{
-						changeTab(tabPath);
+						userTable.load();
 					};
 				}
 			});
@@ -926,18 +899,32 @@ $(document).ready(function() {
 	function changeButtonStatus()
 	{
 		$(".AREA_moveToModify, .AREA_modify").css("display", "none");
+		
+		let loginHistoryTab = $("#TAB_viewDetail a[data-tab=login_history]");
 
 		if (isOnForm())
 		{
-			$(".AREA_modify").css("display", "block");
+			loginHistoryTab.hide();
+			$(".AREA_modify").show();
 		}
 		else
 		{
+			loginHistoryTab.show();
+			
 			if (viewUserTab.tabPath != "login_history")
 			{
-				$(".AREA_moveToModify").css("display", "block");
+				$(".AREA_moveToModify").show();
 			}
 		};
+	};
+
+	function changePath(path, tabPath)
+	{
+		viewUserTab.changePath(path);
+		
+		tabPath = (JpUtilsString.isEmpty(tabPath)) ? $("#TAB_viewDetail a:first").attr("data-tab") : tabPath;
+		
+		changeTab(tabPath);
 	};
 
 	function changeTab(tabPath)
@@ -972,7 +959,7 @@ function doSearch(pageNumber)
 	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
 	$("#rowPerPage").val("5");
 
-	usersTable.load();
+	userTable.load();
 };
 
 </script>

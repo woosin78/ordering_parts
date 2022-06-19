@@ -20,7 +20,6 @@ import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
-import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
@@ -35,8 +34,8 @@ public class AuthorityLayoutBuilder
 		thTr.addTextTh("Name", "four wide");
 		thTr.addTextTh("Description", "five wide");
 		thTr.addTextTh("Users", "one wide");
-		thTr.addTextTh("Reg.Date", "two wide");
 		thTr.addTextTh("Reg.Username", "two wide");
+		thTr.addTextTh("Reg.Date", "two wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -48,21 +47,15 @@ public class AuthorityLayoutBuilder
 		{
 			Tr tbTr = new Tr();
 
-			if (cItem.getType().equals(CItemType.G))
-			{
-				tbTr.addDataKeyCheckboxTd("cSeq", cItem.getCSeq());
-			}
-			else
-			{
-				tbTr.addTextTd("");
-			}
+			Integer cSeq = cItem.getCSeq();
 
+			tbTr.addDataKeyCheckboxTd("cSeq", cSeq);
 			tbTr.addTextTd(cItem.getType().getType());
-			tbTr.addDataKeyLinkTd(cItem.getName(), cItem.getCSeq());
+			tbTr.addDataKeyLinkTd(cItem.getName(), cSeq);
 			tbTr.addTextTd(cItem.getDescription());
-			tbTr.addTextTd(cItem.getUserCount());
-			tbTr.addTextTd(cItem.getDisplayRegDate());
+			tbTr.addDataKeyLinkTd(cItem.getUserCount(), cSeq);
 			tbTr.addTextTd(cItem.getRegUsername());
+			tbTr.addTextTd(cItem.getDisplayRegDate());
 
 			tbody.addTr(tbTr);
 		}

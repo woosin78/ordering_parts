@@ -7,11 +7,13 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
@@ -39,6 +41,9 @@ public class DataAccessLogService extends GeneralService
 	@Autowired(required = false)
 	private SimpleRfcTemplate simpleRfcTemplate;
 
+	@Autowired
+	private SqlSessionFactory sqlSessionFactory;
+
 	@Async("threadPoolTaskExecutor")
 	public void writeLogOnAsync(DataAccessLogDto dataAccessLog)
     {
@@ -54,6 +59,8 @@ public class DataAccessLogService extends GeneralService
 
 		if (CollectionUtils.isNotEmpty(dataAccessLog.getDataAccessLogParameters()))
 		{
+			SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+
 			for (DataAccessLogParameterDto dataAccessLogParameter : dataAccessLog.getDataAccessLogParameters())
 			{
 				DataAccessLogParameterEntity dataAccessLogParameterEntity = CmModelMapperUtils.mapToEntity(DataAccessLogParameterObjectMapper.INSTANCE, dataAccessLogParameter);
@@ -68,19 +75,25 @@ public class DataAccessLogService extends GeneralService
 					{
 						for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail : dataAccessLogParameter.getDataAccessLogParameterDetails())
 						{
-							if (CmStringUtils.isEmpty(dataAccessLogParameterDetail.getValue()))
-							{
-								continue;
-							}
+//							if (CmStringUtils.isEmpty(dataAccessLogParameterDetail.getValue()))
+//							{
+//								continue;
+//							}
 
 							DataAccessLogParameterDetailEntity dataAccessLogParameterDetailEntity = CmModelMapperUtils.mapToEntity(DataAccessLogParameterDetailObjectMapper.INSTANCE, dataAccessLogParameterDetail);
 
 							dataAccessLogParameterDetailEntity.setDlpSeq(dataAccessLogParameterEntity.getDlpSeq());
 							dataAccessLogMapper.insertDataAccessLogParameterDetail(dataAccessLogParameterDetailEntity);
+
+							sqlSession.insert("org.jwebppy.platform.mgmt.logging.mapper.DataAccessLogMapper.insertDataAccessLogParameterDetail", dataAccessLogParameterDetailEntity);
 						}
 					}
 				}
 			}
+
+			sqlSession.flushStatements();
+            sqlSession.close();
+            sqlSession.clearCache();
 		}
 	}
 

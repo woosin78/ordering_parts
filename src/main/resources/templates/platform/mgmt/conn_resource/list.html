@@ -158,7 +158,7 @@ $(document).ready(function() {
 function doSearch(pageNumber)
 {
 	$("#FORM_search input:hidden[name=pageNumber]").val(JpUtilsString.defaultString(pageNumber, "1"));
-	$("#FORM_search input:hidden[name=rowPerPage]").val("10");		
+	$("#FORM_search input:hidden[name=rowPerPage]").val(GLOBAL_CONST.ROW_PER_PAGE);		
 
 	listTable.load();
 };	

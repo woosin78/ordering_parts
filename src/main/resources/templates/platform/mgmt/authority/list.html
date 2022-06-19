@@ -16,11 +16,15 @@
 <div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
-			<select name="type" class="ui search dropdown">
-				<option value="">Type</option>
-				<option th:value="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).R}" th:text="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).R.type}"></option>
-				<option th:value="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).G}" th:text="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).G.type}"></option>
-			</select>
+			<div class="ui fluid normal selection dropdown authority">
+				<input type="hidden" name="type"/>
+				<i class="dropdown icon"></i>
+				<div class="default text">User Group</div>
+				<div class="menu">
+					<div class="item" th:data-value="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).G}" th:text="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).G.type}"></div>
+					<div class="item" th:data-value="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).R}" th:text="${T(org.jwebppy.platform.mgmt.content.dto.CItemType).R.type}"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<div class="fields">
@@ -78,8 +82,13 @@
 	</div>			
 </div>
 <script>
+let authorityTable;
 $(document).ready(function() {
-	let authorityTable = new JpUiTable($("#TBL_authority"));
+	$(".authority").dropdown({
+		clearable: true
+	}).dropdown("set selected", "[[${type}]]");	
+	
+	authorityTable = new JpUiTable($("#TBL_authority"));
 	authorityTable.settings = {
 			ajax: {
 				url: "/platform/mgmt/authority/list/layout",				
@@ -93,26 +102,38 @@ $(document).ready(function() {
 				{
 		  			if (textStatus == "success")
 	  				{
-		  				if ($("#FORM_search input:checkbox[name=cSeq]").val() != "")
+		  				if (JpUtilsString.isNotEmpty(getSeq()))
 		  				{
-			  				authorityTable.getBodyCell(0, 2).find("a").trigger("click");
-		  				};
+			  				$("#TBL_authority").find("td a[data-key=" + getSeq() + "]").trigger("click");
+		  				}
+		  				else
+		  				{
+							viewAuthorityTab.clearTrace();
+						};		  				
 	  				};
 				}
 			},
-			onClickDataKey: function(element, key, row)
+			onClickDataKey: function(element, key, row, column, rowIndex, columnIndex)
 			{
-				if ($(row).hasClass("active"))
+				if (columnIndex == 2)
 				{
-					setSeq(key);					
-					$("#AREA_viewAuthorityDetail .ui.header").html("Details of Authority, " + $(element).html());
-					viewAuthorityTab.changePath("/platform/mgmt/authority/view/layout");
-					showUserDetailsArea();
+					if ($(row).hasClass("active"))
+					{
+						setSeq(key);					
+						$("#AREA_viewAuthorityDetail .ui.header").html("Details of Authority, " + $(element).html());
+	
+						changePath("/platform/mgmt/authority/view/layout", viewAuthorityTab.getPreviousTabPath());
+						showUserDetailsArea();
+					}
+					else
+					{
+						initSeq();
+						hideUserDetailsArea();
+					};					
 				}
-				else
+				else if (columnIndex == 4)
 				{
-					initSeq();
-					hideUserDetailsArea();
+					_showUser({cSeq: key});					
 				};
 			},
 			onClickPageNumber: function(pageNumber)
@@ -135,7 +156,7 @@ $(document).ready(function() {
 						return false;
 					};
 					
-					settings.data = $("#FORM_search").serialize();
+					settings.data = $("#FORM_modifyAuthority").serialize();
 					
 					return settings;
 				}
@@ -236,7 +257,7 @@ $(document).ready(function() {
 											minCharacters: 2,
 											placeholder: "Search",
 											fullTextSearch: true,
-											match: "text"
+											clearable: true
 										}).dropdown("clear");
 									};
 								}
@@ -249,17 +270,7 @@ $(document).ready(function() {
 										global: false,
 										traditional : true,
 										form: $("#FORM_modifyAuthority")
-									},
-									onLoad: function() {
-										let checkboxs = myAuthorityTable.getCheckboxs();
-										let values = [];
-										
-										$.each(checkboxs, function(i, item) {
-											values.push($(item).val());
-										});
-										
-										$("#availableAutority").dropdown("set selected", values);
-									}									
+									}
 							};
 							myAuthorityTable.render();
 
@@ -292,6 +303,9 @@ $(document).ready(function() {
 								$("#TBL_myAuthorityList").find("thead .ui.checkbox").checkbox("uncheck");
 							};
 						};
+						
+						$("#FORM_modifyAuthority input[type=text]:first").select();
+						$("input[type=text]").on("click", function() { $(this).select(); });
 					}
 					else
 					{
@@ -325,9 +339,7 @@ $(document).ready(function() {
 	});
 	
 	$(".BTN_modify").on("click", function() {
-		viewAuthorityTab.changePath("/platform/mgmt/authority/write/layout");
-
-		changeTab();
+		changePath("/platform/mgmt/authority/write/layout", viewAuthorityTab.getPreviousTabPath());
 	});
 
 	$("#BTN_delete").on("click", function() {
@@ -351,7 +363,7 @@ $(document).ready(function() {
 	
 	function setSeq(seq)
 	{
-		$("#FORM_search input:checkbox[name=cSeq]:first, #FORM_modifyAuthority input[name=cSeq]").val(seq);
+		$("#FORM_modifyAuthority input[name=cSeq]").val(seq);
 	};
 
 	function getSeq()
@@ -372,7 +384,7 @@ $(document).ready(function() {
 	function doSearch(pageNumber)
 	{
 		$("#FORM_search input:hidden[name=pageNumber]").val(JpUtilsString.defaultString(pageNumber, "1"));
-		$("#FORM_search input:hidden[name=rowPerPage]").val("10");		
+		$("#FORM_search input:hidden[name=rowPerPage]").val(GLOBAL_CONST.ROW_PER_PAGE);		
 
 		authorityTable.load();
 	};	
@@ -384,8 +396,6 @@ $(document).ready(function() {
 
 	function showUserDetailsArea()
 	{
-		changeTab("general");
-
 		$("#AREA_viewAuthorityDetail").show();
 	};
 	
@@ -395,8 +405,7 @@ $(document).ready(function() {
 
 		initSeq();
 
-		viewAuthorityTab.changePath("/platform/mgmt/authority/write/layout");
-		changeTab("general");
+		changePath("/platform/mgmt/authority/write/layout");
 
 		$("#AREA_viewAuthorityDetail").show();
 	};	
@@ -404,7 +413,7 @@ $(document).ready(function() {
 	$("#query").on("keydown", function(event) {
 		if (event.keyCode==13)
 		{
-			doSearch();
+			$("#BTN_searchUser").trigger("click");
 		}
 	}).on("click", function(event) {
 		this.select();
@@ -420,30 +429,33 @@ $(document).ready(function() {
 		{
 			let tabPath = viewAuthorityTab.tabPath;
 			
-			if (tabPath == "authority")
+			if (JpUtilsString.equals(tabPath, "authority"))
 			{
 				$("#TBL_myAuthorityList").find(".ui.checkbox").checkbox("check");
-			};
+			};			
 			
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/authority/save/" + tabPath,
 				data: $("#FORM_modifyAuthority").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
-					if (JpUtilsString.isEmpty(getSeq()))
+					if (JpUtilsString.isEmpty(getSeq()))//생성
 					{
 						let cSeq = data.RESULT;
 						
 						if (JpUtilsObject.isNotNull(cSeq))
 						{
-							$("#FORM_search input:hidden[name=cSeq]").val(cSeq);
+							$("#FORM_search")[0].reset();
+							$("#FORM_search input:checkbox[name=cSeq]:first").val(cSeq);
+							
+							setSeq(cSeq);
 						};
-						
+
 						doSearch();
 					}
-					else
+					else//수정
 					{
-						changeTab(tabPath);
+						authorityTable.load();
 					};
 				}
 			});
@@ -483,6 +495,15 @@ $(document).ready(function() {
 		};
 	};
 
+	function changePath(path, tabPath)
+	{
+		viewAuthorityTab.changePath(path);
+		
+		tabPath = (JpUtilsString.isEmpty(tabPath)) ? $("#TAB_viewAuthorityDetail a:first").attr("data-tab") : tabPath;
+		
+		changeTab(tabPath);
+	};
+
 	function changeTab(tabPath)
 	{
 		changeButtonStatus();
@@ -499,6 +520,5 @@ $(document).ready(function() {
 });
 
 </script>
-
 </th:block>
 </html>

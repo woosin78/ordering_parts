@@ -108,6 +108,8 @@ public class UserService extends GeneralService
 
 		UserContactInfoDto userContactInfo = user.getUserContactInfo();
 		userContactInfo.setUSeq(uSeq);
+		userContactInfo.setCountry(CmStringUtils.defaultString(userContactInfo.getCountry(), PlatformCommonVo.DEFAULT_COUNTRY));
+		userContactInfo.setTimezone(CmStringUtils.defaultString(userContactInfo.getTimezone(), PlatformCommonVo.DEFAULT_TIMEZONE));
 		userContactInfo.setModDate(null);
 		userContactInfo.setModUsername(null);
 
@@ -115,9 +117,8 @@ public class UserService extends GeneralService
 
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setUSeq(sourceUSeq);
-		cItemSearch.setFgVisible(PlatformCommonVo.ALL);
 
-		List<CItemDto> cItems = contentAuthorityService.getMyCItemHierarchy(cItemSearch);
+		List<CItemDto> cItems = contentAuthorityService.getMyCItems(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
@@ -125,11 +126,6 @@ public class UserService extends GeneralService
 
 			for (CItemDto cItem : cItems)
 			{
-				if (CmStringUtils.equals(cItem.getFgDelete(), PlatformCommonVo.YES))
-				{
-					continue;
-				}
-
 				cSeqs.add(cItem.getCSeq());
 			}
 

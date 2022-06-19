@@ -216,8 +216,7 @@
 		b.timezone
 		from
 		vw_pltf_user a
-		left outer
-		join pltf_user_contact_info b
+		left outer join pltf_user_contact_info b
 		on a.u_seq=b.u_seq
 		
 		<where>
@@ -244,11 +243,26 @@
 				</foreach>
 			</if>
 			
-			<trim prefix="and">
-				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(ugSeq)">
-					 a.ug_seq=#{ugSeq}
-				</if>
-			</trim>
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(ugSeq)">
+				 a.ug_seq=#{ugSeq}
+			</if>
+			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(cSeq)">
+				exists (
+				    select
+				    1
+				    from
+				    pltf_citem x,
+				    pltf_citem_user_rl y
+				    where
+				    x.c_seq=#{cSeq}    
+				    and x.c_seq=y.c_seq
+				    and x.fg_delete='N'
+				    and x.c_seq=y.c_seq
+				    and y.u_seq=a.u_seq
+				    and y.fg_delete='N'				    
+				)
+			</if>
 		</where>
 		
 		order by a.u_seq desc

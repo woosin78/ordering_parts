@@ -12,11 +12,17 @@
 <th:block th:replace="platform/layout/popup/fragments/js"></th:block>
 	
 <script>
-/* Set up static values */
-JpUtilsDateFormat.DATE_TIME_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getDateTimeFormat2()}]]";
-JpUtilsDateFormat.DATE_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getDateFormat2()}]]";
-JpUtilsDateFormat.TIME_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getTimeFormat2()}]]";
-</script>	
+	JpUtilsDateFormat.DATE_TIME_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getDateTimeFormat2()}]]";
+	JpUtilsDateFormat.DATE_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getDateFormat2()}]]";
+	JpUtilsDateFormat.TIME_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getTimeFormat2()}]]";
+	
+	/* Set up static values */
+	const GLOBAL_CONST = {
+		"YES": "[[${T(org.jwebppy.platform.core.PlatformCommonVo).YES}]]",
+		"NO": "[[${T(org.jwebppy.platform.core.PlatformCommonVo).NO}]]",
+		"ROW_PER_PAGE": [[${T(org.jwebppy.platform.core.PlatformCommonVo).DEFAULT_ROW_PER_PAGE}]]"
+	};
+</script>
 	
 <style type="text/css">
 	.main.container {

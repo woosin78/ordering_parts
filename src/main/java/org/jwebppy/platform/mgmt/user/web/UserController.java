@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
@@ -94,18 +93,9 @@ public class UserController extends UserGeneralController
 	@ResponseBody
 	public Object listLayout(@ModelAttribute UserSearchDto userSearch)
 	{
-		PageableList<UserDto> pageableList = null;
+		System.err.println(userSearch);
 
-		if (CmStringUtils.isEmpty(userSearch.getQuery()) && ObjectUtils.isEmpty(userSearch.getUSeq()) && ObjectUtils.isEmpty(userSearch.getUgSeq()))
-		{
-			pageableList = new PageableList<>();
-		}
-		else
-		{
-			pageableList = new PageableList<>(userService.getPageableUsers(userSearch));
-		}
-
-		return UserLayoutBuilder.pageableList(pageableList);
+		return UserLayoutBuilder.pageableList(new PageableList<>(userService.getPageableUsers(userSearch)));
 	}
 
 	@GetMapping("/view/layout/{tabPath}")
@@ -231,12 +221,17 @@ public class UserController extends UserGeneralController
 		}
 		else if ("authority".equals(tabPath))
 		{
-			List<Integer> cSeqs = ArrayUtils.toUnmodifiableList(webRequest.getParameterValues("cSeq"))
-					.stream()
-					.map(s -> Integer.parseInt(s))
-					.collect(Collectors.toList());
+			String[] cSeqs = webRequest.getParameterValues("cSeq");
 
-			cItemUserRl.setCSeqs(cSeqs);
+			if (cSeqs != null && cSeqs.length > 0)
+			{
+				List<Integer> cSeqs2 = ArrayUtils.toUnmodifiableList(cSeqs)
+						.stream()
+						.map(s -> Integer.parseInt(s))
+						.collect(Collectors.toList());
+
+				cItemUserRl.setCSeqs(cSeqs2);
+			}
 
 			return contentAuthorityService.save(cItemUserRl);
 		}

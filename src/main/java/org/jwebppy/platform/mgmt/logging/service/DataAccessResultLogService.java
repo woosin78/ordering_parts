@@ -36,7 +36,6 @@ public class DataAccessResultLogService extends GeneralService
 	@Autowired
 	private SqlSessionFactory sqlSessionFactory;
 
-	//@Async("threadPoolTaskExecutor")
 	public void writeLog(String dlSeq, RfcResponse rfcResponse)
 	{
 		if (ObjectUtils.isNotEmpty(rfcResponse))

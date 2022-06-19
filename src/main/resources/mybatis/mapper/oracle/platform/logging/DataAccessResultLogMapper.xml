@@ -42,12 +42,6 @@
 		)
 	</insert>
 	
-	<insert id="insertDataAccessResultLogParameterDetail2">
-		insert into pltf_dacs_res_log_param_detail (drlp_seq, line_no, name, value) values (
-			#{drlpSeq}, #{lineNo}, #{name}, #{value}
-		)
-	</insert>
-
 	<select id="findResultLog" parameterType="long" resultMap="dataAccessResultLogMap">
 		select
 		a.*
