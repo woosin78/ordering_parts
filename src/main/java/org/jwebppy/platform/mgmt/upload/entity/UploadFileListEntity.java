@@ -16,12 +16,13 @@ public class UploadFileListEntity extends GeneralEntity
 {
 	private static final long serialVersionUID = 2929207940446247708L;
 
-	private Integer uflSeq;
-	private Integer ufSeq;
-	private Integer tSeq;
+	private String uflSeq;
+	private String ufSeq;
+	private String tSeq;
 	private String originName;
 	private String savedName;
 	private String extension;
 	private long fileSize;
+	private String fgDelete;
 	private List<MultipartFile> multipartFiles;
 }

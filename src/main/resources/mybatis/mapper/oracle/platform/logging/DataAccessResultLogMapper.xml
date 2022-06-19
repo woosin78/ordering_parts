@@ -51,6 +51,16 @@
 		a.drl_seq=#{drlSeq}
 	</select>
 
+	<select id="findSimpleResultLogs" parameterType="String" resultType="DataAccessResultLogEntity">
+		select
+		a.*
+		from
+		pltf_dacs_res_log a
+		where
+		a.dl_seq=#{dlSeq}
+		order by drl_seq desc
+	</select>
+
 	<select id="findResultLogs" parameterType="String" resultMap="dataAccessResultLogMap">
 		select
 		a.*

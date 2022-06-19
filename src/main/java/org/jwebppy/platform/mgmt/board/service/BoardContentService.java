@@ -75,7 +75,7 @@ public class BoardContentService extends MgmtGeneralService
 			}
 		}
 
-		uploadFileListService.save(board.getUfSeq(), bcSeq, boardContent.getFiles());
+		uploadFileListService.save(board.getUfSeq(), String.valueOf(bcSeq), boardContent.getFiles());
 
 		return bcSeq;
 	}
@@ -86,7 +86,7 @@ public class BoardContentService extends MgmtGeneralService
 		{
 			BoardDto board = boardService.getBoard(boardContent.getBSeq());
 
-			uploadFileListService.save(board.getUfSeq(), boardContent.getBcSeq(), boardContent.getFiles());
+			uploadFileListService.save(board.getUfSeq(), String.valueOf(boardContent.getBcSeq()), boardContent.getFiles());
 
 			uploadFileListService.delete(boardContent.getUflSeqs());
 		}

@@ -3,7 +3,7 @@
 
 <mapper namespace="org.jwebppy.platform.mgmt.upload.mapper.UploadFileMapper">
 	
-	<select id="findUploadFile" parameterType="Integer" resultType="UploadFileEntity">
+	<select id="findUploadFile" resultType="UploadFileEntity">
 		select
 		a.*
 		from

@@ -126,6 +126,8 @@ public class DataAccessResultLogService extends GeneralService
 				sqlSession.flushStatements();
                 sqlSession.close();
                 sqlSession.clearCache();
+
+                rfcResponse.setDlSeq(dlSeq);
 			}
 		}
 	}
@@ -150,5 +152,10 @@ public class DataAccessResultLogService extends GeneralService
 	public List<DataAccessResultLogDto> getResultLogs(String dlSeq)
 	{
 		return CmModelMapperUtils.mapToDto(DataAccessResultLogObjectMapper.INSTANCE, dataAccessResultLogMapper.findResultLogs(dlSeq));
+	}
+
+	public List<DataAccessResultLogDto> getSimpleResultLogs(String dlSeq)
+	{
+		return CmModelMapperUtils.mapToDto(DataAccessResultLogObjectMapper.INSTANCE, dataAccessResultLogMapper.findSimpleResultLogs(dlSeq));
 	}
 }

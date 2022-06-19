@@ -8,10 +8,10 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tomcat.util.http.fileupload.InvalidFileNameException;
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileDto;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileListDto;
 import org.jwebppy.platform.mgmt.upload.entity.UploadFileListEntity;
@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UploadFileListService extends GeneralService
 {
     @Value("${file.upload.rootPath}")
-    private String rootPath;
+    private String FILE_UPLOAD_ROOT_PATH;
 
     @Value("${file.upload.invalidExtension}")
     private String invalidExtension;
@@ -40,7 +40,7 @@ public class UploadFileListService extends GeneralService
     @Autowired
     private UploadFileListMapper uploadFileListMapper;
 
-	public int save(Integer ufSeq, Integer tSeq, List<MultipartFile> multipartFiles) throws IOException
+	public int save(String ufSeq, String tSeq, List<MultipartFile> multipartFiles) throws IOException
 	{
 		UploadFileDto uploadFile = uploadFileService.getUploadFile(ufSeq);
 
@@ -60,37 +60,44 @@ public class UploadFileListService extends GeneralService
 
 			String path = uploadFile.getPath();
 
-			FileUtils.forceMkdir(new File(rootPath + File.separator + path));
+			FileUtils.forceMkdir(new File(FILE_UPLOAD_ROOT_PATH + File.separator + path));
 
 			for (MultipartFile multipartFile: multipartFiles)
 			{
-				String originFilename = multipartFile.getOriginalFilename();
+				String originNname = multipartFile.getOriginalFilename();
 
-				if (CmStringUtils.isEmpty(originFilename))
+				if (CmStringUtils.isEmpty(originNname))
 				{
 					continue;
 				}
 
 				String savedName = uploadFile.getUfSeq().toString() + "_" + System.nanoTime();
 
-				multipartFile.transferTo(new File(rootPath + File.separator + path + File.separator + savedName));
+				multipartFile.transferTo(new File(FILE_UPLOAD_ROOT_PATH + File.separator + path + File.separator + savedName));
 
-				UploadFileListDto uploadFileList = new UploadFileListDto();
-				uploadFileList.setUfSeq(ufSeq);
-				uploadFileList.setTSeq(tSeq);
-				uploadFileList.setOriginName(FilenameUtils.getBaseName(originFilename));
-				uploadFileList.setSavedName(FilenameUtils.getBaseName(savedName));
-				uploadFileList.setExtension(FilenameUtils.getExtension(originFilename).toLowerCase());
-				uploadFileList.setFileSize(multipartFile.getSize());
-				uploadFileList.setFgDelete(PlatformCommonVo.NO);
-
-				uploadFileListMapper.insert(CmModelMapperUtils.mapToEntity(UploadFileListObjectMapper.INSTANCE, uploadFileList));
+				save(ufSeq, tSeq, originNname, savedName, multipartFile.getResource().getFile().getAbsolutePath());
 			}
 
 			return 1;
 		}
 
 		return 0;
+	}
+
+	public int save(String ufSeq, String tSeq, String originName, String savedName, String path) throws IOException
+	{
+		File file = new File(path + File.separator + savedName);
+
+		UploadFileListDto uploadFileList = new UploadFileListDto();
+		uploadFileList.setUflSeq(UidGenerateUtils.generate());;
+		uploadFileList.setUfSeq(ufSeq);
+		uploadFileList.setTSeq(tSeq);
+		uploadFileList.setOriginName(FilenameUtils.getBaseName(originName));
+		uploadFileList.setSavedName(FilenameUtils.getBaseName(savedName));
+		uploadFileList.setExtension(FilenameUtils.getExtension(originName).toLowerCase());
+		uploadFileList.setFileSize(file.length());
+
+		return uploadFileListMapper.insert(CmModelMapperUtils.mapToEntity(UploadFileListObjectMapper.INSTANCE, uploadFileList));
 	}
 
 	public boolean isExceedMaxUploadSize(List<MultipartFile> multipartFiles, long limit)
@@ -165,7 +172,7 @@ public class UploadFileListService extends GeneralService
 		return null;
 	}
 
-	public int delete(int uflSeq)
+	public int delete(String uflSeq)
 	{
 		UploadFileListEntity uploadfileList = new UploadFileListEntity();
 		uploadfileList.setUflSeq(uflSeq);
@@ -173,11 +180,11 @@ public class UploadFileListService extends GeneralService
 		return uploadFileListMapper.delete(uploadfileList);
 	}
 
-	public int delete(List<Integer> uflSeqs)
+	public int delete(List<String> uflSeqs)
 	{
 		if (CollectionUtils.isNotEmpty(uflSeqs))
 		{
-			for (int uflSeq: uflSeqs)
+			for (String uflSeq: uflSeqs)
 			{
 				delete(uflSeq);
 			}
@@ -191,7 +198,7 @@ public class UploadFileListService extends GeneralService
 		return CmModelMapperUtils.mapToDto(UploadFileListObjectMapper.INSTANCE, uploadFileListMapper.findUploadFileList(uflSeq));
 	}
 
-	public List<UploadFileListDto> getUploadFileLists(int ufSeq, int tSeq)
+	public List<UploadFileListDto> getUploadFileLists(String ufSeq, String tSeq)
 	{
 		UploadFileListDto uploadFileList = new UploadFileListDto();
 		uploadFileList.setUfSeq(ufSeq);

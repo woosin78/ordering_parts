@@ -14,8 +14,8 @@ public class DownloadFileHistoryEntity extends GeneralEntity
 	private static final long serialVersionUID = -4957969853711359643L;
 
 	private Integer dfhSeq;
-	private Integer ufSeq;
-	private Integer uflSeq;
+	private String ufSeq;
+	private String uflSeq;
 	private Integer uSeq;
 	private String originName;
 	private String savedName;

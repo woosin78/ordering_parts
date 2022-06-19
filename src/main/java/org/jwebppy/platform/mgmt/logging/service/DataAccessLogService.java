@@ -75,11 +75,6 @@ public class DataAccessLogService extends GeneralService
 					{
 						for (DataAccessLogParameterDetailDto dataAccessLogParameterDetail : dataAccessLogParameter.getDataAccessLogParameterDetails())
 						{
-//							if (CmStringUtils.isEmpty(dataAccessLogParameterDetail.getValue()))
-//							{
-//								continue;
-//							}
-
 							DataAccessLogParameterDetailEntity dataAccessLogParameterDetailEntity = CmModelMapperUtils.mapToEntity(DataAccessLogParameterDetailObjectMapper.INSTANCE, dataAccessLogParameterDetail);
 
 							dataAccessLogParameterDetailEntity.setDlpSeq(dataAccessLogParameterEntity.getDlpSeq());

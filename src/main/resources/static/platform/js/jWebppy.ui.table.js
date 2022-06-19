@@ -41,7 +41,7 @@ let JpUiTable = function(table)
 			this.table.find(".pagination-previous").attr("DATA-VALUE", previousPage);
 			this.table.find(".pagination-next").attr("DATA-VALUE", nextPage);
 			
-			this.table.find(".pagination button").on("click", function() {
+			this.table.find(".pagination .ui.button").on("click", function() {
 				_this.settings.onClickPageNumber($(this).attr("DATA-VALUE"));
 			});
 			
@@ -293,8 +293,6 @@ let JpUiTable = function(table)
 		let pageNumber = Number(table.attr("DATA-PAGE-NUMBER"));
 		let rowPerPage = Number(table.attr("DATA-ROW-PER-PAGE"));							
 		let totalPage = Math.ceil(totalCount / rowPerPage);
-		let prePage = pageNumber - 1;
-		let nextPage = pageNumber + 1;
 		
 		if (totalPage == 0)
 		{
@@ -312,14 +310,14 @@ let JpUiTable = function(table)
 		content.push("		<div class='ui mini form'>");
 		content.push("			<div class='fields pagination'>");
 		content.push("				<div class='field'>");
-		content.push("					<button class='ui compact icon button pagination-first' DATA-VALUE='1'><i class='angle double left icon'></i></button>");
-		content.push("					<button class='ui compact icon button pagination-previous'><i class='angle left icon'></i></button>");
+		content.push("					<div class='ui compact icon button pagination-first' DATA-VALUE='1'><i class='angle double left icon'></i></div>");
+		content.push("					<div class='ui compact icon button pagination-previous'><i class='angle left icon'></i></div>");
 		content.push("					<input type='number' class='ui mini pagination-pageNumber' style='width:6em;' value='" + pageNumber + "'>");
 		content.push("				</div>");
 		content.push("				<div>of " + JpUtilsNumber.addComma(totalPage) + "</div>");
 		content.push("				<div class='field'>");
-		content.push("					<button class='ui compact icon button pagination-next'><i class='angle right icon'></i></button>");
-		content.push("					<button class='ui compact icon button pagination-last' DATA-VALUE='" + totalPage + "'><i class='angle double right icon'></i></button>");
+		content.push("					<div class='ui compact icon button pagination-next'><i class='angle right icon'></i></div>");
+		content.push("					<div class='ui compact icon button pagination-last' DATA-VALUE='" + totalPage + "'><i class='angle double right icon'></i></div>");
 		content.push("				</div>");
 		content.push("			</div>");
 		content.push("		</div>");

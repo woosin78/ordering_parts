@@ -16,5 +16,6 @@ public interface DataAccessResultLogMapper
 	public void insertDataAccessResultLogParameter(DataAccessResultLogParameterEntity dataAccessResultLogParameter);
 	public void insertDataAccessResultLogParameterDetail(DataAccessResultLogParameterDetailEntity dataAccessResultLogParameterDetail);
 	public DataAccessResultLogEntity findResultLog(long dlSeq);
+	public List<DataAccessResultLogEntity> findSimpleResultLogs(String dlSeq);
 	public List<DataAccessResultLogEntity> findResultLogs(String dlSeq);
 }

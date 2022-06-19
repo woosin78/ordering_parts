@@ -20,6 +20,6 @@ public class BoardDto extends GeneralDto
 	private String fgUseReply = PlatformCommonVo.NO;
 	private String fgUseComment = PlatformCommonVo.NO;
 	private String fgSetPeriod = PlatformCommonVo.NO;
-	private Integer ufSeq;
+	private String ufSeq;
 	private String fgDelete = PlatformCommonVo.NO;
 }

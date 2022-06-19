@@ -2,7 +2,7 @@ package org.jwebppy.platform.mgmt.logging.dto;
 
 public enum IfType
 {
-	J("JDBC"), R("RFC");
+	R("RFC"), J("JDBC");
 
 	private String type;
 

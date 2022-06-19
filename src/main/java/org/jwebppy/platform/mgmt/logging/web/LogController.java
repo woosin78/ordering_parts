@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
-import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.logging.LoggingGeneralController;
@@ -19,6 +20,9 @@ import org.jwebppy.platform.mgmt.logging.dto.DataAccessResultLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.IfType;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
+import org.jwebppy.platform.mgmt.upload.dto.UploadFileDto;
+import org.jwebppy.platform.mgmt.upload.service.UploadFileListService;
+import org.jwebppy.platform.mgmt.upload.service.UploadFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -35,14 +39,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/log")
 public class LogController extends LoggingGeneralController
 {
+	private static final String UF_SEQ = "0-684009dc-1cec-4d9b-8a6b-7ab2d9fcf580";
+
+	@Value("${file.upload.rootPath}")
+	private String FILE_UPLOAD_ROOT_PATH;
+
 	@Autowired
 	private DataAccessLogService dataAccessLogService;
 
 	@Autowired
 	private DataAccessResultLogService dataAccessResultLogService;
 
-	@Value("${file.upload.rootPath}")
-	private String path;
+	@Autowired
+	private UploadFileService uploadFileService;
+
+	@Autowired
+	private UploadFileListService uploadFileListService;
 
 	@RequestMapping("/list")
 	public String list(@ModelAttribute(value = "dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch)
@@ -62,7 +74,7 @@ public class LogController extends LoggingGeneralController
 	{
 		DataAccessLogDto dataAccessLog = dataAccessLogService.getLog(dataAccessLogSearch.getDlSeq());
 
-		if (CollectionUtils.isNotEmpty(dataAccessResultLogService.getResultLogs(dataAccessLog.getDlSeq())))
+		if (CollectionUtils.isNotEmpty(dataAccessResultLogService.getSimpleResultLogs(dataAccessLog.getDlSeq())))
 		{
 			model.addAttribute("fgHasResultLog", PlatformCommonVo.YES);
 		}
@@ -131,17 +143,30 @@ public class LogController extends LoggingGeneralController
 
 		String command = (IfType.R.equals(dataAccessLog.getType())) ? dataAccessLog.getCommand() : "sql";
 
-		String savedFileName = path + File.separator + command + "-" + UserAuthenticationUtils.getUsername() + "-" + CmDateFormatUtils.format(CmDateTimeUtils.now(), PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS) + ".html";
-
 		FileWriter fileWriter = null;
+		String key = null;
 
 		try
 		{
-			fileWriter = new FileWriter(savedFileName);
+			UploadFileDto uploadFile = uploadFileService.getUploadFile(UF_SEQ);
+
+			System.err.println(uploadFile);
+
+			String path = FILE_UPLOAD_ROOT_PATH + File.separator + uploadFile.getPath();
+			String originName = command + "_" + UserAuthenticationUtils.getUsername() + "_" + CmDateFormatUtils.today() + ".html";
+			String savedName = System.nanoTime() + ".html";
+
+			FileUtils.forceMkdir(new File(path));
+
+			fileWriter = new FileWriter(path + File.separator + savedName);
 			fileWriter.write(templete);
 
 			fileWriter.close();
 			fileWriter = null;
+
+			Integer uflSeq = uploadFileListService.save(UF_SEQ, dlSeq, originName, savedName, path);
+
+			key = AES256Cipher.getInstance().encode(UF_SEQ + PlatformConfigVo.DELIMITER + uflSeq + PlatformConfigVo.DELIMITER);
 		}
 		catch (IOException e)
 		{
@@ -153,6 +178,6 @@ public class LogController extends LoggingGeneralController
 			}
 		}
 
-		return savedFileName;
+		return key;
 	}
 }

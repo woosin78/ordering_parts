@@ -43,6 +43,9 @@ public class RfcExecutionAspect
 	@Value("${if.logging.sap}")
 	private boolean IF_LOGGING_SAP;
 
+	@Value("${if.logging.sap.result}")
+	private boolean IF_LOGGING_SAP_RESULT;
+
 	@Value("${platform.service}")
 	private String PLATFORM_SERVICE;
 
@@ -78,12 +81,9 @@ public class RfcExecutionAspect
 		}
 		finally
 		{
-			if (IF_LOGGING_SAP)
+			if (IF_LOGGING_SAP_RESULT)
 			{
-				if (CmStringUtils.equals(PLATFORM_SERVICE, "DEV"))
-				{
-					dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
-				}
+				dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
 			}
 		}
 

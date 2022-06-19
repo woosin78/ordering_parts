@@ -16,13 +16,14 @@ public class UploadFileListDto extends GeneralDto
 {
 	private static final long serialVersionUID = 7896823726474538055L;
 
-	private Integer uflSeq;
-	private Integer ufSeq;
-	private Integer tSeq;
+	private String uflSeq;
+	private String ufSeq;
+	private String tSeq;
 	private String originName;
 	private String savedName;
 	private String extension;
 	private long fileSize;
+	private String fgDelete;
 
 	public String getFullOriginName()
 	{

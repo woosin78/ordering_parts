@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class DownloadFileController extends MgmtGeneralController
 {
 	@Value("${file.upload.rootPath}")
-	private String ROOT_PATH;
+	private String FILE_UPLOAD_ROOT_PATH;
 
 	@Autowired
 	private DownloadFileHistoryService downloadFileHistoryService;
@@ -77,7 +77,7 @@ public class DownloadFileController extends MgmtGeneralController
 
 		downloadFileHistoryService.create(downloadFileHistory);
 
-		File file = Paths.get(ROOT_PATH, uploadFile.getPath(), uploadFileList.getSavedName()).toFile();
+		File file = Paths.get(FILE_UPLOAD_ROOT_PATH, uploadFile.getPath(), uploadFileList.getSavedName()).toFile();
 
 		if (!file.exists())
 		{

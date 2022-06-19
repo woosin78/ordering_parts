@@ -35,7 +35,7 @@ public class BoardContentDto extends GeneralDto implements IPagination
 
 	//variables for file upload
 	private List<MultipartFile> files;
-	private List<Integer> uflSeqs;
+	private List<String> uflSeqs;
 
 	public String getDisplayFromView()
 	{

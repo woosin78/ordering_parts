@@ -20,7 +20,7 @@ public class UploadFileService extends MgmtGeneralService
 		return uploadFileMapper.insert(uploadFile);
 	}
 
-	public UploadFileDto getUploadFile(Integer ufSeq)
+	public UploadFileDto getUploadFile(String ufSeq)
 	{
 		return CmModelMapperUtils.mapToDto(UploadFileObjectMapper.INSTANCE, uploadFileMapper.findUploadFile(ufSeq));
 	}
