@@ -13,6 +13,6 @@ public interface UploadFileListMapper
 {
 	public int insert(UploadFileListEntity uploadFileList);
 	public int delete(UploadFileListEntity UploadFileList);
-	public UploadFileListEntity findUploadFileList(int uflSeq);
+	public UploadFileListEntity findUploadFileList(String uflSeq);
 	public List<UploadFileListEntity> findUploadFileLists(UploadFileListDto uploadFileList);
 }

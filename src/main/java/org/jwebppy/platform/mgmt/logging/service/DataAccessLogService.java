@@ -78,7 +78,6 @@ public class DataAccessLogService extends GeneralService
 							DataAccessLogParameterDetailEntity dataAccessLogParameterDetailEntity = CmModelMapperUtils.mapToEntity(DataAccessLogParameterDetailObjectMapper.INSTANCE, dataAccessLogParameterDetail);
 
 							dataAccessLogParameterDetailEntity.setDlpSeq(dataAccessLogParameterEntity.getDlpSeq());
-							dataAccessLogMapper.insertDataAccessLogParameterDetail(dataAccessLogParameterDetailEntity);
 
 							sqlSession.insert("org.jwebppy.platform.mgmt.logging.mapper.DataAccessLogMapper.insertDataAccessLogParameterDetail", dataAccessLogParameterDetailEntity);
 						}

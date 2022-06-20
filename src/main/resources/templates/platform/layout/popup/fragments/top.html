@@ -5,10 +5,11 @@
 function makeGnb()
 {
 	var menu = [];
-    
-    menu.push("<div class='ui item right inverted' style='cursor:pointer' onclick='window.close()'>");
-    menu.push("<i class='close icon'></i>");
-    menu.push("</div>");    
+
+    menu.push("<div class='ui item inverted'>");
+    menu.push("<a href='[[${T(org.jwebppy.platform.core.PlatformConfigVo).INDEX_URL}]]'><img src='/platform/img/common/doobizplus_s.png'></a>");
+    menu.push("<div style='position:fixed; right:15px; cursor:pointer' onclick='window.close()'><i class='close icon'></i></div>");
+    menu.push("</div>");
     
     $(".ui.menu.topMenu").html(menu.join(""));
 };

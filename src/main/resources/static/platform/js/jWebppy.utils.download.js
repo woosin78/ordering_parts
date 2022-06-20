@@ -18,6 +18,6 @@ let JpUtilsDownload = {
 					}
 			};
 			
-			$.fileDownload(url, options);
+			$.fileDownload(JpUtilsDownload.url, options);
 		}
 }

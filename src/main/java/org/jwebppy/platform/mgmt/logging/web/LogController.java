@@ -3,13 +3,14 @@ package org.jwebppy.platform.mgmt.logging.web;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
-import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
@@ -21,6 +22,7 @@ import org.jwebppy.platform.mgmt.logging.dto.IfType;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
 import org.jwebppy.platform.mgmt.upload.dto.UploadFileDto;
+import org.jwebppy.platform.mgmt.upload.dto.UploadFileListDto;
 import org.jwebppy.platform.mgmt.upload.service.UploadFileListService;
 import org.jwebppy.platform.mgmt.upload.service.UploadFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,29 +146,27 @@ public class LogController extends LoggingGeneralController
 		String command = (IfType.R.equals(dataAccessLog.getType())) ? dataAccessLog.getCommand() : "sql";
 
 		FileWriter fileWriter = null;
-		String key = null;
 
 		try
 		{
 			UploadFileDto uploadFile = uploadFileService.getUploadFile(UF_SEQ);
 
-			System.err.println(uploadFile);
-
 			String path = FILE_UPLOAD_ROOT_PATH + File.separator + uploadFile.getPath();
-			String originName = command + "_" + UserAuthenticationUtils.getUsername() + "_" + CmDateFormatUtils.today() + ".html";
+			String now = CmDateFormatUtils.defaultZonedFormat(LocalDateTime.now(), PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
+			String originName = command + "_" + UserAuthenticationUtils.getUsername() + "_" + now + ".html";
 			String savedName = System.nanoTime() + ".html";
 
 			FileUtils.forceMkdir(new File(path));
 
-			fileWriter = new FileWriter(path + File.separator + savedName);
+			fileWriter = new FileWriter(path + File.separator + FilenameUtils.getBaseName(savedName));
 			fileWriter.write(templete);
 
 			fileWriter.close();
 			fileWriter = null;
 
-			Integer uflSeq = uploadFileListService.save(UF_SEQ, dlSeq, originName, savedName, path);
+			UploadFileListDto uploadFileList = uploadFileListService.getUploadFileList(uploadFileListService.save(UF_SEQ, dlSeq, originName, savedName, path));
 
-			key = AES256Cipher.getInstance().encode(UF_SEQ + PlatformConfigVo.DELIMITER + uflSeq + PlatformConfigVo.DELIMITER);
+			return uploadFileList.getDownloadKey();
 		}
 		catch (IOException e)
 		{
@@ -178,6 +178,6 @@ public class LogController extends LoggingGeneralController
 			}
 		}
 
-		return key;
+		return null;
 	}
 }

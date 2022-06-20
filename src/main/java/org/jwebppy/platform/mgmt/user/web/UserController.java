@@ -93,8 +93,6 @@ public class UserController extends UserGeneralController
 	@ResponseBody
 	public Object listLayout(@ModelAttribute UserSearchDto userSearch)
 	{
-		System.err.println(userSearch);
-
 		return UserLayoutBuilder.pageableList(new PageableList<>(userService.getPageableUsers(userSearch)));
 	}
 

@@ -11,7 +11,8 @@
 			<div id="BTN_execute" class="ui teal button"><i class="play icon"></i> Execute</div>
 			<div id="BTN_copyLink" class="ui teal button"><i class="linkify icon"></i> Copy Link</div>
 		</th:block>
-		<div id="BTN_sendMailWithLink" class="ui teal button"><i class="paper plane outline icon"></i> Send Mail</div>
+		<div id="BTN_download" class="ui teal button"><i class="download icon"></i> Download</div>
+		<!-- div id="BTN_sendMailWithLink" class="ui teal button"><i class="paper plane outline icon"></i> Send Mail</div -->
 	</div>
 </div>
 <div class="ui divider"></div>
@@ -70,7 +71,7 @@ $(document).ready(function() {
 		alert("Copied the url: " + url);
 	});
 	
-	$("#BTN_sendMailWithLink").on("click", function() {
+	$("#BTN_download").on("click", function() {
 		let html = $("#FORM_search div[data-tab=parameter]").html(); 
 		
 		JpUtilsAjax.post({

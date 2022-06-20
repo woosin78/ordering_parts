@@ -40,7 +40,7 @@ public class UploadFileListService extends GeneralService
     @Autowired
     private UploadFileListMapper uploadFileListMapper;
 
-	public int save(String ufSeq, String tSeq, List<MultipartFile> multipartFiles) throws IOException
+	public String[] save(String ufSeq, String tSeq, List<MultipartFile> multipartFiles) throws IOException
 	{
 		UploadFileDto uploadFile = uploadFileService.getUploadFile(ufSeq);
 
@@ -61,6 +61,8 @@ public class UploadFileListService extends GeneralService
 			String path = uploadFile.getPath();
 
 			FileUtils.forceMkdir(new File(FILE_UPLOAD_ROOT_PATH + File.separator + path));
+			String[] uflSeqs = new String[multipartFiles.size()];
+			int index = 0;
 
 			for (MultipartFile multipartFile: multipartFiles)
 			{
@@ -75,21 +77,22 @@ public class UploadFileListService extends GeneralService
 
 				multipartFile.transferTo(new File(FILE_UPLOAD_ROOT_PATH + File.separator + path + File.separator + savedName));
 
-				save(ufSeq, tSeq, originNname, savedName, multipartFile.getResource().getFile().getAbsolutePath());
+				uflSeqs[index++] = save(ufSeq, tSeq, originNname, savedName, multipartFile.getResource().getFile().getAbsolutePath());
 			}
 
-			return 1;
+			return uflSeqs;
 		}
 
-		return 0;
+		return null;
 	}
 
-	public int save(String ufSeq, String tSeq, String originName, String savedName, String path) throws IOException
+	public String save(String ufSeq, String tSeq, String originName, String savedName, String path) throws IOException
 	{
 		File file = new File(path + File.separator + savedName);
+		String uflSeq = UidGenerateUtils.generate();
 
 		UploadFileListDto uploadFileList = new UploadFileListDto();
-		uploadFileList.setUflSeq(UidGenerateUtils.generate());;
+		uploadFileList.setUflSeq(uflSeq);
 		uploadFileList.setUfSeq(ufSeq);
 		uploadFileList.setTSeq(tSeq);
 		uploadFileList.setOriginName(FilenameUtils.getBaseName(originName));
@@ -97,7 +100,12 @@ public class UploadFileListService extends GeneralService
 		uploadFileList.setExtension(FilenameUtils.getExtension(originName).toLowerCase());
 		uploadFileList.setFileSize(file.length());
 
-		return uploadFileListMapper.insert(CmModelMapperUtils.mapToEntity(UploadFileListObjectMapper.INSTANCE, uploadFileList));
+		if (uploadFileListMapper.insert(CmModelMapperUtils.mapToEntity(UploadFileListObjectMapper.INSTANCE, uploadFileList)) > 0)
+		{
+			return uflSeq;
+		}
+
+		return null;
 	}
 
 	public boolean isExceedMaxUploadSize(List<MultipartFile> multipartFiles, long limit)
@@ -193,7 +201,7 @@ public class UploadFileListService extends GeneralService
 		return 1;
 	}
 
-	public UploadFileListDto getUploadFileList(int uflSeq)
+	public UploadFileListDto getUploadFileList(String uflSeq)
 	{
 		return CmModelMapperUtils.mapToDto(UploadFileListObjectMapper.INSTANCE, uploadFileListMapper.findUploadFileList(uflSeq));
 	}

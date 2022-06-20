@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.AES256Cipher;
-import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.common.web.MgmtGeneralController;
@@ -60,20 +59,20 @@ public class DownloadFileController extends MgmtGeneralController
 			throw new Exception("Invalid download information.");
 		}
 
-		if (Duration.between(LocalDateTime.parse(decodedKey[0], DateTimeFormatter.ofPattern(PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT)), LocalDateTime.now()).toMinutes() > 30)
+		if (Duration.between(LocalDateTime.parse(decodedKey[0], DateTimeFormatter.ofPattern(PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)), LocalDateTime.now()).toMinutes() > 30)
 		{
 			throw new Exception("Exceeded the download available time. Please refresh this page and try to download again.");
 		}
 
-		UploadFileListDto uploadFileList = uploadFileListService.getUploadFileList(CmNumberUtils.toInt(decodedKey[1]));
+		UploadFileListDto uploadFileList = uploadFileListService.getUploadFileList(decodedKey[1]);
 		UploadFileDto uploadFile = uploadFileService.getUploadFile(uploadFileList.getUfSeq());
 
 		DownloadFileHistoryDto downloadFileHistory = new DownloadFileHistoryDto();
-		downloadFileHistory.setUfSeq(uploadFile.getUfSeq());
 		downloadFileHistory.setUflSeq(uploadFileList.getUflSeq());
 		downloadFileHistory.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
 		downloadFileHistory.setOriginName(uploadFileList.getOriginName() + "." + uploadFileList.getExtension());
 		downloadFileHistory.setSavedName(uploadFileList.getSavedName() + "." + uploadFileList.getExtension());
+		downloadFileHistory.setPath(uploadFile.getPath());
 
 		downloadFileHistoryService.create(downloadFileHistory);
 

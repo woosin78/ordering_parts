@@ -178,10 +178,10 @@ public class LogLayoutBuilder
 
 	private static void addFields(Document document, DataAccessLogDto dataAccessLog)
 	{
-		int count = 0;
-
 		if (CollectionUtils.isNotEmpty(dataAccessLog.getDataAccessLogParameters()))
 		{
+			int count = 0;
+
 			Element segment = new Div();
 			segment.setClass("ui teal segment");
 

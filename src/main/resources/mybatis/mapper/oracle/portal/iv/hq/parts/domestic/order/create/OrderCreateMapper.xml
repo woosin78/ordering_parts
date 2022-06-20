@@ -28,7 +28,7 @@
 	
 	<insert id="insertOrderHistoryHeader" parameterType="OrderHistoryHeaderEntity" useGeneratedKeys="true" keyProperty="ohhSeq">
 		<selectKey keyProperty="ohhSeq" resultType="Integer" order="BEFORE">
-			select pltf_ohh_seq.nextval from dual
+			select ep_ohh_seq.nextval from dual
 		</selectKey>
 
 		insert into ep_order_history_header (ohh_seq, corp, doc_type, order_type, sold_to_no, ship_to_no, oa_seq, sales_org, dist_channel, division, shipping_condition, po_no, so_no, error_msg, ordered_date, dupl_ohh_seq, ref_seq, ref_system, reg_username, reg_date) values (
