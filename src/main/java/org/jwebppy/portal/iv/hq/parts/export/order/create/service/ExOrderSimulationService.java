@@ -141,9 +141,8 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 				{
 					DataMap dataMap = new DataMap(data);
 
-					if (dataMap.isEquals("MATERIAL", orderItem.getMaterialNo()))
+					if (dataMap.isEquals("MATERIAL", CmStringUtils.trimToEmpty(orderItem.getMaterialNo())))
 					{
-
 						orderItem.setLineNo("999990");
 						orderItem.setLotQty(Integer.toString(dataMap.getInt("LOT_QTY")));
 						break;

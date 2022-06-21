@@ -83,9 +83,9 @@ public class PartInfoController extends PartsDomesticGeneralController
 					scaleMap.put("FINAL_LPRICE", scaleMap.getString("LPRICE"));
 					scaleMap.put("MEINS", partMap.getString("MEINS"));
 					scaleMap.put("WAERS", partMap.getString("WAERS"));
-
-					PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, rate);
 				}
+
+				PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(scaleList, new String[] {"FINAL_LPRICE"}, "WAERS", new String[] {"KRW", "JPY"}, rate);
 			}
 
 			FormatBuilder.with(scaleList)

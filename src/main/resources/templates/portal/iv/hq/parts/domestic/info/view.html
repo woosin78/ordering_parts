@@ -273,7 +273,7 @@ function doSearch()
 			 * Scale List
 			 */
 			let scale = "";
-			$.each(result.scaleList.reverse(), function(index, item) {
+			$.each(result.scaleList, function(index, item) {
 				scale += "<tr>";
 				scale += "	<td class='center'>" + item.OPENQ + "</td>";
 				scale += "	<td class='center'>" + item.MEINS + "</td>";
