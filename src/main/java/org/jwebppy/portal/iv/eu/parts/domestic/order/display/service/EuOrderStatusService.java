@@ -36,7 +36,7 @@ public class EuOrderStatusService extends EuPartsDomesticGeneralService
         String orderType = paramMap.getString("orderType");
         String poNo = paramMap.getString("poNo");
         String custCode = paramMap.getCustomerNo();
-        String orderPartNo = paramMap.getString("orderPartNo");
+        String orderPartNo = paramMap.getString("orderPartNo").toUpperCase();
         String orderNo = paramMap.getString("orderNo");
 
 		rfcRequest.addField("I_AUART", orderType);

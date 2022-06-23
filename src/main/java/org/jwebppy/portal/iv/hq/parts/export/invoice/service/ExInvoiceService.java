@@ -40,12 +40,12 @@ public class ExInvoiceService extends PartsExportGeneralService
 					{"I_SPART", paramMap.getDivision()},
 					{"I_KUNAG", paramMap.getCustomerNo()},
 					{"I_F_BLDAT", fromDate},
-					{"I_T_BLDAT", toDate}
+					{"I_T_BLDAT", toDate},
+					{"I_MATWA", paramMap.getString("orderPartNo").toUpperCase()}
 				})
 				.addByKey(new Object[][] {
 					{"I_F_ZFCIVNO", "invoiceNo"},
-					{"I_BSTNK", "poNo"},
-					{"I_MATWA", "orderPartNo"}
+					{"I_BSTNK", "poNo"}
 				})
 			.and()
     		.structure("I_INPUT")

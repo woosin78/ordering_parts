@@ -16,7 +16,10 @@ public class DeliveryStatusService extends PartsDomesticGeneralService
 
 		rfcRequest.
 			field().with(paramMap)
-				.add("I_LANGU", paramMap.getLangForSap())
+				.add(new Object[][] {
+					{"I_LANGU", paramMap.getLangForSap()},
+					{"I_MATNR", paramMap.getString("partNo").toUpperCase()}
+				})
 				.addByKey(new Object[][] {
 					{"I_FDATE", "fromDate"},
 					{"I_TDATE", "toDate"},
@@ -24,7 +27,6 @@ public class DeliveryStatusService extends PartsDomesticGeneralService
 					{"I_TGDAT", "toOnboardDate"},
 					{"I_TKNUM", "shipmentNo"},
 					{"I_VBELN", "orderNo"},
-					{"I_MATNR", "partNo"},
 					{"I_BSTNK", "poNo"}
 				})
 			.and()
@@ -41,7 +43,10 @@ public class DeliveryStatusService extends PartsDomesticGeneralService
 
 		rfcRequest.
 		field().with(paramMap)
-			.add("I_LANGU", paramMap.getLangForSap())
+			.add(new Object[][] {
+				{"I_LANGU", paramMap.getLangForSap()},
+				{"I_MATNR", paramMap.getString("partNo").toUpperCase()}
+			})
 			.addByKey(new Object[][] {
 				{"I_FDATE", "fromDate"},
 				{"I_TDATE", "toDate"},
@@ -49,7 +54,6 @@ public class DeliveryStatusService extends PartsDomesticGeneralService
 				{"I_TGDAT", "toOnboardDate"},
 				{"I_TKNUM", "shipmentNo"},
 				{"I_VBELN", "orderNo"},
-				{"I_MATNR", "partNo"},
 				{"I_BSTNK", "poNo"}
 			})
 		.and()

@@ -20,7 +20,7 @@ public class UkComplaintDisplayService extends UkPartsDomesticGeneralService
 		rfcRequest.addField("I_USERID", paramMap.getUsername());
 
 		rfcRequest.addStructure("LS_SEARCH", "FRDATE", paramMap.getString("fromDate"));
-		rfcRequest.addStructure("LS_SEARCH", "MATNR", paramMap.getString("partNo"));	// Part No
+		rfcRequest.addStructure("LS_SEARCH", "MATNR", paramMap.getString("partNo").toUpperCase());	// Part No
 		rfcRequest.addStructure("LS_SEARCH", "TODATE", paramMap.getString("toDate"));
 		rfcRequest.addStructure("LS_SEARCH", "VBELN", paramMap.getString("complaintNo"));	// Complaint No
 		rfcRequest.addStructure("LS_SEARCH", "VBTYP", "A");

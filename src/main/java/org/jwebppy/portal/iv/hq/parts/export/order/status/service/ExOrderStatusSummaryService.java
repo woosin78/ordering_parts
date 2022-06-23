@@ -16,11 +16,13 @@ public class ExOrderStatusSummaryService extends PartsExportGeneralService
 
         rfcRequest
         	.field().with(paramMap)
-        		.add("I_UPLOAD", "")
+        		.add(new Object[][] {
+        			{"I_MATNR", paramMap.getString("orderPartNo").toUpperCase()},
+        			{"I_UPLOAD", ""}
+        		})
         		.addByKey(new Object[][] {
         			{"I_VBELN", "orderNo"},
         			{"I_BSTKD", "poNo"},
-        			{"I_MATNR", "orderPartNo"},
         			{"I_FDATE", "fromDate"},
         			{"I_TDATE", "toDate"},
         			{"I_STATUS", "status"}

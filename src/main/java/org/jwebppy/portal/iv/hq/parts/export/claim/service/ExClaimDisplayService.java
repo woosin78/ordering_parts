@@ -22,6 +22,7 @@ public class ExClaimDisplayService extends PartsExportGeneralService
 					{"I_BGTYP", "P"},//상수
 					{"I_LANGU", paramMap.getLangForSap()},
 					{"I_USERID", paramMap.getUsername()},
+					{"MATNR", paramMap.getString("partNo").toUpperCase()},
 					{"COMPLAINT", "Y"}//상수
 				})
 			.and()
@@ -30,7 +31,6 @@ public class ExClaimDisplayService extends PartsExportGeneralService
 				.addByKey(new Object[][] {
 					{"VBELN", "claimNo"},
 					{"VGBEL", "referenceNo"},
-					{"MATNR", "partNo"},
 					{"FRDATE", "fromDate"},
 					{"TODATE", "toDate"}
 				})

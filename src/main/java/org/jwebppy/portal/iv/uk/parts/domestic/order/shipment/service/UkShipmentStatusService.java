@@ -20,7 +20,7 @@ public class UkShipmentStatusService extends UkPartsDomesticGeneralService
 		rfcRequest.addField("I_BGTYP", "P");
 		rfcRequest.addField("I_BSTKD", paramMap.getString("poNo"));		// P.O.No.
 		rfcRequest.addField("I_FKDAT", paramMap.getString("fromDate"));
-		rfcRequest.addField("I_MATNR", paramMap.getString("partsNo"));			// Parts No
+		rfcRequest.addField("I_MATNR", paramMap.getString("partsNo").toUpperCase());			// Parts No
 		rfcRequest.addField("I_TKDAT", paramMap.getString("toDate"));
 		rfcRequest.addField("I_USERID", paramMap.getUsername());
 		rfcRequest.addField("I_VBELN", paramMap.getString("orderNo"));			// Order No.

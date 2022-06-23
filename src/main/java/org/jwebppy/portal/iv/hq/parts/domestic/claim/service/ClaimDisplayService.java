@@ -24,11 +24,13 @@ public class ClaimDisplayService extends PartsDomesticGeneralService
 				})
 			.and()
 			.structure("LS_SEARCH").with(paramMap)
-				.add("VBTYP", "A")
+				.add(new Object[][] {
+					{"VBTYP", "A"},
+					{"MATNR", paramMap.getString("partNo").toUpperCase()}
+				})
 				.addByKey(new Object[][] {
 					{"VBELN", "claimNo"},
 					{"VGBEL", "referenceNo"},
-					{"MATNR", "partNo"},
 					{"FRDATE", "fromDate"},
 					{"TODATE", "toDate"}
 				})

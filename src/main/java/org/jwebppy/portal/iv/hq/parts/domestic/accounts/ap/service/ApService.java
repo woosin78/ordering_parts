@@ -51,10 +51,10 @@ public class ApService extends PartsDomesticGeneralService
 
 		rfcRequest
 			.field().with(paramMap)
+				.add("I_MATNR", paramMap.getString("partNo").toUpperCase())
 				.addByKey(new Object[][] {
 					{"I_F_ZFCIVNO", "fromInvoiceNo"},
 					{"I_T_ZFCIVNO", "toInvoiceNo"},
-					{"I_MATNR", "partNo"},
 					{"I_TKNUM", "shipmentNo"},
 					{"I_F_FKDAT", "fromDate"},
 					{"I_T_FKDAT", "toDate"}

@@ -30,7 +30,7 @@ public class EuInvoiceStatusService extends EuPartsDomesticGeneralService
 		rfcRequest.addField("I_DEALER", paramMap.getCustomerNo());
 		rfcRequest.addField("I_FKDAT", paramMap.getString("fromDate"));
 		rfcRequest.addField("I_IVNO", paramMap.getString("invoiceNo"));	// Invoice No.
-		rfcRequest.addField("I_MATNR", paramMap.getString("partsNo"));	// Parts No
+		rfcRequest.addField("I_MATNR", paramMap.getString("partsNo").toUpperCase());	// Parts No
 		rfcRequest.addField("I_TKDAT", paramMap.getString("toDate"));
 		rfcRequest.addField("I_USERID", paramMap.getUsername());
 		rfcRequest.addField("I_VBELN", paramMap.getString("orderNo"));	// Order No.

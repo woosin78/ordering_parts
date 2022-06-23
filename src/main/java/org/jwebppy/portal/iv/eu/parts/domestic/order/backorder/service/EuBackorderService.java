@@ -30,7 +30,7 @@ public class EuBackorderService extends EuPartsDomesticGeneralService
 		rfcRequest.addField("I_BSTKD", paramMap.getString("poNo"));	//P.O No.
 		rfcRequest.addField("I_FDATE", fromDate);
 		rfcRequest.addField("I_KUNNR", paramMap.getCustomerNo());
-		rfcRequest.addField("I_MATNR", paramMap.getString("orderPartNo"));	// Order Part No.
+		rfcRequest.addField("I_MATNR", paramMap.getString("orderPartNo").toUpperCase());	// Order Part No.
 		rfcRequest.addField("I_TDATE", toDate);
 		rfcRequest.addField("I_USERID", paramMap.getUsername());
     	rfcRequest.addField("I_VBELN", paramMap.getString("orderNo"));	// Order No.

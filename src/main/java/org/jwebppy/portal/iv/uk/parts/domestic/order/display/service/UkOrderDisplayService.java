@@ -28,7 +28,7 @@ public class UkOrderDisplayService extends UkPartsDomesticGeneralService
 		rfcRequest.addStructure("LS_SEARCH", "AUART", paramMap.getString("orderType"));
 		rfcRequest.addStructure("LS_SEARCH", "VBELN", paramMap.getString("orderNo"));
 		rfcRequest.addStructure("LS_SEARCH", "BSTKD", paramMap.getString("poNo"));
-		rfcRequest.addStructure("LS_SEARCH", "MATNR", paramMap.getString("orderPartNo"));
+		rfcRequest.addStructure("LS_SEARCH", "MATNR", paramMap.getString("orderPartNo").toUpperCase());
 		rfcRequest.addStructure("LS_SEARCH", "RFGSK", paramMap.getString("status"));
 		rfcRequest.addStructure("LS_SEARCH", "FRDATE", paramMap.getString("fromDate"));
 		rfcRequest.addStructure("LS_SEARCH", "TODATE", paramMap.getString("toDate"));

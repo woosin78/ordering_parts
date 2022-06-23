@@ -16,12 +16,12 @@ public class ArService extends PartsDomesticGeneralService
 
 		rfcRequest
 			.field().with(paramMap)
+				.add("I_MATNR", paramMap.getString("partNo").toUpperCase())
 				.addByKey(new Object[][] {
 					{"I_F_EBELN", "fromPoNo"},
 					{"I_T_EBELN", "toPoNo"},
 					{"I_F_BELNR", "fromInvoiceNo"},
 					{"I_T_BELNR", "toInvoiceNo"},
-					{"I_MATNR", "partNo"},
 					{"I_F_BLDAT", "fromDate"},
 					{"I_T_BLDAT", "toDate"}
 				})

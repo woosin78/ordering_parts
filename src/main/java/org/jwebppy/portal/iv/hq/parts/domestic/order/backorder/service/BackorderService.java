@@ -27,13 +27,13 @@ public class BackorderService extends PartsDomesticGeneralService
 			.field().with(paramMap)
 				.add(new Object[][] {
 					{"I_FDATE", fromDate},
-					{"I_TDATE", toDate}
+					{"I_TDATE", toDate},
+					{"I_MATNR", paramMap.getString("orderPartNo").toUpperCase()}
 				})
 				.addByKey(new Object[][] {
 					{"I_AUART", "orderType"},
 					{"I_VBELN", "orderNo"},
-					{"I_BSTKD", "poNo"},
-					{"I_MATNR", "orderPartNo"}
+					{"I_BSTKD", "poNo"}
 				})
 			.and()
     		.structure("I_INPUT")

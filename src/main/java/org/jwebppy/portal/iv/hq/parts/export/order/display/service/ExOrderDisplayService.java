@@ -32,14 +32,14 @@ public class ExOrderDisplayService extends PartsExportGeneralService
 					{"KUNNR", paramMap.getCustomerNo()},
 					{"VKORG", paramMap.getSalesOrg()},
 					{"SPART", paramMap.getDivision()},
-					{"KVGR5", "20"}
+					{"KVGR5", "20"},
+					{"MATNR", paramMap.getString("orderPartNo").toUpperCase()}
 				})
 				.addByKey(new Object[][] {
 					{"VBTYP", "docType"},
 					{"AUART", "orderType"},
 					{"VBELN", "orderNo"},
 					{"BSTKD", "poNo"},
-					{"MATNR", "orderPartNo"},
 					{"FRDATE", "fromDate"},
 					{"TODATE", "toDate"},
 					{"RFGSK", "status"}
