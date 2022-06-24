@@ -58,7 +58,7 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 			Map<String, Object> itemMap = new HashMap<>();
 			itemMap.put("ITEM", orderItem.getLineNo());
 			itemMap.put("MATERIAL", orderItem.getMaterialNo());
-			itemMap.put("QTY", orderItem.getOrderQty().replaceAll(",", ""));
+			itemMap.put("QTY", CmStringUtils.trimToEmpty(orderItem.getOrderQty()).replaceAll(",", ""));
 
 			items.add(itemMap);
 		}

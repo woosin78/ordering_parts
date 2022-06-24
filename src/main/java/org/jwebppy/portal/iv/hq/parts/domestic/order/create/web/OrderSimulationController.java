@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -41,6 +42,7 @@ import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.SimulationResultDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderCreateService;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderSimulationService;
+import org.jwebppy.portal.iv.hq.parts.domestic.order.create.util.OrderCreationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -86,6 +88,84 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 
 	@Autowired
 	private OrderSimulationService orderSimulationService;
+
+	public Object validation(OrderDto order)
+	{
+		if (CmStringUtils.isNotEmpty(order.getMaterialNo()))
+		{
+			List<OrderItemDto> orderItems = new LinkedList<>();
+
+			String[] materialNos = order.getMaterialNo().split("\\" + PortalCommonVo.DELIMITER);
+			String[] orderQties = order.getOrderQty().split("\\" + PortalCommonVo.DELIMITER);
+
+			for (int i=0, length=materialNos.length; i<length; i++)
+			{
+				if (CmStringUtils.isNotEmpty(materialNos[i]))
+				{
+					OrderItemDto orderItem = new OrderItemDto();
+					orderItem.setLineNo(OrderCreationUtils.makeLineNo(i+1));
+					orderItem.setMaterialNo(materialNos[i]);
+
+					try
+					{
+						orderItem.setOrderQty(orderQties[i]);
+					}
+					catch (ArrayIndexOutOfBoundsException e)
+					{
+						//orderItem.setOrderQty("0");
+					}
+
+					orderItems.add(orderItem);
+				}
+			}
+
+			ErpDataMap userInfoMap = getErpUserInfo();
+
+			order.setOrderItems(orderItems);
+			order.setUsername(userInfoMap.getUsername());
+			order.setLanguage(userInfoMap.getLangForSap());
+
+			DataList dataList = orderSimulationService.getLotQties(order);
+			List<OrderItemDto> normalOrderItems = new ArrayList<>();
+
+			for (int i=0, size=dataList.size(); i<size; i++)
+			{
+				DataMap dataMap = (DataMap)dataList.get(i);
+
+				OrderItemDto orderItem = new OrderItemDto();
+				orderItem.setLineNo(dataMap.getString("ITEM"));
+				orderItem.setMaterialNo(CmStringUtils.defaultIfEmpty(dataMap.getString("MATERIAL_ENT"), dataMap.getString("MATERIAL")));
+
+				int reqQty = CmNumberUtils.toInt(dataMap.getString("REQ_QTY"), 0);
+
+				if (reqQty > 0)
+				{
+					orderItem.setOrderQty(Integer.toString(reqQty));
+				}
+
+				if (dataMap.isNotEmptyValue("MATERIAL_TEXT"))
+				{
+					orderItem.setDescription(dataMap.getString("MATERIAL_TEXT"));
+
+					int lotQty = CmNumberUtils.toInt(dataMap.getString("LOT_QTY"), 0);
+					lotQty = (lotQty == 0) ? 1 : lotQty;
+
+					orderItem.setLotQty(Integer.toString(lotQty));
+				}
+
+				normalOrderItems.add(orderItem);
+			}
+
+			SimulationResultDto simulationResult = new SimulationResultDto();
+			simulationResult.setNormalOrderItems(normalOrderItems);
+
+			makeOrderItemForm(simulationResult);
+
+			return simulationResult;
+		}
+
+		return EMPTY_RETURN_VALUE;
+	}
 
 	@PostMapping("/simulation/upload")
 	@ResponseBody
@@ -163,16 +243,21 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 				List<OrderItemDto> orderItems = new LinkedList<>();
 
 				String[] materialNos = order.getMaterialNo().split("\\" + PortalCommonVo.DELIMITER);
-				String[] orderQtyies = order.getOrderQty().split("\\" + PortalCommonVo.DELIMITER);
+				String[] orderQties = order.getOrderQty().split("\\" + PortalCommonVo.DELIMITER);
+
+				if (materialNos.length != orderQties.length)
+				{
+					return validation(order);
+				}
 
 				for (int i=0, length=materialNos.length; i<length; i++)
 				{
 					if (CmStringUtils.isNotEmpty(materialNos[i]))
 					{
 						OrderItemDto orderItem = new OrderItemDto();
-						orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
+						orderItem.setLineNo(OrderCreationUtils.makeLineNo(i+1));
 						orderItem.setMaterialNo(materialNos[i]);
-						orderItem.setOrderQty(orderQtyies[i]);
+						orderItem.setOrderQty(orderQties[i]);
 
 						orderItems.add(orderItem);
 					}
@@ -183,7 +268,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 		}
 
 		order.setUsername(userInfoMap.getUsername());
-		order.setLanguage(userInfoMap.getLang());
+		order.setLanguage(userInfoMap.getLangForSap());
 
 		//중복 입력된 자재 필터링
 		if (CmStringUtils.equals(order.getFgFilteringDuplicateItem(), IvCommonVo.YES))
@@ -218,7 +303,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 					for (OrderHistoryItemDto orderHistoryItem: ListUtils.emptyIfNull(orderHistoryHeader.getOrderHistoryItems()))
 					{
 						OrderItemDto orderItem = new OrderItemDto();
-						orderItem.setLineNo(CmStringUtils.leftPad(index*10, 6, "0"));
+						orderItem.setLineNo(OrderCreationUtils.makeLineNo(index+1));
 						orderItem.setMaterialNo(orderHistoryItem.getMaterialNo());
 						orderItem.setOrderQty(orderHistoryItem.getOrderQty());
 

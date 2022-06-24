@@ -451,7 +451,7 @@ function makeItemParameter()
 			let materialNo = node.find("input[name=materialNo]").val();
 			let orderQty = node.find("input[name=orderQty]").val();
 			
-			if ($.trim(materialNo) != "" && $.trim(orderQty) != "")
+			//if ($.trim(materialNo) != "" && $.trim(orderQty) != "")
 			{
 				items.lineNos.push(data.lineNo);
 				items.materialNos.push(materialNo);
@@ -467,10 +467,20 @@ function makeItemParameter()
 	return items;
 };
 
+function doValidation()
+{
+	//시뮬레이션 실행 내역 초기화
+	resetDoneSimulation();
+
+	$tableObj.ajax.reload();
+	
+	ProgressBar.show();	
+};
+
 function doSimulation()
 {
 	//직접 입력한 후 시뮬레이션 했을 경우
-	if ($("#fileName").val() == "" && $("#simulationFrom").val() == "")
+	if (JpUtilsString.isEmpty($("#fileName").val()) && JpUtilsString.isEmpty($("#simulationFrom").val()))
 	{
 		if (initialMaterialNos.length == 0)
 		{
@@ -479,20 +489,15 @@ function doSimulation()
 			let materialNos = itemParameter.materialNos;
 			let orderQties = itemParameter.orderQties;
 			
-			if (materialNo.length == 0 || orderQties.length == 0)
+			if (materialNo.length == 0 || orderQties.length == 0 || materialNos.length != orderQties.length)
 			{
-				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
-				return;
-			};
-	
-			if (materialNos.length != orderQties.length)
-			{
-				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
+				alert("[[#{HQP_M_EMPTY_PART_QTY}]]");
+				JpUiForm.input.on.focus($("#TBL_grid input[name=orderQty][value='']:first, input[name=materialNo][value='']:first"));
 				return;
 			};
 		};
 		
-		if ($("#shippingCondition").val() == "")
+		if (JpUtilsString.isEmpty($("#shippingCondition").val()))
 		{
 			alert("[[#{HQP_L_EMPTY_SHIPPING_INFO}]]");
 			return;
@@ -828,9 +833,10 @@ $(function(){
 				p.fgFilteringDuplicateItem = GLOBAL_CONST.YES;
 				p.fgFilteringInvalidSalesLotItem = GLOBAL_CONST.YES;
 				p.ohhSeq = $("#ohhSeq").val();
+				p.fgValidation = $("#fgValidation").val();
 
 				//Item
-				if ($("#fileName").val() == "")
+				if (JpUtilsString.isEmpty($("#fileName").val()))
 				{
 					if (initialMaterialNos.length > 0)
 					{
@@ -945,13 +951,24 @@ $(function(){
 
 		ProgressBar.hide();
 		
-		JpUiForm.input.on.focus($("#TBL_grid input[name=materialNo][value='']:first"));
-		JpUiForm.input.on.select($("#TBL_grid input[name=orderQty]"), $("#TBL_grid input[name=materialNo]"));
+		let itemParameter = makeItemParameter();
 		
+		if (itemParameter.materialNos.length == itemParameter.orderQties.length)
+		{
+			JpUiForm.input.on.focus($("#TBL_grid input[name=materialNo][value='']:first"));			
+		}
+		else
+		{
+			JpUiForm.input.on.focus($("#TBL_grid input[name=orderQty][value='']:first"));	
+		};
+		
+		JpUiForm.input.on.select($("#TBL_grid input[name=orderQty]"), $("#TBL_grid input[name=materialNo]"));
+
 		JpUiForm.input.on.enter($("#TBL_grid input[name=materialNo]"), function(item) {
-			let orderQtyObj = $(item).closest("tr").find("input[name=orderQty]");
-			
-			orderQtyObj.val(JpUtilsString.defaultString(orderQtyObj.val(), "1"));
+			doValidation();
+		});		
+
+		JpUiForm.input.on.enter($("#TBL_grid input[name=orderQty]"), function(item) {
 			doSimulation();
 		});
 	});
