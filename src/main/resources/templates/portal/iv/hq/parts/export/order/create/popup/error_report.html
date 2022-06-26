@@ -27,14 +27,13 @@
 	$(function(){
 		try
 		{
-			$("#totalRows").html(JpUtilsNumber.addComma(opener.errorOrderItems.length) + " row(s).");			
+			showGridTotalRows($("#totalRows"), opener.errorOrderItems);
 		}
 		catch (e) {}
 		
 		$tableObj = $("#TBL_grid").DataTable({
 			ordering: false,// 정렬 기능 켬
-			scrollY: 100,
-			columns : [
+			columns: [
 				{name: "materialNo", data: "materialNo", title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Parts No.
 				{
 					name: "duplicate",

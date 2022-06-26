@@ -25,21 +25,31 @@ JpUtilsObject.isNotNull = function(obj)
 	return !JpUtilsObject.isNull(obj);
 };
 
-JpUtilsObject.isJqueryObject = function(object)
+JpUtilsObject.defaultIfNull = function(obj1, obj2)
 {
-	return object instanceof jQuery;
+	if (JpUtilsObject.isNull(obj1))
+	{
+		return obj2;		
+	};
+	
+	return obj1;
 };
 
-JpUtilsObject.toJquery = function(object)
+JpUtilsObject.isJqueryObject = function(obj)
 {
-	if (object == null)
+	return obj instanceof jQuery;
+};
+
+JpUtilsObject.toJquery = function(obj)
+{
+	if (obj == null)
 	{
 		return null;
 	}
 
-	if (!JpUtilsObject.isJqueryObject(object))
+	if (!JpUtilsObject.isJqueryObject(obj))
 	{
-		return $(object);
+		return $(obj);
 	}
-	return object;
+	return obj;
 };

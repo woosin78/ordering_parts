@@ -64,7 +64,6 @@ $(function(){
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 
-		scrollY: 100,
 		columns: [
 			{// 컬럼에 radio 설정
 				name: "RAD_MATNR",
@@ -92,21 +91,14 @@ $(function(){
 			},
 			dataSrc: function(response) 
 			{				
-				let data = response.RESULT;
-				
-				if (data == null)
-				{
-					return [];
-				}
-				
-				let returnData = new Array();
+				let data = JpUtilsArray.emptyIfNull(response.RESULT);
 				
 				for (let i=0, length=data.length; i<length; i++)
 				{
 					data[i].RAD_MATNR = "";					
-				}
+				};
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}

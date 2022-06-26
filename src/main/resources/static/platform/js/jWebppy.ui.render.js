@@ -239,7 +239,7 @@ let JpUiRender = function()
 			});
 		};
 		
-		content.push("<div class=\"ui fluid search selection dropdown " + attributes["NAME"] + "\">");
+		content.push("<div class=\"ui fluid search clearable selection dropdown " + attributes["NAME"] + "\">");
 		content.push("<input type=\"hidden\" ");
 		
 		if (JpUtilsObject.isNotNull(attributes["ID"]))

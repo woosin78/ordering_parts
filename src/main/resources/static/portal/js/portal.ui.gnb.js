@@ -178,14 +178,14 @@ function makeGnb2()
 					$(".bx-controls-direction").show();          
 				});      
 			};
-
+			
 			$(".gnb-menu-area").on("mouseout", function() {
 				if (level1Length > GNB_MENU_PER_PAGE)
 				{       
 					$(".bx-controls-direction").hide();
 				};         
 				$(".gnb-menu-area").css("height", 50);
-			});    
+			});
 		
 			$(".gnb-menu-sub-list").on("mouseover", function() {
 				$(".gnb-menu-area").css("height", 100);

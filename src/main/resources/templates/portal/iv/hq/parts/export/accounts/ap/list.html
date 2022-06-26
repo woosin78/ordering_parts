@@ -63,9 +63,7 @@ $(function(){
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
-		scrollY: 100,
-		//fixedColumns: {leftColumns: 8},
-		columns : [
+		columns: [
 			{data: "ZFCIVNO", title: "[[#{HQP_L_COMMERCIAL_INVOICE_NO}]]"},				
 			{data: "ZTERM", title: "[[#{HQP_L_PAYMENT_TERMS}]]"},
 			{data: "BUZEI", title: "[[#{HQP_L_SEQ}]]"},
@@ -97,7 +95,7 @@ $(function(){
 			{				
 				let data = response.RESULT;
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}			

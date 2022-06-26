@@ -100,8 +100,7 @@ $(function(){
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
-		scrollY: 100,
-		columns : [
+		columns: [
 			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
 			{data: "VBELN", title: "[[#{HQP_L_QUOTATION_NO}]]"},//Inuqiry No.			
 			{data: "VBELN2", title: "[[#{HQP_L_SALES_DOC_NO}]]"},//Sales Doc. No.
@@ -132,7 +131,6 @@ $(function(){
 			dataSrc: function(response) 
 			{
 				let result = response.RESULT;
-				let returnData = new Array();
 				
 				for (let i=0, length=result.length; i<length; i++)
 				{
@@ -148,7 +146,7 @@ $(function(){
 					};
 				};
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), result);
 
 				return result;
 			}

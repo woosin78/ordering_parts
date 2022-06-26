@@ -53,9 +53,6 @@
 let $tableObj;
 $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
-		ordering: true, 			// 정렬 기능 켬
-		scrollY: 100,
-		serverSide: true,
 		deferLoading: false,		
 		columns : [
 			{data: "CRDAT", title: "[[#{HQP_L_PURCHASE_DATE}]]"},				
@@ -77,13 +74,13 @@ $(function(){
 			};
 		},		
 		ajax: {
-			url: "[[${BASE_PATH}]]/accounts/ap/list/data",
+			url: "[[${BASE_PATH}]]/dummy",
 			dataSrc: function(response) 
 			{				
 				let data = response.RESULT;
 				
-				let list = data.list;
-				let summary = data.summary;
+				let list = JpUtilsArray.emptyIfNull(data.list);
+				let summary = JpUtilsObject.defaultIfNull(data.summary, {});
 				
 				$("#SUMMARY_1").text(summary.CREDAMT);
 				$("#SUMMARY_2").text(summary.DUEAMT);
@@ -93,14 +90,12 @@ $(function(){
 				
 				let length = list.length;
 				
-				for (let i=0; i < length; i++)
+				for (let i=0; i<length; i++)
 				{
 					list[i].CRDAT = JpUtilsString.defaultString(list[i].CRDAT, "[[#{HQP_L_ORDER_IN_PROGRESS}]]");
 				};
 				
-				let rows = (length > 0) ? length-1 : 0;
-				
-				$("#totalRows").html(JpUtilsNumber.addComma(rows) + " row(s).");
+				showGridTotalRows($("#totalRows"), length-1);
 				
 				return list;
 			}			
@@ -112,7 +107,7 @@ $(function(){
 	});
 	
 	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/accounts/ap/list/data"});
 });
 
 $("#BTN_search").on("click", function(){		

@@ -1,6 +1,6 @@
 <script>
 /*
- * 공통 페이지
+ * 공통으로 사용되는 script 모음
  */
  function _goHome()
  {
@@ -131,7 +131,7 @@ function _setDealerCodeAutocomplete(target, options)
 	});
 };
 
-function _defaultLoading(option)
+function _defaultLoading(gridObj, option)
 {
 	if (JpUtilsString.isNotEmpty(location.search) && JpUtilsObject.isNotNull(option.loaded))
 	{
@@ -156,28 +156,9 @@ function _defaultLoading(option)
 		
 		if (Array.from(urlParams).length > 0)
 		{
-			option.loaded();			
+			gridObj.settings()[0].jqXHR.abort();//dummy 페이지가 로딩 중이면 로딩을 멈춘다
+			option.loaded();
 		};
 	};
 };
-
-//자동 스크롤 탑
-$("body").scroll(function() {
-	if ($(this).scrollTop() > 200 )
-	{
-		$(".bt-gotop").fadeIn();
-	}
-	else
-	{
-		$(".bt-gotop").fadeOut();
-	};
-});
-
-$(".gotop").click(function() {
-	$("html, body").animate( { scrollTop : 0 }, 400);
-	return false;
-});	
-
-//세션유지
-CmSessionUtils.keepSession();
 </script>

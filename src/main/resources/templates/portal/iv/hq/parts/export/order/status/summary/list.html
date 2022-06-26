@@ -82,9 +82,7 @@ $(function(){
 			
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
-		scrollY: 100,
-		//fixedColumns: {leftColumns: 5},
-		columns : [
+		columns: [
 			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"},
 			{data: "MATWA", 		title: "[[#{HQP_L_ORDER_PART_NO}]]"},			
 			{data: "MATNR", 		title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},			
@@ -122,7 +120,7 @@ $(function(){
 			{				
 				let data = response.RESULT;
 			    
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 
 				return data;
 			}

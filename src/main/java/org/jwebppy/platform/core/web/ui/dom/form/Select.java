@@ -34,4 +34,16 @@ public class Select extends Form
 
 		addElement(option);
 	}
+
+	public void addOption(Object value, Object text, boolean isSelected)
+	{
+		Option option = new Option(value, text);
+
+		if (isSelected)
+		{
+			option.addAttribute("selected");
+		}
+
+		addElement(option);
+	}
 }

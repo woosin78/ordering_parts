@@ -46,7 +46,7 @@ public class OrderDisplayController extends PartsDomesticGeneralController
 
 	@RequestMapping("/list/data")
 	@ResponseBody
-	public Object listData(@RequestParam Map<String, Object> paramMap)
+	public Object listData(@RequestParam Map<String, Object> paramMap, WebRequest webRequest)
 	{
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 

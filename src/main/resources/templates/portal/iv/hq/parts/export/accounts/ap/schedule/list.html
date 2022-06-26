@@ -26,9 +26,7 @@
 let $tableObj;
 $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
-		ordering: true, 			// 정렬 기능 켬
-		scrollY: 100,
-		columns : [
+		columns: [
 			{data: "FAEDT", title: "[[#{HQP_L_DUE_DATE}]]"},			
 			{data: "WRBTR", title: "[[#{HQP_L_AP_AMOUNT}]]"},				
 			{data: "WRBTR3", title: "[[#{HQP_L_OVERDUE_INTEREST}]]"},
@@ -57,7 +55,7 @@ $(function(){
 				let length = (apList.length > 0) ? apList.length-1 : 0;
 				let totalAmount = (length > 0) ? data.totalAmount + " " + apList[length].WAERK : "0";
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");
+				showGridTotalRows($("#totalRows"), length);
 				
 				$("#totalAmount").html("[[#{HQP_L_TOTAL_AMOUNT}]] " + totalAmount);
 				

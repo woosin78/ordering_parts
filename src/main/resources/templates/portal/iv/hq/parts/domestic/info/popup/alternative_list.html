@@ -65,7 +65,7 @@ $(function(){
 			{				
 				let data = response.RESULT;
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}

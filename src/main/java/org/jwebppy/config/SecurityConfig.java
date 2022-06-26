@@ -1,5 +1,7 @@
 package org.jwebppy.config;
 
+import javax.servlet.http.HttpSessionListener;
+
 import org.jwebppy.platform.core.web.CmHttpSessionRequestCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,5 +35,11 @@ public class SecurityConfig
 	public PasswordEncoder passwordEncoder()
 	{
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
+
+	@Bean
+	public HttpSessionListener httpSessionListener()
+	{
+		return new SessionListener();
 	}
 }

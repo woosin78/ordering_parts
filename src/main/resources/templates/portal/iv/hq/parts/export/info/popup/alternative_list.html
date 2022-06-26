@@ -48,8 +48,7 @@ let $tableObj;
 $(function(){	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 
-		scrollY: 100,
-		columns : [						
+		columns: [						
 			{data: "NMATNR",	title: "[[#{HQP_L_PART_NO}]]"},//Part No
 			{data: "AMATNR", 	title: "[[#{HQP_L_ALTERNATIVE}]]"},//Alternative
 			{data: "AQTY", 		title: "[[#{HQP_L_QTY}]]"}//Qty
@@ -64,7 +63,7 @@ $(function(){
 			{				
 				let data = response.RESULT;
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}

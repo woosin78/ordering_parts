@@ -215,33 +215,6 @@ UploadModal.hide = function()
 	$(document).off("paste");
 };
 
-function resetInitialItems()
-{
-	initialMaterialNos = [];
-	initialOrderQties = [];		
-};	
-
-function triggerPasteFromClipload(event)
-{
-	resetInitialItems();
-	
-	let rows = event.originalEvent.clipboardData.getData("Text").split(String.fromCharCode(13));//13:CR
-	let items = [];
-	let isValid = true;
-	
-	$.each(rows, function(index, element) {
-		let item = element.split(String.fromCharCode(9));//9:tab
-		
-		if (item[0].trim() != null && item[0].trim() != "")
-		{
-			initialMaterialNos.push(JpUtilsString.replaceAll(item[0], String.fromCharCode(13), ""));
-			initialOrderQties.push(JpUtilsString.replaceAll(JpUtilsString.defaultString(item[1], "1"), String.fromCharCode(13), ""));
-		};
-	});
-	
-	doSimulation();	
-};
-
 $(".dropzone-click-zone").dropzone({
 	url: "[[${BASE_PATH}]]/order/create/simulation/upload",
 	maxFilesize: 5, //MB
@@ -285,6 +258,33 @@ $(".dropzone-click-zone").dropzone({
 		//console.log("dragleave");
 	}
 });
+
+function resetInitialItems()
+{
+	initialMaterialNos = [];
+	initialOrderQties = [];		
+};	
+
+function triggerPasteFromClipload(event)
+{
+	resetInitialItems();
+	
+	let rows = event.originalEvent.clipboardData.getData("Text").split(String.fromCharCode(13));//13:CR
+	let items = [];
+	let isValid = true;
+	
+	$.each(rows, function(index, element) {
+		let item = element.split(String.fromCharCode(9));//9:tab
+		
+		if (item[0].trim() != null && item[0].trim() != "")
+		{
+			initialMaterialNos.push(JpUtilsString.replaceAll(item[0], String.fromCharCode(13), ""));
+			initialOrderQties.push(JpUtilsString.replaceAll(JpUtilsString.defaultString(item[1], "1"), String.fromCharCode(13), ""));
+		};
+	});
+	
+	doSimulation();	
+};
 
 //주문유형 가져오기
 let orderComponent = new OrderComponent();
@@ -409,29 +409,16 @@ function setShippingInfo(result)
 	$(".incoterms2").html(result.incoterms2);		
 };
 
-function doSimulationByEnter(obj)
-{
-	if (!jQuery.isNumeric(obj.value))
-	{
-		obj.value = "";
-		return;
-	};
-
-	if (window.event.keyCode == 13)
-	{
-		doSimulation();
-	};
-}
-
 function makeItemParameter()
 {
-	let items = {};
-	items.lineNos = [];
-	items.materialNos = [];
-	items.orderQties = [];
-	items.lotQties = [];
-	items.uoms = [];
-	items.availabilities = [];
+	let items = {
+		lineNos: [],
+		materialNos: [],
+		orderQties: [],
+		lotQties: [],
+		uoms: [],
+		availabilities: []		
+	};
 
 	try
 	{
@@ -451,15 +438,12 @@ function makeItemParameter()
 			let materialNo = node.find("input[name=materialNo]").val();
 			let orderQty = node.find("input[name=orderQty]").val();
 			
-			//if ($.trim(materialNo) != "" && $.trim(orderQty) != "")
-			{
-				items.lineNos.push(data.lineNo);
-				items.materialNos.push(materialNo);
-				items.orderQties.push(orderQty);
-				items.lotQties.push(data.lotQty);
-				items.uoms.push(data.uom);
-				items.availabilities.push(JpUtilsString.defaultString(data.availability, "^"));
-			};
+			items.lineNos.push(data.lineNo);
+			items.materialNos.push(materialNo);
+			items.orderQties.push(orderQty);
+			items.lotQties.push(data.lotQty);
+			items.uoms.push(data.uom);
+			items.availabilities.push(JpUtilsString.defaultString(data.availability, "^"));
 		};
 	}
 	catch (e) {}
@@ -792,7 +776,7 @@ $(function(){
 				{
 					let clazz =  (JpUtilsString.equals(row.fgInvalidSalesLot, GLOBAL_CONST.YES)) ? "custom-ui warn": "custom-ui"; 
 
-					return "<input type='text' class='" + clazz + "' name='orderQty' style='width:70px;' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
+					return "<input type='text' class='" + clazz + "' name='orderQty' style='width:70px;' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},//Req Qty
 			{name: "lotQty", data: "lotQty", title: "[[#{HQP_L_SALES_LOT}]]"},//Sales Lot
@@ -949,11 +933,12 @@ $(function(){
 		
 		initGridTable($tableObj);
 
-		ProgressBar.hide();
-		
 		let itemParameter = makeItemParameter();
 		
-		if (itemParameter.materialNos.length == itemParameter.orderQties.length)
+		let inputtedMaterialCount = $("#TBL_grid input[name=materialNo][value!='']").length;
+		let inputtedOrderQtyCount = $("#TBL_grid input[name=orderQty][value!='']").length;
+		
+		if (inputtedMaterialCount == inputtedOrderQtyCount)
 		{
 			JpUiForm.input.on.focus($("#TBL_grid input[name=materialNo][value='']:first"));			
 		}
@@ -969,8 +954,16 @@ $(function(){
 		});		
 
 		JpUiForm.input.on.enter($("#TBL_grid input[name=orderQty]"), function(item) {
+			if (!jQuery.isNumeric($(item).val()))
+			{
+				$(item).val("");
+				return false;
+			};
+			
 			doSimulation();
 		});
+		
+		ProgressBar.hide();
 	});
 });
 

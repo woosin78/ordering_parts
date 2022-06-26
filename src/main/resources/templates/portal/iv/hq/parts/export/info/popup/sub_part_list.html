@@ -46,7 +46,6 @@ let $tableObj;
 $(function(){	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 
-		scrollY: 100,
 		columns: [
 			{// 컬럼에 radio 설정
 				name: "KEY",
@@ -86,7 +85,6 @@ $(function(){
 				let grid = new Array();
 				
 				$.each(data.crossList, function(index, item) {
-					
 					let labst1 = parseInt(item.LABST1);
 					let fgAvail = "";
 					
@@ -104,7 +102,7 @@ $(function(){
 					grid[index] = subPart;
 				});
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(crossList.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), crossList);
 				
 				return grid;
 			}

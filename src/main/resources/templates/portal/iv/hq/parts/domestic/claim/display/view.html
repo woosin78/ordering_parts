@@ -101,8 +101,6 @@ JpUtilsAjax.get({
 				}
 			};
 			
-			console.log(fileName);
-			
 			itemList[i].TEXT = JpUtilsString.trimToEmpty(reason1);
 			itemList[i].TEXT2 = JpUtilsString.trimToEmpty(reason2);
 			itemList[i].FILE_NAME = JpUtilsString.trimToEmpty(fileName);
@@ -110,7 +108,6 @@ JpUtilsAjax.get({
 	    	
     	$tableObj = $("#TBL_grid").DataTable({
     		ordering: true,// 정렬 기능 켬
-    		scrollY: 100,
     		columns : [
     			{data: "REF_ORD", 		title: "[[#{HQP_L_REFERENCE_NO}]]"},// Reference No
     			{data: "MATERIAL", 		title: "[[#{HQP_L_PART_NO}]]"},// Part No

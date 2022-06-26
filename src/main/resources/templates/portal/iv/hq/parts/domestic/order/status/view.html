@@ -94,7 +94,7 @@ $(function(){
 					}
 				};
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}

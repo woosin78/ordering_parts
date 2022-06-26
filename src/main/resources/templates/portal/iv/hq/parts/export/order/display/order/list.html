@@ -81,8 +81,7 @@ $(function(){
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
-		scrollY: 100,
-		columns : [
+		columns: [
 			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
 			{data: "VBELN", title: "[[#{HQP_L_ORDER_NO}]]"},//Order No.
 			{data: "ERDAT2", title: "[[#{HQP_L_ORDER_DATE}]]"},//Create Date
@@ -124,7 +123,7 @@ $(function(){
 					result[i].ERDAT2 = JpUtilsString.trimToEmpty(result[i].ERDAT) + " " + JpUtilsString.trimToEmpty(result[i].ERZET);
 				};
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), result);
 
 				return result;
 			}

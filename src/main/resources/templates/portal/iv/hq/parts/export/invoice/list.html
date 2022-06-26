@@ -80,8 +80,7 @@ $(function(){
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
-		scrollY: 100,
-		columns : [
+		columns: [
 			{// 컬럼에 checkbox 설정
 				name: "chk",
 				orderable: false,// checkbox 는 정렬 불가
@@ -127,7 +126,7 @@ $(function(){
 			{				
 				let data = response.RESULT;
 
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 
 				return data;
 			}

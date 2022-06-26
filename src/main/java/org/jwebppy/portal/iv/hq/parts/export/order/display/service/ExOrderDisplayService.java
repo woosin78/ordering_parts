@@ -17,8 +17,6 @@ public class ExOrderDisplayService extends PartsExportGeneralService
 	@Cacheable(value = PortalCacheConfig.EX_ORDER_DISPLAY, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(PartsErpDataMap paramMap)
 	{
-		System.err.println("orderdisplay:" + paramMap);
-
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDERLIST");
 
 		rfcRequest

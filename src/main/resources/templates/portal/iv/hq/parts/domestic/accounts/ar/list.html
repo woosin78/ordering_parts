@@ -73,8 +73,6 @@ $(function(){
 		
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
-		scrollY: 100,
-		serverSide: true,
 		deferLoading: false,
 		columns : [
 			{data: "EBELN", title: "[[#{HQP_L_PO_NO}]]"},				
@@ -94,7 +92,7 @@ $(function(){
 			{targets: [8, 9], className: "dt-body-right"}
 		],		
 		ajax: {
-			url: "[[${BASE_PATH}]]/accounts/ar/list/data",
+			url: "[[${BASE_PATH}]]/dummy",
 			data: function(p)
 			{
 				p.pFromPoNo = $("#pFromPoNo").val();
@@ -109,7 +107,7 @@ $(function(){
 			{				
 				let data = response.RESULT;
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}			
@@ -121,7 +119,7 @@ $(function(){
 	});
 	
 	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/accounts/ar/list/data"});
 });
 
 $("#BTN_search").on("click", function(){		

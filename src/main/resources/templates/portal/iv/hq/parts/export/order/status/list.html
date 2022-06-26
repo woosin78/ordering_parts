@@ -87,9 +87,7 @@ $(function(){
 			
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
-		scrollY: 100,
-		//fixedColumns: {leftColumns: 5},
-		columns : [
+		columns: [
 			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"},
 			{data: "VBELN", 		title: "[[#{HQP_L_ORDER_NO}]]"},
 			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},
@@ -128,7 +126,7 @@ $(function(){
 					data[i].BO_AMT = Number(data[i].SO_QTY) - Number(data[i].SH_QTY);						
 				};
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 
 				return data;
 			}

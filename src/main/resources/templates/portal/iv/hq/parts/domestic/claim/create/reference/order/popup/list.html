@@ -66,8 +66,6 @@ $(function(){
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
-		scrollY: 100,
-		serverSide: true,
 		deferLoading: false,		
 		columns : [
 			{// 컬럼에 checkbox 설정
@@ -91,7 +89,7 @@ $(function(){
 			{targets: [0, 1, 2, 3, 6, 7], className: "dt-body-center"}
 		],
 		ajax: {
-			url: "[[${BASE_PATH}]]/claim/create/reference/order/list/data",
+			url: "[[${BASE_PATH}]]/dummy",
 			data: function(p)
 			{
 				// ajax로 넘길 파라미터
@@ -114,7 +112,7 @@ $(function(){
 	});
 	
 	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/claim/create/reference/order/list/data"});
 	
 	$("#BTN_search").on("click", function() {
 		doSearch();

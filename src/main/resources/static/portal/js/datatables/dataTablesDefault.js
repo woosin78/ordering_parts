@@ -56,10 +56,8 @@ prevHeight 는 생략 가능
 bottomHeight 는 Bottom 영역의 높이
 */
 function dataTableResize($dataTable, $parent, prevHeight){
-	/*
-	let bottomHeight = $(".footer-area").outerHeight();
-	let height = $parent.innerHeight() - bottomHeight;
-	*/
+	//let bottomHeight = $(".footer-area").outerHeight();
+	//let height = $parent.innerHeight() - bottomHeight;
 	let height = $parent.innerHeight();
 	
 	if (typeof prevHeight == "undefined" || prevHeight != height) {
@@ -73,58 +71,18 @@ function dataTableResize($dataTable, $parent, prevHeight){
 	}
 	
 	return height;
-}
-
-/* 
-$dataTable을 $parent 높이에 맞춤. window.resize에 사용. 
-prevHeight 는 생략 가능
-bottomHeight 는 Bottom 영역의 높이
-*/
-function dataTableResizeWithoutScrollY($dataTable, $parent){
-	let maxHeight = $parent.find(".dataTables_scrollBody").prop("scrollHeight");
-	
-	if ($parent.find(".dataTables_scrollBody").prop("scrollWidth") > $parent.find(".dataTables_scrollBody").width())
-	{
-		maxHeight += $(".footer-area").height();
-	};
-	
-	$parent.find(".dataTables_scrollBody").css({
-		"maxHeight": maxHeight + "px"
-	});
-	
-	/*
-	$(".footer-area").remove();
-	
-	let bottom = "";
-	bottom += "<div class='footer-area' style='margin-top: 10px'>";
-	bottom += "	<div class='footer2'>";
-	bottom += "		<div class='split-row-compact'></div>";
-	bottom += "		<div class='logo-area'>";
-	bottom += "			<div class='copylight' th:text='#{PTL_T_COPY_RIGHT}'></div>";
-	bottom += "		</div>";
-	bottom += "		<div>";
-	bottom += "			<button>Language</button>";
-	bottom += "		</div>";
-	bottom += "		<div class='split-row-compact'></div>";
-	bottom += "	</div>";
-	bottom += "</div>";	
-	
-	$parent.append(bottom);
-	*/
-
-	//$dataTable.fixedColumns().relayout();
-}
+};
 
 /* 
 페이지에 dataTable 리사이저를 설치한다. (jquery, throttle 필요)
 주의) $parent 는 css 만으로 리사이징 돼야 한다.
 */
-function installDataTableResizer($dataTable, $parent, isShowAllWithoutScrollY){
+function installDataTableResizer($dataTable, $parent){
 	let prevHeight = 0;
 	const INTERVAL = 100;
 	
 	$(window).resize($.debounce(INTERVAL, function(e){
-		dataTableResizing($dataTable, $parent, prevHeight, isShowAllWithoutScrollY);
+		dataTableResizing($dataTable, $parent, prevHeight);
 	}));
 	// 최초 로딩시 리사이징.
 	$(window).resize();
@@ -132,8 +90,8 @@ function installDataTableResizer($dataTable, $parent, isShowAllWithoutScrollY){
 	let count = 0;
 
 	let intervalId = setInterval(function() {
-		//10회 만 실행시킴
-		if (count > 9)
+		//50회 만 실행시킴
+		if (count > 50)
 		{
 			clearInterval(intervalId);
 		};
@@ -141,23 +99,16 @@ function installDataTableResizer($dataTable, $parent, isShowAllWithoutScrollY){
 		//첫번째는 resize 가 실행되며 조정되기 때문에 skip
 		if (count > 0)
 		{
-			dataTableResizing($dataTable, $parent, prevHeight, isShowAllWithoutScrollY);	
+			dataTableResizing($dataTable, $parent, prevHeight);	
 		};
 		
 		count++;
 	}, INTERVAL);
-}
+};
 
-function dataTableResizing($dataTable, $parent, prevHeight, isShowAllWithoutScrollY)
+function dataTableResizing($dataTable, $parent, prevHeight)
 {
-	if (isShowAllWithoutScrollY)
-	{
-		dataTableResizeWithoutScrollY($dataTable, $parent);
-	}
-	else
-	{
-		prevHeight = dataTableResize($dataTable, $parent, prevHeight);	
-	};
+	prevHeight = dataTableResize($dataTable, $parent, prevHeight);
 };
 
 /*
@@ -196,7 +147,7 @@ function ajaxDeferFunction(url, paramsFunction, ajaxOptions){
 			});
 		}
 	};
-}
+};
 
 /*
  * dataTables FixedColumns 와 row select 기능을 사용하고, 컬럼을 input이나 select로 할 경우, 값을 동기화시킴.
@@ -210,7 +161,7 @@ function syncInput(obj) {
 	} else if (obj.tagName=='SELECT') {
 		$(td).find("select option[value="+obj.value+"]").attr("selected", true);
 	}
-}
+};
 
 /*
  * 그리드 헤더 체크박스로 전체 체크 처리  
@@ -220,16 +171,38 @@ function allChecked(obj) {
 	let tds = $tableObj.columns(0).nodes()[0];   // chk 컬럼은 0번 컬럼으로 가정
 	$(tds).find("input").attr("checked", checked).prop("checked", checked);
 	$tableObj.draw();
-}
+};
 
 /*
  * 그리드 테이블 초기 설정
  */
-function initGridTable(table, isShowAllWithoutScrollY) {
+function initGridTable(table, options) {
 	let tableId = table.tables().nodes().to$().attr("id");
 	
 	// window 리사이즈시 그리드 높이 다시 맞춤. (그리드의 parent 요소의 높이에 맞춤)
-	installDataTableResizer(table, $("#"+tableId+"_wrapper").closest(".grid-area"), isShowAllWithoutScrollY);
+	installDataTableResizer(table, $("#"+tableId+"_wrapper").closest(".grid-area"), false);
 	// dataTable 버그 수정.
-	installDataTableBugFix(tableId);	
-}
+	installDataTableBugFix(tableId);
+	// deferLoading 적용. 
+	// Datatables 제공 옵션 ( serverSide(true) + deferLoading(false) ) 으로 초기 로딩되지 않게 할 수 있으나 serverSide true 를 적용할 경우 sorting 시 server 로 request 를 보내는 이슈 있음
+	ajaxDeferLoading($tableObj.settings()[0], options);	
+};
+
+function ajaxDeferLoading(settings, options)
+{
+	if (JpUtilsObject.isNotNull(options) && JpUtilsObject.isNotNull(settings.oInit.deferLoading))
+	{
+		if (!settings.oInit.deferLoading)
+		{
+			$tableObj.ajax.url(options.url);			
+		};
+	};
+};
+
+function showGridTotalRows(obj1, obj2)
+{
+	let rows = (Array.isArray(obj2)) ? obj2.length : obj2;	
+	rows = (rows < 0) ? 0 : rows;
+
+	JpUtilsObject.toJquery(obj1).html(rows + " row(s).");
+};

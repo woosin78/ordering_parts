@@ -1,5 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.common.web;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.portal.iv.board.dto.EpBoardContentSearchDto;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
@@ -44,5 +46,12 @@ public class PartsDomesticController extends PartsDomesticGeneralController
 		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
+	}
+
+	@RequestMapping("/dummy")
+	@ResponseBody
+	public Object dummy()
+	{
+		return CollectionUtils.emptyCollection();
 	}
 }

@@ -7,15 +7,11 @@ import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
-import org.jwebppy.platform.core.web.ui.dom.Label;
 import org.jwebppy.platform.core.web.ui.dom.Link;
-import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
 import org.jwebppy.platform.core.web.ui.dom.form.Input;
 import org.jwebppy.platform.core.web.ui.dom.form.InputHidden;
-import org.jwebppy.platform.core.web.ui.dom.form.Radio;
 import org.jwebppy.platform.core.web.ui.dom.form.Select;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
@@ -183,6 +179,7 @@ public class UserGroupLayoutBuilder
 		loTimeFormat2.setLabel("Time Format(Front-End)");
 		loTimeFormat2.setRequired(true);
 
+		/* Country */
 		Select loCountry = new Select("country");
 		loCountry.setLabel("Country");
 		loCountry.setRequired(true);
@@ -197,6 +194,7 @@ public class UserGroupLayoutBuilder
 			loCountry.addOption(locale.getCountry(), locale.getDisplayCountry());
 		}
 
+		/* Timezone Format */
 		Select loTimezone = new Select("timezone");
 		loTimezone.setLabel("Timezone");
 		loTimezone.setRequired(true);
@@ -209,18 +207,22 @@ public class UserGroupLayoutBuilder
 			loTimezone.addOption(id, id + ", " + TimeZone.getTimeZone(id).getDisplayName());
 		}
 
+		/* Currency Format */
 		Input loCurrencyFormat = new Input("currencyFormat", userGroup.getCurrencyFormat());
 		loCurrencyFormat.setLabel("Currency Format");
 		loCurrencyFormat.setRequired(true);
 
+		/* Weight Format */
 		Input loWeightFormat = new Input("weightFormat", userGroup.getWeightFormat());
 		loWeightFormat.setLabel("Weight Format");
 		loWeightFormat.setRequired(true);
 
+		/* Quantity Format */
 		Input loQtyFormat = new Input("qtyFormat", userGroup.getQtyFormat());
 		loQtyFormat.setLabel("Quantity Format");
 		loQtyFormat.setRequired(true);
 
+		/* Credential Policy */
 		Select loCredentialPolicy = new Select("cpSeq");
 		loCredentialPolicy.setLabel("Credential Policy");
 		loCredentialPolicy.setRequired(true);
@@ -237,6 +239,39 @@ public class UserGroupLayoutBuilder
 			loCredentialPolicy.addOption(credentialPolicy.getCpSeq(), credentialPolicy.getName());
 		}
 
+		/* Allowable Language */
+		Select loLangKindFields = new Select("langKind");
+		loLangKindFields.setLabel("Allowable Language");
+		loLangKindFields.setRequired(true);
+		loLangKindFields.addAttribute("multiple", "");
+
+		String langKind = userGroup.getLangKind();
+		langKind = (CmStringUtils.isEmpty(langKind)) ? PlatformCommonVo.DEFAULT_LANGUAGE: langKind;
+
+		for (LangKindType langKindType: LangKindType.values())
+		{
+			String value = langKindType.name();
+
+			loLangKindFields.addOption(value, langKindType.getType(), CmStringUtils.contains(langKind, value));
+		}
+
+		/* Default Language */
+		Select loDefLangFields = new Select("defLang");
+		loDefLangFields.setLabel("Default Language");
+		loDefLangFields.setRequired(true);
+		loDefLangFields.setValue(userGroup.getDefLang());
+
+		for (LangKindType langKindType: LangKindType.values())
+		{
+			String value = langKindType.name();
+
+			if (CmStringUtils.contains(langKind, value))
+			{
+				loDefLangFields.addOption(value, langKindType.getType());
+			}
+		}
+
+		/* SAP Connection Resource */
 		Select loSapConnResource = new Select("scrSeq");
 		loSapConnResource.setLabel("SAP Connection Resource");
 		loSapConnResource.setValue(userGroup.getSapConnResource().getScrSeq());
@@ -244,44 +279,6 @@ public class UserGroupLayoutBuilder
 		for (SapConnResourceDto sapConnResource: ListUtils.emptyIfNull(sapConnResources))
 		{
 			loSapConnResource.addOption(sapConnResource.getScrSeq(), sapConnResource.getName());
-		}
-
-		Div loLangKindFields = new Div();
-		loLangKindFields.setClass("inline fields");
-		loLangKindFields.addElement(new Label("Allowable Language"));
-
-		for (LangKindType langKindType: LangKindType.values())
-		{
-			String lanauge = langKindType.name();
-
-			Checkbox loLangKind = new Checkbox("langKind", lanauge);
-			loLangKind.setLabel(langKindType.getType());
-
-			if (CmStringUtils.contains(userGroup.getLangKind(), lanauge))
-			{
-				loLangKind.checked();
-			}
-
-			loLangKindFields.addElement(loLangKind);
-		}
-
-		Div loDefLangFields = new Div();
-		loDefLangFields.setClass("inline fields");
-		loDefLangFields.addElement(new Label("Default Language"));
-
-		for (LangKindType langKindType: LangKindType.values())
-		{
-			String lanauge = langKindType.name();
-
-			Radio loDefLang = new Radio("defLang", lanauge);
-			loDefLang.setLabel(langKindType.getType());
-
-			if (CmStringUtils.contains(userGroup.getDefLang(), lanauge))
-			{
-				loDefLang.checked();
-			}
-
-			loDefLangFields.addElement(loDefLang);
 		}
 
 		document.addElement(loUgSeq);

@@ -86,4 +86,24 @@ $(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
 $(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
 	jqXHR.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
 });
+
+//자동 스크롤 탑
+$("body").scroll(function() {
+	if ($(this).scrollTop() > 200 )
+	{
+		$(".bt-gotop").fadeIn();
+	}
+	else
+	{
+		$(".bt-gotop").fadeOut();
+	};
+});
+
+$(".gotop").click(function() {
+	$("html, body").animate( { scrollTop : 0 }, 400);
+	return false;
+});
+
+//Input type 이 text 인 모든 필드들은 click 시 select 처리
+JpUiForm.input.on.select($("input[type=text]"));
 </script>

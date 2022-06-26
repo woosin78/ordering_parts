@@ -15,7 +15,8 @@ public class PlatformConfigVo
 	public final static String FORM_LOGIN_PASSWORD = "password"; //폼 로그인 - 비밀번호 속성명
 	public final static String FORM_LOGIN_PAGE_PATH = "/login";
 	public final static String FORM_LOGIN_PROCESSING_PATH = "/login/check";
-	public final static String FORM_LOGIN_PAGE_URL = FORM_AUTHENTICATION_PATH + FORM_LOGIN_PAGE_PATH; //폼 로그인 - 로그인 페이지 url
+	//public final static String FORM_LOGIN_PAGE_URL = FORM_AUTHENTICATION_PATH + FORM_LOGIN_PAGE_PATH; //폼 로그인 - 로그인 페이지 url
+	public final static String FORM_LOGIN_PAGE_URL = "/portal/common/authentication" + FORM_LOGIN_PAGE_PATH; //폼 로그인 - 로그인 페이지 url
 	public final static String FORM_LOGIN_PROCESSING_URL = FORM_AUTHENTICATION_PATH + FORM_LOGIN_PROCESSING_PATH; //폼 로그인 - 로그인 처리 url
 	public final static String FORM_LOGIN_FAIL_TYPE = "Login-Fail-Type";
 

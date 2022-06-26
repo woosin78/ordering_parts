@@ -20,7 +20,7 @@
 	$(function(){
 		try
 		{
-			$("#totalRows").html(JpUtilsNumber.addComma(opener.errorOrderItems.length) + " row(s).");			
+			showGridTotalRows($("#totalRows"), opener.errorOrderItems);
 		}
 		catch (e) {}
 		

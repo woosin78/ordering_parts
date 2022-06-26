@@ -125,7 +125,7 @@ $(function(){
 				let list = data.LIST;
 				let sum = data.SUM;
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(list.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), list);
 				
 				let amount = "";
 				

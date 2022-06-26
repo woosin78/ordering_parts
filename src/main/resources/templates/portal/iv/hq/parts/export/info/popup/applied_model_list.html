@@ -51,8 +51,7 @@ let $tableObj;
 $(function(){	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 
-		scrollY: 100,
-		columns : [					
+		columns: [					
 			{data: "MAKTX", title: "[[#{HQP_L_MODEL}]]"	}	//Model
 		],
 		ajax: {
@@ -65,7 +64,7 @@ $(function(){
 			{				
 				let data = response.RESULT;
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}

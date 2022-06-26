@@ -81,8 +81,6 @@ $(function(){
 		
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
-		scrollY: 100,
-		serverSide: true,
 		deferLoading: false,
 		columns : [
 			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},//Order<br>Type
@@ -103,7 +101,7 @@ $(function(){
 			{targets: [2, 3, 4, 8, 9, 10, 11, 12], className: "dt-body-center"}
 		],		
 		ajax: {
-			url: "[[${BASE_PATH}]]/order/backorder/list/data",
+			url: "[[${BASE_PATH}]]/dummy",
 			data: function(p)
 			{
 				p.pOrderNo 		= $("#pOrderNo").val();
@@ -144,7 +142,7 @@ $(function(){
 					data[i].PRETD = etdDesc;
 				};		
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}			
@@ -156,7 +154,7 @@ $(function(){
 	});
 	
 	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/order/backorder/list/data"});
 });
 
 // Search 버튼 클릭

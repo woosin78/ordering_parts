@@ -81,8 +81,7 @@ $(function(){
 		
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
-		scrollY: 100,
-		columns : [
+		columns: [
 			{data: "KONDA_T", 		title: "[[#{HQP_L_ORDER_TYPE}]]"},//Order<br>Type
 			{data: "BSTKD", 		title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
 			{data: "AUDAT", 		title: "[[#{HQP_L_ORDER_DATE}]]"},//Order Date				
@@ -142,7 +141,7 @@ $(function(){
 					data[i].PRETD = etdDesc;
 				};		
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}			

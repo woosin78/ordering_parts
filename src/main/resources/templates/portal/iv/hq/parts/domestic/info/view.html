@@ -141,6 +141,7 @@ function doSearch()
 	if (JpUtilsString.isEmpty($("#pPartNo").val()))
 	{
 		alert("[[#{HQP_M_EMPTY_PART_NO}]]");
+		$("#pPartNo").focus();
 		return;
 	}	
 	

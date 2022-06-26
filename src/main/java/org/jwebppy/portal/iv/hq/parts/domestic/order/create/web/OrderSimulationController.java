@@ -103,7 +103,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 				if (CmStringUtils.isNotEmpty(materialNos[i]))
 				{
 					OrderItemDto orderItem = new OrderItemDto();
-					orderItem.setLineNo(OrderCreationUtils.makeLineNo(i+1));
+					orderItem.setLineNo(OrderCreationUtils.lineNo(i+1));
 					orderItem.setMaterialNo(materialNos[i]);
 
 					try
@@ -136,11 +136,11 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 				orderItem.setLineNo(dataMap.getString("ITEM"));
 				orderItem.setMaterialNo(CmStringUtils.defaultIfEmpty(dataMap.getString("MATERIAL_ENT"), dataMap.getString("MATERIAL")));
 
-				int reqQty = CmNumberUtils.toInt(dataMap.getString("REQ_QTY"), 0);
+				int qty = (int)dataMap.getDouble("QTY", 0);
 
-				if (reqQty > 0)
+				if (qty > 0)
 				{
-					orderItem.setOrderQty(Integer.toString(reqQty));
+					orderItem.setOrderQty(Integer.toString(qty));
 				}
 
 				if (dataMap.isNotEmptyValue("MATERIAL_TEXT"))
@@ -255,7 +255,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 					if (CmStringUtils.isNotEmpty(materialNos[i]))
 					{
 						OrderItemDto orderItem = new OrderItemDto();
-						orderItem.setLineNo(OrderCreationUtils.makeLineNo(i+1));
+						orderItem.setLineNo(OrderCreationUtils.lineNo(i+1));
 						orderItem.setMaterialNo(materialNos[i]);
 						orderItem.setOrderQty(orderQties[i]);
 
@@ -303,7 +303,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 					for (OrderHistoryItemDto orderHistoryItem: ListUtils.emptyIfNull(orderHistoryHeader.getOrderHistoryItems()))
 					{
 						OrderItemDto orderItem = new OrderItemDto();
-						orderItem.setLineNo(OrderCreationUtils.makeLineNo(index+1));
+						orderItem.setLineNo(OrderCreationUtils.lineNo(index+1));
 						orderItem.setMaterialNo(orderHistoryItem.getMaterialNo());
 						orderItem.setOrderQty(orderHistoryItem.getOrderQty());
 
@@ -445,7 +445,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 				}
 
 				OrderItemDto orderItem = new OrderItemDto();
-				orderItem.setLineNo(CmStringUtils.leftPad(i*10, 6, "0"));
+				orderItem.setLineNo(OrderCreationUtils.lineNo(i+1));
 				orderItem.setMaterialNo(materialNo);
 				orderItem.setOrderQty(orderQty);
 
@@ -562,7 +562,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 		for (int i=0, count=rowCount-size; i<count; i++)
 		{
 			OrderItemDto orderItem = new OrderItemDto();
-			orderItem.setLineNo(CmStringUtils.leftPad(lineNo*10, 6, "0"));
+			orderItem.setLineNo(OrderCreationUtils.lineNo(lineNo));
 
 			normalOrderItems.add(orderItem);
 

@@ -183,7 +183,9 @@ JpUiForm.input = {
 				if (Array.isArray(arguments[i]))
 				{
 					$(arguments[i]).each(function(index, item) {
-						$(this).select();
+						//$(this).select();
+						
+						$(item).on("click", function() { $(this).select(); });
 					});
 				}
 				else

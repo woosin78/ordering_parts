@@ -89,8 +89,6 @@ $(function(){
 		
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
-		scrollY: 100,
-		serverSide: true,
 		deferLoading: false,
 		columns : [
 			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
@@ -112,7 +110,7 @@ $(function(){
 			{targets: [7, 8, 12], className: "dt-body-right"}
 		],
 		ajax: {
-			url: "[[${BASE_PATH}]]/order/delivery/view/data",
+			url: "[[${BASE_PATH}]]/dummy",
 			data: function(p)
 			{
 				p.pFromDate = $("#pFromDate").val();
@@ -128,7 +126,7 @@ $(function(){
 			{				
 				let data = response.RESULT;
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), data);
 				
 				return data;
 			}			
@@ -140,7 +138,7 @@ $(function(){
 	});
 	
 	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/order/delivery/view/data"});
 	
 	//list 상세보기 클릭하여 넘어왔을 경우
 	if (document.referrer.indexOf("[[${BASE_PATH}]]/order/delivery/list") > -1)

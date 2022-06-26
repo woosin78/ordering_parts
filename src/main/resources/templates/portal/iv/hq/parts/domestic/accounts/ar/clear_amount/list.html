@@ -85,8 +85,6 @@ $(function(){
 		
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
-		scrollY: 100,
-		serverSide: true,
 		deferLoading: false,
 		columns : [
 			{data: "MATNR", title: "[[#{HQP_T_PART_NO}]]"},
@@ -102,7 +100,7 @@ $(function(){
 			{targets: [3], className: "dt-body-right"}
 		],		
 		ajax: {
-			url: "[[${BASE_PATH}]]/accounts/ar/clear_amount/list/data",
+			url: "[[${BASE_PATH}]]/dummy",
 			data: function(p)
 			{
 				p.pYear = $("#pYear").val();
@@ -112,8 +110,8 @@ $(function(){
 			dataSrc: function(response) 
 			{				
 				let data = response.RESULT;
-				let summary = data.SUMMARY;
-				let list = data.LIST;
+				let summary = JpUtilsObject.defaultIfNull(data.SUMMARY);
+				let list = JpUtilsArray.emptyIfNull(data.LIST);
 				
 				try
 				{
@@ -124,7 +122,7 @@ $(function(){
 				}
 				catch (e) {}
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(list.length) + " row(s).");
+				showGridTotalRows($("#totalRows"), list);
 				
 				return list;
 			}			
@@ -136,7 +134,7 @@ $(function(){
 	});
 	
 	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/accounts/ar/clear_amount/list/data"});
 });
 
 $("#BTN_search").on("click", function(){		

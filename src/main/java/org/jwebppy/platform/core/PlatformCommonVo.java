@@ -5,6 +5,7 @@ public class PlatformCommonVo
 	//기본 날짜 형식
 	public static final String DEFAULT_COUNTRY = "KR";
 	public static final String DEFAULT_TIMEZONE = "Asia/Seoul";
+	public static final String DEFAULT_LANGUAGE = "en";
 	public static final String DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
 	public static final String DEFAULT_DATE_FORMAT_YYYYMMDD = "yyyyMMdd";
 	public static final String DEFAULT_TIME_FORMAT_HHMMSS = "HHmmss";

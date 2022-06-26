@@ -75,8 +75,6 @@ $(function(){
 
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 
-		scrollY: 100,
-		serverSide: true,
 		deferLoading: false,		
 		columns : [
 			{data: "VBELN", 		title: "[[#{HQP_L_CLAIM_NO}]]"},//Claim No.
@@ -96,7 +94,7 @@ $(function(){
 			{targets: [5], className: "dt-body-right"}
 		],
 		ajax: {
-			url: "[[${BASE_PATH}]]/claim/display/list/data",
+			url: "[[${BASE_PATH}]]/dummy",
 			data: function(p)
 			{
 				p.pClaimNo 	= $("#pClaimNo").val();
@@ -107,11 +105,9 @@ $(function(){
 			},
 			dataSrc: function(response) 
 			{				
-				let claimList = response.RESULT.claimList;
-				let claimReason1List = response.RESULT.claimReason1List;
+				let claimList = JpUtilsArray.emptyIfNull(response.RESULT.claimList);
+				let claimReason1List = JpUtilsArray.emptyIfNull(response.RESULT.claimReason1List);
 				
-				let returnData = new Array();
-										
 				for (let i=0, length=claimList.length; i<length; i++)
 				{
 					claimList[i].TEXT = "";
@@ -124,8 +120,8 @@ $(function(){
 						}
 					}
 				}
-
-				$("#totalRows").html(JpUtilsNumber.addComma(claimList.length) + " row(s).");
+				
+				showGridTotalRows($("#totalRows"), claimList);
 
 				return claimList;
 			}			
@@ -137,7 +133,7 @@ $(function(){
 	});
 	
 	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/claim/display/list/data"});
 	
 	// Search 버튼 클릭
 	$("#BTN_search").on("click", function(){		
@@ -176,7 +172,7 @@ $(function(){
 	});
 
 	//처음 접속 시에는 검색 실행하지 않음. 조회->상세보기->조회로 이동했을 때 화면 로딩과 함께 자동으로 검색이 실행되도록 할 때 사용
-	_defaultLoading({ loaded: function() { doSearch(); } });	
+	_defaultLoading($tableObj, { loaded: function() { doSearch(); } });	
 });
 
 function doSearch()

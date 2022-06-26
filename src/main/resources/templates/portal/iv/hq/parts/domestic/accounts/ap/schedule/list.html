@@ -73,8 +73,6 @@ $(function(){
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 			// 정렬 기능 켬
-		scrollY: 100,
-		serverSide: true,
 		deferLoading: false,		
 		columns : [
 			{data: "SALEDT", title: "[[#{HQP_L_AP_SCHEDULE_006}]]"},//매입월		
@@ -87,7 +85,7 @@ $(function(){
 			{targets: [3], className: "dt-body-right"}
 		],
 		ajax: {
-			url: "[[${BASE_PATH}]]/accounts/ap/schedule/list/data",
+			url: "[[${BASE_PATH}]]/dummy",
 			data: function(p)
 			{
 				p.pFromDate 	= $("#pFromDate").val();
@@ -97,9 +95,9 @@ $(function(){
 			{				
 				let data = response.RESULT;
 				
-				let list = data.list;
+				let list = JpUtilsArray.emptyIfNull(data.list);
 				let length = list.length;
-				let summary = data.summary;
+				let summary = JpUtilsObject.defaultIfNull(data.summary, {});
 				
 				$("#SUMMARY_1").text(summary.SUMMARY_1);
 				$("#SUMMARY_2").text(summary.SUMMARY_2);
@@ -134,7 +132,7 @@ $(function(){
 					list[i].GUBUN = gubun;
 				};
 				
-				$("#totalRows").html(JpUtilsNumber.addComma(length) + " row(s).");
+				showGridTotalRows($("#totalRows"), length);
 				
 				return list;
 			}			
@@ -146,7 +144,7 @@ $(function(){
 	});
 	
 	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/accounts/ap/schedule/list/data"});
 });
 
 $("#BTN_search").on("click", function(){		

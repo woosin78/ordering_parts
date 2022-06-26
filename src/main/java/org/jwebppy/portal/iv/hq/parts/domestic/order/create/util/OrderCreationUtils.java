@@ -4,7 +4,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 
 public class OrderCreationUtils
 {
-	public static String makeLineNo(int seq)
+	public static String lineNo(int seq)
 	{
 		return CmStringUtils.leftPad(seq*10, 6, "0");
 	}
