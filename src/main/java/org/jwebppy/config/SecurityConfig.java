@@ -1,7 +1,5 @@
 package org.jwebppy.config;
 
-import javax.servlet.http.HttpSessionListener;
-
 import org.jwebppy.platform.core.web.CmHttpSessionRequestCache;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +14,7 @@ import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)//스프링 시큐리티의 메소드 어노테이션 기반 시큐리티를 활성화 하기 위해서 필요
-@EnableRedisHttpSession
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 7200)//Session timeout 시간 설정 (2시간)
 public class SecurityConfig
 {
 	@Bean
@@ -35,11 +33,5 @@ public class SecurityConfig
 	public PasswordEncoder passwordEncoder()
 	{
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-	}
-
-	@Bean
-	public HttpSessionListener httpSessionListener()
-	{
-		return new SessionListener();
 	}
 }
