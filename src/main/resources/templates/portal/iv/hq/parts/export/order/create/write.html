@@ -954,10 +954,13 @@ $(function(){
 		JpUiForm.input.on.select($("#TBL_grid input[name=orderQty]"), $("#TBL_grid input[name=materialNo]"));
 		
 		JpUiForm.input.on.enter($("#TBL_grid input[name=materialNo]"), function(item) {
-			let orderQtyObj = $(item).closest("tr").find("input[name=orderQty]");
-			
-			orderQtyObj.val(JpUtilsString.defaultString(orderQtyObj.val(), "1"));
-			doSimulation();
+			if (JpUtilsString.isNotEmpty($(item).val()))
+			{
+				let orderQtyObj = $(item).closest("tr").find("input[name=orderQty]");
+				
+				orderQtyObj.val(JpUtilsString.defaultString(orderQtyObj.val(), "1"));
+				doSimulation();				
+			};
 		});
 	});
 });
