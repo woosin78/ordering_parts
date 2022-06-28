@@ -80,7 +80,8 @@ $(function(){
 	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true,// 정렬 기능 켬
-		columns: [
+		scrollY: 100,
+		columns : [
 			{// 컬럼에 checkbox 설정
 				name: "chk",
 				orderable: false,// checkbox 는 정렬 불가
@@ -126,7 +127,7 @@ $(function(){
 			{				
 				let data = response.RESULT;
 
-				showGridTotalRows($("#totalRows"), data);
+				$("#totalRows").html(JpUtilsNumber.addComma(data.length) + " row(s).");
 
 				return data;
 			}
@@ -196,11 +197,14 @@ $(".block-button-area.download button").on("click", function() {
 		
 		let key = [];
 		
-		$.each(checkboxes, function(index, element) {
-			let data = $tableObj.row(index).data();
-			
-			key.push("<input type='hidden' name='invoiceNo' value='" +  data.ZFCIVNO  + "' />");
-			key.push("<input type='hidden' name='shipmentNo' value='" +  data.ZFDONO  + "' />");
+		$.each($($tableObj.columns(0).nodes()[0]).find("input:checkbox"), function(index, element) {
+			if ($(this).is(":checked"))
+			{
+				let data = $tableObj.row(index).data();
+				
+				key.push("<input type='hidden' name='invoiceNo' value='" +  data.ZFCIVNO  + "' />");
+				key.push("<input type='hidden' name='shipmentNo' value='" +  data.ZFDONO  + "' />");				
+			};
 		});
 
 		$("#FORM_download")
