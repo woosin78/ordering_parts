@@ -72,12 +72,12 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 			username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
 			password = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_PASSWORD));
 
-			if ("".equals(username))
+			if (CmStringUtils.isEmpty(username))
 			{
 				throw new UsernameNotFoundException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
 			}
 
-			if ("".equals(password))
+			if (CmStringUtils.isEmpty(password))
 			{
 				throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
 			}

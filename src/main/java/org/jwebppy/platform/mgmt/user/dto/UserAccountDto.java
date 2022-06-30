@@ -90,4 +90,9 @@ public class UserAccountDto extends GeneralDto
 
         return false;
 	}
+
+	public boolean isValid()
+	{
+		return !isPasswordLocked() && !isAccountLocked() && isValidPeriod();
+	}
 }

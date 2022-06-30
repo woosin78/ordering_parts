@@ -48,10 +48,15 @@ public class UserAuthenticationService extends PlatformGeneralService
 
 	public Authentication getAuthentication(UserDto user)
 	{
-		return getAuthentication(user, null);
+		return getAuthentication(user, null, null);
 	}
 
 	public Authentication getAuthentication(UserDto user, AuthenticationType authenticationType)
+	{
+		return getAuthentication(user, authenticationType, null);
+	}
+
+	public Authentication getAuthentication(UserDto user, AuthenticationType authenticationType, String realUsername)
 	{
 		UserAccountDto userAccount = user.getUserAccount();
 		UserGroupDto userGroup = user.getUserGroup();
@@ -86,6 +91,7 @@ public class UserAuthenticationService extends PlatformGeneralService
         platformUserDetails.setQtyFormat(userGroup.getQtyFormat());
         platformUserDetails.setCItems(cItems);
         platformUserDetails.setAuthenticationType(authenticationType);
+        platformUserDetails.setRealUsername(realUsername);
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userAccount.getUsername(), userAccount.getPassword(), platformUserDetails.getAuthorities());
         usernamePasswordAuthenticationToken.setDetails(platformUserDetails);

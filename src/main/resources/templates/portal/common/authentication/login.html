@@ -130,7 +130,7 @@ function login()
 			contentType:"application/json",         
 			type: "GET",
 			url: "[[${gateway}]]/authform/sso/inbound/ad",
-			headers: {"user-key": key, "user-token": token, "user-xuser": $("#username").val(), "user-xpass": $("#password").val()},
+			headers: {"user-key": key, "user-token": token, "user-xuser": getUsername(), "user-xpass": $("#password").val()},
 			beforeSend: function(jqXHR, settings)
 			{
 				JpUiDimmer.show();
@@ -152,8 +152,13 @@ function login()
 			{
 				$("#FORM_login").submit();
 			}
-		});		
+		});
 	};
+};
+
+function getUsername()
+{
+	return $("#username").val().split("@")[0];
 };
 
 $(document).ready(function() {
@@ -209,7 +214,7 @@ $(document).ready(function() {
 	
 	$("#IMG_doobizPlus").on("click", function() {
 		document.location.href = INDEX_URL;
-	});	
+	});
 });
 </script>
 </head>

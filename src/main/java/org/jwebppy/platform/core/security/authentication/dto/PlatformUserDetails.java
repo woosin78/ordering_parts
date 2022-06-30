@@ -43,6 +43,7 @@ public class PlatformUserDetails implements UserDetails
 	private String weightFormat;
 	private String qtyFormat;
 	private AuthenticationType authenticationType;
+	private String realUsername;
 
 	private List<CItemDto> cItems;
 

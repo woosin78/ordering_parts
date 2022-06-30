@@ -8,12 +8,13 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 
 public enum AuthenticationType
 {
-	N("NORMAL"), A("AD"), S("SSO"), D("DOOBIZ");
+	F("FORCED"), N("NORMAL"), A("AD"), S("SSO"), D("DOOBIZ");
 
 	private String type;
 	private Map<String, String> typeMap = new HashMap<>();
 
 	{
+		typeMap.put("FORCED", "SUPER-LOGIN");
 		typeMap.put("NOMAL", "DOOBIZPLUS-USER");
 		typeMap.put("AD", "AD-USER");
 		typeMap.put("SSO", "SSO-USER");

@@ -11,6 +11,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.AuthenticationType;
+import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.security.authentication.service.LoginHistoryService;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
@@ -50,7 +51,10 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException
 	{
-		if (AuthenticationType.D.equals(UserAuthenticationUtils.getUserDetails().getAuthenticationType()))
+		PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
+		AuthenticationType authenticationType = platformUserDetails.getAuthenticationType();
+
+		if (AuthenticationType.D.equals(authenticationType))
 		{
 			UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
 			UserAccountDto userAccount = user.getUserAccount();
@@ -71,6 +75,10 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 			System.err.println("99.2. After:" + userAccount);
 
 			userService.saveUserAccount(userAccount);
+		}
+		else if (AuthenticationType.F.equals(authenticationType))
+		{
+			request.getSession().setAttribute("REAL_USERNAME", platformUserDetails.getRealUsername());
 		}
 
 		loginHistoryService.success(request, response);

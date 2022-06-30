@@ -12,7 +12,7 @@
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
 <input type="checkbox" name="cSeq" style="display:none" value="" checked />
 <input type="hidden" name="pageNumber" value="1"/>
-<input type="hidden" name="rowPerPage" value="10"/>
+<input type="hidden" name="rowPerPage" value="5"/>
 <div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
@@ -104,7 +104,7 @@ $(document).ready(function() {
 	  				{
 		  				if (JpUtilsString.isNotEmpty(getSeq()))
 		  				{
-			  				$("#TBL_authority").find("td a[data-key=" + getSeq() + "]").trigger("click");
+			  				$("#TBL_authority").find("td a[data-key=" + getSeq() + "]:first").trigger("click");
 		  				}
 		  				else
 		  				{
@@ -384,7 +384,7 @@ $(document).ready(function() {
 	function doSearch(pageNumber)
 	{
 		$("#FORM_search input:hidden[name=pageNumber]").val(JpUtilsString.defaultString(pageNumber, "1"));
-		$("#FORM_search input:hidden[name=rowPerPage]").val(GLOBAL_CONST.ROW_PER_PAGE);		
+		$("#FORM_search input:hidden[name=rowPerPage]").val(5);		
 
 		authorityTable.load();
 	};	

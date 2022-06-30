@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
@@ -86,33 +87,40 @@ public class ContentService extends GeneralService
 
 	public int delete(Integer cSeq)
 	{
+		System.err.println(cSeq);
+
 		CItemDto cItem = getCItem(cSeq);
 
-		if (cItem.getType().equals(CItemType.G))
+		if (ObjectUtils.isNotEmpty(cItem))
 		{
-			CItemEntity cItemEntity = new CItemEntity();
-			cItemEntity.setCSeq(cSeq);
-			cItemEntity.setFgDelete(PlatformCommonVo.YES);
-
-			return contentMapper.delete(cItemEntity);
-		}
-
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setCSeq(cSeq);
-
-		List<Map<String, Object>> cItems = getCItemHierarchy2(cItemSearch);
-
-		if (CollectionUtils.isNotEmpty(cItems))
-		{
-			Map<String, Object> cItemMap = cItems.get(0);
-
-			if (MapUtils.isNotEmpty(cItemMap))
+			if (cItem.getType().equals(CItemType.G))
 			{
-				delete(cItemMap);
+				CItemEntity cItemEntity = new CItemEntity();
+				cItemEntity.setCSeq(cSeq);
+				cItemEntity.setFgDelete(PlatformCommonVo.YES);
+
+				return contentMapper.delete(cItemEntity);
 			}
+
+			CItemSearchDto cItemSearch = new CItemSearchDto();
+			cItemSearch.setCSeq(cSeq);
+
+			List<Map<String, Object>> cItems = getCItemHierarchy2(cItemSearch);
+
+			if (CollectionUtils.isNotEmpty(cItems))
+			{
+				Map<String, Object> cItemMap = cItems.get(0);
+
+				if (MapUtils.isNotEmpty(cItemMap))
+				{
+					delete(cItemMap);
+				}
+			}
+
+			return 1;
 		}
 
-		return 1;
+		return 0;
 	}
 
 	private void delete(Map<String, Object> cItemMap)
