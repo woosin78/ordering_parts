@@ -16,6 +16,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.core.env.Environment;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -102,7 +103,7 @@ public abstract class GeneralController
 		//RequestParam 을 Array 로 받을 때 구분자를 ',' 에서 '^' 으로 변경함
 		webDataBinder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(PlatformConfigVo.DELIMITER));
 
-		//String 으로 넘어온 날짜를 LocalDateTime type 으로 convert 함
+		//문자열로 넘어온 날짜를 LocalDateTime type 으로 convert 함
 		webDataBinder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
 			@Override
 			public void setAsText(String text) throws IllegalArgumentException
@@ -135,5 +136,8 @@ public abstract class GeneralController
 				}
 			}
 		});
+
+		//문자열의 경우 앞뒤 공백 삭제하고 공백만 있을 경우 null 을 반환
+		webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 	}
 }

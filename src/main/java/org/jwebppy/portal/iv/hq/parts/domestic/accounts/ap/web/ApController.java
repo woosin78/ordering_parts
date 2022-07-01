@@ -108,7 +108,7 @@ public class ApController extends PartsDomesticGeneralController
 
 		DataList dataList = rfcResponse.getTable("T_INVOICE_DETAIL");
 
-		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"NETPR", "NETWR", "MWSBP"}, null, null, 100);
+		PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(dataList, new String[] {"TLAMT", "RETAMT", "CHAMT", "TOTAL", "ARREAR"}, null, null, 100);
 
 		FormatBuilder.with(dataList)
 			.integerFormat("VEPOS")
