@@ -11,6 +11,9 @@
 		<result property="destination" column="destination" />
 		<result property="startTime" column="start_time" />
 		<result property="elapsed" column="elapsed" />
+		<result property="requestId" column="request_id" />
+		<result property="requestUri" column="request_uri" />
+		<result property="referer" column="referer" />
 		<result property="sessionId" column="session_id" />
 		<result property="error" column="error" />
 		<result property="timezone" column="timezone" />
@@ -28,8 +31,8 @@
 	</resultMap>
 
 	<insert id="insertDataAccessLog" parameterType="DataAccessLogEntity">
-		insert into pltf_dacs_log (dl_seq, type, command, class_name, method_name, destination, start_time, elapsed, request_id, session_id, error, timezone, reg_username, reg_date) values (
-			#{dlSeq}, #{type}, #{command}, #{className}, #{methodName}, #{destination}, #{startTime}, #{elapsed}, #{requestId}, #{sessionId}, #{error}, #{timezone}, #{regUsername}, #{regDate}
+		insert into pltf_dacs_log (dl_seq, type, command, class_name, method_name, destination, start_time, elapsed, request_id, request_uri, referer, session_id, error, timezone, reg_username, reg_date) values (
+			#{dlSeq}, #{type}, #{command}, #{className}, #{methodName}, #{destination}, #{startTime}, #{elapsed}, #{requestId}, #{requestUri}, #{refererUri}, #{sessionId}, #{error}, #{timezone}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -132,6 +135,34 @@
 		where
 		a.dlp_seq=#{dlpSeq}
 		order by line_no		
+	</select>
+	
+	<select id="findUsedSapRfcsOnPage" parameterType="DataAccessLogSearchDto" resultType="DataAccessLogEntity">
+		select
+		a.command,
+		max(b.dl_seq) dl_seq,
+		max(b.reg_date) reg_date
+		from
+		pltf_sap_rfc_info1 a,
+		(
+		    select
+		    dl_seq,
+		    reg_date,
+		    class_name,
+		    method_name,
+		    command
+		    from
+		    pltf_dacs_log
+		    where
+		    reg_username=#{regUsername}
+		    and referer=#{referer}
+		) b
+		where
+		a.referer=#{referer}
+		and a.class_name=b.class_name(+)
+		and a.method_name=b.method_name(+)
+		group by a.command
+		order by reg_date	
 	</select>
 
 </mapper>

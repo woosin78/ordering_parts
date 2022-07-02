@@ -54,6 +54,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
 		AuthenticationType authenticationType = platformUserDetails.getAuthenticationType();
 
+		System.err.println(authenticationType);
+
 		if (AuthenticationType.D.equals(authenticationType))
 		{
 			UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());

@@ -159,12 +159,9 @@ $(function(){
 	});
 	
 	//Input text 엔터 키 입력
-	$("#FORM_search input:text").on("keydown", function(event) {
-		if (event.keyCode == 13)
-		{
-			doSearch();
-		};
-	});	
+	JpUiForm.input.on.enter($("#FORM_search input:text"), function() {
+		doSearch();
+	});
 	
 	function doSearch()
 	{

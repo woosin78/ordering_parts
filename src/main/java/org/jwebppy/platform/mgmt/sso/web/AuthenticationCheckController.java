@@ -4,11 +4,11 @@ import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.AuthenticationHelper;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.sso.uitils.CipherSecurity;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
@@ -61,7 +61,7 @@ public class AuthenticationCheckController extends SsoController
 		{
 			String[] message = new CipherSecurity().getDecryptDoobiz(key);
 
-			if (ArrayUtils.isNotEmpty(message) && message.length == 3)
+			if (CmArrayUtils.isNotEmpty(message) && message.length == 3)
 			{
 				System.err.println("Username:" + message[0]);
 				System.err.println("Password" + message[1]);

@@ -17,30 +17,30 @@
 	<div class="fields">
 		<div class="six wide field">
 			<select name="type" class="ui search dropdown">
-				<option th:each="type: ${T(org.jwebppy.platform.mgmt.logging.dto.IfType).values()}" th:value="${type.name()}" th:text="${type.getType()}"></option>
+				<option th:each="ifType: ${T(org.jwebppy.platform.mgmt.logging.dto.IfType).values()}" th:value="${ifType.name}" th:text="${ifType.type}" th:selected="${ifType.name} == ${type}"></option>
 			</select>
 		</div>
 	</div>
 	<div class="fields">
 		<div class="six wide field">
 			<div class="ui calendar">
-				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromDate" name="fromDate" placeholder="From Start Time"/></div>
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="fromDate" name="fromDate" placeholder="From Start Time" th:value="${fromDate}"/></div>
 			</div>				
 		</div>
 		<div class="six wide field">
 			<div class="ui calendar">
-				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toDate" name="toDate" placeholder="To Start Time"/></div>
+				<div class="ui input left icon"><i class="calendar icon"></i><input type="TEXT" id="toDate" name="toDate" placeholder="To Start Time" th:value="${toDate}"/></div>
 			</div>				
 		</div>
 	</div>
 	<div class="fields">
 		<div class="six wide field">
 			<div class="ui icon input">
-				<input type="text" id="command" name="command" placeholder="Command">
+				<input type="text" id="command" name="command" placeholder="Command" th:value="${command}">
 			</div>
 		</div>
 		<div class="six wide field">
-			<input type="text" id="regUsername" name="regUsername" placeholder="Reg.Username">
+			<input type="text" id="regUsername" name="regUsername" placeholder="Reg.Username" th:value=${regUsername}>
 		</div>
 		<div class="four wide field">
 			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>

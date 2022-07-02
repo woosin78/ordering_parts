@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class CacheHelper
 
 	public void evict(String[] cacheNames)
 	{
-		for (String cacheName: ArrayUtils.nullToEmpty(cacheNames))
+		for (String cacheName: CmArrayUtils.nullToEmpty(cacheNames))
 		{
 			evict(cacheName);
 		}

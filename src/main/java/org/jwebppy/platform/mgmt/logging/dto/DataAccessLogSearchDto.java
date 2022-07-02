@@ -24,6 +24,7 @@ public class DataAccessLogSearchDto extends GeneralDto implements IPagination
 	private String command;
 	private String query;
 	private String fgHasResultLog;
+	private String referer;
 
 	public long getFromDateToMs()
 	{

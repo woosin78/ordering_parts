@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.Formatter;
@@ -49,7 +49,7 @@ public class EpBoardContentController extends IvGeneralController
 	private EpBoardContentService boardContentService;
 
 	@Autowired
-	private I18nMessageSource I18nMessageSource;
+	private I18nMessageSource i18nMessageSource;
 
 	@Autowired
 	private EpUploadFileListService uploadFileListService;
@@ -150,7 +150,7 @@ public class EpBoardContentController extends IvGeneralController
 	@ResponseBody
 	public Object save(@ModelAttribute EpBoardContentDto boardContent, @RequestParam(name = "targetCode", required = false) String[] targetCodes, @RequestParam(name = "targetDescription", required = false) String[] targetDescriptions)
 	{
-		if (ArrayUtils.isNotEmpty(targetCodes))
+		if (CmArrayUtils.isNotEmpty(targetCodes))
 		{
 			List<EpBoardContentTargetDto> boardContentTargets = new ArrayList<>();
 			int index = 0;
@@ -181,7 +181,7 @@ public class EpBoardContentController extends IvGeneralController
 
 			if (board.getUploadFile() != null)
 			{
-				return I18nMessageSource.getMessage("HQP_M_EXCEED_MAXIMUM_UPLOAD_SIZE", new String[] { Formatter.getDisplayFileSize(board.getUploadFile().getMaxFileSize()) } );
+				return i18nMessageSource.getMessage("HQP_M_EXCEED_MAXIMUM_UPLOAD_SIZE", new String[] { Formatter.getDisplayFileSize(board.getUploadFile().getMaxFileSize()) } );
 			}
 		}
 		catch (IOException e)
@@ -208,7 +208,7 @@ public class EpBoardContentController extends IvGeneralController
 
 		if (!UserAuthenticationUtils.hasRole(CmStringUtils.split(board.getReadAuth(), IvCommonVo.DELIMITER)))
 		{
-			throw new AccessDeniedException("");
+			throw new AccessDeniedException(i18nMessageSource.getMessage("PLTF_M_NOT_AUTHORIZED"));
 		}
 
 		EpBoardContentSearchDto boardContentSearch = new EpBoardContentSearchDto();
@@ -225,7 +225,7 @@ public class EpBoardContentController extends IvGeneralController
 
 		model.addAttribute("boardContentSearch", boardContentSearch);
 		model.addAttribute("board", board);
-		model.addAttribute("boardName", I18nMessageSource.getMessage(CmStringUtils.upperCase("PLTF_T_" + bSeq)));
+		model.addAttribute("boardName", i18nMessageSource.getMessage(CmStringUtils.upperCase("PLTF_T_" + bSeq)));
 		model.addAttribute("isManager", isManager());
 		model.addAttribute("fgFrom", webRequest.getParameter("fgFrom"));//M: come from main page
 		model.addAttribute("hasWriteAuth", UserAuthenticationUtils.hasRole(CmStringUtils.split(board.getWriteAuth(), IvCommonVo.DELIMITER)));

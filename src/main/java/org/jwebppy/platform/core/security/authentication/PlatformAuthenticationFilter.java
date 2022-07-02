@@ -8,9 +8,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
@@ -62,7 +62,7 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
 		String[] credentials = checkSsoUser(request);
 
-		if (ArrayUtils.isNotEmpty(credentials))
+		if (CmArrayUtils.isNotEmpty(credentials))
 		{
 			username = credentials[0];
 			password = credentials[1];
@@ -142,7 +142,7 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
 			String[] message = CmStringUtils.split(new StringEncrypter(secretInfo[0], secretInfo[1]).decrypt(key), ":");
 
-	    	if (ArrayUtils.isNotEmpty(message) && message.length == 2 && isValidPeriod(message[1]))
+	    	if (CmArrayUtils.isNotEmpty(message) && message.length == 2 && isValidPeriod(message[1]))
 	    	{
 	    		return new String[] {message[0], AuthenticationType.S.getUniqueName()};
 	    	}

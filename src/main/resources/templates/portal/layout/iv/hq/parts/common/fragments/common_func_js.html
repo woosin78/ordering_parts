@@ -131,6 +131,10 @@ function _setDealerCodeAutocomplete(target, options)
 	});
 };
 
+/*
+ * Datatables default loading 처리. 최초 화면 로딩 시 ajax 실행되지 않게 함.
+ * ServerSide: true, deferLoading: false 옵션을 적용할 경우 화면 로딩과 동시에 ajax 가 실행되지 않지만 않지만 ServerSide: true 를 설정할 경우 sorting 과 같은 기능 실행 시 서버 사이드에서 처리를 해야 함. 
+ */
 function _defaultLoading(gridObj, option)
 {
 	if (JpUtilsString.isNotEmpty(location.search) && JpUtilsObject.isNotNull(option.loaded))
@@ -161,4 +165,100 @@ function _defaultLoading(gridObj, option)
 		};
 	};
 };
+
+/*
+ * RFC I/F Log
+ */
+$(document).on("keydown", function(e) {
+	if (e.ctrlKey && e.key === "z")
+	{
+		if (JpUiDimmer.isActive())
+		{
+			JpUiDimmer.hide();			
+		}
+		else
+		{
+			JpUtilsAjax.get({
+				url: "/platform/mgmt/log/shortcut/list/data",
+				global: false,
+				data: {referer: window.location.pathname},
+				success: function(data, textStatus, jqXHR)
+				{
+					let result = data.RESULT;
+					let content = "<table id='TBL_rfcLog' class='condition' style='width:600px;'><tr><th class='center'>[[#{PLTF_L_RFC_NAME}]]</th><th class='center'>[[#{PLTF_L_REG_DATE}]]</th></tr>";
+					
+					$.each(result, function(index, element) {
+						let link = element.command;
+						
+						if (JpUtilsString.isNotEmpty(element.dlSeq))
+						{
+							link = "<a class='link list'>" + element.command + "</a> <a class='link view' data-key='" + element.dlSeq + "'><i class='external alternate icon'></i></a>";
+						};
+						
+						content += "<tr style='background-color:#fff'>";
+						content += "<td class='left'>" + link + "</td><td class='center'>" + JpUtilsString.trimToEmpty(element.displayRegDate) + "</td>";
+						content += "</tr>";
+					});
+					
+					content += "</tbody></table>";
+					
+					JpUiDimmer.alert(content);
+					
+					$("#TBL_rfcLog a.link.list").on("click", function() {
+						Popup.open("/platform/mgmt/log/list?command=" + $(this).html() + "&regUsername=" + GLOBAL_CONST.USERNAME);	
+					});
+
+					$("#TBL_rfcLog a.link.view").on("click", function() {
+						Popup.open("/platform/mgmt/log/view?dlSeq=" + $(this).attr("data-key"), 1024, screen.availHeight*0.8, 'Y', 'Y');	
+					});					
+				},
+				error: function(jqXHR, textStatus, errorThrown)
+				{
+					console.log(errorThrown);
+				}
+			});			
+		};
+	};
+});
+
+//자동 스크롤 탑
+$("body").scroll(function() {
+	if ($(this).scrollTop() > 200 )
+	{
+		$(".bt-gotop").fadeIn();
+	}
+	else
+	{
+		$(".bt-gotop").fadeOut();
+	};
+});
+
+$(".gotop").click(function() {
+	$("html, body").animate( { scrollTop : 0 }, 400);
+	return false;
+});
+
+/*
+ * Ajax global settings.
+ */
+$(document).ajaxError(function(event, jqXHR, ajaxSettings, thrownError) {
+	if (jqXHR.status == "401" || jqXHR.status == "403")
+	{
+		document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}]]";
+	}
+	else
+	{
+		//document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).ERROR_PAGE_URL}]]";
+	};
+	
+	try
+	{
+		ProgressBar.hide();
+	}
+	catch (e) {}
+});
+
+$(document).ajaxSend(function(event, jqXHR, ajaxOptions) {
+	jqXHR.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
+});
 </script>

@@ -88,7 +88,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
             	{
             		System.err.println("16. Login Success");
 
-            		return userAuthenticationService.getAuthentication(user2, AuthenticationType.F, username2);
+            		return userAuthenticationService.getAuthentication(user2, AuthenticationType.F, username);
             	}
             }
             else

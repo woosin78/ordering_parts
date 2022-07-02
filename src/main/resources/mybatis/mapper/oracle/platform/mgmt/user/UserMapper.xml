@@ -20,7 +20,7 @@
 		<result property="totalCount" column="total_count" />
 		<association property="userAccount" foreignColumn="u_seq" column="u_seq" javaType="UserAccountEntity" select="findUserAccount" />
 		<association property="userContactInfo" foreignColumn="u_seq" column="u_seq" javaType="UserContactInfoEntity" select="findUserContactInfo" />
-		<association property="userGroup" foreignColumn="ug_seq" column="ug_seq" javaType="UserGroupEntity" select="org.jwebppy.platform.mgmt.user.mapper.UserGroupMapper.findUserGroup" />
+		<association property="userGroup" foreignColumn="ug_seq" column="ug_seq" javaType="UserGroupEntity" select="org.jwebppy.platform.mgmt.user.mapper.UserGroupMapper.findUserGroup" />		
 	</resultMap>
 	
 	<resultMap type="UserAccountEntity" id="userAccountEntityMap">
@@ -36,6 +36,7 @@
 		<result property="modUsername" column="mod_username" />
 		<result property="modDate" column="mod_date" />
 		<association property="credentialsPolicy" foreignColumn="cp_seq" column="cp_seq" javaType="CredentialsPolicyEntity" select="org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyMapper.findCredentialsPolicy" />
+		<association property="userPasswordChangeHistory" foreignColumn="u_seq" column="u_seq" javaType="UserPasswordChangeHistoryEntity" select="org.jwebppy.platform.mgmt.user.mapper.UserPasswordChangeHistoryMapper.findLastUserPasswordChangeHistory" />
 	</resultMap>
 	
 	<insert id="insertUser" parameterType="UserEntity" useGeneratedKeys="true" keyProperty="uSeq">

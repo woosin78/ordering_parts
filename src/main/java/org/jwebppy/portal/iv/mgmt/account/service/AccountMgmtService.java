@@ -3,7 +3,6 @@ package org.jwebppy.portal.iv.mgmt.account.service;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
@@ -11,6 +10,7 @@ import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemUserRlDto;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
@@ -168,7 +168,7 @@ public class AccountMgmtService extends IvGeneralService
 
 		String[] authorities = AccountMgmtUtils.getAuthorities(bizType, userType);
 
-		if (ArrayUtils.isNotEmpty(authorities))
+		if (CmArrayUtils.isNotEmpty(authorities))
 		{
 			CItemUserRlDto cItemUserRl = new CItemUserRlDto();
 			cItemUserRl.setUSeq(uSeq);
@@ -183,7 +183,7 @@ public class AccountMgmtService extends IvGeneralService
 
 		String[] salesArea = AccountMgmtUtils.getSalesArea(bizType);
 
-		if (ArrayUtils.isNotEmpty(salesArea))
+		if (CmArrayUtils.isNotEmpty(salesArea))
 		{
 			rfcParamMap.add(new String[][] {
 				{"salesOrg", salesArea[0]},

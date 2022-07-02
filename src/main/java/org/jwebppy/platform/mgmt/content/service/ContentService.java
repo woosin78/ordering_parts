@@ -87,8 +87,6 @@ public class ContentService extends GeneralService
 
 	public int delete(Integer cSeq)
 	{
-		System.err.println(cSeq);
-
 		CItemDto cItem = getCItem(cSeq);
 
 		if (ObjectUtils.isNotEmpty(cItem))

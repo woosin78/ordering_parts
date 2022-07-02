@@ -14,6 +14,10 @@ import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
+import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
+import org.jwebppy.platform.mgmt.content.service.ContentService;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.logging.LoggingGeneralController;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogSearchDto;
@@ -27,6 +31,7 @@ import org.jwebppy.platform.mgmt.upload.service.UploadFileListService;
 import org.jwebppy.platform.mgmt.upload.service.UploadFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +41,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
+import org.thymeleaf.util.ListUtils;
 
 @Controller
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/log")
@@ -47,10 +54,16 @@ public class LogController extends LoggingGeneralController
 	private String FILE_UPLOAD_ROOT_PATH;
 
 	@Autowired
+	private ContentService contentService;
+
+	@Autowired
 	private DataAccessLogService dataAccessLogService;
 
 	@Autowired
 	private DataAccessResultLogService dataAccessResultLogService;
+
+	@Autowired
+	private I18nMessageSource i18nMessageSource;
 
 	@Autowired
 	private UploadFileService uploadFileService;
@@ -59,8 +72,10 @@ public class LogController extends LoggingGeneralController
 	private UploadFileListService uploadFileListService;
 
 	@RequestMapping("/list")
-	public String list(@ModelAttribute(value = "dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch)
+	public String list(Model model, WebRequest webRequest)
 	{
+		addAllAttributeFromRequest(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -88,7 +103,7 @@ public class LogController extends LoggingGeneralController
 
 	@GetMapping("/view/layout/{tabPath}")
 	@ResponseBody
-	public Object logLayout(@PathVariable("tabPath") String tabPath, @RequestParam("dlSeq") String dlSeq)
+	public Object viewLayout(@PathVariable("tabPath") String tabPath, @RequestParam("dlSeq") String dlSeq)
 	{
 		if ("parameter".equals(tabPath))
 		{
@@ -179,5 +194,26 @@ public class LogController extends LoggingGeneralController
 		}
 
 		return null;
+	}
+
+	@GetMapping("/shortcut/list/data")
+	@ResponseBody
+	public Object shourtcutListData(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
+	{
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setUsername(UserAuthenticationUtils.getUserDetails().getRealUsername());
+		cItemSearch.setType(CItemType.G);
+		cItemSearch.setNames(new String[] {"DP_SAP_RFC_LOG_READ", "DP_SAP_RFC_LOG_WRITE"});
+
+		boolean hasAuthority = !ListUtils.isEmpty(contentService.getMyItems(cItemSearch));
+
+		if (!hasAuthority)
+		{
+			throw new AccessDeniedException(i18nMessageSource.getMessage("PLTF_M_NOT_AUTHORIZED"));
+		}
+
+		dataAccessLogSearch.setRegUsername(getUsername());
+
+		return dataAccessLogService.getUsedSapRfcsOnPage(dataAccessLogSearch);
 	}
 }

@@ -3,6 +3,7 @@ package org.jwebppy.platform.mgmt.user.web;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +51,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
 import com.ibm.icu.util.TimeZone;
 
@@ -223,7 +223,7 @@ public class UserController extends UserGeneralController
 
 			if (cSeqs != null && cSeqs.length > 0)
 			{
-				List<Integer> cSeqs2 = ArrayUtils.toUnmodifiableList(cSeqs)
+				List<Integer> cSeqs2 =  Arrays.asList(cSeqs)
 						.stream()
 						.map(s -> Integer.parseInt(s))
 						.collect(Collectors.toList());

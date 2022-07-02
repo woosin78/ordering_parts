@@ -25,4 +25,5 @@ public interface DataAccessLogMapper
 	public void updateDataAccessLog(DataAccessLogEntity dataAccessLog);
 	public List<DataAccessLogEntity> findPageableLogs(DataAccessLogSearchDto dataAccessLogSearcg);
 	public DataAccessLogEntity findLog(String dlSeq);
+	public List<DataAccessLogEntity> findUsedSapRfcsOnPage(DataAccessLogSearchDto dataAccessLogSearcg);
 }

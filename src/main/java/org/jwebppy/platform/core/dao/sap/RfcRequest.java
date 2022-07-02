@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.dao.AbstractDaoRequest;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 
 import lombok.Getter;
@@ -83,13 +83,13 @@ public class RfcRequest extends AbstractDaoRequest
 
 	public RfcRequest field(Object[][] fields)
 	{
-		if (ArrayUtils.isNotEmpty(fields))
+		if (CmArrayUtils.isNotEmpty(fields))
 		{
 			isOnField = true;
 
 			for (Object[] field: fields)
 			{
-				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				if (CmArrayUtils.isNotEmpty(field) && field.length == 2)
 				{
 					if (field[1] != null)
 					{
@@ -178,11 +178,11 @@ public class RfcRequest extends AbstractDaoRequest
 
 	public RfcRequest add(Object[][] fields)
 	{
-		if (ArrayUtils.isNotEmpty(fields))
+		if (CmArrayUtils.isNotEmpty(fields))
 		{
 			for (Object[] field: fields)
 			{
-				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				if (CmArrayUtils.isNotEmpty(field) && field.length == 2)
 				{
 					if (field[1] != null)
 					{
@@ -238,7 +238,7 @@ public class RfcRequest extends AbstractDaoRequest
 
 	public RfcRequest addByKey(Object[] fields)
 	{
-		if (ArrayUtils.isNotEmpty(fields))
+		if (CmArrayUtils.isNotEmpty(fields))
 		{
 			for (Object field: fields)
 			{
@@ -251,11 +251,11 @@ public class RfcRequest extends AbstractDaoRequest
 
 	public RfcRequest addByKey(Object[][] fields)
 	{
-		if (ArrayUtils.isNotEmpty(fields))
+		if (CmArrayUtils.isNotEmpty(fields))
 		{
 			for (Object[] field: fields)
 			{
-				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				if (CmArrayUtils.isNotEmpty(field) && field.length == 2)
 				{
 					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]))
 					{
@@ -365,7 +365,7 @@ public class RfcRequest extends AbstractDaoRequest
 
 	public RfcRequest output(String[] names)
 	{
-		if (ArrayUtils.isNotEmpty(names))
+		if (CmArrayUtils.isNotEmpty(names))
 		{
 			for (String name: names)
 			{

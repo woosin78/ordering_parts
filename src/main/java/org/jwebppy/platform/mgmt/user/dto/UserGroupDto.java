@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
@@ -109,7 +109,7 @@ public class UserGroupDto extends GeneralDto implements IPagination
 	{
 		Map<String, String> langKindMap = new HashMap<>();
 
-		String[] langKinds = ArrayUtils.nullToEmpty(CmStringUtils.split(langKind, PlatformConfigVo.DELIMITER));
+		String[] langKinds = CmArrayUtils.nullToEmpty(CmStringUtils.split(langKind, PlatformConfigVo.DELIMITER));
 
 		for (String langKind: langKinds)
 		{

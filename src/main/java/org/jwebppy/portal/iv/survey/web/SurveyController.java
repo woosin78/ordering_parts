@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.lang3.ArrayUtils;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.survey.dto.SurveyDto;
@@ -81,7 +81,7 @@ public class SurveyController extends IvGeneralController
 	@PreAuthorize("hasAnyRole('ROLE_DP_IVDO_PARTS_MANAGER', 'ROLE_DP_IVEX_PARTS_MANAGER')")
 	public Object save(@ModelAttribute SurveyDto survey, @RequestParam(name = "targetCode", required = false) String[] targetCodes, @RequestParam(name = "targetDescription", required = false) String[] targetDescriptions)
 	{
-		if (ArrayUtils.isNotEmpty(targetCodes))
+		if (CmArrayUtils.isNotEmpty(targetCodes))
 		{
 			List<SurveyTargetDto> surveyTargets = new ArrayList<>();
 			int index = 0;

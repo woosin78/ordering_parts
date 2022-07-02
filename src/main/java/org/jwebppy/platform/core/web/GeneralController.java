@@ -14,10 +14,9 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.core.env.Environment;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -25,11 +24,55 @@ import org.springframework.web.context.request.WebRequest;
 
 public abstract class GeneralController
 {
-	@Autowired
-	private Environment environment;
+	@Value("${platform.service}")
+	private String PLATFORM_SERVICE;
 
 	public final static String DEFAULT_VIEW_URL = "DUMMY";
 	public final static List<?> EMPTY_RETURN_VALUE = Collections.EMPTY_LIST;
+
+	@InitBinder
+	public void initBinder(WebDataBinder webDataBinder)
+	{
+		//RequestParam 을 Array 로 받을 때 구분자를 ',' 에서 '^' 으로 변경함
+		webDataBinder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(PlatformConfigVo.DELIMITER));
+
+		//문자열로 넘어온 날짜를 LocalDateTime type 으로 convert 함
+		webDataBinder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
+			@Override
+			public void setAsText(String text) throws IllegalArgumentException
+			{
+				if (CmStringUtils.isNotEmpty(text))
+				{
+					Object value = null;
+
+					try
+					{
+						value = LocalDate.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getDateFormat1()));
+					}
+					catch (DateTimeParseException e1)
+					{
+						try
+						{
+							value = LocalDateTime.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getDateTimeFormat1()));
+						}
+						catch (DateTimeParseException e2)
+						{
+							try
+							{
+								value = LocalTime.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getTimeFormat1()));
+							}
+							catch (DateTimeParseException e3) {}
+						}
+					}
+
+					setValue(value);
+				}
+			}
+		});
+
+		//문자열의 경우 앞뒤 공백 삭제하고 공백만 있을 경우 null 을 반환
+		webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+	}
 
 	protected Integer getUSeq()
 	{
@@ -41,14 +84,9 @@ public abstract class GeneralController
 		return UserAuthenticationUtils.getUsername();
 	}
 
-	protected String getPlatformName()
-	{
-		return environment.getProperty("platform.service");
-	}
-
 	protected boolean isProduction()
 	{
-		if (CmStringUtils.equals(getPlatformName(), "PRD"))
+		if (CmStringUtils.equals(PLATFORM_SERVICE, "PRD"))
 		{
 			return true;
 		}
@@ -95,49 +133,5 @@ public abstract class GeneralController
 		model.addAttribute("rowPerPage", CmStringUtils.defaultString(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
 
 		addAllAttributeFromRequest(model, webRequest);
-	}
-
-	@InitBinder
-	public void initBinder(WebDataBinder webDataBinder)
-	{
-		//RequestParam 을 Array 로 받을 때 구분자를 ',' 에서 '^' 으로 변경함
-		webDataBinder.registerCustomEditor(String[].class, new StringArrayPropertyEditor(PlatformConfigVo.DELIMITER));
-
-		//문자열로 넘어온 날짜를 LocalDateTime type 으로 convert 함
-		webDataBinder.registerCustomEditor(LocalDateTime.class, new PropertyEditorSupport() {
-			@Override
-			public void setAsText(String text) throws IllegalArgumentException
-			{
-				if (CmStringUtils.isNotEmpty(text))
-				{
-					Object value = null;
-
-					try
-					{
-						value = LocalDate.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getDateFormat1()));
-					}
-					catch (DateTimeParseException e1)
-					{
-						try
-						{
-							value = LocalDateTime.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getDateTimeFormat1()));
-						}
-						catch (DateTimeParseException e2)
-						{
-							try
-							{
-								value = LocalTime.parse(text, DateTimeFormatter.ofPattern(UserAuthenticationUtils.getUserDetails().getTimeFormat1()));
-							}
-							catch (DateTimeParseException e3) {}
-						}
-					}
-
-					setValue(value);
-				}
-			}
-		});
-
-		//문자열의 경우 앞뒤 공백 삭제하고 공백만 있을 경우 null 을 반환
-		webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 	}
 }

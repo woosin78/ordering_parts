@@ -15,7 +15,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -28,6 +27,7 @@ import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.Formatter;
@@ -147,7 +147,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 				{
 					orderItem.setDescription(dataMap.getString("MATERIAL_TEXT"));
 
-					int lotQty = CmNumberUtils.toInt(dataMap.getString("LOT_QTY"), 0);
+					int lotQty = (int)dataMap.getDouble("LOT_QTY", 0);
 					lotQty = (lotQty == 0) ? 1 : lotQty;
 
 					orderItem.setLotQty(Integer.toString(lotQty));
@@ -526,7 +526,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 
 	protected boolean isExcelFile(String contentType)
 	{
-		if (ArrayUtils.contains(AVAILABLE_EXCEL_FORMAT, contentType))
+		if (CmArrayUtils.contains(AVAILABLE_EXCEL_FORMAT, contentType))
 		{
 			return true;
 		}
