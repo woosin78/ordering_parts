@@ -10,14 +10,15 @@ import org.apache.commons.collections4.MapUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.dao.MapParameterSource;
 import org.jwebppy.platform.core.dao.ParameterValue;
 import org.jwebppy.platform.core.dao.sap.AbapType;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
+import org.jwebppy.platform.core.dto.ServletRequestInfoDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.SessionContextUtils;
+import org.jwebppy.platform.core.util.ThreadLocalContextUtils;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
@@ -31,7 +32,6 @@ import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -155,20 +155,23 @@ public class RfcExecutionAspect
 
     	String[] stackTrace = getLastStackTrace();
 
+    	ServletRequestInfoDto servletRequestInfo = ThreadLocalContextUtils.servletRequestInfo.get();
+
 		DataAccessLogDto dataAccessLog = new DataAccessLogDto();
 		dataAccessLog.setDlSeq(dlSeq);
 		dataAccessLog.setCommand(rfcRequest.getFunctionName());
 		dataAccessLog.setType(IfType.R);
 		dataAccessLog.setClassName(stackTrace[0]);
 		dataAccessLog.setMethodName(stackTrace[1]);
-		dataAccessLog.setRequestId(MDC.get(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY));
+		dataAccessLog.setRequestId(servletRequestInfo.getRequestId());
+		dataAccessLog.setRequestUri(servletRequestInfo.getRequestUri());
+		dataAccessLog.setReferer(servletRequestInfo.getReferer());
 		dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
 		dataAccessLog.setDataAccessLogParameters(makeParameters(rfcRequest));
 		dataAccessLog.setDestination(rfcResponse.getDestination());
 		dataAccessLog.setStartTime(rfcResponse.getStartTime());
 		dataAccessLog.setElapsed(rfcResponse.getElapsed());
 		dataAccessLog.setError(rfcResponse.getErrorMsg());
-
 
 		if (UserAuthenticationUtils.isAuthenticated())
 		{

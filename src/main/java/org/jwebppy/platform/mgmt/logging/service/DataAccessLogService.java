@@ -173,4 +173,9 @@ public class DataAccessLogService extends GeneralService
 
 		return simpleRfcTemplate.response(rfcRequest).getDlSeq();
 	}
+
+	public List<DataAccessLogDto> getUsedSapRfcsOnPage(DataAccessLogSearchDto dataAccessLogSearch)
+	{
+		return CmModelMapperUtils.mapToDto(DataAccessLogObjectMapper.INSTANCE, dataAccessLogMapper.findUsedSapRfcsOnPage(dataAccessLogSearch));
+	}
 }

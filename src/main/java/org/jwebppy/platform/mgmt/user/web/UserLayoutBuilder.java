@@ -31,6 +31,7 @@ import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
+import org.jwebppy.platform.mgmt.user.dto.UserPasswordChangeHistoryDto;
 
 import com.ibm.icu.util.TimeZone;
 
@@ -173,14 +174,20 @@ public class UserLayoutBuilder
 
 	public static Document viewAccountInfo(UserAccountDto userAccount, CredentialsPolicyDto credentialPolicy)
 	{
+		UserPasswordChangeHistoryDto userPasswordChangeHistory = userAccount.getUserPasswordChangeHistory();
+
+		System.err.println(userPasswordChangeHistory);
+
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Credentials Policy", (credentialPolicy != null) ? credentialPolicy.getName() + " - " + credentialPolicy.getDescription() : "");
+		elementMap.put("Credentials Policy", (ObjectUtils.isNotEmpty(credentialPolicy)) ? credentialPolicy.getName() + " - " + credentialPolicy.getDescription() : "");
 		elementMap.put("Username", userAccount.getUsername());
 		elementMap.put("Account Locked", userAccount.getFgAccountLocked());
 		elementMap.put("Password Locked", userAccount.getFgPasswordLocked());
 		elementMap.put("No Use Password", userAccount.getFgNoUsePassword());
 		elementMap.put("Valid From", userAccount.getDisplayFromValid());
 		elementMap.put("Valid To", userAccount.getDisplayToValid());
+		elementMap.put("Changed Password On", (ObjectUtils.isNotEmpty(userPasswordChangeHistory)) ? userPasswordChangeHistory.getDisplayRegDate() : "");
+		elementMap.put("Changed Password By", (ObjectUtils.isNotEmpty(userPasswordChangeHistory)) ? userPasswordChangeHistory.getRegUsername() : "");
 		elementMap.put("Reg.Username", userAccount.getRegUsername());
 		elementMap.put("Reg.Date", userAccount.getDisplayRegDate());
 		elementMap.put("Mod.Username", userAccount.getModUsername());

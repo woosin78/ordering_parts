@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
@@ -98,7 +98,7 @@ public class ExInvoiceService extends PartsExportGeneralService
 		String[] invoiceNo = (String[])paramMap.get("invoiceNo");
 		String[] shipmentNo = (String[])paramMap.get("shipmentNo");
 
-		if (ArrayUtils.isNotEmpty(invoiceNo) && ArrayUtils.isNotEmpty(shipmentNo) && invoiceNo.length == shipmentNo.length)
+		if (CmArrayUtils.isNotEmpty(invoiceNo) && CmArrayUtils.isNotEmpty(shipmentNo) && invoiceNo.length == shipmentNo.length)
 		{
 			List<Map<String, Object>> keyList = new ArrayList<>();
 

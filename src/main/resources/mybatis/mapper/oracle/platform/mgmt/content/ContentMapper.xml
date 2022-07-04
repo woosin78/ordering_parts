@@ -157,6 +157,16 @@
 			and a.name=#{name}
 		</if>
 		
+		<if test="names != null">
+			<trim prefix="and">
+				<foreach collection="names" item="name" open="(" close=")" separator="or">
+					<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
+						a.name=#{name}
+					</if>				
+				</foreach>
+			</trim>
+		</if>		
+		
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
 			and a.type=#{type}
 		</if>

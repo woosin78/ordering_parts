@@ -43,4 +43,9 @@ public class SessionContextUtils
     {
         RequestContextHolder.getRequestAttributes().removeAttribute(name, RequestAttributes.SCOPE_SESSION);
     }
+
+    public static String getRealUsername()
+    {
+    	return CmStringUtils.trimToEmpty(SessionContextUtils.getAttribute("REAL_USERNAME"));
+    }
 }

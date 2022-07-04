@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.common.PortalCommonVo;
@@ -57,7 +57,7 @@ public class OrderStatusService extends PartsDomesticGeneralService
 	{
 		String[] orderNos = CmStringUtils.split(CmStringUtils.strip(paramMap.getString("orderNo"), PortalConfigVo.DELIMITER), PortalConfigVo.DELIMITER);
 
-		if (ArrayUtils.isNotEmpty(orderNos))
+		if (CmArrayUtils.isNotEmpty(orderNos))
 		{
 			RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_ST_INFO_DETAIL");
 

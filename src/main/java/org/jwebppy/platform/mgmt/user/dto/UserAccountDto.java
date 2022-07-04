@@ -29,6 +29,7 @@ public class UserAccountDto extends GeneralDto
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
 	private CredentialsPolicyDto credentialsPolicy;
+	private UserPasswordChangeHistoryDto userPasswordChangeHistory;
 
 	public String getDisplayFromValid()
 	{

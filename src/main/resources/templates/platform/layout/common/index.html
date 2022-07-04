@@ -12,16 +12,24 @@
 <th:block th:replace="platform/layout/common/fragments/js"></th:block>
 
 <script>
-	JpUtilsDateFormat.DATE_TIME_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getDateTimeFormat2()}]]";
-	JpUtilsDateFormat.DATE_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getDateFormat2()}]]";
-	JpUtilsDateFormat.TIME_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getTimeFormat2()}]]";
-	
 	/* Set up static values */
 	const GLOBAL_CONST = {
-		"YES": "[[${T(org.jwebppy.platform.core.PlatformCommonVo).YES}]]",
-		"NO": "[[${T(org.jwebppy.platform.core.PlatformCommonVo).NO}]]",
-		"ROW_PER_PAGE": "[[${T(org.jwebppy.platform.core.PlatformCommonVo).DEFAULT_ROW_PER_PAGE}]]"
+		"USERNAME": "[[${USERNAME}]]",
+		"NAME": "[[${NAME}]]",
+		"DATE_TIME_FORMAT": "[[${DATE_TIME_FORMAT}]]",
+		"DATE_FORMAT": "[[${DATE_FORMAT}]]",
+		"TIME_FORMAT": "[[${TIME_FORMAT}]]",
+		"DELIMITER": "[[${DELIMITER}]]",
+		"YES": "[[${YES}]]",
+		"NO": "[[${NO}]]"
 	};
+	
+	//JpUtilsDateFormat.DATE_TIME_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getDateTimeFormat2()}]]";
+	//JpUtilsDateFormat.DATE_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getDateFormat2()}]]";
+	//JpUtilsDateFormat.TIME_FORMAT = "[[${T(org.jwebppy.platform.core.util.UserAuthenticationUtils).getUserDetails().getTimeFormat2()}]]";
+	JpUtilsDateFormat.DATE_TIME_FORMAT = GLOBAL_CONST.DATE_TIME_FORMAT;
+	JpUtilsDateFormat.DATE_FORMAT = GLOBAL_CONST.DATE_FORMAT;
+	JpUtilsDateFormat.TIME_FORMAT = GLOBAL_CONST.TIME_FORMAT;
 </script>
 
 <style type="text/css">

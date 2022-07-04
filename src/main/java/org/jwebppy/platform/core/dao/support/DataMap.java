@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.springframework.util.CollectionUtils;
 
@@ -121,7 +121,7 @@ public class DataMap implements IDataMap, Serializable
     		{
     			String key = (String)it.next();
 
-    			if (ArrayUtils.contains(excludes, key))
+    			if (CmArrayUtils.contains(excludes, key))
     			{
     				continue;
     			}

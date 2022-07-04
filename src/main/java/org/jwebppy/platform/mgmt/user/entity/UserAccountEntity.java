@@ -23,4 +23,5 @@ public class UserAccountEntity extends GeneralEntity
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
 	private CredentialsPolicyEntity credentialsPolicy;
+	private UserPasswordChangeHistoryEntity userPasswordChangeHistory;
 }

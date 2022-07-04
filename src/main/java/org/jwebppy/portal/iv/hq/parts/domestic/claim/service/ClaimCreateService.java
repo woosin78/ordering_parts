@@ -14,10 +14,10 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.common.PortalCommonVo;
@@ -109,7 +109,7 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 					{"I_KVGR5", paramMap.getCustomerGrp5()}
 				});
 
-		if (ArrayUtils.isNotEmpty(partNos))
+		if (CmArrayUtils.isNotEmpty(partNos))
 		{
 			List<Map<String, Object>> itemList = new ArrayList<>();
 			List<Map<String, Object>> attachmentList = new ArrayList<>();
@@ -136,7 +136,7 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 
 				String[] attachments = request.getParameterValues("attachment" + "_" + orderNos[i] + "_" + lineNos[i]);
 
-				if (ArrayUtils.isNotEmpty(attachments))
+				if (CmArrayUtils.isNotEmpty(attachments))
 				{
 					final int BUFFER = 1024;
 					byte[] buffer = new byte[BUFFER];
@@ -146,7 +146,7 @@ public class ClaimCreateService extends PartsDomesticGeneralService
 						//0: original file name, 1: saved file name
 						String[] fileNames = CmStringUtils.split(attachments[j], PortalCommonVo.DELIMITER);
 
-						if (ArrayUtils.isNotEmpty(fileNames) && fileNames.length >= 2)
+						if (CmArrayUtils.isNotEmpty(fileNames) && fileNames.length >= 2)
 						{
 							FileInputStream fileInputStream = null;
 							BufferedInputStream bufferedInputStream = null;

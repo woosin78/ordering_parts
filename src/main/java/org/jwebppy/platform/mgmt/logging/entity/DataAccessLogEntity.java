@@ -1,5 +1,7 @@
 package org.jwebppy.platform.mgmt.logging.entity;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.jwebppy.platform.core.entity.GeneralEntity;
@@ -23,8 +25,24 @@ public class DataAccessLogEntity extends GeneralEntity
 	private long startTime;
 	private long elapsed;
 	private String requestId;
+	private String requestUri;
+	private String referer;
 	private String sessionId;
 	private String error;
 	private String timezone;
 	private List<DataAccessLogParameterEntity> dataAccessLogParameters;
+
+	public String getRefererUri()
+	{
+		try
+		{
+			return new URL(referer).getPath();
+		}
+		catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 }

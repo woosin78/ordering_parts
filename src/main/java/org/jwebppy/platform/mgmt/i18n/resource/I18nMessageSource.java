@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.i18n.dto.LangDetailDto;
@@ -39,7 +39,7 @@ public class I18nMessageSource extends AbstractMessageSource
 	{
 		String text = getMessage(key);
 
-		for (int i=0, length=ArrayUtils.nullToEmpty(replaceTexts).length; i<length; i++)
+		for (int i=0, length=CmArrayUtils.nullToEmpty(replaceTexts).length; i<length; i++)
 		{
 			text = RegExUtils.replaceAll(text, "\\{" + i + "\\}", replaceTexts[i]);
 		}

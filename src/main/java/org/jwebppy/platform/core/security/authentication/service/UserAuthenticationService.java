@@ -9,6 +9,7 @@ import org.jwebppy.platform.core.security.authentication.AuthenticationType;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.util.CmReflectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.SessionContextUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
@@ -48,12 +49,12 @@ public class UserAuthenticationService extends PlatformGeneralService
 
 	public Authentication getAuthentication(UserDto user)
 	{
-		return getAuthentication(user, null, null);
+		return getAuthentication(user, null, SessionContextUtils.getRealUsername());
 	}
 
 	public Authentication getAuthentication(UserDto user, AuthenticationType authenticationType)
 	{
-		return getAuthentication(user, authenticationType, null);
+		return getAuthentication(user, authenticationType, SessionContextUtils.getRealUsername());
 	}
 
 	public Authentication getAuthentication(UserDto user, AuthenticationType authenticationType, String realUsername)

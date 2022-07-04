@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.Formatter;
 
@@ -17,7 +17,7 @@ public class PriceAdjustmentByCurrencyUtils
 {
 	public static void calcPriceByCurrency(Object target, String[] keys, String currKey, String[] targets, double value)
 	{
-		if (ArrayUtils.isNotEmpty(keys))
+		if (CmArrayUtils.isNotEmpty(keys))
 		{
 			if (target instanceof List)
 			{
@@ -43,7 +43,7 @@ public class PriceAdjustmentByCurrencyUtils
 	{
 		if (MapUtils.isNotEmpty(map))
 		{
-			if (targets == null || ArrayUtils.contains(targets, CmStringUtils.trimToEmpty(map.get(currKey))))
+			if (targets == null || CmArrayUtils.contains(targets, CmStringUtils.trimToEmpty(map.get(currKey))))
 			{
 				Iterator<String> it = map.keySet().iterator();
 
@@ -51,7 +51,7 @@ public class PriceAdjustmentByCurrencyUtils
 				{
 					String key = it.next();
 
-					if (ArrayUtils.contains(keys, key))
+					if (CmArrayUtils.contains(keys, key))
 					{
 						if (CmStringUtils.isNotEmpty(map.get(key)))
 						{
@@ -73,7 +73,7 @@ public class PriceAdjustmentByCurrencyUtils
 
 		try
 		{
-			if (CollectionUtils.isNotEmpty(list) && ArrayUtils.isNotEmpty(keys))
+			if (CollectionUtils.isNotEmpty(list) && CmArrayUtils.isNotEmpty(keys))
 			{
 				Double[] amounts = new Double[keys.length];
 

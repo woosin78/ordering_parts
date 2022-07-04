@@ -471,6 +471,7 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 
 /* dataTables 데이터 좌우 정렬을 위한 클래스 */
 .center {text-align: center;}
+.left {text-align: left;}
 .right {text-align: right;}
 .summary {background-color: #dcf2ec; font-weight: bold;}
 

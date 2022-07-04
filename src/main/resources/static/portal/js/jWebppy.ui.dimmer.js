@@ -1,25 +1,25 @@
 let JpUiDimmer = {
-		
 		html: "<div id='jsUiDimmer' class='ui dimmer'></div>",
 	
 		type1: "<div class='ui text inverted loader'><div class='content'></div></div>",
 		type2: "<div class='content'><h3 class='ui inverted header'></h3><button class='ui teal button ok'>OK</button></div>",
 		type3: "<div class='content'><h3 class='ui inverted header'></h3><button class='ui teal button ok'>OK</button><button class='ui button cancel'>Cancel</button></button></div>",
 		
-		isMessageDimmerActive: false,
+		//isMessageDimmerActive: false,
 		obj: null,
 		show: function(message) {
+			//let obj = JpUiDimmer.getDimmer(1, message);
 			let obj = JpUiDimmer.getDimmer(1, message);
 			
 			JpUiDimmer.showDimmer();
 		},
 		alert: function(message, callEvent) {
-			JpUiDimmer.isMessageDimmerActive = true;
+			//JpUiDimmer.isMessageDimmerActive = true;
 			
 			let obj = JpUiDimmer.getDimmer(2, message);
 			
 			obj.find(".ui.button.ok").on("click", function() {
-				JpUiDimmer.isMessageDimmerActive = false;
+				//JpUiDimmer.isMessageDimmerActive = false;
 				obj.dimmer("hide");
 				
 				if (JpUtilsObject.isNotNull(callEvent))
@@ -34,12 +34,12 @@ let JpUiDimmer = {
 			});
 		},
 		confirm: function(message, callEvent, cancelEvent) {
-			JpUiDimmer.isMessageDimmerActive = true;
+			//JpUiDimmer.isMessageDimmerActive = true;
 			
 			let obj = JpUiDimmer.getDimmer(3, message);
 			
 			obj.find(".ui.button").on("click", function() {
-				JpUiDimmer.isMessageDimmerActive = false;
+				//JpUiDimmer.isMessageDimmerActive = false;
 				obj.dimmer("hide");
 				
 				if ($(this).hasClass("ok"))
@@ -63,7 +63,8 @@ let JpUiDimmer = {
 			});
 		},
 		hide: function() {
-			if (!JpUiDimmer.isMessageDimmerActive)
+			//if (!JpUiDimmer.isMessageDimmerActive)
+			if (JpUtilsObject.isNotNull($("#jsUiDimmer")))
 			{
 				$("#jsUiDimmer").dimmer("hide");
 			};
@@ -71,7 +72,11 @@ let JpUiDimmer = {
 		showDimmer: function(onShow) {
 			$("#jsUiDimmer").dimmer({
 				closable: false,
-				onShow: onShow
+				onShow: onShow,
+				duration: {
+					show: 0,
+					hide: 0
+				}
 			}).dimmer("show");
 			
 			$(document).find("input, select").blur();
@@ -101,5 +106,14 @@ let JpUiDimmer = {
 			}
 			
 			return obj;
+		},
+		isActive: function() {
+			
+			if (JpUtilsObject.isNull($("#jsUiDimmer")))
+			{
+				return false;
+			};
+			
+			return $("#jsUiDimmer").dimmer("is active");
 		}
 };

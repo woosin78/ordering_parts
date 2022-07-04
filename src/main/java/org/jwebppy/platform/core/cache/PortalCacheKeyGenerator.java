@@ -2,9 +2,9 @@ package org.jwebppy.platform.core.cache;
 
 import java.lang.reflect.Method;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.cache.interceptor.SimpleKey;
@@ -14,7 +14,7 @@ public class PortalCacheKeyGenerator implements KeyGenerator
 	@Override
 	public Object generate(Object target, Method method, Object... params)
 	{
-		if (ArrayUtils.isEmpty(params))
+		if (CmArrayUtils.isEmpty(params))
 		{
 			return SimpleKey.EMPTY;
 		}

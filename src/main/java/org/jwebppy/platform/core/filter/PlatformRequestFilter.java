@@ -10,10 +10,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.dto.ServletRequestInfoDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.ThreadLocalContextUtils;
 import org.jwebppy.platform.core.util.UidGenerateUtils;
-import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 
@@ -24,11 +24,21 @@ public class PlatformRequestFilter implements Filter
 	{
 		isAllowableMethod(request, response);
 
-		MDC.put(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY, UidGenerateUtils.generate());
+//		System.err.println("============================================");
+//		System.err.println(chain.toString());
+//		System.err.println("URI:" + ((HttpServletRequest)request).getRequestURI());
+//		System.err.println("URL:" + ((HttpServletRequest)request).getRequestURL());
+//		System.err.println("============================================");
+
+		ServletRequestInfoDto servletRequestInfo = ServletRequestInfoDto.builder()
+				.requestId(UidGenerateUtils.generate())
+				.requestUri(((HttpServletRequest)request).getRequestURI())
+				.referer(((HttpServletRequest)request).getHeader("referer"))
+				.build();
+
+		ThreadLocalContextUtils.servletRequestInfo.set(servletRequestInfo);
 
 		chain.doFilter(request, response);
-
-		MDC.remove(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY);
 	}
 
 	protected boolean isAllowableMethod(ServletRequest request, ServletResponse response) throws IOException

@@ -6,13 +6,13 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.jwebppy.platform.core.PlatformConfigVo;
+import org.jwebppy.platform.core.dto.ServletRequestInfoDto;
 import org.jwebppy.platform.core.util.JdbcStatementContextUtils;
 import org.jwebppy.platform.core.util.SessionContextUtils;
+import org.jwebppy.platform.core.util.ThreadLocalContextUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -59,9 +59,13 @@ public class JdbcExecutionAspect extends DataAccessAspect
 
 					if (ObjectUtils.isNotEmpty(dataAccessLog))
 					{
+						ServletRequestInfoDto servletRequestInfo = ThreadLocalContextUtils.servletRequestInfo.get();
+
 						dataAccessLog.setClassName(signature.getDeclaringTypeName());
 						dataAccessLog.setMethodName(signature.getName());
-						dataAccessLog.setRequestId(MDC.get(PlatformConfigVo.REQUEST_MDC_UUID_TOKEN_KEY));
+						dataAccessLog.setRequestId(servletRequestInfo.getRequestId());
+						dataAccessLog.setRequestUri(servletRequestInfo.getRequestUri());
+						dataAccessLog.setReferer(servletRequestInfo.getReferer());
 						dataAccessLog.setSessionId(SessionContextUtils.getSessionId());
 						dataAccessLog.setError(error);
 

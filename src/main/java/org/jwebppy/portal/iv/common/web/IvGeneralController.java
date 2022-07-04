@@ -91,6 +91,8 @@ public class IvGeneralController extends PortalGeneralController
 	{
 		super.addAllAttributeFromRequest(model, webRequest);
 
+		model.addAttribute("USERNAME", getUsername());
+		model.addAttribute("NAME", UserAuthenticationUtils.getUserDetails().getName());
 		model.addAttribute("DATE_FORMAT", UserAuthenticationUtils.getUserDetails().getDateFormat2());
 		model.addAttribute("TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getTimeFormat2());
 		model.addAttribute("DELIMITER", PortalConfigVo.DELIMITER);//split 구분자

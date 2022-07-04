@@ -30,6 +30,8 @@ public class DataAccessLogDto extends GeneralDto implements IPagination
 	private long startTime;
 	private long elapsed;//nano sec
 	private String requestId;
+	private String requestUri;
+	private String referer;
 	private String sessionId;
 	private String error;
 	private String timezone;

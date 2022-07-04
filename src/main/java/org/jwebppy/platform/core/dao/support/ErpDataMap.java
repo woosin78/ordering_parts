@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.ArrayUtils;
+import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 
@@ -101,11 +101,11 @@ public class ErpDataMap extends DataMap implements Serializable
 
 	public ErpDataMap addByKey(Object[][] fields)
 	{
-		if (ArrayUtils.isNotEmpty(fields))
+		if (CmArrayUtils.isNotEmpty(fields))
 		{
 			for (Object[] field: fields)
 			{
-				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				if (CmArrayUtils.isNotEmpty(field) && field.length == 2)
 				{
 					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]))
 					{
@@ -127,11 +127,11 @@ public class ErpDataMap extends DataMap implements Serializable
 
 	public ErpDataMap add(Object[][] fields)
 	{
-		if (ArrayUtils.isNotEmpty(fields))
+		if (CmArrayUtils.isNotEmpty(fields))
 		{
 			for (Object[] field: fields)
 			{
-				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				if (CmArrayUtils.isNotEmpty(field) && field.length == 2)
 				{
 					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]))
 					{
@@ -153,11 +153,11 @@ public class ErpDataMap extends DataMap implements Serializable
 
 	public ErpDataMap addDate(Object[][] fields)
 	{
-		if (ArrayUtils.isNotEmpty(fields))
+		if (CmArrayUtils.isNotEmpty(fields))
 		{
 			for (Object[] field: fields)
 			{
-				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				if (CmArrayUtils.isNotEmpty(field) && field.length == 2)
 				{
 					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]))
 					{
@@ -179,11 +179,11 @@ public class ErpDataMap extends DataMap implements Serializable
 
 	public ErpDataMap addDateByKey(Object[][] fields)
 	{
-		if (ArrayUtils.isNotEmpty(fields))
+		if (CmArrayUtils.isNotEmpty(fields))
 		{
 			for (Object[] field: fields)
 			{
-				if (ArrayUtils.isNotEmpty(field) && field.length == 2)
+				if (CmArrayUtils.isNotEmpty(field) && field.length == 2)
 				{
 					if (CmStringUtils.isNotEmpty(field[0]) && CmStringUtils.isNotEmpty(field[1]) && MapUtils.isNotEmpty(this.map))
 					{
