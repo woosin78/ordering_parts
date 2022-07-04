@@ -156,6 +156,7 @@
 		    where
 		    reg_username=#{regUsername}
 		    and referer=#{referer}
+		    and reg_date>sysdate-1
 		) b
 		where
 		a.referer=#{referer}

@@ -793,7 +793,7 @@ $(function(){
 				orderable: false,
 				render: function(data, type, row)
 				{
-					let clazz =  (JpUtilsString.equals(row.fgInvalidSalesLot, GLOBAL_CONST.YES)) ? "custom-ui warn": "custom-ui";
+					let clazz =  (JpUtilsString.equals(row.fgInvalidSalesLot, GLOBAL_CONST.YES)) ? "custom-ui warn center": "custom-ui center";
 					
 					return "<input type='text' class='" + clazz + "' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}

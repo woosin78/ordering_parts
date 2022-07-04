@@ -25,8 +25,6 @@ public class ExOrderStatusService extends PartsExportGeneralService
 	@Cacheable(value = PortalCacheConfig.EX_ORDER_STATUS, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
-		System.err.println("OrderStatus:" + paramMap);
-
 		String fromDate = paramMap.getString("fromDate");
 		String toDate = paramMap.getString("toDate");
 

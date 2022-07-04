@@ -12,6 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
@@ -201,7 +202,7 @@ public class LogController extends LoggingGeneralController
 	public Object shourtcutListData(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setUsername(UserAuthenticationUtils.getUserDetails().getRealUsername());
+		cItemSearch.setUsername(CmStringUtils.defaultIfEmpty(UserAuthenticationUtils.getUserDetails().getRealUsername(), getUsername()));
 		cItemSearch.setType(CItemType.G);
 		cItemSearch.setNames(new String[] {"DP_SAP_RFC_LOG_READ", "DP_SAP_RFC_LOG_WRITE"});
 
