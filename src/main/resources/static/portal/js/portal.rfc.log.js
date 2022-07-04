@@ -23,11 +23,11 @@ $(document).on("keydown", function(e) {
 					if (JpUtilsObject.isNotNull(result))
 					{
 						$.each(result, function(index, element) {
-							let link = element.command;
+							let link = "<a class='link list'>" + element.command + "</a>";
 							
 							if (JpUtilsString.isNotEmpty(element.dlSeq))
 							{
-								link = "<a class='link list'>" + element.command + "</a> <a class='link view' data-key='" + element.dlSeq + "'><i class='external alternate icon'></i></a>";
+								link += " <a class='link view' data-key='" + element.dlSeq + "'><i class='external alternate icon'></i></a>";
 							};
 							
 							content += "<tr style='background-color:#fff'>";
