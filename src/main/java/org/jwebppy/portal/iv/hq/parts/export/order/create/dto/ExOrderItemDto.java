@@ -62,7 +62,7 @@ public class ExOrderItemDto extends PartsExportGeneralDto
 			return Integer.toString(iOrderQty);
 		}
 
-		return orderQty;
+		return null;
 	}
 
 	public void incSubCount()
