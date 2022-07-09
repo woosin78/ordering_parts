@@ -18,6 +18,8 @@ import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -27,6 +29,8 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler
 {
+	private Logger logger = LoggerFactory.getLogger(LoginSuccessHandler.class);
+
 	@Autowired
 	private LoginHistoryService loginHistoryService;
 
@@ -54,15 +58,13 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
 		AuthenticationType authenticationType = platformUserDetails.getAuthenticationType();
 
-		System.err.println(authenticationType);
-
 		if (AuthenticationType.D.equals(authenticationType))
 		{
 			UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
 			UserAccountDto userAccount = user.getUserAccount();
 
-			System.err.println("99. User Account Update");
-			System.err.println("99.1. Before:" + userAccount);
+			logger.debug("99. User Account Update");
+			logger.debug("99.1. Before:" + userAccount);
 
 			userAccount.setFgAccountLocked(PlatformCommonVo.NO);
 			userAccount.setFgPasswordLocked(PlatformCommonVo.NO);
@@ -74,7 +76,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     			userAccount.setToValid(null);
 			}
 
-			System.err.println("99.2. After:" + userAccount);
+			logger.debug("99.2. After:" + userAccount);
 
 			userService.saveUserAccount(userAccount);
 		}

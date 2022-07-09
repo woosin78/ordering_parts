@@ -143,7 +143,6 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 
 					if (dataMap.isEquals("MATERIAL", CmStringUtils.trimToEmpty(orderItem.getMaterialNo())))
 					{
-						orderItem.setLineNo("999990");
 						orderItem.setLotQty(Integer.toString(dataMap.getInt("LOT_QTY")));
 						break;
 					}

@@ -30,6 +30,9 @@
 <input type="hidden" id="ugSeq" name="ugSeq" th:value="${ugSeq}" />
 </form>
 <script>
+//팝업 Title
+const POPUP_TITLE = "User Group";
+
 $(document).ready(function() {
 	JpUtilsAjax.get({
 		url: "/platform/mgmt/user/user_group/view/layout",

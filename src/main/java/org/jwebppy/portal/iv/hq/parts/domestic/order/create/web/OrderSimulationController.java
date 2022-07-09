@@ -391,7 +391,7 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 			for (int i=0, size=hssfSheet.getPhysicalNumberOfRows(); i<size; i++)
 			{
 				OrderItemDto orderItem = new OrderItemDto();
-				orderItem.setLineNo(CmStringUtils.leftPad(i*10, 6, "0"));
+				orderItem.setLineNo(OrderCreationUtils.lineNo(i));
 				orderItem.setMaterialNo(getValueFromExcel(hssfSheet.getRow(i).getCell(0)));
 				orderItem.setOrderQty(getValueFromExcel(hssfSheet.getRow(i).getCell(1)));
 

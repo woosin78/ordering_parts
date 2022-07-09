@@ -120,7 +120,9 @@ public class ExOrderDto extends PartsExportGeneralDto
 				{
 					if (Double.parseDouble(orderItem.getOrderQty()) % Double.parseDouble(orderItem.getLotQty()) > 0)
 					{
+						orderItem.setLineNo("999990");
 						orderItem.setFgInvalidSalesLot(PartsDomesticCommonVo.YES);
+
 						invalidSalesLotOrderItems.add(orderItem);
 					}
 					else

@@ -36,7 +36,7 @@ public class BoardContentController extends MgmtGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -55,7 +55,7 @@ public class BoardContentController extends MgmtGeneralController
 
 		model.addAttribute("boardContent", boardContentService.getBoardContent(CmNumberUtils.toInt(webRequest.getParameter("bcSeq"), 0)));
 
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -78,7 +78,7 @@ public class BoardContentController extends MgmtGeneralController
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest)
 	{
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -97,7 +97,6 @@ public class BoardContentController extends MgmtGeneralController
 		return boardContentService.delete(bcSeqs);
 	}
 
-	@Override
 	protected void setDefaultAttribute(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("board", boardService.getBoard(webRequest.getParameter("bId")));

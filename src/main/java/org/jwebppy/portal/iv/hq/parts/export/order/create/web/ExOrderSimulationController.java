@@ -38,6 +38,7 @@ import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExSimulationResultDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.service.ExOrderSimulationService;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.util.ExOrderCreationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -167,7 +168,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 					if (CmStringUtils.isNotEmpty(materialNos[i]))
 					{
 						ExOrderItemDto orderItem = new ExOrderItemDto();
-						orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
+						orderItem.setLineNo(ExOrderCreationUtils.lineNo(i+1));
 						orderItem.setMaterialNo(materialNos[i]);
 						orderItem.setOrderQty(orderQtyies[i]);
 
@@ -280,7 +281,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 			for (int i=0, size=hssfSheet.getPhysicalNumberOfRows(); i<size; i++)
 			{
 				ExOrderItemDto orderItem = new ExOrderItemDto();
-				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
+				orderItem.setLineNo(ExOrderCreationUtils.lineNo(i+1));
 				orderItem.setMaterialNo(getValueFromExcel(hssfSheet.getRow(i).getCell(0)));
 				orderItem.setOrderQty(getValueFromExcel(hssfSheet.getRow(i).getCell(1)));
 
@@ -334,7 +335,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 				}
 
 				ExOrderItemDto orderItem = new ExOrderItemDto();
-				orderItem.setLineNo(CmStringUtils.leftPad(i+1, 6, "0"));
+				orderItem.setLineNo(ExOrderCreationUtils.lineNo(i+1));
 				orderItem.setMaterialNo(materialNo);
 				orderItem.setOrderQty(orderQty);
 
@@ -451,7 +452,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		for (int i=0, count=rowCount-size; i<count; i++)
 		{
 			ExOrderItemDto orderItem = new ExOrderItemDto();
-			orderItem.setLineNo(CmStringUtils.leftPad(lineNo*10, 6, "0"));
+			orderItem.setLineNo(ExOrderCreationUtils.lineNo(lineNo));
 
 			normalOrderItems.add(orderItem);
 

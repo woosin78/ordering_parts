@@ -37,7 +37,7 @@ public class CredentialsPolicyController extends UserGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -73,7 +73,7 @@ public class CredentialsPolicyController extends UserGeneralController
 		model.addAttribute("userGroups", userGroupService.getUserGroups(null));
 		model.addAttribute("isShowFgDefault", isShowFgDefault);
 
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}

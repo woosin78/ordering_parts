@@ -5,7 +5,17 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+	<script th:inline="javascript">
+	/* Set up static values */
+	const GLOBAL_CONST = {};
+	
+	/*[# th:each="variable: ${globalConstVariables}" ]*/
+	GLOBAL_CONST[ [[${variable.key}]] ] = [[${variable.value}]];
+	/*[/]*/
+	</script>
+
 	<script>
+	/*
 	const GLOBAL_CONST = {
 		"USERNAME": "[[${USERNAME}]]",
 		"NAME": "[[${NAME}]]",
@@ -15,6 +25,7 @@
 		"YES": "[[${YES}]]",
 		"NO": "[[${NO}]]"
 	};
+	*/
 	</script>
 
 	<title th:text="#{PTL_T_DOOBIZ_PLUS}"></title>

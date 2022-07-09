@@ -32,7 +32,7 @@ public class SapConnResourceController extends MgmtGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -47,7 +47,7 @@ public class SapConnResourceController extends MgmtGeneralController
 	@GetMapping("/view")
 	public Object view(Model model, WebRequest webRequest)
 	{
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -66,7 +66,7 @@ public class SapConnResourceController extends MgmtGeneralController
 
 		model.addAttribute("sapConnResource", sapConnResource);
 
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}

@@ -30,7 +30,7 @@ public class LoginHistoryController extends UserGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}

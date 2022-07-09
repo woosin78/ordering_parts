@@ -29,6 +29,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/content")
@@ -51,8 +53,10 @@ public class ContentController extends ContentGeneralController
 	private LangService langService;
 
 	@RequestMapping("/view")
-	public String view()
+	public String view(Model model, WebRequest webRequest)
 	{
+		addAllAttributeFromRequest(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 

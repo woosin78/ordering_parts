@@ -48,7 +48,7 @@ public class UserGroupController extends MgmtGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -63,7 +63,7 @@ public class UserGroupController extends MgmtGeneralController
 	@GetMapping("/view")
 	public Object view(Model model, WebRequest webRequest)
 	{
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
@@ -83,7 +83,7 @@ public class UserGroupController extends MgmtGeneralController
 		model.addAttribute("userGroup", userGroup);
 		model.addAttribute("mode", webRequest.getParameter("mode"));
 
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}

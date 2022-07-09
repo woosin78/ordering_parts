@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
@@ -127,11 +126,11 @@ public abstract class GeneralController
         }
     }
 
-	protected void setDefaultAttribute(Model model, WebRequest webRequest)
-	{
-		model.addAttribute("pageNumber", CmStringUtils.defaultString(webRequest.getParameter("pageNumber"), "1"));
-		model.addAttribute("rowPerPage", CmStringUtils.defaultString(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
-
-		addAllAttributeFromRequest(model, webRequest);
-	}
+//	protected void setDefaultAttribute(Model model, WebRequest webRequest)
+//	{
+//		model.addAttribute("pageNumber", CmStringUtils.defaultString(webRequest.getParameter("pageNumber"), "1"));
+//		model.addAttribute("rowPerPage", CmStringUtils.defaultString(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
+//
+//		addAllAttributeFromRequest(model, webRequest);
+//	}
 }

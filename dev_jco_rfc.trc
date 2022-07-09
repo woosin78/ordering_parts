@@ -7850,3 +7850,10 @@ Error: [1] >Tue Jun 14 15:45:55,428<    RfcException raised by system [GSQ|diver
     return code: RFC_CLOSED (6)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220708 150115 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error: [3] >Fri Jul 08 15:01:15,555<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: connection closed without message (CM_NO_DATA_RECEIVED)
+    return code: RFC_CLOSED (6)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

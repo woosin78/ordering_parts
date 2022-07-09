@@ -56,13 +56,7 @@
 			<table class="condition table-fixed template">
 				<tbody>
 					<tr>
-						<th class="center checkbox">
-							<input type="checkbox" class="custom-ui check-all"><label></label>
-							<input type="hidden" name="orderNo"/>
-							<input type="hidden" name="lineNo"/>
-							<input type="hidden" name="partNo"/>
-							<input type="hidden" name="orderDate"/>						
-						</th>
+						<th class="checkbox"></th>
 						<th th:text="#{HQP_L_ORDER_NO}" class="center order-no"></th>
 						<th th:text="#{HQP_L_LINE_ITEM}" class="center item-line"></th>
 						<th th:text="#{HQP_L_ORDER_PART_NO}" class="center material"></th>
@@ -75,7 +69,13 @@
 						<th th:text="#{HQP_L_ORDER_DATE}" class="center order-date"></th>
 					</tr>
 					<tr>
-						<td></td>
+						<td class="checkbox">
+							<input type="checkbox" class="custom-ui"><label></label>
+							<input type="hidden" name="orderNo"/>
+							<input type="hidden" name="lineNo"/>
+							<input type="hidden" name="partNo"/>
+							<input type="hidden" name="orderDate"/>						
+						</td>
 						<td data-key="order-no" class="center"></td>
 						<td data-key="line-item" class="center"></td>
 						<td data-key="order-part-no"></td>
@@ -144,7 +144,7 @@ $(function(){
 	});
 	
 	$("#BTN_delete").on("click", function(){
-		$("input.check-all:checked").each(function(index, element) {
+		$("input[type=checkbox]:checked").each(function(index, element) {
 			$(this).closest("table").prev("div.split-row-compact").remove();//delete split row 
 			$(this).closest("table").not(".template").remove();
 		});
@@ -155,7 +155,7 @@ $(function(){
 		}
 		catch (e) {};
 		
-		if ($("#FORM_claim input.check-all").length == 0)
+		if ($("#FORM_claim input[type=checkbox]").length == 0)
 		{
 			$("#AREA_template").show();
 		};
@@ -316,7 +316,7 @@ function setSelectedItems(rows)
 		$(template).find("input[name=partNo]").val(element.MATNR);
 		$(template).find("input[name=orderDate]").val(element.ERDAT);
 		
-		if ($("#FORM_claim input.check-all").length > 0)
+		if ($("#FORM_claim input[type=checkbox]").length > 0)
 		{
 			$("#FORM_claim").append(splitRow);
 		};

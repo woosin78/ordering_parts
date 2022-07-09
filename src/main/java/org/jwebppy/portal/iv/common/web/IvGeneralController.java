@@ -2,6 +2,7 @@ package org.jwebppy.portal.iv.common.web;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
@@ -9,7 +10,6 @@ import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.common.PortalConfigVo;
 import org.jwebppy.portal.common.web.PortalGeneralController;
 import org.jwebppy.portal.iv.common.IvCommonVo;
@@ -18,6 +18,8 @@ import org.jwebppy.portal.iv.hq.parts.common.PartsErpUserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.context.request.WebRequest;
+
+import com.google.common.collect.ImmutableMap;
 
 public class IvGeneralController extends PortalGeneralController
 {
@@ -92,6 +94,24 @@ public class IvGeneralController extends PortalGeneralController
 	{
 		super.addAllAttributeFromRequest(model, webRequest);
 
+		model.addAttribute("BASE_PATH", IvCommonVo.REQUEST_PATH);
+
+		//HTML 페이지 javascript 에서 사용하는 상수 정의
+		ImmutableMap<String, String> constVariableMap = new ImmutableMap.Builder<String, String>()
+				.put("USERNAME", getUsername())
+				.put("NAME", UserAuthenticationUtils.getUserDetails().getName())
+				.put("DATE_TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getDateTimeFormat2())
+				.put("DATE_FORMAT", UserAuthenticationUtils.getUserDetails().getDateFormat2())
+				.put("TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getTimeFormat2())
+				.put("DELIMITER", PortalConfigVo.DELIMITER)
+				.put("ROW_PER_PAGE", Integer.toString(PlatformCommonVo.DEFAULT_ROW_PER_PAGE))
+				.put("YES", PlatformCommonVo.YES)
+				.put("NO", PlatformCommonVo.NO)
+				.build();
+
+		model.addAttribute("globalConstVariables", constVariableMap);
+
+		/*
 		model.addAttribute("USERNAME", getUsername());
 		model.addAttribute("NAME", UserAuthenticationUtils.getUserDetails().getName());
 		model.addAttribute("DATE_FORMAT", UserAuthenticationUtils.getUserDetails().getDateFormat2());
@@ -99,8 +119,7 @@ public class IvGeneralController extends PortalGeneralController
 		model.addAttribute("DELIMITER", PortalConfigVo.DELIMITER);//split 구분자
 		model.addAttribute("YES", PortalCommonVo.YES);
 		model.addAttribute("NO", PortalCommonVo.NO);
-
-		model.addAttribute("BASE_PATH", IvCommonVo.REQUEST_PATH);
+		*/
 	}
 
 	protected void setErpUserInfoByUsername()

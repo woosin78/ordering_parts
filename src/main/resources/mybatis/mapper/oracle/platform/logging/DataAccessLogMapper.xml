@@ -139,31 +139,44 @@
 	
 	<select id="findUsedSapRfcsOnPage" parameterType="DataAccessLogSearchDto" resultType="DataAccessLogEntity">
 		select
-		a.command,
-		max(b.dl_seq) dl_seq,
-		max(b.reg_date) reg_date
+		x.command,
+		y.dl_seq,
+		y.reg_date
 		from
-		pltf_sap_rfc_info1 a,
 		(
 		    select
-		    dl_seq,
-		    reg_date,
-		    class_name,
-		    method_name,
-		    command
+		    a.command,
+		    max(b.reg_username) reg_username,        
+		    max(b.reg_date) reg_date
 		    from
-		    pltf_dacs_log
+		    pltf_sap_rfc_info1 a,
+		    (
+		        select
+		        dl_seq,		    
+		        class_name,
+		        method_name,
+		        command,
+		        reg_username,
+		        reg_date
+		        from
+		        pltf_dacs_log
+		        where
+		        reg_username=#{regUsername}
+		        and referer=#{referer}
+		        and reg_date>sysdate-1
+		    ) b
 		    where
-		    reg_username=#{regUsername}
-		    and referer=#{referer}
-		    and reg_date>sysdate-1
-		) b
+		    a.referer=#{referer}
+		    and a.class_name=b.class_name(+)
+		    and a.method_name=b.method_name(+)
+		    group by a.command
+		) x,
+		pltf_dacs_log y
 		where
-		a.referer=#{referer}
-		and a.class_name=b.class_name(+)
-		and a.method_name=b.method_name(+)
-		group by a.command
-		order by reg_date	
+		x.command=y.command(+)
+		and x.reg_username=y.reg_username(+)
+		and x.reg_date=y.reg_date(+)
+		order by y.reg_date, x.command	
 	</select>
 
 </mapper>

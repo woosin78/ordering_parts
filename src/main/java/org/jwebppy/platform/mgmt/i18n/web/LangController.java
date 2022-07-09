@@ -16,12 +16,14 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangSearchDto;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.WebRequest;
 
 @Controller
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/i18n")
@@ -40,8 +42,10 @@ public class LangController extends MgmtGeneralController
 	private LangService langService;
 
 	@RequestMapping("/list")
-	public String list()
+	public String list(Model model, WebRequest webRequest)
 	{
+		addAllAttributeFromRequest(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 

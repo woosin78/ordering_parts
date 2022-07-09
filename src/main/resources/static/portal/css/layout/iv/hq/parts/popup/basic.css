@@ -345,7 +345,7 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 .condition td.wp15{
 	width: 15%;
 }
-.condition th.checkbox { width: 50px; }
+.condition th.checkbox, td.checkbox { width: 50px; position: relative; text-align: center; }
 .condition th.order-no { width: 150px; }
 .condition th.item-line { width: 100px; }
 .condition th.material { width: 200px; }

@@ -92,7 +92,7 @@ public class UserAuthenticationService extends PlatformGeneralService
         platformUserDetails.setQtyFormat(userGroup.getQtyFormat());
         platformUserDetails.setCItems(cItems);
         platformUserDetails.setAuthenticationType(authenticationType);
-        platformUserDetails.setRealUsername(realUsername);
+        platformUserDetails.setRealUsername(CmStringUtils.defaultIfEmpty(realUsername, userAccount.getUsername()));
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userAccount.getUsername(), userAccount.getPassword(), platformUserDetails.getAuthorities());
         usernamePasswordAuthenticationToken.setDetails(platformUserDetails);

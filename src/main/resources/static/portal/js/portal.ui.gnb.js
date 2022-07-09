@@ -1,92 +1,11 @@
-let gnbLevel2 = {};
-const GNB_MENU_PER_PAGE = 9;//한 화면에 보여질 메뉴 개수
+const GNB_LEVEL2 = {};
 
 function makeGnb()
 {
-	JpUtilsAjax.get({
-		url: "/platform/mgmt/gnb/menu",
-		success: function(data, textStatus, jqXHR)
-		{
-			let items = data.RESULT;
-			let level1 = [];
-						
-	    	for (let i=0, length=items.length; i<length; i++)
-	    	{
-	    		if (items[i].TYPE == "R")
-	    		{
-	    			$.each(items[i].SUB_ITEMS, function(index, element) {
-	    				level1.push(makeGnbItem(element));
-	    				
-	    				setGnbLevel2(element);
-	    			});
-	    		}
-	    		else
-	    		{
-	    			level1.push(makeGnbItem(items[i]));
-	    			
-	    			if (items[i].TYPE == "M")
-	    			{
-	    				setGnbLevel2(item[i]);
-	    			};
-	    		};
-	    	};
-	    	
-	    	for (let i=GNB_MENU_PER_PAGE-level1.length; i>0; i--)
-	    	{
-				level1.push("<li></li>");
-			};
-	    	
-	    	$(".gnb-menu-list").html(level1.slice(0, GNB_MENU_PER_PAGE).join(""));
-	    	$(".gnb-menu-list li").css("width", Math.floor(100 / GNB_MENU_PER_PAGE).toString() + "%");
-	    	$(".gnb-menu-list").show();
-	    	
-	    	$(".gnb-menu-list > li").on("click", function() {
-				moveToGnbMenu($(this));
-	    	});
-	    	
-	    	$(".gnb-menu-list > li").on("mouseover", function() {
-				let key = JpUtilsString.trimToEmpty($(this).attr("data-key")); 
-				
-	    		if (JpUtilsString.isNotEmpty(key))
-	    		{
-	    			if (gnbLevel2[key].length > 0)
-	    			{
-	    				$(".gnb-menu-area").css("height", 100);
-	    				
-	    				let submenu = [];
-	    				
-	    				$.each(gnbLevel2[key], function(index, item){
-	    					submenu.push(makeGnbItem(item));
-	    				});
-	    				
-	    				$(".gnb-menu-sub-list").html(submenu.join("")).show();
-	    			}
-	    			else
-	    			{
-	    				$(".gnb-menu-area").css("height", 50);
-	    			};
-	    			
-	    			$(".gnb-menu-sub-list > li").not(".mainmenu-seperator").on("click", function() {
-
-	    				moveToGnbMenu($(this));
-	    			});
-	    		};
-	    	});
-	    	
-	    	$("div").on("mouseover", function() {
-	    		if (!$(this).hasClass("gnb-menu-area"))
-	    		{
-	    			$(".gnb-menu-area").css("height", 50);
-	    		};
-	    		
-	    		return false;
-	    	});
-		}
-	});
-};
-
-function makeGnb2()
-{
+	let GNB_MENU_PER_PAGE = 9;//한 화면에 보여질 메뉴 개수
+	let GNB_LEVEL1_HEIGHT = JpUtilsNumber.defaultNumber($(".gnb-menu-area").height(), 50);//GNB Level1's height
+	let GNB_LEVEL1_ACTIVE_HEIGHT = 125;//Level1 에 마우스오버 뵀을 때 Level1 + Level2 높이 
+	
 	JpUtilsAjax.get({
 		url: "/platform/mgmt/gnb/menu",
 		success: function(data, textStatus, jqXHR)
@@ -148,21 +67,24 @@ function makeGnb2()
 				
 	    		if (JpUtilsString.isNotEmpty(key))
 	    		{
-	    			if (gnbLevel2[key].length > 0)
+	    			if (GNB_LEVEL2[key].length > 0)
 	    			{
-	    				$(".gnb-menu-area").css("height", 100);
+	    				$(".gnb-menu-area").css("height", GNB_LEVEL1_ACTIVE_HEIGHT);
 	    				
 	    				let submenu = [];
 	    				
-	    				$.each(gnbLevel2[key], function(index, item){
+	    				$.each(GNB_LEVEL2[key], function(index, item){
 	    					submenu.push(makeGnbItem(item));
 	    				});
 	    				
-	    				$(".gnb-menu-sub-list").html(submenu.join("")).show();
+	    				$(".gnb-menu-sub-list")
+	    					.css("height", (GNB_LEVEL1_ACTIVE_HEIGHT-GNB_LEVEL1_HEIGHT))
+	    					.html(submenu.join(""))
+	    					.show();
 	    			}
 	    			else
 	    			{
-	    				$(".gnb-menu-area").css("height", 50);
+	    				$(".gnb-menu-area").css("height", GNB_LEVEL1_HEIGHT);
 	    			};
 	    			
 	    			$(".gnb-menu-sub-list > li").not(".mainmenu-seperator").on("click", function() {
@@ -184,11 +106,12 @@ function makeGnb2()
 				{       
 					$(".bx-controls-direction").hide();
 				};         
-				$(".gnb-menu-area").css("height", 50);
+				$(".gnb-menu-area").css("height", GNB_LEVEL1_HEIGHT);
 			});
 		
 			$(".gnb-menu-sub-list").on("mouseover", function() {
-				$(".gnb-menu-area").css("height", 100);
+				$(".gnb-menu-area").css("height", GNB_LEVEL1_ACTIVE_HEIGHT);
+
 				if (level1Length > GNB_MENU_PER_PAGE)
 				{
 					$(".bx-controls-direction").show();       
@@ -196,7 +119,7 @@ function makeGnb2()
 			});
 		
 			$(".gnb-menu-list2 > li").on("mouseover", function() {
-				$(".gnb-menu-area").css("height", 100);
+				$(".gnb-menu-area").css("height", GNB_LEVEL1_ACTIVE_HEIGHT);
 			});
 		
 			$(".bx-controls-direction").on("mouseover", function() {   
@@ -204,7 +127,7 @@ function makeGnb2()
 				{
 					$(".bx-controls-direction").show();   
 				}   
-				$(".gnb-menu-area").css("height", 50);    
+				$(".gnb-menu-area").css("height", GNB_LEVEL1_HEIGHT);    
 			});
 		}
 	});
@@ -212,10 +135,10 @@ function makeGnb2()
 
 function setGnbLevel2(item)
 {
-	gnbLevel2[item.KEY] = [];
+	GNB_LEVEL2[item.KEY] = [];
 	
 	$.each(item.SUB_ITEMS, function(index, element) {
-		gnbLevel2[item.KEY].push(element);
+		GNB_LEVEL2[item.KEY].push(element);
 	});
 };
 

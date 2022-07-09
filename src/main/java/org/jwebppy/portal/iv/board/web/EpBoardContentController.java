@@ -199,7 +199,6 @@ public class EpBoardContentController extends IvGeneralController
 		return boardContentService.delete(bcSeqs);
 	}
 
-	@Override
 	protected void setDefaultAttribute(Model model, WebRequest webRequest)
 	{
 		String bSeq = webRequest.getParameter("bSeq");

@@ -84,7 +84,7 @@ public class UserController extends UserGeneralController
 	{
 		model.addAttribute("userGroups", userGroupService.getUserGroups(null));
 
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}

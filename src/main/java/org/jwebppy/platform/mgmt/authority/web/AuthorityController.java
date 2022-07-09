@@ -48,7 +48,7 @@ public class AuthorityController extends UserGeneralController
 	{
 		model.addAttribute("type", webRequest.getParameter("type"));
 
-		setDefaultAttribute(model, webRequest);
+		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}

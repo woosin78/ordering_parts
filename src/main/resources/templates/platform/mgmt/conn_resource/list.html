@@ -21,7 +21,7 @@
 		</div>
 		<div class="four wide field">
 			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>
-			<div class="ui button" onclick="document.location.reload()"><i class="undo icon"></i> Reset</div>
+			<div class="ui button" onclick="document.location .reload()"><i class="undo icon"></i> Reset</div>
 		</div>
 	</div>
 </div>
@@ -157,7 +157,7 @@ $(document).ready(function() {
 function doSearch(pageNumber)
 {
 	$("#FORM_search input:hidden[name=pageNumber]").val(JpUtilsString.defaultString(pageNumber, "1"));
-	$("#FORM_search input:hidden[name=rowPerPage]").val(GLOBAL_CONST.ROW_PER_PAGE);		
+	$("#FORM_search input:hidden[name=rowPerPage]").val(GLOBAL_CONST.ROW_PER_PAGE);
 
 	listTable.load();
 };	

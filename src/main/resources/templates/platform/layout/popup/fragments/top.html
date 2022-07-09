@@ -6,10 +6,16 @@ function makeGnb()
 {
 	var menu = [];
 
+	/*
     menu.push("<div class='ui item inverted'>");
     menu.push("<a href='[[${T(org.jwebppy.platform.core.PlatformConfigVo).INDEX_URL}]]'><img src='/platform/img/common/doobizplus_s.png'></a>");
     menu.push("<div style='position:fixed; right:15px; cursor:pointer' onclick='window.close()'><i class='close icon'></i></div>");
     menu.push("</div>");
+    */
+    
+    menu.push("<a href='[[${T(org.jwebppy.platform.core.PlatformConfigVo).INDEX_URL}]]' class='item header'><img src='/platform/img/common/doobizplus_s.png' class='logo' style='width:16px;'></a>");
+    menu.push("<a class='item' onclick='document.location.reload()' id='POPUP_TITLE'>" + JpUtilsString.trimToEmpty(POPUP_TITLE) + "</a>");
+    menu.push("<a class='right item' onclick='window.close()'><i class='close icon'></i></div>");
     
     $(".ui.menu.topMenu").html(menu.join(""));
 };
