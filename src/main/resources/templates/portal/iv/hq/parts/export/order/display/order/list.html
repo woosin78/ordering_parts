@@ -80,7 +80,6 @@ $(function(){
 	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
 	
 	$tableObj = $("#TBL_grid").DataTable({
-		ordering: true,// 정렬 기능 켬
 		columns: [
 			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
 			{data: "VBELN", title: "[[#{HQP_L_ORDER_NO}]]"},//Order No.

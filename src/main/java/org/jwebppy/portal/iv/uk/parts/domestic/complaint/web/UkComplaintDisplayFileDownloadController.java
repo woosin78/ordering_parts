@@ -84,7 +84,8 @@ public class UkComplaintDisplayFileDownloadController extends UkPartsDomesticGen
 
 		RfcResponse rfcResponse = complaintDisplayService.getFileDown(rfcParamMap);
 		DataList dataList = rfcResponse.getTable("LT_FILE");
-		String fileName = paramMap.get("fileName").toString()+".pdf";
+		//String fileName = paramMap.get("fileName").toString()+".pdf";
+		String fileName = paramMap.get("fileName").toString();
 		BufferedOutputStream bufferOutputStream = null;
 
 		try

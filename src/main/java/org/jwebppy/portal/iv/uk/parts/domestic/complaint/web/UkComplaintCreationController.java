@@ -179,13 +179,9 @@ public class UkComplaintCreationController extends UkPartsDomesticGeneralControl
 		RfcResponse rfcResponse = ukComplaintCreationService.sendComplaintInfoToSAP(request, getErpUserInfo(), getComplaintFileUploadPath());
 
 		String errorMsg = "";	// 에러 메시지
-		String complaintNo = "";	// SAP 반품번호
-		String sapReturnFlag = rfcResponse.getString("RETURN2");	// S일 경우 성공, E 실패
+		String complaintNo = rfcResponse.getString("LV_VENLR").trim();	// SAP 반품번호
 
-		if (sapReturnFlag.equals("S"))
-		{
-			complaintNo = rfcResponse.getString("LV_VENLR").trim();	// SAP 반품번호
-		} else
+		if (CmStringUtils.isEmpty(complaintNo))
 		{
 			complaintNo = "NO_LV_VENLR";
 			errorMsg = rfcResponse.getString("E_MEG");
