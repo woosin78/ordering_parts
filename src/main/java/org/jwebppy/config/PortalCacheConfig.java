@@ -85,9 +85,9 @@ public class PortalCacheConfig
 		redisCacheConfigurationMap.put(DEALER_INFO_AUTOCOMPLETE, getTtl(TTL_24_HOURS));
 		redisCacheConfigurationMap.put(BUSINESS_TOOLS, getTtl(TTL_1_HOUR));
 
-		redisCacheConfigurationMap.put(EX_ORDER_DISPLAY, getTtl(TTL_5_MINUTES));
-		redisCacheConfigurationMap.put(EX_BACKORDER, getTtl(TTL_5_MINUTES));
-		redisCacheConfigurationMap.put(EX_ORDER_STATUS, getTtl(TTL_5_MINUTES));
+		redisCacheConfigurationMap.put(EX_ORDER_DISPLAY, getTtl(TTL_20_MINUTES));
+		redisCacheConfigurationMap.put(EX_BACKORDER, getTtl(TTL_20_MINUTES));
+		redisCacheConfigurationMap.put(EX_ORDER_STATUS, getTtl(TTL_20_MINUTES));
 
 		return RedisCacheManager.RedisCacheManagerBuilder
 				.fromConnectionFactory(redisConnectionFactory)

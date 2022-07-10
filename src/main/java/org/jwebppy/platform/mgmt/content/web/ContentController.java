@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
@@ -60,6 +61,14 @@ public class ContentController extends ContentGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
+	@RequestMapping("/popup/view")
+	public String viewPopup(Model model, WebRequest webRequest)
+	{
+		addAllAttributeFromRequest(model, webRequest);
+
+		return DEFAULT_VIEW_URL;
+	}
+
 	@GetMapping("/list/layout")
 	@ResponseBody
 	public Object listLayout(@ModelAttribute CItemSearchDto cItemSearch)
@@ -83,7 +92,7 @@ public class ContentController extends ContentGeneralController
 			cItemLangRl.setCSeq(cItemSearch.getCSeq());
 			cItemLangRl.setBasename(cItemSearch.getBasename());
 
-			List<CItemLangRlDto> cItemLangRls = contentLangService.getLangs(cItemLangRl);
+			List<CItemLangRlDto> cItemLangRls = contentLangService.getCItemLangRls(cItemLangRl);
 
 			if (CollectionUtils.isNotEmpty(cItemLangRls))
 			{
@@ -163,11 +172,11 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object lang(@ModelAttribute CItemLangRlDto pCItemLangRl)
 	{
-		List<CItemLangRlDto> citemLangRls = contentLangService.getLangs(pCItemLangRl);
+		List<CItemLangRlDto> cItemLangRls = contentLangService.getCItemLangRls(pCItemLangRl);
 
-		if (CollectionUtils.isNotEmpty(citemLangRls))
+		if (CollectionUtils.isNotEmpty(cItemLangRls))
 		{
-			return langService.getLangByLSeq(citemLangRls.get(0).getLSeq());
+			return langService.getLangByLSeq(cItemLangRls.get(0).getLSeq());
 		}
 
 		return null;
@@ -177,7 +186,7 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object itemsHierarchy(@ModelAttribute CItemSearchDto cItemSearch)
 	{
-		if (cItemSearch.getCSeq() == null)
+		if (ObjectUtils.isEmpty(cItemSearch.getCSeq()))
 		{
 			cItemSearch.setCSeq(contentService.getRoot().getCSeq());
 		}

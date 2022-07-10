@@ -62,7 +62,7 @@
 .gnb-menu-sub-list {
 	overflow-y: hidden;
 	white-space: nowrap;
-	line-height: 75px;
+	line-height: 100px;
 	width: 100%;
 	margin: 0;
 	display: inline-block;

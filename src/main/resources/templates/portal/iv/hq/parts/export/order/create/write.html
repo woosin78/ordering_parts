@@ -297,6 +297,7 @@ $(".dropzone-click-zone").dropzone({
 
 //주문유형 가져오기
 let orderComponent = new OrderComponent();
+orderComponent.isAsync = false;
 orderComponent.success = function(response, textStatus, jqXHR)
 {
 	setDefaultHeaderInfo();

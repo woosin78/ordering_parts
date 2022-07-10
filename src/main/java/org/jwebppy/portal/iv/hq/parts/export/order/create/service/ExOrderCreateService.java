@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -29,6 +30,8 @@ import org.jwebppy.portal.iv.hq.parts.export.order.create.mapper.ExOrderCreateMa
 import org.jwebppy.portal.iv.hq.parts.export.order.create.mapper.ExOrderHistoryHeaderObjectMapper;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.mapper.ExOrderHistoryItemObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -175,6 +178,12 @@ public class ExOrderCreateService extends PartsExportGeneralService
 		return null;
 	}
 
+	@Caching(
+			evict = {
+					@CacheEvict (value = PortalCacheConfig.EX_ORDER_DISPLAY, allEntries = true),
+					@CacheEvict (value = PortalCacheConfig.EX_BACKORDER, allEntries = true),
+					@CacheEvict (value = PortalCacheConfig.EX_ORDER_STATUS, allEntries = true)
+			})
 	public RfcResponse save(ExOrderDto order)
 	{
 		if (CollectionUtils.isNotEmpty(order.getOrderItems()))

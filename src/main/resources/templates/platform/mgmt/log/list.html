@@ -90,6 +90,8 @@ $(document).ready(function() {
 	function doSearch(pageNumber)
 	{
 		$("#FORM_search input[name=pageNumber]:hidden").val(JpUtilsString.defaultString(pageNumber, "1"));
+		$("#FORM_search input[name=rowPerPage]").val(GLOBAL_CONST.ROW_PER_PAGE);
+
 		logTable.load();
 	};
 	
@@ -101,6 +103,5 @@ $(document).ready(function() {
 });
 
 </script>
-
 </th:block>
 </html>

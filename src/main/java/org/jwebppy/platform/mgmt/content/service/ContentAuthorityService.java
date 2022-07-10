@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
@@ -121,15 +122,15 @@ public class ContentAuthorityService extends GeneralService
 	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
 	public List<CItemDto> getMyCItemHierarchy(CItemSearchDto cItemSearch)
 	{
-		List<CItemDto> cItems = getMyCItems(cItemSearch);
+		List<CItemDto> myCItems = getMyCItems(cItemSearch);
 
-		if (CollectionUtils.isNotEmpty(cItems))
+		if (CollectionUtils.isNotEmpty(myCItems))
 		{
 			List<CItemDto> hierarchy = new LinkedList<>();
 
 			List<CItemDto> roles = new ArrayList<>();
 
-			for (CItemDto cItem : cItems)
+			for (CItemDto cItem : myCItems)
 			{
 				if (CItemType.G.equals(cItem.getType()))
 				{
@@ -164,10 +165,16 @@ public class ContentAuthorityService extends GeneralService
 				}
 			}
 
+			cItemSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
+			cItemSearch.setLang(lang);
+			cItemSearch.setFgVisible(PlatformCommonVo.YES);
+
+			List<CItemDto> cItems = ListUtils.emptyIfNull(contentService.getCItemsFormTree(cItemSearch));
+
 			for (CItemDto role : roles)
 			{
 				role.setName2(langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, role.getCSeq(), lang));
-				role.setSubCItems(getSubCItems(role.getCSeq(), lang));
+				role.setSubCItems(getSubCItems2(role.getCSeq(), cItems));
 
 				hierarchy.add(role);
 			}
@@ -178,6 +185,27 @@ public class ContentAuthorityService extends GeneralService
 		return Collections.emptyList();
 	}
 
+	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
+	public List<CItemDto> getSubCItems2(Integer cSeq, List<CItemDto> cItems)
+	{
+		List<CItemDto> subItems = new LinkedList<>();
+
+		for (int i=0, size=cItems.size(); i<size; i++)
+		{
+			CItemDto subCItem = cItems.get(i);
+
+			if (cSeq.equals(subCItem.getPSeq()))
+			{
+				subCItem.setSubCItems(getSubCItems2(subCItem.getCSeq(), cItems));
+
+				subItems.add(subCItem);
+			}
+		}
+
+		return subItems;
+	}
+
+	/*
 	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
 	public List<CItemDto> getSubCItems(Integer cSeq, String lang)
 	{
@@ -207,6 +235,7 @@ public class ContentAuthorityService extends GeneralService
 
 		return cItems;
 	}
+	*/
 
 	public CItemDto getMyEntryPoint(CItemSearchDto cItemSearch)
 	{

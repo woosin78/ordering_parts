@@ -2,9 +2,10 @@ let OrderComponent = function(target)
 {
 	this.orderTypes = [];
 	this.target = (target != null) ? $(target) : null;
+	this.isAsync = true;//주문생성 화면에서 Order Type 은 async true 필수
 	this.success;
 	
-	var _this = this;
+	let _this = this;
 	
 	this.makeOrderType = function(target, name, defaultValue, fgAddEmptyOption, param)
 	{
@@ -12,12 +13,12 @@ let OrderComponent = function(target)
 		
 		$.ajax({
 			url: "/portal/iv/hq/parts/domestic/order/create/order_type/data",
-			async: false,//Order Type 은 async 필수
+			async: _this.isAsync,
 			data: param,
 		    success: function(response, textStatus, jqXHR) 
 		    {
-		    	var data = response.RESULT;
-		    	var options = [];
+		    	let data = response.RESULT;
+		    	let options = [];
 		    	
 		    	if (fgAddEmptyOption)
 		    	{
@@ -30,7 +31,7 @@ let OrderComponent = function(target)
 		    		_this.orderTypes.push(this);
 		    	});
 
-		    	var orderType = [];
+		    	let orderType = [];
 		    	orderType.push("<select class='custom-ui' id='" + name + "' name='" + name + "'>");
 		    	orderType.push(options.join(""));
 		    	orderType.push("</select>");
@@ -61,9 +62,9 @@ let OrderComponent = function(target)
 	
 	this.getSelectedPriceGroup = function()
 	{
-		var orderType = this.target.find("option:selected").val();
+		let orderType = this.target.find("option:selected").val();
 		
-		for (var i=0, length=this.orderTypes.length; i<length; i++)
+		for (let i=0, length=this.orderTypes.length; i<length; i++)
 		{
 			if (this.orderTypes[i].AUART == orderType)
 			{
@@ -76,9 +77,9 @@ let OrderComponent = function(target)
 	
 	this.getSelectedDocType = function()
 	{
-		var orderType = this.target.find("option:selected").val();
+		let orderType = this.target.find("option:selected").val();
 		
-		for (var i=0, length=this.orderTypes.length; i<length; i++)
+		for (let i=0, length=this.orderTypes.length; i<length; i++)
 		{
 			if (this.orderTypes[i].AUART == orderType)
 			{

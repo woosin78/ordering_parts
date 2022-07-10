@@ -3,11 +3,8 @@ package org.jwebppy.platform.core.util;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 
@@ -19,6 +16,7 @@ public class CmMyBatisQueryUtils
 {
 	public static boolean isEmpty(Object obj)
 	{
+		/*
 		if (obj instanceof Map)
 		{
 			return MapUtils.isEmpty((Map<?, ?>)obj);
@@ -29,6 +27,8 @@ public class CmMyBatisQueryUtils
 		}
 
 		return CmStringUtils.isEmpty(obj);
+		*/
+		return ObjectUtils.isEmpty(obj);
 	}
 
 	public static boolean isNotEmpty(Object obj)

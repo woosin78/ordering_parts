@@ -24,6 +24,7 @@ public class CItemDto extends GeneralDto implements IPagination
 	private Integer pSeq;
 	private CItemType type;
 	private String name;
+	private String name2;
 	private String description;
 	private String component;
 	private String entryPoint;
@@ -42,7 +43,6 @@ public class CItemDto extends GeneralDto implements IPagination
 	private int userCount;
 	private int subItemCount;
 	private List<CItemDto> subCItems;
-	private String name2;
 
 	public String getDisplayFromValid()
 	{

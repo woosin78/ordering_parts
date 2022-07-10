@@ -204,11 +204,11 @@
 
 		<if test="cSeq != null">
 			and a.c_seq=#{cSeq}
-		</if>			
+		</if>
 		
 		<if test="pSeq != null">
 			and a.p_seq=#{pSeq}
-		</if>	
+		</if>
 
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
 			and a.name=#{name}
@@ -300,7 +300,7 @@
 		and l_seq=#{lSeq}
 	</select>
 	
-	<select id="findLangs" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
+	<select id="findCItemLangRls" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
 		select
 		b.*
 		from
@@ -328,5 +328,51 @@
 		and d.fg_delete='N'
 		order by d.fg_default desc
 	</select>	
+
+	<select id="findCItemsForTree" parameterType="CItemSearchDto" resultType="CItemEntity">
+		select
+		x.*,
+		(
+		    select
+		    d.text
+		    from
+		    pltf_citem_lang_rl a,
+		    pltf_lang b,
+		    pltf_lang_kind c,
+		    pltf_lang_detail d
+		    where
+		    a.c_seq=x.c_seq
+		    and a.l_seq=b.l_seq
+		    and b.basename=#{basename}
+		    and b.fg_delete='N'
+		    and b.basename=c.basename
+		    and c.code=#{lang}
+		    and c.fg_delete='N'
+		    and b.l_seq=d.l_seq
+		    and c.lk_seq=d.lk_seq
+		    and d.fg_delete='N'
+		) name2
+		from
+		pltf_citem x
+		where
+		x.fg_delete='N'
+		
+	    <if test='fgVisible == "Y"'>
+	    	and x.fg_visible='Y'
+	    	and x.from_valid <![CDATA[<]]> sysdate and x.to_valid <![CDATA[>=]]> sysdate
+	    </if>
+
+		<choose>
+			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(cSeq)">
+				start with x.c_seq=#{cSeq}
+			</when>
+			<otherwise>
+				start with x.name='ROOT'
+			</otherwise>
+		</choose>
+		
+		connect by prior x.c_seq=x.p_seq
+		order siblings by x.sort, x.reg_date	
+	</select>
 
 </mapper>

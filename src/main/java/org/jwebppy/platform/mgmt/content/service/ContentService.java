@@ -3,12 +3,12 @@ package org.jwebppy.platform.mgmt.content.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.config.CacheConfig;
@@ -20,21 +20,29 @@ import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemLangRlDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
 import org.jwebppy.platform.mgmt.content.mapper.CItemObjectMapper;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
+import org.jwebppy.platform.mgmt.i18n.dto.LangDetailDto;
+import org.jwebppy.platform.mgmt.i18n.dto.LangDto;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.ImmutableMap;
+
 @Service
 @Transactional
 public class ContentService extends GeneralService
 {
+	@Autowired
+	private ContentLangService contentLangService;
+
 	@Autowired
 	private ContentMapper contentMapper;
 
@@ -142,7 +150,7 @@ public class ContentService extends GeneralService
 
 	public int copy(Integer cSeq, Integer pSeq, String fgCopyWithSubItems)
 	{
-		if (cSeq == null || pSeq == null)
+		if (ObjectUtils.isEmpty(cSeq)|| ObjectUtils.isEmpty(pSeq))
 		{
 			return -1;
 		}
@@ -198,7 +206,64 @@ public class ContentService extends GeneralService
 			cItem.setName(cItem.getName() + "_" + CmDateFormatUtils.now());
 		}
 
-		return create(cItem);
+		Integer nCseq = create(cItem);
+
+		if (ObjectUtils.isNotEmpty(nCseq))
+		{
+			//다국어 copy
+			copyCItemLang(cSeq, nCseq);
+		}
+
+		return nCseq;
+	}
+
+	public Integer copyCItemLang(Integer sCseq, Integer nCseq)
+	{
+		CItemLangRlDto cItemLangRlSearch = new CItemLangRlDto();
+		cItemLangRlSearch.setCSeq(sCseq);
+		cItemLangRlSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
+
+		List<CItemLangRlDto> cItemLangRls = contentLangService.getCItemLangRls(cItemLangRlSearch);
+
+		if (CollectionUtils.isNotEmpty(cItemLangRls))
+		{
+			CItemLangRlDto cItemLangRl = cItemLangRls.get(0);
+
+			LangDto sLang = langService.getLangByLSeq(cItemLangRl.getLSeq());
+
+			List<LangDetailDto> nLangDetails = new ArrayList<LangDetailDto>();
+
+			for (LangDetailDto sLangDetail: ListUtils.emptyIfNull(sLang.getLangDetails()))
+			{
+				LangDetailDto nLangDetail = new LangDetailDto();
+
+				nLangDetail.setLkSeq(sLangDetail.getLkSeq());
+				nLangDetail.setText(sLangDetail.getText());
+				nLangDetail.setFgDelete(PlatformCommonVo.NO);
+
+				nLangDetails.add(nLangDetail);
+			}
+
+			LangDto nLang = new LangDto();
+			nLang.setBasename(sLang.getBasename());
+			nLang.setType(sLang.getType());
+			nLang.setFgDelete(PlatformCommonVo.NO);
+			nLang.setLangDetails(nLangDetails);
+
+			Integer nLseq = langService.save(nLang);
+
+			if (ObjectUtils.isNotEmpty(nLseq))
+			{
+				CItemLangRlDto nCItemLangRl = new CItemLangRlDto();
+
+				nCItemLangRl.setCSeq(nCseq);
+				nCItemLangRl.setLSeq(nLseq);
+
+				return contentLangService.save(nCItemLangRl);
+			}
+		}
+
+		return null;
 	}
 
 	public int move(Integer cSeq, Integer pSeq)
@@ -269,6 +334,7 @@ public class ContentService extends GeneralService
 		}
 	}
 
+	/*
 	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
 	public List<Map<String, Object>> getCItemHierarchy2(CItemSearchDto cItemSearch)
 	{
@@ -327,6 +393,70 @@ public class ContentService extends GeneralService
 		}
 
 		return Collections.emptyList();
+	}
+	*/
+
+	public List<CItemDto> getCItemsFormTree(CItemSearchDto cItemSearch)
+	{
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCItemsForTree(cItemSearch));
+	}
+
+	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
+	public List<Map<String, Object>> getCItemHierarchy2(CItemSearchDto cItemSearch)
+	{
+		cItemSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
+		cItemSearch.setLang(UserAuthenticationUtils.getUserDetails().getLanguage());
+
+		List<CItemDto> cItems = getCItemsFormTree(cItemSearch);
+
+		if (CollectionUtils.isNotEmpty(cItems))
+		{
+			List<Map<String, Object>> hierarchy = new LinkedList<>();
+
+			CItemDto cItem = cItems.get(0);
+
+			hierarchy.add(new ImmutableMap.Builder<String, Object>()
+					.put("KEY", cItem.getCSeq())
+					.put("P_KEY", CmStringUtils.trimToEmpty(cItem.getPSeq()))
+					.put("NAME", CmStringUtils.defaultIfEmpty(cItem.getName2(), cItem.getName()))
+					.put("TYPE", cItem.getType().getType())
+					.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(cItem.getLaunchType()))
+					.put("WIDTH", CmStringUtils.trimToEmpty(cItem.getScrWidth()))
+					.put("HEIGHT", CmStringUtils.trimToEmpty(cItem.getScrHeight()))
+					.put("SUB_ITEMS", getSubItems(cItem.getCSeq(), cItems))
+					.build()
+					);
+
+			return hierarchy;
+		}
+
+		return Collections.emptyList();
+	}
+
+	public List<Map<String, Object>> getSubItems(Integer cSeq, List<CItemDto> cItems)
+	{
+		List<Map<String, Object>> subItems = new LinkedList<>();
+
+		for (int i=0, size=cItems.size(); i<size; i++)
+		{
+			CItemDto subCItem = cItems.get(i);
+
+			if (cSeq.equals(subCItem.getPSeq()))
+			{
+				subItems.add(new ImmutableMap.Builder<String, Object>()
+						.put("KEY", subCItem.getCSeq())
+						.put("P_KEY", CmStringUtils.trimToEmpty(subCItem.getPSeq()))
+						.put("NAME", CmStringUtils.defaultIfEmpty(subCItem.getName2(), subCItem.getName()))
+						.put("TYPE", subCItem.getType().getType())
+						.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(subCItem.getLaunchType()))
+						.put("WIDTH", CmStringUtils.trimToEmpty(subCItem.getScrWidth()))
+						.put("HEIGHT", CmStringUtils.trimToEmpty(subCItem.getScrHeight()))
+						.put("SUB_ITEMS", getSubItems(subCItem.getCSeq(), cItems))
+						.build());
+			}
+		}
+
+		return subItems;
 	}
 
 	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)

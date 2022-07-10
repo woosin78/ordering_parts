@@ -75,6 +75,7 @@ public class AuthorityLayoutBuilder
 		elementMap.put("Valid From", cItem.getDisplayFromValid());
 		elementMap.put("Valid To", cItem.getDisplayToValid());
 		elementMap.put("Visible", cItem.getFgVisible());
+		elementMap.put("Sort", cItem.getSort());
 		elementMap.put("Reg.Date", cItem.getDisplayRegDate());
 		elementMap.put("Reg.Username", cItem.getRegUsername());
 
@@ -103,13 +104,19 @@ public class AuthorityLayoutBuilder
 		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(cItem.getDisplayFromValid(), CmDateFormatUtils.now()));
 		loFromValid.setId("fromValid");
 		loFromValid.setLabel("Valid From");
+		loFromValid.setRequired(true);
 
 		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(cItem.getDisplayToValid(), CmDateFormatUtils.unlimitDate()));
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
+		loToValid.setRequired(true);
 
 		Checkbox loFgVisible = new Checkbox("fgVisible", PlatformCommonVo.YES, cItem.getFgVisible());
 		loFgVisible.setLabel("Visible");
+
+		Input loSort = new Input("sort", CmStringUtils.defaultString(cItem.getSort(), 100));
+		loSort.setLabel("Sort");
+		loSort.setRequired(true);
 
 		Document document = new Document();
 		document.addElement(loName);
@@ -117,6 +124,7 @@ public class AuthorityLayoutBuilder
 		document.addElement(loFromValid);
 		document.addElement(loToValid);
 		document.addElement(loFgVisible);
+		document.addElement(loSort);
 
 		return document;
 	}

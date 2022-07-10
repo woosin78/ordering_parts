@@ -176,7 +176,7 @@
 		x.command=y.command(+)
 		and x.reg_username=y.reg_username(+)
 		and x.reg_date=y.reg_date(+)
-		order by y.reg_date, x.command	
+		order by y.reg_date desc, x.command	
 	</select>
 
 </mapper>

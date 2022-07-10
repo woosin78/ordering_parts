@@ -4,7 +4,7 @@ function makeGnb()
 {
 	let GNB_MENU_PER_PAGE = 9;//한 화면에 보여질 메뉴 개수
 	let GNB_LEVEL1_HEIGHT = JpUtilsNumber.defaultNumber($(".gnb-menu-area").height(), 50);//GNB Level1's height
-	let GNB_LEVEL1_ACTIVE_HEIGHT = 125;//Level1 에 마우스오버 뵀을 때 Level1 + Level2 높이 
+	let GNB_LEVEL1_ACTIVE_HEIGHT = 150;//Level1 에 마우스오버 뵀을 때 Level1 + Level2 높이 
 	
 	JpUtilsAjax.get({
 		url: "/platform/mgmt/gnb/menu",

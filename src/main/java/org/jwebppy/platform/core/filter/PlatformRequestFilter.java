@@ -24,12 +24,6 @@ public class PlatformRequestFilter implements Filter
 	{
 		isAllowableMethod(request, response);
 
-//		System.err.println("============================================");
-//		System.err.println(chain.toString());
-//		System.err.println("URI:" + ((HttpServletRequest)request).getRequestURI());
-//		System.err.println("URL:" + ((HttpServletRequest)request).getRequestURL());
-//		System.err.println("============================================");
-
 		ServletRequestInfoDto servletRequestInfo = ServletRequestInfoDto.builder()
 				.requestId(UidGenerateUtils.generate())
 				.requestUri(((HttpServletRequest)request).getRequestURI())

@@ -20,6 +20,7 @@ public class CItemEntity extends GeneralEntity
 	private Integer pSeq;
 	private CItemType type;
 	private String name;
+	private String name2;
 	private String description;
 	private String component;
 	private String entryPoint;

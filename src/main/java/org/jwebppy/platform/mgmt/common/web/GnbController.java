@@ -8,11 +8,9 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
-import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.jwebppy.portal.common.PortalConfigVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,8 +26,8 @@ public class GnbController extends MgmtGeneralController
 	@Autowired
 	private ContentAuthorityService contentAuthorityService;
 
-	@Autowired
-	private LangService langService;
+	//@Autowired
+	//private LangService langService;
 
 	@GetMapping("/menu")
 	@ResponseBody
@@ -70,7 +68,8 @@ public class GnbController extends MgmtGeneralController
 			{
 				Map<String, Object> itemMap = new LinkedHashMap<>();
 				itemMap.put("KEY", subCItem.getCSeq());
-				itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+				//itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
+				itemMap.put("NAME", CmStringUtils.defaultIfEmpty(subCItem.getName2(), subCItem.getName()));
 				itemMap.put("TYPE", subCItem.getType().toString());
 				itemMap.put("URL", subCItem.getUrl());
 				itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(subCItem.getLaunchType()));

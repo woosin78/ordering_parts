@@ -25,5 +25,6 @@ public interface ContentMapper
 	public List<CItemEntity> findMyCItems(CItemSearchDto cItemSearch);
 	public List<CItemEntity> findCItems(CItemSearchDto cItemSearch);
 	public List<CItemEntity> findPageCItems(CItemSearchDto cItemSearch);
-	public List<CItemLangRlEntity> findLangs(CItemLangRlDto cItemLangRl);
+	public List<CItemLangRlEntity> findCItemLangRls(CItemLangRlDto cItemLangRl);
+	public List<CItemEntity> findCItemsForTree(CItemSearchDto cItemSearch);
 }
