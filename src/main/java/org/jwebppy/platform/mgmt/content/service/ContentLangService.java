@@ -22,7 +22,7 @@ public class ContentLangService extends GeneralService
 
 	public int save(CItemLangRlDto cItemLangRl)
 	{
-		if (CollectionUtils.isEmpty(getLangs(cItemLangRl)))
+		if (CollectionUtils.isEmpty(getCItemLangRls(cItemLangRl)))
 		{
 			CItemLangRlEntity cItemLangRlEntity = CmModelMapperUtils.mapToEntity(CItemLangRlObjectMapper.INSTANCE, cItemLangRl);
 
@@ -34,8 +34,8 @@ public class ContentLangService extends GeneralService
 		return 0;
 	}
 
-	public List<CItemLangRlDto> getLangs(CItemLangRlDto cItemLangRl)
+	public List<CItemLangRlDto> getCItemLangRls(CItemLangRlDto cItemLangRl)
 	{
-		return CmModelMapperUtils.mapToDto(CItemLangRlObjectMapper.INSTANCE, contentMapper.findLangs(cItemLangRl));
+		return CmModelMapperUtils.mapToDto(CItemLangRlObjectMapper.INSTANCE, contentMapper.findCItemLangRls(cItemLangRl));
 	}
 }

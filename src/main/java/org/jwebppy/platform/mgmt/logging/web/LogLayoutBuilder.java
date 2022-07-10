@@ -14,6 +14,7 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmMyBatisQueryUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
@@ -33,9 +34,10 @@ public class LogLayoutBuilder
 	public static Document pageableList(PageableList<DataAccessLogDto> pageableList)
 	{
 		Tr thTr = new Tr();
+		thTr.addTextTh("No.", "one wide");
 		thTr.addTextTh("Type", "one wide");
 		thTr.addTextTh("Command", "three wide");
-		thTr.addTextTh("Class Name", "four wide");
+		thTr.addTextTh("Class Name", "three wide");
 		thTr.addTextTh("Method Name", "two wide");
 		thTr.addTextTh("Elapsed(sec)", "one wide");
 		thTr.addTextTh("Start Time", "two wide");
@@ -52,6 +54,7 @@ public class LogLayoutBuilder
 		{
 			Tr tbTr = new Tr();
 
+			tbTr.addTextTd(Formatter.getDefNumberFormat(dataAccessLog.getNo()));
 			tbTr.addTextTd(dataAccessLog.getType().getType());
 			tbTr.addDataKeyLinkTd(dataAccessLog.getCommand(), dataAccessLog.getDlSeq());
 			tbTr.addTextTd(dataAccessLog.getClassName());

@@ -21,7 +21,15 @@ JpUiPopup.open = function(settings)
     let popup = window.open("about:blank", "", "left=" + left + ", top=" + top + ", width=" + width + ", height=" + height + ", " + specs);    
     
     if (popup) popup.location.href = JpUtilsPath.url(url); //열림   
-    popup.focus();
+    
+	try
+	{
+		popup.focus();   
+	}
+	catch (e)
+	{
+		alert("[[#{PTL_M_POPUP_BLOCKED}]]");
+	};    
 	
 	return popup;
 };

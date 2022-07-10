@@ -216,7 +216,7 @@ let JpUiTree = function(object)
 			}
 			else
 			{
-				$("#MC_createItem, #MC_deleteItem, #MC_copyItem, #MC_cutItem").show();				
+				$("#MC_createItem, #MC_deleteItem, #MC_copyItem, #MC_cutItem, #MC_newWindow").show();				
 			};
 			
 			let command = this.getCommand();
@@ -324,6 +324,14 @@ let JpUiTree = function(object)
 			catch (e) {};
 		});
 		
+		$("#MC_newWindow").on("click", function(event) {
+			try
+			{
+				_this.doCommand("NEW_WINDOW", this, event);
+			}
+			catch (e) {};
+		});
+		
 		$("body").on("scroll", function() {
 			_this.hidePopupMenu();
 		});
@@ -396,6 +404,10 @@ let JpUiTree = function(object)
 		{
 			this.pasteItem(key, pKey, this, event);
 		}
+		else if (command == "NEW_WINDOW")
+		{
+			this.newWindow(key, pKey, this, event);
+		}		
 		
 		this.hidePopupMenu();
 	};
@@ -417,8 +429,9 @@ let JpUiTree = function(object)
 		menu += "	<a id='MC_createItem' class='item'><i class='plus icon'></i> Create</a>";
 		menu += "	<a id='MC_deleteItem' class='item'><i class='minus icon'></i> Delete</a>";
 		menu += "	<a id='MC_copyItem' class='item'><i class='copy icon'></i> Copy</a>";
-		menu += "	<a id='MC_cutItem' class='item'><i class='cut icon'></i> Cut</a>";				
-		menu += "	<a id='MC_pasteItem' class='item'><i class='paste icon'></i> Paste</a>";		
+		menu += "	<a id='MC_cutItem' class='item'><i class='cut icon'></i> Cut</a>";
+		menu += "	<a id='MC_pasteItem' class='item'><i class='paste icon'></i> Paste</a>";
+		menu += "	<a id='MC_newWindow' class='item'><i class='clone outline icon'></i> New Window</a>";
 		menu += "</div>";
 		
 		return menu;

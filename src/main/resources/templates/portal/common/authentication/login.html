@@ -228,7 +228,7 @@ $(document).ready(function() {
 		<div id="openNewWindow" class="button" th:text="#{PTL_T_NEW_WINDOW}"></div>
 	</div>
 	<div class="body">
-		<div><script>document.write("<img id='mainImg' src='" + "[[@{/portal/img/login}]]/main" + (Math.floor(Math.random()*5)+1) + ".png' alt='Main Image' />");</script></div>
+		<div><script>document.write("<img id='mainImg' src='" + "[[@{/portal/img/login}]]/main" + [[${#numbers.formatDecimal(T(java.lang.Math).floor(T(java.lang.Math).random()*5+1), 1, 0)}]] + ".png' alt='Main Image' />");</script></div>
 		<div class="login-box">
 			<div class="title" th:text="#{PTL_T_FORM_LOGIN}"></div>
 			<div class="username"><img th:src="@{/portal/img/login/username.png}" class="login-input" alt="Username" /><input type="text" th:with="username=${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGIN_USERNAME}" th:id="${username}" th:name="${username}" th:placeholder="#{PTL_T_FORM_USERNAME}" autofocus /></div>

@@ -176,8 +176,6 @@ public class UserLayoutBuilder
 	{
 		UserPasswordChangeHistoryDto userPasswordChangeHistory = userAccount.getUserPasswordChangeHistory();
 
-		System.err.println(userPasswordChangeHistory);
-
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Credentials Policy", (ObjectUtils.isNotEmpty(credentialPolicy)) ? credentialPolicy.getName() + " - " + credentialPolicy.getDescription() : "");
 		elementMap.put("Username", userAccount.getUsername());

@@ -151,6 +151,7 @@ public class AuthorityController extends UserGeneralController
 				cItem2.setFromValid(cItem.getFromValid());
 				cItem2.setToValid(cItem.getToValid());
 				cItem2.setFgVisible(cItem.getFgVisible());
+				cItem2.setSort(cItem.getSort());
 
 				return contentService.modify(cItem2);
 			}

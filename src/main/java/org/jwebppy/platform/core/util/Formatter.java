@@ -213,6 +213,8 @@ public class Formatter {
 		}
 	}
 
+	/*
+	 * 주석처리일자: 2022.07.10
 	public static String getQtyFormat(String strValue) {
 		if (strValue != null && !strValue.trim().equals("")) {
 			return Integer.toString(Integer.parseInt(strValue));
@@ -220,6 +222,7 @@ public class Formatter {
 			return "";
 		}
 	}
+	*/
 
 	/**
 	 * 문자열로 된 숫자를 기본 포맷(#,###.##)으로 변환하여 반환한다.
@@ -285,8 +288,16 @@ public class Formatter {
 		}
 	}
 
-	public static String getIntegerFormat(Object value) {
+	public static String getDefNumberFormat(Object obj) {
+		if (obj == null)
+		{
+			return "";
+		}
 
+		return getDecimalFormat(obj.toString(), "#,###");
+	}
+
+	public static String getIntegerFormat(Object value) {
 		if (value != null)
 		{
 			DecimalFormat decimalFormat = new DecimalFormat("#");
