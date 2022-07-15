@@ -108,7 +108,7 @@ $(function(){
 			{targets: [15, 16, 21], className: "dt-body-right"}
 		],			
 		ajax: {
-			url: "[[${BASE_PATH}]]/accounts/ap/view/data",
+			url: "[[${BASE_PATH}]]/dummy",
 			data: function(p)
 			{
 				p.pShipmentNo = $("#pShipmentNo").val();
@@ -121,7 +121,7 @@ $(function(){
 			dataSrc: function(response) 
 			{				
 				let data = response.RESULT;
-				let list = data.LIST;
+				let list = JpUtilsArray.emptyIfNull(data.LIST);
 				let sum = data.SUM;
 				
 				showGridTotalRows($("#totalRows"), list);
@@ -145,7 +145,7 @@ $(function(){
 	});
 	
 	// Datatable grid 초기 설정 셋업
-	initGridTable($tableObj);
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/accounts/ap/view/data"});
 });
 
 $("#BTN_search").on("click", function(){		
