@@ -5,7 +5,7 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 
 <th:block layout:fragment="content">
-	<script th:src="@{/editor_html5/js/xfe_main.js}"></script>
+	<script src="/editor_html5/js/xfe_main.js"></script>
 	
 	<div class="block-header">
 		<div class="block-title" th:text="${boardName}"></div>
@@ -179,9 +179,6 @@ function addTarget(label, value)
 };
 
 $("#BTN_deleteVisibleTarget").on("click", function(event) {
-	
-	console.log(0);
-	
 	$.each($("#FORM_write .visible-target"), function(i, item) {
 		if ($(this).is(":checked"))
 		{
@@ -295,7 +292,9 @@ let xfe = new XFE({
 		};
 	},
 	language: "english",
-	initFontFamily: "Arial"
+	initFontFamily: "Arial",
+	uploadFilePath: "/portal/iv/xfree/editor_upload"
+	//uploadPasteContentsPath: "/portal/iv/xfree/editor_upload_contents"	
 });
 	
 xfe.render("xfe");

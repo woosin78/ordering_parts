@@ -64,6 +64,8 @@ public class PortalSecurityConfig extends WebSecurityConfigurerAdapter
 			.requestCache()
 				.requestCache(requestCache)
 			.and()
+			.csrf().ignoringAntMatchers(PortalConfigVo.CONTEXT_PATH + "/iv/xfree/**")//csrf예외처리
+			.and()
 			.exceptionHandling()
 				.authenticationEntryPoint(loginUrlAuthenticationEntryPoint());
 	}
