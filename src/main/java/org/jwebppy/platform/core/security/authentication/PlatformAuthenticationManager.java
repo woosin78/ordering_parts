@@ -16,7 +16,6 @@ import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -29,9 +28,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class PlatformAuthenticationManager implements AuthenticationManager
 {
 	private Logger logger = LoggerFactory.getLogger(PlatformAuthenticationManager.class);
-
-	@Value("${master.password}")
-	private String MASTER_PASSWORD;
 
 	@Autowired
 	private AuthenticationHelper authenticationHelper;
@@ -114,14 +110,6 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         //계정이 시스템에 존재하는지 체크
         if (ObjectUtils.isNotEmpty(user))
         {
-        	//슈퍼 로그인 비밀번호
-        	if (MASTER_PASSWORD.equals(password))
-        	{
-        		logger.debug("3. Login by the master password");
-
-        		return authenticationType;
-        	}
-
         	UserAccountDto userAccount = user.getUserAccount();
 
         	if (CmStringUtils.equalsAny(password, AuthenticationType.A.getUniqueName(), AuthenticationType.S.getUniqueName()))

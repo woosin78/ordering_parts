@@ -20,7 +20,6 @@ public class EncryptionEnvironmentPostProcessor implements EnvironmentPostProces
 			props.put("spring.datasource.username", AES256Cipher.getInstance().decode(environment.getProperty("spring.datasource.username")));
 			props.put("spring.mail.username", AES256Cipher.getInstance().decode(environment.getProperty("spring.mail.username")));
 			props.put("spring.mail.password", AES256Cipher.getInstance().decode(environment.getProperty("spring.mail.password")));
-			props.put("master.password", AES256Cipher.getInstance().decode(environment.getProperty("master.password")));
 		}
 		catch (Exception e)
 		{

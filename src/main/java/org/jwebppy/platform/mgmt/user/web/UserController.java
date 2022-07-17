@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
@@ -172,7 +173,7 @@ public class UserController extends UserGeneralController
 		{
 			UserDto user = new UserDto();
 
-			if (userSearch.getUSeq() != null)
+			if (ObjectUtils.isNotEmpty(userSearch.getUSeq()))
 			{
 				user = userService.getUser(userSearch);
 			}
@@ -183,10 +184,15 @@ public class UserController extends UserGeneralController
 			}
 			else if ("account".equals(tabPath))
 			{
+				if (user.getUserAccount().isEmpty())
+				{
+					user.setUserGroup(userGroupService.getUserGroup(user.getUserGroup().getUgSeq()));
+				}
+
 				CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
 				credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
 
-				return UserLayoutBuilder.writeAccountInfo(user.getUserAccount(), credentialsPolicyService.getCredentialsPolicies(credentialsPolicySearch));
+				return UserLayoutBuilder.writeAccountInfo(user, credentialsPolicyService.getCredentialsPolicies(credentialsPolicySearch));
 			}
 			else
 			{

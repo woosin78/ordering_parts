@@ -285,6 +285,16 @@ function _showUserGroup(params)
 	});
 };
  
+//Authority
+function _showAuthority(params)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/authority/list?" + JpUtilsPath.jsonToQueryString(params),
+		width: screen.availWidth * 0.7,
+		height: screen.availHeight * 0.7		
+	});
+};
+ 
 //Security Policy
 function _showCredentialsPolicy(params)
 {

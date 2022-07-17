@@ -94,7 +94,7 @@ public class SapConnResourceLayoutBuilder
 		elementMap.put("Pool Capacity", sapConnResource.getPoolCapacity());
 		elementMap.put("Peak Limit", sapConnResource.getPeakLimit());
 		elementMap.put("Language", sapConnResource.getLanguage());
-		elementMap.put("Use User Language", sapConnResource.getFgUseUserLang());
+		//elementMap.put("Use User Language", sapConnResource.getFgUseUserLang());
 		elementMap.put("Use", sapConnResource.getFgUse());
 		elementMap.put("Reg. Username", sapConnResource.getRegUsername());
 		elementMap.put("Reg. Date", sapConnResource.getDisplayRegDate());
@@ -182,8 +182,8 @@ public class SapConnResourceLayoutBuilder
 		loLanguage.addOption("en", new Locale("en").getDisplayLanguage());
 		loLanguage.addOption("ko", new Locale("ko").getDisplayLanguage());
 
-		Element loFgUseUserLang = new Checkbox("fgUseUserLang", PlatformCommonVo.YES, sapConnResource.getFgUseUserLang());
-		loFgUseUserLang.setLabel("Use User Language");
+		//Element loFgUseUserLang = new Checkbox("fgUseUserLang", PlatformCommonVo.YES, sapConnResource.getFgUseUserLang());
+		//loFgUseUserLang.setLabel("Use User Language");
 
 		Element loFgUse = new Checkbox("fgUse", PlatformCommonVo.YES, sapConnResource.getFgUse());
 		loFgUse.setLabel("Use");
@@ -196,7 +196,7 @@ public class SapConnResourceLayoutBuilder
 		document.addElement(loUsername);
 		document.addElement(loPassword);
 		document.addElement(loLanguage);
-		document.addElement(loFgUseUserLang);
+		//document.addElement(loFgUseUserLang);
 		document.addElement(loFgUse);
 
 		return document;

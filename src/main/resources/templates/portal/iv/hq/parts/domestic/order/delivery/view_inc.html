@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	
+	<div class="block-header">
+		<div class="block-title" th:text="#{HQP_T_DELIVERY_STATUS_DETAIL}"></div><!-- Delivery Status Detail -->
+		<div class="block-button-area">
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
+			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button><!-- Download -->
+			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}" th:if="${not #strings.isEmpty(shipmentNo)}"></button><!-- Back -->
+		</div>
+	</div>
+	<div class="condition-area table-fixed">
+	<form id="FORM_search" name="FORM_search">
+	
+	<table class="condition">
+		<tbody>
+			<tr>
+				<th th:text="#{HQP_L_SHIPMENT_DOC_CREATE_DATE}"></th><!-- Shipment Doc. Create Date Period-->
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromDate" name="pFromDate" class="custom-ui-calendar" th:value="${pFromDate}">
+						<input type="text" id="pToDate" name="pToDate" class="custom-ui-calendar to" th:value="${pToDate}">					
+					</div>
+				</td>
+				<th th:text="#{HQP_L_ONBOARD_DATE}"></th><!-- Onboard Date Period -->
+				<td>
+					<div class="input-area">
+						<input type="text" id="pFromOnboardDate" name="pFromOnboardDate" class="custom-ui-calendar" th:value="${pOnboardFromDate}">
+						<input type="text" id="pToOnboardDate" name="pToOnboardDate" class="custom-ui-calendar to" th:value="${pToOnboardDate}">					
+					</div>
+				</td>
+			</tr>			
+			<tr>
+				<th th:text="#{HQP_L_SHIPMENT_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pShipmentNo" name="pShipmentNo" class="custom-ui" th:value="${pShipmentNo}">
+					</div>			
+				</td>			
+				<th th:text="#{HQP_L_ORDER_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pOrderNo" name="pOrderNo" class="custom-ui" th:value="${pOrderNo}">
+					</div>			
+				</td>			
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_PART_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
+					</div>			
+				</td>			
+				<th th:text="#{HQP_L_PO_NO}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="pPoNo" name="pPoNo" class="custom-ui" th:value="${pPoNo}">
+					</div>			
+				</td>			
+			</tr>			
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+	
+<script>
+//팝업으로 열릴경우 Back 버튼 제거
+if (opener)
+{
+	$("#BTN_back").hide();
+};
+
+$(document).ready(function() {
+	_setPartAutocomplete($("#pPartNo"));
+});	
+
+$(function(){
+	Calendar.makeBeetweenCalendar($("#pFromDate"), "[[${pFromDate}]]", $("#pToDate"), "[[${pToDate}]]");
+	Calendar.makeBeetweenCalendar($("#pFromOnboardDate"), "[[${pFromOnboardDate}]]", $("#pToOnboardDate"), "[[${pToOnboardDate}]]");
+		
+	$tableObj = $("#TBL_grid").DataTable({
+		ordering: true, 			// 정렬 기능 켬
+		deferLoading: false,
+		columns : [
+			{data: "BSTKD", title: "[[#{HQP_L_PO_NO}]]"},//P.O. No.
+			{data: "TKNUM", title: "[[#{HQP_L_SHIPMENT_NO}]]"},//Shipment No.				
+			{data: "EXIDV", title: "[[#{HQP_L_HU_NO}]]"},//H.U. No.
+			{data: "MATNR_SO", title: "[[#{HQP_L_ORDER_PART_NO}]]"},//Order Parts No.
+			{data: "MATNR_SH", title: "[[#{HQP_L_SUPPLY_PART_NO}]]"},//Supply Parts No.
+			{data: "MAKTX", title: "[[#{HQP_L_PART_DESCRIPTION}]]"},//Description
+			{data: "LFIMG", title: "[[#{HQP_L_QTY}]]"},//Qty
+			{data: "NETPR", title: "[[#{HQP_L_UNIT_PRICE}]]"},//Unit Price
+			{data: "NETWR", title: "[[#{HQP_L_TOTAL_AMOUNT}]]"},//Amount
+			{data: "HERKL", title: "[[#{HQP_L_ORIGIN}]]"},//Origin
+			{data: "VBELN2", title: "[[#{HQP_L_SALES_DOC_NO}]]"},//Sales Doc. No.
+			{data: "ZFOBDT", title: "[[#{HQP_L_ONBOARD_DATE}]]"},//Onboard Date
+			{data: "KWERT", title: "[[#{HQP_L_FREIGHT_FEE}]]"}//Freight Fee
+		],
+		columnDefs: [
+			{targets: [0, 1, 2, 6, 9, 10, 11], className: "dt-body-center"},
+			{targets: [7, 8, 12], className: "dt-body-right"}
+		],
+		ajax: {
+			url: "[[${BASE_PATH}]]/dummy",
+			data: function(p)
+			{
+				p.pFromDate = $("#pFromDate").val();
+				p.pToDate = $("#pToDate").val();
+				p.pFromOnboardDate = $("#pFromOnboardDate").val();
+				p.pToOnboardDate = $("#pToOnboardDate").val();
+				p.pShipmentNo = $("#pShipmentNo").val();
+				p.pOrderNo = $("#pOrderNo").val();
+				p.pPartNo = $("#pPartNo").val();
+				p.pPoNo = $("#pPoNo").val();
+			},
+			dataSrc: function(response) 
+			{				
+				let data = response.RESULT;
+				
+				showGridTotalRows($("#totalRows"), data);
+				
+				return data;
+			}			
+		},
+		initComplete:function(settings, json) 
+		{			
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj, {url: "[[${BASE_PATH}]]/order/delivery/view/data"});
+	
+	//list 상세보기 클릭하여 넘어왔을 경우
+	if (document.referrer.indexOf("[[${BASE_PATH}]]/order/delivery/list") > -1)
+	{
+		doSearch();
+	};
+});
+
+// Search 버튼 클릭
+$("#BTN_search").on("click", function(){		
+	doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+});
+
+//Input text 엔터 키 입력
+$("#FORM_search input:text").on("keydown", function(event) {
+	if (event.keyCode == 13)
+	{
+		doSearch();
+	};
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
+
+$("#BTN_back").on("click", function() {
+	$("#FORM_search").attr("action", "[[${BASE_PATH}]]/order/delivery/list").submit();
+});		
+	
+$("#BTN_download").on("click", function() {
+	_gridDownload($tableObj, "Delivery_Status_Detail");
+});
+</script>

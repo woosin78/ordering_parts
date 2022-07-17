@@ -166,7 +166,8 @@ $(function(){
 				$("#orderNo").val(orderNo);			
 				$("#docDate").val(rowData.ERDAT);
 				$("#docType").val(docType);
-				$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/display/view").submit();
+				//$("#FORM_search").attr("action", "[[${BASE_PATH}]]/claim/display/view").submit();
+				Popup.open("[[${BASE_PATH}]]/claim/display/popup/view?" + $("#FORM_search").serialize());
 			}
 		}
 	});

@@ -600,6 +600,18 @@ $(document).ready(function() {
 
 					changeButtonStatus();
 					viewUserTab.changePath("/platform/mgmt/user/view/layout");
+					
+					$("a.user-group").on("click", function() {
+						_showUserGroup({ugSeq: $(this).attr("data-key")});
+					});
+					
+					$("a.credentials-policy").on("click", function() {
+						_showCredentialsPolicy({cpSeq: $(this).attr("data-key")});
+					});
+					
+					$("a.authority").on("click", function() {
+						_showAuthority({type: $(this).attr("data-type"), cSeq: $(this).attr("data-key")});
+					});
 				}
 			}
 	};

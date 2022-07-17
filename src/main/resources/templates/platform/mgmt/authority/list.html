@@ -10,7 +10,7 @@
   <div class="sub header">Authorities has roles and groups. You can create or modify the authorities and check users who belong to each of them.</div>
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-<input type="checkbox" name="cSeq" style="display:none" value="" checked />
+<input type="checkbox" name="cSeq" style="display:none" th:value="${cSeq}" checked />
 <input type="hidden" name="pageNumber" value="1"/>
 <input type="hidden" name="rowPerPage" value="5"/>
 <div class="ui grey attached segment">
@@ -34,7 +34,7 @@
 			</div>				
 		</div>
 		<div class="four wide field">
-			<div id="BTN_searchUser" class="ui teal button"><i class="search icon"></i> Search</div>
+			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>
 			<div class="ui button" onclick="document.location.reload()"><i class="redo icon"></i> Reset</div>
 		</div>
 	</div>
@@ -53,7 +53,6 @@
 	<div class="ui clearing divider"></div>
 	<div id="TAB_viewAuthorityDetail" class="ui secondary pointing menu">
 		<a class="item active wrap" data-tab="general">General</a>
-		<a class="item wrap" data-tab="user">User</a>
 		<a class="item wrap" data-tab="authority">Sub Authority</a>
 	</div>
 	<div class="AREA_moveToModifyAuthority" style="display:none;">
@@ -68,7 +67,6 @@
 	<form id="FORM_modifyAuthority" class="ui form" autocomplete="off" onsubmit="return false;">
 		<input type="hidden" name="cSeq" />
 		<div class="ui tab active attached segment teal" data-tab="general"></div>
-		<div class="ui tab attached" data-tab="user"></div>
 		<div class="ui tab attached segment teal" data-tab="authority"></div>
 	</form>
 	<div class="AREA_moveToModifyAuthority" style="display:none;">
@@ -333,26 +331,6 @@ $(document).ready(function() {
 						
 						$("#FORM_modifyAuthority input[type=text]:first").select();
 						$("input[type=text]").on("click", function() { $(this).select(); });
-					}
-					else
-					{
-						if (tabPath == "user")
-						{
-							$("#FORM_modifyAuthority div[data-tab=user] a").on("click", function() {
-								
-								let dataKeyName = JpUtilsString.trimToEmpty($(this).attr("data-key-name"));
-								let dataKey = JpUtilsString.trimToEmpty($(this).attr("data-key"));
-								
-								if (dataKeyName == "uSeq")
-								{
-									_showUser({uSeq: dataKey});	
-								}
-								else
-								{
-									_showUserGroup({ugSeq: dataKey});
-								};
-							});
-						};
 					};
 
 					changeButtonStatus();
@@ -440,13 +418,13 @@ $(document).ready(function() {
 	$("#query").on("keydown", function(event) {
 		if (event.keyCode==13)
 		{
-			$("#BTN_searchUser").trigger("click");
+			$("#BTN_search").trigger("click");
 		}
 	}).on("click", function(event) {
 		this.select();
 	});
 
-	$("#BTN_searchUser").on("click", function() {
+	$("#BTN_search").on("click", function() {
 		setSeq("");
 		doSearch();
 	});

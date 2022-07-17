@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
@@ -75,12 +76,12 @@ public class InquiryDisplayController extends PartsDomesticGeneralController
 		return dataList;
 	}
 
-	@RequestMapping("/view")
-	public Object view(@RequestParam Map<String, Object> paramMap, Model model, WebRequest webRequest)
+	@RequestMapping({"/view", "/popup/view"})
+	public Object view(@RequestParam Map<String, Object> paramMap, Model model, ServletWebRequest webRequest)
 	{
 		addAllAttributeFromRequest(model, webRequest);
 
-		return DEFAULT_VIEW_URL;
+		return webRequest.getRequest().getRequestURI();
 	}
 
 	@RequestMapping("/view/data")

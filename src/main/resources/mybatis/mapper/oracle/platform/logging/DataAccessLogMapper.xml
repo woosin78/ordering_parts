@@ -146,7 +146,8 @@
 		(
 		    select
 		    a.command,
-		    max(b.reg_username) reg_username,        
+		    max(b.reg_username) reg_username,
+		    max(b.start_time) start_time,        
 		    max(b.reg_date) reg_date
 		    from
 		    pltf_sap_rfc_info1 a,
@@ -156,6 +157,7 @@
 		        class_name,
 		        method_name,
 		        command,
+		        start_time,
 		        reg_username,
 		        reg_date
 		        from
@@ -175,8 +177,8 @@
 		where
 		x.command=y.command(+)
 		and x.reg_username=y.reg_username(+)
-		and x.reg_date=y.reg_date(+)
-		order by y.reg_date desc, x.command	
+		and x.start_time=y.start_time(+)
+		order by nvl(y.start_time, -1) desc, x.command	
 	</select>
 
 </mapper>

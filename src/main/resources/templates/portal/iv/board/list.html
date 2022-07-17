@@ -69,12 +69,7 @@ $(function(){
 	Calendar.makeBeetweenCalendar($("#fromRegDate"), "[[${boardContentSearch.fromRegDate}]]", $("#toRegDate"), "[[${boardContentSearch.toRegDate}]]");
 
 	$tableObj = $("#TBL_grid").DataTable({
-		select: {
-			selector: "td:not(.noselect)"
-	    },
 		ordering: true, 
-		scrollY: 100,
-		//fixedColumns: {leftColumns: 3},
 		columns : [
 			{data: "no", 				title: "[[#{HQP_L_NUMBER}]]", "width": "8%"},
 			{data: "displayTitle",		title: "[[#{HQP_L_TITLE}]]"},
@@ -116,11 +111,11 @@ $(function(){
 			}
 		},
 		paging : true, // 페이징 기능켬
-		pageLength: [[${boardContentSearch.rowPerPage}]], // 한 페이지에 20개 행
+		pageLength: GLOBAL_CONST.ROW_PER_PAGE, // 한 페이지에 20개 행
+		//pageLength: 3,
 		initComplete:function(settings, json)
 		{
 			ProgressBar.hide();
-			//this.api().page(2).draw("page");
 		}
 	});
 	

@@ -62,7 +62,7 @@ public class SapConnResourceController extends MgmtGeneralController
 	@GetMapping("/write")
 	public Object write(Model model, WebRequest webRequest, @RequestParam(required = false, name="scrSeq") Integer scrSeq)
 	{
-		SapConnResourceDto sapConnResource = (scrSeq == null) ? new SapConnResourceDto() : sapConnResourceService.getSapConnResource(scrSeq);
+		SapConnResourceDto sapConnResource = (ObjectUtils.isEmpty(scrSeq)) ? new SapConnResourceDto() : sapConnResourceService.getSapConnResource(scrSeq);
 
 		model.addAttribute("sapConnResource", sapConnResource);
 

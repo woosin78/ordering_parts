@@ -737,12 +737,9 @@ $(function(){
 	let tabIndex = 1;
 
 	$tableObj = $("#TBL_grid").DataTable({
-		ordering: true,
-		scrollY: 100,
 		columns: [
 			{// 컬럼에 checkbox 설정
 				name: "chk",
-				orderable: false,// checkbox 는 정렬 불가
 				title:"<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)' onclick='allChecked(this)'><label></label>",
 				render: function(data, type, row)
 				{
@@ -760,7 +757,6 @@ $(function(){
 				name: "materialNo",
 				data: "materialNo",
 				title: "[[#{HQP_L_ORDER_PART_NO}]]",				
-				orderable: false,
 				render: function(data, type, row)
 				{
 					return "<input type='text' name='materialNo' class='custom-ui' style='width: 150px;' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
@@ -772,7 +768,6 @@ $(function(){
 				name: "orderQty",
 				data: "orderQty",
 				title: "[[#{HQP_L_REQ_QTY}]]",
-				orderable: false,
 				render: function(data, type, row)
 				{
 					let clazz =  (JpUtilsString.equals(row.fgInvalidSalesLot, GLOBAL_CONST.YES)) ? "custom-ui warn center": "custom-ui center"; 

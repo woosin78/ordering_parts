@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmArrayUtils;
@@ -52,7 +53,12 @@ public class UserGroupDto extends GeneralDto implements IPagination
 
 	public SapConnResourceDto getSapConnResource()
 	{
-		return (sapConnResource == null) ? new SapConnResourceDto() : sapConnResource;
+		return ObjectUtils.defaultIfNull(sapConnResource, new SapConnResourceDto());
+	}
+
+	public CredentialsPolicyDto getCredentialsPolicy()
+	{
+		return ObjectUtils.defaultIfNull(credentialsPolicy, new CredentialsPolicyDto());
 	}
 
 	public String getDisplayCountry()
@@ -117,5 +123,15 @@ public class UserGroupDto extends GeneralDto implements IPagination
 		}
 
 		return langKindMap;
+	}
+
+	public boolean isEmpty()
+	{
+		return (ugSeq == null);
+	}
+
+	public boolean isNotEmpty()
+	{
+		return !isEmpty();
 	}
 }

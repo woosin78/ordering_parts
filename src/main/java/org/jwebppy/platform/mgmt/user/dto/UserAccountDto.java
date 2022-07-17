@@ -96,4 +96,14 @@ public class UserAccountDto extends GeneralDto
 	{
 		return !isPasswordLocked() && !isAccountLocked() && isValidPeriod();
 	}
+
+	public boolean isEmpty()
+	{
+		return (uSeq == null);
+	}
+
+	public boolean isNotEmpty()
+	{
+		return !isEmpty();
+	}
 }

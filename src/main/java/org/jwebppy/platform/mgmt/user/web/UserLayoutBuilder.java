@@ -14,6 +14,7 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
+import org.jwebppy.platform.core.web.ui.dom.Link;
 import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
 import org.jwebppy.platform.core.web.ui.dom.form.Input;
 import org.jwebppy.platform.core.web.ui.dom.form.InputPassword;
@@ -91,6 +92,10 @@ public class UserLayoutBuilder
 
 	public static Document viewGeneralInfo(UserDto user)
 	{
+		Link loUserGroup = new Link(user.getUserGroup().getName() + " - " + user.getUserGroup().getDescription());
+		loUserGroup.setClass("user-group");
+		loUserGroup.setKey(user.getUserGroup().getUgSeq());
+
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 		elementMap.put("Last Name", user.getLastName());
 		elementMap.put("First Name", user.getFirstName());
@@ -98,7 +103,7 @@ public class UserLayoutBuilder
 		elementMap.put("Organization", user.getOrganization());
 		elementMap.put("Position", user.getPosition());
 		elementMap.put("Department", user.getDepartment());
-		elementMap.put("User Group", user.getUserGroup().getName() + " - " + user.getUserGroup().getDescription());
+		elementMap.put("User Group", loUserGroup);
 		elementMap.put("Language", user.getDisplayLanguage());
 		elementMap.put("Reg.Username", user.getRegUsername());
 		elementMap.put("Reg.Date", user.getDisplayRegDate());
@@ -176,8 +181,17 @@ public class UserLayoutBuilder
 	{
 		UserPasswordChangeHistoryDto userPasswordChangeHistory = userAccount.getUserPasswordChangeHistory();
 
+		Link loCredentialPolicy = null;
+
+		if (ObjectUtils.isNotEmpty(credentialPolicy))
+		{
+			loCredentialPolicy = new Link(credentialPolicy.getName() + " - " + credentialPolicy.getDescription());
+			loCredentialPolicy.setClass("credentials-policy");
+			loCredentialPolicy.setKey(credentialPolicy.getCpSeq());
+		}
+
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Credentials Policy", (ObjectUtils.isNotEmpty(credentialPolicy)) ? credentialPolicy.getName() + " - " + credentialPolicy.getDescription() : "");
+		elementMap.put("Credentials Policy", loCredentialPolicy);
 		elementMap.put("Username", userAccount.getUsername());
 		elementMap.put("Account Locked", userAccount.getFgAccountLocked());
 		elementMap.put("Password Locked", userAccount.getFgPasswordLocked());
@@ -197,8 +211,12 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document writeAccountInfo(UserAccountDto userAccount, List<CredentialsPolicyDto> credentialPolicies)
+	public static Document writeAccountInfo(UserDto user, List<CredentialsPolicyDto> credentialPolicies)
 	{
+		UserAccountDto userAccount = user.getUserAccount();
+		UserGroupDto userGroup = user.getUserGroup();
+		CredentialsPolicyDto credentialsPolicy = ObjectUtils.defaultIfNull(userAccount.getCredentialsPolicy(), userGroup.getCredentialsPolicy());
+
 		InputPassword loPassword = new InputPassword("password");
 		loPassword.setLabel("Password");
 		loPassword.addAttribute("autofocus");
@@ -226,13 +244,7 @@ public class UserLayoutBuilder
 		Select loCredentialPolicy = new Select("cpSeq");
 		loCredentialPolicy.setLabel("Credential Policy");
 		loCredentialPolicy.setRequired(true);
-
-		CredentialsPolicyDto credentialsPolicy = userAccount.getCredentialsPolicy();
-
-		if (credentialsPolicy != null)
-		{
-			loCredentialPolicy.setValue(credentialsPolicy.getCpSeq());
-		}
+		loCredentialPolicy.setValue(credentialsPolicy.getCpSeq());
 
 		for (CredentialsPolicyDto credentialPolicy: ListUtils.emptyIfNull(credentialPolicies))
 		{
@@ -294,7 +306,6 @@ public class UserLayoutBuilder
 	{
 		Input loEmail = new Input("email", userContactInfo.getEmail());
 		loEmail.setLabel("Email");
-		//loEmail.setRequired(true);
 
 		Element loTelephone = new Element("group");
 		loTelephone.addAttribute("type", "form");
@@ -372,17 +383,23 @@ public class UserLayoutBuilder
 
 	public static Document viewAuthority(List<CItemDto> cItems)
 	{
-		Document document = new Document();
+		Map<String, Object> elementMap = new LinkedHashMap<>();
 
-		if (CollectionUtils.isNotEmpty(cItems))
+		for (CItemDto cItem : ListUtils.emptyIfNull(cItems))
 		{
-			for (CItemDto cItem : cItems)
-			{
-				String prefix = "[" + cItem.getType().getType() + "] ";
+			Link loAuthority = new Link(cItem.getName());
+			loAuthority.setClass("authority");
+			loAuthority.setKey(cItem.getCSeq());
+			loAuthority.addAttribute("data-type", cItem.getType());
 
-				document.addElement(PlatformLayoutBuildUtils.defaultLabelText(prefix + cItem.getName(), cItem.getDescription()));
-			}
+			StringBuilder name = new StringBuilder();
+			name.append("[").append(cItem.getType().getType()).append( "] ").append(cItem.getDescription());
+
+			elementMap.put(name.toString(), loAuthority);
 		}
+
+		Document document = new Document();
+		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
 
 		return document;
 	}

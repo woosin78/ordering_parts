@@ -44,10 +44,12 @@ Popup.open = function(url, width, height, fgCenter, fgScrollbars)
 	
 	try
 	{
-		popup.focus();   
+		popup.focus();
 	}
 	catch (e)
 	{
 		alert("[[#{PTL_M_POPUP_BLOCKED}]]");
-	};	
+	};
+	
+	return popup;
 };

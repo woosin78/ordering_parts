@@ -7,9 +7,9 @@
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_T_ORDER_STATUS}"></div><!-- Order Status -->	
 		<div class="block-button-area">		
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 			<button id="BTN_download" type="button" th:text="#{HQP_B_DOWNLOAD}"></button><!-- Download -->
 			<button id="BTN_totalDownload" type="button" th:text="#{HQP_B_TOTAL_DOWNLOAD}"></button><!-- Total Download -->
-			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 		</div>
 	</div>
 	<div class="condition-area">
@@ -149,10 +149,14 @@ $(function(){
 		$("#poNo").val(rowData.BSTKD);			
 		$("#orderDate").val(rowData.ERDAT);
 		
+		/*
 		$("#FORM_search").attr({
 			"target": "_self",
 			"action": "[[${BASE_PATH}]]/order/status/view"
 		}).submit();
+		*/
+		
+		Popup.open("[[${BASE_PATH}]]/order/status/popup/view?" + $("#FORM_search").serialize());
 	});
 	
 	//처음 접속 시에는 검색 실행하지 않음. 조회->상세보기->조회로 이동했을 때 화면 로딩과 함께 자동으로 검색이 실행되도록 할 때 사용

@@ -86,9 +86,4 @@ public class UserGroupService extends GeneralService
 	{
 		return CmModelMapperUtils.mapToDto(UserGroupObjectMapper.INSTANCE, userGroupMapper.findPageUserGroups(userGroupSearch));
 	}
-
-	public UserGroupDto getDefaultUserGroupIfEmpty(UserGroupSearchDto userGroupSearch)
-	{
-		return null;
-	}
 }

@@ -73,6 +73,14 @@ public class OrderStatusController extends PartsDomesticGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
+	@RequestMapping("/popup/view")
+	public Object viewPopup(@RequestParam Map<String, Object> paramMap, Model model, WebRequest webRequest)
+	{
+		addAllAttributeFromRequest(model, webRequest);
+
+		return DEFAULT_VIEW_URL;
+	}
+
 	@RequestMapping("/view/data")
 	@ResponseBody
 	public Object viewData(@RequestParam Map<String, Object> paramMap)

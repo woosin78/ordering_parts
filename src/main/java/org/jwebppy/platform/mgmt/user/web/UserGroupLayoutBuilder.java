@@ -82,9 +82,14 @@ public class UserGroupLayoutBuilder
 	{
 		SapConnResourceDto sapConnResource = userGroup.getSapConnResource();
 
-		Link loSapConnResource = new Link(sapConnResource.getName() + " - " + sapConnResource.getDescription());
-		loSapConnResource.setClass("sap-conn-resource");
-		loSapConnResource.setKey(sapConnResource.getScrSeq());
+		Link loSapConnResource = null;
+
+		if (sapConnResource.isNotEmpty())
+		{
+			loSapConnResource = new Link(sapConnResource.getName() + " - " + sapConnResource.getDescription());
+			loSapConnResource.setClass("sap-conn-resource");
+			loSapConnResource.setKey(sapConnResource.getScrSeq());
+		}
 
 		CredentialsPolicyDto credentialsPolicy = userGroup.getCredentialsPolicy();
 

@@ -5,10 +5,6 @@
 	layout:decorate="~{platform/layout/popup/index}">
 
 <th:block layout:fragment="content">
-<div class="ui dividing header">
-	SAP Connection Resource
-	<div class="sub header">This platform offers how to access functions of SAP using JCO and you need to set up the connection info. first.</div>
-</div>
 <div class="ui one column grid">
 	<div class="column">
 		<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
@@ -40,6 +36,9 @@
 	</div>
 </div>
 <script>
+//팝업 Title
+const POPUP_TITLE = "SAP Connection Resource";
+
 $(document).ready(function() {
 	let mode = "[[${mode}]]";
 	
@@ -229,7 +228,7 @@ $(document).ready(function() {
 	
 	function goBack()
 	{
-		document.location.href = JpUtilsPath.url("/platform/mgmt/conn_resource/view?scrSeq=" + $("#scrSeq").val());
+		document.location.href = JpUtilsPath.url("/platform/mgmt/conn_resource/view?scrSeq=${scrSeq}");
 	};	
 });
 </script>

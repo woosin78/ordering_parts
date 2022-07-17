@@ -20,9 +20,6 @@ import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
-import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
-import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
-import org.jwebppy.platform.mgmt.user.dto.UserDto;
 
 public class AuthorityLayoutBuilder
 {
@@ -125,54 +122,6 @@ public class AuthorityLayoutBuilder
 		document.addElement(loToValid);
 		document.addElement(loFgVisible);
 		document.addElement(loSort);
-
-		return document;
-	}
-
-	public static Document listUser(List<UserDto> users)
-	{
-		Tr thTr = new Tr();
-		thTr.addTextTh("Status", "one wide");
-		thTr.addTextTh("Username", "two wide");
-		thTr.addTextTh("Name", "three wide");
-		thTr.addTextTh("E-mail", "four wide");
-		thTr.addTextTh("Company", "four wide");
-		thTr.addTextTh("User Group", "two wide");
-
-		Thead thead = new Thead();
-		thead.addTr(thTr);
-
-		Tbody tbody = new Tbody();
-
-		if (CollectionUtils.isNotEmpty(users))
-		{
-			for (UserDto user : users)
-			{
-				UserAccountDto userAccount = user.getUserAccount();
-				UserContactInfoDto userContactInfo = user.getUserContactInfo();
-
-				Tr tbTr = new Tr();
-
-				String status = "<i class='lock icon'></i>";
-
-				if (CmStringUtils.equals(userAccount.getFgAccountLocked(), PlatformCommonVo.NO))
-				{
-					status = "<i class='lock open icon'></i>";
-				}
-
-				tbTr.addTextTd(status);
-				tbTr.addDataKeyLinkTd(userAccount.getUsername(), user.getUSeq(), "uSeq");
-				tbTr.addTextTd(user.getName());
-				tbTr.addTextTd(userContactInfo.getEmail());
-				tbTr.addTextTd(user.getCompany());
-				tbTr.addDataKeyLinkTd(user.getUserGroup().getName(), user.getUserGroup().getUgSeq(), "ugSeq");
-
-				tbody.addTr(tbTr);
-			}
-		}
-
-		Document document = new Document();
-		document.addElement(new Table(thead, tbody));
 
 		return document;
 	}

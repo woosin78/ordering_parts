@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 @Controller
@@ -75,8 +76,8 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 		return dataList;
 	}
 
-	@RequestMapping("/view")
-	public String view(Model model, WebRequest webRequest)
+	@RequestMapping({"/view", "/popup/view"})
+	public String view(Model model, ServletWebRequest webRequest)
 	{
 		model.addAttribute("pFromDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pFromDate"), CmDateFormatUtils.theFirstDateThisMonth()));
 		model.addAttribute("pToDate", CmStringUtils.defaultIfEmpty(webRequest.getParameter("pToDate"), CmDateFormatUtils.today()));
@@ -88,7 +89,7 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 			model.addAttribute("pShipmentNo", webRequest.getParameter("shipmentNo"));
 		}
 
-		return DEFAULT_VIEW_URL;
+		return webRequest.getRequest().getRequestURI();
 	}
 
 	@RequestMapping("/view/data")

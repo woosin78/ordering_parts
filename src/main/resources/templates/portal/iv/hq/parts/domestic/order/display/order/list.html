@@ -174,7 +174,9 @@ $(function(){
 		if (JpUtilsString.isNotEmpty(orderNo))
 		{
 			$("#orderNo").val(orderNo);
-			$("#FORM_search").attr("action", "[[${BASE_PATH}]]/order/display/order/view").submit();
+			//$("#FORM_search").attr("action", "[[${BASE_PATH}]]/order/display/order/popup/view").submit();
+			
+			Popup.open("[[${BASE_PATH}]]/order/display/order/popup/view?" + $("#FORM_search").serialize());
 		};
 	});
 	

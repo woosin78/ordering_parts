@@ -3,6 +3,7 @@ package org.jwebppy.platform.mgmt.user.dto;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
@@ -35,32 +36,17 @@ public class UserDto extends GeneralDto implements IPagination
 
 	public UserAccountDto getUserAccount()
 	{
-		if (userAccount == null)
-		{
-			return new UserAccountDto();
-		}
-
-		return userAccount;
+		return ObjectUtils.defaultIfNull(userAccount, new UserAccountDto());
 	}
 
 	public UserContactInfoDto getUserContactInfo()
 	{
-		if (userContactInfo == null)
-		{
-			return new UserContactInfoDto();
-		}
-
-		return userContactInfo;
+		return ObjectUtils.defaultIfNull(userContactInfo, new UserContactInfoDto());
 	}
 
 	public UserGroupDto getUserGroup()
 	{
-		if (userGroup == null)
-		{
-			return new UserGroupDto();
-		}
-
-		return userGroup;
+		return ObjectUtils.defaultIfNull(userGroup, new UserGroupDto());
 	}
 
 	public String getName()
@@ -93,5 +79,15 @@ public class UserDto extends GeneralDto implements IPagination
 	public String getTimezone()
 	{
 		return CmStringUtils.defaultString(getUserContactInfo().getTimezone(), getUserGroup().getTimezone());
+	}
+
+	public boolean isEmpty()
+	{
+		return (uSeq == null);
+	}
+
+	public boolean isNotEmpty()
+	{
+		return !isEmpty();
 	}
 }

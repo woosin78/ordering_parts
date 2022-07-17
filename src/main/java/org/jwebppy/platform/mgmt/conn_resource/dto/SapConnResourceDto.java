@@ -64,4 +64,14 @@ public class SapConnResourceDto extends GeneralDto implements IPagination
 	{
 		return (CmStringUtils.isNotEmpty(password)) ? AES256Cipher.getInstance().decode(password) : password;
 	}
+
+	public boolean isEmpty()
+	{
+		return (scrSeq == null);
+	}
+
+	public boolean isNotEmpty()
+	{
+		return !isEmpty();
+	}
 }
