@@ -111,8 +111,7 @@ $(function(){
 			}
 		},
 		paging : true, // 페이징 기능켬
-		pageLength: GLOBAL_CONST.ROW_PER_PAGE, // 한 페이지에 20개 행
-		//pageLength: 3,
+		pageLength: parseInt(GLOBAL_CONST.ROW_PER_PAGE), // 한 페이지에 20개 행
 		initComplete:function(settings, json)
 		{
 			ProgressBar.hide();
