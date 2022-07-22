@@ -94,7 +94,7 @@
 									<th:block th:unless="${#lists.isEmpty(bbs1)}">
 										<tr th:each="content, i: ${bbs1}">
 											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="${bbs1Name}" th:title="${bbs1Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(1);" style="cursor: pointer; margin-top: 20px;"/></td>
-											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.board.bSeq}">[[${content.title}]]</a></td>
+											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.bSeq}">[[${content.title}]]</a></td>
 											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
 										</tr>
 										<tr th:if="${#lists.size(bbs1) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(bbs1)-4)}">
@@ -119,7 +119,7 @@
 									<th:block th:unless="${#lists.isEmpty(bbs2)}">
 										<tr th:each="content, i: ${bbs2}">
 											<td rowspan="4" class="bbs-name" th:if="${i.index == 0}"><div class="bulletin-title-text" th:text="${bbs2Name}" th:title="${bbs2Name}"></div><img src="/portal/img/icon/more.png" onclick="goToBoard(2);" style="cursor: pointer; margin-top: 20px;"/></td>
-											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.board.bSeq}">[[${content.title}]]</a></td>
+											<td class="bbs-title">・<a class="link" th:data-key="${content.bcSeq}" th:bSeq="${content.bSeq}">[[${content.title}]]</a></td>
 											<td class="bbs-date" th:text="${content.displayRegDate2}"></td>												
 										</tr>
 										<tr th:if="${#lists.size(bbs2) < 4}" th:each="i: ${#numbers.sequence(0, #lists.size(bbs2)-4)}">
