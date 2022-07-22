@@ -595,3 +595,95 @@ input {
 
 a.link {color: #000; cursor: pointer;}
 a.link:hover {text-decoration: underline; color: #4183C4; cursor: pointer;}
+
+/* 데이터 좌우 정렬을 위한 클래스 */
+.center {text-align: center;}
+.left {text-align: left;}
+.right {text-align: right;}
+
+/*--- 검색 조건 영역 ------------------*/
+.condition-area {
+	margin: 5px 40px 5px 40px;
+}
+
+.condition {
+	width: 100%;
+	border-spacing: 0px;
+	border-collapse: separate;
+	border: 1px solid #003081;
+	/* border-radius: 5px; */
+}
+
+.condition th, .condition td{
+	padding: 3px 15px;
+	border-top:1px solid #cfcfcf;
+}
+.condition th {
+	background: #f3f4f7;
+	color: #003081;
+	font-weight: 500;
+	text-align: left;
+	width: 15%;
+	min-width: 100px;
+	padding: 6px 15px;
+}
+.condition th.center {
+	text-align: center;
+}
+.condition th span, .condition th div, .condition th p {
+	color: #003081;
+	float:left;
+}
+.condition tr:first-child th, .condition tr:first-child td{
+    border-top:none; 
+}
+.condition td.wp10{
+	width: 10%;
+}
+.condition td.wp13{
+	width: 13%;
+}
+.condition td.wp15{
+	width: 15%;
+}
+.condition th.checkbox, td.checkbox { width: 50px; position: relative; text-align: center; }
+.condition th.order-no { width: 150px; }
+.condition th.item-line { width: 100px; }
+.condition th.material { width: 200px; }
+.condition th.uom { width: 80px; }
+.condition th.qty { width: 120px; }
+.condition th.weight { width: 150px; }
+.condition th.order-date { width: 120px; }
+.condition th.price { width: 120px; }
+/* condition 테이블 모서리 라운드 처리*/
+
+.condition tr:first-child th:first-child, .condition tr:first-child td:first-child {
+	border-radius: 5px 0 0 0;
+}
+.condition tr:first-child th:last-child, .condition tr:first-child td:last-child {
+	border-radius: 0 5px 0 0;
+}
+.condition tr:last-child th:last-child, .condition tr:last-child td:last-child {
+	border-radius: 0 0 5px 0;
+}
+.condition tr:last-child th:first-child, .condition tr:last-child td:first-child {
+	border-radius: 0 0 0 5px;
+}
+
+.condition-title{
+	font-weight: bold;
+	font-size:16px;
+	margin: 0px 0px 5px 0px; 
+}
+
+.condition-sub-title{
+	font-weight: bold;
+	font-size:14px;
+	margin: 0px 0px 5px 0px; 
+}
+
+.condition-normal-sub-title{
+	font-size:14px;
+	margin: 0px 0px 5px 0px; 
+}
+/*--- 검색 조건 영역 ------------------*/

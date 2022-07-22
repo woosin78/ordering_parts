@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
@@ -28,6 +29,7 @@ import org.jwebppy.portal.iv.hq.parts.domestic.order.create.mapper.OrderCreateMa
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.mapper.OrderHistoryHeaderObjectMapper;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.mapper.OrderHistoryItemObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +61,7 @@ public class OrderCreateService extends PartsDomesticGeneralService
 		return new DataMap(simpleRfcTemplate.response(rfcRequest).getStructure("LS_EP002"));
 	}
 
+	@Cacheable(value = PortalCacheConfig.IVDO_ORDER_TYPE, key = "#paramMap", unless="#result == null")
 	public DataList getOrderType(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_GET_ORDERTYPE2");

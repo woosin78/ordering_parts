@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExOrderDisplayService extends PartsExportGeneralService
 {
-	@Cacheable(value = PortalCacheConfig.EX_ORDER_DISPLAY, key = "#paramMap", unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.IVEX_ORDER_DISPLAY, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(PartsErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_ORDERLIST");

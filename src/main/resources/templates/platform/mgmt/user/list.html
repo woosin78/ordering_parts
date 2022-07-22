@@ -223,9 +223,16 @@ $(document).ready(function() {
 
 		if (JpUtilsString.isNotEmpty(value))
 		{
+			let uSeq = "";
+			
+			if (getCheckedUserCount() > 0)
+			{
+				uSeq = userTable.getCheckedValues().pop();
+			};
+			
 			JpUtilsAjax.get({
 				url: "/platform/mgmt/user/check/valid_credentials",
-				data: { value: value, type: type, cpSeq: $("#FORM_modify select[name=cpSeq]").val() },
+				data: { value: value, type: type, cpSeq: JpUtilsString.trimToEmpty($("#FORM_modify select[name=cpSeq]").val()), uSeq: uSeq },
 				global: false,
 				async: false,
 				success: function(data, textStatus, jqXHR)
@@ -238,7 +245,7 @@ $(document).ready(function() {
 					};
 					
 					let message = JpUtilsString.trimToEmpty(result.MESSAGE);
-
+					
 					if (type == "U")
 					{
 						checkUsernameResultMsg = message;
@@ -248,7 +255,7 @@ $(document).ready(function() {
 						checkPasswordResultMsg = message;
 					};
 				}
-			});
+			});				
 		};
 
 		return isValid;
@@ -637,7 +644,7 @@ $(document).ready(function() {
 		{
 			JpUiDimmer.alert("Please select one.", function() {
 				return;
-			});			
+			});
 		};
 		
 		$("#FORM_copyToCreate").form("reset");

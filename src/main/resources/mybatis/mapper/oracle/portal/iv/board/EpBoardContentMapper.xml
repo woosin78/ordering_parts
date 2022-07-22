@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.portal.iv.board.mapper.EpBoardContentMapper">
-	<resultMap type="EpBoardContentEntity" id="boardContentEntityMap">
+	<resultMap type="EpBoardContentEntity" id="simpleBoardContentEntityMap">
 		<id property="bcSeq" column="bc_seq" />
 		<result property="bSeq" column="b_seq" />
 		<result property="pSeq" column="p_seq" />
@@ -30,10 +30,13 @@
 		<result property="regDate" column="reg_date" />
 		<result property="modUsername" column="mod_username" />
 		<result property="modDate" column="mod_date" />
+	</resultMap>
+	
+	<resultMap type="EpBoardContentEntity" id="boardContentEntityMap" extends="simpleBoardContentEntityMap">
 		<association property="board" foreignColumn="b_seq" column="b_seq" javaType="EpBoardEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardMapper.findBoard" />
 		<collection property="boardContentTargets" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpBoardContentTargetEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardContentTargetMapper.findBoardContentTargets" />
 		<collection property="uploadFileLists" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
-	</resultMap>
+	</resultMap>	
 
 	<insert id="insert" parameterType="EpBoardContentEntity">
 		insert into ep_board_content (bc_seq, b_seq, p_seq, top_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date, width, height) values (
@@ -99,7 +102,7 @@
 		and a.fg_delete='N'
 	</select>
 	
-	<select id="findBoardContents" parameterType="EpBoardContentSearchDto" resultMap="boardContentEntityMap">
+	<select id="findBoardContents" parameterType="EpBoardContentSearchDto" resultMap="simpleBoardContentEntityMap">
 		<include refid="PaginationMapper.header"/>
 
 		select		

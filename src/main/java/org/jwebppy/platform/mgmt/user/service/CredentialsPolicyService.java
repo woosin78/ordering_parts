@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
@@ -18,6 +19,7 @@ import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyVo;
+import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyMapper;
 import org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ public class CredentialsPolicyService extends GeneralService
 
 	@Autowired
 	private I18nMessageSource i18nMessageSource;
+
+	@Autowired
+	private UserService userService;
 
 	public int create(CredentialsPolicyDto credentialsPolicy)
 	{
@@ -88,35 +93,39 @@ public class CredentialsPolicyService extends GeneralService
 
 	public CredentialsPolicyDto getDefaultCredentialPolicyIfEmpty(CredentialsPolicySearchDto credentialsPolicySearch)
 	{
-		CredentialsPolicyDto credentialsPolicy = null;
+		Integer cpSeq = credentialsPolicySearch.getCpSeq();
+		Integer uSeq = credentialsPolicySearch.getUSeq();
 
-		if (credentialsPolicySearch == null)
+		if (ObjectUtils.isEmpty(cpSeq))
 		{
-			credentialsPolicySearch = new CredentialsPolicySearchDto();
+			if (ObjectUtils.isNotEmpty(uSeq))
+			{
+				UserDto user = userService.getUser(uSeq);
+
+				cpSeq = user.getUserGroup().getCredentialsPolicy().getCpSeq();
+			}
 		}
 
-		Integer cpSeq = credentialsPolicySearch.getCpSeq();
-
-		if (cpSeq == null)
+		//Get default credentials policy
+		if (ObjectUtils.isEmpty(cpSeq))
 		{
-			//pltf_user 에 user_group 필드 추가. 사용자 그룹 별로 각각의 credential policy 가 관리되도록 개선 필요
-			credentialsPolicySearch.setName(credentialsPolicySearch.getName());
-			credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
-			credentialsPolicySearch.setFgDefault(PlatformCommonVo.YES);
+			CredentialsPolicySearchDto credentialsPolicySearch2 = new CredentialsPolicySearchDto();
+			credentialsPolicySearch2.setFgUse(PlatformCommonVo.YES);
+			credentialsPolicySearch2.setFgDefault(PlatformCommonVo.YES);
 
-			List<CredentialsPolicyDto> credentialsPolicies = getCredentialsPolicies(credentialsPolicySearch);
+			List<CredentialsPolicyDto> credentialsPolicies = getCredentialsPolicies(credentialsPolicySearch2);
 
 			if (CollectionUtils.isNotEmpty(credentialsPolicies))
 			{
-				credentialsPolicy = credentialsPolicies.get(0);
+				return credentialsPolicies.get(0);
 			}
 		}
 		else
 		{
-			credentialsPolicy = getCredentialPolicy(cpSeq);
+			return getCredentialPolicy(cpSeq);
 		}
 
-		return credentialsPolicy;
+		return null;
 	}
 
 	public List<CredentialsPolicyDto> getCredentialsPolicies(CredentialsPolicySearchDto credentialsPolicySearch)

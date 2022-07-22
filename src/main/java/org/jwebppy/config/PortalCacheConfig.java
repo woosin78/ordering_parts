@@ -19,6 +19,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class PortalCacheConfig
 {
+	//DIVEU, DIVUK
 	public static final String CUSTOMER = "Customer";
 	public static final String ORDER_TYPE = "OrderType";
 	public static final String ORDER_DISPLAY = "OrderDisplay";
@@ -40,9 +41,14 @@ public class PortalCacheConfig
 	public static final String DEALER_INFO_AUTOCOMPLETE = "DealerInfoAutoComplete";
 	public static final String BUSINESS_TOOLS = "BusinessTools";
 
-	public static final String EX_ORDER_DISPLAY = "ExOrderDisplay";
-	public static final String EX_BACKORDER = "ExBackorder";
-	public static final String EX_ORDER_STATUS = "ExOrderStatus";
+	//DIVK Domestic
+	public static final String IVDO_ORDER_TYPE = "IVDO_OrderType";
+
+	//DIVK Export
+	public static final String IVEX_ORDER_TYPE = "IVEX_OrderType";
+	public static final String IVEX_ORDER_DISPLAY = "IVEX_OrderDisplay";
+	public static final String IVEX_BACKORDER = "IVEX_Backorder";
+	public static final String IVEX_ORDER_STATUS = "IVEX_OrderStatus";
 
 	public static final int TTL_1_MINUTES = 60;
 	public static final int TTL_5_MINUTES = 5*60;
@@ -85,9 +91,12 @@ public class PortalCacheConfig
 		redisCacheConfigurationMap.put(DEALER_INFO_AUTOCOMPLETE, getTtl(TTL_24_HOURS));
 		redisCacheConfigurationMap.put(BUSINESS_TOOLS, getTtl(TTL_1_HOUR));
 
-		redisCacheConfigurationMap.put(EX_ORDER_DISPLAY, getTtl(TTL_20_MINUTES));
-		redisCacheConfigurationMap.put(EX_BACKORDER, getTtl(TTL_20_MINUTES));
-		redisCacheConfigurationMap.put(EX_ORDER_STATUS, getTtl(TTL_20_MINUTES));
+		redisCacheConfigurationMap.put(IVDO_ORDER_TYPE, getTtl(TTL_1_HOUR));
+
+		redisCacheConfigurationMap.put(IVEX_ORDER_TYPE, getTtl(TTL_1_HOUR));
+		redisCacheConfigurationMap.put(IVEX_ORDER_DISPLAY, getTtl(TTL_20_MINUTES));
+		redisCacheConfigurationMap.put(IVEX_BACKORDER, getTtl(TTL_20_MINUTES));
+		redisCacheConfigurationMap.put(IVEX_ORDER_STATUS, getTtl(TTL_20_MINUTES));
 
 		return RedisCacheManager.RedisCacheManagerBuilder
 				.fromConnectionFactory(redisConnectionFactory)

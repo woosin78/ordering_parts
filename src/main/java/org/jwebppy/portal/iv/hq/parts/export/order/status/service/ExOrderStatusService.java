@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExOrderStatusService extends PartsExportGeneralService
 {
-	@Cacheable(value = PortalCacheConfig.EX_ORDER_STATUS, key = "#paramMap", unless="#result == null")
+	@Cacheable(value = PortalCacheConfig.IVEX_ORDER_STATUS, key = "#paramMap", unless="#result == null")
 	public RfcResponse getList(ErpDataMap paramMap)
 	{
 		String fromDate = paramMap.getString("fromDate");

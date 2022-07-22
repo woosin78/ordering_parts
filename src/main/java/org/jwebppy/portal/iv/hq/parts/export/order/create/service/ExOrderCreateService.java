@@ -31,6 +31,7 @@ import org.jwebppy.portal.iv.hq.parts.export.order.create.mapper.ExOrderHistoryH
 import org.jwebppy.portal.iv.hq.parts.export.order.create.mapper.ExOrderHistoryItemObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +61,7 @@ public class ExOrderCreateService extends PartsExportGeneralService
 		return new DataMap(simpleRfcTemplate.response(rfcRequest).getStructure("LS_EP002"));
 	}
 
+	@Cacheable(value = PortalCacheConfig.IVEX_ORDER_TYPE, key = "#paramMap", unless="#result == null")
 	public DataList getOrderType(ErpDataMap paramMap)
 	{
 		RfcRequest rfcRequest = new RfcRequest("ZSS_PARA_DIV_EP_GET_ORDERTYPE2");
@@ -180,9 +182,9 @@ public class ExOrderCreateService extends PartsExportGeneralService
 
 	@Caching(
 			evict = {
-					@CacheEvict (value = PortalCacheConfig.EX_ORDER_DISPLAY, allEntries = true),
-					@CacheEvict (value = PortalCacheConfig.EX_BACKORDER, allEntries = true),
-					@CacheEvict (value = PortalCacheConfig.EX_ORDER_STATUS, allEntries = true)
+					@CacheEvict (value = PortalCacheConfig.IVEX_ORDER_DISPLAY, allEntries = true),
+					@CacheEvict (value = PortalCacheConfig.IVEX_BACKORDER, allEntries = true),
+					@CacheEvict (value = PortalCacheConfig.IVEX_ORDER_STATUS, allEntries = true)
 			})
 	public RfcResponse save(ExOrderDto order)
 	{

@@ -12,6 +12,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
@@ -75,6 +76,9 @@ public class LogController extends LoggingGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
+		model.addAttribute("fromDate", CmDateFormatUtils.format(CmDateTimeUtils.now().minusDays(1)));
+		model.addAttribute("toDate", CmDateFormatUtils.now());
+
 		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
