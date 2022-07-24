@@ -34,14 +34,14 @@ public class PartsDomesticController extends PartsDomesticGeneralController
 		boardContentSearch.setCorp(getCorp());
 		model.addAttribute("bSeq1", bSeq1);
 		model.addAttribute("bbs1Name", i18nMessageSource.getMessage("PLTF_T_" + bSeq1));
-		model.addAttribute("bbs1", ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch)));
+		model.addAttribute("bbs1", ListUtils.emptyIfNull(boardContentService.getPageableBoardContents(boardContentSearch)));
 
 		//부품장터
 		String bSeq2 = "1-92953403-226b-494e-9c63-55763f8bbb8b";
 		boardContentSearch.setBSeq(bSeq2);
 		model.addAttribute("bSeq2", bSeq2);
 		model.addAttribute("bbs2Name", i18nMessageSource.getMessage("PLTF_T_" + bSeq2));
-		model.addAttribute("bbs2", ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch)));
+		model.addAttribute("bbs2", ListUtils.emptyIfNull(boardContentService.getPageableBoardContents(boardContentSearch)));
 
 		addAllAttributeFromRequest(model, webRequest);
 

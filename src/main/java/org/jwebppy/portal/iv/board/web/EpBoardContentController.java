@@ -78,7 +78,7 @@ public class EpBoardContentController extends IvGeneralController
 		boardContentSearch.setCorp(getCorp());
 		boardContentSearch.setRowPerPage(999999);
 
-		return ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch));
+		return ListUtils.emptyIfNull(boardContentService.getPageableBoardContents(boardContentSearch));
 	}
 
 	@RequestMapping("/popup/list/data")
@@ -90,7 +90,7 @@ public class EpBoardContentController extends IvGeneralController
 		boardContentSearch.setCustCode(getErpUserContext().getCustCode());
 		boardContentSearch.setFgPopup(PortalCommonVo.YES);
 
-		return ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch));
+		return ListUtils.emptyIfNull(boardContentService.getPageableBoardContents(boardContentSearch));
 	}
 
 	@RequestMapping("/view")

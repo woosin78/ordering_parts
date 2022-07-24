@@ -5,6 +5,18 @@
 	<resultMap type="EpBoardContentEntity" id="simpleBoardContentEntityMap">
 		<id property="bcSeq" column="bc_seq" />
 		<result property="bSeq" column="b_seq" />
+		<result property="depth" column="depth" />
+		<result property="uSeq" column="u_seq" />
+		<result property="title" column="title" />
+		<result property="views" column="views" />
+		<result property="writer" column="writer" />
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+	</resultMap>
+
+	<resultMap type="EpBoardContentEntity" id="boardContentEntityMap">
+		<id property="bcSeq" column="bc_seq" />
+		<result property="bSeq" column="b_seq" />
 		<result property="pSeq" column="p_seq" />
 		<result property="topSeq" column="top_seq" />
 		<result property="sort" column="sort" />
@@ -30,13 +42,10 @@
 		<result property="regDate" column="reg_date" />
 		<result property="modUsername" column="mod_username" />
 		<result property="modDate" column="mod_date" />
-	</resultMap>
-	
-	<resultMap type="EpBoardContentEntity" id="boardContentEntityMap" extends="simpleBoardContentEntityMap">
 		<association property="board" foreignColumn="b_seq" column="b_seq" javaType="EpBoardEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardMapper.findBoard" />
 		<collection property="boardContentTargets" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpBoardContentTargetEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardContentTargetMapper.findBoardContentTargets" />
-		<collection property="uploadFileLists" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
-	</resultMap>	
+		<collection property="uploadFileLists" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />		
+	</resultMap>
 
 	<insert id="insert" parameterType="EpBoardContentEntity">
 		insert into ep_board_content (bc_seq, b_seq, p_seq, top_seq, sort, depth, u_seq, title, html_content, text_content, from_view, to_view, views, writer, etc1, etc2, etc3, etc4, etc5, etc6, fg_delete, reg_username, reg_date, width, height) values (
@@ -102,77 +111,80 @@
 		and a.fg_delete='N'
 	</select>
 	
-	<select id="findBoardContents" parameterType="EpBoardContentSearchDto" resultMap="simpleBoardContentEntityMap">
+	<select id="findPageableBoardContents" parameterType="EpBoardContentSearchDto" resultMap="simpleBoardContentEntityMap">
 		<include refid="PaginationMapper.header"/>
-
-		select		
-		z.*
+		select
+		a.bc_seq,
+		a.b_seq,
+		a.depth,
+		a.u_seq,
+		a.title,
+		a.views,
+		a.writer,
+		a.reg_username,
+		a.reg_date
 		from
-		(
-			select			
-			a.*
-			from
-			ep_board_content a,
-			ep_board b
-			where
-			a.b_seq=#{bSeq}
-			and a.fg_delete='N'
-			and a.b_seq=b.b_seq
-			and b.fg_delete='N'
-			and b.corp=#{corp}
-			
-			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(title)">
-				and upper(a.title) like '%'||upper(#{title})||'%'
-			</if>
-			
-			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(writer)">
-				and upper(a.writer) like '%'||upper(#{writer})||'%'
-			</if>
-			
-			<choose>
-				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
-					and a.reg_date <![CDATA[>=]]> #{fromRegDateForDb} and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
-				</when>
-				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate)">
-					and a.reg_date <![CDATA[>=]]> #{fromRegDateForDb}
-				</when>
-				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
-					and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
-				</when>
-			</choose>
-			
-			<choose>
-				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
-					and a.from_view <![CDATA[>]]> #{fromView} and a.to_view <![CDATA[<=]]> #{toView}
-				</when>
-				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView)">
-					and a.from_view <![CDATA[>]]> #{fromView}
-				</when>
-				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
-					and a.to_view <![CDATA[<=]]> #{toView}
-				</when>
-			</choose>
-			
-			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@equals(fgPopup, 'Y')">
-				and nvl(a.from_view, sysdate-1) <![CDATA[<]]> sysdate and nvl(a.to_view, sysdate+1) <![CDATA[>=]]> sysdate
-				and
-				(
-					(select count(1) from ep_board_content_target where bc_seq=a.bc_seq and fg_delete='N') = 0
-					or exists (
-						select
-						1
-						from
-						ep_board_content_target
-						where
-						bc_seq=a.bc_seq
-						and code=#{custCode}
-						and fg_delete='N'
-					)					
-				)				
-			</if>
-	
-			order by a.top_seq desc, a.sort, a.depth
-		) z
+		ep_board_content a,
+		ep_board b
+		where
+		a.b_seq=#{bSeq}
+		and b.b_seq=#{bSeq}
+		and a.fg_delete='N'
+		and a.b_seq=b.b_seq
+		and b.fg_delete='N'
+		and b.corp=#{corp}
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(title)">
+			and upper(a.title) like '%'||upper(#{title})||'%'
+		</if>
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(writer)">
+			and upper(a.writer) like '%'||upper(#{writer})||'%'
+		</if>
+		
+		<choose>
+			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
+				and a.reg_date <![CDATA[>=]]> #{fromRegDateForDb} and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
+			</when>
+			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate)">
+				and a.reg_date <![CDATA[>=]]> #{fromRegDateForDb}
+			</when>
+			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
+				and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
+			</when>
+		</choose>
+		
+		<choose>
+			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
+				and a.from_view <![CDATA[>]]> #{fromView} and a.to_view <![CDATA[<=]]> #{toView}
+			</when>
+			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromView)">
+				and a.from_view <![CDATA[>]]> #{fromView}
+			</when>
+			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toView)">
+				and a.to_view <![CDATA[<=]]> #{toView}
+			</when>
+		</choose>
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@equals(fgPopup, 'Y')">
+			and nvl(a.from_view, sysdate-1) <![CDATA[<]]> sysdate and nvl(a.to_view, sysdate+1) <![CDATA[>=]]> sysdate
+			and
+			(
+				(select count(1) from ep_board_content_target where bc_seq=a.bc_seq and fg_delete='N') = 0
+				or exists (
+					select
+					1
+					from
+					ep_board_content_target
+					where
+					bc_seq=a.bc_seq
+					and code=#{custCode}
+					and fg_delete='N'
+				)					
+			)				
+		</if>
+
+		order by a.top_seq desc, a.sort, a.depth
 
 		<include refid="PaginationMapper.footer"/>
 	</select>

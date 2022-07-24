@@ -167,8 +167,8 @@ public class EpBoardContentService extends IvGeneralService
 		return CmModelMapperUtils.mapToDto(EpBoardContentObjectMapper.INSTANCE, boardContentMapper.findBoardContent(bcSeq));
 	}
 
-	public List<EpBoardContentDto> getBoardContents(EpBoardContentSearchDto boardContentSearch)
+	public List<EpBoardContentDto> getPageableBoardContents(EpBoardContentSearchDto boardContentSearch)
 	{
-		return CmModelMapperUtils.mapToDto(EpBoardContentObjectMapper.INSTANCE, boardContentMapper.findBoardContents(boardContentSearch));
+		return CmModelMapperUtils.mapToDto(EpBoardContentObjectMapper.INSTANCE, boardContentMapper.findPageableBoardContents(boardContentSearch));
 	}
 }

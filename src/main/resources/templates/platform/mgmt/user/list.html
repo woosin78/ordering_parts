@@ -617,7 +617,16 @@ $(document).ready(function() {
 					});
 					
 					$("a.authority").on("click", function() {
-						_showAuthority({type: $(this).attr("data-type"), cSeq: $(this).attr("data-key")});
+						let type = $(this).attr("data-type");
+						
+						if (type == "G")
+						{
+							_showAuthority({type: $(this).attr("data-type"), cSeq: $(this).attr("data-key")});	
+						}
+						else if (type == "R")
+						{
+							_showContent({cSeq: $(this).attr("data-key")});
+						};
 					});
 				}
 			}

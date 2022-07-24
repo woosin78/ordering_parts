@@ -35,7 +35,7 @@
 		</div>
 		<div class="four wide field">
 			<div id="BTN_search" class="ui teal button"><i class="search icon"></i> Search</div>
-			<div class="ui button" onclick="document.location.reload()"><i class="redo icon"></i> Reset</div>
+			<div class="ui button" onclick="document.location.href = window.location.pathname"><i class="redo icon"></i> Reset</div>
 		</div>
 	</div>
 </div>
@@ -331,6 +331,17 @@ $(document).ready(function() {
 						
 						$("#FORM_modifyAuthority input[type=text]:first").select();
 						$("input[type=text]").on("click", function() { $(this).select(); });
+					}
+					else
+					{
+						if (tabPath == "authority")
+						{
+							$("a.authority").on("click", function() {
+								_showContent({
+									cSeq: $(this).attr("data-key")
+								});
+							});							
+						};
 					};
 
 					changeButtonStatus();

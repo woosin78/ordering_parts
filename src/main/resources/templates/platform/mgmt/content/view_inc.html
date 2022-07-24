@@ -339,11 +339,8 @@ tree.pasteItem = function(key, pKey)
 };
 tree.newWindow = function(key, pKey)
 {
-	JpUiPopup.open({
-		url: "/platform/mgmt/content/popup/view?cSeq=" + key,
-		fgScrollbars: GLOBAL_CONST.YES,
-		width: screen.availWidth * 0.7,
-		height: screen.availHeight * 0.8
+	_showContent({
+		cSeq: key
 	});
 };
 tree.setUrl("/platform/mgmt/content/tree?cSeq=[[${cSeq}]]");

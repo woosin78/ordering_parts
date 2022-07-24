@@ -13,13 +13,8 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
-import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
-import org.jwebppy.platform.mgmt.content.dto.CItemType;
-import org.jwebppy.platform.mgmt.content.service.ContentService;
-import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.logging.LoggingGeneralController;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogSearchDto;
@@ -33,7 +28,7 @@ import org.jwebppy.platform.mgmt.upload.service.UploadFileListService;
 import org.jwebppy.platform.mgmt.upload.service.UploadFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,7 +39,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-import org.thymeleaf.util.ListUtils;
 
 @Controller
 @RequestMapping(PlatformConfigVo.CONTEXT_PATH + "/mgmt/log")
@@ -55,8 +49,6 @@ public class LogController extends LoggingGeneralController
 	@Value("${file.upload.rootPath}")
 	private String FILE_UPLOAD_ROOT_PATH;
 
-	@Autowired
-	private ContentService contentService;
 
 	@Autowired
 	private DataAccessLogService dataAccessLogService;
@@ -64,8 +56,9 @@ public class LogController extends LoggingGeneralController
 	@Autowired
 	private DataAccessResultLogService dataAccessResultLogService;
 
+
 	@Autowired
-	private I18nMessageSource i18nMessageSource;
+	private LogAuthorityChecker logAuthorityChecker;
 
 	@Autowired
 	private UploadFileService uploadFileService;
@@ -74,10 +67,10 @@ public class LogController extends LoggingGeneralController
 	private UploadFileListService uploadFileListService;
 
 	@RequestMapping("/list")
+	@PreAuthorize("@logAuthorityChecker.hasRead()")
 	public String list(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("fromDate", CmDateFormatUtils.format(CmDateTimeUtils.now().minusDays(1)));
-		model.addAttribute("toDate", CmDateFormatUtils.now());
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -86,13 +79,15 @@ public class LogController extends LoggingGeneralController
 
 	@GetMapping("/list/layout")
 	@ResponseBody
+	@PreAuthorize("@logAuthorityChecker.hasRead()")
 	public Object listLayout(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
 	{
 		return LogLayoutBuilder.pageableList(new PageableList<>(dataAccessLogService.getPageableLogs(dataAccessLogSearch)));
 	}
 
 	@GetMapping("/view")
-	public String view(@ModelAttribute("dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch, Model model)
+	@PreAuthorize("@logAuthorityChecker.hasRead()")
+	public String view(@ModelAttribute("dataAccessLogSearch") DataAccessLogSearchDto dataAccessLogSearch, Model model, WebRequest webRequest)
 	{
 		DataAccessLogDto dataAccessLog = dataAccessLogService.getLog(dataAccessLogSearch.getDlSeq());
 
@@ -103,11 +98,14 @@ public class LogController extends LoggingGeneralController
 
 		model.addAttribute("dataAccessLog", dataAccessLog);
 
+		addAllAttributeFromRequest(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 
 	@GetMapping("/view/layout/{tabPath}")
 	@ResponseBody
+	@PreAuthorize("@logAuthorityChecker.hasRead()")
 	public Object viewLayout(@PathVariable("tabPath") String tabPath, @RequestParam("dlSeq") String dlSeq)
 	{
 		if ("parameter".equals(tabPath))
@@ -133,6 +131,7 @@ public class LogController extends LoggingGeneralController
 
 	@GetMapping("/rfc/execute")
 	@ResponseBody
+	@PreAuthorize("@logAuthorityChecker.hasWrite()")
 	public Object execute(@RequestParam("dlSeq") String dlSeq)
 	{
 		return dataAccessLogService.execute(dlSeq);
@@ -140,7 +139,7 @@ public class LogController extends LoggingGeneralController
 
 	@PostMapping("/view/download")
 	@ResponseBody
-	public Object download(@RequestParam("html") String html, @RequestParam("dlSeq") String dlSeq)
+	public Object download(@RequestParam("html") String html, @RequestParam("dlSeq") String dlSeq, @RequestParam("type") String type)
 	{
 		String templete = "<!DOCTYPE html>";
 		templete += "<html>";
@@ -173,7 +172,7 @@ public class LogController extends LoggingGeneralController
 
 			String path = FILE_UPLOAD_ROOT_PATH + File.separator + uploadFile.getPath();
 			String now = CmDateFormatUtils.defaultZonedFormat(LocalDateTime.now(), PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
-			String originName = command + "_" + UserAuthenticationUtils.getUsername() + "_" + now + ".html";
+			String originName = "[" + type.toUpperCase() + "] " + command + "_" + UserAuthenticationUtils.getUsername() + "_" + now + ".html";
 			String savedName = System.nanoTime() + ".html";
 
 			FileUtils.forceMkdir(new File(path));
@@ -203,12 +202,14 @@ public class LogController extends LoggingGeneralController
 
 	@GetMapping("/shortcut/list/data")
 	@ResponseBody
-	public Object shourtcutListData(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
+	@PreAuthorize("@logAuthorityChecker.hasRead()")
+	public Object shortcutListData(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
 	{
+		/*
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setUsername(CmStringUtils.defaultIfEmpty(UserAuthenticationUtils.getUserDetails().getRealUsername(), getUsername()));
 		cItemSearch.setType(CItemType.G);
-		cItemSearch.setNames(new String[] {"DP_SAP_RFC_LOG_READ", "DP_SAP_RFC_LOG_WRITE"});
+		cItemSearch.setNames(new String[] {"DP_SAP_RFC_LOG_READ", "DP_SAP_RFC_LOG_EXECUTE"});
 
 		boolean hasAuthority = !ListUtils.isEmpty(contentService.getMyItems(cItemSearch));
 
@@ -216,6 +217,7 @@ public class LogController extends LoggingGeneralController
 		{
 			throw new AccessDeniedException(i18nMessageSource.getMessage("PLTF_M_NOT_AUTHORIZED"));
 		}
+		*/
 
 		dataAccessLogSearch.setRegUsername(getUsername());
 

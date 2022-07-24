@@ -1,0 +1,108 @@
+<script>
+$("body").scroll(function() {
+	if ($(this).scrollTop() > 200)
+	{
+		$("#BTN_moveToTop").fadeIn();
+	}
+	else
+	{
+		$("#BTN_moveToTop").fadeOut();
+	};
+});
+
+$("#BTN_moveToTop").click(function() {
+	$("html, body").animate({ scrollTop : 0 }, 400);
+	return false;
+});
+
+function _checkExpiredPassword()
+{
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/user/check/expired_password",
+		global: false,
+		success: function(data, textStatus, jqXHR)
+		{
+			let result = data.RESULT;
+			
+			let difference = parseInt(result.difference);
+			
+			if (difference < 15)
+			{
+				if (difference < 0)
+				{
+					JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
+						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});
+				}
+				else
+				{
+					let message = "[[#{PLTF_M_PASSWORD_EXPIRE_DATE_NOTICE}]]".replace("{0}", result.expiredDate);
+					
+					JpUiDimmer.confirm(message, function() {
+						document.location.href = "[[${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";
+					});					
+				};
+
+			};
+		}
+	});
+};
+
+/*
+ * 공통 함수
+ */
+//User
+function _showUser(params)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/user/list?" + JpUtilsPath.jsonToQueryString(params),
+		width: screen.availWidth * 0.7,
+		height: screen.availHeight * 0.7
+	});
+};
+ 
+//User Group
+function _showUserGroup(params)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/user/user_group/view?" + JpUtilsPath.jsonToQueryString(params)
+	});
+};
+ 
+//Authority
+function _showAuthority(params)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/authority/list?" + JpUtilsPath.jsonToQueryString(params),
+		width: screen.availWidth * 0.7,
+		height: screen.availHeight * 0.7		
+	});
+};
+ 
+//Security Policy
+function _showCredentialsPolicy(params)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/user/credentials/policy/write?" + JpUtilsPath.jsonToQueryString(params)
+	});	
+};
+
+//Connection Resource
+function _showConnectionResource(params)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/conn_resource/view?" + JpUtilsPath.jsonToQueryString(params)
+	});	
+};
+
+//Content
+function _showContent(params)
+{
+	JpUiPopup.open({
+		url: "/platform/mgmt/content/popup/view?" + JpUtilsPath.jsonToQueryString(params),
+		fgScrollbars: GLOBAL_CONST.YES,
+		width: screen.availWidth * 0.7,
+		height: screen.availHeight * 0.8
+	});	
+};
+</script>

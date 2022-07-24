@@ -32,14 +32,14 @@ public class PartsExportController extends PartsExportGeneralController
 		boardContentSearch.setCorp(getCorp());
 		model.addAttribute("bSeq1", bSeq1);
 		model.addAttribute("bbs1Name", i18nMessageSource.getMessage("PLTF_T_" + bSeq1));
-		model.addAttribute("bbs1", ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch)));
+		model.addAttribute("bbs1", ListUtils.emptyIfNull(boardContentService.getPageableBoardContents(boardContentSearch)));
 
 		//프로모션&마케팅
 		String bSeq2 = "1-12886034-ac64-4d5d-a874-3245a127d73c";
 		boardContentSearch.setBSeq(bSeq2);
 		model.addAttribute("bSeq2", bSeq2);
 		model.addAttribute("bbs2Name", i18nMessageSource.getMessage("PLTF_T_PROMOTION"));
-		model.addAttribute("bbs2", ListUtils.emptyIfNull(boardContentService.getBoardContents(boardContentSearch)));
+		model.addAttribute("bbs2", ListUtils.emptyIfNull(boardContentService.getPageableBoardContents(boardContentSearch)));
 
 		addAllAttributeFromRequest(model, webRequest);
 

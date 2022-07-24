@@ -10,6 +10,7 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
+import org.jwebppy.platform.core.web.ui.dom.Link;
 import org.jwebppy.platform.core.web.ui.dom.form.Checkbox;
 import org.jwebppy.platform.core.web.ui.dom.form.Input;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
@@ -128,6 +129,7 @@ public class AuthorityLayoutBuilder
 
 	public static Document viewAuthority(List<CItemDto> cItems)
 	{
+		/*
 		Document document = new Document();
 
 		if (CollectionUtils.isNotEmpty(cItems))
@@ -137,6 +139,25 @@ public class AuthorityLayoutBuilder
 				document.addElement(PlatformLayoutBuildUtils.defaultLabelText(cItemDto.getName(), cItemDto.getDescription()));
 			}
 		}
+		*/
+
+		Map<String, Object> elementMap = new LinkedHashMap<>();
+
+		for (CItemDto cItem : ListUtils.emptyIfNull(cItems))
+		{
+			Link loAuthority = new Link(cItem.getName());
+			loAuthority.setClass("authority");
+			loAuthority.setKey(cItem.getCSeq());
+			loAuthority.addAttribute("data-type", cItem.getType());
+
+			StringBuilder name = new StringBuilder();
+			name.append("[").append(cItem.getType().getType()).append( "] ").append(cItem.getDescription());
+
+			elementMap.put(name.toString(), loAuthority);
+		}
+
+		Document document = new Document();
+		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
 
 		return document;
 	}

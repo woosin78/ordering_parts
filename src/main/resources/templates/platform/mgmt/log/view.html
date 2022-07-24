@@ -2,16 +2,17 @@
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	layout:decorate="~{platform/layout/popup/index}">
 
 <th:block layout:fragment="content">
 <div class="ui one column grid">
 	<div class="column">
 		<th:block th:if="${#strings.toString(dataAccessLog.type) eq 'R'}">
-			<div id="BTN_execute" class="ui teal button"><i class="play icon"></i> Execute</div>
+			<div id="BTN_execute" class="ui teal button" sec:authorize="@logAuthorityChecker.hasWrite()"><i class="play icon"></i> Execute</div>
 			<div id="BTN_copyLink" class="ui teal button"><i class="linkify icon"></i> Copy Link</div>
 		</th:block>
-		<div id="BTN_download" class="ui teal button"><i class="download icon"></i> Download</div>
+		<div id="BTN_download" class="ui teal button"><i class="download icon"></i> Download</div>		
 		<!-- div id="BTN_sendMailWithLink" class="ui teal button"><i class="paper plane outline icon"></i> Send Mail</div -->
 	</div>
 </div>
@@ -51,6 +52,52 @@ $(document).ready(function() {
 				isLoadFirstTab: true,
 				onLoaded: function(tabPath, parameterArray, historyEvent)
 				{
+					const MAX_HEIGHT = 500;
+					let count = 0;
+					
+					let intervalId = setInterval(function() {
+						$(".ui.tab").find(".ui.segment").each(function() {
+							if (parseInt($(this).height()) > MAX_HEIGHT)
+							{
+								$(this).css({
+									"overflow-y": "auto",
+									"display": "block",
+									"height": MAX_HEIGHT
+								});								
+							}
+						});
+						
+						$(".ui.table").each(function(index, item) {
+							if (parseInt($(this).height()) > MAX_HEIGHT)
+							{
+								let width = new Array();
+								
+								$(this).find("thead th").each(function() {
+									width.push($(this).outerWidth());
+								});
+								
+								$(this).css({
+									"overflow-y": "auto",
+									"display": "block",
+									"height": MAX_HEIGHT
+								});
+								
+								$(this).find("thead th").each(function(index, item) {
+									$(this).css("width", width[index]);
+								});
+							};
+						});
+						
+						count++;
+						
+						console.log(intervalId);					
+					}, 1000);
+					
+					//5초 동안만 실행한다
+					if (count > 5)
+					{
+						clearInterval(intervalId);
+					};				
 				}
 			}
 	};
@@ -75,16 +122,15 @@ $(document).ready(function() {
 	});
 	
 	$("#BTN_download").on("click", function() {
-		let html = $("#FORM_search div[data-tab=parameter]").html(); 
+		let tabPath = viewLogTab.getTabPath();
+		let html = $("#FORM_search div[data-tab=" + tabPath +  "]").html();
 		
 		JpUtilsAjax.post({
 			url: "/platform/mgmt/log/view/download",
-			data: { html : html, dlSeq: "[[${dataAccessLog.dlSeq}]]" },
+			data: { html : html, dlSeq: "[[${dataAccessLog.dlSeq}]]", type: tabPath },
 			success: function(response, textStatus, jqXHR)
 			{
-				let result = response.RESULT;
-				
-				JpUtilsDownload.download(result);
+				JpUtilsDownload.download(response.RESULT);
 			}
 		});
 	});

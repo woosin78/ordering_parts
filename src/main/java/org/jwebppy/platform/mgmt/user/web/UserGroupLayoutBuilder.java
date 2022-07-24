@@ -35,7 +35,7 @@ public class UserGroupLayoutBuilder
 		thTr.addTextTh("Name", "three wide");
 		thTr.addTextTh("Description", "four wide");
 		thTr.addTextTh("Language(Allowable / Default)", "three wide");
-		thTr.addTextTh("Credentials Policy", "two wide");
+		thTr.addTextTh("Default Credentials Policy", "two wide");
 		thTr.addTextTh("SAP Connection", "two wide");
 		thTr.addTextTh("User", "one wide");
 
@@ -124,12 +124,12 @@ public class UserGroupLayoutBuilder
 		document.addDefaultLabelText("Time Format (Back-End)", userGroup.getTimeFormat1());
 		document.addDefaultLabelText("Date Format (Front-End)", userGroup.getDateFormat2());
 		document.addDefaultLabelText("Time Format (Front-End)", userGroup.getTimeFormat2());
-		document.addDefaultLabelText("Country", userGroup.getDisplayCountry());
+		document.addDefaultLabelText("Default Country", userGroup.getDisplayCountry());
 		document.addDefaultLabelText("Timezone", userGroup.getDisplayTimezone());
 		document.addDefaultLabelText("Currency Format", userGroup.getCurrencyFormat());
 		document.addDefaultLabelText("Weight Format", userGroup.getWeightFormat());
 		document.addDefaultLabelText("Quantity Format", userGroup.getQtyFormat());
-		document.addDefaultLabelText("Credentials Policy", loCredentialsPolicy);
+		document.addDefaultLabelText("Default Credentials Policy", loCredentialsPolicy);
 		document.addDefaultLabelText("Allowable Languages", langKind);
 		document.addDefaultLabelText("Default Language", userGroup.getDisplayDefLang());
 		document.addDefaultLabelText("SAP Connection Resource", loSapConnResource);
@@ -186,7 +186,7 @@ public class UserGroupLayoutBuilder
 
 		/* Country */
 		Select loCountry = new Select("country");
-		loCountry.setLabel("Country");
+		loCountry.setLabel("Default Country");
 		loCountry.setRequired(true);
 		loCountry.setValue(CmStringUtils.defaultIfEmpty(userGroup.getCountry(), PlatformCommonVo.DEFAULT_COUNTRY));
 

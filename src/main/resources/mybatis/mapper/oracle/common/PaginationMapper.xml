@@ -8,7 +8,7 @@ total_count-(rnum-1) no,
 yyy.*
 from
 (
-    select
+    select    
     rownum as rnum,
     nvl(#{pageNumber}, 1) page_number,
     nvl(#{rowPerPage}, 10) row_per_page,
@@ -22,6 +22,6 @@ from
     ) xxx
 ) yyy
 where
-rnum <![CDATA[>]]> (page_number - 1) * row_per_page and rnum <![CDATA[<=]]> page_number * row_per_page	
+rnum <![CDATA[>]]> (page_number - 1) * row_per_page and rnum <![CDATA[<=]]> page_number * row_per_page
 	</sql>	
 </mapper>
