@@ -104,18 +104,13 @@ $(function(){
 				
 				$("#AREA_grid").html(table.join(""));
 				
-				initJpGrid();
+				initJpGridSize();
 			},
 			complete: function(jqXHR, textStatus)
 			{
 				ProgressBar.hide();
 			}
 		});
-		
-		function initJpGrid()
-		{
-			setInterval(function() { initJpGridSize(); }, 100);
-		};
 		
 		function getJpGridAreaHeight()
 		{
@@ -179,6 +174,10 @@ $(function(){
 			
 			$("#AREA_grid").css("height", gridAreaHeight);
 		};
+		
+		$(window).resize($.debounce(100, function(e){
+			initJpGridSize();
+		}));		
 	};	
 });
 </script>

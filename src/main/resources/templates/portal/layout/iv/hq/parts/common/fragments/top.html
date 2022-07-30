@@ -1,6 +1,6 @@
 <div class="top-header">
 	<div class="logo-area">
-		<img class="logo-doosan" th:src="@{/portal/img/logo/logo2.png}" alt="DOOSAN" /><img class="logo-doobizplus" th:src="@{/portal/img/logo/doobizplus.png}" alt="DOOBIZ Plus" />
+		<img class="logo-doosan" th:src="@{/portal/img/logo/logo.png}" alt="DOOSAN" /><img class="logo-doobizplus" th:src="@{/portal/img/logo/doobizplus.png}" alt="DOOBIZ Plus" />
 	</div>	
 	<div class="info-area">
 		<ul class="info-list">
@@ -10,7 +10,7 @@
 			<li>|</li>
 			<li class="dealer-info" th:text="#{PTL_T_DEALER_INFO}"></li>
 			<li>|</li>		
-			<li class="tooltip"><span th:text="#{PTL_T_LAST_LOGIN_INFO}"></span><span class="last-login-time tooltiptext"></span></li>
+			<li class="tooltip">[[#{PTL_T_LAST_LOGIN_INFO}]]<span class="last-login-time tooltiptext"></span></li>
 		</ul>
 		<div class="split"></div>
 		<button class="logout-button" th:text="#{PTL_B_LOGOUT}"></button>

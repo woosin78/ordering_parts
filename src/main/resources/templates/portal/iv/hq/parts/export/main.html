@@ -5,12 +5,13 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<script>
-	const GLOBAL_CONST = {
-		"DATE_FORMAT": "[[${DATE_FORMAT}]]",
-		"TIME_FORMAT": "[[${TIME_FORMAT}]]",
-		"DELIMITER": "[[${DELIMITER}]]"
-	};
+	<script th:inline="javascript">
+	/* Set up static values */
+	const GLOBAL_CONST = {};
+	
+	/*[# th:each="variable: ${globalConstVariables}" ]*/
+	GLOBAL_CONST[ [[${variable.key}]] ] = [[${variable.value}]];
+	/*[/]*/
 	</script>
 
 	<title th:text="#{PTL_T_DOOBIZ_PLUS}"></title>
@@ -46,7 +47,7 @@
 			<div class="gnb-area">
 				<div class="top-header">
 					<div class="logo-area">
-						<img class="logo-doosan" th:src="@{/portal/img/logo/logo2.png}" /><img class="logo-doobizplus" th:src="@{/portal/img/logo/doobizplus.png}" alt="DOOBIZ Plus" />
+						<img class="logo-doosan" th:src="@{/portal/img/logo/logo.png}" /><img class="logo-doobizplus" th:src="@{/portal/img/logo/doobizplus.png}" alt="DOOBIZ Plus" />
 					</div>
 					<div class="info-area">
 						<ul class="info-list">
@@ -212,7 +213,7 @@ $(function(){
 				
 				if (JpUtilsString.equals(fgNotShow, "N"))
 				{
-					let url = "/portal/iv/board/popup/view2?bSeq=" + element.board.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
+					let url = "/portal/iv/board/popup/view2?bSeq=" + element.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
 					
 					let width = JpUtilsString.defaultString(element.width, "700");
 					let height = JpUtilsString.defaultString(element.height, "600");

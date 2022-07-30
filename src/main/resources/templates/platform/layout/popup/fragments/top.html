@@ -1,4 +1,4 @@
-<div class="ui fixed inverted menu topMenu">
+<div class="ui fixed inverted menu top-menu">
 <!-- Top menu area. This comment is mandatory to make a space between top and body.-->
 </div>
 <script>
@@ -17,7 +17,7 @@ function makeGnb()
     menu.push("<a class='item' onclick='document.location.reload()' id='POPUP_TITLE'>" + JpUtilsString.trimToEmpty(POPUP_TITLE) + "</a>");
     menu.push("<a class='right item' onclick='window.close()'><i class='close icon'></i></div>");
     
-    $(".ui.menu.topMenu").html(menu.join(""));
+    $(".ui.menu.top-menu").html(menu.join(""));
 };
 
 $(document).ready(function() {

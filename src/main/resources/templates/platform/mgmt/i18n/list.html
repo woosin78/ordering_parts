@@ -10,8 +10,8 @@
   <div class="sub header">The content is translated into other languages here.</div>
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-<input type="hidden" name="pageNumber" value="1"/>
-<input type="hidden" name="rowPerPage" value="20"/>
+<input type="hidden" id="pageNumber" name="pageNumber"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"/>
 <div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
@@ -49,104 +49,104 @@
 <th:block th:replace="/platform/mgmt/i18n/lang :: addLang"></th:block>
 <!-- End add language -->
 <script>
-	$(document).ready(function() {
-		JpUtilsAjax.get({
-			url: "/platform/mgmt/i18n/basenames",
-			success: function(data, textStatus, jqXHR)
-			{
-				let basename = $("#FORM_search select[name=basename]");
-				
-				data.RESULT.forEach(function(element, index) {
-					basename.append("<option value='" + element + "'>" + element + "</option>");
-				});
-				
-				basename.find("option:first").attr("selected", "true");
+$(document).ready(function() {
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/i18n/basenames",
+		success: function(data, textStatus, jqXHR)
+		{
+			let basename = $("#FORM_search select[name=basename]");
+			
+			data.RESULT.forEach(function(element, index) {
+				basename.append("<option value='" + element + "'>" + element + "</option>");
+			});
+			
+			basename.find("option:first").attr("selected", "true");
 
-				doSearch();
-			}
-		}); 		
-	});
-	
-	let langTable = new JpUiTable($("#TBL_list"));
-	langTable.settings = {
-			ajax: {
-				url: "/platform/mgmt/i18n/list/layout",
-				form: $("#FORM_search")
-			},
-			onClickDataKey: function(element, key, row)
-			{
-				viewLang("TRANSLATION", key, $(element).html());
-			},
-			onClickPageNumber: function(pageNumber)
-			{
-				doSearch(pageNumber);
-			}
-	};
-	
-	$("#BTN_create").on("click", function() {
-		writeLang("TRANSLATION", $("#FORM_search select[name='basename']").val());
-	});
-	
-	$("#BTN_delete").on("click", function() {
-		if (langTable.getCheckedCount() == 0)
-		{
-			JpUiDimmer.alert("Please choose targets.");
-			return;
-		};		
-		
-		JpUiDimmer.confirm("Do you want to delete?", function() {
-			JpUtilsAjax.post({
-				url: "/platform/mgmt/i18n/delete",
-				data: $("#FORM_search").serialize(),
-				success: function(data, textStatus, jqXHR)
-				{
-					doSearch();
-				}
-			}); 			
-		});
-	});
-	
-	$("#BTN_search").on("click", function() {
-		doSearch();
-	});
-	
-	$("#query").on("keydown", function(event) {
-		if (event.keyCode==13)
-		{
 			doSearch();
 		}
-	});
-	
-	function doSearch(pageNumber)
-	{
-		$("#FORM_search input[name=pageNumber]:hidden").val(JpUtilsString.defaultString(pageNumber, "1"));
-		langTable.load();
-	};	
-	
-	function doAfterSavingLang(isNew, lSeq, basename)
-	{
-		let pageNumber = $("#FORM_search input[name=pageNumber]:hidden").val(); 
-		
-		if (isNew)
+	}); 		
+});
+
+let langTable = new JpUiTable($("#TBL_list"));
+langTable.settings = {
+		ajax: {
+			url: "/platform/mgmt/i18n/list/layout",
+			form: $("#FORM_search")
+		},
+		onClickDataKey: function(element, key, row)
 		{
-			if (JpUtilsString.isNotEmpty(basename))
-			{
-				$("#FORM_search select[name=basename]").val(basename);	
-			};
-			
-			$("#query").val("");
-			pageNumber = "1";
-		};
-		
-		doSearch(pageNumber);
-	};	
+			viewLang("TRANSLATION", key, $(element).html());
+		},
+		onClickPageNumber: function(pageNumber)
+		{
+			doSearch(pageNumber);
+		}
+};
+
+$("#BTN_create").on("click", function() {
+	writeLang("TRANSLATION", $("#FORM_search select[name='basename']").val());
+});
+
+$("#BTN_delete").on("click", function() {
+	if (langTable.getCheckedCount() == 0)
+	{
+		JpUiDimmer.alert("Please choose targets.");
+		return;
+	};		
 	
-	function doAfterDeletingLang()
+	JpUiDimmer.confirm("Do you want to delete?", function() {
+		JpUtilsAjax.post({
+			url: "/platform/mgmt/i18n/delete",
+			data: $("#FORM_search").serialize(),
+			success: function(data, textStatus, jqXHR)
+			{
+				doSearch();
+			}
+		}); 			
+	});
+});
+
+$("#BTN_search").on("click", function() {
+	doSearch();
+});
+
+$("#query").on("keydown", function(event) {
+	if (event.keyCode==13)
 	{
 		doSearch();
+	}
+});
+
+function doSearch(pageNumber)
+{
+	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
+	$("#rowPerPage").val(JpUtilsString.defaultString($(".pagination-rowPerPage").val(), GLOBAL_CONST.ROW_PER_PAGE));
+	
+	langTable.load();
+};	
+
+function doAfterSavingLang(isNew, lSeq, basename)
+{
+	let pageNumber = $("#FORM_search input[name=pageNumber]:hidden").val(); 
+	
+	if (isNew)
+	{
+		if (JpUtilsString.isNotEmpty(basename))
+		{
+			$("#FORM_search select[name=basename]").val(basename);	
+		};
+		
+		$("#query").val("");
+		pageNumber = "1";
 	};
+	
+	doSearch(pageNumber);
+};	
 
+function doAfterDeletingLang()
+{
+	doSearch();
+};
 </script>
-
 </th:block>
 </html>

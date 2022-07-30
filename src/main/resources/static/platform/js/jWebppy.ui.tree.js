@@ -242,10 +242,17 @@ let JpUiTree = function(object)
 	
 	this.attachEventClickItem = function()
 	{
+		this.context.find(".header > span.name").dblclick(function(event) {
+			
+		});
+		
+		
 		this.context.find(".header > span.name").on("mousedown", function(event) {
 			try
 			{
 				_this.selectedItem = $(this).closest("div");
+				
+				console.log(event.which + "," + event.clickCount);
 				
 				if (event.which == 1)
 				{
@@ -259,7 +266,7 @@ let JpUiTree = function(object)
 						{
 							//let left = $(target).offset().left + $(target).width() + 5;
 							let left = $(target).offset().left;
-							let top = $(target).offset().top + $(target).height();
+							let top = $(target).offset().top + $(target).height() - 10;
 							
 							$("#MENU_command").css("left", left).css("top", top);
 							
@@ -425,7 +432,7 @@ let JpUiTree = function(object)
 	this.menu = function()
 	{
 		let menu = "";
-		menu += "<div id='MENU_command' class='ui compact menu' style='display:none; position: absolute;'>";
+		menu += "<div id='MENU_command' class='ui inverted vertical menu' style='display:none; position: absolute;'>";
 		menu += "	<a id='MC_createItem' class='item'><i class='plus icon'></i> Create</a>";
 		menu += "	<a id='MC_deleteItem' class='item'><i class='minus icon'></i> Delete</a>";
 		menu += "	<a id='MC_copyItem' class='item'><i class='copy icon'></i> Copy</a>";

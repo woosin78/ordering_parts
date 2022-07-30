@@ -110,16 +110,6 @@ public class IvGeneralController extends PortalGeneralController
 				.build();
 
 		model.addAttribute("globalConstVariables", constVariableMap);
-
-		/*
-		model.addAttribute("USERNAME", getUsername());
-		model.addAttribute("NAME", UserAuthenticationUtils.getUserDetails().getName());
-		model.addAttribute("DATE_FORMAT", UserAuthenticationUtils.getUserDetails().getDateFormat2());
-		model.addAttribute("TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getTimeFormat2());
-		model.addAttribute("DELIMITER", PortalConfigVo.DELIMITER);//split 구분자
-		model.addAttribute("YES", PortalCommonVo.YES);
-		model.addAttribute("NO", PortalCommonVo.NO);
-		*/
 	}
 
 	protected void setErpUserInfoByUsername()

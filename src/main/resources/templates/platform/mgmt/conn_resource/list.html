@@ -10,8 +10,8 @@
 	<div class="sub header">This platform offers how to access functions of SAP using JCO and you need to set up the connection info. first.</div>
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-<input type="hidden" name="pageNumber" value="1"/>
-<input type="hidden" name="rowPerPage" value="20"/>
+<input type="hidden" id="pageNumber" name="pageNumber"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"/>
 <div class="ui grey attached segment">
 	<div class="fields">	
 		<div class="twelve wide field">
@@ -156,12 +156,11 @@ $(document).ready(function() {
 
 function doSearch(pageNumber)
 {
-	$("#FORM_search input:hidden[name=pageNumber]").val(JpUtilsString.defaultString(pageNumber, "1"));
-	$("#FORM_search input:hidden[name=rowPerPage]").val(GLOBAL_CONST.ROW_PER_PAGE);
-
+	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
+	$("#rowPerPage").val(JpUtilsString.defaultString($(".pagination-rowPerPage").val(), GLOBAL_CONST.ROW_PER_PAGE));
+	
 	listTable.load();
-};	
+};
 </script>
-
 </th:block>
 </html>

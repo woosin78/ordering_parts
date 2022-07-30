@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
@@ -101,20 +102,12 @@ public class EpBoardContentController extends IvGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/popup/view")
-	public Object viewPopup(Model model, WebRequest webRequest)
+	@RequestMapping({"/popup/view", "/popup/view2"})
+	public Object viewPopup(Model model, ServletWebRequest webRequest)
 	{
 		viewProc(model, webRequest);
 
-		return DEFAULT_VIEW_URL;
-	}
-
-	@RequestMapping("/popup/view2")
-	public Object viewPopup2(Model model, WebRequest webRequest)
-	{
-		viewProc(model, webRequest);
-
-		return DEFAULT_VIEW_URL;
+		return webRequest.getRequest().getRequestURI();
 	}
 
 	protected void viewProc(Model model, WebRequest webRequest)

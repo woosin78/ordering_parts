@@ -195,7 +195,7 @@
 		u_seq=#{uSeq}
 	</select>		
 	
-	<select id="findPageUsers" parameterType="UserSearchDto" resultMap="userEntityMap">
+	<select id="findPageableUsers" parameterType="UserSearchDto" resultMap="userEntityMap">
 		<include refid="PaginationMapper.header"/>
 
 		select

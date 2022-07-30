@@ -62,7 +62,15 @@ let JpUiTable = function(table)
 					_this.settings.onClickPageNumber(pageNumber);	
 				};
 				
-			});			
+			});
+
+			this.table.find(".pagination-rowPerPage").on("keydown", function(e) {
+				if (e.keyCode == 13)
+				{	
+					_this.settings.onClickPageNumber(_this.table.find(".pagination-pageNumber").val());	
+				};
+				
+			});
 		};
 		
 		this.table.find("input:text, textarea").on("click", function() {
@@ -319,6 +327,10 @@ let JpUiTable = function(table)
 		content.push("					<div class='ui compact icon button pagination-next'><i class='angle right icon'></i></div>");
 		content.push("					<div class='ui compact icon button pagination-last' DATA-VALUE='" + totalPage + "'><i class='angle double right icon'></i></div>");
 		content.push("				</div>");
+		content.push("				<div class='field'>");
+		content.push("					<input type='number' class='ui mini pagination-rowPerPage' style='width:6em;' value='" + rowPerPage + "'>");
+		content.push("				</div>");
+		//content.push("				<div>Rows per page</div>");
 		content.push("			</div>");
 		content.push("		</div>");
 		content.push("	</div>");

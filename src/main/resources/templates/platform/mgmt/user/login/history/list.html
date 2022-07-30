@@ -10,8 +10,8 @@
   <div class="sub header">There are users' login histories. You can check when users login and from where users access this system.</div>
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
-<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
+<input type="hidden" id="pageNumber" name="pageNumber"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"/>
 <div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
@@ -41,41 +41,44 @@
 <div id="TBL_list"></div>
 </form>
 <script>
-	$(document).ready(function() {
-		JpUiCalendar.datetimeCalendar($("#fromDate"), $("#toDate"));
-		
-		let listTable = new JpUiTable($("#TBL_list"));
-		listTable.settings = {
-				ajax: {
-					url: "/platform/mgmt/user/login/history/list/layout",
-					form: $("#FORM_search")
-				},
-				onClickPageNumber: function(pageNumber)
-				{
-					$("#pageNumber").val(pageNumber);
-					doSearch();
-				}
-		};
+let listTable;
 
-		$("#BTN_search").on("click", function() {
-			doSearch();
-		});
-		
-		$("#query").on("keydown", function(event) {
-			if (event.keyCode==13)
+$(document).ready(function() {
+	JpUiCalendar.datetimeCalendar($("#fromDate"), $("#toDate"));
+	
+	listTable = new JpUiTable($("#TBL_list"));
+	listTable.settings = {
+			ajax: {
+				url: "/platform/mgmt/user/login/history/list/layout",
+				form: $("#FORM_search")
+			},
+			onClickPageNumber: function(pageNumber)
 			{
-				doSearch();
+				doSearch(pageNumber);
 			}
-		});
-		
-		function doSearch()
-		{
-			listTable.load();
-		};	
-		
+	};
+
+	$("#BTN_search").on("click", function() {
 		doSearch();
 	});
+	
+	$("#query").on("keydown", function(event) {
+		if (event.keyCode==13)
+		{
+			doSearch();
+		}
+	});
+	
+	doSearch();
+});
+	
+function doSearch(pageNumber)
+{
+	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
+	$("#rowPerPage").val(JpUtilsString.defaultString($(".pagination-rowPerPage").val(), GLOBAL_CONST.ROW_PER_PAGE));
+	
+	listTable.load();
+};	
 </script>
-
 </th:block>
 </html>

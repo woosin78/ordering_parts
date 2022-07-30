@@ -1,40 +1,14 @@
 <!-- bottom start -->
-<div class="ui bottom_blank" style="width:100%; margin-top:40px;">&nbsp;</div>
+<div class="ui bottom_blank" style="width:100%; margin-top:90px;">&nbsp;</div>
 <div class="ui bottom inverted vertical footer segment" style="position: fixed; width:100%; bottom: 0px;">
-	<!-- div class="ui center aligned container round">	
-		<div class="ui stackable inverted divided grid">
-			<div class="two wide column"></div>
-			<div class="four wide column">
-				<h4 class="ui inverted header">User</h4>
-				<div class="ui inverted link list">
-					<a href="#" class="item">User</a>
-				</div>
-			</div>
-			<div class="four wide column">
-				<h4 class="ui inverted header">Content</h4>
-				<div class="ui inverted link list">
-					<a href="#" class="item">Menu</a>
-					<a href="#" class="item">Translation</a>
-				</div>
-			</div>
-			<div class="four wide column">
-				<h4 class="ui inverted header">System</h4>
-				<div class="ui inverted link list">
-					<a href="#" class="item">Interface Log</a>
-				</div>
-			</div>
-			<div class="two wide column"></div>
-		</div>	
-	</div>
-	<div class="ui inverted section divider"></div-->
 	<div class="ui center aligned container">
-		<!-- img class="ui centered image" th:src="@{/portal/img/head_logo.png}" alt="jWebppy"/ -->
+		<img class="ui centered image" th:src="@{/platform/img/logo/logo.png}" alt="jWebppy"/>
 		<div class="ui horizontal inverted small divided link list">
 			<a class="item" href="#" th:text="#{PLTF_T_COPYLEFT}"></a>
 		</div>
 	</div>
 </div>
-<div id="BTN_moveToTop" style="position:fixed; right:25px; bottom: 100px; display:none;">
+<div id="BTN_moveToTop" style="position:fixed; right:25px; bottom: 50px; display:none;">
 	<button class="ui icon button big"><i class="arrow up icon"></i></button>
 </div>
 <form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.platform.core.PlatformConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>
@@ -103,15 +77,20 @@ function makeGnb()
 		    menu.push("<div class='divider'></div>");
 		    menu.push("<div class='item'><i class='history icon'></i> Last Login Time / IP : <span id='gnbLastLoginTime'></span></div>");
 		    menu.push("<div class='divider'></div>");
-		    menu.push("<a class='item' href='javascript:logout();'><i class='power off icon'></i> Log Off</a>");
+		    menu.push("<a class='item logout'><i class='power off icon'></i> Log Off</a>");
 		    menu.push("</div>");
 		    menu.push("</div>");		    
 		    
-		    $(".ui.menu.topMenu").html(menu.join(""));
+		    $(".ui.menu.top-menu").html(menu.join(""));
+		    
+		    $("a.item.logout").on("click", function(event) {
+				$("#FORM_logout").submit();
+				event.preventdefault();
+			});
 		    
 		    /* 메뉴명 길이에 따라서 width 를 자동 조절함 */
 		    let maxLength = 0;
-		    $(".ui.menu.topMenu span.text").each(function(index, element) {
+		    $(".ui.menu.top-menu span.text").each(function(index, element) {
 				//let length = $(this).html().length;
 				let length = JpUtilsString.lengthAsByte($(this).text());
 				
@@ -121,22 +100,17 @@ function makeGnb()
 				};
 		    });
 		    
-		    $(".ui.menu.topMenu span.text").css("width", maxLength * 8);
+		    $(".ui.menu.top-menu span.text").css("width", maxLength * 8);
 		    /* 메뉴명 길이에 따라서 너비를 자동 조절함 */
 		    
-			$(".ui.menu.topMenu .ui.dropdown").dropdown({
+			$(".ui.menu.top-menu .ui.dropdown").dropdown({
 				allowCategorySelection: true
 			});
-			
-			$(".ui.menu.topMenu span.text").on("click", function() {
+
+			$(".ui.menu.top-menu .item").not(".dropdown").on("click", function() {
 				goToMenu(this);
+				return false;
 			});
-			
-			/*
-			$(".ui.menu.topMenu span.text[url]").parent("div.item").on("click", function() {
-				goToMenu($(this).find("span.text[url]"));
-			});
-			*/
 			
 			function goToMenu(menu)
 			{
@@ -144,7 +118,7 @@ function makeGnb()
 				
 				if (JpUtilsString.isEmpty(url))
 				{
-					let subElements = $(menu).parent().find("span.text[url]");
+					let subElements = $(menu).find("span.text[url]");
 					
 					for (let i=0, length=subElements.length; i<length; i++)
 					{
@@ -208,11 +182,6 @@ function makeGnb()
 			menu.push("</div>");
 		}
 	};
-};
-
-function logout()
-{
-	$("#FORM_logout").submit();	
 };
 </script>
 <!-- bottom end -->

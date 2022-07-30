@@ -99,7 +99,7 @@ public class UserController extends UserGeneralController
 
 	@GetMapping("/view/layout/{tabPath}")
 	@ResponseBody
-	public Object viewLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
+	public Object viewLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute UserSearchDto userSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
@@ -153,7 +153,7 @@ public class UserController extends UserGeneralController
 
 	@GetMapping("/write/layout/{tabPath}")
 	@ResponseBody
-	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("userSearch") UserSearchDto userSearch)
+	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute UserSearchDto userSearch)
 	{
 		if ("authority".equals(tabPath))
 		{

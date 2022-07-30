@@ -11,8 +11,8 @@
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
 <input type="checkbox" name="cSeq" style="display:none" th:value="${cSeq}" checked />
-<input type="hidden" name="pageNumber" value="1"/>
-<input type="hidden" name="rowPerPage" value="5"/>
+<input type="hidden" id="pageNumber" name="pageNumber"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"/>
 <div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
@@ -397,14 +397,6 @@ $(document).ready(function() {
 		return authorityTable.getCheckedCount();
 	};
 	
-	function doSearch(pageNumber)
-	{
-		$("#FORM_search input:hidden[name=pageNumber]").val(JpUtilsString.defaultString(pageNumber, "1"));
-		$("#FORM_search input:hidden[name=rowPerPage]").val(5);		
-
-		authorityTable.load();
-	};	
-
 	function hideUserDetailsArea()
 	{
 		$("#AREA_viewAuthorityDetail").hide();
@@ -534,6 +526,14 @@ $(document).ready(function() {
 
 	doSearch();
 });
+
+function doSearch(pageNumber)
+{
+	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
+	$("#rowPerPage").val(JpUtilsString.defaultString($(".pagination-rowPerPage").val(), GLOBAL_CONST.ROW_PER_PAGE));		
+
+	authorityTable.load();
+};
 
 </script>
 </th:block>

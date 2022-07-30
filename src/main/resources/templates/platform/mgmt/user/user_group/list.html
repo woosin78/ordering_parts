@@ -10,8 +10,8 @@
 	<div class="sub header">Users can be classified according to regions, sales divisions, types of customers so on.</div>
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
-<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
+<input type="hidden" id="pageNumber" name="pageNumber"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"/>
 <div class="ui grey attached segment">
 	<div class="fields">	
 		<div class="twelve wide field">
@@ -50,8 +50,7 @@ $(document).ready(function() {
 			},
 			onClickPageNumber: function(pageNumber)
 			{
-				$("#pageNumber").val(pageNumber);
-				doSearch();
+				doSearch(pageNumber);
 			},
 			onClickDataKey: function(element, key, row, column, rowIndex, columnIndex)
 			{
@@ -136,8 +135,11 @@ $(document).ready(function() {
 	doSearch();
 });
 
-function doSearch()
+function doSearch(pageNumber)
 {
+	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
+	$("#rowPerPage").val(JpUtilsString.defaultString($(".pagination-rowPerPage").val(), GLOBAL_CONST.ROW_PER_PAGE));
+	
 	listTable.load();
 };
 </script>

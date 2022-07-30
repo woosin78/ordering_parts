@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.security.authentication.dto.LogoutHistoryDto;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.security.authentication.service.LogoutHistoryService;
@@ -26,7 +27,7 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
     @Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException
     {
-    	if (authentication != null)
+    	if (ObjectUtils.isNotEmpty(authentication))
     	{
     		PlatformUserDetails platformUserDetails = (PlatformUserDetails)authentication.getDetails();
 

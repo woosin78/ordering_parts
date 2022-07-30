@@ -323,7 +323,7 @@ public class UserService extends GeneralService
 
 	public List<UserDto> getPageableUsers(UserSearchDto userSearch)
 	{
-		return CmModelMapperUtils.mapToDto(UserObjectMapper.INSTANCE, userMapper.findPageUsers(userSearch));
+		return CmModelMapperUtils.mapToDto(UserObjectMapper.INSTANCE, userMapper.findPageableUsers(userSearch));
 	}
 
 	public List<UserDto> getUsersInCItem(UserSearchDto userSearch)

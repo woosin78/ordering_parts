@@ -11,8 +11,8 @@
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
 <input type="hidden" name="dlSeq"/>
-<input type="hidden" name="pageNumber" value="1"/>
-<input type="hidden" name="rowPerPage" value="20"/>
+<input type="hidden" id="pageNumber" name="pageNumber"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"/>
 <div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
@@ -54,12 +54,12 @@
 <form id="FORM_viewLog" name="FORM_viewLog">
 <input type="hidden" name="dlSeq"/>
 </form>
-
 <script>
+let logTable;
 $(document).ready(function() {
 	JpUiCalendar.datetimeCalendar($("#fromDate"), $("#toDate"));
 	
-	let logTable = new JpUiTable($("#TBL_logs"));
+	logTable = new JpUiTable($("#TBL_logs"));
 	logTable.settings = {
 			ajax: {
 				url: "/platform/mgmt/log/list/layout",
@@ -86,14 +86,6 @@ $(document).ready(function() {
 			doSearch();
 		}
 	});    	
-       
-	function doSearch(pageNumber)
-	{
-		$("#FORM_search input[name=pageNumber]:hidden").val(JpUtilsString.defaultString(pageNumber, "1"));
-		$("#FORM_search input[name=rowPerPage]").val(GLOBAL_CONST.ROW_PER_PAGE);
-
-		logTable.load();
-	};
 	
 	$("#BTN_search").on("click", function() {
 		doSearch();
@@ -102,6 +94,13 @@ $(document).ready(function() {
 	doSearch();		
 });
 
+function doSearch(pageNumber)
+{
+	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
+	$("#rowPerPage").val(JpUtilsString.defaultString($(".pagination-rowPerPage").val(), GLOBAL_CONST.ROW_PER_PAGE));
+
+	logTable.load();
+};
 </script>
 </th:block>
 </html>

@@ -940,7 +940,8 @@ input.custom-ui[type="radio"]:checked + label:before {
 .tooltip {
   position: relative;
   display: inline-block;
-  z-index: 999999;
+  z-index: 1000;
+  color: black;
   /*border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
@@ -949,7 +950,7 @@ input.custom-ui[type="radio"]:checked + label:before {
   visibility: hidden;
   width: 300px;
   background-color: black;
-  color: #fff;
+  color: white;
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;

@@ -4,11 +4,11 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css"/>
+<link rel="stylesheet" type="text/css" th:href="@{/portal/js/semantic/semantic.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/popup/basic.css}" />
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/portal/js/jquery/jquery.min.js}"></script>
 <script th:src="@{/portal/js/jquery/jquery.cookie.js}"></script>
-<script th:src="@{/editor_html5/js/xfe_main.js}"></script>
+<script src="/editor_html5/js/xfe_main.js"></script>
 <style>
 .pop-bottom {
 	width:100%;
@@ -41,7 +41,7 @@
 <textarea id="htmlContent" th:text="${boardContent?.htmlContent}" style="display:none;"></textarea>
 <script>
 $(window).on("load", function() {
-	let height = [[${boardContent.height}]] - $("#bottom").outerHeight(true);
+	let height = $(document).outerHeight(true) - $(".pop-top").outerHeight(true) - $("#bottom").outerHeight(true);
 	$("#xfe").height(height);
 });
 

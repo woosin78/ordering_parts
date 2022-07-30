@@ -12,8 +12,8 @@
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
 <input type="checkbox" name="uSeq" style="display:none" checked />
 <input type="hidden" name="cSeq" th:value="${cSeq}"/>
-<input type="hidden" id="pageNumber" name="pageNumber"  th:value="${pageNumber}"/>
-<input type="hidden" id="rowPerPage" name="rowPerPage"  th:value="${rowPerPage}"/>
+<input type="hidden" id="pageNumber" name="pageNumber"/>
+<input type="hidden" id="rowPerPage" name="rowPerPage"/>
 <div class="ui grey attached segment">
 	<div class="fields">
 		<div class="six wide field">
@@ -51,7 +51,7 @@
 </div>
 <div id="TBL_users"></div>
 </form>
-<div id="AREA_viewDetail" style="margin: 0; padding: 0; display:none;">
+<div id="AREA_viewDetail" style="margin: 0; padding: 0;">
 	<div class="ui divider"></div>
 	<div class="ui segment">
 		<div class="ui header"></div>
@@ -984,7 +984,7 @@ $(document).ready(function() {
 function doSearch(pageNumber)
 {
 	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
-	$("#rowPerPage").val("5");
+	$("#rowPerPage").val(JpUtilsString.defaultString($(".pagination-rowPerPage").val(), GLOBAL_CONST.ROW_PER_PAGE));
 
 	userTable.load();
 };

@@ -12,6 +12,7 @@
 		<result property="writer" column="writer" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
+		<collection property="uploadFileLists" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
 	</resultMap>
 
 	<resultMap type="EpBoardContentEntity" id="boardContentEntityMap">
@@ -44,7 +45,6 @@
 		<result property="modDate" column="mod_date" />
 		<association property="board" foreignColumn="b_seq" column="b_seq" javaType="EpBoardEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardMapper.findBoard" />
 		<collection property="boardContentTargets" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpBoardContentTargetEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardContentTargetMapper.findBoardContentTargets" />
-		<collection property="uploadFileLists" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />		
 	</resultMap>
 
 	<insert id="insert" parameterType="EpBoardContentEntity">

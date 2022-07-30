@@ -7857,3 +7857,81 @@ Error: [3] >Fri Jul 08 15:01:15,555<    RfcException raised by system [GSQ|diver
     return code: RFC_CLOSED (6)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20220730 135331 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Jul 30 13:53:31,345<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 63513118
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Jul 30 13:53:31 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:18478
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     275991
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+
+**** Error file opened at 20220730 145537 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Jul 30 14:55:37,106<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 67519886
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-220.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Jul 30 14:55:36 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.220:3300; L=10.249.10.61:47172
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     276897
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+
+
+**** Error file opened at 20220730 151238 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Sat Jul 30 15:12:38,217<    
+>RfcIoException:
+    message: CPIC-CALL: CMRCV on convId: 68696000
+
+LOCATION    SAP-Gateway on host divbwap01.doosan-iv.com / sapgw00
+ERROR       connection to partner
+            'ip-10-249-7-88.ap-northeast-2.compute.internal:sapgw00'
+            broken
+TIME        Sat Jul 30 15:12:38 2022
+RELEASE     753
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      /bas/753_REL/src/base/ni/nixxi.cpp
+LINE        5429
+DETAIL      NiIRead: P=10.249.7.88:3300; L=10.249.10.61:46850
+SYSTEM CALL recv
+ERRNO       104
+ERRNO TEXT  Connection reset by peer
+COUNTER     277146
+
+    Return code: RFCIO_ERROR_SYSERROR(5)<
+
+

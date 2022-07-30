@@ -71,15 +71,30 @@ $(function(){
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 
 		columns : [
-			{data: "no", 				title: "[[#{HQP_L_NUMBER}]]", "width": "8%"},
+			{data: "no", 				title: "[[#{HQP_L_NUMBER}]]", width: "8%"},
 			{data: "displayTitle",		title: "[[#{HQP_L_TITLE}]]"},
-			{data: "writer",			title: "[[#{HQP_L_WRITER}]]", "width": "20%"},
-			{data: "displayRegDate2", 	title: "[[#{HQP_L_REG_DATE}]]", "width": "10%"},
-			{data: "views", 			title: "[[#{HQP_L_VIEWS}]]", "width": "10%"}		
+			{data: "writer",			title: "[[#{HQP_L_WRITER}]]", width: "15%"},
+			{
+				name: "fileCnt",
+				data: "fileCnt",
+				title: "[[#{HQP_L_ATTACHMENT}]]",
+				width: "8%",
+				render: function(data, type, row)
+				{
+					if (row.uploadFileLists.length > 0)
+					{
+						return "<i class='paperclip icon large'></i>";
+					};
+					
+					return "";
+				}
+			},
+			{data: "displayRegDate2", 	title: "[[#{HQP_L_REG_DATE}]]", width: "8%"},
+			{data: "views", 			title: "[[#{HQP_L_VIEWS}]]", width: "8%"}		
 		],
 		columnDefs: [
 			{targets: [1], className: "link"},
-			{targets: [0, 3, 4], className: "dt-body-center"}
+			{targets: [0, 3, 4, 5], className: "dt-body-center"}
 		],		
 		ajax: {
 			url: "[[${BASE_PATH}]]/board/list/data",

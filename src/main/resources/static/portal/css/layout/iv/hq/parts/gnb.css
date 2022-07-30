@@ -23,7 +23,7 @@
 	border-radius: 5px;
 	background: rgba(0, 48, 130, 0.8);
 	position: relative;
-	z-index: 9999;
+	z-index: 999;
 }
 .gnb-menu-list {
 	/*
