@@ -200,7 +200,7 @@ let JpUiTree = function(object)
 	
 	this.showPopupMenu = function()
 	{
-		$("#MENU_command .item").hide();
+		$("#MENU_command a.item").not("#MC_newWindow").hide();
 		
 		if (this.isRoot())
 		{
@@ -216,7 +216,7 @@ let JpUiTree = function(object)
 			}
 			else
 			{
-				$("#MC_createItem, #MC_deleteItem, #MC_copyItem, #MC_cutItem, #MC_newWindow").show();				
+				$("#MC_createItem, #MC_deleteItem, #MC_copyItem, #MC_cutItem").show();				
 			};
 			
 			let command = this.getCommand();
@@ -251,8 +251,6 @@ let JpUiTree = function(object)
 			try
 			{
 				_this.selectedItem = $(this).closest("div");
-				
-				console.log(event.which + "," + event.clickCount);
 				
 				if (event.which == 1)
 				{
@@ -433,13 +431,23 @@ let JpUiTree = function(object)
 	{
 		let menu = "";
 		menu += "<div id='MENU_command' class='ui inverted vertical menu' style='display:none; position: absolute;'>";
-		menu += "	<a id='MC_createItem' class='item'><i class='plus icon'></i> Create</a>";
-		menu += "	<a id='MC_deleteItem' class='item'><i class='minus icon'></i> Delete</a>";
-		menu += "	<a id='MC_copyItem' class='item'><i class='copy icon'></i> Copy</a>";
-		menu += "	<a id='MC_cutItem' class='item'><i class='cut icon'></i> Cut</a>";
-		menu += "	<a id='MC_pasteItem' class='item'><i class='paste icon'></i> Paste</a>";
-		menu += "	<a id='MC_newWindow' class='item'><i class='clone outline icon'></i> New Window</a>";
-		menu += "</div>";
+		menu += "	<div class='item'>";
+		menu += "		<div class='header'>Edit</div>";
+		menu += "		<div class='menu'>";
+		menu += "			<a id='MC_createItem' class='item'><i class='plus icon'></i> New</a>";				
+		menu += "			<a id='MC_cutItem' class='item'><i class='cut icon'></i> Cut</a>";
+		menu += "			<a id='MC_copyItem' class='item'><i class='copy icon'></i> Copy</a>";
+		menu += "			<a id='MC_pasteItem' class='item'><i class='paste icon'></i> Paste</a>";
+		menu += "			<a id='MC_deleteItem' class='item'><i class='minus icon'></i> Delete</a>";
+		menu += "		</div>";
+		menu += "	</div>";
+		menu += "	<div class='item'>";
+		menu += "		<div class='header'>View</div>";
+		menu += "		<div class='menu'>";
+		menu += "			<a id='MC_newWindow' class='item'><i class='clone outline icon'></i> New Window</a>";
+		menu += "		</div>";
+		menu += "	</div>";
+		menu += "</div>";		
 		
 		return menu;
 	};	

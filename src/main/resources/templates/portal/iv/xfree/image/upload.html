@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<script th:src="@{/portal/js/jquery/jquery.min.js}"></script>
+
+<input type="hidden" id="contentType" name="contentType" th:value="${xfreeUpload.contentType}"/>
+<input type="hidden" id="dialogType" name="dialogType" th:value="${xfreeUpload.dialogType}"/>
+<input type="hidden" id="savedFileName" name="savedFileName" th:value="${xfreeUpload.savedFileName}"/>
+<input type="hidden" id="viewerPath" name="viewerPath" th:value="${xfreeUpload.viewerPath}"/>
+<input type="hidden" id="error" name="error" th:value="${xfreeUpload.error}"/>
+
+<script type="text/javascript">
+
+window.onload = function() {
+	let contentType = $("#contentType").val();
+	let savedFileName = $("#savedFileName").val();
+	let origin = document.location.origin;
+	let viewerPath = $("#viewerPath").val();
+	
+	let savedFilePath = "";
+
+	if (origin)
+	{
+		viewerPath = origin + viewerPath;
+		savedFilePath = viewerPath + "?fileName=" + savedFileName;
+	}
+	else
+	{
+		//origin 이 없을 경우 프로토콜과 호스트를 결합하여 url 경로 설정.
+		//viewerPath = document.location.protocol + '//' + document.location.host + viewerPath;
+		savedFilePath = viewerPath + "?fileName=" + savedFileName;
+	};
+
+	let dialogType = $("#dialogType").val();
+	let error = $("#error").val();
+
+	// XFE 2.5 추가
+	if (savedFilePath != undefined && savedFilePath != "")
+	{
+		if (savedFilePath)
+		{
+			/**
+			 * http://, https:// 프로토콜 체크 후 없을 경우 절대 경로.
+			 * 절대 경로 일 경우 앞에 / 가 여러개 들어 갈 경우 처리.
+			 */
+			if (savedFilePath.indexOf("http://") < 0 && savedFilePath.indexOf("https://") < 0)
+			{
+				if (/^[\/]{2,}/img.test(savedFilePath))
+				{
+					savedFilePath = savedFilePath.replace(/^[\/]{2,}/img, function() {
+						return '/';
+					});
+				}
+			}
+
+			if (contentType == "flash")
+			{
+				//parent.insertFlash.setFlash(savedFilePath);
+				if (parent.insertFlash)
+				{
+					parent.insertFlash.setFlash(savedFilePath);
+				}
+				else
+				{
+					parent.parent.insertFlash.setFlash(savedFilePath);
+				}
+			}
+			else if (contentType == "image")
+			{
+				// XFE 2.5 수정.
+				if (dialogType === "background")
+				{
+					if (parent.insertBackground)
+					{
+						parent.insertBackground.setBgImage(savedFilePath);
+					}
+					else
+					{
+						parent.parent.insertBackground.setBgImage(savedFilePath);
+					}
+				}
+				else
+				{
+					if (parent.insertImage)
+					{
+						parent.insertImage.setImage(savedFilePath);
+					}
+					else
+					{
+						parent.parent.insertImage.setImage(savedFilePath);
+					}
+				}
+			}
+		}
+		else
+		{
+			alert("[[#{HQP_M_ONLY_ALLOW_TO_UPLOAD_IMAGE}]]");// MSG_0064 Only Image and Flash File are supported.
+		}
+	}
+	else
+	{
+		alert(error);
+	};
+};
+</script>
+</html>

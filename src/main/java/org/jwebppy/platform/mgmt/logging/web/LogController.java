@@ -58,9 +58,6 @@ public class LogController extends LoggingGeneralController
 
 
 	@Autowired
-	private LogAuthorityChecker logAuthorityChecker;
-
-	@Autowired
 	private UploadFileService uploadFileService;
 
 	@Autowired

@@ -1,5 +1,6 @@
 package org.jwebppy.portal.iv.common.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,15 +8,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Builder
 public class XfreeUploadDto extends IvGeneralDto
 {
 	private static final long serialVersionUID = 6335210316588903887L;
 
 	private String contentType;
-	private String uploadedPath;
 	private String dialogType;
-	private String errorLog;
+	private String savedFileName;
+	private String viewerPath;
 	private String rootId;
-	private String saveFilePath;
-	private String basePath;
+	private String error;
 }
