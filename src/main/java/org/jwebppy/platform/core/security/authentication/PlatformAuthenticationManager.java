@@ -84,11 +84,14 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
             	logger.debug("15. user2: " + user2);
 
-            	if (user2.getUserAccount().isValid())
+            	if (ObjectUtils.isNotEmpty(user2))
             	{
-            		logger.debug("16. Login Success");
+                	if (user2.getUserAccount().isValid())
+                	{
+                		logger.debug("16. Login Success");
 
-            		return userAuthenticationService.getAuthentication(user2, AuthenticationType.F, username);
+                		return userAuthenticationService.getAuthentication(user2, AuthenticationType.F, username);
+                	}
             	}
             }
             else

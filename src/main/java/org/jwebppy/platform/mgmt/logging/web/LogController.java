@@ -202,20 +202,6 @@ public class LogController extends LoggingGeneralController
 	@PreAuthorize("@logAuthorityChecker.hasRead()")
 	public Object shortcutListData(@ModelAttribute DataAccessLogSearchDto dataAccessLogSearch)
 	{
-		/*
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setUsername(CmStringUtils.defaultIfEmpty(UserAuthenticationUtils.getUserDetails().getRealUsername(), getUsername()));
-		cItemSearch.setType(CItemType.G);
-		cItemSearch.setNames(new String[] {"DP_SAP_RFC_LOG_READ", "DP_SAP_RFC_LOG_EXECUTE"});
-
-		boolean hasAuthority = !ListUtils.isEmpty(contentService.getMyItems(cItemSearch));
-
-		if (!hasAuthority)
-		{
-			throw new AccessDeniedException(i18nMessageSource.getMessage("PLTF_M_NOT_AUTHORIZED"));
-		}
-		*/
-
 		dataAccessLogSearch.setRegUsername(getUsername());
 
 		return dataAccessLogService.getUsedSapRfcsOnPage(dataAccessLogSearch);
