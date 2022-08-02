@@ -985,6 +985,9 @@ function doSearch(pageNumber)
 {
 	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
 	$("#rowPerPage").val(JpUtilsString.defaultString($(".pagination-rowPerPage").val(), GLOBAL_CONST.ROW_PER_PAGE));
+	
+	$("input[name=uSeq]").val("");
+	$("input[name=cSeq]").val("");
 
 	userTable.load();
 };
