@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 
 import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.platform.core.util.CmStringUtils;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +37,10 @@ public class DataAccessLogEntity extends GeneralEntity
 	{
 		try
 		{
-			return new URL(referer).getPath();
+			if (CmStringUtils.isNotEmpty(referer))
+			{
+				return new URL(referer).getPath();
+			}
 		}
 		catch (MalformedURLException e)
 		{
