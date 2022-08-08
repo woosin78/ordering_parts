@@ -19,6 +19,7 @@ public class EpUploadFileListEntity extends IvGeneralEntity
 	private String uflSeq;
 	private String ufSeq;
 	private String tSeq;
+	private String type;
 	private String originName;
 	private String savedName;
 	private String extension;

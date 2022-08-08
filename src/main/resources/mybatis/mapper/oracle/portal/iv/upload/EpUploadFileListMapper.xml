@@ -3,8 +3,8 @@
 
 <mapper namespace="org.jwebppy.portal.iv.upload.mapper.EpUploadFileListMapper">
 	<insert id="insert" parameterType="EpUploadFileListEntity">
-		insert into ep_upload_file_list (ufl_seq, uf_seq, t_seq, origin_name, saved_name, extension, file_size, fg_delete, reg_username, reg_date) values (
-			#{uflSeq}, #{ufSeq}, #{tSeq}, #{originName}, #{savedName}, #{extension}, #{fileSize}, 'N', #{regUsername}, #{regDate}
+		insert into ep_upload_file_list (ufl_seq, uf_seq, t_seq, origin_name, saved_name, extension, file_size, fg_delete, reg_username, reg_date, type) values (
+			#{uflSeq}, #{ufSeq}, #{tSeq}, #{originName}, #{savedName}, #{extension}, #{fileSize}, 'N', #{regUsername}, #{regDate}. #{type}
 		)
 	</insert>
 	
@@ -25,6 +25,10 @@
 		where
 		a.ufl_seq=#{uflSeq}
 		and a.fg_delete='N'
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+			and a.type=#{type}		
+		</if>		
 	</select>		
 	
 	<select id="findUploadFileLists" parameterType="EpUploadFileListDto" resultType="EpUploadFileListEntity">
@@ -36,6 +40,11 @@
 		a.uf_seq=#{ufSeq}
 		and a.t_seq=#{tSeq}
 		and a.fg_delete='N'
+		
+		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
+			and a.type=#{type}		
+		</if>
+		
 	</select>
 	
 </mapper>

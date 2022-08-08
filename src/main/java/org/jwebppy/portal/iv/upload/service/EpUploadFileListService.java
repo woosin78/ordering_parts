@@ -48,17 +48,27 @@ public class EpUploadFileListService extends IvGeneralService
 
     public int save(String name, String tSeq, List<MultipartFile> multipartFiles) throws IOException
     {
+    	return save(name, tSeq, null, multipartFiles);
+    }
+
+    public int save(String name, String tSeq, String type, List<MultipartFile> multipartFiles) throws IOException
+    {
     	EpUploadFileDto uploadFile = uploadFileService.getUploadFileByName(name);
 
     	if (ObjectUtils.isNotEmpty(uploadFile))
     	{
-    		return save(uploadFile, tSeq, multipartFiles);
+    		return save(uploadFile, tSeq, type, multipartFiles);
     	}
 
     	return 0;
     }
 
-	public int save(EpUploadFileDto uploadFile, String tSeq, List<MultipartFile> multipartFiles) throws IOException
+    public int save(EpUploadFileDto uploadFile, String tSeq, List<MultipartFile> multipartFiles) throws IOException
+    {
+    	return save(uploadFile, tSeq, null, multipartFiles);
+    }
+
+	public int save(EpUploadFileDto uploadFile, String tSeq, String type, List<MultipartFile> multipartFiles) throws IOException
 	{
 		if (ObjectUtils.isNotEmpty(uploadFile))
 		{
@@ -95,6 +105,7 @@ public class EpUploadFileListService extends IvGeneralService
 				uploadFileList.setUflSeq(UidGenerateUtils.generate());
 				uploadFileList.setUfSeq(uploadFile.getUfSeq());
 				uploadFileList.setTSeq(tSeq);
+				uploadFileList.setType(type);
 				uploadFileList.setOriginName(FilenameUtils.getBaseName(originFilename));
 				uploadFileList.setSavedName(FilenameUtils.getBaseName(savedName));
 				uploadFileList.setExtension(FilenameUtils.getExtension(originFilename).toLowerCase());
