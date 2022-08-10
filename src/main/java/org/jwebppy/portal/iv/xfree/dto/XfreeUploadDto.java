@@ -1,4 +1,6 @@
-package org.jwebppy.portal.iv.common.dto;
+package org.jwebppy.portal.iv.xfree.dto;
+
+import org.jwebppy.portal.iv.common.dto.IvGeneralDto;
 
 import lombok.Builder;
 import lombok.Getter;

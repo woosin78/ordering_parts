@@ -145,7 +145,7 @@ $(function(){
 $(window).on("load", function() {
 	ProgressBar.hide();
 	
-	initBoardViwer($("#boardViwer"), $("#xfe"));
+	adjustViewerSize();
 	
 	_setDealerCodeAutocomplete($("#searchVisibleTarget"), {
 		select: function(label, value, event) {
@@ -155,6 +155,11 @@ $(window).on("load", function() {
 		}
 	});
 });
+
+function adjustViewerSize()
+{
+	initBoardViwer($("#boardViwer"), $("#xfe"));
+};
 
 function addTarget(label, value)
 {
@@ -291,10 +296,8 @@ let xfe = new XFE({
 			xfe.setBodyValue($("#htmlContent").val());	
 		};
 	},
-	language: "english",
-	initFontFamily: "Arial",
-	uploadFilePath: "/portal/iv/xfree/image/upload",
-	uploadPasteContentsPath: "/portal/iv/xfree/upload"
+	language: ((JpUtilsString.equals(GLOBAL_CONST.LANG, "KO")) ? "korean" : "english"),
+	initFontFamily: (JpUtilsString.equals(GLOBAL_CONST.LANG, "KO")) ? "맑은 고딕" : "Arial",
 });
 	
 xfe.render("xfe");
@@ -321,10 +324,17 @@ $("#BTN_deleteFile").on("click", function(event) {
 		{
 			for (let j=0, length=files.length; j<length; j++)
 			{
-				if (JpUtilsString.equals(files[j].name, $(this).attr("fileName")))
+				try
 				{
-					files.splice(j, 1);
-				};
+					if (JpUtilsString.equals(files[j].name, $(this).attr("fileName")))
+					{
+						files.splice(j, 1);
+					};					
+				}
+				catch(e)
+				{
+					console.log(e);
+				}
 			};
 			
 			files.forEach(file => { dataTransfer.items.add(file); });
@@ -341,6 +351,8 @@ $("#BTN_deleteFile").on("click", function(event) {
 			$("#files")[0].files = dataTransfer.files;
 		};
 	});
+	
+	adjustViewerSize();
 });	
 
 function addFile(name, size, uflSeq)
@@ -355,6 +367,8 @@ function addFile(name, size, uflSeq)
 	$("#attachedFiles").append(html.join(""));
 	
 	$("#FORM_write .ui.checkbox").checkbox();
+	
+	adjustViewerSize();
 };
 
 function isReply()

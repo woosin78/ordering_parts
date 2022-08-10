@@ -2,7 +2,7 @@ package org.jwebppy.portal.iv.eu.common.file_upload.entity;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.portal.iv.eu.common.entity.EuGeneralEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class FileUploadEntity extends GeneralEntity
+public class FileUploadEntity extends EuGeneralEntity
 {
 	private static final long serialVersionUID = -8195343547130977045L;
 

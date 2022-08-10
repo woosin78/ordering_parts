@@ -14,5 +14,5 @@ import lombok.ToString;
 public class PortalGeneralEntity extends GeneralEntity implements Serializable
 {
 	private static final long serialVersionUID = -3378770967914954346L;
-	private String corp;
+	protected String corp;
 }

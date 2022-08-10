@@ -24,12 +24,8 @@
 		ep_upload_file_list a
 		where
 		a.ufl_seq=#{uflSeq}
-		and a.fg_delete='N'
-		
-		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
-			and a.type=#{type}		
-		</if>		
-	</select>		
+		and a.fg_delete='N'		
+	</select>
 	
 	<select id="findUploadFileLists" parameterType="EpUploadFileListDto" resultType="EpUploadFileListEntity">
 		select
@@ -42,7 +38,7 @@
 		and a.fg_delete='N'
 		
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(type)">
-			and a.type=#{type}		
+			and a.type=#{type}
 		</if>
 		
 	</select>

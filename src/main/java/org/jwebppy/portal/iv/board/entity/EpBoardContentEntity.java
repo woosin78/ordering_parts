@@ -18,7 +18,6 @@ public class EpBoardContentEntity extends IvGeneralEntity
 {
 	private static final long serialVersionUID = 3571593885122638421L;
 
-	private int no;
 	private String bcSeq;
 	private String bSeq;
 	private String pSeq;

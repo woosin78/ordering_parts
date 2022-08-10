@@ -12,5 +12,6 @@ import lombok.ToString;
 public class PortalGeneralDto extends GeneralDto
 {
 	private static final long serialVersionUID = 7568870569871601910L;
-	private String corp;
+	protected String corp;
 }
+

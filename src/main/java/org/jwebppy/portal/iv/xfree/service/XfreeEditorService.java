@@ -1,4 +1,4 @@
-package org.jwebppy.portal.iv.common.service;
+package org.jwebppy.portal.iv.xfree.service;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,7 +11,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.tomcat.util.http.fileupload.impl.InvalidContentTypeException;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
-import org.jwebppy.portal.iv.common.dto.XfreeUploadDto;
+import org.jwebppy.portal.iv.common.service.IvGeneralService;
+import org.jwebppy.portal.iv.xfree.dto.XfreeUploadDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -69,6 +70,11 @@ public class XfreeEditorService extends IvGeneralService
 		String extention = request.getParameter("file_extension");
 		String contents = request.getParameter("clip_contents");
 		String rootId = request.getParameter("xfe_root_id");
+
+		if (CmStringUtils.isEmpty(extention))
+		{
+			return XfreeUploadDto.builder().error(i18nMessageSource.getMessage("HQP_M_NOT_ACCEPTABLE_FILE_FORMAT")).build();
+		}
 
 		if (CmStringUtils.startsWith(contents, "data:"))
 		{

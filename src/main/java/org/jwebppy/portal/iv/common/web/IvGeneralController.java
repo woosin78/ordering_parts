@@ -107,6 +107,7 @@ public class IvGeneralController extends PortalGeneralController
 				.put("ROW_PER_PAGE", Integer.toString(PlatformCommonVo.DEFAULT_ROW_PER_PAGE))
 				.put("YES", PlatformCommonVo.YES)
 				.put("NO", PlatformCommonVo.NO)
+				.put("LANG", UserAuthenticationUtils.getLanguage())
 				.build();
 
 		model.addAttribute("globalConstVariables", constVariableMap);

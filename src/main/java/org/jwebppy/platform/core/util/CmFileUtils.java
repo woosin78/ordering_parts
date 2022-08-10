@@ -15,12 +15,16 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
 
-public class ImageUtils
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
+public class CmFileUtils extends FileUtils
 {
 	public static BufferedImage readImage(File file) throws IOException
 	{
 		InputStream stream = new FileInputStream(file);
-		Iterator<ImageReader> imageReaders = ImageIO.getImageReadersBySuffix("jpg");
+		//Iterator<ImageReader> imageReaders = ImageIO.getImageReadersBySuffix("jpg");
+		Iterator<ImageReader> imageReaders = ImageIO.getImageReadersBySuffix(FilenameUtils.getExtension(file.getName()));
 		ImageReader imageReader = imageReaders.next();
 		ImageInputStream iis = ImageIO.createImageInputStream(stream);
 		imageReader.setInput(iis, true, true);

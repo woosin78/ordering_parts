@@ -2,7 +2,7 @@ package org.jwebppy.portal.iv.eu.common.file_upload.dto;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.dto.GeneralDto;
+import org.jwebppy.portal.iv.eu.common.dto.EuGeneralDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class FileUploadDto extends GeneralDto
+public class FileUploadDto extends EuGeneralDto
 {
 	private Integer fuSeq;
 	private String target;

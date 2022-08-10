@@ -19,15 +19,13 @@ public abstract class GeneralDto implements Serializable
 {
 	private static final long serialVersionUID = -2141681838401701675L;
 
-	protected String corp;
 	protected String fgDelete;
 	protected String regUsername;
 	protected LocalDateTime regDate;
 	protected String modUsername;
 	protected LocalDateTime modDate;
 
-	protected int no = 0;
-	protected int rnum = 0;
+	protected int rnum;
 	protected int pageNumber = 1;
 	protected int rowPerPage = PlatformCommonVo.DEFAULT_ROW_PER_PAGE;
 	protected int totalCount = 0;

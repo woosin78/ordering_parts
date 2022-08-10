@@ -1,4 +1,4 @@
-package org.jwebppy.portal.iv.common.web;
+package org.jwebppy.portal.iv.xfree.web;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -11,9 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
-import org.jwebppy.platform.core.util.FileUtils;
+import org.jwebppy.platform.core.util.CmFileUtils;
 import org.jwebppy.portal.iv.common.IvCommonVo;
-import org.jwebppy.portal.iv.common.service.XfreeEditorService;
+import org.jwebppy.portal.iv.common.web.IvGeneralController;
+import org.jwebppy.portal.iv.xfree.service.XfreeEditorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -85,7 +86,7 @@ public class XfreeEditorController extends IvGeneralController
 	        // Caused by: Numbers of source Raster bands and source color space components do not match
 	        try
 	        {
-	        	bufferedImage = FileUtils.readImage(file);
+	        	bufferedImage = CmFileUtils.readImage(file);
 	        }
 	        catch (Exception e1)
 	        {

@@ -24,7 +24,6 @@ public class EpBoardContentDto extends IvGeneralDto
 {
 	private static final long serialVersionUID = -1969963429122839740L;
 
-	private int no;
 	private String bcSeq;
 	private String bSeq;
 	private String pSeq;

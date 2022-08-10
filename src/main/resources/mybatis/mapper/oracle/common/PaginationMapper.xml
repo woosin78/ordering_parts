@@ -4,7 +4,6 @@
 <mapper namespace="PaginationMapper">
 	<sql id="header">
 select
-total_count-(rnum-1) no,
 yyy.*
 from
 (

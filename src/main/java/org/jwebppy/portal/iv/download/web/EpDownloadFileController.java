@@ -69,6 +69,7 @@ public class EpDownloadFileController extends IvGeneralController
 		}
 
 		EpUploadFileListDto uploadFileList = uploadFileListService.getUploadFileList(decodedKey[1]);
+
 		EpUploadFileDto uploadFile = uploadFileService.getUploadFile(uploadFileList.getUfSeq());
 
 		EpDownloadFileHistoryDto downloadFileHistory = new EpDownloadFileHistoryDto();

@@ -18,7 +18,6 @@ public class GeneralEntity implements Serializable
 {
 	private static final long serialVersionUID = 8736258968068994440L;
 
-	protected String corp;
 	protected String fgDelete;
 	protected String regUsername;
 	protected LocalDateTime regDate;
