@@ -11,7 +11,6 @@
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
 <input type="checkbox" name="uSeq" style="display:none" checked />
-<input type="hidden" name="cSeq" th:value="${cSeq}"/>
 <input type="hidden" id="pageNumber" name="pageNumber"/>
 <input type="hidden" id="rowPerPage" name="rowPerPage"/>
 <div class="ui grey attached segment">
@@ -871,7 +870,7 @@ $(document).ready(function() {
 	});
 
 	$("#BTN_reset").on("click", function() {
-		document.location.reload();
+		document.location.href = location.pathname;
 	});	
 	
 	$(".BTN_save").on("click", doSave);
@@ -986,9 +985,6 @@ function doSearch(pageNumber)
 	$("#pageNumber").val(JpUtilsString.defaultString(pageNumber, "1"));
 	$("#rowPerPage").val(JpUtilsString.defaultString($(".pagination-rowPerPage").val(), GLOBAL_CONST.ROW_PER_PAGE));
 	
-	$("input[name=uSeq]").val("");
-	$("input[name=cSeq]").val("");
-
 	userTable.load();
 };
 

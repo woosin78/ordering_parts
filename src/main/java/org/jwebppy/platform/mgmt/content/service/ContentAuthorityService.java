@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.config.CacheConfig;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
@@ -25,7 +24,6 @@ import org.jwebppy.platform.mgmt.content.mapper.CItemObjectMapper;
 import org.jwebppy.platform.mgmt.content.mapper.ContentMapper;
 import org.jwebppy.platform.mgmt.i18n.service.LangService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,7 +117,6 @@ public class ContentAuthorityService extends GeneralService
 		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findMyCItems(cItemSearch));
 	}
 
-	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
 	public List<CItemDto> getMyCItemHierarchy(CItemSearchDto cItemSearch)
 	{
 		List<CItemDto> myCItems = getMyCItems(cItemSearch);
@@ -185,7 +182,6 @@ public class ContentAuthorityService extends GeneralService
 		return Collections.emptyList();
 	}
 
-	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
 	public List<CItemDto> getSubCItems2(Integer cSeq, List<CItemDto> cItems)
 	{
 		List<CItemDto> subItems = new LinkedList<>();

@@ -26,9 +26,6 @@ public class GnbController extends MgmtGeneralController
 	@Autowired
 	private ContentAuthorityService contentAuthorityService;
 
-	//@Autowired
-	//private LangService langService;
-
 	@GetMapping("/menu")
 	@ResponseBody
 	public Object myMenu(@ModelAttribute CItemSearchDto cItemSearch)
@@ -68,7 +65,6 @@ public class GnbController extends MgmtGeneralController
 			{
 				Map<String, Object> itemMap = new LinkedHashMap<>();
 				itemMap.put("KEY", subCItem.getCSeq());
-				//itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
 				itemMap.put("NAME", CmStringUtils.defaultIfEmpty(subCItem.getName2(), subCItem.getName()));
 				itemMap.put("TYPE", subCItem.getType().toString());
 				itemMap.put("URL", subCItem.getUrl());

@@ -458,9 +458,9 @@ public class ContentService extends GeneralService
 
 		return subItems;
 	}
-
-	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)
-	{
-		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findMyCItems(cItemSearch));
-	}
+//
+//	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)
+//	{
+//		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findMyCItems(cItemSearch));
+//	}
 }

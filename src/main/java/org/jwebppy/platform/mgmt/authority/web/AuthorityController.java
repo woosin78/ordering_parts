@@ -47,7 +47,6 @@ public class AuthorityController extends UserGeneralController
 	public String list(Model model, WebRequest webRequest)
 	{
 		model.addAttribute("type", webRequest.getParameter("type"));
-		model.addAttribute("cSeq", webRequest.getParameter("cSeq"));
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -88,6 +87,10 @@ public class AuthorityController extends UserGeneralController
 			}
 
 			return Collections.emptyList();
+		}
+		else if ("user".equals(tabPath))
+		{
+			return AuthorityLayoutBuilder.listUser(userService.getUsersInCItem(userSearch));
 		}
 
 		return AuthorityLayoutBuilder.viewGeneralInfo(contentService.getCItem(cItemSearch.getCSeq()));

@@ -15,6 +15,7 @@ import org.jwebppy.platform.core.dao.IDaoRequest;
 import org.jwebppy.platform.core.dao.MapParameterSource;
 import org.jwebppy.platform.core.dao.ParameterValue;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.MyLocalLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
@@ -82,9 +83,15 @@ public class RfcTemplate extends AbstractDaoTemplate
 
             stopWatch.start();
 
+            //Write the request log in console.
+            int rfcSeq = MyLocalLogger.rfcRequestLog(rfcRequest);
+
             jCoFunction.execute(jCoDestination);
 
             stopWatch.stop();
+
+            //Write the result log in console.
+            MyLocalLogger.rfcResultLog(rfcSeq, stopWatch, jCoFunction);
 
             resultMap.put("RESULT", extractData(jCoFunction, rfcRequest.getOutputParameterMap()));
         }

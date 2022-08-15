@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
+import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.iv.mgmt.account.dto.UserType;
 
 public class AccountMgmtUtils
 {
@@ -32,7 +34,7 @@ public class AccountMgmtUtils
 		USER_GROUP.put("EUDOP", "UG_IVEUDO_P01");//EUDOP
 		USER_GROUP.put("UKDOP", "UG_IVUKDO_PGM");//UKDOP
 		USER_GROUP.put("HQDOP", "UG_IVHQDO_P09");//HQDOP
-		USER_GROUP.put("HQEXP", "UG_IVHQEX_P09");//HQEXP
+		USER_GROUP.put("HQEXP", "UG_IVHQEX_{TZONE}");//HQEXP
 
 		//유럽부품
 		AUTHORITY.put("EUDOP_I", new String[] {"DP_EUDO_PARTS_DEALER", "DP_EUDO_PARTS_MANAGER"});//Internal User
@@ -63,18 +65,23 @@ public class AccountMgmtUtils
 		return SALES_AREA.get(bizType);
 	}
 
-	public static String getDefaultMappingCode(String bizType, String userType)
+	public static String getDefaultMappingCode(String bizType, UserType userType)
 	{
 		return MAPPING_CODE.get(bizType + "_" + userType);
 	}
 
-	public static String[] getAuthorities(String bizType, String userType)
+	public static String[] getAuthorities(String bizType, UserType userType)
 	{
 		return AUTHORITY.get(bizType + "_" + userType);
 	}
 
-	public static String getUserGroupName(String bizType)
+	public static String getUserGroupName(String bizType, String tzone)
 	{
+		if (CmStringUtils.equals("HQEXP", bizType))
+		{
+			return CmStringUtils.replace(USER_GROUP.get(bizType), "{TZONE}", tzone);
+		}
+
 		return USER_GROUP.get(bizType);
 	}
 }

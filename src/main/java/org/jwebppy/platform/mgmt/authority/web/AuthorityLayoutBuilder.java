@@ -21,6 +21,9 @@ import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
+import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
+import org.jwebppy.platform.mgmt.user.dto.UserContactInfoDto;
+import org.jwebppy.platform.mgmt.user.dto.UserDto;
 
 public class AuthorityLayoutBuilder
 {
@@ -51,7 +54,7 @@ public class AuthorityLayoutBuilder
 			tbTr.addTextTd(cItem.getType().getType());
 			tbTr.addDataKeyLinkTd(cItem.getName(), cSeq);
 			tbTr.addTextTd(cItem.getDescription());
-			tbTr.addDataKeyLinkTd(cItem.getUserCount(), cSeq);
+			tbTr.addTextTd(cItem.getUserCount());
 			tbTr.addTextTd(cItem.getRegUsername());
 			tbTr.addTextTd(cItem.getDisplayRegDate());
 
@@ -127,20 +130,56 @@ public class AuthorityLayoutBuilder
 		return document;
 	}
 
-	public static Document viewAuthority(List<CItemDto> cItems)
+	public static Document listUser(List<UserDto> users)
 	{
-		/*
-		Document document = new Document();
+		Tr thTr = new Tr();
+		thTr.addTextTh("Status", "one wide");
+		thTr.addTextTh("Username", "two wide");
+		thTr.addTextTh("Name", "three wide");
+		thTr.addTextTh("E-mail", "four wide");
+		thTr.addTextTh("Company", "four wide");
+		thTr.addTextTh("User Group", "two wide");
 
-		if (CollectionUtils.isNotEmpty(cItems))
+		Thead thead = new Thead();
+		thead.addTr(thTr);
+
+		Tbody tbody = new Tbody();
+
+		if (CollectionUtils.isNotEmpty(users))
 		{
-			for (CItemDto cItemDto : cItems)
+			for (UserDto user : users)
 			{
-				document.addElement(PlatformLayoutBuildUtils.defaultLabelText(cItemDto.getName(), cItemDto.getDescription()));
+				UserAccountDto userAccount = user.getUserAccount();
+				UserContactInfoDto userContactInfo = user.getUserContactInfo();
+
+				Tr tbTr = new Tr();
+
+				String status = "<i class='lock icon'></i>";
+
+				if (CmStringUtils.equals(userAccount.getFgAccountLocked(), PlatformCommonVo.NO))
+				{
+					status = "<i class='lock open icon'></i>";
+				}
+
+				tbTr.addTextTd(status);
+				tbTr.addDataKeyLinkTd(userAccount.getUsername(), user.getUSeq(), "uSeq");
+				tbTr.addTextTd(user.getName());
+				tbTr.addTextTd(userContactInfo.getEmail());
+				tbTr.addTextTd(user.getCompany());
+				tbTr.addTextTd(user.getUserGroup().getName());
+
+				tbody.addTr(tbTr);
 			}
 		}
-		*/
 
+		Document document = new Document();
+		document.addElement(new Table(thead, tbody));
+
+		return document;
+	}
+
+	public static Document viewAuthority(List<CItemDto> cItems)
+	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 
 		for (CItemDto cItem : ListUtils.emptyIfNull(cItems))

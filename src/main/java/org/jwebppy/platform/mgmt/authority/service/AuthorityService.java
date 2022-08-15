@@ -14,6 +14,7 @@ import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.mapper.CItemObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class AuthorityService
 		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, authorityMapper.findCItemAuthorities(cItemSearch));
 	}
 
+	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
 	public List<CItemDto> getSubRoles(CItemSearchDto cItemSearch)
 	{
 		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, authorityMapper.findSubRoles(cItemSearch));

@@ -14,6 +14,7 @@
 	
 	<div class="condition-area">
 	<form id="FORM_write" name="FORM_write">
+	<input type="hidden" id="bizType" name="bizType" th:value="${bizType}"/>
 	<table class="condition">
 		<tbody>
 			<tr>
@@ -27,11 +28,11 @@
 				</td>
 			</tr>
 			<tr>
-				<th><div th:text="#{HQP_L_DEALER_CODE}"></div><img src="/portal/img/icon/required.png" class="required" /></th>
+				<th><div th:text="#{HQP_L_DEALER_CODE}"></div><img src="/portal/img/icon/required.png" class="required dealer-code" /></th>
 				<td><div class="input-area"><input type="text" id="dealerCode" name="dealerCode" class="custom-ui" autofocus="autofocus"/></div></td>
 			</tr>
 			<tr>
-				<th><div th:text="#{HQP_L_USERNAME}"></div><img src="/portal/img/icon/required.png" class="required" /></th>
+				<th><div th:text="#{HQP_L_USERNAME}"></div><img src="/portal/img/icon/required.png" class="required username" /></th>
 				<td>
 					<div class="input-area"><input type="text" id="username" name="username" class="custom-ui" style="text-transform: uppercase;"/></div>
 				
@@ -62,9 +63,7 @@ $(function(){
 	});
 	
 	$("input:radio[name=userType]").on("click", function() {
-		let userType = $(this).val();
-		
-		if (userType == "I")
+		if (JpUtilsString.equals($(this).val(), "I"))
 		{
 			$("#dealerCode").prop("readonly", true).val("");
 		}
@@ -73,20 +72,62 @@ $(function(){
 			$("#dealerCode").prop("readonly", false);
 		};
 		
-		showUsernameRule(userType);
+		showUsernameGenerationRule();
 	});
 	
-	function showUsernameRule(userType)
+	function showUsernameGenerationRule()
 	{
-		if (userType == "I")
+		let userType = $("input:radio[name=userType]:checked").val();
+		let readOnlyDealerCode = false;
+		let readOnlyUsername = false;
+				
+		if (JpUtilsString.equals(userType, "I"))
 		{
+			//Show username generation rule
 			$(".internalUserUsernameRule").show();
 			$(".dealerUsernameRule").hide();
+			
+			readOnlyDealerCode = true;
 		}
 		else
 		{
-			$(".internalUserUsernameRule").hide();
-			$(".dealerUsernameRule").show();
+			let bizType = $("#bizType").val();
+			
+			if (JpUtilsString.equals(bizType, "EUDOP") || JpUtilsString.equals(bizType, "UKDOP"))
+			{
+				$(".internalUserUsernameRule").hide();
+				$(".dealerUsernameRule").show();
+			}
+			else
+			{
+				$(".internalUserUsernameRule, .dealerUsernameRule").hide();
+
+				readOnlyUsername = true;
+			};		
+		};
+		
+		//Enable or disable username field
+		$("#username").prop("readonly", readOnlyUsername).val("");
+		
+		if (readOnlyUsername)
+		{
+			$("img.required.username").hide();
+		}
+		else
+		{
+			$("img.required.username").show();	
+		};
+		
+		//Enable or disable dealercode field
+		$("#dealerCode").prop("readonly", readOnlyDealerCode).val("");
+		
+		if (readOnlyDealerCode)
+		{
+			$("img.required.dealer-code").hide();
+		}
+		else
+		{
+			$("img.required.dealer-code").show();	
 		};		
 	};
 		
@@ -100,25 +141,25 @@ $(function(){
 				return false;
 			};			
 		};
-
-		if (JpUtilsString.isEmpty($("#username").val()))
-		{
-			alert("[[#{HQP_M_EMPTY_USERNAME}]]");
-			$("#username").focus();
-			return false;			
-		};
 		
 		let form = new JpUiForm($("#FORM_write"));
 		
-		if (JpUtilsString.equals(form.val("userType"), "D"))
+		if (isTargetToInputUsernameInPerson())
 		{
+			if (JpUtilsString.isEmpty($("#username").val()))
+			{
+				alert("[[#{HQP_M_EMPTY_USERNAME}]]");
+				$("#username").focus();
+				return false;			
+			};
+			
 			let username = form.val("username").toUpperCase();
-			const EUUK_USERNAME_PREFIX = "[[${T(org.jwebppy.portal.iv.common.IvCommonVo).EUUK_USERNAME_PREFIX}]]"; 
+			const EUUK_USERNAME_PREFIX = "[[${T(org.jwebppy.portal.iv.eu.common.EuCommonVo).EUUK_USERNAME_PREFIX}]]"; 
 			
 			if (username.startsWith(EUUK_USERNAME_PREFIX))
 			{
 				username = JpUtilsString.replaceAll(username, EUUK_USERNAME_PREFIX, "");
-			}
+			};
 			
 			JpUtilsAjax.get({
 				url: "/platform/mgmt/user/check/valid_credentials",
@@ -128,10 +169,17 @@ $(function(){
 			    	let result = response.RESULT;
 			    	
 					let message = "";
-
-					$.each(result.MESSAGE, function (index, value) {
-						message += value + "\n";
-					});
+					
+					if (Array.isArray(result.MESSAGE))
+					{
+						$.each(result.MESSAGE, function (index, value) {
+							message += value + "\n";
+						});						
+					}
+					else
+					{
+						message = result.MESSAGE;				
+					};
 					
 					if (JpUtilsString.isEmpty(message))
 					{
@@ -142,13 +190,32 @@ $(function(){
 						alert(message);	
 					};
 			    }
-			});			
+			});				
 		}
 		else
 		{
 			submit();
 		};
 	});
+	
+	function isTargetToInputUsernameInPerson()
+	{
+		let bizType = $("#bizType").val();
+		
+		//본사 내수/수출 딜러는 아이디를 자동발번하므로 직접 입력 불필요
+		if (JpUtilsString.notEquals(bizType, "HQDOP") && JpUtilsString.notEquals(bizType, "HQEXP"))
+		{
+			return true;
+		};
+		
+		//내부사용자는 자신의 AD 계정 입력
+		if (JpUtilsString.equals($("input:radio[name=userType]:checked").val(), "I"))
+		{
+			return true;			
+		};
+		
+		return false;
+	};
 	
 	function submit()
 	{
@@ -212,6 +279,8 @@ $(function(){
 		
 		JpUtilsAjax.post(options);
 	};
+	
+	$("input:radio[name=userType][value=D]").trigger("click");
 });
 </script>	
 </th:block>

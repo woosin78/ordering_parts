@@ -1,7 +1,6 @@
 package org.jwebppy.portal.iv.mgmt.account.web;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,16 +12,21 @@ import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
+import org.jwebppy.portal.iv.mgmt.account.dto.AccountDto;
+import org.jwebppy.portal.iv.mgmt.account.dto.UserType;
 import org.jwebppy.portal.iv.mgmt.account.service.AccountMgmtService;
 import org.jwebppy.portal.iv.mgmt.account.utils.AccountMgmtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
+
+import com.google.common.collect.ImmutableMap;
 
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH + "/mgmt/account")
@@ -44,35 +48,33 @@ public class AccountMgmtController extends IvGeneralController
 
 	@RequestMapping("/list/data")
 	@ResponseBody
-	public Object listDate(@RequestParam Map<String, Object> paramMap)
+	public Object listData(@RequestParam Map<String, Object> paramMap)
 	{
 		if (CmStringUtils.isEmpty(paramMap.get("pUsername")) && CmStringUtils.isEmpty(paramMap.get("pDealerCode")))
 		{
 			return EMPTY_RETURN_VALUE;
 		}
 
-		ErpDataMap rfcParamMap = getErpUserInfoByUsername();
+		ErpDataMap userInfoMap = getErpUserInfoByUsername();
 
-		String bizType = CmStringUtils.defaultString(paramMap.get("bizType"), AccountMgmtUtils.getBizTypeBySalesArea(rfcParamMap));
+		String[] saleaArea = AccountMgmtUtils.getSalesArea(AccountMgmtUtils.getBizTypeBySalesArea(userInfoMap));
 
-		String[] saleaArea = AccountMgmtUtils.getSalesArea(bizType);
-
-		Map<String, Object> salesAreaMap = new HashMap<>();
-		salesAreaMap.put("VKORG", saleaArea[0]);
-		salesAreaMap.put("VTWEG", saleaArea[1]);
-		salesAreaMap.put("WERKS", saleaArea[2]);
+		Map<String, Object> salesAreaMap = new ImmutableMap.Builder<String, Object>()
+				.put("VKORG", saleaArea[0])
+				.put("VTWEG", saleaArea[1])
+				.build();
 
 		List<Map<String, Object>> salesAreaList = new ArrayList<>();
 		salesAreaList.add(salesAreaMap);
 
-		rfcParamMap = getErpUserInfoByUsername().with(paramMap)
+		userInfoMap = getErpUserInfoByUsername().with(paramMap)
 				.addByKey(new Object[][] {
 					{"dealerCode", "pDealerCode"},
 					{"username", "pUsername"}
 				})
 				.add("salesAreaList", salesAreaList);
 
-		DataList dataList = accountMgmtService.getMappingList(rfcParamMap);
+		DataList dataList = accountMgmtService.getMappingList(userInfoMap);
 
 		List<DataMap> accountList = new ArrayList<>();
 
@@ -98,37 +100,38 @@ public class AccountMgmtController extends IvGeneralController
 	}
 
 	@RequestMapping("/write")
-	public String write()
+	public String write(Model model, WebRequest webRequest)
 	{
+		model.addAttribute("bizType", AccountMgmtUtils.getBizTypeBySalesArea(getErpUserInfoByUsername()));
+
+		addAllAttributeFromRequest(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 
 	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@RequestParam Map<String, Object> paramMap)
+	public Object save(@ModelAttribute AccountDto account)
 	{
 		//Default is mine
-		paramMap.put("bizType", CmStringUtils.defaultString(paramMap.get("bizType"), AccountMgmtUtils.getBizTypeBySalesArea(getErpUserInfoByUsername())));
+		account.setBizType(AccountMgmtUtils.getBizTypeBySalesArea(getErpUserInfoByUsername()));
 
-		ErpDataMap rfcParamMap = new ErpDataMap(paramMap);
-
-		int result = accountMgmtService.save(rfcParamMap);
+		//정상적으로 계정이 생성되었을 경우 PLTF_USER 식별자 반환
+		int result = accountMgmtService.save(account);
 
 		if (result > 0)
 		{
 			UserDto user = userService.getUser(result);
 
-			Map<String, Object> returnMap = new HashMap<>();
-			returnMap.put("uSeq", user.getUSeq());
-			returnMap.put("userType", rfcParamMap.get("userType"));
-			returnMap.put("username", user.getUserAccount().getUsername());
+			account.setUSeq(user.getUSeq());
+			account.setUsername(user.getUserAccount().getUsername());
 
-			if (rfcParamMap.isEquals("userType", "D"))
+			if (UserType.D.equals(account.getUserType()))
 			{
-				returnMap.put("password", IvCommonVo.INITIAL_PASSWORD);
+				account.setPassword(IvCommonVo.INITIAL_PASSWORD);
 			}
 
-			return returnMap;
+			return account;
 		}
 
 		return result;

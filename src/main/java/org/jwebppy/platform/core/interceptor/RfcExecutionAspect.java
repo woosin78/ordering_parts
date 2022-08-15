@@ -40,8 +40,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RfcExecutionAspect
 {
-	@Value("${if.logging.sap}")
-	private boolean IF_LOGGING_SAP;
+	@Value("${if.logging.sap.request}")
+	private boolean IF_LOGGING_SAP_REQUEST;
 
 	@Value("${if.logging.sap.result}")
 	private boolean IF_LOGGING_SAP_RESULT;
@@ -70,7 +70,7 @@ public class RfcExecutionAspect
 
 			result = proceedingJoinPoint.proceed();
 
-			if (IF_LOGGING_SAP)
+			if (IF_LOGGING_SAP_REQUEST)
 			{
 				dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
 			}

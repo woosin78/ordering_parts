@@ -18,7 +18,6 @@ import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -34,9 +33,6 @@ public class LoginHistoryService extends GeneralService
 
 	@Autowired
 	private RequestCache requestCache;
-
-	@Autowired
-	private UserService userService;
 
 	public int success(HttpServletRequest request, HttpServletResponse response)
 	{

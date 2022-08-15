@@ -8,7 +8,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
-import org.jwebppy.platform.mgmt.content.service.ContentService;
+import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
@@ -33,7 +33,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 	private AuthenticationHelper authenticationHelper;
 
 	@Autowired
-	private ContentService contentService;
+	private ContentAuthorityService contentAuthorityService;
 
 	@Autowired
 	private I18nMessageSource i18nMessageSource;
@@ -197,7 +197,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
     	cItemSearch.setUsername(username);
     	cItemSearch.setType(CItemType.G);
 
-    	for (CItemDto cItem: ListUtils.emptyIfNull(contentService.getMyItems(cItemSearch)))
+    	for (CItemDto cItem: ListUtils.emptyIfNull(contentAuthorityService.getMyCItems(cItemSearch)))
     	{
     		if (CmStringUtils.equals(cItem.getName(), "DP_SUPER_LOGIN"))
     		{

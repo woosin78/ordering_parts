@@ -53,6 +53,7 @@
 	<div class="ui clearing divider"></div>
 	<div id="TAB_viewAuthorityDetail" class="ui secondary pointing menu">
 		<a class="item active wrap" data-tab="general">General</a>
+		<a class="item wrap" data-tab="user">User</a>
 		<a class="item wrap" data-tab="authority">Sub Authority</a>
 	</div>
 	<div class="AREA_moveToModifyAuthority" style="display:none;">
@@ -67,6 +68,7 @@
 	<form id="FORM_modifyAuthority" class="ui form" autocomplete="off" onsubmit="return false;">
 		<input type="hidden" name="cSeq" />
 		<div class="ui tab active attached segment teal" data-tab="general"></div>
+		<div class="ui tab attached" data-tab="user"></div>
 		<div class="ui tab attached segment teal" data-tab="authority"></div>
 	</form>
 	<div class="AREA_moveToModifyAuthority" style="display:none;">
@@ -128,10 +130,6 @@ $(document).ready(function() {
 						initSeq();
 						hideUserDetailsArea();
 					};					
-				}
-				else if (columnIndex == 4)
-				{
-					_showUser({cSeq: key});					
 				};
 			},
 			onClickPageNumber: function(pageNumber)
@@ -334,13 +332,21 @@ $(document).ready(function() {
 					}
 					else
 					{
-						if (tabPath == "authority")
+						if (JpUtilsString.equals(tabPath, "authority"))
 						{
 							$("a.authority").on("click", function() {
 								_showContent({
 									cSeq: $(this).attr("data-key")
 								});
-							});							
+							});
+						}
+						else if (JpUtilsString.equals(tabPath, "user"))
+						{
+							$("a[data-key-name=uSeq]").on("click", function() {
+								_showUser({
+									uSeq: $(this).attr("data-key")
+								});
+							});
 						};
 					};
 

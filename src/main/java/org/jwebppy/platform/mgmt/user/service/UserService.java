@@ -2,6 +2,7 @@ package org.jwebppy.platform.mgmt.user.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -319,6 +320,15 @@ public class UserService extends GeneralService
 	public UserDto getUser(UserSearchDto userSearch)
 	{
 		return CmModelMapperUtils.mapToDto(UserObjectMapper.INSTANCE, userMapper.findUser(userSearch));
+	}
+
+	public List<UserDto> getUsersByUsernames(String[] usernames)
+	{
+		UserSearchDto userSearch = new UserSearchDto();
+		userSearch.setUsernames(Arrays.asList(usernames));
+		userSearch.setRowPerPage(99999);
+
+		return getPageableUsers(userSearch);
 	}
 
 	public List<UserDto> getPageableUsers(UserSearchDto userSearch)
