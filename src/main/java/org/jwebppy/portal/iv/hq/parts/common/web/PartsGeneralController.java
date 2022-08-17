@@ -8,11 +8,14 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.portal.iv.hq.common.HqCommonVo;
 import org.jwebppy.portal.iv.hq.common.web.HqGeneralController;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpUserContext;
 import org.jwebppy.portal.iv.hq.parts.common.service.PartsGeneralService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
+import org.springframework.web.context.request.WebRequest;
 
 public class PartsGeneralController extends HqGeneralController
 {
@@ -72,5 +75,13 @@ public class PartsGeneralController extends HqGeneralController
 		}
 
 		return null;
+	}
+
+	@Override
+	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
+	{
+		super.addAllAttributeFromRequest(model, webRequest);
+
+		model.addAttribute("BASE_PATH", HqCommonVo.REQUEST_PATH);
 	}
 }
