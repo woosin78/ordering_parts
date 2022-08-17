@@ -22,7 +22,8 @@ public class OrderCreateGateService extends PartsDomesticGeneralService
 	@Autowired
 	private OrderCreateService orderCreateService;
 
-	public int save(Map<String, String> paramMap)
+	//시스뱅크 주문 연동
+	public int saveSysbankOrder(Map<String, String> paramMap)
 	{
         SimpleDauMap dauMap = null;
 
@@ -96,7 +97,7 @@ public class OrderCreateGateService extends PartsDomesticGeneralService
 		return 0;
 	}
 
-	public void done(String poNo, String seq, String customerNo)
+	public void doneSysbankOrder(String poNo, String seq, String customerNo)
 	{
 		SimpleDauMap dauMap = null;
 

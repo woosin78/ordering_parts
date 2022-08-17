@@ -965,13 +965,19 @@ $(function(){
 
 let fgDoneSimulation = GLOBAL_CONST.NO;
 $(document).ajaxStop(function() {
-	//시스뱅크 대리점재고 시스템에서 I/F 되어 넘어 온 주문일 경우 로딩과 함께 시뮬레이션해 준다.
-	if (JpUtilsString.equals("[[${simulationFrom}]]", "SB") && JpUtilsString.equals(fgDoneSimulation, GLOBAL_CONST.NO))
+	if (JpUtilsString.equals(fgDoneSimulation, GLOBAL_CONST.NO))
 	{
-		doSimulation();
+		if (JpUtilsString.equals("[[${simulationFrom}]]", "SB"))//시스뱅크 대리점재고 시스템에서 I/F 된 주문일 경우 로딩과 함께 시뮬레이션해 준다.
+		{
+			doSimulation();
+		}
+		else if (JpUtilsString.equals("[[${simulationFrom}]]", "PROMOTION"))//프로모션 화면에서 넘어온 경우
+		{
+			doValidation();
+		};
 		
-		//시뮬레이션이 무한 반복되는 것을 방지하기 위해 값을 초기화 해 줌		
-		fgDoneSimulation = GLOBAL_CONST.YES;
+		//시뮬레이션이 무한 반복되는 것을 방지하기 위해 상태를 변경해 줌		
+		fgDoneSimulation = GLOBAL_CONST.YES;		
 	};
 });
 </script>

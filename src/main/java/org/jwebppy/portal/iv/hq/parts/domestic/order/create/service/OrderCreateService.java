@@ -285,7 +285,7 @@ public class OrderCreateService extends PartsDomesticGeneralService
 						try
 						{
 							//시스뱅크 연동 주문일 경우 상태 업데이트
-							orderCreateGateService.done(order.getPoNo(), prevOrderHistoryHeader.getRefSeq(), order.getSoldToNo());
+							orderCreateGateService.doneSysbankOrder(order.getPoNo(), prevOrderHistoryHeader.getRefSeq(), order.getSoldToNo());
 						}
 						catch (Exception e)
 						{
