@@ -31,6 +31,11 @@ public class EpUploadFileListDto extends IvGeneralDto
 		return originName + "." + extension;
 	}
 
+	public String getFullSavedName()
+	{
+		return savedName + "." + extension;
+	}
+
 	public String getDownloadKey()
 	{
 		try

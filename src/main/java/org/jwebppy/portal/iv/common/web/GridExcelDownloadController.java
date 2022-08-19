@@ -1,4 +1,4 @@
-package org.jwebppy.portal.common.web;
+package org.jwebppy.portal.iv.common.web;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,6 +13,7 @@ import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.common.web.PortalGeneralController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("/portal/iv/download/grid")
-public class GridExcelDownload extends PortalGeneralController
+public class GridExcelDownloadController extends PortalGeneralController
 {
 	@PostMapping("/excel")
 	public void excel(WebRequest webRequest, HttpServletResponse httpServletResponse) throws JsonParseException, JsonMappingException, IOException
