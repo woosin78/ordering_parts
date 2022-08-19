@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	
+	
+<th:block layout:fragment="content">
+	<script src="/editor_html5/js/xfe_main.js"></script>
+	
+	<div class="block-header">
+		<div class="block-title" th:text="프로모션"></div>
+		<div class="block-button-area">
+			<th:block >
+				<button id="BTN_modify" type="button" th:text="#{HQP_B_MODIFY}"></button>
+				<button id="BTN_delete" type="button" th:text="#{HQP_B_DELETE}"></button>
+			</th:block>
+			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}" ></button>
+		</div>	
+	</div>
+	
+	
+	<div id="boardViwer" class="condition-area">
+	<form id="FORM_search" th:action="|${BASE_PATH}/promotion/list|" >
+	<input type="hidden" name="pSeq" th:value="*{pSeq}"/>
+	<input type="hidden" name="title" th:value="*{title}"/>
+	<input type="hidden" name="fromRegDate" th:value="*{fromRegDate}"/>
+	<input type="hidden" name="toRegDate" th:value="*{toRegDate}"/>
+	<input type="hidden" name="pageNumber" th:value="*{pageNumber}"/>
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th><span th:text="#{HQP_L_TITLE}"></span></th>
+				<td th:text="${promotion.title}" colspan="3"/>
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_WRITER}"></th>
+				<td th:text="${promotion.writer}"></td>
+				<th th:text="#{HQP_L_REG_DATE}"></th>
+				<td th:text="${promotion.displayRegDate2}"></td>
+			</tr>
+			<tr>
+				<td colspan="4"><div id="xfe"></div></td>
+			</tr>
+			<tr >
+				<th th:text="#{HQP_L_VISIBLE_TARGET}"/>
+				<td colspan="3">
+					<div th:each="promotionTarget : ${promotion.promotionTargets}">
+						<span th:text="${promotionTarget.code}"></span><div class='split2'></div><span th:text="${promotionTarget.description}"></span>
+					</div>				
+				</td>			
+			</tr>
+			<tr >
+				<th th:text="#{HQP_L_VISIBLE_PERIOD}"/>
+				<td colspan="3">
+					<span th:text="${promotion.displayFromView}"></span>
+					<span th:if="${not #strings.isEmpty(promotion.displayToView)}" th:text="| - ${promotion.displayToView}|"></span>
+				</td>
+			</tr>
+			<tr >
+				<th th:text="|#{HQP_L_WIDTH} (#{HQP_L_PLACEHOLD_PIXEL})|"/> 
+				<td th:text="|${promotion?.width == null ? '' : promotion.width} |"></td>
+				<th th:text="|#{HQP_L_HEIGHT} (#{HQP_L_PLACEHOLD_PIXEL})|"/>
+				<td  th:text="|${promotion?.height == null ? '' : promotion.height}|"></td>
+			</tr>
+			<tr >
+				<th th:text="배너이미지"/>
+				<td colspan="3">
+					<div th:each="uploadFileList : ${promotion.uploadFileLists}">
+						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a><div class='split2'></div><span th:text="${uploadFileList.displayFileSize}"></span>
+						<input name="uflSeqs" type="hidden" th:value="${uploadFileList.uflSeq}" />
+					</div>
+				</td>
+			</tr>
+			<tr >
+				<th th:text="#{HQP_L_ATTACHMENT}"/>
+				<td colspan="3">
+					<div th:each="uploadFileList : ${promotion.uploadFileLists2}">
+						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a><div class='split2'></div><span th:text="${uploadFileList.displayFileSize}"></span>
+						<input name="uflSeqs2" type="hidden" th:value="${uploadFileList.uflSeq}" />
+					</div>
+				</td>
+			</tr>
+			<tr >
+				<th th:text="대상자재"/>
+				<td colspan="3">
+					<div th:each="promotionItem : ${promotion.promotionItems}">
+						<span th:text="${promotionItem.materialNo}"></span><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
+					</div>				
+				</td>			
+			</tr>
+			
+		</tbody>
+	</table>
+	</form>
+	</div>
+	
+	<textarea id="htmlContent" th:text="${promotion.htmlContent}" style="display:none;"></textarea>
+	
+	
+<script>
+$(window).on("load", function() {
+	ProgressBar.hide();
+	
+	initBoardViwer($("#boardViwer"), $("#xfe"));
+});
+
+function initBoardViwer($area, $content)
+{
+	installBoardViewResizer($area, $content);
+	
+	$(window).on("resize", $.debounce(100, function(e){
+		installBoardViewResizer($area, $content);
+	}));
+};
+
+function installBoardViewResizer($area, $content)
+{
+	let height = 0;
+	
+	$.each($("body").children(":not(script)").not($area), function(index, element) {
+		if (!$(element).is(":visible"))
+		{
+			return true;
+		};
+		
+		height += $(element).outerHeight(true);
+	});
+	
+	let bodyHeight = $("body").height();
+	let h1 = $area.outerHeight(true) - $content.outerHeight(true);//게시글 영역 외 height
+	
+	$content.height(bodyHeight - height - h1);
+	xfe.setHeight($content.height() + "px");
+};
+
+$("#BTN_modify").on("click", function() {
+	$("#FORM_search")
+		.attr("action", "[[${BASE_PATH}]]/promotion/write")
+		.submit();
+});
+
+$("#BTN_delete").on("click", function() {
+	if (confirm("[[#{HQP_M_CONFIRM_DELETE}]]"))
+	{
+		JpUtilsAjax.post({
+			url: "[[${BASE_PATH}]]/promotion/delete",
+			data: $("#FORM_search").serialize(),
+			success: function(data, textStatus, jqXHR) {
+				$("#BTN_back").trigger("click");
+			}		
+		});		
+	};
+});
+
+$("#BTN_back").on("click", function() {
+	$("#FORM_search").submit();
+});
+
+/*
+ * 에디터 생성.
+ * 
+ * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
+ * width : 에디터의 너비
+ * height : 에디터의 높이
+ * onLoad : 에디터 초기 로드 이벤트				 
+ */	
+let xfe = new XFE({
+	basePath: "[[@{/editor_html5}]]",
+	width: "100%",
+	viewMode: true,
+    viewModeOptions: {
+    	borderWidth: "0px"
+    },
+	onLoad: function() {
+		xfe.setBodyValue($("#htmlContent").val());
+	}
+});
+	
+xfe.render("xfe");
+
+$("a[downloadKey]").on("click", function() {					
+	PortalFileDownload.download($(this).attr("downloadKey"));
+});	
+</script>
+</th:block>	

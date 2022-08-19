@@ -10,6 +10,7 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.hq.common.HqCommonVo;
 import org.jwebppy.portal.iv.hq.common.web.HqGeneralController;
+import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpUserContext;
 import org.jwebppy.portal.iv.hq.parts.common.service.PartsGeneralService;
@@ -82,6 +83,6 @@ public class PartsGeneralController extends HqGeneralController
 	{
 		super.addAllAttributeFromRequest(model, webRequest);
 
-		model.addAttribute("BASE_PATH", HqCommonVo.REQUEST_PATH);
+		model.addAttribute("BASE_PATH", PartsCommonVo.REQUEST_PATH);
 	}
 }

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="프로모션"></div>
+		<div class="block-button-area">
+			<button id="BTN_write" type="button" th:text="#{HQP_B_WRITE}"></button>
+			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>			
+		</div>
+	</div>
+	<div class="condition-area">
+	<form id="FORM_search" th:object="${promotionSearch}">
+	<input type="hidden" id="pSeq" name="pSeq"/>
+	<input type="hidden" id="pageNumber" name="pageNumber" th:value="*{pageNumber}"/>
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th th:text="#{HQP_L_TITLE}"></th>
+				<td> 
+					<div class="input-area">
+						<input type="text" id="title" name="title" class="custom-ui" th:value="*{title}"/>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<th th:text="#{HQP_L_REG_DATE}"></th>
+				<td>
+					<div class="input-area">
+						<input type="text" id="fromRegDate" name="fromRegDate" class="custom-ui-calendar" th:value="*{fromRegDate}"/>
+						<input type="text" id="toRegDate" name="toRegDate" class="custom-ui-calendar to" th:value="*{toRegDate}"/>
+					</div>
+				</td>			
+			</tr>				
+		</tbody>
+	</table>
+	</form>
+	</div>
+	
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+
+
+<script>
+let $tableObj;
+$(function(){
+	Calendar.makeBeetweenCalendar($("#fromRegDate"), "[[${promotionSearch.fromRegDate}]]", $("#toRegDate"), "[[${promotionSearch.toRegDate}]]");
+	
+	$tableObj = $("#TBL_grid").DataTable({
+		ordering: true, 
+		columns : [
+			{data: "no", 			title: "[[#{HQP_L_NUMBER}]]", width: "8%"},
+			{data: "displayTitle",	title: "[[#{HQP_L_TITLE}]]"},
+			{data: "state",			title: "상태", width: "6%"},
+			{
+				name: "fromView",
+				data: "fromView",
+				title: "기간",
+				width: "18%",
+				render: function(data, type, row)
+				{
+					return row.displayFromView.substr(0, 10) + " - " + row.displayToView.substr(0, 10) ;
+				}
+			},
+			{data: "displayRegDate2", 	title: "[[#{HQP_L_REG_DATE}]]", width: "8%"}
+		],
+		columnDefs: [
+			{targets: [1], className: "link"},
+			{targets: [0, 2, 3, 4], className: "dt-body-center"}
+		],		
+		ajax: {
+			url: "[[${BASE_PATH}]]/promotion/list/data",
+			data: function(p)
+			{
+				//console.log('p',p);
+				p.pSeq 			= $("#pSeq").val();
+				p.title 		= $("#title").val();
+				p.writer		= $("#writer").val();
+				p.fromRegDate 	= $("#fromRegDate").val();
+				p.toRegDate 	= $("#toRegDate").val();
+			},
+			dataSrc: function(response) 
+			{
+				//console.log('response',response);
+				let result = response.RESULT;
+				
+				if(null == result){
+					return result;
+				}
+				
+				for (let i=0, length=result.length; i<length; i++)
+				{
+					let depth = result[i].depth;
+					
+					if (depth > 0)
+					{
+						result[i].displayTitle = "<span style='margin-left:" + depth + "em;'>└ </span>" + result[i].displayTitle;
+					};
+				}
+
+				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
+
+				return result;
+			}
+		},
+		paging : true, // 페이징 기능켬
+		pageLength: parseInt(GLOBAL_CONST.ROW_PER_PAGE), // 한 페이지에 20개 행
+		initComplete:function(settings, json)
+		{
+			console.log('initComplete');
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+	
+	// Search 버튼 클릭
+	$("#BTN_search").on("click", function(){		
+		doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+	});
+	
+	//Input text 엔터 키 입력
+	$("#FORM_search input:text").on("keydown", function(event) {
+		if (event.keyCode == 13)
+		{
+			doSearch();
+		};
+	});		
+	
+	$("#TBL_grid tbody").on("click", "tr", function (e){				
+	    let tblGrid = $("#TBL_grid").DataTable();	    
+	    let index = $("#TBL_grid").dataTable().api().cell($(e.target).closest("td")).index().column;	    	    
+		let rowData = tblGrid.row(this).data();
+		//console.log('rowData',rowData);
+		
+		if (index == 1)
+		{
+			$("#FORM_search input[name=pSeq]").val(rowData.pseq);
+			$("#FORM_search").attr("action", "[[${BASE_PATH}]]/promotion/view").submit();	
+		};
+	});
+	
+	$("#BTN_write").on("click", function() {
+		$("#FORM_search").attr("action", "[[${BASE_PATH}]]/promotion/write").submit();
+	});
+});
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+}
+
+</script>
+
+</th:block>	

@@ -12,4 +12,11 @@ import lombok.ToString;
 public class PromotionTargetEntity extends PartsGeneralEntity
 {
 	private static final long serialVersionUID = 7501998799786585300L;
+	
+	private Integer ptSeq;
+	private Integer pSeq;
+	private String code;
+	private String description;
+	private String type;
+
 }

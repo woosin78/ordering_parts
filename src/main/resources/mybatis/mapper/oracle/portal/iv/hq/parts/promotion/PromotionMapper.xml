@@ -2,4 +2,152 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.portal.iv.hq.parts.promotion.mapper.PromotionMapper">
+
+	<resultMap type="PromotionEntity" id="promotionEntityMap">
+		<id property="pSeq" column="p_seq" />
+		<result property="title" column="title" />
+		<result property="htmlContent" column="html_content" />
+		<result property="textContent" column="text_content" />
+		<result property="target" column="target" />
+		<result property="ufSeq" column="uf_seq" />
+		<result property="writer" column="writer" />
+		<result property="width" column="width" />
+		<result property="height" column="height" />
+		<result property="fromView" column="from_view" />
+		<result property="toView" column="to_view" />	
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+		<result property="modUsername" column="mod_username" />
+		<result property="modDate" column="mod_date" />
+		<collection property="uploadFileLists" foreignColumn="p_seq" column="p_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
+		<collection property="uploadFileLists2" foreignColumn="p_seq" column="p_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists2" />
+		<collection property="promotionTargets" foreignColumn="p_seq" column="p_seq" javaType="java.util.ArrayList" ofType="PromotionTargetEntity" select="org.jwebppy.portal.iv.hq.parts.promotion.mapper.PromotionTargetMapper.findPromotionTargets" />
+		<collection property="promotionItems" foreignColumn="p_seq" column="p_seq" javaType="java.util.ArrayList" ofType="PromotionItemEntity" select="org.jwebppy.portal.iv.hq.parts.promotion.mapper.PromotionItemMapper.findPromotionItems" />
+	</resultMap>
+	
+	<resultMap type="PromotionEntity" id="bannerPromotionEntityMap">
+		<id property="pSeq" column="p_seq" />
+		<collection property="uploadFileLists" foreignColumn="p_seq" column="p_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
+	</resultMap>
+	
+	
+	
+	<select id="findPageablePromotions" parameterType="PromotionSearchDto" resultType="PromotionEntity">
+		<include refid="PaginationMapper.header"/>
+		select
+			a.*,
+        	(CASE WHEN a.from_view <![CDATA[<=]]> sysdate and a.to_view <![CDATA[>=]]> sysdate THEN '진행중' ELSE '' END) AS state
+		from
+		    ep_promotion a
+		where
+		    a.fg_delete='N'
+		    <if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(title)">
+				and upper(a.title) like '%'||upper(#{title})||'%'
+			</if>
+			
+			<choose>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
+					and a.reg_date <![CDATA[>=]]> #{fromRegDateForDb} and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate)">
+					and a.reg_date <![CDATA[>=]]> #{fromRegDateForDb}
+				</when>
+				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
+					and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
+				</when>
+			</choose>
+		order by a.p_seq desc
+		<include refid="PaginationMapper.footer"/>
+	</select>
+	
+	<select id="findBannerPromotions" parameterType="PromotionSearchDto" resultMap="bannerPromotionEntityMap">
+		select
+			a.*
+   		from
+        	EP_PROMOTION a
+    	where
+        	a.fg_delete='N'
+        	and a.from_view <![CDATA[<=]]> sysdate and a.to_view <![CDATA[>=]]> sysdate
+        	and  ( 
+	            0 = (select count(b.pt_seq) from EP_PROMOTION_TARGET b where a.p_seq = b.p_seq and b.fg_delete='N' )
+	            or 
+	            0 <![CDATA[<]]> (select count(b.pt_seq) from EP_PROMOTION_TARGET b where a.p_seq = b.p_seq and b.fg_delete='N' and b.code = #{custCode})
+            )
+    	order by a.p_seq desc
+	</select>
+	
+	<select id="findPromotion" parameterType="int" resultMap="promotionEntityMap">
+		select
+			a.*
+		from
+			ep_promotion a
+		where
+			a.p_seq=#{pSeq}
+			and a.fg_delete='N'
+	</select>
+	
+	<select id="findUploadFileLists" resultType="EpUploadFileListEntity">
+		select
+		b.*
+		from
+		ep_promotion a,		
+		ep_upload_file_list b
+		where
+		a.uf_seq = b.uf_seq
+        and a.p_seq = b.t_seq
+		and a.fg_delete='N'		
+		and b.fg_delete='N'
+        and a.p_seq = #{pSeq}
+        and b.type = 'B'
+	</select>
+	
+	<select id="findUploadFileLists2" resultType="EpUploadFileListEntity">
+		select
+		b.*
+		from
+		ep_promotion a,		
+		ep_upload_file_list b
+		where
+		a.uf_seq = b.uf_seq
+        and a.p_seq = b.t_seq
+		and a.fg_delete='N'		
+		and b.fg_delete='N'
+        and a.p_seq = #{pSeq}
+        and b.type = 'N'
+	</select>
+	
+	<insert id="insert" parameterType="PromotionEntity" useGeneratedKeys="true" keyProperty="p_seq">
+		<selectKey keyProperty="pSeq" resultType="Integer" order="BEFORE">
+			select ep_p_seq.nextval from dual
+		</selectKey>
+	
+		insert into ep_promotion (p_seq, title, html_content, text_content, from_view, to_view, target, uf_seq,  writer, width, height, fg_delete, reg_username, reg_date) 
+		values (#{pSeq}, #{title}, #{htmlContent}, #{textContent}, #{fromView}, #{toView}, #{target}, #{ufSeq}, #{writer}, #{width}, #{height}, 'N', #{regUsername}, #{regDate})
+	</insert>
+	
+	<update id="update" parameterType="PromotionEntity">
+		update ep_promotion set
+			title=#{title},
+			html_content=#{htmlContent},
+			text_content=#{textContent},
+			from_view=#{fromView},
+			to_view=#{toView},
+			width=#{width},
+			height=#{height},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}				
+		where
+			p_seq=#{pSeq}
+	</update>
+	
+	<update id="updateFgDelete" parameterType="PromotionEntity">
+		update ep_promotion set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			p_seq=#{pSeq}
+			and fg_delete='N'
+	</update>
+	
 </mapper>

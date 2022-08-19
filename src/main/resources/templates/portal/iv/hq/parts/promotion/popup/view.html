@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+<link rel="stylesheet" type="text/css" th:href="@{/portal/js/semantic/semantic.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/popup/basic.css}" />
+<script th:src="@{/portal/js/jquery/jquery.min.js}"></script>
+<script th:src="@{/portal/js/jquery/jquery.cookie.js}"></script>
+<script th:src="@{/portal/js/jquery/jquery.fileDownload.js}"></script>
+<script th:src="@{/portal/js/portal.utils.download.js}"></script>
+<script src="/editor_html5/js/xfe_main.js"></script>
+<style>
+.pop-bottom {
+	width:100%;
+	height:45px;
+	padding: 10px 5px 5px 10px;
+	background-color: #000;
+	position:fixed;
+	bottom: 0px;
+}
+.pop-bottom label {
+	color:#fff;
+}
+
+.pop-bottom label.link {color: #fff; cursor: pointer;}
+.pop-bottom label.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
+
+.pop-top {
+	border-top: 6px solid #003081;
+}
+
+</style>
+</head>	
+<body style="overflow: hidden; margin:0; padding:0;">
+<div class="pop-top"></div>
+
+
+<div id="boardViwer" class="condition-area">
+	<form id="FORM_search" th:action="|${BASE_PATH}/promotion/list|" >
+	<input type="hidden" name="pSeq" th:value="*{pSeq}"/>
+	
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th style="width: 100px;" ><span th:text="#{HQP_L_TITLE}"></span></th>
+				<td th:text="${promotion.title}"/>
+			</tr>
+			<tr>
+				<td colspan="2"><div id="xfe"></div></td>
+			</tr>
+			<tr th:style="${promotion?.uploadFileLists2.size() == 0 ? 'display:none;' : ''}">
+				<th th:text="#{HQP_L_ATTACHMENT}"/>
+				<td >
+					<div th:each="uploadFileList : ${promotion.uploadFileLists2}">
+						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a><div class='split2'></div><span th:text="${uploadFileList.displayFileSize}"></span>
+					</div>
+				</td>
+			</tr>
+			<tr th:style="${promotion?.promotionItems.size() == 0 ? 'display:none;' : ''}">
+				<th th:text="대상자재"/>
+				<td >
+					<div th:each="promotionItem : ${promotion.promotionItems}">
+						<!--<span th:text="${promotionItem.materialNo}"></span><div class='split2'></div><span th:text="부품명"></span>-->
+						<input type="checkbox" name="materialChk" class="custom-ui visible-item" th:value="${promotionItem.materialNo}" />
+						<label class="dealer-code" th:text="${promotionItem.materialNo}"></label><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
+					</div>				
+				</td>			
+			</tr>
+			
+		</tbody>
+	</table>
+	</form>
+	</div>
+	
+
+<div id="bottom" class="pop-bottom">	
+	<button id="BTN_order" type="button" th:text="#{HQP_B_ORDER}" th:style="${promotion?.promotionItems.size() == 0 ? 'display:none;' : ''}" ></button>
+	<!--<button id="BTN_cart" type="button" th:text="장바구니담기" th:style="${promotion?.promotionItems.size() == 0 ? 'display:none;' : ''}" ></button>-->
+	<div style="float: right;"><button id="BTN_close" type="button" th:text="#{HQP_B_CLOSE}"></button></div>	
+</div>
+<textarea id="htmlContent" th:text="${promotion?.htmlContent}" style="display:none;"></textarea>
+<script>
+$(window).on("load", function() {
+	let height = $(document).outerHeight(true) - $(".pop-top").outerHeight(true) - $("#bottom").outerHeight(true) -200;
+	$("#xfe").height(height);
+});
+
+/*
+ * 에디터 생성.
+ * 
+ * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
+ * width : 에디터의 너비
+ * height : 에디터의 높이
+ * onLoad : 에디터 초기 로드 이벤트				 
+ */	
+let xfe = new XFE({
+	basePath: "[[@{/editor_html5}]]",
+	viewMode: true,
+    viewModeOptions: {
+    	borderWidth: "0px"
+    },
+	onLoad: function() {
+		xfe.setBodyValue($("#htmlContent").val());
+	}
+});
+
+xfe.render("xfe");
+
+$("#BTN_close").on("click", function() {
+	window.close();
+});
+
+$("#BTN_order").on("click", function() {
+	if(0==$("input[name=materialChk]:checked").length)
+	{
+		alert("주문할 대상 자재를 선택해 주세요.");
+		return;
+	}
+	
+	$("input[name=materialChk]:checked").each(function (index) {
+		window.opener.$("#FORM_logout").append('<input type="text" name="materialNo" value="'+$(this).val()+'" />');
+	});
+	
+	window.opener.$("#FORM_logout").attr("action", "/portal/iv/hq/parts/domestic/order/create/gate/promotion");
+	window.opener.$("#FORM_logout").submit();
+	
+	window.close();
+});
+
+/*$(".link").on("click", function() {
+	$("input[type=checkbox]").prop("checked", !$("input[type=checkbox]").is(":checked"));
+});*/
+
+$("a[downloadKey]").on("click", function() {					
+	PortalFileDownload.download($(this).attr("downloadKey"));
+});	
+
+</script>
+</body>
+</html>

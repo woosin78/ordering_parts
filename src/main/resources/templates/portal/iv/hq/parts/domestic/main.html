@@ -18,6 +18,7 @@
 	<!-- Meta -->
 	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/meta"></th:block>
 	<!-- CSS -->
+	
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/jquery/jquery.bxslider.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/main.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/portal/css/layout/iv/hq/parts/gnb.css}">	
@@ -25,6 +26,12 @@
 	
 	<!-- JavaScript -->
 	<th:block th:replace="portal/layout/iv/hq/parts/common/fragments/js"></th:block>
+	
+	<!-- 배너관련 파일 -->
+	<link rel="stylesheet" type="text/css" href="/portal/slick/slick.css"/>
+	<link rel="stylesheet" type="text/css" href="/portal/slick/slick-theme.css"/>
+	<script type="text/javascript" src="/portal/slick/slick.min.js"></script>
+	
 </head>
 <body>
 	<!-- Progress bar end -->
@@ -43,6 +50,7 @@
 					</button>
 				</div>
 			</div>
+			
 			<!-- header.jsp begin -->
 			<div class="gnb-area">
 				<div class="top-header">
@@ -133,27 +141,119 @@
 						</table>
 					</div>
 				</div>
+				
+				<!-- 배너 -->
+				<div id="banner-div" style=" width: 300px;	height:200px;"> <!-- background-color: skyblue; -->
+				    <div id="slider-div" class="slick" >
+						<!--<a href="javascript:goPromotionPop('11','500','500')"><div><img class="slick_img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readmed_2022_362848_16507548185018777.jpg"></div></a>
+						<a href="javascript:goPromotionPop('11','500','500')"><div><img class="slick_img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readtop_2022_362848_16507548185018769.jpg"></div></a>
+						<a href="javascript:goPromotionPop('11','500','500')"><div><img class="slick_img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readtop_2022_362848_16507548185018769.jpg"></div></a>-->
+					</div>
+				</div>
+				<!-- //배너 -->
+				
 			</div>
 		</div>
+
 		<div class="bottom-area">
 			<div class="copy-right">
 				<span th:text="#{PTL_T_COPY_RIGHT}"></span>
 			</div>
 		</div>
+		
 	</div>
 	<!-- Logout -->
 	<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>	
 	<!-- iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe -->
+
+<style>
+  .slick1 {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  .slick_img {
+	width: 220px;
+	height: 160px;
+    margin-top: 10px;
+    margin-left: 40px;
+    margin-right: 40px;
+  }
+</style>
+
+
 <script>
+
 $(window).on("load", function() {
 	ProgressBar.hide();
 	
+	Promotion.getPromotionBanner();
 	Survey.getLatestSurvey();
 });
 
 $(window).resize($.debounce(100, function(e){
 	resizeView();
 }));
+
+function goPromotionPop(pSeq, width, height)
+{
+	let url = "/portal/iv/hq/parts/promotion/popup/view?pSeq=" + pSeq;
+					
+	width = JpUtilsString.defaultString(width, "700");
+	height = JpUtilsString.defaultString(height, "600");
+	
+	Popup.open(url, width, height, "Y", "Y");	
+}
+
+
+let Promotion = {
+	getPromotionBanner: function() {
+		// 진행중인 프로모션 배너 목록 가져오기
+		JpUtilsAjax.get({
+			url: "/portal/iv/hq/parts/promotion/list/banner",
+			global: false,
+			success: function(data, textStatus, jqXHR)
+			{
+				console.log('promotion data', data);
+				let result = data.RESULT;
+				
+				if(0==result.length)
+				{
+					$('banner-div').css('display', 'none');
+					return;
+				}
+				
+				$.each(result, function(index, element) {
+					console.log(element);
+					$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick_img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readmed_2022_362848_16507548185018777.jpg"></a>');
+				});
+				
+				// 슬라이더 옵션 셜정
+				$('#slider-div').slick({
+					slide: 'a'		//슬라이드 되어야 할 태그 ex) div, li, a 등
+					,infinite : true 	//무한 반복 옵션	 
+					,slidesToShow : 1		// 한 화면에 보여질 컨텐츠 개수
+					,slidesToScroll : 1		//스크롤 한번에 움직일 컨텐츠 개수
+					,speed : 1000	 	// 다음 버튼 누르고 다음 화면 뜨는데까지 걸리는 시간(ms)
+					,arrows : true 		// 옆으로 이동하는 화살표 표시 여부
+					,dots : true 		// 스크롤바 아래 점으로 페이지네이션 여부
+					,autoplay : true		// 자동 스크롤 사용 여부
+					,autoplaySpeed : 3000 	// 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
+					,pauseOnHover : true	// 슬라이드 이동	시 마우스 호버하면 슬라이더 멈추게 설정
+					,vertical : false		// 세로 방향 슬라이드 옵션
+					//,prevArrow : "<button type='button' class='slick-prev'>Previous</button>"	// 이전 화살표 모양 설정
+					//,nextArrow : "<button type='button' class='slick-next'>Next</button>"		// 다음 화살표 모양 설정
+					//,dotsClass : "slick-dots" 	//아래 나오는 페이지네이션(점) css class 지정
+				});
+			}
+		});	
+	},
+	popupView: function(pSeq, width, height) {
+		let url = "/portal/iv/hq/parts/promotion/popup/view?pSeq=" + pSeq;
+		width = JpUtilsString.defaultString(width, "700");
+		height = JpUtilsString.defaultString(height, "600");
+		Popup.open(url, width, height, "Y", "Y");
+	}
+};
 
 let Survey = {
 	sSeq: 0,
@@ -356,6 +456,11 @@ function resizeView()
 		$("#mainImg").height(RESIZING_MIN_HEIGHT);
 	}
 };
+
+
+
+
+			
 </script>
 </body>
 </html>

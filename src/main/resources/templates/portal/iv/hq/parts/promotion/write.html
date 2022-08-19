@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+
+<th:block layout:fragment="content">
+<style> 
+/*
+body {
+	overflow-y: auto;
+}*/
+</style>
+	<script src="/editor_html5/js/xfe_main.js"></script>
+	
+	<div class="block-header">
+		<div class="block-title" th:text="프로모션"></div>
+		<div class="block-button-area">
+			<button id="BTN_save" type="button" th:text="#{HQP_B_SAVE}"></button>
+			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}"></button>
+		</div>	
+	</div>	
+	<div id="boardViwer" class="condition-area" > <!-- style="overflow:auto;" -->
+	<form id="FORM_write" method="post" th:action="|${BASE_PATH}/promotion/save|" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
+	<input type="hidden" name="pSeq" id="pSeq" th:value="${promotion?.pSeq}"/>
+	<input type="hidden" name="textContent" id="textContent" th:value="${promotion?.textContent}"/>
+	<input type="hidden" name="htmlContent" id="htmlContent" th:value="${promotion?.htmlContent}"/>	
+	<input type="file" name="files" id="files" style="display:none;"/>
+	<input type="file" name="files2" id="files2" multiple style="display:none;"/>
+	<table class="condition table-fixed">
+		<tbody>
+			<tr>
+				<th>[[#{HQP_L_TITLE}]]<img src="/portal/img/icon/required.png" class="required" /></th>
+				<td>
+					<input type="text" id="title" name="title" class="custom-ui" th:value="${promotion?.title}"/>
+				</td>
+			</tr>
+			<tr>
+				<th>[[#{HQP_L_CONTENT}]]<img src="/portal/img/icon/required.png" class="required" /></th>
+				<td><div id="xfe"></div></td>
+			</tr>
+			<tr >
+				<th th:text="#{HQP_L_VISIBLE_TARGET}"/> 
+				<td>
+					<div class="split-row-more-compact"></div>
+					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui" th:placeholder="#{HQP_L_PLACEHOLD_DEALER_CODE_NAME}"/></div>
+					<div class="split-row-more-compact"></div>
+					<button id="BTN_deleteVisibleTarget" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
+					<div class="split-row-more-compact"></div>
+					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+					<div class="split-row-more-compact"></div>
+					<div id="addedtargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
+						<div th:each="promotionTarget : ${promotion?.promotionTargets}">
+							<input type="checkbox" class="custom-ui visible-target"/><label class="dealer-code" th:text="${promotionTarget.code}"></label>
+							<div class="split2"></div><span class="dealer-name" th:text="${promotionTarget.description}"></span>
+							<input name="targetCode" type="hidden" th:value="${promotionTarget.code}"/>
+							<input name="targetDescription" type="hidden" th:value="${promotionTarget.description}"/>
+						</div>						
+					</div>
+				</td>
+			</tr>
+			<tr >
+				<th>[[#{HQP_L_VISIBLE_PERIOD}]]<img src="/portal/img/icon/required.png" class="required" /></th>
+				<td>
+					<div class="input-area period">
+						<span th:text="#{HQP_L_FROM}" class="label"></span>
+						<input type="text" id="fromViewDate" name="fromViewDate" class="custom-ui-calendar" th:value="${promotion?.fromViewDate}"/>
+						<div class="split3"></div>
+						<select id="fromViewHours" name="fromViewHours" class="custom-ui hours">
+							<option value=""></option>
+							<option th:each="num : ${#numbers.sequence(0,23)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq promotion?.fromViewHours}"/>
+						</select>
+						<span th:text="#{HQP_L_HOURS}"></span>
+						<select id="fromViewMinutes" name="fromViewMinutes" class="custom-ui minutes">
+							<option value=""></option>
+							<option th:each="num : ${#numbers.sequence(0,59)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq promotion?.fromViewMinutes}"/>
+						</select>
+						<span th:text="#{HQP_L_MINUTES}"></span>
+					</div>
+					<div class="split-row-more-compact"></div>
+					<div class="input-area period">
+						<span th:text="#{HQP_L_TO}" class="label"></span>
+						<input type="text" id="toViewDate" name="toViewDate" class="custom-ui-calendar" th:value="${promotion?.toViewDate}"/>
+						<div class="split3"></div>
+						<select id="toViewHours" name="toViewHours" class="custom-ui hours">
+							<option value=""></option>
+							<option th:each="num : ${#numbers.sequence(0,23)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq promotion?.toViewHours}"/>
+						</select>
+						<span th:text="#{HQP_L_HOURS}"></span>
+						<select id="toViewMinutes" name="toViewMinutes" class="custom-ui minutes">
+							<option value=""></option>
+							<option th:each="num : ${#numbers.sequence(0,59)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq promotion?.toViewMinutes}"/>
+						</select>
+						<span th:text="#{HQP_L_MINUTES}"></span>			
+					</div>
+				</td>
+			</tr>
+			<tr >
+				<th>[[#{HQP_L_POPUP_SIZE}]]</th>
+				<td>
+					<div class="input-area popup">
+						<span th:text="#{HQP_L_WIDTH}" class="label"></span>
+						<input type="text" class="custom-ui-scope" id="width" name="width" th:value="${promotion?.width}" th:placeholder="#{HQP_L_PLACEHOLD_PIXEL}" />
+					</div>
+					<div class="split-row-more-compact"></div>
+					<div class="input-area popup">
+						<span th:text="#{HQP_L_HEIGHT}" class="label"></span>
+						<input type="text" class="custom-ui-scope" id="height" name="height" th:value="${promotion?.height}" th:placeholder="#{HQP_L_PLACEHOLD_PIXEL}" />
+					</div>
+				</td>
+			</tr>
+			<tr >
+				<th>[[배너이미지]] <img src="/portal/img/icon/required.png" class="required" /> </th> 
+				<td>
+					<div class="split-row-more-compact"></div>
+					<button id="BTN_searchFile" type="button" th:text="#{HQP_B_FILE}" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
+					<div class="split-row-more-compact"></div>
+					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+					<div class="split-row-more-compact"></div>
+					<!-- div id="attachedFiles" style="width:100%; height:5em; overflow-y: auto;" -->
+					<div id="attachedFiles">
+						<div th:each="uploadFileList : ${promotion?.uploadFileLists}">
+							<input name="uflSeq" type="checkbox" th:value="${uploadFileList.uflSeq}" class="custom-ui" th:fileName="${uploadFileList.fullOriginName}"/><label th:text="${uploadFileList.fullOriginName}"></label>
+							<div class="split2"></div><span th:text="${uploadFileList.displayFileSize}"></span>
+						</div>
+					</div>
+				</td>
+			</tr>		
+			<tr >
+				<th th:text="#{HQP_L_ATTACHMENT}"/>
+				<td>
+					<div class="split-row-more-compact"></div>
+					<button id="BTN_searchFile2" type="button" th:text="#{HQP_B_FILE}" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile2" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
+					<div class="split-row-more-compact"></div>
+					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+					<div class="split-row-more-compact"></div>
+					<!-- div id="attachedFiles" style="width:100%; height:5em; overflow-y: auto;" -->
+					<div id="attachedFiles2">
+						<div th:each="uploadFileList : ${promotion?.uploadFileLists2}">
+							<input name="uflSeq2" type="checkbox" th:value="${uploadFileList.uflSeq}" class="custom-ui" th:fileName="${uploadFileList.fullOriginName}"/><label th:text="${uploadFileList.fullOriginName}"></label>
+							<div class="split2"></div><span th:text="${uploadFileList.displayFileSize}"></span>
+						</div>
+					</div>
+				</td>
+			</tr>	
+			<tr >
+				<th th:text="대상자재"/>
+				<td>
+					<div class="split-row-more-compact"></div>
+					<div class="input-area"><input type="text" id="searchVisibleItem" name="searchVisibleItem" class="custom-ui" th:placeholder="품번"/></div>
+					<div class="split-row-more-compact"></div>
+					<button id="BTN_deleteVisibleItem" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
+					<div class="split-row-more-compact"></div>
+					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+					<div class="split-row-more-compact"></div>
+					<div id="addedItems" style="width:100%; height:5em; display: block; overflow-y: auto;">
+						<div th:each="promotionItem : ${promotion?.promotionItems}">
+							<input type="checkbox" class="custom-ui visible-item"/><label class="dealer-code" th:text="${promotionItem.materialNo}"></label><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
+							<input name="materialNo" type="hidden" th:value="${promotionItem.materialNo}"/>
+						</div>						
+					</div>
+				</td>
+			</tr>	
+		</tbody>
+	</table>
+	</form>
+	</div>
+	<form id="FORM_search" th:action="|${BASE_PATH}/promotion/list|" th:object="${promotionSearch}">
+	<input type="hidden" name="pSeq" th:value="${pSeq}"/>
+	<input type="hidden" name="title" th:value="${title}"/>
+	<input type="hidden" name="fromRegDate" th:value="${fromRegDate}"/>
+	<input type="hidden" name="toRegDate" th:value="${toRegDate}"/>
+	<input type="hidden" name="pageNumber" th:value="${pageNumber}"/>
+	</form>
+<script>
+$(function(){
+	Calendar.makeCalendar($("#fromViewDate"), "[[${promotion?.displayFromView}]]");
+	Calendar.makeCalendar($("#toViewDate"), "[[${promotion?.displayToView}]]");
+	
+	$("#FORM_write .ui.checkbox").checkbox();
+});
+
+$(window).on("load", function() {
+	ProgressBar.hide();
+	
+	initBoardViwer($("#boardViwer"), $("#xfe"));
+	
+	_setDealerCodeAutocomplete($("#searchVisibleTarget"), {
+		select: function(label, value, event) {
+			addTarget(label, value);
+			 
+			$("#searchVisibleTarget").val("");
+		}
+	});
+	
+	_setPartAutocomplete($("#searchVisibleItem"), {
+		select: function(label, value, event) {
+			addItem(label, value);
+			 
+			$("#searchVisibleItem").val("");
+		}
+	});
+});
+
+function addTarget(label, value)
+{
+	let str = label.split("|");
+	
+	let dealerCode = str[0];
+	let dealerName = str[1];
+	
+	if ($("#FORM_write label:contains('" + dealerCode + "')").length == 0)
+	{
+		let html = [];
+		
+		html.push("<div>");
+		html.push("<input type='checkbox' class='custom-ui visible-target'/><label class='dealer-code'>" + dealerCode + "</label>");
+		html.push("<div class='split2'></div><span class='dealer-name'>" + dealerName + "</span>");
+		html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
+		html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
+		html.push("</div>");
+		
+		$("#addedtargets").append(html.join(""));		
+	};
+};
+
+function addItem(label, value)
+{
+	let materialNo = value;
+	
+	if ($("#FORM_write label:contains('" + label + "')").length == 0)
+	{
+		let html = [];
+		
+		html.push("<div>");
+		html.push("<input type='checkbox' class='custom-ui visible-target'/><label class='dealer-code'>" + label + "</label>");
+		html.push("<input name='materialNo' type='hidden' value='" + JpUtilsString.trimToEmpty(materialNo) + "'/>");
+		html.push("</div>");
+		
+		$("#addedItems").append(html.join(""));		
+	};
+};
+
+$("#BTN_deleteVisibleTarget").on("click", function(event) {
+	$.each($("#FORM_write .visible-target"), function(i, item) {
+		if ($(this).is(":checked"))
+		{
+			$(this).closest("div").remove();
+		};
+	});
+});	
+
+$("#BTN_deleteVisibleItem").on("click", function(event) {
+	$.each($("#FORM_write .visible-item"), function(i, item) {
+		if ($(this).is(":checked"))
+		{
+			$(this).closest("div").remove();
+		};
+	});
+});	
+
+function initBoardViwer($area, $content)
+{
+	installBoardViewResizer($area, $content);
+	
+	$(window).on("resize", $.debounce(100, function(e){
+		installBoardViewResizer($area, $content);
+	}));
+};
+
+function installBoardViewResizer($area, $content)
+{
+	let height = 0;
+	
+	$.each($("body").children(":not(script)").not($area), function(index, element) {
+		if (!$(element).is(":visible"))
+		{
+			return true;
+		};
+		
+		height += $(element).outerHeight(true);
+	});
+	
+	let bodyHeight = $("body").height();
+	let h1 = $area.outerHeight(true) - $content.outerHeight(true);//게시글 영역 외 height
+	
+	$content.height(bodyHeight - height - h1);
+	xfe.setHeight($content.height() + "px");
+};
+
+$("#BTN_back").on("click", function() {
+	let action = (JpUtilsString.isNotEmpty("[[${promotion?.pSeq}]]")) ? "[[${BASE_PATH}]]/promotion/view" : "[[${BASE_PATH}]]/promotion/list";
+	
+	$("#FORM_search")
+		.attr("action", action)
+		.submit();
+});
+
+$("#BTN_save").on("click", function() {
+	if (JpUtilsString.isEmpty($("#title").val()))
+	{
+		alert("[[#{HQP_M_EMPTY_TITLE}]]");
+		$("#title").focus();
+		return;
+	};
+
+	if (JpUtilsString.isEmpty(xfe.getTextValue()))
+	{
+		alert("[[#{HQP_M_EMPTY_CONTENT}]]");
+		return;
+	};
+	
+	if(JpUtilsString.isEmpty($("#fromViewDate").val()) || JpUtilsString.isEmpty($("#fromViewHours").val()) || JpUtilsString.isEmpty($("#fromViewMinutes").val())
+		|| JpUtilsString.isEmpty($("#toViewDate").val()) || JpUtilsString.isEmpty($("#toViewHours").val()) || JpUtilsString.isEmpty($("#toViewMinutes").val()) )
+	{
+		alert("노출기간을 입력 해주세요.");
+		return;
+	}
+
+	if ( 0 == $('input[name=uflSeq]').length)
+	{
+		alert("배너이미지를 첨부 해주세요.");
+		return;
+	};
+
+	$("#textContent").val(xfe.getTextValue());
+	$("#htmlContent").val(xfe.getBodyValue());
+	
+	ProgressBar.show();
+
+
+	let options = {
+			enctype: "multipart/form-data",
+			url: "[[${BASE_PATH}]]/promotion/save",
+			data: new FormData($("#FORM_write")[0]),
+			global: false,
+			processData: false,
+			contentType: false,
+			cache: false,
+			success: function(data, textStatus, jqXHR) {
+				//console.log('data', data);
+				$("#FORM_search input[name=pSeq]").val(data.RESULT);
+				ProgressBar.hide();
+				$("#BTN_back").trigger("click");
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				let response = JSON.parse(jqXHR.responseText);
+				
+				alert("[[#{HQP_M_FAIL_SAVE}]]\n" + response.MESSAGE);
+				
+				ProgressBar.hide();
+			}
+	};
+	
+	JpUtilsAjax.post(options);
+});
+
+/*
+ * 에디터 생성.
+ * 
+ * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
+ * width : 에디터의 너비
+ * height : 에디터의 높이
+ * onLoad : 에디터 초기 로드 이벤트				 
+ */
+let xfe = new XFE({
+	basePath: "[[@{/editor_html5}]]",
+	width: "100%",
+	height: "100%",
+	onLoad: function() {
+			xfe.setBodyValue($("#htmlContent").val());	
+	},
+	language: "english",
+	initFontFamily: "Arial",
+	uploadFilePath: "/portal/iv/xfree/image/upload",
+	uploadPasteContentsPath: "/portal/iv/xfree/upload"
+});
+	
+xfe.render("xfe");
+
+$("#BTN_searchFile").on("click", function() {
+	$("#files").trigger("click");
+});	
+
+$("#files").on("change", function() {
+	console.log('files2', this.files.length);
+	
+	if( 1 <= $("#FORM_write input[name=uflSeq]").length )
+	{
+		alert("배너이미지는 1개만 등록가능합니다.");
+		return;
+	}
+	
+	for (let i=0, length=this.files.length; i<length; i++)
+	{
+		addFile(this.files[i].name, this.files[i].size);
+	};
+	
+	$("#FORM_write .ui.checkbox").checkbox();
+});
+
+$("#BTN_deleteFile").on("click", function(event) {
+	let files = Array.from($("#files")[0].files);
+	const dataTransfer = new DataTransfer();
+	
+	$.each($("#FORM_write input[name=uflSeq]"), function(i, item) {
+		if ($(this).is(":checked"))
+		{
+			for (let j=0, length=files.length; j<length; j++)
+			{
+				if (JpUtilsString.equals(files[j].name, $(this).attr("filename")))
+				{
+					files.splice(j, 1);
+				};
+			};
+			
+			files.forEach(file => { dataTransfer.items.add(file); });
+			
+			if (JpUtilsString.isNotEmpty($(this).val()))
+			{
+				$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
+			};
+			
+			$(this).closest("div").remove();
+			
+			console.log(dataTransfer.files);
+			
+			$("#files")[0].files = dataTransfer.files;
+		};
+	});
+});	
+
+function addFile(name, size, uflSeq)
+{
+	let html = [];
+	
+	html.push("<div>");
+	html.push("<input name='uflSeq' type='checkbox' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' class='custom-ui' fileName='" + JpUtilsString.trimToEmpty(name) + "'/><label>" + name + "</label>");
+	html.push("<div class='split2'></div><span>" + JpUtilsFile.displaySize(size) + "</span>");
+	html.push("</div>");
+	
+	$("#attachedFiles").append(html.join(""));
+	
+	$("#FORM_write .ui.checkbox").checkbox();
+};
+
+
+// 
+$("#BTN_searchFile2").on("click", function() {
+	$("#files2").trigger("click");
+});	
+
+$("#files2").on("change", function() {
+	console.log('files2', this.files.length);
+	
+	for (let i=0, length=this.files.length; i<length; i++)
+	{
+		addFile2(this.files[i].name, this.files[i].size);
+	};
+	
+	//$("#FORM_write .ui.checkbox").checkbox();
+});
+
+$("#BTN_deleteFile2").on("click", function(event) {
+	let files = Array.from($("#files2")[0].files);
+	const dataTransfer = new DataTransfer();
+	
+	$.each($("#FORM_write input[name=uflSeq2]"), function(i, item) {
+		if ($(this).is(":checked"))
+		{
+			for (let j=0, length=files.length; j<length; j++)
+			{
+				if (JpUtilsString.equals(files[j].name, $(this).attr("filename")))
+				{
+					files.splice(j, 1);
+				};
+			};
+			
+			files.forEach(file => { dataTransfer.items.add(file); });
+			
+			if (JpUtilsString.isNotEmpty($(this).val()))
+			{
+				$("#FORM_write").append("<input type='hidden' name='uflSeqs2' value='" + $(this).val() + "' />");
+			};
+			
+			$(this).closest("div").remove();
+			
+			console.log(dataTransfer.files);
+			
+			$("#files2")[0].files = dataTransfer.files;
+		};
+	});
+});	
+
+function addFile2(name, size, uflSeq)
+{
+	let html = [];
+	
+	html.push("<div>");
+	html.push("<input name='uflSeq2' type='checkbox' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' class='custom-ui' fileName='" + JpUtilsString.trimToEmpty(name) + "'/><label>" + name + "</label>");
+	html.push("<div class='split2'></div><span>" + JpUtilsFile.displaySize(size) + "</span>");
+	html.push("</div>");
+	
+	$("#attachedFiles2").append(html.join(""));
+	
+	//$("#FORM_write .ui.checkbox").checkbox();
+};
+</script>
+</th:block>								

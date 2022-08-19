@@ -55,8 +55,9 @@ function _gridDownload(grid, fileName)
 	gridFileDownload.excelDownload();				
 };
 
+
 //품번 자동완성
-function _setPartAutocomplete(target)
+function _setPartAutocomplete(target, options)
 {
 	$(target).autocomplete({
 		source: function(request, response) {
@@ -83,6 +84,14 @@ function _setPartAutocomplete(target)
 					};
 				}
 			});
+		},
+		select: function(event, ui)
+		{
+			if (JpUtilsObject.isNotNull(options.select))
+			{
+				options.select(ui.item.label, ui.item.value, event);
+				return false;
+			};
 		},
 		//delay: 50,
 		minLength: 3

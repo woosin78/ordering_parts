@@ -13,4 +13,9 @@ public class PromotionTargetDto extends PartsGeneralDto
 {
 	private static final long serialVersionUID = 3915182747692161098L;
 
+	private Integer ptSeq;
+	private Integer pSeq;
+	private String code;
+	private String description;
+	private String type;
 }
