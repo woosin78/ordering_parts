@@ -6,36 +6,32 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<style>
-	/*
-		.slick1 {
-			padding-left: 40px;
-			padding-right: 40px;
-		}
-	*/
-	.banner-div1
-	{
-		width:300px;
-		height:200px;
+	.slick {
+		padding-left: 40px;
+		padding-right: 40px;
+	}
+	
+	.banner-div1 {
+		width:500px;
+		height:400px;
 		position:fixed;
 		top: 130px;
 		right:40px;
 	}
 	
-	.banner-div2
-	{
-		width:300px;
-		height:200px;
+	.banner-div2 {
+		width:500px;
+		height:400px;
 		position:absolute;
 		top: 130px;
 		left:960px;
 	}
 	
 	.slick-img {
-		width: 220px;
-		height: 160px;
+		width: 420px;
+		height: 400px;
 		margin-top: 10px;
-		margin-left: 40px;
-		margin-right: 40px;
+		border-radius: 15px;
 	}
 	</style>
 	
@@ -227,7 +223,6 @@ let Promotion = {
 			global: false,
 			success: function(data, textStatus, jqXHR)
 			{
-				console.log('promotion data', data);
 				let result = data.RESULT;
 				
 				if(0==result.length)
@@ -237,12 +232,7 @@ let Promotion = {
 				}
 				
 				$.each(result, function(index, element) {
-					console.log(element);
-					//$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick-img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readmed_2022_362848_16507548185018777.jpg"></a>');
-					
-					$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick-img" src="/portal/iv/image/load?ulfSeq=' + element.uploadFileLists[0].uflSeq + '"></a>');
-					
-					
+					$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick-img" src="https://doobizplus-dev.doosan-iv.com/portal/iv/image/load?ulfSeq=' + element.uploadFileLists[0].uflSeq + '"></a>');
 				});
 				
 				// 슬라이더 옵션 셜정
@@ -253,14 +243,14 @@ let Promotion = {
 					,slidesToScroll : 1		//스크롤 한번에 움직일 컨텐츠 개수
 					,speed : 1000	 	// 다음 버튼 누르고 다음 화면 뜨는데까지 걸리는 시간(ms)
 					,arrows : true 		// 옆으로 이동하는 화살표 표시 여부
-					,dots : true 		// 스크롤바 아래 점으로 페이지네이션 여부
+					//,dots : true 		// 스크롤바 아래 점으로 페이지네이션 여부
 					,autoplay : true		// 자동 스크롤 사용 여부
 					,autoplaySpeed : 3000 	// 자동 스크롤 시 다음으로 넘어가는데 걸리는 시간 (ms)
 					,pauseOnHover : true	// 슬라이드 이동	시 마우스 호버하면 슬라이더 멈추게 설정
 					,vertical : false		// 세로 방향 슬라이드 옵션
 					//,prevArrow : "<button type='button' class='slick-prev'>Previous</button>"	// 이전 화살표 모양 설정
 					//,nextArrow : "<button type='button' class='slick-next'>Next</button>"		// 다음 화살표 모양 설정
-					//,dotsClass : "slick-dots" 	//아래 나오는 페이지네이션(점) css class 지정
+					//,dotsClass : "slick-dots2" 	//아래 나오는 페이지네이션(점) css class 지정
 				});
 			}
 		});	
@@ -481,12 +471,10 @@ function stickyPromotionBanner()
 	
 	if (width > RESIZING_MIN_WIDTH)
 	{
-		console.log(1);
 		$("#promotionBanner").removeClass("banner-div2").addClass("banner-div1");
 	}
 	else
 	{
-		console.log(2);
 		$("#promotionBanner").removeClass("banner-div1").addClass("banner-div2");
 	};
 };
