@@ -19,7 +19,6 @@
 		</div>	
 	</div>
 	
-	
 	<div id="boardViwer" class="condition-area">
 	<form id="FORM_search" th:action="|${BASE_PATH}/promotion/list|" >
 	<input type="hidden" name="pSeq" th:value="*{pSeq}"/>
@@ -59,10 +58,10 @@
 				</td>
 			</tr>
 			<tr >
-				<th th:text="|#{HQP_L_WIDTH} (#{HQP_L_PLACEHOLD_PIXEL})|"/> 
-				<td th:text="|${promotion?.width == null ? '' : promotion.width} |"></td>
-				<th th:text="|#{HQP_L_HEIGHT} (#{HQP_L_PLACEHOLD_PIXEL})|"/>
-				<td  th:text="|${promotion?.height == null ? '' : promotion.height}|"></td>
+				<th th:text="#{HQP_L_POPUP_WIDTH}"/> 
+				<td>[[${promotion?.width == null ? '' : promotion.width}]] <span th:text="#{HQP_L_PIXCEL}"></span></td>
+				<th th:text="#{HQP_L_POPUP_HEIGHT}"/>
+				<td>[[${promotion?.height  == null ? '' : promotion.height }]] <span th:text="#{HQP_L_PIXCEL}"></span></td>
 			</tr>
 			<tr >
 				<th th:text="배너이미지"/>

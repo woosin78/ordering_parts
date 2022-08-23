@@ -90,7 +90,7 @@ body {
 							<option value=""></option>
 							<option th:each="num : ${#numbers.sequence(0,59)}" th:with="num=${#numbers.formatInteger(num, 2)}" th:value="${num}" th:text="${num}" th:selected="${num eq promotion?.toViewMinutes}"/>
 						</select>
-						<span th:text="#{HQP_L_MINUTES}"></span>			
+						<span th:text="#{HQP_L_MINUTES}"></span>
 					</div>
 				</td>
 			</tr>
@@ -109,7 +109,7 @@ body {
 				</td>
 			</tr>
 			<tr >
-				<th>[[배너이미지]] <img src="/portal/img/icon/required.png" class="required" /> </th> 
+				<th>[[배너이미지]] <img src="/portal/img/icon/required.png" class="required" /></th> 
 				<td>
 					<div class="split-row-more-compact"></div>
 					<button id="BTN_searchFile" type="button" th:text="#{HQP_B_FILE}" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
@@ -123,6 +123,8 @@ body {
 							<div class="split2"></div><span th:text="${uploadFileList.displayFileSize}"></span>
 						</div>
 					</div>
+					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+					<div th:text="#{HQP_T_RECOMENDED_SIZE}" class="warn"></div>
 				</td>
 			</tr>		
 			<tr >
