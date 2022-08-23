@@ -35,6 +35,19 @@
 					</div>
 				</td>			
 			</tr>				
+			<tr>
+				<th th:text="상태"></th>
+				<td>
+					<div class="input-area">
+						<select id="state" name="state" class="custom-ui hours" th:value="${state}">
+							<option value=""></option>
+							<option th:selected="${state} == '0'" value="0">진행전</option>
+							<option th:selected="${state} == '1'" value="1">진행중</option>
+							<option th:selected="${state} == '2'" value="2">완료</option>
+						</select>
+					</div>
+				</td>			
+			</tr>				
 		</tbody>
 	</table>
 	</form>
@@ -91,6 +104,7 @@ $(function(){
 				p.writer		= $("#writer").val();
 				p.fromRegDate 	= $("#fromRegDate").val();
 				p.toRegDate 	= $("#toRegDate").val();
+				p.state 		= $("#state").val();
 			},
 			dataSrc: function(response) 
 			{

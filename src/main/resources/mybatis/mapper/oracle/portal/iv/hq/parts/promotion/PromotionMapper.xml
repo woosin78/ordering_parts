@@ -36,7 +36,12 @@
 		<include refid="PaginationMapper.header"/>
 		select
 			a.*,
-        	(CASE WHEN a.from_view <![CDATA[<=]]> sysdate and a.to_view <![CDATA[>=]]> sysdate THEN '진행중' ELSE '' END) AS state
+        	(CASE 
+        		WHEN a.from_view <![CDATA[>]]> sysdate and a.to_view <![CDATA[>]]> sysdate THEN '진행전' 
+        		WHEN a.from_view <![CDATA[<=]]> sysdate and a.to_view <![CDATA[>=]]> sysdate THEN '진행중' 
+        		WHEN a.from_view <![CDATA[<]]> sysdate and a.to_view <![CDATA[<]]> sysdate THEN '완료' 
+        		ELSE '' 
+        	END) AS state
 		from
 		    ep_promotion a
 		where
@@ -44,7 +49,6 @@
 		    <if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(title)">
 				and upper(a.title) like '%'||upper(#{title})||'%'
 			</if>
-			
 			<choose>
 				<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(fromRegDate) and @org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(toRegDate)">
 					and a.reg_date <![CDATA[>=]]> #{fromRegDateForDb} and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
@@ -56,6 +60,16 @@
 					and a.reg_date <![CDATA[<]]> #{toRegDateForDb}
 				</when>
 			</choose>
+			
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(state) and state==0">
+				and a.from_view <![CDATA[>]]> sysdate and a.to_view <![CDATA[>]]> sysdate
+			</if>
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(state) and state==1">
+				and a.from_view <![CDATA[<=]]> sysdate and a.to_view <![CDATA[>=]]> sysdate
+			</if>
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(state) and state==2">
+				and a.from_view <![CDATA[<]]> sysdate and a.to_view <![CDATA[<]]> sysdate
+			</if>
 		order by a.p_seq desc
 		<include refid="PaginationMapper.footer"/>
 	</select>

@@ -24,6 +24,7 @@ public class PromotionSearchDto extends PartsGeneralDto
 	private String fromRegDate;
 	private String toRegDate;
 	private String custCode;
+	private String state;
 
 	public LocalDateTime getFromRegDateForDb()
 	{

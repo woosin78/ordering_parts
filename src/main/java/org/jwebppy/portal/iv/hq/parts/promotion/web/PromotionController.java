@@ -196,11 +196,9 @@ public class PromotionController extends PartsGeneralController
 		PromotionSearchDto promotionSearch = new PromotionSearchDto();
 		promotionSearch.setPSeq(Integer.getInteger(webRequest.getParameter("pSeq")));
 		promotionSearch.setTitle(webRequest.getParameter("title"));
-//		promotionSearch.setWriter(webRequest.getParameter("writer"));
 		promotionSearch.setFromRegDate(webRequest.getParameter("fromRegDate"));
 		promotionSearch.setToRegDate(webRequest.getParameter("toRegDate"));
-//		promotionSearch.setFromView(webRequest.getParameter("fromView"));
-//		promotionSearch.setToView(webRequest.getParameter("toView"));
+		promotionSearch.setState(webRequest.getParameter("state"));
 		promotionSearch.setPageNumber(CmNumberUtils.toInt(webRequest.getParameter("pageNumber"), 1));
 		promotionSearch.setRowPerPage(CmNumberUtils.toInt(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
 //
