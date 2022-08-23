@@ -7935,3 +7935,83 @@ COUNTER     277146
     Return code: RFCIO_ERROR_SYSERROR(5)<
 
 
+
+**** Error file opened at 20220810 145041 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Wed Aug 10 14:50:41,733<    >RfcGetException rc (3) message: CPIC-CALL: CMRCV on convId: 31628495
+
+ERROR       connection to partner 'gsq.doosan-iv.com:3300' broken
+TIME        Wed Aug 10 14:50:41 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=10.249.27.32:3300; L=10.229.17.27:56644
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+<RfcGetException
+
+Error: [3] >Wed Aug 10 14:50:41,737<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: CPIC-CALL: CMRCV on convId: 31628495
+
+ERROR       connection to partner 'gsq.doosan-iv.com:3300' broken
+TIME        Wed Aug 10 14:50:41 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=10.249.27.32:3300; L=10.229.17.27:56644
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     3
+
+    return code: RFC_SYS_EXCEPTION (3)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION
+Error:  >Wed Aug 10 14:50:45,712<    >RfcGetException rc (3) message: CPIC-CALL: CMRCV on convId: 31623968
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       connection to partner 'gsq.doosan-iv.com:3300' broken
+TIME        Wed Aug 10 14:50:45 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=10.249.27.32:3300; L=10.229.17.27:56626
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     4
+
+<RfcGetException
+
+Error: [1] >Wed Aug 10 14:50:45,713<    RfcException raised by system [GSQ|diverpdbq01]:
+    message: CPIC-CALL: CMRCV on convId: 31623968
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       connection to partner 'gsq.doosan-iv.com:3300' broken
+TIME        Wed Aug 10 14:50:45 2022
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -6
+MODULE      nixxi.cpp
+LINE        4599
+DETAIL      NiIWrite: P=10.249.27.32:3300; L=10.229.17.27:56626
+SYSTEM CALL WSASend
+ERRNO       10054
+ERRNO TEXT  WSAECONNRESET: Connection reset by peer
+COUNTER     4
+
+    return code: RFC_SYS_EXCEPTION (3)
+    error group: 102
+    key: RFC_ERROR_COMMUNICATION

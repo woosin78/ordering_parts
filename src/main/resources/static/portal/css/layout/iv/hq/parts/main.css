@@ -687,3 +687,38 @@ a.link:hover {text-decoration: underline; color: #4183C4; cursor: pointer;}
 	margin: 0px 0px 5px 0px; 
 }
 /*--- 검색 조건 영역 ------------------*/
+
+/*--- 프로모션 슬라이드 ------------------*/
+.slick {
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+.banner-div1 {
+	width:500px;
+	height:400px;
+	position:fixed;
+	top: 130px;
+	right:40px;
+}
+
+.banner-div2 {
+	width:500px;
+	height:400px;
+	position:absolute;
+	top: 130px;
+	left:960px;
+}
+
+.slick-img {
+	width: 420px;
+	height: 400px;
+	margin-top: 10px;
+	border-radius: 15px;
+	opacity: 0.3;
+}
+
+.slick-img:hover {
+	opacity: 1;
+}
+/*--- 프로모션 슬라이드 ------------------*/
