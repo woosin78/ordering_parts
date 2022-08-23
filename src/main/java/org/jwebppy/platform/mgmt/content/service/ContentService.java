@@ -398,8 +398,6 @@ public class ContentService extends GeneralService
 
 	public List<CItemDto> getCItemsFormTree(CItemSearchDto cItemSearch)
 	{
-		System.err.println(cItemSearch);
-
 		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCItemsForTree(cItemSearch));
 	}
 
