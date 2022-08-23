@@ -6,10 +6,9 @@
 
 <th:block layout:fragment="content">
 <style> 
-/*
 body {
-	overflow-y: auto;
-}*/
+	overflow-y: scroll;
+}
 </style>
 	<script src="/editor_html5/js/xfe_main.js"></script>
 	
@@ -177,7 +176,11 @@ $(function(){
 	Calendar.makeCalendar($("#fromViewDate"), "[[${promotion?.displayFromView}]]");
 	Calendar.makeCalendar($("#toViewDate"), "[[${promotion?.displayToView}]]");
 	
-	$("#FORM_write .ui.checkbox").checkbox();
+	//$("#FORM_write input[type=checkbox].custom-ui").checkbox();
+});
+
+$(document).on("scroll", function() {
+	//$("#FORM_write input[type=checkbox].custom-ui").checkbox();
 });
 
 $(window).on("load", function() {
@@ -261,10 +264,10 @@ $("#BTN_deleteVisibleItem").on("click", function(event) {
 
 function initBoardViwer($area, $content)
 {
-	installBoardViewResizer($area, $content);
+	//installBoardViewResizer($area, $content);
 	
 	$(window).on("resize", $.debounce(100, function(e){
-		installBoardViewResizer($area, $content);
+		//installBoardViewResizer($area, $content);
 	}));
 };
 
@@ -286,6 +289,9 @@ function installBoardViewResizer($area, $content)
 	
 	$content.height(bodyHeight - height - h1);
 	xfe.setHeight($content.height() + "px");
+	
+	//$("#FORM_write .ui.checkbox").checkbox();
+	//$("#FORM_write input[type=checkbox].custom-ui").checkbox();
 };
 
 $("#BTN_back").on("click", function() {
@@ -327,7 +333,6 @@ $("#BTN_save").on("click", function() {
 	$("#htmlContent").val(xfe.getBodyValue());
 	
 	ProgressBar.show();
-
 
 	let options = {
 			enctype: "multipart/form-data",
@@ -396,7 +401,8 @@ $("#files").on("change", function() {
 		addFile(this.files[i].name, this.files[i].size);
 	};
 	
-	$("#FORM_write .ui.checkbox").checkbox();
+	//$("#FORM_write .ui.checkbox").checkbox();
+	//$("#FORM_write input[type=checkbox].custom-ui").checkbox();
 });
 
 $("#BTN_deleteFile").on("click", function(event) {
@@ -441,11 +447,10 @@ function addFile(name, size, uflSeq)
 	
 	$("#attachedFiles").append(html.join(""));
 	
-	$("#FORM_write .ui.checkbox").checkbox();
+	//$("#FORM_write .ui.checkbox").checkbox();
+	//$("#FORM_write input[type=checkbox].custom-ui").checkbox();
 };
 
-
-// 
 $("#BTN_searchFile2").on("click", function() {
 	$("#files2").trigger("click");
 });	
@@ -457,8 +462,6 @@ $("#files2").on("change", function() {
 	{
 		addFile2(this.files[i].name, this.files[i].size);
 	};
-	
-	//$("#FORM_write .ui.checkbox").checkbox();
 });
 
 $("#BTN_deleteFile2").on("click", function(event) {
@@ -502,8 +505,6 @@ function addFile2(name, size, uflSeq)
 	html.push("</div>");
 	
 	$("#attachedFiles2").append(html.join(""));
-	
-	//$("#FORM_write .ui.checkbox").checkbox();
 };
 </script>
 </th:block>								

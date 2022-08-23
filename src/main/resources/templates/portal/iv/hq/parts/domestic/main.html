@@ -5,6 +5,40 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
+	<style>
+	/*
+		.slick1 {
+			padding-left: 40px;
+			padding-right: 40px;
+		}
+	*/
+	.banner-div1
+	{
+		width:300px;
+		height:200px;
+		position:fixed;
+		top: 130px;
+		right:40px;
+	}
+	
+	.banner-div2
+	{
+		width:300px;
+		height:200px;
+		position:absolute;
+		top: 130px;
+		left:960px;
+	}
+	
+	.slick-img {
+		width: 220px;
+		height: 160px;
+		margin-top: 10px;
+		margin-left: 40px;
+		margin-right: 40px;
+	}
+	</style>
+	
 	<script th:inline="javascript">
 	/* Set up static values */
 	const GLOBAL_CONST = {};
@@ -141,17 +175,6 @@
 						</table>
 					</div>
 				</div>
-				
-				<!-- 배너 -->
-				<div id="banner-div" style=" width: 300px;	height:200px;"> <!-- background-color: skyblue; -->
-				    <div id="slider-div" class="slick" >
-						<!--<a href="javascript:goPromotionPop('11','500','500')"><div><img class="slick_img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readmed_2022_362848_16507548185018777.jpg"></div></a>
-						<a href="javascript:goPromotionPop('11','500','500')"><div><img class="slick_img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readtop_2022_362848_16507548185018769.jpg"></div></a>
-						<a href="javascript:goPromotionPop('11','500','500')"><div><img class="slick_img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readtop_2022_362848_16507548185018769.jpg"></div></a>-->
-					</div>
-				</div>
-				<!-- //배너 -->
-				
 			</div>
 		</div>
 
@@ -160,50 +183,41 @@
 				<span th:text="#{PTL_T_COPY_RIGHT}"></span>
 			</div>
 		</div>
-		
 	</div>
 	<!-- Logout -->
 	<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>	
 	<!-- iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe -->
 
-<style>
-  .slick1 {
-    padding-left: 40px;
-    padding-right: 40px;
-  }
-  .slick_img {
-	width: 220px;
-	height: 160px;
-    margin-top: 10px;
-    margin-left: 40px;
-    margin-right: 40px;
-  }
-</style>
-
-
+	<!-- 프로모션 배너 -->
+	<div id="promotionBanner" class="banner-div1"> <!-- background-color: skyblue; -->
+	    <div id="slider-div" class="slick" ></div>
+	</div>
+	<!-- 프로모션 배너 -->
 <script>
 
 $(window).on("load", function() {
 	ProgressBar.hide();
 	
 	Promotion.getPromotionBanner();
+	stickyPromotionBanner();
+
 	Survey.getLatestSurvey();
 });
 
 $(window).resize($.debounce(100, function(e){
 	resizeView();
+	stickyPromotionBanner();
 }));
 
 function goPromotionPop(pSeq, width, height)
 {
 	let url = "/portal/iv/hq/parts/promotion/popup/view?pSeq=" + pSeq;
 					
-	width = JpUtilsString.defaultString(width, "700");
-	height = JpUtilsString.defaultString(height, "600");
+	width = JpUtilsString.defaultString(width, "1000");
+	height = JpUtilsString.defaultString(height, "700");
 	
 	Popup.open(url, width, height, "Y", "Y");	
 }
-
 
 let Promotion = {
 	getPromotionBanner: function() {
@@ -218,13 +232,17 @@ let Promotion = {
 				
 				if(0==result.length)
 				{
-					$('banner-div').css('display', 'none');
+					$('#promotionBanner').css('display', 'none');
 					return;
 				}
 				
 				$.each(result, function(index, element) {
 					console.log(element);
-					$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick_img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readmed_2022_362848_16507548185018777.jpg"></a>');
+					//$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick-img" src="https://file.mk.co.kr/meet/neds/2022/04/image_readmed_2022_362848_16507548185018777.jpg"></a>');
+					
+					$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick-img" src="/portal/iv/image/load?ulfSeq=' + element.uploadFileLists[0].uflSeq + '"></a>');
+					
+					
 				});
 				
 				// 슬라이더 옵션 셜정
@@ -457,10 +475,21 @@ function resizeView()
 	}
 };
 
-
-
-
-			
+function stickyPromotionBanner()
+{
+	let width = $(window).width();
+	
+	if (width > RESIZING_MIN_WIDTH)
+	{
+		console.log(1);
+		$("#promotionBanner").removeClass("banner-div2").addClass("banner-div1");
+	}
+	else
+	{
+		console.log(2);
+		$("#promotionBanner").removeClass("banner-div1").addClass("banner-div2");
+	};
+};
 </script>
 </body>
 </html>
