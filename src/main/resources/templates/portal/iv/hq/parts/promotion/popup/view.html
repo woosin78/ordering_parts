@@ -61,14 +61,18 @@
 			<tr th:style="${promotion?.promotionItems.size() == 0 ? 'display:none;' : ''}">
 				<th th:text="대상자재"/>
 				<td >
+					<div class="split-row-more-compact"></div>
+					<button id="BTN_checkAll" type="button" th:text="#{HQP_B_SELECT_ALL}" class="small_button"></button>
+					<button id="BTN_order" type="button" th:text="#{HQP_B_ORDER2}" class="small_button"></button>
+					<div class="split-row-more-compact"></div>
+					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div th:each="promotionItem : ${promotion.promotionItems}">
 						<!--<span th:text="${promotionItem.materialNo}"></span><div class='split2'></div><span th:text="부품명"></span>-->
 						<input type="checkbox" name="materialChk" class="custom-ui visible-item" th:value="${promotionItem.materialNo}" />
 						<label class="dealer-code" th:text="${promotionItem.materialNo}"></label><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
 					</div>				
-				</td>			
+				</td>
 			</tr>
-			
 		</tbody>
 	</table>
 	</form>
@@ -76,7 +80,7 @@
 	
 
 <div id="bottom" class="pop-bottom">	
-	<button id="BTN_order" type="button" th:text="#{HQP_B_ORDER}" th:style="${promotion?.promotionItems.size() == 0 ? 'display:none;' : ''}" ></button>
+	<!-- button id="BTN_order2" type="button" th:text="#{HQP_B_ORDER2}" th:style="${promotion?.promotionItems.size() == 0 ? 'display:none;' : ''}" ></button -->
 	<!--<button id="BTN_cart" type="button" th:text="장바구니담기" th:style="${promotion?.promotionItems.size() == 0 ? 'display:none;' : ''}" ></button>-->
 	<div style="float: right;"><button id="BTN_close" type="button" th:text="#{HQP_B_CLOSE}"></button></div>	
 </div>
@@ -112,10 +116,16 @@ $("#BTN_close").on("click", function() {
 	window.close();
 });
 
+let checkAll = false;
+$("#BTN_checkAll").on("click", function() {	
+	checkAll = (checkAll) ? false: true;	
+	$("input[name=materialChk]").prop("checked", checkAll);
+});
+
 $("#BTN_order").on("click", function() {
 	if(0==$("input[name=materialChk]:checked").length)
 	{
-		alert("주문할 대상 자재를 선택해 주세요.");
+		alert("주문 대상자재를 선택해 주세요.");
 		return;
 	}
 	
