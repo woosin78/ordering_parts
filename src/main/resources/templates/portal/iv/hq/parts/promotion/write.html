@@ -338,10 +338,8 @@ let xfe = new XFE({
 	onLoad: function() {
 			xfe.setBodyValue($("#htmlContent").val());	
 	},
-	language: "english",
-	initFontFamily: "Arial",
-	uploadFilePath: "/portal/iv/xfree/image/upload",
-	uploadPasteContentsPath: "/portal/iv/xfree/upload"
+	language: ((JpUtilsString.equals(GLOBAL_CONST.LANG, "KO")) ? "korean" : "english"),
+	initFontFamily: (JpUtilsString.equals(GLOBAL_CONST.LANG, "KO")) ? "맑은 고딕" : "Arial",
 });
 	
 xfe.render("xfe");

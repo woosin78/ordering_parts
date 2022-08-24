@@ -8,7 +8,6 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
-import org.jwebppy.portal.iv.hq.common.HqCommonVo;
 import org.jwebppy.portal.iv.hq.common.web.HqGeneralController;
 import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;

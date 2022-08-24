@@ -30,8 +30,6 @@
 		<collection property="uploadFileLists" foreignColumn="p_seq" column="p_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
 	</resultMap>
 	
-	
-	
 	<select id="findPageablePromotions" parameterType="PromotionSearchDto" resultType="PromotionEntity">
 		<include refid="PaginationMapper.header"/>
 		select

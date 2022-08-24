@@ -18,7 +18,7 @@ import lombok.ToString;
 public class PromotionEntity extends PartsGeneralEntity
 {
 	private static final long serialVersionUID = 5555926427143731047L;
-	
+
 	private Integer pSeq;
 	private String title;
 	private String textContent;
@@ -50,10 +50,10 @@ public class PromotionEntity extends PartsGeneralEntity
 	private EpUploadFileEntity uploadFile2;
 	private List<EpUploadFileListEntity> uploadFileLists;
 	private List<EpUploadFileListEntity> uploadFileLists2;
-//	//variables for file upload
+	//variables for file upload
 	private List<MultipartFile> files;
 	private List<MultipartFile> files2;
 	private List<String> uflSeqs;
 	private List<String> uflSeqs2;
-	
+
 }

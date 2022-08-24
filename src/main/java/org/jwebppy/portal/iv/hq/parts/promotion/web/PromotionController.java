@@ -12,7 +12,6 @@ import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.portal.iv.hq.parts.common.PartsCommonVo;
-import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.common.web.PartsGeneralController;
 import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionDto;
 import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionItemDto;
@@ -40,11 +39,6 @@ public class PromotionController extends PartsGeneralController
 	@Autowired
 	private I18nMessageSource i18nMessageSource;
 
-	
-//	public static void main(String[] args)
-//	{
-//	}
-	
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest) // , PromotionSearchDto promotionSearch
 	{
@@ -52,20 +46,16 @@ public class PromotionController extends PartsGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	
 	@RequestMapping("/list/data")
 	@ResponseBody
 	public Object listData(@ModelAttribute PromotionSearchDto promotionSearch, WebRequest webRequest)
 	{
 		promotionSearch.setCorp(getCorp());
 		promotionSearch.setRowPerPage(999999);
-		
-		PartsErpDataMap rfcParamMap = getErpUserInfo();
-        //rfcParamMap.add("materialNos", materialNos);
 
 		return ListUtils.emptyIfNull(promotionService.getPageablePromotions(promotionSearch));
 	}
-	
+
 	@RequestMapping("/list/banner")
 	@ResponseBody
 	public Object listBanner(@ModelAttribute PromotionSearchDto promotionSearch, WebRequest webRequest)
@@ -74,14 +64,14 @@ public class PromotionController extends PartsGeneralController
 		String custCode = String.valueOf(getErpUserInfo().get("KUNNR"));
 		System.out.println("@@@@@@@@@@@ custCode" + custCode);
 		promotionSearch.setCustCode(custCode);
-		
+
 		return ListUtils.emptyIfNull(promotionService.getBannerPromotions(promotionSearch));
 	}
-	
+
 	@RequestMapping("/popup/view")
 	public String popupView(Model model, WebRequest webRequest, PromotionSearchDto promotionSearch)
 	{
-		if(ObjectUtils.isNotEmpty(promotionSearch.getPSeq())) 
+		if(ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
 		{
 			model.addAttribute("promotion", promotionService.getPromotion(promotionSearch.getPSeq(), getErpUserInfo()));
 		}
@@ -90,31 +80,31 @@ public class PromotionController extends PartsGeneralController
 
 		return DEFAULT_VIEW_URL;
 	}
-	
+
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest, PromotionSearchDto promotionSearch)
 	{
-		if(ObjectUtils.isNotEmpty(promotionSearch.getPSeq())) 
+		if(ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
 		{
 			model.addAttribute("promotion", promotionService.getPromotion(promotionSearch.getPSeq(), getErpUserInfo()));
 		}
 
 		addAllAttributeFromRequest(model, webRequest);
-		
+
 		return DEFAULT_VIEW_URL;
 	}
-	
+
 	@PostMapping("/save")
 	@ResponseBody
-	public Object save(@ModelAttribute PromotionDto promotion, 
-			@RequestParam(name = "targetCode", required = false) String[] targetCodes, 
+	public Object save(@ModelAttribute PromotionDto promotion,
+			@RequestParam(name = "targetCode", required = false) String[] targetCodes,
 			@RequestParam(name = "targetDescription", required = false) String[] targetDescriptions,
 			@RequestParam(name = "materialNo", required = false) String[] materialNos
 			)
 	{
-		
+
 		promotion.setTarget(getErpUserContext().getSalesOrg() + getErpUserContext().getDistChl() );
-		
+
 		if (CmArrayUtils.isNotEmpty(targetCodes))
 		{
 			List<PromotionTargetDto> promotionTargets = new ArrayList<>();
@@ -134,7 +124,7 @@ public class PromotionController extends PartsGeneralController
 			}
 			promotion.setPromotionTargets(promotionTargets);
 		}
-		
+
 		if (CmArrayUtils.isNotEmpty(materialNos))
 		{
 			List<PromotionItemDto> promotionItems = new ArrayList<>();
@@ -169,11 +159,11 @@ public class PromotionController extends PartsGeneralController
 
 		return null;
 	}
-	
+
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest, PromotionSearchDto promotionSearch)
 	{
-		if(ObjectUtils.isNotEmpty(promotionSearch.getPSeq())) 
+		if(ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
 		{
 			model.addAttribute("promotion", promotionService.getPromotion(promotionSearch.getPSeq(), getErpUserInfo()));
 		}
@@ -182,15 +172,15 @@ public class PromotionController extends PartsGeneralController
 
 		return DEFAULT_VIEW_URL;
 	}
-	
-	
+
+
 	@PostMapping("/delete")
 	@ResponseBody
 	public Object delete(PromotionDto promotion)
 	{
 		return promotionService.delete(promotion);
 	}
-	
+
 	protected void setDefaultAttribute(Model model, WebRequest webRequest)
 	{
 		PromotionSearchDto promotionSearch = new PromotionSearchDto();
@@ -201,7 +191,7 @@ public class PromotionController extends PartsGeneralController
 		promotionSearch.setState(webRequest.getParameter("state"));
 		promotionSearch.setPageNumber(CmNumberUtils.toInt(webRequest.getParameter("pageNumber"), 1));
 		promotionSearch.setRowPerPage(CmNumberUtils.toInt(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
-//
+
 		model.addAttribute("promotionSearch", promotionSearch);
 
 		addAllAttributeFromRequest(model, webRequest);

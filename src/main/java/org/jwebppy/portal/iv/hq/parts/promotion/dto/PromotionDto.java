@@ -5,11 +5,9 @@ import java.util.List;
 
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
-import org.jwebppy.platform.core.util.CmMyBatisQueryUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.util.XssHandleUtils;
-import org.jwebppy.portal.iv.board.dto.EpBoardContentTargetDto;
 import org.jwebppy.portal.iv.hq.parts.common.dto.PartsGeneralDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileListDto;
@@ -25,7 +23,7 @@ import lombok.ToString;
 public class PromotionDto extends PartsGeneralDto
 {
 	private static final long serialVersionUID = 5443957411620937709L;
-	
+
 	private Integer pSeq;
 	private String title;
 	private String htmlContent;
@@ -48,7 +46,7 @@ public class PromotionDto extends PartsGeneralDto
 	private String writeAuth;
 	private String readAuth;
 	private String state;
-	
+
 	private List<PromotionTargetDto> promotionTargets;
 	private List<PromotionItemDto> promotionItems;
 
@@ -56,7 +54,7 @@ public class PromotionDto extends PartsGeneralDto
 	private EpUploadFileDto uploadFile2;
 	private List<EpUploadFileListDto> uploadFileLists;
 	private List<EpUploadFileListDto> uploadFileLists2;
-//	//variables for file upload
+	//variables for file upload
 	private List<MultipartFile> files;
 	private List<MultipartFile> files2;
 	private List<String> uflSeqs;

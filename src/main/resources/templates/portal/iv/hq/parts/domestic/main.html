@@ -156,11 +156,11 @@
 
 	<!-- 프로모션 배너 -->
 	<div id="promotionBanner" class="banner-div1"> <!-- background-color: skyblue; -->
+		<form id="FORM_promotionOrder" method="post" th:action="@{/portal/iv/hq/parts/domestic/order/create/gate/promotion}"></form>
 	    <div id="slider-div" class="slick" ></div>
 	</div>
 	<!-- 프로모션 배너 -->
 <script>
-
 $(window).on("load", function() {
 	ProgressBar.hide();
 	
@@ -175,17 +175,7 @@ $(window).resize($.debounce(100, function(e){
 	stickyPromotionBanner();
 }));
 
-function goPromotionPop(pSeq, width, height)
-{
-	let url = "/portal/iv/hq/parts/promotion/popup/view?pSeq=" + pSeq;
-					
-	width = JpUtilsString.defaultString(width, "1000");
-	height = JpUtilsString.defaultString(height, "700");
-	
-	Popup.open(url, width, height, "Y", "Y");	
-}
-
-let Promotion = {
+var Promotion = {
 	getPromotionBanner: function() {
 		// 진행중인 프로모션 배너 목록 가져오기
 		JpUtilsAjax.get({
@@ -227,9 +217,22 @@ let Promotion = {
 	},
 	popupView: function(pSeq, width, height) {
 		let url = "/portal/iv/hq/parts/promotion/popup/view?pSeq=" + pSeq;
+		
 		width = JpUtilsString.defaultString(width, "700");
 		height = JpUtilsString.defaultString(height, "600");
+		
 		Popup.open(url, width, height, "Y", "Y");
+	},
+	order: function(materialNos) {
+		let html = [];
+
+		$.each(materialNos, function(index, value) {
+			html.push("<input type='hidden' name='materialNo' value='" + value + "' />");
+		});
+		
+		ProgressBar.show();
+		
+		$("#FORM_promotionOrder").append(html.join("")).submit();
 	}
 };
 

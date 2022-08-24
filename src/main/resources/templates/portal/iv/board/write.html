@@ -5,6 +5,11 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 
 <th:block layout:fragment="content">
+<style> 
+body {
+	overflow-y: scroll;
+}
+</style>
 	<script src="/editor_html5/js/xfe_main.js"></script>
 	
 	<div class="block-header">
@@ -138,14 +143,10 @@
 $(function(){
 	Calendar.makeCalendar($("#fromViewDate"), "[[${boardContent?.displayFromView}]]");
 	Calendar.makeCalendar($("#toViewDate"), "[[${boardContent?.displayToView}]]");
-	
-	$("#FORM_write .ui.checkbox").checkbox();
 });
 
 $(window).on("load", function() {
 	ProgressBar.hide();
-	
-	adjustViewerSize();
 	
 	_setDealerCodeAutocomplete($("#searchVisibleTarget"), {
 		select: function(label, value, event) {
@@ -155,11 +156,6 @@ $(window).on("load", function() {
 		}
 	});
 });
-
-function adjustViewerSize()
-{
-	initBoardViwer($("#boardViwer"), $("#xfe"));
-};
 
 function addTarget(label, value)
 {
@@ -190,36 +186,7 @@ $("#BTN_deleteVisibleTarget").on("click", function(event) {
 			$(this).closest("div").remove();
 		};
 	});
-});	
-
-function initBoardViwer($area, $content)
-{
-	installBoardViewResizer($area, $content);
-	
-	$(window).on("resize", $.debounce(100, function(e){
-		installBoardViewResizer($area, $content);
-	}));
-};
-
-function installBoardViewResizer($area, $content)
-{
-	let height = 0;
-	
-	$.each($("body").children(":not(script)").not($area), function(index, element) {
-		if (!$(element).is(":visible"))
-		{
-			return true;
-		};
-		
-		height += $(element).outerHeight(true);
-	});
-	
-	let bodyHeight = $("body").height();
-	let h1 = $area.outerHeight(true) - $content.outerHeight(true);//게시글 영역 외 height
-	
-	$content.height(bodyHeight - height - h1);
-	xfe.setHeight($content.height() + "px");
-};
+});
 
 $("#BTN_back").on("click", function() {
 	let action = (JpUtilsString.isNotEmpty("[[${boardContent?.bcSeq}]]")) ? "[[${BASE_PATH}]]/board/view" : "[[${BASE_PATH}]]/board/list";
@@ -311,8 +278,6 @@ $("#files").on("change", function() {
 	{
 		addFile(this.files[i].name, this.files[i].size);
 	};
-	
-	$("#FORM_write .ui.checkbox").checkbox();
 });
 
 $("#BTN_deleteFile").on("click", function(event) {
@@ -351,8 +316,6 @@ $("#BTN_deleteFile").on("click", function(event) {
 			$("#files")[0].files = dataTransfer.files;
 		};
 	});
-	
-	adjustViewerSize();
 });	
 
 function addFile(name, size, uflSeq)
@@ -365,10 +328,6 @@ function addFile(name, size, uflSeq)
 	html.push("</div>");
 	
 	$("#attachedFiles").append(html.join(""));
-	
-	$("#FORM_write .ui.checkbox").checkbox();
-	
-	adjustViewerSize();
 };
 
 function isReply()

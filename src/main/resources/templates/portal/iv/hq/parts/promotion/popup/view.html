@@ -40,7 +40,7 @@
 <div id="boardViwer" class="condition-area">
 	<form id="FORM_search" th:action="|${BASE_PATH}/promotion/list|" >
 	<input type="hidden" name="pSeq" th:value="*{pSeq}"/>
-	
+
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
@@ -76,12 +76,8 @@
 		</tbody>
 	</table>
 	</form>
-	</div>
-	
-
+</div>
 <div id="bottom" class="pop-bottom">	
-	<!-- button id="BTN_order2" type="button" th:text="#{HQP_B_ORDER2}" th:style="${promotion?.promotionItems.size() == 0 ? 'display:none;' : ''}" ></button -->
-	<!--<button id="BTN_cart" type="button" th:text="장바구니담기" th:style="${promotion?.promotionItems.size() == 0 ? 'display:none;' : ''}" ></button>-->
 	<div style="float: right;"><button id="BTN_close" type="button" th:text="#{HQP_B_CLOSE}"></button></div>	
 </div>
 <textarea id="htmlContent" th:text="${promotion?.htmlContent}" style="display:none;"></textarea>
@@ -127,26 +123,25 @@ $("#BTN_order").on("click", function() {
 	{
 		alert("주문 대상자재를 선택해 주세요.");
 		return;
-	}
+	};
+	
+	let materialNos = new Array();
 	
 	$("input[name=materialChk]:checked").each(function (index) {
-		window.opener.$("#FORM_logout").append('<input type="text" name="materialNo" value="'+$(this).val()+'" />');
+		materialNos[index] = $(this).val();
 	});
 	
-	window.opener.$("#FORM_logout").attr("action", "/portal/iv/hq/parts/domestic/order/create/gate/promotion");
-	window.opener.$("#FORM_logout").submit();
-	
-	window.close();
+	try
+	{
+		window.opener.Promotion.order(materialNos);
+		window.close();
+	}
+	catch (e) {}
 });
-
-/*$(".link").on("click", function() {
-	$("input[type=checkbox]").prop("checked", !$("input[type=checkbox]").is(":checked"));
-});*/
 
 $("a[downloadKey]").on("click", function() {					
 	PortalFileDownload.download($(this).attr("downloadKey"));
 });	
-
 </script>
 </body>
 </html>
