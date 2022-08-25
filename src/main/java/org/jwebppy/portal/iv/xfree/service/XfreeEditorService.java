@@ -101,6 +101,10 @@ public class XfreeEditorService extends IvGeneralService
 		}
 		catch (IOException e)
 		{
+			return XfreeUploadDto.builder().error(i18nMessageSource.getMessage("HQP_M_ONLY_ALLOW_TO_UPLOAD_IMAGE")).build();
+		}
+		finally
+		{
 			if (fileOuputStream != null)
 			{
 				try
@@ -112,8 +116,6 @@ public class XfreeEditorService extends IvGeneralService
 					e1.printStackTrace();
 				}
 			}
-
-			return XfreeUploadDto.builder().error(i18nMessageSource.getMessage("HQP_M_ONLY_ALLOW_TO_UPLOAD_IMAGE")).build();
 		}
 
 		XfreeUploadDto xfreeUpload = XfreeUploadDto.builder()
