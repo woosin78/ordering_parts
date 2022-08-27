@@ -87,11 +87,17 @@ function _setPartAutocomplete(target, options)
 		},
 		select: function(event, ui)
 		{
-			if (JpUtilsObject.isNotNull(options.select))
+			try
 			{
-				options.select(ui.item.label, ui.item.value, event);
-				return false;
-			};
+				if (JpUtilsObject.isNotNull(options.select))
+				{
+					options.select(ui.item.label, ui.item.value, event);
+					return false;
+				};				
+			}
+			catch (e) {}
+			
+			$(target).autocomplete("close");
 		},
 		//delay: 50,
 		minLength: 3
@@ -129,11 +135,17 @@ function _setDealerCodeAutocomplete(target, options)
 		},
 		select: function(event, ui)
 		{
-			if (JpUtilsObject.isNotNull(options.select))
+			try
 			{
-				options.select(ui.item.label, ui.item.value, event);
-				return false;
-			};
+				if (JpUtilsObject.isNotNull(options.select))
+				{
+					options.select(ui.item.label, ui.item.value, event);
+					return false;
+				};				
+			}
+			catch (e) {}
+			
+			$(target).autocomplete("close");
 		},
 		//delay: 50,
 		minLength: 3
@@ -156,16 +168,7 @@ function _defaultLoading(gridObj, option)
 			$.each(exceptionParams, function(index, item) {
 				urlParams.delete(item);
 			});
-			
-			/*
-			for (const[key, value] of urlParams)
-			{   
-				console.log(key, value);
-			};
-			*/
 		};
-		
-		//console.log("length:" +  Array.from(urlParams).length);
 		
 		if (Array.from(urlParams).length > 0)
 		{
