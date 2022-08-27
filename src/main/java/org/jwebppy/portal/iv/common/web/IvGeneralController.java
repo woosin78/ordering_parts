@@ -1,5 +1,8 @@
 package org.jwebppy.portal.iv.common.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
@@ -18,8 +21,6 @@ import org.jwebppy.portal.iv.hq.parts.common.PartsErpUserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.context.request.WebRequest;
-
-import com.google.common.collect.ImmutableMap;
 
 public class IvGeneralController extends PortalGeneralController
 {
@@ -97,6 +98,19 @@ public class IvGeneralController extends PortalGeneralController
 		model.addAttribute("BASE_PATH", IvCommonVo.REQUEST_PATH);
 
 		//HTML 페이지 javascript 에서 사용하는 상수 정의
+		Map<String, String> constVariableMap = new HashMap<>();
+		constVariableMap.put("USERNAME", getUsername());
+		constVariableMap.put("NAME", UserAuthenticationUtils.getUserDetails().getName());
+		constVariableMap.put("DATE_TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getDateTimeFormat2());
+		constVariableMap.put("DATE_FORMAT", UserAuthenticationUtils.getUserDetails().getDateFormat2());
+		constVariableMap.put("TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getTimeFormat2());
+		constVariableMap.put("DELIMITER", PortalConfigVo.DELIMITER);
+		constVariableMap.put("ROW_PER_PAGE", Integer.toString(PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
+		constVariableMap.put("YES", PlatformCommonVo.YES);
+		constVariableMap.put("NO", PlatformCommonVo.NO);
+		constVariableMap.put("LANG", UserAuthenticationUtils.getLanguage());
+
+		/*
 		ImmutableMap<String, String> constVariableMap = new ImmutableMap.Builder<String, String>()
 				.put("USERNAME", getUsername())
 				.put("NAME", UserAuthenticationUtils.getUserDetails().getName())
@@ -109,6 +123,7 @@ public class IvGeneralController extends PortalGeneralController
 				.put("NO", PlatformCommonVo.NO)
 				.put("LANG", UserAuthenticationUtils.getLanguage())
 				.build();
+				*/
 
 		model.addAttribute("globalConstVariables", constVariableMap);
 	}

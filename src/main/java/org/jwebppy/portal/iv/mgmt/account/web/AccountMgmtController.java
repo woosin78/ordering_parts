@@ -1,6 +1,7 @@
 package org.jwebppy.portal.iv.mgmt.account.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-
-import com.google.common.collect.ImmutableMap;
 
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH + "/mgmt/account")
@@ -59,10 +58,16 @@ public class AccountMgmtController extends IvGeneralController
 
 		String[] saleaArea = AccountMgmtUtils.getSalesArea(AccountMgmtUtils.getBizTypeBySalesArea(userInfoMap));
 
+		Map<String, Object> salesAreaMap = new HashMap<>();
+		salesAreaMap.put("VKORG", saleaArea[0]);
+		salesAreaMap.put("VTWEG", saleaArea[1]);
+
+		/*
 		Map<String, Object> salesAreaMap = new ImmutableMap.Builder<String, Object>()
 				.put("VKORG", saleaArea[0])
 				.put("VTWEG", saleaArea[1])
 				.build();
+				*/
 
 		List<Map<String, Object>> salesAreaList = new ArrayList<>();
 		salesAreaList.add(salesAreaMap);

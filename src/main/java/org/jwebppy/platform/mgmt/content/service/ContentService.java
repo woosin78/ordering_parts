@@ -3,6 +3,7 @@ package org.jwebppy.platform.mgmt.content.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.collect.ImmutableMap;
 
 @Service
 @Transactional
@@ -415,6 +414,19 @@ public class ContentService extends GeneralService
 
 			CItemDto cItem = cItems.get(0);
 
+			Map<String, Object> itemMap = new HashMap<String, Object>();
+			itemMap.put("KEY", cItem.getCSeq());
+			itemMap.put("P_KEY", CmStringUtils.trimToEmpty(cItem.getPSeq()));
+			itemMap.put("NAME", CmStringUtils.defaultIfEmpty(cItem.getName2(), cItem.getName()));
+			itemMap.put("TYPE", cItem.getType().getType());
+			itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(cItem.getLaunchType()));
+			itemMap.put("WIDTH", CmStringUtils.trimToEmpty(cItem.getScrWidth()));
+			itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(cItem.getScrHeight()));
+			itemMap.put("SUB_ITEMS", getSubItems(cItem.getCSeq(), cItems));
+
+			hierarchy.add(itemMap);
+
+					/*
 			hierarchy.add(new ImmutableMap.Builder<String, Object>()
 					.put("KEY", cItem.getCSeq())
 					.put("P_KEY", CmStringUtils.trimToEmpty(cItem.getPSeq()))
@@ -426,6 +438,7 @@ public class ContentService extends GeneralService
 					.put("SUB_ITEMS", getSubItems(cItem.getCSeq(), cItems))
 					.build()
 					);
+					*/
 
 			return hierarchy;
 		}
@@ -443,6 +456,19 @@ public class ContentService extends GeneralService
 
 			if (cSeq.equals(subCItem.getPSeq()))
 			{
+				Map<String, Object> itemMap = new HashMap<String, Object>();
+				itemMap.put("KEY", subCItem.getCSeq());
+				itemMap.put("P_KEY", CmStringUtils.trimToEmpty(subCItem.getPSeq()));
+				itemMap.put("NAME", CmStringUtils.defaultIfEmpty(subCItem.getName2(), subCItem.getName()));
+				itemMap.put("TYPE", subCItem.getType().getType());
+				itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(subCItem.getLaunchType()));
+				itemMap.put("WIDTH", CmStringUtils.trimToEmpty(subCItem.getScrWidth()));
+				itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(subCItem.getScrHeight()));
+				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getCSeq(), cItems));
+
+				subItems.add(itemMap);
+
+				/*
 				subItems.add(new ImmutableMap.Builder<String, Object>()
 						.put("KEY", subCItem.getCSeq())
 						.put("P_KEY", CmStringUtils.trimToEmpty(subCItem.getPSeq()))
@@ -453,14 +479,10 @@ public class ContentService extends GeneralService
 						.put("HEIGHT", CmStringUtils.trimToEmpty(subCItem.getScrHeight()))
 						.put("SUB_ITEMS", getSubItems(subCItem.getCSeq(), cItems))
 						.build());
+						*/
 			}
 		}
 
 		return subItems;
 	}
-//
-//	public List<CItemDto> getMyItems(CItemSearchDto cItemSearch)
-//	{
-//		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findMyCItems(cItemSearch));
-//	}
 }

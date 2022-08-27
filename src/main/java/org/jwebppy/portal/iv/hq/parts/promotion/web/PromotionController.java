@@ -43,6 +43,7 @@ public class PromotionController extends PartsGeneralController
 	public String list(Model model, WebRequest webRequest) // , PromotionSearchDto promotionSearch
 	{
 		setDefaultAttribute(model, webRequest);
+
 		return DEFAULT_VIEW_URL;
 	}
 
@@ -61,9 +62,7 @@ public class PromotionController extends PartsGeneralController
 	public Object listBanner(@ModelAttribute PromotionSearchDto promotionSearch, WebRequest webRequest)
 	{
 		// 프로모션 대상 조건
-		String custCode = String.valueOf(getErpUserInfo().get("KUNNR"));
-		System.out.println("@@@@@@@@@@@ custCode" + custCode);
-		promotionSearch.setCustCode(custCode);
+		promotionSearch.setCustCode(getErpUserContext().getCustCode());
 
 		return ListUtils.emptyIfNull(promotionService.getBannerPromotions(promotionSearch));
 	}
@@ -71,7 +70,7 @@ public class PromotionController extends PartsGeneralController
 	@RequestMapping("/popup/view")
 	public String popupView(Model model, WebRequest webRequest, PromotionSearchDto promotionSearch)
 	{
-		if(ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
+		if (ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
 		{
 			model.addAttribute("promotion", promotionService.getPromotion(promotionSearch.getPSeq(), getErpUserInfo()));
 		}
@@ -84,7 +83,7 @@ public class PromotionController extends PartsGeneralController
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest, PromotionSearchDto promotionSearch)
 	{
-		if(ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
+		if (ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
 		{
 			model.addAttribute("promotion", promotionService.getPromotion(promotionSearch.getPSeq(), getErpUserInfo()));
 		}
@@ -147,7 +146,7 @@ public class PromotionController extends PartsGeneralController
 		{
 			PromotionDto p = promotionService.getPromotion(promotion.getPSeq(), getErpUserInfo());
 
-			if (p.getUploadFile() != null)
+			if (ObjectUtils.isNotEmpty(p.getUploadFile()))
 			{
 				return i18nMessageSource.getMessage("HQP_M_EXCEED_MAXIMUM_UPLOAD_SIZE", new String[] { Formatter.getDisplayFileSize(p.getUploadFile().getMaxFileSize()) } );
 			}
@@ -163,7 +162,7 @@ public class PromotionController extends PartsGeneralController
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest, PromotionSearchDto promotionSearch)
 	{
-		if(ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
+		if (ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
 		{
 			model.addAttribute("promotion", promotionService.getPromotion(promotionSearch.getPSeq(), getErpUserInfo()));
 		}
@@ -172,7 +171,6 @@ public class PromotionController extends PartsGeneralController
 
 		return DEFAULT_VIEW_URL;
 	}
-
 
 	@PostMapping("/delete")
 	@ResponseBody

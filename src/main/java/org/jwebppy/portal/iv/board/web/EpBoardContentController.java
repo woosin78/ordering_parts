@@ -2,7 +2,9 @@ package org.jwebppy.portal.iv.board.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
@@ -36,8 +38,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
-
-import com.google.common.collect.ImmutableMap;
 
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH  + "/board")
@@ -233,10 +233,16 @@ public class EpBoardContentController extends IvGeneralController
 		 * 공지사항: 1-07008bda-f80b-4f6c-8397-c382bc344273, /irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_notice_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312
 		 * 부품장터: 1-92953403-226b-494e-9c63-55763f8bbb8b, /irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_market_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312
 		*/
+		Map<String, String> oldSystemUrlMap = new HashMap<String, String>();
+		oldSystemUrlMap.put("1-07008bda-f80b-4f6c-8397-c382bc344273", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_notice_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312");
+		oldSystemUrlMap.put("1-92953403-226b-494e-9c63-55763f8bbb8b", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_market_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312");
+
+		/*
 		ImmutableMap<String, String> oldSystemUrlMap = new ImmutableMap.Builder<String, String>()
 				.put("1-07008bda-f80b-4f6c-8397-c382bc344273", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_notice_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312")
 				.put("1-92953403-226b-494e-9c63-55763f8bbb8b", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_market_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312")
 				.build();
+				*/
 
 		String oldSystemUrl = oldSystemUrlMap.get(bSeq);
 

@@ -1,6 +1,7 @@
 package org.jwebppy.portal.iv.hq.parts.export.report.order.machine.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-
-import com.google.common.collect.ImmutableMap;
 
 @Controller
 @RequestMapping(PartsExportCommonVo.REQUEST_PATH + "/report/order/machine")
@@ -102,12 +101,20 @@ public class ExMachineOrderReportController extends PartsExportGeneralController
 			}
 		}
 
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("from", fromYear);
+		resultMap.put("to", toYear);
+		resultMap.put("models", ListUtils.emptyIfNull(new ArrayList<>(reportMap.keySet())));
+		resultMap.put("values", ListUtils.emptyIfNull(new ArrayList<>(reportMap.values())));
+
+		/*
 		ImmutableMap<String, Object> resultMap = new ImmutableMap.Builder<String, Object>()
 				.put("from", fromYear)
 				.put("to", toYear)
 				.put("models", ListUtils.emptyIfNull(new ArrayList<>(reportMap.keySet())))
 				.put("values", ListUtils.emptyIfNull(new ArrayList<>(reportMap.values())))
 				.build();
+				*/
 
 		return resultMap;
 	}

@@ -7,7 +7,6 @@ import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.portal.iv.hq.parts.common.service.PartsGeneralService;
 import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionItemDto;
 import org.jwebppy.portal.iv.hq.parts.promotion.entity.PromotionItemEntity;
-import org.jwebppy.portal.iv.hq.parts.promotion.entity.PromotionTargetEntity;
 import org.jwebppy.portal.iv.hq.parts.promotion.mapper.PromotionItemMapper;
 import org.jwebppy.portal.iv.hq.parts.promotion.mapper.PromotionItemObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class PromotionItemService extends PartsGeneralService
 {
 	@Autowired
 	private PromotionItemMapper promotionItemMapper;
-	
+
 	/**
 	 * promotionItem DB insert
 	 * @param promotionItem
@@ -28,7 +27,7 @@ public class PromotionItemService extends PartsGeneralService
 	{
 		return promotionItemMapper.insert(CmModelMapperUtils.mapToEntity(PromotionItemObjectMapper.INSTANCE, promotionItem));
 	}
-	
+
 	/**
 	 * promotionItems 저장
 	 * @param promotionItems
@@ -43,7 +42,7 @@ public class PromotionItemService extends PartsGeneralService
 
 		return 1;
 	}
-	
+
 	/**
 	 * 새글 등록 시 리턴된 pSeq 세팅 후 PromotionItem 저장
 	 * @param promotionItems
@@ -57,16 +56,16 @@ public class PromotionItemService extends PartsGeneralService
 			promotionItem.setPSeq(pSeq);
 			save(promotionItem);
 		}
-		
+
 		return 1;
 	}
 
-	public List<PromotionItemDto> getPromotionItems(PromotionItemDto promotionItem) 
+	public List<PromotionItemDto> getPromotionItems(PromotionItemDto promotionItem)
 	{
 		return CmModelMapperUtils.mapToDto(PromotionItemObjectMapper.INSTANCE, promotionItemMapper.findPromotionItems(promotionItem));
 	}
 
-	public int delete(Integer pSeq) 
+	public int delete(Integer pSeq)
 	{
 		PromotionItemEntity promotionItem = new PromotionItemEntity();
 		promotionItem.setPSeq(pSeq);
@@ -74,7 +73,7 @@ public class PromotionItemService extends PartsGeneralService
 	}
 
 
-	
-	
+
+
 
 }

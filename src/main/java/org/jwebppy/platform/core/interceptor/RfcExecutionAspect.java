@@ -72,8 +72,7 @@ public class RfcExecutionAspect
 
 			if (IF_LOGGING_SAP_REQUEST)
 			{
-				//dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
-				dataAccessLogService.writeLog(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
+				dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
 			}
 		}
 		catch (Exception e)

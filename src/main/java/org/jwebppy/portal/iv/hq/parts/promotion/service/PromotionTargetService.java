@@ -17,8 +17,7 @@ public class PromotionTargetService extends PartsGeneralService
 {
 	@Autowired
 	private PromotionTargetMapper promotionTargetMapper;
-	
-	
+
 	/**
 	 * promotionTarget DB insert
 	 * @param promotionTarget
@@ -28,7 +27,7 @@ public class PromotionTargetService extends PartsGeneralService
 	{
 		return promotionTargetMapper.insert(CmModelMapperUtils.mapToEntity(PromotionTargetObjectMapper.INSTANCE, promotionTarget));
 	}
-	
+
 	/**
 	 * promotionTargets 저장
 	 * @param promotionTargets
@@ -43,7 +42,7 @@ public class PromotionTargetService extends PartsGeneralService
 
 		return 1;
 	}
-	
+
 	/**
 	 * 새글 등록 시 리턴된 pSeq 세팅 후 PromotionTarget 저장
 	 * @param promotionTargets
@@ -57,16 +56,16 @@ public class PromotionTargetService extends PartsGeneralService
 			promotionTarget.setPSeq(pSeq);
 			save(promotionTarget);
 		}
-		
+
 		return 1;
 	}
 
-	public List<PromotionTargetDto> getPromotionTargets(PromotionTargetDto promotionTarget) 
+	public List<PromotionTargetDto> getPromotionTargets(PromotionTargetDto promotionTarget)
 	{
 		return CmModelMapperUtils.mapToDto(PromotionTargetObjectMapper.INSTANCE, promotionTargetMapper.findPromotionTargets(promotionTarget));
 	}
 
-	public int delete(Integer pSeq) 
+	public int delete(Integer pSeq)
 	{
 		PromotionTargetEntity promotionTarget = new PromotionTargetEntity();
 		promotionTarget.setPSeq(pSeq);
@@ -74,7 +73,7 @@ public class PromotionTargetService extends PartsGeneralService
 	}
 
 
-	
-	
+
+
 
 }

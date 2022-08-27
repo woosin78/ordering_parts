@@ -15,18 +15,17 @@ import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.util.XssHandleUtils;
-import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
-import org.jwebppy.portal.iv.upload.service.EpUploadFileListService;
-import org.jwebppy.portal.iv.upload.service.EpUploadFileService;
 import org.jwebppy.portal.iv.hq.parts.common.PartsErpDataMap;
 import org.jwebppy.portal.iv.hq.parts.common.service.PartsGeneralService;
 import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionDto;
 import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionItemDto;
 import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionSearchDto;
 import org.jwebppy.portal.iv.hq.parts.promotion.entity.PromotionEntity;
-import org.jwebppy.portal.iv.hq.parts.promotion.entity.PromotionItemEntity;
 import org.jwebppy.portal.iv.hq.parts.promotion.mapper.PromotionMapper;
 import org.jwebppy.portal.iv.hq.parts.promotion.mapper.PromotionObjectMapper;
+import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
+import org.jwebppy.portal.iv.upload.service.EpUploadFileListService;
+import org.jwebppy.portal.iv.upload.service.EpUploadFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,35 +37,35 @@ public class PromotionService extends PartsGeneralService
 
 	@Autowired
 	private PromotionTargetService promotionTargetService;
+
 	@Autowired
 	private PromotionItemService promotionItemService;
-	
+
 	@Autowired
 	private EpUploadFileListService uploadFileListService;
-	
+
 	@Autowired
 	private EpUploadFileService uploadFileService;
 
-	
 	public static final String UPLOAD_NAME = "SALES_PROMOTION-HQ";
-	
 
 	/**
 	 * 프로모션 목록
 	 * @param promotionSearch
 	 * @return
 	 */
-	public List<PromotionDto> getPageablePromotions(PromotionSearchDto promotionSearch) 
+	public List<PromotionDto> getPageablePromotions(PromotionSearchDto promotionSearch)
 	{
 		return CmModelMapperUtils.mapToDto(PromotionObjectMapper.INSTANCE, promotionMapper.findPageablePromotions(promotionSearch));
 	}
-	
+
 	/**
 	 * 프로모션 배너 목록
 	 * @param promotionSearch
 	 * @return
 	 */
-	public List<PromotionDto> getBannerPromotions(PromotionSearchDto promotionSearch) {
+	public List<PromotionDto> getBannerPromotions(PromotionSearchDto promotionSearch)
+	{
 		return CmModelMapperUtils.mapToDto(PromotionObjectMapper.INSTANCE, promotionMapper.findBannerPromotions(promotionSearch));
 	}
 
@@ -75,33 +74,34 @@ public class PromotionService extends PartsGeneralService
 	 * @param pSeq
 	 * @return
 	 */
-	public PromotionDto getPromotion(Integer pSeq, PartsErpDataMap rfcParamMap) 
+	public PromotionDto getPromotion(Integer pSeq, PartsErpDataMap rfcParamMap)
 	{
 		PromotionDto promotion = CmModelMapperUtils.mapToDto(PromotionObjectMapper.INSTANCE, promotionMapper.findPromotion(pSeq));
-		
+
 		List<PromotionItemDto> promotionItems = promotion.getPromotionItems();
-		if(null != promotionItems && 0 <promotionItems.size())
+
+		if (CollectionUtils.isNotEmpty(promotionItems))
 		{
 			//부품명 가져와서 데이터 세팅
 			String[] materialNos = new String[promotionItems.size()];
-			for(int i=0; i<promotionItems.size(); i++) 
+			for (int i=0; i<promotionItems.size(); i++)
 			{
 				PromotionItemDto pItem = promotionItems.get(i);
 				materialNos[i] = pItem.getMaterialNo();
 			}
 	        rfcParamMap.add("materialNos", materialNos);
 	        Map<String, Map<String, Object>> materialInfo = getMaterialInfo(rfcParamMap);
-	        
-	        for(int i=0; i<promotionItems.size(); i++) 
+
+	        for (int i=0; i<promotionItems.size(); i++)
 			{
 				PromotionItemDto pItem = promotionItems.get(i);
 				pItem.setMaterialText(materialInfo.get(pItem.getMaterialNo()).get("MATERIAL_TEXT").toString());
 				promotionItems.set(i, pItem);
 			}
-	        
+
 	        promotion.setPromotionItems(promotionItems);
 		}
-		
+
 		return promotion;
 	}
 
@@ -122,7 +122,7 @@ public class PromotionService extends PartsGeneralService
 			return modify(promotion);
 		}
 	}
-	
+
 	/**
 	 * 프로모션 생성
 	 * @param promotion
@@ -138,7 +138,7 @@ public class PromotionService extends PartsGeneralService
 		promotion.setHtmlContent(XssHandleUtils.removeInvalidTagAndEvent(promotion.getHtmlContent()));
 		PromotionEntity promotionEntity = CmModelMapperUtils.mapToEntity(PromotionObjectMapper.INSTANCE, promotion);
 		promotionMapper.insert(promotionEntity);
-		
+
 		Integer pSeq = promotionEntity.getPSeq();
 
 		// 배너이미지
@@ -194,14 +194,16 @@ public class PromotionService extends PartsGeneralService
 	 * @param promotion
 	 * @return
 	 */
-	public int delete(PromotionDto promotion) {
+	public int delete(PromotionDto promotion)
+	{
 		Integer pSeq = promotion.getPSeq();
 		if (ObjectUtils.isEmpty(pSeq))
 		{
 			return 0;
 		}
-		
-		if(0 < promotionMapper.updateFgDelete(CmModelMapperUtils.mapToEntity(PromotionObjectMapper.INSTANCE, promotion))) {
+
+		if (0 < promotionMapper.updateFgDelete(CmModelMapperUtils.mapToEntity(PromotionObjectMapper.INSTANCE, promotion)))
+		{
 			uploadFileListService.delete(promotion.getUflSeqs());
 			uploadFileListService.delete(promotion.getUflSeqs2());
 			promotionTargetService.delete(pSeq);
@@ -210,7 +212,7 @@ public class PromotionService extends PartsGeneralService
 		}
 		return 0;
 	}
-	
+
 	/**
 	 * 부품정보 가져오기
 	 * @param paramMap
@@ -218,55 +220,54 @@ public class PromotionService extends PartsGeneralService
 	 */
 	public Map<String, Map<String, Object>> getMaterialInfo(PartsErpDataMap paramMap)
     {
-           RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY");
 
-           rfcRequest.
-                   field()
-                          .add(new Object[][] {
-                                  {"I_LANGU", paramMap.getLangForSap()},
-                                  {"I_BGTYP", "P"},
-                                  {"I_USERID", paramMap.getUsername()}
-                          });
+		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY");
 
-           List<Map<String, Object>> items = new LinkedList<>();
+		rfcRequest.
+			field()
+				.add(new Object[][] {
+					{"I_LANGU", paramMap.getLangForSap()},
+					{"I_BGTYP", "P"},
+					{"I_USERID", paramMap.getUsername()}
+				});
 
-           String[] matertialNos = (String[])paramMap.get("materialNos");
+		List<Map<String, Object>> items = new LinkedList<>();
 
-           int index = 1;
-           for (String material: matertialNos)
-           {
-                   if (CmStringUtils.isEmpty(material))
-                   {
-                          continue;
-                   }
+		String[] matertialNos = (String[])paramMap.get("materialNos");
 
-                   Map<String, Object> itemMap = new HashMap<>();
-                   itemMap.put("ITEM", index++);
-                   itemMap.put("MATERIAL", material);
+		int index = 1;
+		for (String material: matertialNos)
+		{
+			if (CmStringUtils.isEmpty(material))
+			{
+				continue;
+			}
 
-                   items.add(itemMap);
-           }
+			Map<String, Object> itemMap = new HashMap<>();
+			itemMap.put("ITEM", index++);
+			itemMap.put("MATERIAL", material);
 
-           rfcRequest.addTable("LT_ITEM", items);
+			items.add(itemMap);
+		}
 
-           DataList ltItems = simpleRfcTemplate.response(rfcRequest).getTable("LT_ITEM");
+		rfcRequest.addTable("LT_ITEM", items);
 
-           if (CollectionUtils.isNotEmpty(ltItems))
-           {
-                   Map<String, Map<String, Object>> resultMap = new HashMap<>();
+		DataList ltItems = simpleRfcTemplate.response(rfcRequest).getTable("LT_ITEM");
 
-                   for (int i=0, size=ltItems.size(); i<size; i++)
-                   {
-                          Map<String, Object> itemMap = (Map<String, Object>)ltItems.get(i);
+		if (CollectionUtils.isNotEmpty(ltItems))
+		{
+			Map<String, Map<String, Object>> resultMap = new HashMap<>();
 
-                          resultMap.put(CmStringUtils.trimToEmpty(itemMap.get("MATERIAL")), itemMap);
-                   }
+			for (int i=0, size=ltItems.size(); i<size; i++)
+			{
+				Map<String, Object> itemMap = (Map<String, Object>)ltItems.get(i);
 
-                   return resultMap;
-           }
+				resultMap.put(CmStringUtils.trimToEmpty(itemMap.get("MATERIAL")), itemMap);
+			}
 
-           return Collections.emptyMap() ;
+			return resultMap;
+		}
+
+		return Collections.emptyMap() ;
     }
-	
-
 }

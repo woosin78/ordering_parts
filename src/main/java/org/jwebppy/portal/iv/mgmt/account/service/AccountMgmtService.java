@@ -1,6 +1,7 @@
 package org.jwebppy.portal.iv.mgmt.account.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.ImmutableMap;
 import com.ibm.icu.util.TimeZone;
 
 @Service
@@ -118,19 +118,32 @@ public class AccountMgmtService extends IvGeneralService
 	{
 		String[] salesArea = AccountMgmtUtils.getSalesArea(account.getBizType());
 
+		/*
 		Map<String, Object> salesAreaMap = new ImmutableMap.Builder<String, Object>()
 				.put("VKORG", salesArea[0])
 				.build();
+				*/
+		Map<String, Object> salesAreaMap = new HashMap<>();
+		salesAreaMap.put("VKORG", salesArea[0]);
+
 
 		List<Map<String, Object>> salesAreaList = new ArrayList<>();
 		salesAreaList.add(salesAreaMap);
 
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("distChl", salesArea[1]);
+		paramMap.put("division", salesArea[2]);
+		paramMap.put("dealerCode", account.getDealerCode());
+		paramMap.put("salesAreaList", salesAreaList);
+
+		/*
 		Map<String, Object> paramMap = new ImmutableMap.Builder<String, Object>()
 				.put("distChl", salesArea[1])
 				.put("division", salesArea[2])
 				.put("dealerCode", account.getDealerCode())
 				.put("salesAreaList", salesAreaList)
 				.build();
+				*/
 
 		RfcResponse rfcResponse = getDealerInfo(paramMap);
 
@@ -302,10 +315,16 @@ public class AccountMgmtService extends IvGeneralService
 	{
 		String[] salesArea = AccountMgmtUtils.getSalesArea(bizType);
 
+		Map<String, Object> salesAreaMap = new HashMap<>();
+		salesAreaMap.put("VKORG", salesArea[0]);
+		salesAreaMap.put("VTWEG", salesArea[1]);
+
+		/*
 		Map<String, Object> salesAreaMap = new ImmutableMap.Builder<String, Object>()
 				.put("VKORG", salesArea[0])
 				.put("VTWEG", salesArea[1])
 				.build();
+				*/
 
 		List<Map<String, Object>> salesAreaList = new ArrayList<>();
 		salesAreaList.add(salesAreaMap);
