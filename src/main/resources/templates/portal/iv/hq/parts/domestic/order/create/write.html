@@ -924,7 +924,13 @@ $(function(){
 		$("#simulationFrom").val("");
 		
 		$.each($("#TBL_grid input[name=materialNo]"), function(index, item) {
-			_setPartAutocomplete(item);	
+			_setPartAutocomplete(item, {
+				select: function(label, value, event)
+				{
+					$(item).val(value);
+					doValidation();
+				}
+			});
 		});
 		
 		initGridTable($tableObj);

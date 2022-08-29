@@ -72,7 +72,13 @@
 	<iframe id="IFM_download" name="IFM_download" style="display:none;"></iframe>
 <script>
 $(document).ready(function() {
-	_setPartAutocomplete($("#pOrderPartNo"));
+	_setPartAutocomplete($("#pOrderPartNo"), {
+		select: function(label, value, event)
+		{
+			$("#pOrderPartNo").val(value);
+			doSearch();
+		}
+	});
 });
 
 let $tableObj;

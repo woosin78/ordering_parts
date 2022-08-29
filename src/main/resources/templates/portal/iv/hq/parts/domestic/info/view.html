@@ -129,11 +129,13 @@ $(window).on("load", function() {
 });
 
 $(document).ready(function() {
-	_setPartAutocomplete($("#pPartNo"));
-	
-	$("#pPartNo").on("click", function() {
-		$(this).select();
-	});	
+	_setPartAutocomplete($("#pPartNo"), {
+		select: function(label, value, event)
+		{
+			$("#pPartNo").val(value);
+			doSearch();
+		}
+	});
 });
 
 function doSearch()

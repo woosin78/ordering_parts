@@ -1,5 +1,6 @@
 package org.jwebppy.portal.iv.board.web;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.upload.dto.EpUploadFileDto;
 import org.jwebppy.portal.iv.upload.service.EpUploadFileListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,11 +40,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH  + "/board")
 public class EpBoardContentController extends IvGeneralController
 {
+	@Value("${file.upload.rootPath}")
+	private String ROOT_PATH;
+
 	@Autowired
 	private EpBoardService boardService;
 
@@ -138,6 +144,48 @@ public class EpBoardContentController extends IvGeneralController
 		setDefaultAttribute(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
+	}
+
+	@RequestMapping("/upload")
+	public Object upload(@ModelAttribute EpBoardContentDto boardContent)
+	{
+		return DEFAULT_VIEW_URL;
+	}
+
+	@PostMapping("/upload/proc")
+	@ResponseBody
+	public Object uploadProc(@ModelAttribute EpBoardContentDto boardContent)
+	{
+		List<MultipartFile> multipartFiles = boardContent.getFiles();
+		int index = 1;
+
+		for (MultipartFile multipartFile: multipartFiles)
+		{
+			File file = new File(ROOT_PATH + "/bbs/divk/domestic/notice/" + multipartFile.getOriginalFilename());
+
+			try
+			{
+				if (file.exists())
+				{
+					System.err.println(index++ + ".E.=============================" + multipartFile.getOriginalFilename());
+				}
+				else
+				{
+					multipartFile.transferTo(file);
+					System.err.println(index++ + ".N.=============================" + multipartFile.getOriginalFilename());
+				}
+			}
+			catch (IllegalStateException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return null;
 	}
 
 	@PostMapping("/save")

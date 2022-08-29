@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+<th:block layout:fragment="content">
+<form name="uploadForm" method="post" th:action="@{/portal/iv/board/upload/proc}" enctype="multipart/form-data">
+<input type="file" name="files" multiple="multiple">
+<input type="submit">
+</form>
+<script>
+ProgressBar.hide();
+</script>
+</th:block>
