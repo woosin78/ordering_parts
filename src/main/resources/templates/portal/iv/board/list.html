@@ -8,7 +8,7 @@
 	<div class="block-header">
 		<div class="block-title" th:text="${boardName}"></div>
 		<div class="block-button-area">
-			<button id="BTN_showOldData" type="button" th:text="#{HQP_B_SHOW_OLD_DATA}" th:if="${not #strings.isEmpty(oldSystemUrl)}"></button>
+			<!-- button id="BTN_showOldData" type="button" th:text="#{HQP_B_SHOW_OLD_DATA}" th:if="${not #strings.isEmpty(oldSystemUrl)}"></button -->
 			<button id="BTN_write" type="button" th:text="#{HQP_B_WRITE}" th:if="${hasWriteAuth}"></button>
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>			
 		</div>
@@ -165,9 +165,11 @@ $(function(){
 		$("#FORM_search").attr("action", "[[${BASE_PATH}]]/board/write").submit();
 	});
 	
+	/*
 	$("#BTN_showOldData").on("click", function() {
 		$("#doobizLogin_F").attr("src", "/platform/mgmt/sso/out/doobiz");
 	});
+	*/
 });
 
 function doSearch()

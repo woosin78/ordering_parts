@@ -37,7 +37,7 @@
 				<th th:text="#{HQP_L_PART_NO}"></th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
+						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui autocomplete" th:value="${pPartNo}">
 					</div>
 				</td>
 				<th th:text="#{HQP_L_PO_NO}"></th>
@@ -58,7 +58,12 @@
 	</div>
 <script>
 $(document).ready(function() {
-	_setPartAutocomplete($("#pPartNo"));
+	_setPartAutocomplete($("#pPartNo"), {
+		select: function(label, value, event)
+		{
+			doSearch();
+		}
+	});	
 });
 
 $(function(){
@@ -118,26 +123,11 @@ $(function(){
 		doSearch();
 	});
 	
-	//Input text 엔터 키 입력
-	$("#FORM_search input:text").on("keydown", function(event) {
-		if (event.keyCode == 13)
-		{
-			doSearch();
-		};
+	//Input text 엔터 키 입력.
+	JpUiForm.input.on.enter($("#FORM_search input:text"), function(item) {
+		doSearch();
 	});	
 	
-	function doSearch()
-	{
-		if (JpUtilsString.isAllEmpty([$("#pOrderNo").val(), $("#pFromDate").val(), $("#pToDate").val(), $("#pPartNo").val(), $("#pPoNo").val()]))
-		{
-			alert("[[#{HQP_M_EMPTY_QUERY}]]");
-			$("#pOrderNo").focus();
-			return;
-		};
-		
-		$tableObj.ajax.reload();
-	};
-
 	$("#BTN_select").on("click", function() {
 		let tds = $tableObj.columns(0).nodes()[0];
 	
@@ -164,5 +154,10 @@ $(function(){
 		catch (e) {}
 	});
 });
+
+function doSearch()
+{
+	$tableObj.ajax.reload();
+};
 </script>
 </th:block>

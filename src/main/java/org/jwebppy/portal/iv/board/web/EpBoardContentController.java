@@ -71,7 +71,7 @@ public class EpBoardContentController extends IvGeneralController
 	public String list(Model model, WebRequest webRequest, EpBoardContentSearchDto boardContentSearch)
 	{
 		//Doobiz 에 있는 과거 데이터를 보여주기 위한 용도
-		addOldMenuLink(model, boardContentSearch.getBSeq());
+		//addOldMenuLink(model, boardContentSearch.getBSeq());
 
 		setDefaultAttribute(model, webRequest);
 
