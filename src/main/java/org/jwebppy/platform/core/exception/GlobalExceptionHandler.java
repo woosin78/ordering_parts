@@ -2,6 +2,7 @@ package org.jwebppy.platform.core.exception;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.catalina.connector.ClientAbortException;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ResponseMessage;
@@ -17,7 +18,11 @@ public class GlobalExceptionHandler
 	@ExceptionHandler(Exception.class)
 	public Object handleException(HttpServletRequest request, Exception e)
 	{
-		e.printStackTrace();
+		//Broken Pipe exception 은 Server 단에서는 핸들링 할 수 없으므로 Console 및 APM 에 logging 되지 않도록 예외 처리한다.
+		if (!(e instanceof ClientAbortException))
+		{
+			e.printStackTrace();
+		}
 
         if (CmStringUtils.equals("XMLHttpRequest", request.getHeader("X-Requested-With")))
         {

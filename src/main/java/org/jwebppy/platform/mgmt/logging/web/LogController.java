@@ -47,7 +47,7 @@ public class LogController extends LoggingGeneralController
 	private static final String UF_SEQ = "0-684009dc-1cec-4d9b-8a6b-7ab2d9fcf580";
 
 	@Value("${file.upload.rootPath}")
-	private String FILE_UPLOAD_ROOT_PATH;
+	private String ROOT_PATH;
 
 
 	@Autowired
@@ -167,7 +167,7 @@ public class LogController extends LoggingGeneralController
 		{
 			UploadFileDto uploadFile = uploadFileService.getUploadFile(UF_SEQ);
 
-			String path = FILE_UPLOAD_ROOT_PATH + File.separator + uploadFile.getPath();
+			String path = ROOT_PATH + File.separator + uploadFile.getPath();
 			String now = CmDateFormatUtils.defaultZonedFormat(LocalDateTime.now(), PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
 			String originName = "[" + type.toUpperCase() + "] " + command + "_" + UserAuthenticationUtils.getUsername() + "_" + now + ".html";
 			String savedName = System.nanoTime() + ".html";

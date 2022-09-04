@@ -42,7 +42,7 @@
 				<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
 				<td colspan="3">
 					<div class="input-area">
-						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
+						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui autocomplete" th:value="${pOrderPartNo}">
 					</div>
 				</td>
 			</tr>		
@@ -71,7 +71,12 @@
 	<form id="FORM_download"></form>
 <script>
 $(document).ready(function() {
-	_setPartAutocomplete($("#pOrderPartNo"));
+	_setPartAutocomplete($("#pOrderPartNo"), {
+		select: function(label, value, event)
+		{
+			doSearch();
+		}
+	});
 });
 
 let $tableObj;
@@ -154,13 +159,10 @@ $("#BTN_search").on("click", function(){
 	doSearch(); 
 });
 
-//Input text 엔터 키 입력
-$("#FORM_search input:text").on("keydown", function(event) {
-	if (event.keyCode == 13)
-	{
-		doSearch();
-	};
-});
+//Input text 엔터 키 입력.
+JpUiForm.input.on.enter($("#FORM_search input:text"), function(item) {
+	doSearch();
+});	
 
 function doSearch()
 {

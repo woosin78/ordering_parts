@@ -6,9 +6,9 @@
 <th:block layout:fragment="content">
 	
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQP_L_SURVEY}"></div>
+		<div class="block-title" th:text="#{HQP_T_SURVEY}"></div>
 		<div th:if="${isManager == true}" class="block-button-area">
-			<button id="BTN_write" type="button" th:text="#{HQP_B_SURVEY_CREATION}"></button>
+			<button id="BTN_write" type="button" th:text="#{HQP_B_WRITE}"></button>
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>
 		</div>
 	</div>
@@ -22,16 +22,15 @@
 						<div class="input-area">
 							<select id="fgStatus" name="fgStatus" class="custom-ui">
 								<option value="0"></option>
-								<option th:if="${isManager == true}" value="1">[[#{HQP_L_SURVEY_DOING}]]</option>
-								<!-- <option value="2">설문대기중</option> -->
-								<option value="2">[[#{HQP_L_SURVEY_RUNNING}]]</option>
-								<option value="3">[[#{HQP_L_SURVEY_COMPLETE}]]</option>
+								<option th:if="${isManager == true}" value="1">[[#{HQP_L_WRITING}]]</option>
+								<option value="2">[[#{HQP_L_STATUS_ONGOING}]]</option>
+								<option value="3">[[#{HQP_L_STATUS_CLOSED}]]</option>
 							</select>
 						</div>
 					</td>
 				</tr>
 				<tr>
-					<th>[[#{HQP_L_SURVEY_TITLE}]]/[[#{HQP_L_WRITER}]]</th>
+					<th>[[#{HQP_L_TITLE}]]/[[#{HQP_L_WRITER}]]</th>
 					<td>
 						<div class="input-area">
 							<input type="text" id="query" name="query" class="custom-ui" onkeyup="if(event.keyCode =='13') doSearch();"/>
@@ -72,8 +71,8 @@ $(function(){
 			{data:"fgStatus",		title: "[[#{HQP_L_STATUS}]]", 		"width": "8%"},		// 1
 			{data:"validFrom",		title: "[[#{HQP_L_SURVEY_PERIOD}]]", 	"width": "15%"},	// 2
 			{data:"validTo",		title: "[[#{HQP_L_SURVEY_PERIOD}]]", 	"width": "15%"},	// 3
-			{data:"displayTitle",	title: "[[#{HQP_L_SURVEY_TITLE}]]"},						// 4
-			{data:"fgOpenResult",	title: "[[#{HQP_L_RESULT}]]", 		"width": "8%"},		// 5
+			{data:"displayTitle",	title: "[[#{HQP_L_TITLE}]]"},						// 4
+			{data:"fgOpenResult",	title: "[[#{HQP_L_RESULT_OPEN}]]", 		"width": "10%"},		// 5
 			{data:"regUsername", 	title: "[[#{HQP_L_WRITER}]]", 		"width": "10%"},	// 6
 			{data:"applier", 		title: "[[#{HQP_L_PARTICIPATE}]]", 		"width": "8%"},		// 7
 			{data:null, 			title: "[[#{HQP_L_SURVEY_NOTE}]]", 		"width": "10%"},	// 8
@@ -91,11 +90,10 @@ $(function(){
 					};
 				},
 				render: function(data, type, row) {
-					return {'0': '-', '1': '[[#{HQP_L_SURVEY_DOING}]]', '2':'[[#{HQP_L_SURVEY_RUNNING}]]', '3':'[[#{HQP_L_SURVEY_COMPLETE}]]'}[data];
+					return {'0': '-', '1': '[[#{HQP_L_WRITING}]]', '2':'[[#{HQP_L_STATUS_ONGOING}]]', '3':'[[#{HQP_L_STATUS_CLOSED}]]'}[data];
 				}
 			},
 			{targets: [2,3], className: "dt-body-center", render: function(data, type, row) {
-				//return moment(data.substr(0, 8)).format('YYYY.MM.DD') + ' ~ ' + moment(row['validTo'].substr(0, 8)).format('YYYY.MM.DD');
 				return row['validFromYmd'] + '  -  ' + row['validToYmd'];
 			}},
 			{targets: [3, 9, 10, 11], visible: false},
@@ -107,7 +105,7 @@ $(function(){
 				},	
 			},
 			{targets: 5, render: function(data, type, row) {
-				return {'Y':'[[#{HQP_L_PUBLIC}]]', 'N':'[[#{HQP_L_PRIVATE}]]'}[data];
+				return {'Y':'[[#{HQP_L_YES}]]', 'N':'[[#{HQP_L_NO}]]'}[data];
 			}},
 			{targets: 8, className: "dt-body-center", render: function(data, type, row) {
 				if (isManager) {
@@ -160,14 +158,6 @@ $(function(){
 		let data = $tableObj.row( $(this).parents('tr') ).data();
 		goView(data['sseq']);
 	});
-	
-	/* $("#TBL_grid").on("click", 'button',  function(event){		
-		let data = $tableObj.row( $(this).parents('tr') ).data();
-		//alert(data['sseq']);
-		
-		//to-do: 권한에 따라 다른 처리
-		Popup.open("[[${BASE_PATH}]]/survey/popup/view?sseq="+data['sseq'], 1100, 600);
-	}); */
 	
 	$("#BTN_search").on("click", function(){		
 		doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 

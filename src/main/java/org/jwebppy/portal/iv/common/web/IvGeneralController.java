@@ -110,21 +110,6 @@ public class IvGeneralController extends PortalGeneralController
 		constVariableMap.put("NO", PlatformCommonVo.NO);
 		constVariableMap.put("LANG", UserAuthenticationUtils.getLanguage());
 
-		/*
-		ImmutableMap<String, String> constVariableMap = new ImmutableMap.Builder<String, String>()
-				.put("USERNAME", getUsername())
-				.put("NAME", UserAuthenticationUtils.getUserDetails().getName())
-				.put("DATE_TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getDateTimeFormat2())
-				.put("DATE_FORMAT", UserAuthenticationUtils.getUserDetails().getDateFormat2())
-				.put("TIME_FORMAT", UserAuthenticationUtils.getUserDetails().getTimeFormat2())
-				.put("DELIMITER", PortalConfigVo.DELIMITER)
-				.put("ROW_PER_PAGE", Integer.toString(PlatformCommonVo.DEFAULT_ROW_PER_PAGE))
-				.put("YES", PlatformCommonVo.YES)
-				.put("NO", PlatformCommonVo.NO)
-				.put("LANG", UserAuthenticationUtils.getLanguage())
-				.build();
-				*/
-
 		model.addAttribute("globalConstVariables", constVariableMap);
 	}
 

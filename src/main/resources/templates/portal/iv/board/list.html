@@ -81,7 +81,7 @@ $(function(){
 				width: "8%",
 				render: function(data, type, row)
 				{
-					if (row.uploadFileLists.length > 0)
+					if (row.fileCount > 0)
 					{
 						return "<i class='paperclip icon large'></i>";
 					};
@@ -118,6 +118,9 @@ $(function(){
 					{
 						result[i].displayTitle = "<span style='margin-left:" + depth + "em;'>└ </span>" + result[i].displayTitle;
 					};
+					
+					result[i].no = JpUtilsNumber.addComma(result[i].no);
+					result[i].views = JpUtilsNumber.addComma(result[i].views);
 				}
 
 				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
@@ -141,12 +144,9 @@ $(function(){
 		doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
 	});
 	
-	//Input text 엔터 키 입력
-	$("#FORM_search input:text").on("keydown", function(event) {
-		if (event.keyCode == 13)
-		{
-			doSearch();
-		};
+	//Input text 엔터 키 입력.
+	JpUiForm.input.on.enter($("#FORM_search input:text"), function(item) {
+		doSearch();
 	});		
 	
 	$("#TBL_grid tbody").on("click", "tr", function (e){				

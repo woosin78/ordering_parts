@@ -132,7 +132,6 @@ $(document).ready(function() {
 	_setPartAutocomplete($("#pPartNo"), {
 		select: function(label, value, event)
 		{
-			$("#pPartNo").val(value);
 			doSearch();
 		}
 	});
@@ -291,7 +290,7 @@ function doSearch()
     	{
     		ProgressBar.hide();
     	}
-	});				
+	});
 }
 
 $("#BTN_calc").on("click", function() {
@@ -301,17 +300,6 @@ $("#BTN_calc").on("click", function() {
 //Search 버튼 클릭
 $("#BTN_search").on("click", function(){
 	doSearch(); 
-});
-
-$("#pPartNo").on("keydown", function(event) {
-	if (event.keyCode == 13)
-	{
-		if ($.trim($("#pPartNo").val()) != "")
-		{
-			doSearch();
-			$(this).select();
-		};
-	};
 });
 
 //_showSubPartList() callback 함수

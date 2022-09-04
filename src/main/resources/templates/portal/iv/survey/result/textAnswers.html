@@ -19,7 +19,7 @@
 				<td><span th:text="${survey?.title}" /></td>
 			</tr>
 			<tr th:style="${survey?.description == null ? 'display:none' : ''}">
-				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
+				<th><span th:text="#{HQP_L_PURPOSE}"></span></th>
 				<td><span th:text="${survey?.description}"/></td>
 			</tr>
 			<tr th:style="${#lists.isEmpty(survey?.uploadFileLists) ? 'display:none' : ''}">

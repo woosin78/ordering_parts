@@ -62,13 +62,6 @@ public class AccountMgmtController extends IvGeneralController
 		salesAreaMap.put("VKORG", saleaArea[0]);
 		salesAreaMap.put("VTWEG", saleaArea[1]);
 
-		/*
-		Map<String, Object> salesAreaMap = new ImmutableMap.Builder<String, Object>()
-				.put("VKORG", saleaArea[0])
-				.put("VTWEG", saleaArea[1])
-				.build();
-				*/
-
 		List<Map<String, Object>> salesAreaList = new ArrayList<>();
 		salesAreaList.add(salesAreaMap);
 

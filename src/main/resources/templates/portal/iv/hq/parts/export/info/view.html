@@ -20,7 +20,7 @@
 			<th style="width:15%" th:text="#{HQP_L_PART_NO}"></th><!-- Part No. -->
 			<td colspan="3">
 				<div class="input-area">
-					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn" style="text-transform: uppercase;" autofocus />
+					<input type="text" id="pPartNo" name="pPartNo" class="custom-ui-btn autocomplete" style="text-transform: uppercase;" autofocus />
 				</div>
 			</td>
 		</tr>		
@@ -141,7 +141,6 @@ $(document).ready(function() {
 	_setPartAutocomplete($("#pPartNo"), {
 		select: function(label, value, event)
 		{
-			$("#pPartNo").val(value);
 			doSearch();
 		}
 	});
@@ -289,16 +288,6 @@ function doSearch()
 //Search 버튼 클릭
 $("#BTN_search").on("click", function(){
 	doSearch(); 
-});
-
-$("#pPartNo").on("keydown", function(event) {
-	if (event.keyCode == 13)
-	{
-		if ($.trim($("#pPartNo").val()) != "")
-		{
-			doSearch();	
-		};
-	};
 });
 
 //_showSubPartList() callback 함수

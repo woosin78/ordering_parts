@@ -306,8 +306,9 @@
 		from
 		pltf_citem a,
 		pltf_citem_lang_rl b,
-		pltf_lang_detail c,
-		pltf_lang_kind d
+		pltf_lang c,
+		pltf_lang_detail d,
+		pltf_lang_kind e
 		where
 		a.c_seq=#{cSeq}
 		
@@ -319,14 +320,16 @@
 		and a.c_seq=b.c_seq
 		and b.l_seq=c.l_seq
 		and c.fg_delete='N'
-		and c.lk_seq=d.lk_seq
+		and c.l_seq=d.l_seq
+		and d.fg_delete='N'
+		and d.lk_seq=e.lk_seq
 		
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(basename)">
-			and d.basename=#{basename}
+			and e.basename=#{basename}
 		</if>
 		
-		and d.fg_delete='N'
-		order by d.fg_default desc
+		and e.fg_delete='N'
+		order by e.fg_default desc
 	</select>	
 
 	<select id="findCItemsForTree" parameterType="CItemSearchDto" resultType="CItemEntity">

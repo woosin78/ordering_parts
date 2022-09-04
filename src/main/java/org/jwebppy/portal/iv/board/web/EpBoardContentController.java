@@ -1,6 +1,5 @@
 package org.jwebppy.portal.iv.board.web;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +9,8 @@ import java.util.Map;
 import org.apache.commons.collections4.ListUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmArrayUtils;
+import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.Formatter;
@@ -40,7 +41,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping(IvCommonVo.REQUEST_PATH  + "/board")
@@ -146,48 +146,6 @@ public class EpBoardContentController extends IvGeneralController
 		return DEFAULT_VIEW_URL;
 	}
 
-	@RequestMapping("/upload")
-	public Object upload(@ModelAttribute EpBoardContentDto boardContent)
-	{
-		return DEFAULT_VIEW_URL;
-	}
-
-	@PostMapping("/upload/proc")
-	@ResponseBody
-	public Object uploadProc(@ModelAttribute EpBoardContentDto boardContent)
-	{
-		List<MultipartFile> multipartFiles = boardContent.getFiles();
-		int index = 1;
-
-		for (MultipartFile multipartFile: multipartFiles)
-		{
-			File file = new File(ROOT_PATH + "/bbs/divk/domestic/notice/" + multipartFile.getOriginalFilename());
-
-			try
-			{
-				if (file.exists())
-				{
-					System.err.println(index++ + ".E.=============================" + multipartFile.getOriginalFilename());
-				}
-				else
-				{
-					multipartFile.transferTo(file);
-					System.err.println(index++ + ".N.=============================" + multipartFile.getOriginalFilename());
-				}
-			}
-			catch (IllegalStateException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-		return null;
-	}
-
 	@PostMapping("/save")
 	@ResponseBody
 	public Object save(@ModelAttribute EpBoardContentDto boardContent, @RequestParam(name = "targetCode", required = false) String[] targetCodes, @RequestParam(name = "targetDescription", required = false) String[] targetDescriptions)
@@ -263,6 +221,8 @@ public class EpBoardContentController extends IvGeneralController
 		boardContentSearch.setToView(webRequest.getParameter("toView"));
 		boardContentSearch.setPageNumber(CmNumberUtils.toInt(webRequest.getParameter("pageNumber"), 1));
 		boardContentSearch.setRowPerPage(CmNumberUtils.toInt(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
+		boardContentSearch.setFromRegDate(CmStringUtils.defaultIfEmpty(boardContentSearch.getFromRegDate(), CmDateFormatUtils.theFirstDateMonth(CmDateTimeUtils.now().minusYears(1))));
+		boardContentSearch.setToRegDate(CmStringUtils.defaultIfEmpty(boardContentSearch.getToRegDate(), CmDateFormatUtils.today()));
 
 		model.addAttribute("boardContentSearch", boardContentSearch);
 		model.addAttribute("board", board);
@@ -284,13 +244,6 @@ public class EpBoardContentController extends IvGeneralController
 		Map<String, String> oldSystemUrlMap = new HashMap<String, String>();
 		oldSystemUrlMap.put("1-07008bda-f80b-4f6c-8397-c382bc344273", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_notice_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312");
 		oldSystemUrlMap.put("1-92953403-226b-494e-9c63-55763f8bbb8b", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_market_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312");
-
-		/*
-		ImmutableMap<String, String> oldSystemUrlMap = new ImmutableMap.Builder<String, String>()
-				.put("1-07008bda-f80b-4f6c-8397-c382bc344273", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_notice_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312")
-				.put("1-92953403-226b-494e-9c63-55763f8bbb8b", "/irj/servlet/prt/portal/prtroot/pcd!3aportal_content!2fdoosan_infracore_2nd!2fcommon!2froles!2fparts!2fcom.doosaninfracore.r.parts_dido_iv!2fcom.doosaninfracore.w.home_dido!2fcom.doosaninfracore.i.20090917_market_dido?InitialNodeFirstLevel=true&windowId=WID1655167963312")
-				.build();
-				*/
 
 		String oldSystemUrl = oldSystemUrlMap.get(bSeq);
 

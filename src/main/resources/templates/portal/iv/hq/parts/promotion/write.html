@@ -13,7 +13,7 @@ body {
 	<script src="/editor_html5/js/xfe_main.js"></script>
 	
 	<div class="block-header">
-		<div class="block-title" th:text="프로모션"></div>
+		<div class="block-title" th:text="#{HQP_T_PROMOTION}"></div>
 		<div class="block-button-area">
 			<button id="BTN_save" type="button" th:text="#{HQP_B_SAVE}"></button>
 			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}"></button>
@@ -42,16 +42,16 @@ body {
 				<th th:text="#{HQP_L_VISIBLE_TARGET}"/> 
 				<td>
 					<div class="split-row-more-compact"></div>
-					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui" th:placeholder="#{HQP_L_PLACEHOLD_DEALER_CODE_NAME}"/></div>
+					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui autocomplete" th:placeholder="#{HQP_L_PLACEHOLD_DEALER_CODE_NAME}"/></div>
 					<div class="split-row-more-compact"></div>
 					<button id="BTN_deleteVisibleTarget" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
 					<div class="split-row-more-compact"></div>
 					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div class="split-row-more-compact"></div>
-					<div id="addedtargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
+					<div id="addedTargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
 						<div th:each="promotionTarget : ${promotion?.promotionTargets}">
-							<input type="checkbox" class="custom-ui visible-target"/><label class="dealer-code" th:text="${promotionTarget.code}"></label>
-							<div class="split2"></div><span class="dealer-name" th:text="${promotionTarget.description}"></span>
+							<input type="checkbox" class="custom-ui visible-target"/><label th:text="${promotionTarget.code}"></label>
+							<span th:text="${promotionTarget.description}"></span>
 							<input name="targetCode" type="hidden" th:value="${promotionTarget.code}"/>
 							<input name="targetDescription" type="hidden" th:value="${promotionTarget.description}"/>
 						</div>						
@@ -109,7 +109,7 @@ body {
 				</td>
 			</tr>
 			<tr >
-				<th>[[배너이미지]] <img src="/portal/img/icon/required.png" class="required" /></th> 
+				<th>[[#{HQP_L_BANNER_IMAGE}]] <img src="/portal/img/icon/required.png" class="required" /></th> 
 				<td>
 					<div class="split-row-more-compact"></div>
 					<button id="BTN_searchFile" type="button" th:text="#{HQP_B_FILE}" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
@@ -145,10 +145,10 @@ body {
 				</td>
 			</tr>	
 			<tr >
-				<th th:text="대상자재"/>
+				<th th:text="#{HQP_L_PROMOTION_MATERIAL}"/>
 				<td>
 					<div class="split-row-more-compact"></div>
-					<div class="input-area"><input type="text" id="searchVisibleItem" name="searchVisibleItem" class="custom-ui" th:placeholder="품번"/></div>
+					<div class="input-area"><input type="text" id="searchVisibleItem" name="searchVisibleItem" class="custom-ui autocomplete" th:placeholder="#{HQP_L_MATERIAL_NO}"/></div>
 					<div class="split-row-more-compact"></div>
 					<button id="BTN_deleteVisibleItem" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
 					<div class="split-row-more-compact"></div>
@@ -156,7 +156,7 @@ body {
 					<div class="split-row-more-compact"></div>
 					<div id="addedItems" style="width:100%; height:5em; display: block; overflow-y: auto;">
 						<div th:each="promotionItem : ${promotion?.promotionItems}">
-							<input type="checkbox" class="custom-ui visible-item"/><label class="dealer-code" th:text="${promotionItem.materialNo}"></label><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
+							<input type="checkbox" class="custom-ui visible-item"/><label th:text="${promotionItem.materialNo}"></label><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
 							<input name="materialNo" type="hidden" th:value="${promotionItem.materialNo}"/>
 						</div>						
 					</div>
@@ -204,21 +204,21 @@ function addTarget(label, value)
 {
 	let str = label.split("|");
 	
-	let dealerCode = str[0];
-	let dealerName = str[1];
+	let dealerCode = JpUtilsString.trimToEmpty(str[0]);
+	let dealerName = JpUtilsString.trimToEmpty(str[1]);
 	
 	if ($("#FORM_write label:contains('" + dealerCode + "')").length == 0)
 	{
 		let html = [];
 		
 		html.push("<div>");
-		html.push("<input type='checkbox' class='custom-ui visible-target'/><label class='dealer-code'>" + dealerCode + "</label>");
-		html.push("<div class='split2'></div><span class='dealer-name'>" + dealerName + "</span>");
+		html.push("<input type='checkbox' class='custom-ui visible-target'/><label>" + dealerCode + "</label>");
+		html.push("<span>" + dealerName + "</span>");
 		html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
 		html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
 		html.push("</div>");
 		
-		$("#addedtargets").append(html.join(""));		
+		$("#addedTargets").append(html.join(""));
 	};
 };
 
@@ -231,7 +231,7 @@ function addItem(label, value)
 		let html = [];
 		
 		html.push("<div>");
-		html.push("<input type='checkbox' class='custom-ui visible-target'/><label class='dealer-code'>" + label + "</label>");
+		html.push("<input type='checkbox' class='custom-ui visible-item'/><label>" + label + "</label>");
 		html.push("<input name='materialNo' type='hidden' value='" + JpUtilsString.trimToEmpty(materialNo) + "'/>");
 		html.push("</div>");
 		
@@ -349,8 +349,6 @@ $("#BTN_searchFile").on("click", function() {
 });	
 
 $("#files").on("change", function() {
-	console.log('files2', this.files.length);
-	
 	if( 1 <= $("#FORM_write input[name=uflSeq]").length )
 	{
 		alert("배너이미지는 1개만 등록가능합니다.");
@@ -361,9 +359,6 @@ $("#files").on("change", function() {
 	{
 		addFile(this.files[i].name, this.files[i].size);
 	};
-	
-	//$("#FORM_write .ui.checkbox").checkbox();
-	//$("#FORM_write input[type=checkbox].custom-ui").checkbox();
 });
 
 $("#BTN_deleteFile").on("click", function(event) {
@@ -390,8 +385,6 @@ $("#BTN_deleteFile").on("click", function(event) {
 			
 			$(this).closest("div").remove();
 			
-			console.log(dataTransfer.files);
-			
 			$("#files")[0].files = dataTransfer.files;
 		};
 	});
@@ -407,9 +400,6 @@ function addFile(name, size, uflSeq)
 	html.push("</div>");
 	
 	$("#attachedFiles").append(html.join(""));
-	
-	//$("#FORM_write .ui.checkbox").checkbox();
-	//$("#FORM_write input[type=checkbox].custom-ui").checkbox();
 };
 
 $("#BTN_searchFile2").on("click", function() {
@@ -417,8 +407,6 @@ $("#BTN_searchFile2").on("click", function() {
 });	
 
 $("#files2").on("change", function() {
-	console.log('files2', this.files.length);
-	
 	for (let i=0, length=this.files.length; i<length; i++)
 	{
 		addFile2(this.files[i].name, this.files[i].size);
@@ -448,8 +436,6 @@ $("#BTN_deleteFile2").on("click", function(event) {
 			};
 			
 			$(this).closest("div").remove();
-			
-			console.log(dataTransfer.files);
 			
 			$("#files2")[0].files = dataTransfer.files;
 		};

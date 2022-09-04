@@ -42,17 +42,6 @@ public class IvPartsCommonController extends IvGeneralController
 		rfcParamMap.put("division", erpDataMap.getDivision());
 		rfcParamMap.put("lang", erpDataMap.getLangForSap());
 
-		/*
-		ImmutableMap<String, String> rfcParamMap = new ImmutableMap.Builder<String, String>()
-				.put("partNo", pPartNo)
-				.put("partDesc", pPartNo)
-				.put("salesOrg", erpDataMap.getSalesOrg())
-				.put("distChannel", erpDataMap.getDistChannel())
-				.put("division", erpDataMap.getDivision())
-				.put("lang", erpDataMap.getLangForSap())
-				.build();
-				*/
-
 		return ivPartsCommonService.getPartsInfo(rfcParamMap);
 	}
 
@@ -68,15 +57,6 @@ public class IvPartsCommonController extends IvGeneralController
 		rfcParamMap.put("salesOrg", erpDataMap.getSalesOrg());
 		rfcParamMap.put("distChannel", erpDataMap.getDistChannel());
 		rfcParamMap.put("division", erpDataMap.getDivision());
-		/*
-		ImmutableMap<String, String> rfcParamMap = new ImmutableMap.Builder<String, String>()
-				.put("name", pName)
-				.put("dealerCode", pCode)
-				.put("salesOrg", erpDataMap.getSalesOrg())
-				.put("distChannel", erpDataMap.getDistChannel())
-				.put("division", erpDataMap.getDivision())
-				.build();
-				*/
 
 		return ivPartsCommonService.getDealers(rfcParamMap);
 	}

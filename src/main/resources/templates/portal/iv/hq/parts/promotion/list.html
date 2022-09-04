@@ -6,7 +6,7 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="프로모션"></div>
+		<div class="block-title" th:text="#{HQP_T_PROMOTION}"></div>
 		<div class="block-button-area">
 			<button id="BTN_write" type="button" th:text="#{HQP_B_WRITE}"></button>
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>			
@@ -36,14 +36,14 @@
 				</td>			
 			</tr>				
 			<tr>
-				<th th:text="상태"></th>
+				<th th:text="#{HQP_L_STATUS}"></th>
 				<td>
 					<div class="input-area">
 						<select id="state" name="state" class="custom-ui hours" th:value="${state}">
 							<option value=""></option>
-							<option th:selected="${state} == '0'" value="0">진행전</option>
-							<option th:selected="${state} == '1'" value="1">진행중</option>
-							<option th:selected="${state} == '2'" value="2">완료</option>
+							<option th:selected="${state} == '0'" th:value="0" th:text="#{HQP_L_STATUS_BEFORE_START}"></option>
+							<option th:selected="${state} == '1'" th:value="1" th:text="#{HQP_L_STATUS_ONGOING}"></option>
+							<option th:selected="${state} == '2'" th:value="2" th:text="#{HQP_L_STATUS_CLOSED}"></option>
 						</select>
 					</div>
 				</td>			
@@ -66,7 +66,6 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 
-
 <script>
 let $tableObj;
 $(function(){
@@ -77,11 +76,11 @@ $(function(){
 		columns : [
 			{data: "no", 			title: "[[#{HQP_L_NUMBER}]]", width: "8%"},
 			{data: "displayTitle",	title: "[[#{HQP_L_TITLE}]]"},
-			{data: "state",			title: "상태", width: "6%"},
+			{data: "state",			title: "[[#{HQP_L_STATUS}]]", width: "6%"},
 			{
 				name: "fromView",
 				data: "fromView",
-				title: "기간",
+				title: "[[#{HQP_L_VISIBLE_PERIOD}]]",
 				width: "18%",
 				render: function(data, type, row)
 				{
@@ -98,7 +97,6 @@ $(function(){
 			url: "[[${BASE_PATH}]]/promotion/list/data",
 			data: function(p)
 			{
-				//console.log('p',p);
 				p.pSeq 			= $("#pSeq").val();
 				p.title 		= $("#title").val();
 				p.writer		= $("#writer").val();
@@ -108,7 +106,6 @@ $(function(){
 			},
 			dataSrc: function(response) 
 			{
-				//console.log('response',response);
 				let result = response.RESULT;
 				
 				if(null == result){
@@ -117,12 +114,7 @@ $(function(){
 				
 				for (let i=0, length=result.length; i<length; i++)
 				{
-					let depth = result[i].depth;
-					
-					if (depth > 0)
-					{
-						result[i].displayTitle = "<span style='margin-left:" + depth + "em;'>└ </span>" + result[i].displayTitle;
-					};
+					result[i].no = JpUtilsNumber.addComma(result[i].no);
 				}
 
 				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
@@ -134,7 +126,6 @@ $(function(){
 		pageLength: parseInt(GLOBAL_CONST.ROW_PER_PAGE), // 한 페이지에 20개 행
 		initComplete:function(settings, json)
 		{
-			console.log('initComplete');
 			ProgressBar.hide();
 		}
 	});
@@ -148,18 +139,14 @@ $(function(){
 	});
 	
 	//Input text 엔터 키 입력
-	$("#FORM_search input:text").on("keydown", function(event) {
-		if (event.keyCode == 13)
-		{
-			doSearch();
-		};
+	JpUiForm.input.on.enter($("#FORM_search input:text"), function(item) {
+		doSearch();
 	});		
 	
 	$("#TBL_grid tbody").on("click", "tr", function (e){				
 	    let tblGrid = $("#TBL_grid").DataTable();	    
 	    let index = $("#TBL_grid").dataTable().api().cell($(e.target).closest("td")).index().column;	    	    
 		let rowData = tblGrid.row(this).data();
-		//console.log('rowData',rowData);
 		
 		if (index == 1)
 		{

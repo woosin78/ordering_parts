@@ -3,6 +3,7 @@ package org.jwebppy.portal.iv.board.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -56,6 +57,7 @@ public class EpBoardContentDto extends IvGeneralDto
 	private EpUploadFileDto uploadFile;
 	private List<EpUploadFileListDto> uploadFileLists;
 	private List<EpBoardContentTargetDto> boardContentTargets;
+	private int fileCount;
 
 	//variables for file upload
 	private List<MultipartFile> files;
@@ -119,5 +121,17 @@ public class EpBoardContentDto extends IvGeneralDto
 	public boolean isMyContent()
 	{
 		return CmStringUtils.equals(UserAuthenticationUtils.getUsername(), regUsername);
+	}
+
+	public int getFileCount()
+	{
+		if (CollectionUtils.isNotEmpty(uploadFileLists))
+		{
+			return uploadFileLists.size();
+		}
+		else
+		{
+			return this.fileCount;
+		}
 	}
 }

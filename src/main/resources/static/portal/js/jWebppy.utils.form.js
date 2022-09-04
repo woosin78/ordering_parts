@@ -216,7 +216,7 @@ JpUiForm.input = {
 			{
 				if (Array.isArray(element))
 				{
-					$(element).each(function(index, item) {
+					$(element).not(".autocomplete").each(function(index, item) {
 						$(item).on("keydown", function(event) {
 							if (event.keyCode == 13)
 							{
@@ -227,7 +227,7 @@ JpUiForm.input = {
 				}
 				else
 				{
-					$(element).on("keydown", function(event) {
+					$(element).not(".autocomplete").on("keydown", function(event) {
 						if (event.keyCode == 13)
 						{
 							func(this);

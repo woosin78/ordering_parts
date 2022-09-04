@@ -6,7 +6,7 @@
 <th:block layout:fragment="content">
 	
 	<div class="block-header" >
-		<div class="block-title" th:text="#{HQP_T_SURVEY_BASIC_INFO}">></div>
+		<div class="block-title" th:text="#{HQP_T_SURVEY}">></div>
 		<div class="block-button-area">
 			<button id="BTN_save" type="button" th:text="#{HQP_B_SAVE}"></button>
 			<button id="BTN_back" type="button" th:text="#{HQP_B_BACK}" onclick="goView();"></button>
@@ -23,12 +23,12 @@
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<th><span th:text="#{HQP_L_SURVEY_TITLE}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
+				<th><span th:text="#{HQP_L_TITLE}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
 				<td><input type="text" name="title" id="title" class="custom-ui" autofocus="autofocus" th:value="${survey?.title}"/></td>
 			</tr>
 			
 			<tr>
-				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
+				<th><span th:text="#{HQP_L_PURPOSE}"></span></th>
 				<td>
 					<textarea class="custom-ui" name="description" id="description" th:text="${survey?.description}" rows="5" cols="50">
 					</textarea>
@@ -97,10 +97,9 @@
 				<th><span th:text="#{HQP_L_SURVEY_OPEN}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
 				<td>
 					<input type="radio" class="custom-ui" name="fgOpen" value="Y"/>
-					<label th:text="#{HQP_L_PUBLIC}"></label>
-					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label th:text="#{HQP_L_YES}"></label>
 					<input type="radio" class="custom-ui" name="fgOpen" value="N"/>
-					<label th:text="#{HQP_L_PRIVATE}"></label>
+					<label th:text="#{HQP_L_NO}"></label>
 				</td>
 			</tr>
 			
@@ -108,10 +107,9 @@
 				<th><span th:text="#{HQP_L_RESULT_OPEN}"></span><img src="/portal/img/icon/required.png" class="required" /></th>
 				<td>
 					<input type="radio" class="custom-ui" name="fgOpenResult" value="Y"/>
-					<label th:text="#{HQP_L_PUBLIC}"></label>
-					&nbsp;&nbsp;&nbsp;&nbsp;
+					<label th:text="#{HQP_L_YES}"></label>
 					<input type="radio" class="custom-ui" name="fgOpenResult" value="N"/>
-					<label th:text="#{HQP_L_PRIVATE}"></label>
+					<label th:text="#{HQP_L_NO}"></label>
 				</td>
 			</tr>
 			

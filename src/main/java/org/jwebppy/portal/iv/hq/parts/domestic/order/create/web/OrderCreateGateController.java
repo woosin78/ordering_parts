@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.view.RedirectView;
@@ -53,8 +54,8 @@ public class OrderCreateGateController extends PartsDomesticGeneralController
 		return new RedirectView(PartsDomesticCommonVo.REQUEST_PATH + "/order/create/write?ohhSeq=" + orderCreateGateService.saveSysbankOrder(paramMap) + "&simulationFrom=" + from);
 	}
 
-	@RequestMapping("/promotion")
-	public Object gate(@ModelAttribute OrderDto order, WebRequest webRequest)
+	@RequestMapping("/{from}")
+	public Object gate(@PathVariable("from") String from, @ModelAttribute OrderDto order, WebRequest webRequest)
 	{
 		String[] materialNos = webRequest.getParameterValues("materialNo");
 		String[] orderQties = webRequest.getParameterValues("orderQty");
@@ -79,16 +80,16 @@ public class OrderCreateGateController extends PartsDomesticGeneralController
 				}
 
 				orderItems.add(orderItem);
-
 			}
 
+			order.setRefSystem(from);
 			order.setOrderItems(orderItems);
 		}
 
-		return new RedirectView(PartsDomesticCommonVo.REQUEST_PATH + "/order/create/write?ohhSeq=" + saveOrderHistory(order) + "&simulationFrom=PROMOTION");
+		return redirectUrl(saveOrderHistory(order));
 	}
 
-	protected Integer saveOrderHistory(OrderDto order)
+	protected OrderDto saveOrderHistory(OrderDto order)
 	{
 		ErpUserContext erpUserContext = getErpUserContext();
 
@@ -102,6 +103,13 @@ public class OrderCreateGateController extends PartsDomesticGeneralController
     	order.setShippingCondition(CmStringUtils.defaultIfEmpty(order.getShippingCondition(), "-"));//DB 에 not null 조건이므로 임의의 값 저장
     	order.setPoNo(CmStringUtils.defaultIfEmpty(order.getPoNo(), OrderCreationUtils.poNo(order.getSoldToNo())));
 
-    	return orderCreateService.saveOrderHistory(order);
+    	order.setOhhSeq(orderCreateService.saveOrderHistory(order));
+
+    	return order;
+	}
+
+	protected RedirectView redirectUrl(OrderDto order)
+	{
+		return new RedirectView(PartsDomesticCommonVo.REQUEST_PATH + "/order/create/write?ohhSeq=" + order.getOhhSeq() + "&simulationFrom=" + order.getRefSystem());
 	}
 }

@@ -102,7 +102,7 @@ public class DeliveryStatusController extends PartsDomesticGeneralController
 			.addByKey(new Object[][] {
 				{"shipmentNo", "pShipmentNo"},
 				{"orderNo", "pOrderNo"},
-				{"partsNo", "pPartsNo"},
+				{"partNo", "pPartNo"},
 				{"poNo", "pPoNo"}
 			})
 			.addDateByKey(new Object[][] {

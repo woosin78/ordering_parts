@@ -32,7 +32,7 @@
 				<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
+						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui autocomplete" th:value="${pOrderPartNo}">
 					</div>		
 				</td>
 				<th th:text="#{HQP_L_ORDER_DATE}"></th><!-- Period -->
@@ -72,7 +72,6 @@ $(document).ready(function() {
 	_setPartAutocomplete($("#pOrderPartNo"), {
 		select: function(label, value, event)
 		{
-			$("#pOrderPartNo").val(value);
 			doSearch();
 		}
 	});
@@ -165,15 +164,12 @@ $(function(){
 
 // Search 버튼 클릭
 $("#BTN_search").on("click", function(){		
-	doSearch();			// dataTable의 ajax 설정을 이용해  다시 조회. 
+	doSearch();
 });
 
-//Input text 엔터 키 입력
-$("#FORM_search input:text").on("keydown", function(event) {
-	if (event.keyCode == 13)
-	{
-		doSearch();
-	};
+//Input text 엔터 키 입력.
+JpUiForm.input.on.enter($("#FORM_search input:text"), function(item) {
+	doSearch();
 });	
 
 $("#BTN_download").on("click", function() {

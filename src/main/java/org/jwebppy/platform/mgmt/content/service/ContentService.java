@@ -406,6 +406,10 @@ public class ContentService extends GeneralService
 		cItemSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
 		cItemSearch.setLang(UserAuthenticationUtils.getUserDetails().getLanguage());
 
+		System.err.println("=======================================");
+		System.err.println(cItemSearch);
+		System.err.println("=======================================");
+
 		List<CItemDto> cItems = getCItemsFormTree(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))
@@ -425,20 +429,6 @@ public class ContentService extends GeneralService
 			itemMap.put("SUB_ITEMS", getSubItems(cItem.getCSeq(), cItems));
 
 			hierarchy.add(itemMap);
-
-					/*
-			hierarchy.add(new ImmutableMap.Builder<String, Object>()
-					.put("KEY", cItem.getCSeq())
-					.put("P_KEY", CmStringUtils.trimToEmpty(cItem.getPSeq()))
-					.put("NAME", CmStringUtils.defaultIfEmpty(cItem.getName2(), cItem.getName()))
-					.put("TYPE", cItem.getType().getType())
-					.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(cItem.getLaunchType()))
-					.put("WIDTH", CmStringUtils.trimToEmpty(cItem.getScrWidth()))
-					.put("HEIGHT", CmStringUtils.trimToEmpty(cItem.getScrHeight()))
-					.put("SUB_ITEMS", getSubItems(cItem.getCSeq(), cItems))
-					.build()
-					);
-					*/
 
 			return hierarchy;
 		}
@@ -467,19 +457,6 @@ public class ContentService extends GeneralService
 				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getCSeq(), cItems));
 
 				subItems.add(itemMap);
-
-				/*
-				subItems.add(new ImmutableMap.Builder<String, Object>()
-						.put("KEY", subCItem.getCSeq())
-						.put("P_KEY", CmStringUtils.trimToEmpty(subCItem.getPSeq()))
-						.put("NAME", CmStringUtils.defaultIfEmpty(subCItem.getName2(), subCItem.getName()))
-						.put("TYPE", subCItem.getType().getType())
-						.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(subCItem.getLaunchType()))
-						.put("WIDTH", CmStringUtils.trimToEmpty(subCItem.getScrWidth()))
-						.put("HEIGHT", CmStringUtils.trimToEmpty(subCItem.getScrHeight()))
-						.put("SUB_ITEMS", getSubItems(subCItem.getCSeq(), cItems))
-						.build());
-						*/
 			}
 		}
 

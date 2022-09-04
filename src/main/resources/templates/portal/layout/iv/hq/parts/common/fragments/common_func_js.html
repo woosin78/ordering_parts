@@ -55,11 +55,11 @@ function _gridDownload(grid, fileName)
 	gridFileDownload.excelDownload();				
 };
 
-
 //품번 자동완성
 function _setPartAutocomplete(target, options)
 {
 	$(target).autocomplete({
+		autoFocus: true,
 		source: function(request, response) {
 			JpUtilsAjax.get({
 				url: "/portal/iv/parts/search/data",
@@ -91,9 +91,11 @@ function _setPartAutocomplete(target, options)
 			{
 				if (JpUtilsObject.isNotNull(options.select))
 				{
+					$(target).val(ui.item.value);
+
 					options.select(ui.item.label, ui.item.value, event);
 					return false;
-				};				
+				};
 			}
 			catch (e) {}
 			
@@ -108,6 +110,7 @@ function _setPartAutocomplete(target, options)
 function _setDealerCodeAutocomplete(target, options)
 {
 	$(target).autocomplete({
+		autoFocus: true,
 		source: function(request, response) {
 			JpUtilsAjax.get({
 				url: "/portal/iv/parts/search/dealer/data",
@@ -139,9 +142,11 @@ function _setDealerCodeAutocomplete(target, options)
 			{
 				if (JpUtilsObject.isNotNull(options.select))
 				{
+					$(target).val(ui.item.value);
+
 					options.select(ui.item.label, ui.item.value, event);
 					return false;
-				};				
+				};
 			}
 			catch (e) {}
 			

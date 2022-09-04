@@ -107,15 +107,6 @@ public class ExMachineOrderReportController extends PartsExportGeneralController
 		resultMap.put("models", ListUtils.emptyIfNull(new ArrayList<>(reportMap.keySet())));
 		resultMap.put("values", ListUtils.emptyIfNull(new ArrayList<>(reportMap.values())));
 
-		/*
-		ImmutableMap<String, Object> resultMap = new ImmutableMap.Builder<String, Object>()
-				.put("from", fromYear)
-				.put("to", toYear)
-				.put("models", ListUtils.emptyIfNull(new ArrayList<>(reportMap.keySet())))
-				.put("values", ListUtils.emptyIfNull(new ArrayList<>(reportMap.values())))
-				.build();
-				*/
-
 		return resultMap;
 	}
 }

@@ -15,11 +15,11 @@
 	<div class="condition-area">
 		<table class="condition table-fixed">
 			<tr>
-				<th style="width:20%;"><span th:text="#{HQP_L_SURVEY_TITLE}"></span></th>
+				<th style="width:20%;"><span th:text="#{HQP_L_TITLE}"></span></th>
 				<td><span th:text="${survey?.title}" /></td>
 			</tr>
 			<tr th:style="${survey?.description == null ? 'display:none' : ''}">
-				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
+				<th><span th:text="#{HQP_L_PURPOSE}"></span></th>
 				<td><span th:text="${survey?.description}"/></td>
 			</tr>
 			<tr th:style="${#lists.isEmpty(survey?.uploadFileLists) ? 'display:none' : ''}">
@@ -32,164 +32,164 @@
 				</td>
 			</tr>
 		</table>
-	<br/><br/>
-	<table class="condition">
-		<tbody>
-			<tr th:each="voteItem, rowIndex : ${voteResult}">
-				<td th:switch="${voteItem.type}">
-					
-					<!--  객관식 -->
-					<table th:case="0" style="width:100%">
-						<tr>
-							<td>
-								<table>
-									<tr>
-										<td>
-											<span th:text="${rowIndex.count}+'.'"></span>
-											<span th:text="${voteItem.title}"></span>
-											<span>([[#{HQP_L_OBJECTIVE_QUESTION}]])</span>
-										</td>
-									</tr>
-								</table>
-								<table style="width:100%">
-									<tbody th:each="item, index : ${voteItem.items}">
+		<br/>
+		<table class="condition">
+			<tbody>
+				<tr th:each="voteItem, rowIndex : ${voteResult}">
+					<td th:switch="${voteItem.type}">
+						
+						<!--  객관식 -->
+						<table th:case="0" style="width:100%">
+							<tr>
+								<td>
+									<table>
 										<tr>
 											<td>
-												<span>([[${index.count}]])  [[${item.title}]]
+												<span th:text="${rowIndex.count}+'.'"></span>
+												<span th:text="${voteItem.title}"></span>
+												<span>([[#{HQP_L_OBJECTIVE_QUESTION}]])</span>
 											</td>
 										</tr>
-										<tr>
-											<td style="color:#cc6600; font-weight:bold; font-size:1em;">
-												<img th:src="'https://doobiz-edu.doosan-iv.com/common/images/common/common/graph_'+${rowIndex.count}+'.gif'" height="12"
-													th:width="${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}+'%'"> 
-													[[${item.voteCnt}]] ([[${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}]]%)
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-					</table>
-					
-					<!--  다중객관식 -->
-					<table th:case="1" style="width:100%">
-						<tr>
-							<td>
-								<table>
-									<tr>
-										<td>
-											<span th:text="${rowIndex.count}+'.'"></span>
-											<span th:text="${voteItem.title}"></span>
-											<span>([[#{HQP_L_SELECTION_NUMBER}]] : [[${voteItem.mandatoryCnt}]])</span>
-										</td>
-									</tr>
-								</table>
-								<table style="width:100%">
-									<tbody th:each="item, index : ${voteItem.items}">
+									</table>
+									<table style="width:100%">
+										<tbody th:each="item, index : ${voteItem.items}">
+											<tr>
+												<td>
+													<span>([[${index.count}]])  [[${item.title}]]
+												</td>
+											</tr>
+											<tr>
+												<td style="color:#cc6600; font-weight:bold; font-size:1em;">
+													<img th:src="'https://doobiz-edu.doosan-iv.com/common/images/common/common/graph_'+${rowIndex.count}+'.gif'" height="12"
+														th:width="${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}+'%'"> 
+														[[${item.voteCnt}]] ([[${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}]]%)
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</table>
+						
+						<!--  다중객관식 -->
+						<table th:case="1" style="width:100%">
+							<tr>
+								<td>
+									<table>
 										<tr>
 											<td>
-												<span>([[${index.count}]])  [[${item.title}]]
+												<span th:text="${rowIndex.count}+'.'"></span>
+												<span th:text="${voteItem.title}"></span>
+												<span>([[#{HQP_L_SELECTION_NUMBER}]] : [[${voteItem.mandatoryCnt}]])</span>
 											</td>
 										</tr>
-										<tr>
-											<td style="color:#cc6600; font-weight:bold; font-size:1em;">
-												<img th:src="'https://doobiz-edu.doosan-iv.com/common/images/common/common/graph_'+${rowIndex.count}+'.gif'" height="12"
-													th:width="${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}+'%'"> 
-													[[${item.voteCnt}]] ([[${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}]]%) 
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-					</table>
-					
-					<!--  주관식 -->
-					<table th:case="2">
-						<tr>
-							<td>
-								<table>
-									<tr>
-										<td>
-											<span th:text="${rowIndex.count}+'.'"></span>
-											<span th:text="${voteItem.title}"></span>
-											<span>([[#{HQP_L_SUBJECTIVE_QUESTION}]])</span>
-										</td>
-									</tr>
-								</table>
-								<table>
-									<tr>
-										<td>
-											<button class="small_button" th:onclick="goTextAnswers([[${voteItem.sSeq}]], [[${voteItem.sqSeq}]], [[${rowIndex.count}]]);">[[#{HQP_B_VIEW_ANSWERS}]]</button>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-					
-					<!--  가중치 -->
-					<table th:case="3" style="width:100%">
-						<tr> 
-							<td>
-								<table>
-									<tr>
-										<td>
-											<span th:text="${rowIndex.count}+'.'"></span>
-											<span th:text="${voteItem.title}"></span>
-											<span>([[#{HQP_L_EXTRA_WEIGHT_SUM}]] : 10[[#{HQP_L_POINT}]])</span>
-										</td>
-									</tr>
-								</table>
-								<table>
-									<tbody th:each="item, index : ${voteItem.items}">
+									</table>
+									<table style="width:100%">
+										<tbody th:each="item, index : ${voteItem.items}">
+											<tr>
+												<td>
+													<span>([[${index.count}]])  [[${item.title}]]
+												</td>
+											</tr>
+											<tr>
+												<td style="color:#cc6600; font-weight:bold; font-size:1em;">
+													<img th:src="'https://doobiz-edu.doosan-iv.com/common/images/common/common/graph_'+${rowIndex.count}+'.gif'" height="12"
+														th:width="${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}+'%'"> 
+														[[${item.voteCnt}]] ([[${#numbers.formatDecimal((item.voteCnt*100)/voteItem.voteCnt, 0, 0)}]]%) 
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</table>
+						
+						<!--  주관식 -->
+						<table th:case="2">
+							<tr>
+								<td>
+									<table>
 										<tr>
 											<td>
-												<span>([[${index.count}]])  [[${item.title}]]</span>
+												<span th:text="${rowIndex.count}+'.'"></span>
+												<span th:text="${voteItem.title}"></span>
+												<span>([[#{HQP_L_SUBJECTIVE_QUESTION}]])</span>
 											</td>
 										</tr>
-										<tr>
-											<td style="color:#cc6600; font-weight:bold; font-size:1em;">[[${item.resultTxt}]]</td>
-										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-					</table>
-					
-					<!--  우선순위 -->
-					<table th:case="4">
-						<tr>
-							<td>
-								<table>
-									<tr>
-										<td>
-											<span th:text="${rowIndex.count}+'.'"></span>
-											<span th:text="${voteItem.title}"></span>
-											<span>([[#{HQP_L_PRIORITY}]])</span>
-										</td>
-									</tr>
-								</table>
-								<table>
-									<tbody th:each="item, index : ${voteItem.items}">
+									</table>
+									<table>
 										<tr>
 											<td>
-												<span>([[${index.count}]])  [[${item.title}]]</span>
+												<button class="small_button" th:onclick="goTextAnswers([[${voteItem.sSeq}]], [[${voteItem.sqSeq}]], [[${rowIndex.count}]]);">[[#{HQP_B_VIEW_ANSWERS}]]</button>
 											</td>
 										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+						
+						<!--  가중치 -->
+						<table th:case="3" style="width:100%">
+							<tr> 
+								<td>
+									<table>
 										<tr>
-											<td style="color:#cc6600; font-weight:bold; font-size:1em;">[[${item.resultTxt}]]</td>
+											<td>
+												<span th:text="${rowIndex.count}+'.'"></span>
+												<span th:text="${voteItem.title}"></span>
+												<span>([[#{HQP_L_EXTRA_WEIGHT_SUM}]] : 10[[#{HQP_L_POINT}]])</span>
+											</td>
 										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
-					</table>
-					
-				</td>
-			</tr>
-		</tbody>
-	</table>
+									</table>
+									<table>
+										<tbody th:each="item, index : ${voteItem.items}">
+											<tr>
+												<td>
+													<span>([[${index.count}]])  [[${item.title}]]</span>
+												</td>
+											</tr>
+											<tr>
+												<td style="color:#cc6600; font-weight:bold; font-size:1em;">[[${item.resultTxt}]]</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</table>
+						
+						<!--  우선순위 -->
+						<table th:case="4">
+							<tr>
+								<td>
+									<table>
+										<tr>
+											<td>
+												<span th:text="${rowIndex.count}+'.'"></span>
+												<span th:text="${voteItem.title}"></span>
+												<span>([[#{HQP_L_PRIORITY}]])</span>
+											</td>
+										</tr>
+									</table>
+									<table>
+										<tbody th:each="item, index : ${voteItem.items}">
+											<tr>
+												<td>
+													<span>([[${index.count}]])  [[${item.title}]]</span>
+												</td>
+											</tr>
+											<tr>
+												<td style="color:#cc6600; font-weight:bold; font-size:1em;">[[${item.resultTxt}]]</td>
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</table>
+						
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	
 <script>

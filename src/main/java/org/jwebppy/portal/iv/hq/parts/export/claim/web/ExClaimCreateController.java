@@ -101,15 +101,6 @@ public class ExClaimCreateController extends PartsExportGeneralController
 				resultMap.put("CONTENT_TYPE", multipartFile.getContentType());
 				resultMap.put("SIZE", multipartFile.getSize());
 
-				/*
-				ImmutableMap<String, Object> resultMap = new ImmutableMap.Builder<String, Object>()
-						.put("ORIGIN_FILE_NAME", originalFileName)
-						.put("SAVED_FILE_NAME", fileName)
-						.put("CONTENT_TYPE", multipartFile.getContentType())
-						.put("SIZE", multipartFile.getSize())
-						.build();
-						*/
-
 				return resultMap;
 			}
 			catch (IllegalStateException | IOException e)
@@ -130,13 +121,6 @@ public class ExClaimCreateController extends PartsExportGeneralController
 		Map<String, String> resultMap = new HashMap<>();
 		resultMap.put("CLAIM_NO", rfcResponse.getString("LV_VENLR"));
 		resultMap.put("ERROR_MSG", rfcResponse.getString("E_MEG"));
-
-		/*
-		ImmutableMap<String, String> resultMap = new ImmutableMap.Builder<String, String>()
-				.put("CLAIM_NO", rfcResponse.getString("LV_VENLR"))
-				.put("ERROR_MSG", rfcResponse.getString("E_MEG"))
-				.build();
-				*/
 
 		return resultMap;
 	}

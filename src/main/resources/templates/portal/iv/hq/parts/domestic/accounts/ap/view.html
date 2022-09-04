@@ -69,7 +69,12 @@
 	
 <script>
 $(document).ready(function() {
-	_setPartAutocomplete($("#pPartNo"));
+	_setPartAutocomplete($("#pPartNo"), {
+		select: function(label, value, event)
+		{
+			doSearch();
+		}
+	});	
 });
 
 let $tableObj;
@@ -152,12 +157,10 @@ $("#BTN_search").on("click", function(){
 	doSearch(); 
 });
 
-$("#FORM_search input:text").on("keydown", function(event) {
-	if (event.keyCode == 13)
-	{
-		doSearch();
-	};
-});
+//Input text 엔터 키 입력
+JpUiForm.input.on.enter($("#FORM_search input:text"), function(item) {
+	doSearch();
+});	
 
 function doSearch()
 {

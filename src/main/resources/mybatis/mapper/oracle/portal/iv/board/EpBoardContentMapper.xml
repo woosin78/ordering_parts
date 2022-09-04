@@ -12,7 +12,6 @@
 		<result property="writer" column="writer" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
-		<collection property="uploadFileLists" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
 	</resultMap>
 
 	<resultMap type="EpBoardContentEntity" id="boardContentEntityMap">
@@ -45,6 +44,7 @@
 		<result property="modDate" column="mod_date" />
 		<association property="board" foreignColumn="b_seq" column="b_seq" javaType="EpBoardEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardMapper.findBoard" />
 		<collection property="boardContentTargets" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpBoardContentTargetEntity" select="org.jwebppy.portal.iv.board.mapper.EpBoardContentTargetMapper.findBoardContentTargets" />
+		<collection property="uploadFileLists" foreignColumn="bc_seq" column="bc_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
 	</resultMap>
 
 	<insert id="insert" parameterType="EpBoardContentEntity">
@@ -122,7 +122,8 @@
 		a.views,
 		a.writer,
 		a.reg_username,
-		a.reg_date
+		a.reg_date,
+		(select count(ufl_seq) from ep_upload_file_list where uf_seq=b.uf_seq and t_seq=a.bc_seq) file_count
 		from
 		ep_board_content a,
 		ep_board b

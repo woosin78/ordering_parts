@@ -19,6 +19,7 @@ import org.jwebppy.portal.iv.hq.parts.domestic.common.PartsDomesticCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.display.service.OrderDisplayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,9 @@ import org.springframework.web.context.request.WebRequest;
 @RequestMapping(PartsDomesticCommonVo.REQUEST_PATH + "/order/display/order")
 public class OrderDisplayController extends PartsDomesticGeneralController
 {
+	@Value("${file.upload.rootPath}")
+	private String ROOT_PATH;
+
 	@Autowired
 	private OrderDisplayService orderDisplayService;
 

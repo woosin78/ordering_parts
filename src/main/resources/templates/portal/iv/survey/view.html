@@ -7,7 +7,7 @@
 <th:block layout:fragment="content">
 	
 	<div class="block-header">
-		<div class="block-title" th:text="#{HQP_T_SURVEY_BASIC_INFO}"></div>
+		<div class="block-title" th:text="#{HQP_T_SURVEY}"></div>
 		<div class="block-button-area">
 			<button onclick="BTN.modify();" type="button" th:text="#{HQP_B_MODIFY}"></button>
 			<button onclick="BTN.remove();" type="button" th:text="#{HQP_B_DELETE}" th:if="${survey?.editable == 'Y'}"></button>
@@ -25,27 +25,27 @@
 	<table class="condition table-fixed">
 		<tbody>
 			<tr>
-				<th><span th:text="#{HQP_L_SURVEY_TITLE}"></span></th>
+				<th><span th:text="#{HQP_L_TITLE}"></span></th>
 				<td><span th:text="${survey?.title}"></span></td>
 				<th><span th:text="#{HQP_L_SURVEY_PERIOD}"></span></th>
 				<td>
-					<span th:text="${survey?.validFromYmdHHMI}"></span> ~ <span th:text="${survey?.validToYmdYmdHHMI}"></span>
+					<span th:text="${survey?.validFromYmdHHMI}"></span> - <span th:text="${survey?.validToYmdYmdHHMI}"></span>
 				</td>
 			</tr>
 			<tr>
 				<th><span th:text="#{HQP_L_SURVEY_OPEN}"></span></th>
 				<td>
-					<span th:if="${(survey?.fgOpen == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_PUBLIC}"></span>
-					<span th:unless="${(survey?.fgOpen == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_PRIVATE}"></span>
+					<span th:if="${(survey?.fgOpen == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_YES}"></span>
+					<span th:unless="${(survey?.fgOpen == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_NO}"></span>
 				</td>
 				<th><span th:text="#{HQP_L_RESULT_OPEN}"></span></th>
 				<td>
-					<span th:if="${(survey?.fgOpenResult == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_PUBLIC}"></span>
-					<span th:unless="${(survey?.fgOpenResult == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_PRIVATE}"></span>
+					<span th:if="${(survey?.fgOpenResult == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_YES}"></span>
+					<span th:unless="${(survey?.fgOpenResult == T(org.jwebppy.portal.iv.common.IvCommonVo).YES)}" th:text="#{HQP_L_NO}"></span>
 				</td>	
 			</tr>
 			<tr>
-				<th><span th:text="#{HQP_L_SURVEY_PURPOSE}"></span></th>
+				<th><span th:text="#{HQP_L_PURPOSE}"></span></th>
 				<td colspan="3"><span th:text="${survey?.description}"></span></td>
 			</tr>
 			<tr>

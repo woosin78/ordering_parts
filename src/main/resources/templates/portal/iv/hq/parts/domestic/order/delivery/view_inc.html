@@ -50,7 +50,7 @@
 				<th th:text="#{HQP_L_PART_NO}"></th>
 				<td>
 					<div class="input-area">
-						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui" th:value="${pPartNo}">
+						<input type="text" id="pPartNo" name="pPartNo" class="custom-ui autocomplete" th:value="${pPartNo}">
 					</div>			
 				</td>			
 				<th th:text="#{HQP_L_PO_NO}"></th>
@@ -84,7 +84,12 @@ if (opener)
 };
 
 $(document).ready(function() {
-	_setPartAutocomplete($("#pPartNo"));
+	_setPartAutocomplete($("#pPartNo"), {
+		select: function(label, value, event)
+		{
+			doSearch();
+		}
+	});
 });	
 
 $(function(){
@@ -157,12 +162,9 @@ $("#BTN_search").on("click", function(){
 });
 
 //Input text 엔터 키 입력
-$("#FORM_search input:text").on("keydown", function(event) {
-	if (event.keyCode == 13)
-	{
-		doSearch();
-	};
-});
+JpUiForm.input.on.enter($("#FORM_search input:text"), function(item) {
+	doSearch();
+});	
 
 function doSearch()
 {

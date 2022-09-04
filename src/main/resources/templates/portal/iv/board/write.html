@@ -43,16 +43,16 @@ body {
 				<th th:text="#{HQP_L_VISIBLE_TARGET}"/>
 				<td>
 					<div class="split-row-more-compact"></div>
-					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui" th:placeholder="#{HQP_L_PLACEHOLD_DEALER_CODE_NAME}"/></div>
+					<div class="input-area"><input type="text" id="searchVisibleTarget" name="searchVisibleTarget" class="custom-ui autocomplete" th:placeholder="#{HQP_L_PLACEHOLD_DEALER_CODE_NAME}"/></div>
 					<div class="split-row-more-compact"></div>
 					<button id="BTN_deleteVisibleTarget" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
 					<div class="split-row-more-compact"></div>
 					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div class="split-row-more-compact"></div>
-					<div id="addedtargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
+					<div id="addedTargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
 						<div th:each="boardContentTarget : ${boardContent?.boardContentTargets}">
 							<input type="checkbox" class="custom-ui visible-target"/><label class="dealer-code" th:text="${boardContentTarget.code}"></label>
-							<div class="split2"></div><span class="dealer-name" th:text="${boardContentTarget.description}"></span>
+							<span class="dealer-name" th:text="${boardContentTarget.description}"></span>
 							<input name="targetCode" type="hidden" th:value="${boardContentTarget.code}"/>
 							<input name="targetDescription" type="hidden" th:value="${boardContentTarget.description}"/>
 						</div>						
@@ -161,21 +161,21 @@ function addTarget(label, value)
 {
 	let str = label.split("|");
 	
-	let dealerCode = str[0];
-	let dealerName = str[1];
+	let dealerCode = JpUtilsString.trimToEmpty(str[0]);
+	let dealerName = JpUtilsString.trimToEmpty(str[1]);
 	
-	if ($("#FORM_write label:contains('" + dealerCode + "')").length == 0)
+	if ($("#FORM_write label.dealer-code:contains('" + dealerCode + "')").length == 0)
 	{
 		let html = [];
 		
 		html.push("<div>");
 		html.push("<input type='checkbox' class='custom-ui visible-target'/><label class='dealer-code'>" + dealerCode + "</label>");
-		html.push("<div class='split2'></div><span class='dealer-name'>" + dealerName + "</span>");
+		html.push("<span class='dealer-name'>" + dealerName + "</span>");
 		html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
 		html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
 		html.push("</div>");
 		
-		$("#addedtargets").append(html.join(""));		
+		$("#addedTargets").append(html.join(""));		
 	};
 };
 

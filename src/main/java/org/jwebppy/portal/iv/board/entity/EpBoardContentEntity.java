@@ -44,4 +44,5 @@ public class EpBoardContentEntity extends IvGeneralEntity
 	private EpUploadFileEntity fileUploadFile;
 	private List<EpUploadFileListEntity> uploadFileLists;
 	private List<EpBoardContentTargetEntity> boardContentTargets;
+	private int fileCount;
 }

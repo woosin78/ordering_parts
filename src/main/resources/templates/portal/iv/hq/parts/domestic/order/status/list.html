@@ -51,7 +51,7 @@
 				<th th:text="#{HQP_L_ORDER_PART_NO}"></th>
 				<td colspan="3">
 					<div class="input-area">
-						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui" th:value="${pOrderPartNo}">
+						<input type="text" id="pOrderPartNo" name="pOrderPartNo" class="custom-ui autocomplete" th:value="${pOrderPartNo}">
 					</div>
 				</td>			
 			</tr>		
@@ -175,12 +175,9 @@ $("#BTN_search").on("click", function(){
 });
 
 //Input text 엔터 키 입력
-$("#FORM_search input:text").on("keydown", function(event) {
-	if (event.keyCode == 13)
-	{
-		doSearch();
-	};
-});
+JpUiForm.input.on.enter($("#FORM_search input:text"), function(item) {
+	doSearch();
+});	
 
 function doSearch()
 {
