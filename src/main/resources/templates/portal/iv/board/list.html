@@ -8,7 +8,6 @@
 	<div class="block-header">
 		<div class="block-title" th:text="${boardName}"></div>
 		<div class="block-button-area">
-			<!-- button id="BTN_showOldData" type="button" th:text="#{HQP_B_SHOW_OLD_DATA}" th:if="${not #strings.isEmpty(oldSystemUrl)}"></button -->
 			<button id="BTN_write" type="button" th:text="#{HQP_B_WRITE}" th:if="${hasWriteAuth}"></button>
 			<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button>			
 		</div>
@@ -132,6 +131,7 @@ $(function(){
 		pageLength: parseInt(GLOBAL_CONST.ROW_PER_PAGE), // 한 페이지에 20개 행
 		initComplete:function(settings, json)
 		{
+			initGridTablePage(this, $("#pageNumber").val());
 			ProgressBar.hide();
 		}
 	});
@@ -150,13 +150,13 @@ $(function(){
 	});		
 	
 	$("#TBL_grid tbody").on("click", "tr", function (e){				
-	    let tblGrid = $("#TBL_grid").DataTable();	    
 	    let index = $("#TBL_grid").dataTable().api().cell($(e.target).closest("td")).index().column;	    	    
-		let rowData = tblGrid.row(this).data();
+		let rowData = $tableObj.row(this).data();
 		
 		if (index == 1)
 		{
-			$("#FORM_search input[name=bcSeq]").val(rowData.bcSeq);
+			$("#bcSeq").val(rowData.bcSeq);
+			$("#pageNumber").val(getGridTablePageNumber($tableObj));
 			$("#FORM_search").attr("action", "[[${BASE_PATH}]]/board/view").submit();	
 		};
 	});
@@ -164,12 +164,6 @@ $(function(){
 	$("#BTN_write").on("click", function() {
 		$("#FORM_search").attr("action", "[[${BASE_PATH}]]/board/write").submit();
 	});
-	
-	/*
-	$("#BTN_showOldData").on("click", function() {
-		$("#doobizLogin_F").attr("src", "/platform/mgmt/sso/out/doobiz");
-	});
-	*/
 });
 
 function doSearch()

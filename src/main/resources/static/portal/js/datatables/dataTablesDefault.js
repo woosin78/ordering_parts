@@ -206,3 +206,13 @@ function showGridTotalRows(obj1, obj2)
 
 	JpUtilsObject.toJquery(obj1).html(rows + " row(s).");
 };
+
+function initGridTablePage(table, pageNumber)
+{
+	table.api().page(JpUtilsNumber.defaultNumber(pageNumber-1, 0)).draw("page");
+};
+
+function getGridTablePageNumber(table)
+{
+	return JpUtilsNumber.defaultNumber(table.page.info().page+1, 1)
+};

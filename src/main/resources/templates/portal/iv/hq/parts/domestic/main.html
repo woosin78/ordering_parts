@@ -157,7 +157,7 @@
 	<!-- 프로모션 배너 -->
 	<div id="promotionBanner" class="banner-div1"> <!-- background-color: skyblue; -->
 		<form id="FORM_promotionOrder" method="post" th:action="@{/portal/iv/hq/parts/domestic/order/create/gate/promotion}"></form>
-	    <div id="slider-div" class="slick" ></div>
+	    <div id="slider-div" class="slick"></div>
 	</div>
 	<!-- 프로모션 배너 -->
 <script>
@@ -175,7 +175,7 @@ $(window).resize($.debounce(100, function(e){
 	stickyPromotionBanner();
 }));
 
-var Promotion = {
+let Promotion = {
 	getPromotionBanner: function() {
 		// 진행중인 프로모션 배너 목록 가져오기
 		JpUtilsAjax.get({
@@ -192,7 +192,7 @@ var Promotion = {
 				}
 				
 				$.each(result, function(index, element) {
-					$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick-img" src="https://doobizplus-dev.doosan-iv.com/portal/iv/image/load?ulfSeq=' + element.uploadFileLists[0].uflSeq + '"></a>');
+					$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick-img" src="/portal/iv/image/load?ulfSeq=' + element.uploadFileLists[0].uflSeq + '"></a>');
 				});
 				
 				// 슬라이더 옵션 셜정
@@ -320,24 +320,55 @@ $(function(){
 	    }	
 	});
 	
+	//Popup
 	JpUtilsAjax.get({
 		url: "/portal/iv/board/popup/list/data",
 		global: false,
 		success: function(data, textStatus, jqXHR)
 		{
 			let result = data.RESULT;
+			let settings = {
+				width: 700,
+				height: 600,
+				left: 0,
+				top: 0,
+				fgScrollbars: "Y"
+			};
 			
-			$.each(result, function(index, element) {
+			let left = 0;
+			let top = 0;
+			let screenWidth = screen.availWidth;
+			
+			$.each(result.reverse(), function(index, element) {
 				let fgNotShow = JpUtilsString.defaultString($.cookie(element.bcSeq), "N");
 				
 				if (JpUtilsString.equals(fgNotShow, "N"))
 				{
-					let url = "/portal/iv/board/popup/view2?bSeq=" + element.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
+					let width = JpUtilsNumber.defaultNumber(parseInt(element.width), 700);
+					let height = JpUtilsNumber.defaultNumber(parseInt(element.height), 600);
+
+					if (screenWidth < left + width)
+					{
+						left = 0;
+						top += 150;
+						
+						totalWidth = 0;
+					};
+
+					let settings = {
+						url: "/portal/iv/board/popup/view2?bSeq=" + element.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M",
+						name: "popup_" + element.bcSeq,
+						width: width,
+						height: height,
+						left: left,
+						top: top,
+						fgCenter: "N",
+						fgScrollbars: "Y"
+					};
 					
-					let width = JpUtilsString.defaultString(element.width, "700");
-					let height = JpUtilsString.defaultString(element.height, "600");
+					JpUiPopup.open(settings);
 					
-					Popup.open(url, width, height, "Y", "Y");					
+					left += width;
 				};
 			});
 		}

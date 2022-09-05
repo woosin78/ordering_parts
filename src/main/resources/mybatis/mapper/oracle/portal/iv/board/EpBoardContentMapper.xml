@@ -10,6 +10,8 @@
 		<result property="title" column="title" />
 		<result property="views" column="views" />
 		<result property="writer" column="writer" />
+		<result property="width" column="width" />
+		<result property="height" column="height" />
 		<result property="regUsername" column="reg_username" />
 		<result property="regDate" column="reg_date" />
 	</resultMap>
@@ -121,6 +123,8 @@
 		a.title,
 		a.views,
 		a.writer,
+		a.width,
+		a.height,
 		a.reg_username,
 		a.reg_date,
 		(select count(ufl_seq) from ep_upload_file_list where uf_seq=b.uf_seq and t_seq=a.bc_seq) file_count

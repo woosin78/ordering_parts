@@ -126,6 +126,7 @@ $(function(){
 		pageLength: parseInt(GLOBAL_CONST.ROW_PER_PAGE), // 한 페이지에 20개 행
 		initComplete:function(settings, json)
 		{
+			initGridTablePage(this, $("#pageNumber").val());
 			ProgressBar.hide();
 		}
 	});
@@ -144,13 +145,13 @@ $(function(){
 	});		
 	
 	$("#TBL_grid tbody").on("click", "tr", function (e){				
-	    let tblGrid = $("#TBL_grid").DataTable();	    
 	    let index = $("#TBL_grid").dataTable().api().cell($(e.target).closest("td")).index().column;	    	    
-		let rowData = tblGrid.row(this).data();
+		let rowData = $tableObj.row(this).data();
 		
 		if (index == 1)
 		{
-			$("#FORM_search input[name=pSeq]").val(rowData.pseq);
+			$("#pSeq").val(rowData.pseq);
+			$("#pageNumber").val(getGridTablePageNumber($tableObj));
 			$("#FORM_search").attr("action", "[[${BASE_PATH}]]/promotion/view").submit();	
 		};
 	});

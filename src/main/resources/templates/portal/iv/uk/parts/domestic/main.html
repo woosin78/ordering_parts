@@ -143,7 +143,6 @@
 	</div>
 	<!-- Logout -->
 	<form id="FORM_logout" method="post" th:action="@{${T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGOUT_PROCESSING_URL}}"></form>	
-	<!-- iframe th:src="|${BASE_PATH}/preload|" style="display:none;"></iframe -->
 <script>
 $(window).on("load", function() {
 	ProgressBar.hide();
@@ -201,28 +200,59 @@ $(function(){
 	    }	
 	});
 	
+	//Popup
 	JpUtilsAjax.get({
 		url: "/portal/iv/board/popup/list/data",
 		global: false,
 		success: function(data, textStatus, jqXHR)
 		{
 			let result = data.RESULT;
+			let settings = {
+				width: 700,
+				height: 600,
+				left: 0,
+				top: 0,
+				fgScrollbars: "Y"
+			};
 			
-			$.each(result, function(index, element) {
+			let left = 0;
+			let top = 0;
+			let screenWidth = screen.availWidth;
+			
+			$.each(result.reverse(), function(index, element) {
 				let fgNotShow = JpUtilsString.defaultString($.cookie(element.bcSeq), "N");
 				
 				if (JpUtilsString.equals(fgNotShow, "N"))
 				{
-					let url = "/portal/iv/board/popup/view2?bSeq=" + element.board.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M";
+					let width = JpUtilsNumber.defaultNumber(parseInt(element.width), 700);
+					let height = JpUtilsNumber.defaultNumber(parseInt(element.height), 600);
+
+					if (screenWidth < left + width)
+					{
+						left = 0;
+						top += 150;
+						
+						totalWidth = 0;
+					};
+
+					let settings = {
+						url: "/portal/iv/board/popup/view2?bSeq=" + element.bseq + "&bcSeq=" + element.bcSeq + "&fgFrom=M",
+						name: "popup_" + element.bcSeq,
+						width: width,
+						height: height,
+						left: left,
+						top: top,
+						fgCenter: "N",
+						fgScrollbars: "Y"
+					};
 					
-					let width = JpUtilsString.defaultString(element.width, "700");
-					let height = JpUtilsString.defaultString(element.height, "600");
+					JpUiPopup.open(settings);
 					
-					Popup.open(url, width, height, "Y", "Y");					
+					left += width;
 				};
 			});
 		}
-	});	
+	});
 	
 	checkExpiredPassword();
 });
