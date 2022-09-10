@@ -156,6 +156,13 @@ public class OrderSimulationController extends PartsDomesticGeneralController
 				normalOrderItems.add(orderItem);
 			}
 
+			//Sales Lot 오류 자재 필터링
+			if (CmStringUtils.equals(order.getFgFilteringInvalidSalesLotItem(), IvCommonVo.YES))
+			{
+				order.setOrderItems(normalOrderItems);
+				order.filteringInvalidSalesLotOrderItems();
+			}
+
 			SimulationResultDto simulationResult = new SimulationResultDto();
 			simulationResult.setNormalOrderItems(normalOrderItems);
 

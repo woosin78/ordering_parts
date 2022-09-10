@@ -88,10 +88,6 @@ public class AuthorityController extends UserGeneralController
 
 			return Collections.emptyList();
 		}
-		else if ("user".equals(tabPath))
-		{
-			return AuthorityLayoutBuilder.listUser(userService.getUsersInCItem(userSearch));
-		}
 
 		return AuthorityLayoutBuilder.viewGeneralInfo(contentService.getCItem(cItemSearch.getCSeq()));
 	}

@@ -235,6 +235,54 @@ JpUiForm.input = {
 					});
 				};			
 			};
+		},
+		keyup: function(element, func)
+		{
+			if (JpUtilsObject.isNotNull(element))
+			{
+				if (Array.isArray(element))
+				{
+					$(element).not(".autocomplete").each(function(index, item) {
+						$(item).on("keyup", function() {
+							func(item);
+						});
+					});
+				}
+				else
+				{
+					$(element).not(".autocomplete").on("keyup", function() {
+						func(this);
+					});
+				};			
+			};
+		}
+	},
+	validation: {
+		number: function(element, min, max)
+		{
+			min = JpUtilsNumber.defaultNumber(min, 1);
+			max = JpUtilsNumber.defaultNumber(max, Number.MAX_SAFE_INTEGER);
+			
+			JpUiForm.input.on.keyup(element, function(item) {
+				if (!jQuery.isNumeric($(item).val()))
+				{
+					$(item).val("");
+					return;					
+				};
+				
+				let num = parseFloat($(item).val());
+				
+				if (num < min)
+				{
+					num = min;
+				}
+				else if (num > max)
+				{
+					num = max;
+				};
+				
+				$(item).val(num);
+			});
 		}		
 	}
 };

@@ -8,8 +8,6 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ResponseMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.view.RedirectView;
@@ -21,8 +19,7 @@ public class GlobalExceptionHandler
 	public Object handleException(HttpServletRequest request, Exception e)
 	{
 		//Broken Pipe exception 은 Server 단에서는 핸들링 할 수 없으므로 console 및 APM 에 logging 되지 않도록 예외 처리한다.
-		//인증, 권한 관련 exception 은 console 및 APM 에 logging 되지 않도록 예외 처리한다.
-		if (!(e instanceof ClientAbortException || e instanceof AccessDeniedException || e instanceof AuthenticationException))
+		if (!(e instanceof ClientAbortException))
 		{
 			e.printStackTrace();
 		}

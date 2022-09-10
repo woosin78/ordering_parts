@@ -664,7 +664,7 @@ input.custom-ui[type="text"], input.custom-ui[type="number"]{
 input.custom-ui[type="text"].uppercase{
 	text-transform: uppercase; 
 }
-input.custom-ui[type="text"].warn{
+input.custom-ui[type="text"].warn, input.custom-ui[type="number"].warn{
 	background-color: #db2828;
 	color:#363636; 
 }
@@ -764,6 +764,17 @@ select::-ms-expand {
 img.required {
 	border: none;
 	margin-left:3px;
+}
+
+/* Hide arrow of the number type of the input element */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
 }
 
 /*--- Text style ------------------*/

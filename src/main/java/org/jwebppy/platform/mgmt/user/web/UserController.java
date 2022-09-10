@@ -24,6 +24,7 @@ import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
+import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.dto.CItemUserRlDto;
 import org.jwebppy.platform.mgmt.content.service.ContentAuthorityService;
 import org.jwebppy.platform.mgmt.content.service.ContentService;
@@ -83,6 +84,11 @@ public class UserController extends UserGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
+		CItemSearchDto cItemSearch = new CItemSearchDto();
+		cItemSearch.setFgVisible(PlatformCommonVo.YES);
+		cItemSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
+
+		model.addAttribute("cItems", contentService.getCItems(cItemSearch));
 		model.addAttribute("userGroups", userGroupService.getUserGroups(null));
 
 		addAllAttributeFromRequest(model, webRequest);

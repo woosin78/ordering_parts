@@ -761,6 +761,17 @@ img.required {
 	margin-left:3px;
 }
 
+/* Hide arrow of the number type of the input element */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
 /*--- Text style ------------------*/
 .hidden {
 	display: none;

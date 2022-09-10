@@ -283,7 +283,7 @@ public class AccountMgmtService extends IvGeneralService
 					return generateUsername(bizType, prefix);
 				}
 			}
-			else if (CmStringUtils.equalsAny(bizType, "EUDOP", "UKEXP"))
+			else if (CmStringUtils.equalsAny(bizType, "EUDOP", "UKDOP"))
 			{
 				//유럽, 영국법인 계정은 발번 규칙을 따르지 않음. AD 와의 중복을 파하기 위해 딜러 아이디에 prefix 추가
 				if (!CmStringUtils.startsWith(username, EuCommonVo.EUUK_USERNAME_PREFIX))

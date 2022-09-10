@@ -796,7 +796,7 @@ $(function(){
 				{
 					let clazz =  (JpUtilsString.equals(row.fgInvalidSalesLot, GLOBAL_CONST.YES)) ? "custom-ui warn center": "custom-ui center";
 					
-					return "<input type='text' class='" + clazz + "' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
+					return "<input type='number' class='" + clazz + "' name='orderQty' style='width:70px' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onkeyup='doSimulationByEnter(this)' onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
 			},//Req Qty
 			{name: "lotQty", data: "lotQty", title: "[[#{HQP_L_SALES_LOT}]]"},//Sales Lot
@@ -954,8 +954,6 @@ $(function(){
 		
 		initGridTable($tableObj);
 
-		ProgressBar.hide();
-		
 		JpUiForm.input.on.focus($("#TBL_grid input[name=materialNo][value='']:first"));
 		JpUiForm.input.on.select($("#TBL_grid input[name=orderQty]"), $("#TBL_grid input[name=materialNo]"));
 		
@@ -968,6 +966,10 @@ $(function(){
 				doSimulation();				
 			};
 		});
+		
+		JpUiForm.input.validation.number($("#TBL_grid input[name=orderQty]"), 1, 9999);
+		
+		ProgressBar.hide();
 	});
 });
 </script>

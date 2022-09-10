@@ -121,7 +121,17 @@ public class OrderDto extends PartsDomesticGeneralDto
 
 				for (OrderItemDto orderItem: orderItems)
 				{
-					if (Double.parseDouble(orderItem.getOrderQty()) % Double.parseDouble(orderItem.getLotQty()) > 0)
+					String orderQty = orderItem.getOrderQty();
+					String lotQty = orderItem.getLotQty();
+
+					System.err.println(orderItem);
+
+					if (CmStringUtils.isAnyEmpty(orderQty, lotQty))
+					{
+						continue;
+					}
+
+					if (Double.parseDouble(orderQty) % Double.parseDouble(lotQty) > 0)
 					{
 						orderItem.setLineNo("999990");
 						orderItem.setFgInvalidSalesLot(PartsDomesticCommonVo.YES);

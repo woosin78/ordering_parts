@@ -25,6 +25,16 @@
 				</div>
 			</div>
 		</div>
+		<div class="six wide field">
+			<div class="ui fluid normal search selection dropdown authority">
+				<input type="hidden" name="cSeq"/>
+				<i class="dropdown icon"></i>
+				<div class="default text">Authority</div>
+				<div class="menu">
+					<div class="item" th:each="cItem : ${cItems}" th:data-value="${cItem.cSeq}" th:text="|[${cItem.type.type}] ${cItem.name} - ${cItem.description}|"></div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="fields">
 		<div class="twelve wide field">
@@ -132,7 +142,7 @@
 <script>
 let userTable;
 $(document).ready(function() {
-	$(".user-group").dropdown({
+	$(".user-group, .authority").dropdown({
 		minCharacters: 2,
 		fullTextSearch: true,
 		clearable: true
@@ -144,6 +154,7 @@ $(document).ready(function() {
 	});
 	
 	$(".user-group").dropdown("set selected", "[[${ugSeq}]]");
+	$(".authority").dropdown("set selected", "[[${cSeq}]]");
 
 	userTable = new JpUiTable($("#TBL_users"));
 	userTable.settings = {
