@@ -12,6 +12,28 @@ body {
 </style>
 	<script src="/editor_html5/js/xfe_main.js"></script>
 	
+	<!-- Modal for upload simulation -->	
+	<div class="dropzone-dimmer dimmer"></div>		
+	<div class="dropzone-area">
+		<div class="dropzone-area-top"></div>
+		<div class="dropzone-body dropzone-click-zone">
+			<div class="dropzone-click-zone" style="height:20px"></div>
+			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/icon/upload_file.png"/>
+			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_HOW_TO_UPLOAD_EXCEL}"></div>
+			<div class="dropzone-body-content dropzone-click-zone" th:text="#{HQP_T_ITEMS_COPY_PASTE2}"></div>
+			<hr style="width:95%;"/>
+			<div class="dropzone-body-content dropzone-click-zone">
+				<span class="bold">*[[#{HQP_T_GUIDE_ORDER_UPLOAD_FORM1}]]</span><br/>
+				- A: [[#{HQP_T_PROMOTION_MATERIAL}]]
+				<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/iv/hq/parts/common/upload_form2.png"/>
+			</div>
+		</div>
+		<div class="dropzone-bottom dropzone-click-zone">
+			<button type="button" onclick="UploadModal.hide()">[[#{HQP_B_CANCEL}]]</button>
+		</div>
+	</div>
+	<!-- Modal for upload simulation -->	
+	
 	<div class="block-header">
 		<div class="block-title" th:text="#{HQP_T_PROMOTION}"></div>
 		<div class="block-button-area">
@@ -48,13 +70,13 @@ body {
 					<div class="split-row-more-compact"></div>
 					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div class="split-row-more-compact"></div>
-					<div id="addedTargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
+					<div id="addedTargets">
 						<div th:each="promotionTarget : ${promotion?.promotionTargets}">
 							<input type="checkbox" class="custom-ui visible-target"/><label th:text="${promotionTarget.code}"></label>
-							<span th:text="${promotionTarget.description}"></span>
+							<div class="split2"></div><span th:text="${promotionTarget.description}"></span>
 							<input name="targetCode" type="hidden" th:value="${promotionTarget.code}"/>
 							<input name="targetDescription" type="hidden" th:value="${promotionTarget.description}"/>
-						</div>						
+						</div>
 					</div>
 				</td>
 			</tr>
@@ -111,38 +133,13 @@ body {
 			<tr >
 				<th>[[#{HQP_L_BANNER_IMAGE}]] <img src="/portal/img/icon/required.png" class="required" /></th> 
 				<td>
-					<div class="split-row-more-compact"></div>
-					<button id="BTN_searchFile" type="button" th:text="#{HQP_B_FILE}" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
-					<div class="split-row-more-compact"></div>
-					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
-					<div class="split-row-more-compact"></div>
-					<!-- div id="attachedFiles" style="width:100%; height:5em; overflow-y: auto;" -->
-					<div id="attachedFiles">
-						<div th:each="uploadFileList : ${promotion?.uploadFileLists}">
-							<input name="uflSeq" type="checkbox" th:value="${uploadFileList.uflSeq}" class="custom-ui" th:fileName="${uploadFileList.fullOriginName}"/><label th:text="${uploadFileList.fullOriginName}"></label>
-							<div class="split2"></div><span th:text="${uploadFileList.displayFileSize}"></span>
-						</div>
-					</div>
-					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
+					<div id="banner"></div>
 					<div th:text="#{HQP_T_RECOMENDED_SIZE}" class="warn"></div>
 				</td>
 			</tr>		
 			<tr >
 				<th th:text="#{HQP_L_ATTACHMENT}"/>
-				<td>
-					<div class="split-row-more-compact"></div>
-					<button id="BTN_searchFile2" type="button" th:text="#{HQP_B_FILE}" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile2" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
-					<div class="split-row-more-compact"></div>
-					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
-					<div class="split-row-more-compact"></div>
-					<!-- div id="attachedFiles" style="width:100%; height:5em; overflow-y: auto;" -->
-					<div id="attachedFiles2">
-						<div th:each="uploadFileList : ${promotion?.uploadFileLists2}">
-							<input name="uflSeq2" type="checkbox" th:value="${uploadFileList.uflSeq}" class="custom-ui" th:fileName="${uploadFileList.fullOriginName}"/><label th:text="${uploadFileList.fullOriginName}"></label>
-							<div class="split2"></div><span th:text="${uploadFileList.displayFileSize}"></span>
-						</div>
-					</div>
-				</td>
+				<td id="attachment"></td>
 			</tr>	
 			<tr >
 				<th th:text="#{HQP_L_PROMOTION_MATERIAL}"/>
@@ -150,15 +147,16 @@ body {
 					<div class="split-row-more-compact"></div>
 					<div class="input-area"><input type="text" id="searchVisibleItem" name="searchVisibleItem" class="custom-ui autocomplete" th:placeholder="#{HQP_L_MATERIAL_NO}"/></div>
 					<div class="split-row-more-compact"></div>
-					<button id="BTN_deleteVisibleItem" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
+					<button id="BTN_uploadVisibleItem" type="button" th:text="#{HQP_B_UPLOAD}" class="small_button"></button><div class="split"></div><button id="BTN_checkAllVisibleItem" type="button" th:text="#{HQP_B_SELECT_ALL}" class="small_button"></button><div class="split"></div><button id="BTN_deleteVisibleItem" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
 					<div class="split-row-more-compact"></div>
 					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div class="split-row-more-compact"></div>
-					<div id="addedItems" style="width:100%; height:5em; display: block; overflow-y: auto;">
+					<div id="addedItems">
 						<div th:each="promotionItem : ${promotion?.promotionItems}">
-							<input type="checkbox" class="custom-ui visible-item"/><label th:text="${promotionItem.materialNo}"></label><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
+							<input type="checkbox" class="custom-ui visible-item"/><label th:text="${promotionItem.materialNo}"></label>
+							<div class="split2"></div><span th:text="${promotionItem.materialText}"></span>
 							<input name="materialNo" type="hidden" th:value="${promotionItem.materialNo}"/>
-						</div>						
+						</div>
 					</div>
 				</td>
 			</tr>	
@@ -174,18 +172,177 @@ body {
 	<input type="hidden" name="pageNumber" th:value="${pageNumber}"/>
 	<input type="hidden" name="state" th:value="${state}"/>
 	</form>
+
+<script th:inline="javascript">
+let bannerUploader;
+let fileUploader;
+
+$(function(){
+	bannerUploader = _setFileUploader($("#banner"));
+	
+	/*[# th:each="uploadFileList : ${promotion?.uploadFileLists}"]*/
+	bannerUploader.addFile(/*[[${uploadFileList.fullOriginName}]]*/, /*[[${uploadFileList.fileSize}]]*/, /*[[${uploadFileList.uflSeq}]]*/);
+	/*[/]*/
+	
+	fileUploader = _setFileUploader($("#attachment"), "files2", "uflSeqs2");
+	
+	/*[# th:each="uploadFileList : ${promotion?.uploadFileLists2}"]*/
+	fileUploader.addFile(/*[[${uploadFileList.fullOriginName}]]*/, /*[[${uploadFileList.fileSize}]]*/, /*[[${uploadFileList.uflSeq}]]*/);
+	/*[/]*/	
+});
+</script>
+	
 <script>
 $(function(){
 	Calendar.makeCalendar($("#fromViewDate"), "[[${promotion?.displayFromView}]]");
 	Calendar.makeCalendar($("#toViewDate"), "[[${promotion?.displayToView}]]");
 });
 
+let UploadModal = {};
+UploadModal.show = function() {
+	let width = 480;
+	let height = 450;
+	let left = ($(window).innerWidth() - width) * 0.5;
+	let top = ($(window).innerHeight() - height) * 0.5;
+
+	$(".dropzone-area").css({
+		"width": width,
+		"height": height,
+		"left": left,
+		"top": top
+	});
+	
+	$(".dropzone-dimmer").css({
+		"width": "100%",
+		"height": "100%"
+	});
+
+	$(".dropzone-dimmer, .dropzone-area").show();
+	
+	$(document).on("paste", function(event) {
+		triggerPasteFromClipload(event);
+	});
+};
+
+UploadModal.hide = function()
+{
+	$(".dropzone-dimmer, .dropzone-area").hide();
+	
+	$(document).off("paste");
+};
+
+$(".dropzone-click-zone").dropzone({
+	url: "/portal/iv/parts/search/upload/data",
+	maxFilesize: 5, //MB
+	acceptedFiles: ".xlsx",
+	accept: function(file, done)
+	{
+		console.log("accept");
+		done();
+	},
+	addedfile: function(file)
+	{
+	},
+	sending: function(file, xhr, formData)
+	{
+		xhr.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
+		ProgressBar.show();
+	},
+	success: function(file, response)
+	{
+		getTargetItems(response.RESULT);
+	},
+	complete: function(file)
+	{
+		UploadModal.hide();
+	},
+	error: function(file, error, xhr)
+	{
+		ProgressBar.hide();
+		UploadModal.hide();
+	},
+	drop: function()
+	{
+		//console.log("drop");
+	},
+	dragenter: function(e)
+	{
+		//console.log("dragenter");
+	},
+	dragover: function(e)
+	{
+		//console.log("dragover");
+	},
+	dragleave: function(e)
+	{
+		//console.log("dragleave");
+	}
+});
+
+function triggerPasteFromClipload(event)
+{
+	let rows = event.originalEvent.clipboardData.getData("Text").split(String.fromCharCode(13));//13:CR
+	let items = [];
+	
+	$.each(rows, function(index, element) {
+		if (JpUtilsString.isNotEmpty(element))
+		{
+			items.push(JpUtilsString.trimToEmpty(element));
+		};
+	});
+	
+	getTargetItems(items);
+};
+
+function getTargetItems(items)
+{
+	if (items.length > 0)
+	{
+		JpUtilsAjax.get({
+			url: "/portal/iv/parts/search/data",
+			data: {"pPartNo": items.join(GLOBAL_CONST.DELIMITER)},
+			success: function(data, textStatus, jqXHR)
+			{
+				let result = data.RESULT;
+	
+				$.each(result, function(index, element) {
+					addTargetItem(element.MATERIAL + "|" + element.MATERIAL_TEXT, element.MATERIAL);					
+				});
+			},
+			complete: function(jqXHR, textStatus)
+			{
+				ProgressBar.hide();				
+			}
+		});		
+	};
+};
+
+function addTargetItem(label, value)
+{
+	if ($("#FORM_write label:contains('" + label + "')").length == 0)
+	{
+		let str = label.split("|");
+		
+		let materialNo = JpUtilsString.trimToEmpty(str[0]);
+		let materialText = JpUtilsString.trimToEmpty(str[1]);		
+		
+		let html = [];
+		html.push("<div>");
+		html.push("<input type='checkbox' class='custom-ui visible-target'/><label>" + materialNo + "</label>");
+		html.push("<div class='split2'></div><span>" + materialText + "</span>");
+		html.push("<input name='materialNo' type='hidden' value='" + JpUtilsString.trimToEmpty(materialNo) + "'/>");
+		html.push("</div>");
+		
+		$("#addedItems").append(html.join(""));
+	};
+};
+
 $(window).on("load", function() {
 	ProgressBar.hide();
 	
 	_setDealerCodeAutocomplete($("#searchVisibleTarget"), {
 		select: function(label, value, event) {
-			addTarget(label, value);
+			addVisibleTarget(label, value);
 			 
 			$("#searchVisibleTarget").val("");
 		}
@@ -193,14 +350,23 @@ $(window).on("load", function() {
 	
 	_setPartAutocomplete($("#searchVisibleItem"), {
 		select: function(label, value, event) {
-			addItem(label, value);
+			addTargetItem(label, value);
 			 
 			$("#searchVisibleItem").val("");
 		}
 	});
 });
 
-function addTarget(label, value)
+$("#BTN_deleteVisibleTarget").on("click", function(event) {
+	$.each($("#FORM_write .visible-target"), function(i, item) {
+		if ($(this).is(":checked"))
+		{
+			$(this).closest("div").remove();
+		};
+	});
+});	
+
+function addVisibleTarget(label, value)
 {
 	let str = label.split("|");
 	
@@ -212,9 +378,9 @@ function addTarget(label, value)
 		let html = [];
 		
 		html.push("<div>");
-		html.push("<input type='checkbox' class='custom-ui visible-target'/><label>" + dealerCode + "</label>");
+		html.push("<input type='checkbox' class='custom-ui visible-target'/><label>" + value + "</label><div class='split2'></div>");
 		html.push("<span>" + dealerName + "</span>");
-		html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerCode) + "'/>");
+		html.push("<input name='targetCode' type='hidden' value='" + JpUtilsString.trimToEmpty(value) + "'/>");
 		html.push("<input name='targetDescription' type='hidden' value='" + JpUtilsString.trimToEmpty(dealerName) + "'/>");
 		html.push("</div>");
 		
@@ -222,31 +388,17 @@ function addTarget(label, value)
 	};
 };
 
-function addItem(label, value)
-{
-	let materialNo = value;
-	
-	if ($("#FORM_write label:contains('" + label + "')").length == 0)
-	{
-		let html = [];
-		
-		html.push("<div>");
-		html.push("<input type='checkbox' class='custom-ui visible-item'/><label>" + label + "</label>");
-		html.push("<input name='materialNo' type='hidden' value='" + JpUtilsString.trimToEmpty(materialNo) + "'/>");
-		html.push("</div>");
-		
-		$("#addedItems").append(html.join(""));		
-	};
-};
+$("#BTN_uploadVisibleItem").on("click", function() {
+	UploadModal.show();
+});
 
-$("#BTN_deleteVisibleTarget").on("click", function(event) {
-	$.each($("#FORM_write .visible-target"), function(i, item) {
-		if ($(this).is(":checked"))
-		{
-			$(this).closest("div").remove();
-		};
-	});
-});	
+$("#BTN_checkAllVisibleItem").on("click", function() {
+	let isCheckAll = $(this).prop("isCheckAll") ? false : true;
+	
+	$("#addedItems input[type=checkbox]").prop("checked", isCheckAll);
+	
+	$(this).prop("isCheckAll", isCheckAll);
+});
 
 $("#BTN_deleteVisibleItem").on("click", function(event) {
 	$.each($("#FORM_write .visible-item"), function(i, item) {
@@ -279,16 +431,15 @@ $("#BTN_save").on("click", function() {
 		return;
 	};
 	
-	if(JpUtilsString.isEmpty($("#fromViewDate").val()) || JpUtilsString.isEmpty($("#fromViewHours").val()) || JpUtilsString.isEmpty($("#fromViewMinutes").val())
-		|| JpUtilsString.isEmpty($("#toViewDate").val()) || JpUtilsString.isEmpty($("#toViewHours").val()) || JpUtilsString.isEmpty($("#toViewMinutes").val()) )
+	if (JpUtilsString.isAnyEmpty($("#fromViewDate").val(), $("#fromViewHours").val(), $("#fromViewMinutes").val(), $("#toViewDate").val(), $("#toViewHours").val(), $("#toViewMinutes").val()))
 	{
-		alert("노출기간을 입력 해주세요.");
+		alert("[[#{HQP_M_EMPTY_VISIBLE PERIOD}]]");
 		return;
 	}
-
-	if ( 0 == $('input[name=uflSeq]').length)
+	
+	if (0 == bannerUploader.getFileCount())
 	{
-		alert("배너이미지를 첨부 해주세요.");
+		alert("[[#{HQP_M_EMPTY_BANNER}]]");
 		return;
 	};
 
@@ -307,9 +458,9 @@ $("#BTN_save").on("click", function() {
 			cache: false,
 			success: function(data, textStatus, jqXHR) {
 				//console.log('data', data);
-				$("#FORM_search input[name=pSeq]").val(data.RESULT);
-				ProgressBar.hide();
+				$("#FORM_search input[name=pSeq]").val(data.RESULT);				
 				$("#BTN_back").trigger("click");
+				ProgressBar.show();
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				let response = JSON.parse(jqXHR.responseText);
@@ -336,122 +487,12 @@ let xfe = new XFE({
 	width: "100%",
 	height: "100%",
 	onLoad: function() {
-			xfe.setBodyValue($("#htmlContent").val());	
+		xfe.setBodyValue($("#htmlContent").val());	
 	},
 	language: ((JpUtilsString.equals(GLOBAL_CONST.LANG, "KO")) ? "korean" : "english"),
 	initFontFamily: (JpUtilsString.equals(GLOBAL_CONST.LANG, "KO")) ? "맑은 고딕" : "Arial",
 });
 	
 xfe.render("xfe");
-
-$("#BTN_searchFile").on("click", function() {
-	$("#files").trigger("click");
-});	
-
-$("#files").on("change", function() {
-	if( 1 <= $("#FORM_write input[name=uflSeq]").length )
-	{
-		alert("배너이미지는 1개만 등록가능합니다.");
-		return;
-	}
-	
-	for (let i=0, length=this.files.length; i<length; i++)
-	{
-		addFile(this.files[i].name, this.files[i].size);
-	};
-});
-
-$("#BTN_deleteFile").on("click", function(event) {
-	let files = Array.from($("#files")[0].files);
-	const dataTransfer = new DataTransfer();
-	
-	$.each($("#FORM_write input[name=uflSeq]"), function(i, item) {
-		if ($(this).is(":checked"))
-		{
-			for (let j=0, length=files.length; j<length; j++)
-			{
-				if (JpUtilsString.equals(files[j].name, $(this).attr("filename")))
-				{
-					files.splice(j, 1);
-				};
-			};
-			
-			files.forEach(file => { dataTransfer.items.add(file); });
-			
-			if (JpUtilsString.isNotEmpty($(this).val()))
-			{
-				$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
-			};
-			
-			$(this).closest("div").remove();
-			
-			$("#files")[0].files = dataTransfer.files;
-		};
-	});
-});	
-
-function addFile(name, size, uflSeq)
-{
-	let html = [];
-	
-	html.push("<div>");
-	html.push("<input name='uflSeq' type='checkbox' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' class='custom-ui' fileName='" + JpUtilsString.trimToEmpty(name) + "'/><label>" + name + "</label>");
-	html.push("<div class='split2'></div><span>" + JpUtilsFile.displaySize(size) + "</span>");
-	html.push("</div>");
-	
-	$("#attachedFiles").append(html.join(""));
-};
-
-$("#BTN_searchFile2").on("click", function() {
-	$("#files2").trigger("click");
-});	
-
-$("#files2").on("change", function() {
-	for (let i=0, length=this.files.length; i<length; i++)
-	{
-		addFile2(this.files[i].name, this.files[i].size);
-	};
-});
-
-$("#BTN_deleteFile2").on("click", function(event) {
-	let files = Array.from($("#files2")[0].files);
-	const dataTransfer = new DataTransfer();
-	
-	$.each($("#FORM_write input[name=uflSeq2]"), function(i, item) {
-		if ($(this).is(":checked"))
-		{
-			for (let j=0, length=files.length; j<length; j++)
-			{
-				if (JpUtilsString.equals(files[j].name, $(this).attr("filename")))
-				{
-					files.splice(j, 1);
-				};
-			};
-			
-			files.forEach(file => { dataTransfer.items.add(file); });
-			
-			if (JpUtilsString.isNotEmpty($(this).val()))
-			{
-				$("#FORM_write").append("<input type='hidden' name='uflSeqs2' value='" + $(this).val() + "' />");
-			};
-			
-			$(this).closest("div").remove();
-			
-			$("#files2")[0].files = dataTransfer.files;
-		};
-	});
-});	
-
-function addFile2(name, size, uflSeq)
-{
-	let html = [];
-	
-	html.push("<div>");
-	html.push("<input name='uflSeq2' type='checkbox' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' class='custom-ui' fileName='" + JpUtilsString.trimToEmpty(name) + "'/><label>" + name + "</label>");
-	html.push("<div class='split2'></div><span>" + JpUtilsFile.displaySize(size) + "</span>");
-	html.push("</div>");
-	
-	$("#attachedFiles2").append(html.join(""));
-};
 </script>
 </th:block>								

@@ -72,7 +72,7 @@ html, body {
 	flex-flow: column;
 	overflow-x: auto;
 	overflow-y: hidden;
-	min-width: 1300px;
+	min-width: 1320px;
 }
 
 button {

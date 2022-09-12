@@ -406,10 +406,6 @@ public class ContentService extends GeneralService
 		cItemSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
 		cItemSearch.setLang(UserAuthenticationUtils.getUserDetails().getLanguage());
 
-		System.err.println("=======================================");
-		System.err.println(cItemSearch);
-		System.err.println("=======================================");
-
 		List<CItemDto> cItems = getCItemsFormTree(cItemSearch);
 
 		if (CollectionUtils.isNotEmpty(cItems))

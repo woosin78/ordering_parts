@@ -61,7 +61,7 @@ public class EpBoardContentDto extends IvGeneralDto
 
 	//variables for file upload
 	private List<MultipartFile> files;
-	private List<String> uflSeqs;
+	private List<String> uflSeqs;//삭제될 파일 식별자
 
 	public String getDisplayFromView()
 	{

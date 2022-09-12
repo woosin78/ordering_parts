@@ -1,7 +1,7 @@
 /*
  * https://semantic-ui.com/modules/modal.html#/settings
  */
-let JpUiModal = function(target)
+JpUiModal = function(target)
 {
 	this.target = JpUtilsObject.toJquery(target);
 	this.url;

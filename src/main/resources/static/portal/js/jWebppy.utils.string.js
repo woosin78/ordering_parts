@@ -18,13 +18,12 @@ JpUtilsString.equalsIgnoreCase = function(str1, str2)
 
 JpUtilsString.equals = function(str1, str2)
 {
-	
 	if (JpUtilsObject.isNull(str1) || JpUtilsObject.isNull(str2))
 	{
 		return false;
 	};
 	
-	if ($.trim(str1) == $.trim(str2))
+	if (JpUtilsString.trimToEmpty(str1) == JpUtilsString.trimToEmpty(str2))
 	{
 		return true;
 	};
@@ -34,7 +33,6 @@ JpUtilsString.equals = function(str1, str2)
 
 JpUtilsString.notEquals = function(str1, str2)
 {
-	
 	if (JpUtilsObject.isNull(str1) || JpUtilsObject.isNull(str2))
 	{
 		return false;
@@ -43,6 +41,28 @@ JpUtilsString.notEquals = function(str1, str2)
 	if ($.trim(str1) != $.trim(str2))
 	{
 		return true;
+	};
+	
+	return false;
+};
+
+JpUtilsString.equalsAny = function()
+{
+	let length = arguments.length; 
+	
+	if (length < 2)
+	{
+		return false;		
+	};
+	
+	let str = JpUtilsString.trimToEmpty(arguments[0]);
+	
+	for (let i=1; i<length; i++)
+	{
+		if (JpUtilsString.equals(str, arguments[i]))
+		{
+			return true;			
+		};
 	};
 	
 	return false;
@@ -68,30 +88,35 @@ JpUtilsString.isEmpty = function(str)
 	return false;
 };
 
-JpUtilsString.isAllEmpty = function(strs)
+JpUtilsString.isNotEmpty = function(str)
 {
-	if (strs == null || !Array.isArray(strs) || strs.length == 0)
+	return !JpUtilsString.isEmpty(str);
+};
+
+JpUtilsString.isAllEmpty = function()
+{
+	for (let i=0, length=arguments.length; i<length; i++)
 	{
-		console.log(1);
-		return false;		
-	};
-	
-	for (let i=0, length=strs.length; i<length; i++)
-	{
-		console.log(strs[i]);
-		
 		if (JpUtilsString.isNotEmpty(strs[i]))
 		{
 			return false;
-		}		
+		};		
 	};
 	
 	return true;
 };
 
-JpUtilsString.isNotEmpty = function(str)
+JpUtilsString.isAnyEmpty = function()
 {
-	return !JpUtilsString.isEmpty(str);
+	for (let i=0, length=arguments.length; i<length; i++)
+	{
+		if (JpUtilsString.isEmpty(arguments[i]))
+		{
+			return true;
+		};		
+	};
+	
+	return false;
 };
 
 JpUtilsString.defaultString = function(str1, str2)

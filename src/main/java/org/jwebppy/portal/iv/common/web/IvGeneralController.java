@@ -54,6 +54,7 @@ public class IvGeneralController extends PortalGeneralController
 	    		erpUserContext.setCustGrp3(userMap.getString("KVGR3"));
 	    		erpUserContext.setCustGrp4(userMap.getString("KVGR4"));
 	    		erpUserContext.setCustGrp5(userMap.getString("KVGR5"));
+	    		erpUserContext.setShippingCondition(userMap.getString("VSBED"));
 
 	    		UserAuthenticationUtils.getUserDetails().setErpUserContext(erpUserContext);
 	        }

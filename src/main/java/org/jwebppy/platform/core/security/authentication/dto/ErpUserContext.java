@@ -27,6 +27,7 @@ public class ErpUserContext implements Serializable
 	private String custGrp3;
 	private String custGrp4;
 	private String custGrp5;
+	private String shippingCondition;
 	private String customerType;
 
 	public String getCorpName()

@@ -1,4 +1,4 @@
-let JpUiForm = function(form)
+JpUiForm = function(form)
 {
 	this.form = $(form);
 	this.form;

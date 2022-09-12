@@ -124,8 +124,6 @@ public class OrderDto extends PartsDomesticGeneralDto
 					String orderQty = orderItem.getOrderQty();
 					String lotQty = orderItem.getLotQty();
 
-					System.err.println(orderItem);
-
 					if (CmStringUtils.isAnyEmpty(orderQty, lotQty))
 					{
 						continue;

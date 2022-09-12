@@ -1,4 +1,4 @@
-let JpUiTab = function(context)
+JpUiTab = function(context)
 {
 	this.context = JpUtilsObject.toJquery(context);
 	this.target = JpUtilsObject.toJquery(this.context).find(".item");

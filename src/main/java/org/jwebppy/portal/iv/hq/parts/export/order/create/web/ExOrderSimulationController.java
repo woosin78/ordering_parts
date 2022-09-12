@@ -287,9 +287,6 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 				orderItems.add(orderItem);
 			}
-
-			hssfWorkbook.close();
-			hssfWorkbook = null;
 		}
 		catch (IOException e)
 		{
@@ -297,17 +294,24 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		}
 		finally
 		{
-			if (hssfWorkbook != null)
+			try
 			{
-				try
-				{
-					hssfWorkbook.close();
-					hssfWorkbook = null;
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				hssfWorkbook.close();
+				hssfWorkbook = null;
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+
+			try
+			{
+				inputStream.close();
+				inputStream = null;
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
 			}
 		}
 
@@ -341,9 +345,6 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 
 				orderItems.add(orderItem);
 			}
-
-			xssfWorkbook.close();
-			xssfWorkbook = null;
 		}
 		catch (IOException e)
 		{
@@ -351,17 +352,24 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		}
 		finally
 		{
-			if (xssfWorkbook != null)
+			try
 			{
-				try
-				{
-					xssfWorkbook.close();
-					xssfWorkbook = null;
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				xssfWorkbook.close();
+				xssfWorkbook = null;
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+
+			try
+			{
+				inputStream.close();
+				inputStream = null;
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
 			}
 		}
 

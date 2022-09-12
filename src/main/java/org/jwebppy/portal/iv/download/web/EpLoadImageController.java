@@ -1,6 +1,7 @@
 package org.jwebppy.portal.iv.download.web;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 
 import javax.servlet.http.HttpServletResponse;
@@ -61,7 +62,7 @@ public class EpLoadImageController extends IvGeneralController
 
 		if (!file.exists())
 		{
-			throw new Exception(i18nMessageSource.getMessage("PTL_M_FILE_NOT_FOUND"));
+			throw new FileNotFoundException(i18nMessageSource.getMessage("PTL_M_FILE_NOT_FOUND"));
 		}
 
 		File imageFile = Paths.get(ROOT_PATH, uploadFile.getPath(), uploadFileList.getFullSavedName()).toFile();

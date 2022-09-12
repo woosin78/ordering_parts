@@ -66,6 +66,11 @@ public class OrderCreateGateController extends PartsDomesticGeneralController
 
 			for (int i=0, length=materialNos.length; i<length; i++)
 			{
+				if (CmStringUtils.isEmpty(materialNos[i]))
+				{
+					continue;
+				}
+
 				OrderItemDto orderItem = new OrderItemDto();
 				orderItem.setLineNo(OrderCreationUtils.lineNo(i+1));
 				orderItem.setMaterialNo(materialNos[i]);
@@ -83,6 +88,7 @@ public class OrderCreateGateController extends PartsDomesticGeneralController
 			}
 
 			order.setRefSystem(from);
+			order.setSimulationFrom(CmStringUtils.upperCase(from));
 			order.setOrderItems(orderItems);
 		}
 
@@ -94,13 +100,13 @@ public class OrderCreateGateController extends PartsDomesticGeneralController
 		ErpUserContext erpUserContext = getErpUserContext();
 
 		order.setDocType(CmStringUtils.defaultIfEmpty(order.getDocType(), "C"));
-		order.setOrderType(CmStringUtils.defaultIfEmpty(order.getOrderType(), "-"));
+		order.setOrderType(CmStringUtils.defaultIfEmpty(order.getOrderType(), "YDSO"));
     	order.setSoldToNo(erpUserContext.getCustCode());
     	order.setShipToNo(erpUserContext.getCustCode());
     	order.setSalesOrg(erpUserContext.getSalesOrg());
     	order.setDistChannel(erpUserContext.getDistChl());
     	order.setDivision(erpUserContext.getDivision());
-    	order.setShippingCondition(CmStringUtils.defaultIfEmpty(order.getShippingCondition(), "-"));//DB 에 not null 조건이므로 임의의 값 저장
+    	order.setShippingCondition(CmStringUtils.defaultIfEmpty(order.getShippingCondition(), CmStringUtils.defaultIfEmpty(erpUserContext.getShippingCondition(), "-")));//DB 에 not null 조건이므로 임의의 값 저장
     	order.setPoNo(CmStringUtils.defaultIfEmpty(order.getPoNo(), OrderCreationUtils.poNo(order.getSoldToNo())));
 
     	order.setOhhSeq(orderCreateService.saveOrderHistory(order));
@@ -110,6 +116,6 @@ public class OrderCreateGateController extends PartsDomesticGeneralController
 
 	protected RedirectView redirectUrl(OrderDto order)
 	{
-		return new RedirectView(PartsDomesticCommonVo.REQUEST_PATH + "/order/create/write?ohhSeq=" + order.getOhhSeq() + "&simulationFrom=" + order.getRefSystem());
+		return new RedirectView(PartsDomesticCommonVo.REQUEST_PATH + "/order/create/write?ohhSeq=" + order.getOhhSeq() + "&simulationFrom=" + order.getSimulationFrom());
 	}
 }

@@ -1,4 +1,4 @@
-let JpUiTree = function(object)
+JpUiTree = function(object)
 {
 	this.context = JpUtilsObject.toJquery(object);
 	this.items = [];

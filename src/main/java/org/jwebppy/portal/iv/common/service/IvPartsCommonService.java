@@ -13,18 +13,27 @@ import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class IvPartsCommonService extends IvGeneralService
 {
-	@Cacheable(cacheManager = "portalCacheManager", value = PortalCacheConfig.PARTS_INFO_AUTOCOMPLETE, unless="#result == null")
+	//@Cacheable(cacheManager = "portalCacheManager", value = PortalCacheConfig.PARTS_INFO_AUTOCOMPLETE, unless="#result == null")
 	public DataList getPartsInfo(Map<String, String> paramMap)
 	{
-		Map<String, Object> partMap = new HashMap<>();
-		partMap.put("MATERIAL", paramMap.get("partNo"));
-		partMap.put("MATERIAL_TEXT", paramMap.get("partDesc"));
+		String[] partNos = CmStringUtils.split(paramMap.get("partNo"), IvCommonVo.DELIMITER);
+
+		List<Map<String, Object>> items = new ArrayList<>();
+		for (String partNo: partNos)
+		{
+			Map<String, Object> partMap = new HashMap<>();
+			partMap.put("MATERIAL", partNo);
+			partMap.put("MATERIAL_TEXT", partNo);
+
+			items.add(partMap);
+		}
 
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_GET_QTY2");
 
@@ -38,7 +47,7 @@ public class IvPartsCommonService extends IvGeneralService
 				})
 			.and()
 			.table("LT_ITEM")
-				.add(partMap)
+				.add(items)
 			.output("LT_ITEM");
 
 		return simpleRfcTemplate.response(rfcRequest).getTable("LT_ITEM");

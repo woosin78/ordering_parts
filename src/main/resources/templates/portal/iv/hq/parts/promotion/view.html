@@ -4,8 +4,13 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 	
-	
 <th:block layout:fragment="content">
+	<style>
+	body {
+		overflow-y: scroll;
+	}
+	</style>
+	
 	<script src="/editor_html5/js/xfe_main.js"></script>
 	
 	<div class="block-header">
@@ -64,7 +69,7 @@
 				<td>[[${promotion?.height  == null ? '' : promotion.height }]] <span th:text="#{HQP_L_PIXCEL}"></span></td>
 			</tr>
 			<tr >
-				<th th:text="배너이미지"/>
+				<th th:text="#{HQP_L_BANNER_IMAGE}"/>
 				<td colspan="3">
 					<div th:each="uploadFileList : ${promotion.uploadFileLists}">
 						<a class="link" th:text="${uploadFileList.fullOriginName}" th:downloadKey="${uploadFileList.downloadKey}"></a><div class='split2'></div><span th:text="${uploadFileList.displayFileSize}"></span>
@@ -82,10 +87,10 @@
 				</td>
 			</tr>
 			<tr >
-				<th th:text="대상자재"/>
+				<th th:text="#{HQP_L_PROMOTION_MATERIAL}"/>
 				<td colspan="3">
 					<div th:each="promotionItem : ${promotion.promotionItems}">
-						<span th:text="${promotionItem.materialNo}"></span><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
+						<span th:text="${promotionItem.materialNo}" style="width:400px;"></span><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
 					</div>				
 				</td>			
 			</tr>
@@ -97,39 +102,10 @@
 	<textarea id="htmlContent" th:text="${promotion.htmlContent}" style="display:none;"></textarea>
 <script>
 $(window).on("load", function() {
+	$("#xfe").height($(".xfeViewFrame ").contents().height());
+
 	ProgressBar.hide();
-	
-	initBoardViwer($("#boardViwer"), $("#xfe"));
 });
-
-function initBoardViwer($area, $content)
-{
-	installBoardViewResizer($area, $content);
-	
-	$(window).on("resize", $.debounce(100, function(e){
-		installBoardViewResizer($area, $content);
-	}));
-};
-
-function installBoardViewResizer($area, $content)
-{
-	let height = 0;
-	
-	$.each($("body").children(":not(script)").not($area), function(index, element) {
-		if (!$(element).is(":visible"))
-		{
-			return true;
-		};
-		
-		height += $(element).outerHeight(true);
-	});
-	
-	let bodyHeight = $("body").height();
-	let h1 = $area.outerHeight(true) - $content.outerHeight(true);//게시글 영역 외 height
-	
-	$content.height(bodyHeight - height - h1);
-	xfe.setHeight($content.height() + "px");
-};
 
 $("#BTN_modify").on("click", function() {
 	$("#FORM_search")
@@ -164,7 +140,6 @@ $("#BTN_back").on("click", function() {
  */	
 let xfe = new XFE({
 	basePath: "[[@{/editor_html5}]]",
-	width: "100%",
 	viewMode: true,
     viewModeOptions: {
     	borderWidth: "0px"

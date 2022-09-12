@@ -1,4 +1,4 @@
-let JpUiRender = function()
+JpUiRender = function()
 {
 	let _this = this;
 	
@@ -10,8 +10,6 @@ let JpUiRender = function()
 		{
 			return false;
 		};
-		
-		let elementType = "";
 		
 		if (tagName == "GROUP")
 		{
@@ -74,7 +72,6 @@ let JpUiRender = function()
 		let attributes = [];
 		let isRequired = false;
 		let isHiddenFormElement = false;
-		let isDateFormElement = false;
 		let typeFormElement = "TEXT";
 		let closeTags = [];
 		let dataKey = "";

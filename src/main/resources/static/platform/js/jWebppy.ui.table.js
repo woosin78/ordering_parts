@@ -1,4 +1,4 @@
-let JpUiTable = function(table)
+JpUiTable = function(table)
 {
 	this.table = JpUtilsObject.toJquery(table);
 	this.request;

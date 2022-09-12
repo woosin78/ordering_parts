@@ -157,6 +157,24 @@ function _setDealerCodeAutocomplete(target, options)
 	});
 };
 
+//파일 업로더
+function _setFileUploader(target, fileElementName, deletedElementName)
+{
+	let fileUploader = new FileUploader({
+		target: target,
+		fileElementName: JpUtilsString.defaultString(fileElementName, "files"),
+		deletedElementName: JpUtilsString.defaultString(deletedElementName, "uflSeqs"),
+		i18n: {
+			FILE: "[[#{HQP_B_FILE}]]",
+			DELETE: "[[#{HQP_B_DELETE}]]",
+		}
+	});
+	
+	fileUploader.render();
+	
+	return fileUploader;
+};
+
 /*
  * Datatables default loading 처리. 최초 화면 로딩 시 ajax 실행되지 않게 함.
  * ServerSide: true, deferLoading: false 옵션을 적용할 경우 화면 로딩과 동시에 ajax 가 실행되지 않지만 않지만 ServerSide: true 를 설정할 경우 sorting 과 같은 기능 실행 시 서버 사이드에서 처리를 해야 함. 
@@ -185,7 +203,7 @@ function _defaultLoading(gridObj, option)
 
 //자동 스크롤 탑
 $("body").scroll(function() {
-	if ($(this).scrollTop() > 200 )
+	if ($(this).scrollTop() > 200)
 	{
 		$(".bt-gotop").fadeIn();
 	}

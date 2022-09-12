@@ -49,7 +49,7 @@ body {
 					<div class="split-row-more-compact"></div>
 					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div class="split-row-more-compact"></div>
-					<div id="addedTargets" style="width:100%; height:5em; display: block; overflow-y: auto;">
+					<div id="addedTargets">
 						<div th:each="boardContentTarget : ${boardContent?.boardContentTargets}">
 							<input type="checkbox" class="custom-ui visible-target"/><label class="dealer-code" th:text="${boardContentTarget.code}"></label>
 							<span class="dealer-name" th:text="${boardContentTarget.description}"></span>
@@ -100,31 +100,18 @@ body {
 				<td>
 					<div class="input-area popup">
 						<span th:text="#{HQP_L_WIDTH}" class="label"></span>
-						<input type="text" class="custom-ui-scope" id="width" name="width" th:value="${boardContent?.width}" th:placeholder="#{HQP_L_PLACEHOLD_PIXEL}" />
+						<input type="text" class="custom-ui-scope" id="width" name="width" th:value="${#strings.defaultString(boardContent?.width, '700')}" th:placeholder="#{HQP_L_PLACEHOLD_PIXEL}" />
 					</div>
 					<div class="split-row-more-compact"></div>
 					<div class="input-area popup">
 						<span th:text="#{HQP_L_HEIGHT}" class="label"></span>
-						<input type="text" class="custom-ui-scope" id="height" name="height" th:value="${boardContent?.height}" th:placeholder="#{HQP_L_PLACEHOLD_PIXEL}" />
+						<input type="text" class="custom-ui-scope" id="height" name="height" th:value="${#strings.defaultString(boardContent?.height, '600')}" th:placeholder="#{HQP_L_PLACEHOLD_PIXEL}" />
 					</div>
 				</td>
 			</tr>
 			<tr th:style="${board?.uploadFile != null ? '' : 'display:none;'}">
 				<th th:text="#{HQP_L_ATTACHMENT}"/>
-				<td>
-					<div class="split-row-more-compact"></div>
-					<button id="BTN_searchFile" type="button" th:text="#{HQP_B_FILE}" class="small_button"></button><div class="split"></div><button id="BTN_deleteFile" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
-					<div class="split-row-more-compact"></div>
-					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
-					<div class="split-row-more-compact"></div>
-					<!-- div id="attachedFiles" style="width:100%; height:5em; overflow-y: auto;" -->
-					<div id="attachedFiles">
-						<div th:each="uploadFileList : ${boardContent?.uploadFileLists}">
-							<input name="uflSeq" type="checkbox" th:value="${uploadFileList.uflSeq}" class="custom-ui" th:fileName="${uploadFileList.fullOriginName}"/><label th:text="${uploadFileList.fullOriginName}"></label>
-							<div class="split2"></div><span th:text="${uploadFileList.displayFileSize}"></span>
-						</div>
-					</div>
-				</td>
+				<td id="attachment">asdfasdfasdf</td>
 			</tr>		
 		</tbody>
 	</table>
@@ -139,6 +126,16 @@ body {
 	<input type="hidden" name="toRegDate" th:value="*{toRegDate}"/>
 	<input type="hidden" name="pageNumber" th:value="*{pageNumber}"/>
 	</form>
+<script th:inline="javascript">
+$(function(){
+	let fileUploader = _setFileUploader($("#attachment"), "files", "uflSeqs");
+	
+	/*[# th:each="uploadFileList : ${boardContent?.uploadFileLists}"]*/
+	fileUploader.addFile(/*[[${uploadFileList.fullOriginName}]]*/, /*[[${uploadFileList.fileSize}]]*/, /*[[${uploadFileList.uflSeq}]]*/);
+	/*[/]*/	
+});
+</script>
+	
 <script>
 $(function(){
 	Calendar.makeCalendar($("#fromViewDate"), "[[${boardContent?.displayFromView}]]");
@@ -147,6 +144,8 @@ $(function(){
 
 $(window).on("load", function() {
 	ProgressBar.hide();
+	
+	initBoardViwer($("#boardViwer"), $("#xfe"));
 	
 	_setDealerCodeAutocomplete($("#searchVisibleTarget"), {
 		select: function(label, value, event) {
@@ -186,7 +185,36 @@ $("#BTN_deleteVisibleTarget").on("click", function(event) {
 			$(this).closest("div").remove();
 		};
 	});
-});
+});	
+
+function initBoardViwer($area, $content)
+{
+	installBoardViewResizer($area, $content);
+	
+	$(window).on("resize", $.debounce(100, function(e){
+		installBoardViewResizer($area, $content);
+	}));
+};
+
+function installBoardViewResizer($area, $content)
+{
+	let height = 0;
+	
+	$.each($("body").children(":not(script)").not($area), function(index, element) {
+		if (!$(element).is(":visible"))
+		{
+			return true;
+		};
+		
+		height += $(element).outerHeight(true);
+	});
+	
+	let bodyHeight = $("body").height();
+	let h1 = $area.outerHeight(true) - $content.outerHeight(true);//게시글 영역 외 height
+	
+	$content.height(bodyHeight - height - h1);
+	xfe.setHeight($content.height() + "px");
+};
 
 $("#BTN_back").on("click", function() {
 	let action = (JpUtilsString.isNotEmpty("[[${boardContent?.bcSeq}]]")) ? "[[${BASE_PATH}]]/board/view" : "[[${BASE_PATH}]]/board/list";
@@ -229,9 +257,10 @@ $("#BTN_save").on("click", function() {
 			contentType: false,
 			cache: false,
 			success: function(data, textStatus, jqXHR) {
-				$("#FORM_search input[name=bcSeq]").val(data.RESULT);
-				
+				$("#FORM_search input[name=bcSeq]").val(data.RESULT);				
 				$("#BTN_back").trigger("click");
+				
+				ProgressBar.show();
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				let response = JSON.parse(jqXHR.responseText);
@@ -268,67 +297,6 @@ let xfe = new XFE({
 });
 	
 xfe.render("xfe");
-
-$("#BTN_searchFile").on("click", function() {
-	$("#files").trigger("click");
-});	
-
-$("#files").on("change", function() {
-	for (let i=0, length=this.files.length; i<length; i++)
-	{
-		addFile(this.files[i].name, this.files[i].size);
-	};
-});
-
-$("#BTN_deleteFile").on("click", function(event) {
-	let files = Array.from($("#files")[0].files);
-	const dataTransfer = new DataTransfer();
-	
-	$.each($("#FORM_write input[name=uflSeq]"), function(i, item) {
-		if ($(this).is(":checked"))
-		{
-			for (let j=0, length=files.length; j<length; j++)
-			{
-				try
-				{
-					if (JpUtilsString.equals(files[j].name, $(this).attr("fileName")))
-					{
-						files.splice(j, 1);
-					};					
-				}
-				catch(e)
-				{
-					console.log(e);
-				}
-			};
-			
-			files.forEach(file => { dataTransfer.items.add(file); });
-			
-			if (JpUtilsString.isNotEmpty($(this).val()))
-			{
-				$("#FORM_write").append("<input type='hidden' name='uflSeqs' value='" + $(this).val() + "' />");
-			};
-			
-			$(this).closest("div").remove();
-			
-			console.log(dataTransfer.files);
-			
-			$("#files")[0].files = dataTransfer.files;
-		};
-	});
-});	
-
-function addFile(name, size, uflSeq)
-{
-	let html = [];
-	
-	html.push("<div>");
-	html.push("<input name='uflSeq' type='checkbox' value='" + JpUtilsString.trimToEmpty(uflSeq) + "' class='custom-ui' fileName='" + JpUtilsString.trimToEmpty(name) + "'/><label>" + name + "</label>");
-	html.push("<div class='split2'></div><span>" + JpUtilsFile.displaySize(size) + "</span>");
-	html.push("</div>");
-	
-	$("#attachedFiles").append(html.join(""));
-};
 
 function isReply()
 {

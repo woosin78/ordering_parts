@@ -1,4 +1,4 @@
-let JpUiAutoComplete = function(target, url) {
+JpUiAutoComplete = function(target, url) {
 	this.target = target;
 	this.url = url;
 	this.type = "category";

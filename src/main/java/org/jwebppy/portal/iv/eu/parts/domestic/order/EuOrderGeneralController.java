@@ -31,7 +31,7 @@ public class EuOrderGeneralController extends EuPartsDomesticGeneralController
 {
 	@Autowired
 	private Environment environment;
-	
+
 	@Override
 	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
 	{
@@ -119,9 +119,6 @@ public class EuOrderGeneralController extends EuPartsDomesticGeneralController
 
 				orderItems.add(orderItem);
 			}
-
-			hssfWorkbook.close();
-			hssfWorkbook = null;
 		}
 		catch (IOException e)
 		{
@@ -129,17 +126,24 @@ public class EuOrderGeneralController extends EuPartsDomesticGeneralController
 		}
 		finally
 		{
-			if (hssfWorkbook != null)
+			try
 			{
-				try
-				{
-					hssfWorkbook.close();
-					hssfWorkbook = null;
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				hssfWorkbook.close();
+				hssfWorkbook = null;
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+
+			try
+			{
+				inputStream.close();
+				inputStream = null;
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
 			}
 		}
 
@@ -174,9 +178,6 @@ public class EuOrderGeneralController extends EuPartsDomesticGeneralController
 
 				orderItems.add(orderItem);
 			}
-
-			xssfWorkbook.close();
-			xssfWorkbook = null;
 		}
 		catch (IOException e)
 		{
@@ -184,17 +185,24 @@ public class EuOrderGeneralController extends EuPartsDomesticGeneralController
 		}
 		finally
 		{
-			if (xssfWorkbook != null)
+			try
 			{
-				try
-				{
-					xssfWorkbook.close();
-					xssfWorkbook = null;
-				}
-				catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				xssfWorkbook.close();
+				xssfWorkbook = null;
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+
+			try
+			{
+				inputStream.close();
+				inputStream = null;
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
 			}
 		}
 
