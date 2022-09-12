@@ -33,7 +33,7 @@ JpUiPopup.open = function(settings)
 	{
 		let message = "Your popup blocker is preventing you from proceeding. To continue, please disable your popup blocker for this site.";
 		
-		if (JpUtilsString.equals(navigator.language, "ko-KR"))
+		if (JpUtilsString.equalsAny(navigator.language, "ko-KR", "ko"))
 		{
 			message = "팝업이 차단 되었습니다. 팝업 차단을 해제하고 이용해 주세요.";			
 		};
