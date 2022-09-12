@@ -10,15 +10,22 @@
 	<div class="dropzone-area">
 		<div class="dropzone-area-top"></div>
 		<div class="dropzone-body dropzone-click-zone">
-			<div class="dropzone-click-zone" style="height:40.5px"></div>
+			<div class="dropzone-click-zone" style="height:20px"></div>
 			<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/icon/upload_file.png"/>
-			<div class="dropzone-body-content dropzone-click-zone" th:text="#{EUP_M_0002}"></div>
+			<div class="dropzone-body-content dropzone-click-zone" th:text="#{EUP_T_HOW_TO_UPLOAD_SIMULATION}"></div>
+			<hr style="width:95%;"/>
+			<div class="dropzone-body-content dropzone-click-zone">
+				<span class="bold">*[[#{EUP_T_GUIDE_ORDER_UPLOAD_FORM1}]]</span><br/>
+				- A: [[#{EUP_T_GUIDE_ORDER_UPLOAD_FORM2}]]<br/>
+				- B: [[#{EUP_T_GUIDE_ORDER_UPLOAD_FORM3}]]
+				<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/iv/hq/parts/common/upload_form.png"/>
+			</div>
 		</div>
 		<div class="dropzone-bottom dropzone-click-zone">
-			<button type="button" onclick="UploadModal.hide()">[[#{EUP_B_0014}]]</button>
+			<button type="button" onclick="UploadModal.hide()">[[#{EUP_B_CANCEL}]]</button>
 		</div>
 	</div>
-	<!-- Modal for upload simulation -->
+	<!-- Modal for upload simulation -->	
 
 	<div class="block-header">
 		<div class="block-title" th:text="#{EUP_T_0042}"></div>
@@ -50,6 +57,7 @@
 	<input type="hidden" id="uom" name="uom"/>
 	<input type="hidden" id="availability" name="availability"/>
 	<input type="hidden" id="blockReason" name="blockReason"/>
+	<input type="hidden" id="blockMessage" name="blockMessage"/>
 	<input type="hidden" id="message" name="message"/>
 	<input type="hidden" id="fgChargeDocumentFree" name="fgChargeDocumentFree"/>
 	<input type="hidden" id="pricingInfo" name="pricingInfo"/>
@@ -183,7 +191,7 @@
 	let UploadModal = {};
 	UploadModal.show = function() {
 		let width = 480;
-		let height = 250;
+		let height = 430;
 		let left = ($(window).innerWidth() - width) * 0.5;
 		let top = ($(window).innerHeight() - height) * 0.5;
 	
@@ -624,7 +632,6 @@
 	});
 	
 	$("#BTN_save").on("click", function() {
-	
 		if ($("#poNo").val() == "")
 		{
 			alert("[[#{EUP_M_0004}]]");
@@ -637,7 +644,7 @@
 			alert("[[#{EUP_M_0003}]]");
 			return;
 		};
-	
+		
 		if ($("#blockReason").val() != "")
 		{
 			alert($("#blockMessage").val());
@@ -989,8 +996,6 @@
 	
 			ProgressBar.hide();
 		});
-		
-		
 	});
 	</script>
 </th:block>
