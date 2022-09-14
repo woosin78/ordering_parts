@@ -2,4 +2,44 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.portal.iv.hq.parts.cart.mapper.CartMapper">
+	<insert id="insert" parameterType="CartEntity" useGeneratedKeys="true" keyProperty="ci_seq">
+		<selectKey keyProperty="ciSeq" resultType="Integer" order="BEFORE">
+			select ep_p_seq.nextval from dual
+		</selectKey>
+		
+		insert into ep_cart_item (ci_seq, u_seq, material_no, order_qty, fg_delete, reg_username, reg_date) 
+		values (#{ciSeq}, #{uSeq}, #{materialNo}, #{orderQty}, 'N', #{regUsername}, #{regDate})
+	</insert>
+	
+	<update id="updateFgDelete" parameterType="CartEntity">
+		update EP_CART_ITEM set
+			fg_delete='Y',
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			ci_seq=#{ciSeq}
+			and fg_delete='N'
+	</update>
+	
+	<select id="existCart" parameterType="CartEntity" resultType="int">
+		select count(*) 
+		from 
+			EP_CART_ITEM
+	    where
+	        fg_delete='N'
+	        and u_seq=#{uSeq}
+	        and material_no=#{materialNo}
+	</select>
+	
+	<select id="findCarts" parameterType="CartEntity" resultType="CartEntity">
+		select
+			*
+   		from
+        	EP_CART_ITEM 
+    	where
+        	fg_delete='N'
+        	and u_seq=#{uSeq}
+    	order by ci_seq desc
+	</select>
+	
 </mapper>

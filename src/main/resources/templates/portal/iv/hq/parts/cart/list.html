@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	
+	
+<th:block layout:fragment="content">
+	<div class="block-header">
+		<div class="block-title" th:text="장바구니"></div>
+		<div class="block-button-area">
+			<button id="BTN_order" type="button" th:text="#{HQP_B_ORDER2}"></button>
+			<button id="BTN_delete" type="button" th:text="#{HQP_B_DELETE}"></button>			
+		</div>
+	</div>
+	<div class="condition-area">
+	
+	</div>
+	
+	<div class="split-row"></div>
+	
+	<div class="grid-info">
+		<div class="grid-total">
+			<div class="split"></div>
+			<span class="total-number" id="totalRows"></span>
+		</div>
+	</div>
+	
+	<div id="AREA_grid" class="flex-grow grid-area">
+		<table id="TBL_grid" class="order-column stripe compact"></table>
+	</div>
+
+	<form id="FORM_order" method="post" th:action="@{/portal/iv/hq/parts/domestic/order/create/gate/cart}"></form>
+
+<script>
+let $tableObj;
+$(function(){
+	
+	$tableObj = $("#TBL_grid").DataTable({
+		ordering: true, 
+		columns : [
+			{// 컬럼에 checkbox 설정
+				name: "chk",				
+				className:"center noselect skip-download",// row selection 기능 막음.
+				orderable: false,// checkbox 는 정렬 불가
+				data: "ciSeq",
+				title:"<input type='checkbox' class='custom-ui check-all' onchange='syncInput(this)' onclick='allChecked(this)'><label></label>",
+				render: function(data, type, row)
+				{
+					return '<input type="checkbox" class="custom-ui check-all" name="ciSeq" value="' + data + '"><label></label>';// FixedColumns 사용시엔 syncInput 호출 필요함.
+				},
+				width: "50px"
+			},
+			{data: "materialNo",	title: "품번" },
+			{data: "materialText",	title: "품명" },
+			{
+				data: "orderQty", 	title: "수량", width: "10%",
+				render: function(data, type, row)
+				{
+					return '<input type="text" class="custom-ui-scope" onchange="syncInput(this)" name="orderQty" value="' + data + '"  maxlength="10" ><label></label>';
+				}
+			}
+		],
+		columnDefs: [
+			{targets: [0,1,2,3], className: "dt-body-center"}
+		],		
+		ajax: {
+			url: "[[${BASE_PATH}]]/cart/list/data",
+			data: function(p)
+			{
+				// ajax로 넘길 파라미터
+			},
+			dataSrc: function(response) 
+			{
+				//console.log('response',response);
+				let result = response.RESULT;
+				
+				if(null == result){
+					return result;
+				}
+				
+				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
+
+				return result;
+			}
+		},
+		paging : true, // 페이징 기능켬
+		pageLength: parseInt(GLOBAL_CONST.ROW_PER_PAGE), // 한 페이지에 20개 행
+		initComplete:function(settings, json)
+		{
+			//console.log('initComplete');
+			ProgressBar.hide();
+		}
+	});
+	
+	// Datatable grid 초기 설정 셋업
+	initGridTable($tableObj);
+	
+	
+	$("#TBL_grid").on("draw.dt", function () {
+		//숫자체크 JpUiForm.input.validation.number(대상객체, 허용 최소 값, 허용 최대 값)
+		JpUiForm.input.validation.number($("#TBL_grid input[name=orderQty]"), 1, 9999);
+	});
+	
+	
+	// 체크된값 겟
+	function getCheckedCiSeqs()
+	{
+		let tds = $tableObj.columns(0).nodes()[0];
+		let rtns = []; 
+		
+		for (let i=0, length=tds.length; i<length; i++)
+		{
+			let $td = $(tds[i]);
+			
+			if ($td.find("input:checkbox").is(":checked"))
+			{
+				let row = $tableObj.row($td);
+				rtns.push(row.data().ciSeq);
+			};
+		};
+		
+		return rtns;
+	};
+	
+	$("#BTN_order").on("click", function() {
+		
+		if( 0 == getCheckedCiSeqs().length)
+		{
+			return;
+		}
+		
+		if (confirm("주문화면으로 이동합니다."))
+		{
+			let tds = $tableObj.columns(0).nodes()[0];
+			
+			for (let i=0, length=tds.length; i<length; i++)
+			{
+				let $td = $(tds[i]);
+				
+				if ($td.find("input:checkbox").is(":checked"))
+				{
+					let row = $tableObj.row($td);
+					$("#FORM_order").append( "<input type='hidden' name='materialNo' value='" + row.data().materialNo + "' />" );
+					$("#FORM_order").append( "<input type='hidden' name='orderQty' value='" + row.data().orderQty + "' />" );
+				};
+			};
+			
+			ProgressBar.show();
+			
+			$("#FORM_order").submit();
+		}
+	});
+	
+	$("#BTN_delete").on("click", function() {
+		let ciSeqs = getCheckedCiSeqs();
+		if( 0 == ciSeqs.length)
+		{
+			return;
+		}
+		
+		if (confirm("삭제하시겠습니까?"))
+		{
+			JpUtilsAjax.post({
+				url: "/portal/iv/hq/parts/cart/delete",
+				data: {"ciSeqs" : ciSeqs.join(",")},
+				beforeSend: function(jqXHR, settings)
+				{
+					ProgressBar.show();
+				},			
+			    success: function(response, textStatus, jqXHR)
+			    {
+			    	$tableObj.ajax.reload();
+			    },
+			    complete: function(jqXHR, textStatus)
+		    	{
+		    		ProgressBar.hide();
+		    	}
+			});
+		};	
+	});
+	
+	
+});
+
+
+</script>
+
+</th:block>	

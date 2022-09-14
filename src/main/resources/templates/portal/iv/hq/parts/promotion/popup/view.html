@@ -54,6 +54,7 @@
 						<div class="split-row-more-compact"></div>
 						<button id="BTN_checkAll" type="button" th:text="#{HQP_B_SELECT_ALL}" class="small_button"></button>
 						<button id="BTN_order" type="button" th:text="#{HQP_B_ORDER2}" class="small_button"></button>
+						<button id="BTN_cart" type="button" th:text="장바구니담기" class="small_button"></button>
 						<div class="split-row-more-compact"></div>
 						<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 						<div th:each="promotionItem : ${promotion.promotionItems}">
@@ -130,6 +131,49 @@ $("#BTN_order").on("click", function() {
 	}
 	catch (e) {}
 });
+
+$("#BTN_cart").on("click", function() {
+	if(0==$("input[name=materialChk]:checked").length)
+	{
+		alert("장바구니에 담을 대상자재를 선택해 주세요.");
+		return;
+	};
+	
+	let materialNos = new Array();
+	
+	$("input[name=materialChk]:checked").each(function (index) {
+		materialNos[index] = $(this).val();
+	});
+	
+	console.log('materialNos', materialNos);
+	
+	try
+	{
+		JpUtilsAjax.post({
+			url: "/portal/iv/hq/parts/cart/add",
+			data: {"materialNos" : materialNos.join(",")},
+			beforeSend: function(jqXHR, settings)
+			{
+				ProgressBar.show();
+			},			
+		    success: function(response, textStatus, jqXHR)
+		    {
+		    	if (confirm("장바구니에 자재를 담았습니다. \n 장바구니로 이동하시겠습니까?"))
+				{
+					window.opener.location.href = "/portal/iv/hq/parts/cart/list";
+					window.close();
+				}
+		    },
+		    complete: function(jqXHR, textStatus)
+	    	{
+	    		ProgressBar.hide();
+	    	}
+		});
+		
+	}
+	catch (e) { console.log('error', e); }
+});
+
 
 $("a[downloadKey]").on("click", function() {					
 	PortalFileDownload.download($(this).attr("downloadKey"));

@@ -12,4 +12,8 @@ import lombok.ToString;
 public class CartEntity extends PartsGeneralEntity
 {
 	private static final long serialVersionUID = 664717208735966711L;
+	private Integer ciSeq;
+	private Integer uSeq;
+	private String materialNo;
+	private String orderQty;
 }
