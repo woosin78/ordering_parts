@@ -1,9 +1,11 @@
 package org.jwebppy.portal.iv.hq.parts.cart.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.portal.iv.hq.parts.cart.dto.CartDto;
@@ -62,18 +64,18 @@ public class CartService extends PartsGeneralService
 			return 1;
 		}
 
-
+		/*
 		if(CmStringUtils.isEmpty(cart.getOrderQty()))
 		{
 			cart.setOrderQty("1");
 		}
+		*/
 
 		CartEntity cartEntity = CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart);
 		cartMapper.insert(cartEntity);
 
 		return cartEntity.getCiSeq();
 	}
-
 
 	/**
 	 * 장바구니 삭제
@@ -118,15 +120,25 @@ public class CartService extends PartsGeneralService
 			rfcParamMap.add("materialNos", materialNos);
 	        Map<String, Map<String, Object>> materialInfo = promotionService.getMaterialInfo(rfcParamMap);
 
-	        for (int i=0; i<carts.size(); i++)
+	        for (int i=0, size=carts.size(); i<size; i++)
 			{
 	        	CartDto c = carts.get(i);
-	        	c.setMaterialText(materialInfo.get(c.getMaterialNo()).get("MATERIAL_TEXT").toString());
-				carts.set(i, c);
+
+	        	Map<String, Object> materialInfoMap = materialInfo.get(c.getMaterialNo());
+
+	        	//품명
+	        	c.setDescription(CmStringUtils.trimToEmpty(materialInfoMap.get("MATERIAL_TEXT")));
+
+	        	//Sales Lot
+				int lotQty = (int)NumberUtils.toDouble((BigDecimal)materialInfoMap.get("LOT_QTY"), 0);
+				lotQty = (lotQty == 0) ? 1 : lotQty;
+
+				c.setLotQty(Integer.toString(lotQty));
+
+				//carts.set(i, c);
 			}
 		}
 
 		return carts;
 	}
-
 }

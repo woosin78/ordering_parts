@@ -47,7 +47,7 @@ public class PromotionService extends PartsGeneralService
 	@Autowired
 	private EpUploadFileService uploadFileService;
 
-	public static final String UPLOAD_NAME = "SALES_PROMOTION-HQ";
+	public static final String UPLOAD_NAME = "SALES-PROMOTION_HQ";
 
 	/**
 	 * 프로모션 목록

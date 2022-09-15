@@ -7,7 +7,7 @@
 	
 <th:block layout:fragment="content">
 	<div class="block-header">
-		<div class="block-title" th:text="장바구니"></div>
+		<div class="block-title" th:text="#{HQP_T_CART}"></div>
 		<div class="block-button-area">
 			<button id="BTN_order" type="button" th:text="#{HQP_B_ORDER2}"></button>
 			<button id="BTN_delete" type="button" th:text="#{HQP_B_DELETE}"></button>			
@@ -33,7 +33,9 @@
 	<form id="FORM_order" method="post" th:action="@{/portal/iv/hq/parts/domestic/order/create/gate/cart}" target="order"></form>
 <script>
 let $tableObj;
-$(function(){	
+$(function(){
+	let tabIndex = 1;
+
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 
 		columns : [
@@ -49,19 +51,27 @@ $(function(){
 				},
 				width: "50px"
 			},
-			{data: "materialNo",	title: "품번" },
-			{data: "materialText",	title: "품명" },
+			{data: "materialNo",	title: "[[#{HQP_L_PART_NO}]]" },
+			{data: "description",	title: "[[#{HQP_L_PART_DESCRIPTION}]]" },
 			{
-				data: "orderQty", 	title: "수량", width: "10%",
+				data: "lotQty",	title: "[[#{HQP_L_SALES_LOT}]]",
 				orderable: false,
 				render: function(data, type, row)
 				{
-					return '<input type="number" class="custom-ui center" style="width:70px;" onchange="syncInput(this)" name="orderQty" value="' + data + '"><label></label>';
+					return "<span name='lotQty'>" + data + "</span>";
+				}
+			},
+			{
+				data: "orderQty", 	title: "[[#{HQP_L_REQ_QTY}]]",
+				orderable: false,
+				render: function(data, type, row)
+				{
+					return '<input type="number" class="custom-ui center" style="width:70px;" onchange="syncInput(this)" name="orderQty" tabindex="' + tabIndex++ + '" value="' + data + '"><label></label>';
 				}
 			}
 		],
 		columnDefs: [
-			{targets: [3], className: "dt-body-center"}
+			{targets: [3, 4], className: "dt-body-center"}
 		],		
 		ajax: {
 			url: "[[${BASE_PATH}]]/cart/list/data",
@@ -71,12 +81,12 @@ $(function(){
 			},
 			dataSrc: function(response) 
 			{
-				//console.log('response',response);
 				let result = response.RESULT;
 				
-				if(null == result){
-					return result;
-				}
+				if (JpUtilsObject.isNull(result))
+				{
+					return result;	
+				};
 				
 				$("#totalRows").html(JpUtilsNumber.addComma(result.length) + " row(s).");
 
@@ -86,7 +96,6 @@ $(function(){
 		paging: false, // 페이징 기능켬
 		initComplete: function(settings, json)
 		{
-			//console.log('initComplete');
 			ProgressBar.hide();
 		}
 	});
@@ -97,6 +106,34 @@ $(function(){
 	$("#TBL_grid").on("draw.dt", function () {
 		//숫자체크 JpUiForm.input.validation.number(대상객체, 허용 최소 값, 허용 최대 값)
 		JpUiForm.input.validation.number($("#TBL_grid input[name=orderQty]"), 1, 9999);
+		
+		JpUiForm.input.on.select($("#TBL_grid input[name=orderQty]"));
+		
+		$("#TBL_grid input[name=orderQty]").on("keyup", function(event) {			
+			let reqQty = parseInt($(this).val());
+			let lotQty = parseInt($(this).closest("tr").find("td span[name=lotQty]").text());
+			
+			if (JpUtilsString.isEmpty($(this).val()))
+			{
+				$(this).val(lotQty);
+			}
+			else
+			{
+				let value = parseInt(reqQty / lotQty);
+				
+				if (value == 0)
+				{
+					reqQty = lotQty;
+				}
+				else
+				{
+					//입력한 값과 가장 인접한 lotQty 에 맞는 값을 계산한다
+					reqQty = value * lotQty
+				};
+				
+				$(this).val(reqQty);				
+			};
+		});
 	});
 	
 	// 체크된값 겟
@@ -163,7 +200,7 @@ $(function(){
 			return;
 		};
 		
-		if (confirm("삭제하시겠습니까?"))
+		if (confirm("[[#{HQP_M_CONFIRM_DELETE}]]"))
 		{
 			JpUtilsAjax.post({
 				url: "/portal/iv/hq/parts/cart/delete",

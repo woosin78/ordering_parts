@@ -14,14 +14,15 @@ import lombok.ToString;
 public class CartDto extends PartsGeneralDto
 {
 	private static final long serialVersionUID = 4966926989263909123L;
-	
+
 	private Integer ciSeq;
 	private Integer uSeq;
 	private String materialNo;
-	private String materialText;
+	private String description;
+	private String lotQty;
 	private String orderQty;
-	
+
 	private List<Integer> ciSeqs;
 	private List<String> materialNos;
-	
+
 }
