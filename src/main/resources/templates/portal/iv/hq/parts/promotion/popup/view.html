@@ -54,11 +54,10 @@
 						<div class="split-row-more-compact"></div>
 						<button id="BTN_checkAll" type="button" th:text="#{HQP_B_SELECT_ALL}" class="small_button"></button>
 						<button id="BTN_order" type="button" th:text="#{HQP_B_ORDER2}" class="small_button"></button>
-						<button id="BTN_addCart" type="button" th:text="장바구니담기" class="small_button"></button>
+						<button id="BTN_addCart" type="button" th:text="#{HQP_B_ADD_CART}" class="small_button"></button>
 						<div class="split-row-more-compact"></div>
 						<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 						<div th:each="promotionItem : ${promotion.promotionItems}">
-							<!--<span th:text="${promotionItem.materialNo}"></span><div class='split2'></div><span th:text="부품명"></span>-->
 							<input type="checkbox" name="materialChk" class="custom-ui visible-item" th:value="${promotionItem.materialNo}" />
 							<label class="dealer-code" th:text="${promotionItem.materialNo}"></label><div class='split2'></div><span th:text="${promotionItem.materialText}"></span>
 						</div>				
