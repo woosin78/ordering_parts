@@ -8,7 +8,7 @@
 <div class="block-header">
 	<div class="block-title" th:text="#{HQP_T_PARTS_INFO}"></div><!-- Parts Info. -->
 	<div class="block-button-area">
-		<!--<button id="BTN_cart" type="button" th:text="장바구니담기"></button>--> <!-- Add Cart -->
+		<button id="BTN_addCart" type="button" th:text="장바구니담기"></button>
 		<button id="BTN_calc" type="button" th:text="#{HQP_B_CALCULATE}"></button><!-- Calculate -->
 		<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 	</div>	
@@ -299,30 +299,20 @@ $("#BTN_calc").on("click", function() {
 });	
 
 //Search 버튼 클릭
-$("#BTN_search").on("click", function(){
+$("#BTN_search").on("click", function() {
 	doSearch(); 
 });
 
-$("#BTN_cart").on("click", function() {
+//장바구니담기
+$("#BTN_addCart").on("click", function() {
+	if (JpUtilsString.isEmpty($("#MAKTX").text()))
+	{
+		alert("[[#{HQP_M_USE_AFTER_SEARCHING}]]");
+		return;
+	};
 	
-	JpUtilsAjax.post({
-		url: "/portal/iv/hq/parts/cart/add", 
-		data: { materialNo: $("#pPartNo").val() },
-		success: function(data, textStatus, jqXHR)
-		{
-			
-			JpUiDimmer.confirm("장바구니에 자재를 담았습니다. 장바구니로 이동하시겠습니까?", function() {
-				location.href="/portal/iv/hq/parts/cart/list";
-			});
-			
-		},error: function(jqXHR, textStatus, errorThrown) {
-			let result = JSON.parse(jqXHR.responseText);
-			JpUiDimmer.alert(result.MESSAGE);
-		}
-	});	
-	
-});	
-
+	_addCart($("#pPartNo").val());
+});
 
 //_showSubPartList() callback 함수
 function _callbackSubPartList(partNo)

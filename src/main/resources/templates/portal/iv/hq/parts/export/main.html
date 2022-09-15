@@ -55,6 +55,8 @@
 							<li>|</li>
 							<li class="new-window" th:text="#{PTL_T_NEW_WINDOW}"></li>
 							<li>|</li>
+							<li class="cart" th:text="#{HQP_T_CART}"></li>
+							<li>|</li>
 							<li class="dealer-info" th:text="#{PTL_T_DEALER_INFO}"></li>
 							<li>|</li>
 							<li class="tooltip"><span th:text="#{PTL_T_LAST_LOGIN_INFO}" style="color: #fff"></span><span class="last-login-time tooltiptext"></span></li>
@@ -166,6 +168,10 @@ $(function(){
 	$(".top-header li.new-window").on("click", function() {
 		window.open("/portal/forward/entry_point", "");
 	});
+	
+	$(".top-header li.cart").on("click", function() {
+		Popup.open("/portal/iv/hq/parts/cart/popup/list", 900, 600);
+	});	
 	
 	$(".top-header li.dealer-info").on("click", function() {
 		clickDealerInfo();

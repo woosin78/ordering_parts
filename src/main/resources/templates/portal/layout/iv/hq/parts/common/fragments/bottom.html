@@ -32,6 +32,10 @@ $(document).ready(function() {
 		window.open("/portal/forward/entry_point", "");
 	});
 	
+	$(".top-header li.cart").on("click", function() {
+		_showCart();
+	});	
+	
 	$(".top-header li.dealer-info").on("click", function() {
 		_clickDealerInfo();	    		
 	});

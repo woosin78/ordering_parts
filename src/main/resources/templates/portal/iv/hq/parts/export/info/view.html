@@ -8,7 +8,7 @@
 <div class="block-header">
 	<div class="block-title" th:text="#{HQP_T_PARTS_INFO}"></div><!-- Parts Info. -->
 	<div class="block-button-area">
-		<!-- button id="BTN_calc" type="button" th:text="#{HQP_B_CALCULATE}"></button --><!-- Calculate -->
+		<button id="BTN_addCart" type="button" th:text="장바구니담기"></button>
 		<button id="BTN_search" type="button" th:text="#{HQP_B_SEARCH}"></button><!-- Search -->
 	</div>	
 </div>	
@@ -288,6 +288,17 @@ function doSearch()
 //Search 버튼 클릭
 $("#BTN_search").on("click", function(){
 	doSearch(); 
+});
+
+//장바구니담기
+$("#BTN_addCart").on("click", function() {
+	if (JpUtilsString.isEmpty($("#MAKTX").text()))
+	{
+		alert("[[#{HQP_M_USE_AFTER_SEARCHING}]]");
+		return;
+	};
+	
+	_addCart($("#pPartNo").val());
 });
 
 //_showSubPartList() callback 함수

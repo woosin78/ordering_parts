@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
+	layout:decorate="~{portal/layout/iv/hq/parts/popup/index}">  
 	
 	
 <th:block layout:fragment="content">
@@ -30,12 +30,10 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 
-	<form id="FORM_order" method="post" th:action="@{/portal/iv/hq/parts/domestic/order/create/gate/cart}"></form>
-
+	<form id="FORM_order" method="post" th:action="@{/portal/iv/hq/parts/domestic/order/create/gate/cart}" target="order"></form>
 <script>
 let $tableObj;
-$(function(){
-	
+$(function(){	
 	$tableObj = $("#TBL_grid").DataTable({
 		ordering: true, 
 		columns : [
@@ -55,14 +53,15 @@ $(function(){
 			{data: "materialText",	title: "품명" },
 			{
 				data: "orderQty", 	title: "수량", width: "10%",
+				orderable: false,
 				render: function(data, type, row)
 				{
-					return '<input type="text" class="custom-ui-scope" onchange="syncInput(this)" name="orderQty" value="' + data + '"  maxlength="10" ><label></label>';
+					return '<input type="number" class="custom-ui center" style="width:70px;" onchange="syncInput(this)" name="orderQty" value="' + data + '"><label></label>';
 				}
 			}
 		],
 		columnDefs: [
-			{targets: [0,1,2,3], className: "dt-body-center"}
+			{targets: [3], className: "dt-body-center"}
 		],		
 		ajax: {
 			url: "[[${BASE_PATH}]]/cart/list/data",
@@ -84,9 +83,8 @@ $(function(){
 				return result;
 			}
 		},
-		paging : true, // 페이징 기능켬
-		pageLength: parseInt(GLOBAL_CONST.ROW_PER_PAGE), // 한 페이지에 20개 행
-		initComplete:function(settings, json)
+		paging: false, // 페이징 기능켬
+		initComplete: function(settings, json)
 		{
 			//console.log('initComplete');
 			ProgressBar.hide();
@@ -96,12 +94,10 @@ $(function(){
 	// Datatable grid 초기 설정 셋업
 	initGridTable($tableObj);
 	
-	
 	$("#TBL_grid").on("draw.dt", function () {
 		//숫자체크 JpUiForm.input.validation.number(대상객체, 허용 최소 값, 허용 최대 값)
 		JpUiForm.input.validation.number($("#TBL_grid input[name=orderQty]"), 1, 9999);
 	});
-	
 	
 	// 체크된값 겟
 	function getCheckedCiSeqs()
@@ -124,32 +120,40 @@ $(function(){
 	};
 	
 	$("#BTN_order").on("click", function() {
-		
 		if( 0 == getCheckedCiSeqs().length)
 		{
+			alert("[[#{HQP_M_SELECT_TARGETS}]]");
 			return;
-		}
+		};
 		
-		if (confirm("주문화면으로 이동합니다."))
+		let tds = $tableObj.columns(0).nodes()[0];
+		
+		for (let i=0, length=tds.length; i<length; i++)
 		{
-			let tds = $tableObj.columns(0).nodes()[0];
+			let $td = $(tds[i]);
 			
-			for (let i=0, length=tds.length; i<length; i++)
+			if ($td.find("input:checkbox").is(":checked"))
 			{
-				let $td = $(tds[i]);
-				
-				if ($td.find("input:checkbox").is(":checked"))
-				{
-					let row = $tableObj.row($td);
-					$("#FORM_order").append( "<input type='hidden' name='materialNo' value='" + row.data().materialNo + "' />" );
-					$("#FORM_order").append( "<input type='hidden' name='orderQty' value='" + row.data().orderQty + "' />" );
-				};
+				let row = $tableObj.row($td);
+				$("#FORM_order").append( "<input type='hidden' name='materialNo' value='" + row.data().materialNo + "' />" );
+				$("#FORM_order").append( "<input type='hidden' name='orderQty' value='" + row.data().orderQty + "' />" );
 			};
-			
-			ProgressBar.show();
-			
-			$("#FORM_order").submit();
+		};
+		
+		ProgressBar.show();
+		
+		//form submit 시 opener 를 target 으로 지정하기 위해
+		window.opener.name = "order";
+		
+		$("#FORM_order").submit();
+		
+		try
+		{
+			window.opener.ProgressBar.show();
 		}
+		catch (e) {};
+		
+		window.close();
 	});
 	
 	$("#BTN_delete").on("click", function() {
@@ -157,7 +161,7 @@ $(function(){
 		if( 0 == ciSeqs.length)
 		{
 			return;
-		}
+		};
 		
 		if (confirm("삭제하시겠습니까?"))
 		{
@@ -179,11 +183,6 @@ $(function(){
 			});
 		};	
 	});
-	
-	
 });
-
-
 </script>
-
 </th:block>	
