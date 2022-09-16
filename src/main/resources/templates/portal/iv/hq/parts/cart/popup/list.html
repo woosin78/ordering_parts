@@ -113,11 +113,7 @@ $(function(){
 			let reqQty = parseInt($(this).val());
 			let lotQty = parseInt($(this).closest("tr").find("td span[name=lotQty]").text());
 			
-			if (JpUtilsString.isEmpty($(this).val()))
-			{
-				$(this).val(lotQty);
-			}
-			else
+			if (JpUtilsString.isNotEmpty($(this).val()))
 			{
 				let value = parseInt(reqQty / lotQty);
 				
@@ -131,7 +127,7 @@ $(function(){
 					reqQty = value * lotQty
 				};
 				
-				$(this).val(reqQty);				
+				$(this).val(reqQty);
 			};
 		});
 	});
