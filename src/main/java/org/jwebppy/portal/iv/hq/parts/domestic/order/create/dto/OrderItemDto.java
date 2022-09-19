@@ -42,6 +42,7 @@ public class OrderItemDto extends PartsDomesticGeneralDto
 	private String errorCode;
 	private String errorMessage;
 	private String fgInvalidSalesLot = PortalCommonVo.NO;
+	private int sort;//정렬순서
 
 	public String getAdjustedOrderQty()
 	{

@@ -152,6 +152,7 @@ public class OrderCreateController extends PartsDomesticGeneralController
 					orderItem.setLotQty(lotQties[i]);
 					orderItem.setUom(uoms[i]);
 					orderItem.setAvailability(availabilities[i]);
+					orderItem.setSort(i);
 
 					orderItems.add(orderItem);
 				}

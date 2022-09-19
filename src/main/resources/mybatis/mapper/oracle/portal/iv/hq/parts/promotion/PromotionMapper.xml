@@ -44,6 +44,8 @@
 		    ep_promotion a
 		where
 		    a.fg_delete='N'
+		    and a.target=#{target}
+
 		    <if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(title)">
 				and upper(a.title) like '%'||upper(#{title})||'%'
 			</if>
@@ -74,11 +76,12 @@
 	
 	<select id="findBannerPromotions" parameterType="PromotionSearchDto" resultMap="bannerPromotionEntityMap">
 		select
-			a.*
+			a.p_seq
    		from
         	EP_PROMOTION a
     	where
         	a.fg_delete='N'
+        	and a.target=#{target}
         	and a.from_view <![CDATA[<=]]> sysdate and a.to_view <![CDATA[>=]]> sysdate
         	and  ( 
 	            0 = (select count(b.pt_seq) from EP_PROMOTION_TARGET b where a.p_seq = b.p_seq and b.fg_delete='N' )
@@ -88,7 +91,7 @@
     	order by a.p_seq desc
 	</select>
 	
-	<select id="findPromotion" parameterType="int" resultMap="promotionEntityMap">
+	<select id="findPromotion" resultMap="promotionEntityMap">
 		select
 			a.*
 		from
@@ -159,7 +162,8 @@
 			mod_date=#{modDate}
 		where
 			p_seq=#{pSeq}
-			and fg_delete='N'
+			and target=#{target}
+			and fg_delete='N'			
 	</update>
 	
 </mapper>

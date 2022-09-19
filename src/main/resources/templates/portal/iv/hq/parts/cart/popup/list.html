@@ -27,7 +27,9 @@
 	</div>
 	
 	<div id="AREA_grid" class="flex-grow grid-area">
+		<form autocomplete="off">
 		<table id="TBL_grid" class="order-column stripe compact"></table>
+		</form>
 	</div>
 
 	<form id="FORM_order" method="post" th:action="@{/portal/iv/hq/parts/domestic/order/create/gate/cart}" target="order"></form>
@@ -66,7 +68,7 @@ $(function(){
 				orderable: false,
 				render: function(data, type, row)
 				{
-					return '<input type="number" class="custom-ui center" style="width:70px;" onchange="syncInput(this)" name="orderQty" tabindex="' + tabIndex++ + '" value="' + data + '"><label></label>';
+					return '<input type="number" class="custom-ui center" style="width:70px;" onchange="syncInput(this)" name="orderQty" tabindex="' + tabIndex++ + '" value="' + JpUtilsString.trimToEmpty(data) + '"><label></label>';
 				}
 			}
 		],
@@ -168,8 +170,11 @@ $(function(){
 			if ($td.find("input:checkbox").is(":checked"))
 			{
 				let row = $tableObj.row($td);
-				$("#FORM_order").append( "<input type='hidden' name='materialNo' value='" + row.data().materialNo + "' />" );
-				$("#FORM_order").append( "<input type='hidden' name='orderQty' value='" + row.data().orderQty + "' />" );
+				let node = $(row.node());
+				
+				$("#FORM_order")
+					.append("<input type='hidden' name='materialNo' value='" + row.data().materialNo + "' />")
+					.append("<input type='hidden' name='orderQty' value='" + node.find("input[name=orderQty]").val() + "' />");
 			};
 		};
 		

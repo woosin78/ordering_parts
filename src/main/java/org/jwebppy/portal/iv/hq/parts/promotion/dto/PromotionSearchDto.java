@@ -15,7 +15,7 @@ import lombok.ToString;
 public class PromotionSearchDto extends PartsGeneralDto
 {
 	private static final long serialVersionUID = 7436604637369814540L;
-	
+
 	private Integer pSeq;
 	private String title;
 	private String fromView;
@@ -25,6 +25,7 @@ public class PromotionSearchDto extends PartsGeneralDto
 	private String toRegDate;
 	private String custCode;
 	private String state;
+	private String target;
 
 	public LocalDateTime getFromRegDateForDb()
 	{

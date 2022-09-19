@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
 import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.Formatter;
@@ -40,7 +41,7 @@ public class PromotionController extends PartsGeneralController
 	private I18nMessageSource i18nMessageSource;
 
 	@RequestMapping("/list")
-	public String list(Model model, WebRequest webRequest) // , PromotionSearchDto promotionSearch
+	public String list(Model model, WebRequest webRequest)
 	{
 		setDefaultAttribute(model, webRequest);
 
@@ -53,6 +54,7 @@ public class PromotionController extends PartsGeneralController
 	{
 		promotionSearch.setCorp(getCorp());
 		promotionSearch.setRowPerPage(999999);
+		promotionSearch.setTarget(getTarget());
 
 		return ListUtils.emptyIfNull(promotionService.getPageablePromotions(promotionSearch));
 	}
@@ -63,6 +65,7 @@ public class PromotionController extends PartsGeneralController
 	{
 		// 프로모션 대상 조건
 		promotionSearch.setCustCode(getErpUserContext().getCustCode());
+		promotionSearch.setTarget(getTarget());
 
 		return ListUtils.emptyIfNull(promotionService.getBannerPromotions(promotionSearch));
 	}
@@ -70,10 +73,10 @@ public class PromotionController extends PartsGeneralController
 	@RequestMapping("/popup/view")
 	public String popupView(Model model, WebRequest webRequest, PromotionSearchDto promotionSearch)
 	{
-		if (ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
-		{
-			model.addAttribute("promotion", promotionService.getPromotion(promotionSearch.getPSeq(), getErpUserInfo()));
-		}
+		//본인 프로모션만 조회해야 할 경우 custCode 에 customer code 값을 넣어준다.
+		promotionSearch.setCustCode(getErpUserContext().getCustCode());
+
+		addPromotionToModel(model, promotionSearch);
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -83,10 +86,7 @@ public class PromotionController extends PartsGeneralController
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest, PromotionSearchDto promotionSearch)
 	{
-		if (ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
-		{
-			model.addAttribute("promotion", promotionService.getPromotion(promotionSearch.getPSeq(), getErpUserInfo()));
-		}
+		addPromotionToModel(model, promotionSearch);
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -101,9 +101,6 @@ public class PromotionController extends PartsGeneralController
 			@RequestParam(name = "materialNo", required = false) String[] materialNos
 			)
 	{
-
-		promotion.setTarget(getErpUserContext().getSalesOrg() + getErpUserContext().getDistChl() );
-
 		if (CmArrayUtils.isNotEmpty(targetCodes))
 		{
 			List<PromotionTargetDto> promotionTargets = new ArrayList<>();
@@ -140,11 +137,13 @@ public class PromotionController extends PartsGeneralController
 
 		try
 		{
+			promotion.setTarget(getTarget());
+
 			return promotionService.save(promotion);
 		}
 		catch (MaxUploadSizeExceededException e)
 		{
-			PromotionDto p = promotionService.getPromotion(promotion.getPSeq(), getErpUserInfo());
+			PromotionDto p = promotionService.getPromotion(promotion.getPSeq());
 
 			if (ObjectUtils.isNotEmpty(p.getUploadFile()))
 			{
@@ -162,10 +161,7 @@ public class PromotionController extends PartsGeneralController
 	@RequestMapping("/view")
 	public String view(Model model, WebRequest webRequest, PromotionSearchDto promotionSearch)
 	{
-		if (ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
-		{
-			model.addAttribute("promotion", promotionService.getPromotion(promotionSearch.getPSeq(), getErpUserInfo()));
-		}
+		addPromotionToModel(model, promotionSearch);
 
 		addAllAttributeFromRequest(model, webRequest);
 
@@ -177,6 +173,23 @@ public class PromotionController extends PartsGeneralController
 	public Object delete(PromotionDto promotion)
 	{
 		return promotionService.delete(promotion);
+	}
+
+	private String getTarget()
+	{
+		ErpUserContext erpUserContext = getErpUserContext();
+
+		return erpUserContext.getSalesOrg() + erpUserContext.getDistChl();
+	}
+
+	private void addPromotionToModel(Model model, PromotionSearchDto promotionSearch)
+	{
+		if (ObjectUtils.isNotEmpty(promotionSearch.getPSeq()))
+		{
+			promotionSearch.setTarget(getTarget());
+
+			model.addAttribute("promotion", ObjectUtils.defaultIfNull(promotionService.getPromotion(promotionSearch, getErpUserInfo()), new PromotionDto()));
+		}
 	}
 
 	protected void setDefaultAttribute(Model model, WebRequest webRequest)
@@ -195,6 +208,3 @@ public class PromotionController extends PartsGeneralController
 		addAllAttributeFromRequest(model, webRequest);
 	}
 }
-
-
-

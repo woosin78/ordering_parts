@@ -37,8 +37,8 @@
 	</insert>
 	
 	<insert id="insertOrderHistoryItem" parameterType="OrderHistoryItemEntity">
-		insert into ep_order_history_item (ohh_seq, material_no, order_qty) values (
-			#{ohhSeq}, #{materialNo}, #{orderQty}
+		insert into ep_order_history_item (ohh_seq, material_no, order_qty, sort) values (
+			#{ohhSeq}, #{materialNo}, #{orderQty}, #{sort}
 		)
 	</insert>
 
@@ -91,6 +91,6 @@
 		ep_order_history_item
 		where
 		ohh_seq=#{ohhSeq}
-		order by material_no
+		order by sort
 	</select>
 </mapper>

@@ -7,7 +7,7 @@ import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionSearchDto;
 import org.jwebppy.portal.iv.hq.parts.promotion.entity.PromotionEntity;
 
 @Mapper
-public interface PromotionMapper 
+public interface PromotionMapper
 {
 	public List<PromotionEntity> findPageablePromotions(PromotionSearchDto promotionSearch);
 	public List<PromotionEntity> findBannerPromotions(PromotionSearchDto promotionSearch);

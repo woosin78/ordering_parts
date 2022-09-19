@@ -68,6 +68,7 @@ public class OrderHistoryHeaderDto extends PartsDomesticGeneralDto
 				orderHistoryItem.setOhhSeq(ohhSeq);
 				orderHistoryItem.setMaterialNo(orderItem.getMaterialNo());
 				orderHistoryItem.setOrderQty(orderItem.getOrderQty());
+				orderHistoryItem.setSort(orderItem.getSort());
 
 				orderHistoryItems.add(orderHistoryItem);
 			}

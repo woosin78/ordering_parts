@@ -191,11 +191,19 @@ var Promotion = {
 				{
 					$('#promotionBanner').css('display', 'none');
 					return;
-				}
+				};
 				
 				$.each(result, function(index, element) {
 					$('#slider-div').append('<a href="javascript:Promotion.popupView('+element.pseq+', '+element.width+', '+element.height+')"><img class="slick-img" src="/portal/iv/image/load?ulfSeq=' + element.uploadFileLists[0].uflSeq + '" onerror="Promotion.noimage(this);"></a>');
 				});
+				
+				$(".slick-img").on("mouseover", function() {
+					$(this).animate({opacity: "1"}, 300);
+				});
+				
+				$(".slick-img").on("mouseout", function() {
+					$(this).animate({opacity: "0.8"}, 300);
+				});				
 				
 				// 슬라이더 옵션 셜정
 				$('#slider-div').slick({

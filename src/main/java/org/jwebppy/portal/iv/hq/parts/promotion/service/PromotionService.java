@@ -20,6 +20,7 @@ import org.jwebppy.portal.iv.hq.parts.common.service.PartsGeneralService;
 import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionDto;
 import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionItemDto;
 import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionSearchDto;
+import org.jwebppy.portal.iv.hq.parts.promotion.dto.PromotionTargetDto;
 import org.jwebppy.portal.iv.hq.parts.promotion.entity.PromotionEntity;
 import org.jwebppy.portal.iv.hq.parts.promotion.mapper.PromotionMapper;
 import org.jwebppy.portal.iv.hq.parts.promotion.mapper.PromotionObjectMapper;
@@ -74,9 +75,53 @@ public class PromotionService extends PartsGeneralService
 	 * @param pSeq
 	 * @return
 	 */
-	public PromotionDto getPromotion(Integer pSeq, PartsErpDataMap rfcParamMap)
+	public PromotionDto getPromotion(Integer pSeq)
 	{
-		PromotionDto promotion = CmModelMapperUtils.mapToDto(PromotionObjectMapper.INSTANCE, promotionMapper.findPromotion(pSeq));
+		return CmModelMapperUtils.mapToDto(PromotionObjectMapper.INSTANCE, promotionMapper.findPromotion(pSeq));
+	}
+
+	/**
+	 * 프로모션 상세정보
+	 * @param promotionSearch
+	 * @return
+	 */
+	public PromotionDto getPromotion(PromotionSearchDto promotionSearch, PartsErpDataMap rfcParamMap)
+	{
+		PromotionDto promotion = getPromotion(promotionSearch.getPSeq());
+
+		/*
+		 * Sales Area check
+		 * 예) Target: F11610, F11620, 781610, 721610
+		 */
+		if (ObjectUtils.isEmpty(promotion) || CmStringUtils.notEquals(promotion.getTarget(), promotionSearch.getTarget()))
+		{
+			return null;
+		}
+
+		//본인 프로모션만 조회해야 할 경우 custCode 에 customer code 값을 넣어준다.
+		if (CmStringUtils.isNotEmpty(promotionSearch.getCustCode()))
+		{
+			List<PromotionTargetDto> promotionTargets = promotion.getPromotionTargets();
+
+			if (CollectionUtils.isNotEmpty(promotion.getPromotionTargets()))
+			{
+				String custCode = promotionSearch.getCustCode();
+				boolean isExists = false;
+
+				for (PromotionTargetDto promotionTarget: promotionTargets)
+				{
+					if (CmStringUtils.equals(promotionTarget.getCode(), custCode))
+					{
+						isExists = true;
+					}
+				}
+
+				if (!isExists)
+				{
+					return null;
+				}
+			}
+		}
 
 		List<PromotionItemDto> promotionItems = promotion.getPromotionItems();
 
@@ -84,7 +129,7 @@ public class PromotionService extends PartsGeneralService
 		{
 			//부품명 가져와서 데이터 세팅
 			String[] materialNos = new String[promotionItems.size()];
-			for (int i=0; i<promotionItems.size(); i++)
+			for (int i=0, size=promotionItems.size(); i<size; i++)
 			{
 				PromotionItemDto pItem = promotionItems.get(i);
 				materialNos[i] = pItem.getMaterialNo();
@@ -92,7 +137,7 @@ public class PromotionService extends PartsGeneralService
 	        rfcParamMap.add("materialNos", materialNos);
 	        Map<String, Map<String, Object>> materialInfo = getMaterialInfo(rfcParamMap);
 
-	        for (int i=0; i<promotionItems.size(); i++)
+	        for (int i=0, size=promotionItems.size(); i<size; i++)
 			{
 				PromotionItemDto pItem = promotionItems.get(i);
 				pItem.setMaterialText(materialInfo.get(pItem.getMaterialNo()).get("MATERIAL_TEXT").toString());
