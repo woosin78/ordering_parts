@@ -52,8 +52,11 @@ public class CartController extends PartsGeneralController
 		return ListUtils.emptyIfNull(cartService.getCarts(cart, getErpUserInfo()));
 	}
 
-	// 주문 후 장바구니 내용 삭제? > 주문을 햇는지 안햇는지 모름
-	// 수량 수정시 마다 업데이트?
-
+	@PostMapping("/updateQty")
+	@ResponseBody
+	public Object updateQty(CartDto cart)
+	{
+		return cartService.updateQty(cart);
+	}
 
 }

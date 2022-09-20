@@ -42,4 +42,14 @@
     	order by ci_seq desc
 	</select>
 	
+	<update id="updateQty" parameterType="CartEntity">
+		update EP_CART_ITEM set
+			order_qty=#{orderQty},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			ci_seq=#{ciSeq}
+			and fg_delete='N'
+	</update>
+	
 </mapper>

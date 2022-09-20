@@ -132,6 +132,23 @@ $(function(){
 				$(this).val(reqQty);
 			};
 		});
+		
+		
+		$("#TBL_grid input[name=orderQty]").focusout(function() {
+			// 수량 업데이트
+		   	JpUtilsAjax.post({
+				url: "/portal/iv/hq/parts/cart/updateQty",
+				data: {"ciSeq" : $(this).closest("tr").find("input[name=ciSeq]").val()
+						, "orderQty" : $(this).val()
+					},
+			    success: function(response, textStatus, jqXHR)
+			    {
+					//console.log("완료!");
+			    	//$tableObj.ajax.reload();
+			    }
+			});
+		});
+		
 	});
 	
 	// 체크된값 겟

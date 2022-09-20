@@ -12,4 +12,5 @@ public interface CartMapper
 	public int updateFgDelete(CartEntity cartEntity);
 	public int existCart(CartEntity cartEntity);
 	public List<CartEntity> findCarts(CartEntity cartEntity);
+	public int updateQty(CartEntity mapToEntity);
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -140,5 +141,14 @@ public class CartService extends PartsGeneralService
 		}
 
 		return carts;
+	}
+
+	public int updateQty(CartDto cart) {
+		if(ObjectUtils.isEmpty(cart.getCiSeq()))
+		{
+			return 0;
+		}
+
+		return cartMapper.updateQty(CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart));
 	}
 }
