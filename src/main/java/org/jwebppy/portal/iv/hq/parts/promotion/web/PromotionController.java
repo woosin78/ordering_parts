@@ -59,7 +59,7 @@ public class PromotionController extends PartsGeneralController
 		return ListUtils.emptyIfNull(promotionService.getPageablePromotions(promotionSearch));
 	}
 
-	@RequestMapping("/list/banner")
+	@RequestMapping("/banner/list/data")
 	@ResponseBody
 	public Object listBanner(@ModelAttribute PromotionSearchDto promotionSearch, WebRequest webRequest)
 	{

@@ -219,7 +219,7 @@ $(function(){
 				height: 600,
 				left: 0,
 				top: 0,
-				fgScrollbars: "Y"
+				fgScrollbars: GLOBAL_CONST.YES
 			};
 			
 			let left = 0;
@@ -227,9 +227,9 @@ $(function(){
 			let screenWidth = screen.availWidth;
 			
 			$.each(result.reverse(), function(index, element) {
-				let fgNotShow = JpUtilsString.defaultString($.cookie(element.bcSeq), "N");
+				let fgNotShow = JpUtilsString.defaultString($.cookie(element.bcSeq), GLOBAL_CONST.NO);
 				
-				if (JpUtilsString.equals(fgNotShow, "N"))
+				if (JpUtilsString.equals(fgNotShow, GLOBAL_CONST.NO))
 				{
 					let width = JpUtilsNumber.defaultNumber(parseInt(element.width), 700);
 					let height = JpUtilsNumber.defaultNumber(parseInt(element.height), 600);
@@ -249,8 +249,8 @@ $(function(){
 						height: height,
 						left: left,
 						top: top,
-						fgCenter: "N",
-						fgScrollbars: "Y"
+						fgCenter: GLOBAL_CONST.NO,
+						fgScrollbars: GLOBAL_CONST.YES
 					};
 					
 					JpUiPopup.open(settings);
@@ -293,7 +293,7 @@ function goToBoard(type)
 
 $(".bulletin-area a.link").on("click", function() {
 	let url = "/portal/iv/board/popup/view?bSeq=" + $(this).attr("bSeq") + "&bcSeq=" + $(this).attr("data-key") + "&fgFrom=M";
-	Popup.open(url, 1024, 730, "Y", "Y");
+	Popup.open(url, 1024, 730, GLOBAL_CONST.YES, GLOBAL_CONST.YES);
 });
 
 function checkExpiredPassword()

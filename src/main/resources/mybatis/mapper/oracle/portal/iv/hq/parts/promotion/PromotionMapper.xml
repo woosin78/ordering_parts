@@ -27,6 +27,8 @@
 	
 	<resultMap type="PromotionEntity" id="bannerPromotionEntityMap">
 		<id property="pSeq" column="p_seq" />
+		<result property="width" column="width" />
+		<result property="height" column="height" />
 		<collection property="uploadFileLists" foreignColumn="p_seq" column="p_seq" javaType="java.util.ArrayList" ofType="EpUploadFileListEntity" select="findUploadFileLists" />
 	</resultMap>
 	
@@ -76,7 +78,9 @@
 	
 	<select id="findBannerPromotions" parameterType="PromotionSearchDto" resultMap="bannerPromotionEntityMap">
 		select
-			a.p_seq
+			a.p_seq,
+			a.width,
+			a.height
    		from
         	EP_PROMOTION a
     	where
