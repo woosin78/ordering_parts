@@ -14,5 +14,6 @@ public interface ExOrderCreateMapper
 	public int insertOrderHistoryItem(ExOrderHistoryItemEntity orderHistoryItem);
 	public int updateSuccessOrderHistoryHeader(ExOrderHistoryHeaderEntity orderHistoryHeader);
 	public int updateFailOrderHistoryHeader(ExOrderHistoryHeaderEntity orderHistoryHeader);
+	public ExOrderHistoryHeaderEntity findOrderHistoryHeader(Integer ohhSeq);
 	public List<ExOrderHistoryHeaderEntity> findAllOrderHistoryHeader(ExOrderHistoryHeaderDto orderHistoryHeader);
 }

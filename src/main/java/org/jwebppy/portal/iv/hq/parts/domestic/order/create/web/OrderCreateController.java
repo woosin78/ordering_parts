@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
@@ -40,18 +41,24 @@ public class OrderCreateController extends PartsDomesticGeneralController
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest)
 	{
-		PartsErpDataMap rfcParamMap = getErpUserInfo();
+		String ohhSeq = webRequest.getParameter("ohhSeq");
 
-		model.addAttribute("ohhSeq", webRequest.getParameter("ohhSeq"));
+		if (ObjectUtils.isNotEmpty(ohhSeq))
+		{
+			model.addAttribute("orderHistoryHeader", orderCreateService.getOrderHistory(Integer.valueOf(ohhSeq)));
+		}
+
 		model.addAttribute("simulationFrom", webRequest.getParameter("simulationFrom"));
-		model.addAttribute("docType", CmStringUtils.defaultIfEmpty(webRequest.getParameter("docType"), "C"));
-		model.addAttribute("poNo", CmStringUtils.stripStart(rfcParamMap.getCustomerNo(), "0") + CmDateFormatUtils.format(CmDateTimeUtils.now(), PortalCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
+		model.addAttribute("poNo", CmStringUtils.stripStart(getErpUserContext().getCustCode(), "0") + CmDateFormatUtils.format(CmDateTimeUtils.now(), PortalCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
 
 		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;
 	}
 
+	/*
+	 * 주문 화면 옵션 2 - 미사용하는 것으로 결정됨
+	 */
 	@RequestMapping("/write2")
 	public String write2(Model model, WebRequest webRequest)
 	{

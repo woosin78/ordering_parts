@@ -1,5 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.export.order.create.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.config.PortalCacheConfig;
 import org.jwebppy.platform.core.dao.sap.RfcRequest;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
@@ -18,6 +20,8 @@ import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
+import org.jwebppy.portal.iv.hq.parts.cart.dto.CartDto;
+import org.jwebppy.portal.iv.hq.parts.cart.service.CartService;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.export.common.service.PartsExportGeneralService;
@@ -39,6 +43,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ExOrderCreateService extends PartsExportGeneralService
 {
+	@Autowired
+	private CartService cartService;
+
 	@Autowired
 	private ExOrderCreateMapper orderCreateMapper;
 
@@ -279,6 +286,34 @@ public class ExOrderCreateService extends PartsExportGeneralService
 			if (orderNo.length() > 5)
 			{
 				modifySuccessOrderHistoryHeader(ohhSeq, orderNo);
+
+				if ("C".equals(order.getDocType()))
+				{
+					ExOrderHistoryHeaderEntity orderHistoryHeader = orderCreateMapper.findOrderHistoryHeader(ohhSeq);
+
+					if (ObjectUtils.isNotEmpty(orderHistoryHeader))
+					{
+						String refSystem = orderHistoryHeader.getRefSystem();
+
+						if (CmStringUtils.equals(refSystem, "cart"))
+						{
+							CartDto cart = new CartDto();
+							cart.setUSeq(UserAuthenticationUtils.getUSeq());
+							cart.setOhhSeq(ohhSeq);
+
+							List<String> materialNos = new ArrayList<>();
+
+							for (ExOrderItemDto orderItem : order.getOrderItems())
+							{
+								materialNos.add(orderItem.getMaterialNo());
+							}
+
+							cart.setMaterialNos(materialNos);
+
+							cartService.doneOrder(cart);
+						}
+					}
+				}
 			}
 			else
 			{
@@ -343,6 +378,11 @@ public class ExOrderCreateService extends PartsExportGeneralService
 		}
 
 		return null;
+	}
+
+	public ExOrderHistoryHeaderDto getOrderHistory(Integer ohhSeq)
+	{
+		return CmModelMapperUtils.mapToDto(ExOrderHistoryHeaderObjectMapper.INSTANCE, orderCreateMapper.findOrderHistoryHeader(ohhSeq));
 	}
 
 	public List<ExOrderHistoryHeaderDto> getOrderHistoryList(String regUsername, Integer ohhSeq)

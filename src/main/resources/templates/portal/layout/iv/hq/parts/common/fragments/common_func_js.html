@@ -59,7 +59,7 @@ function _gridDownload(grid, fileName)
 function _setPartAutocomplete(target, options)
 {
 	$(target).autocomplete({
-		autoFocus: true,
+		//autoFocus: true, //첫번째 항목 자동 포커스 기본값 false
 		source: function(request, response) {
 			JpUtilsAjax.get({
 				url: "/portal/iv/parts/search/data",
@@ -101,7 +101,7 @@ function _setPartAutocomplete(target, options)
 			
 			$(target).autocomplete("close");
 		},
-		//delay: 50,
+		delay: 0,
 		minLength: 3
 	});
 };

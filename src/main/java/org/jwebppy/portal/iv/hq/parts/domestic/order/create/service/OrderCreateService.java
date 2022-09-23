@@ -1,5 +1,6 @@
 package org.jwebppy.portal.iv.hq.parts.domestic.order.create.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,8 @@ import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.common.utils.SimpleRfcMakeParameterUtils;
+import org.jwebppy.portal.iv.hq.parts.cart.dto.CartDto;
+import org.jwebppy.portal.iv.hq.parts.cart.service.CartService;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.service.PartsDomesticGeneralService;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderDto;
 import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderHistoryHeaderDto;
@@ -36,6 +39,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrderCreateService extends PartsDomesticGeneralService
 {
+	@Autowired
+	private CartService cartService;
+
 	@Autowired
 	private OrderCreateMapper orderCreateMapper;
 
@@ -166,6 +172,12 @@ public class OrderCreateService extends PartsDomesticGeneralService
 		{
 			for (OrderHistoryHeaderDto orderHistoryHeader : orderHistoryHeaderList)
 			{
+				//주문 성공한 것만 가지고 중복 체크
+				if (CmStringUtils.isEmpty(orderHistoryHeader.getSoNo()))
+				{
+					continue;
+				}
+
 				if (orderHistoryHeader.isEquals(order))
 				{
 					return orderHistoryHeader.getOhhSeq();
@@ -236,14 +248,6 @@ public class OrderCreateService extends PartsDomesticGeneralService
 				.table("LT_ITEM")
 					.add(items);
 
-			//이전에 저장한 Order History 조회
-			OrderHistoryHeaderEntity prevOrderHistoryHeader = null;
-
-			if (ObjectUtils.isNotEmpty(order.getOhhSeq()))
-			{
-				prevOrderHistoryHeader = orderCreateMapper.findOrderHistoryHeader(order.getOhhSeq());
-			}
-
 			//Order History 저장
 			Integer ohhSeq = saveOrderHistory(order);
 
@@ -252,7 +256,7 @@ public class OrderCreateService extends PartsDomesticGeneralService
 				//동일 주문 중복 생성 체크
 				Integer duplOhhSeq = checkDuplicatedOrder(order, ohhSeq);
 
-				if (duplOhhSeq != null)
+				if (ObjectUtils.isNotEmpty(duplOhhSeq))
 				{
 					//주문 실패 사유 저장
 					modifyFailOrderHistoryHeader(ohhSeq, duplOhhSeq, null);
@@ -280,35 +284,68 @@ public class OrderCreateService extends PartsDomesticGeneralService
 
 				if ("C".equals(order.getDocType()))
 				{
-					if (ObjectUtils.isNotEmpty(prevOrderHistoryHeader) && CmStringUtils.equals(prevOrderHistoryHeader.getRefSystem(), "SB"))
+					String refSystem = order.getRefSystem();
+
+					if (CmStringUtils.equals(refSystem, "SB"))
 					{
 						try
 						{
 							//시스뱅크 연동 주문일 경우 상태 업데이트
-							orderCreateGateService.doneSysbankOrder(order.getPoNo(), prevOrderHistoryHeader.getRefSeq(), order.getSoldToNo());
+							orderCreateGateService.doneSysbankOrder(order.getPoNo(), order.getRefSeq(), order.getSoldToNo());
 						}
 						catch (Exception e)
 						{
 							e.printStackTrace();
 						}
 					}
+					else if (CmStringUtils.equals(refSystem, "cart"))
+					{
+						//장바구니에서 넘어온 주문은 주문 생성 완료 후 주문 완료된 자재를 삭제해 준다.
+						CartDto cart = new CartDto();
+						cart.setUSeq(UserAuthenticationUtils.getUSeq());
+						cart.setOhhSeq(ohhSeq);
+
+						List<String> materialNos = new ArrayList<>();
+
+						for (OrderItemDto orderItem : order.getOrderItems())
+						{
+							materialNos.add(orderItem.getMaterialNo());
+						}
+
+						cart.setMaterialNos(materialNos);
+
+						cartService.doneOrder(cart);
+					}
 				}
 			}
 			else
 			{
+				StringBuffer message = new StringBuffer();
+
 				if (!"E".equals(rfcResponse.getString("E_MEG")))
 				{
 					DataList bapiret2 = rfcResponse.getTable("LT_BAPIRET2");
 
 					if (CollectionUtils.isNotEmpty(bapiret2))
 					{
-						DataMap dataMap = new DataMap(bapiret2.get(0));
-						rfcResponse.setObject("E_MEG", dataMap.getString("MESSAGE"));
+						for (int i=0, size=bapiret2.size(); i<size; i++)
+						{
+							DataMap dataMap = new DataMap(bapiret2.get(i));
+
+							if (dataMap.isEquals("ID", "V4"))
+							{
+								continue;
+							}
+
+							message.append(dataMap.getString("MESSAGE"));
+						}
+
+						rfcResponse.setObject("E_MEG", message.toString());
 					}
 				}
 
 				//주문 실패 사유 저장
-				modifyFailOrderHistoryHeader(ohhSeq, null, rfcResponse.getString("E_MEG"));
+				modifyFailOrderHistoryHeader(ohhSeq, null, message.toString());
 			}
 
 			return rfcResponse;

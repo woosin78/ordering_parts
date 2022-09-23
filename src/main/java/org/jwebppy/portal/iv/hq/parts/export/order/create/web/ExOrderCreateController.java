@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
@@ -42,10 +43,14 @@ public class ExOrderCreateController extends PartsExportGeneralController
 	@RequestMapping("/write")
 	public String write(Model model, WebRequest webRequest)
 	{
-		PartsErpDataMap rfcParamMap = getErpUserInfo();
+		String ohhSeq = webRequest.getParameter("ohhSeq");
 
-		model.addAttribute("docType", CmStringUtils.defaultIfEmpty(webRequest.getParameter("docType"), "C"));
-		model.addAttribute("poNo", CmStringUtils.stripStart(rfcParamMap.getCustomerNo(), "0") + CmDateFormatUtils.format(CmDateTimeUtils.now(), PortalCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS));
+		if (ObjectUtils.isNotEmpty(ohhSeq))
+		{
+			model.addAttribute("orderHistoryHeader", orderCreateService.getOrderHistory(Integer.valueOf(ohhSeq)));
+		}
+
+		model.addAttribute("simulationFrom", webRequest.getParameter("simulationFrom"));
 
 		addAllAttributeFromRequest(model, webRequest);
 

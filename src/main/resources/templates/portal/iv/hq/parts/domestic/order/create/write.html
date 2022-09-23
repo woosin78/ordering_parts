@@ -5,8 +5,8 @@
 	layout:decorate="~{portal/layout/iv/hq/parts/common/index}">
 
 <th:block layout:fragment="content">
-	<!-- Modal for upload simulation -->	
-	<div class="dropzone-dimmer dimmer"></div>		
+	<!-- Modal for upload simulation -->
+	<div class="dropzone-dimmer dimmer"></div>
 	<div class="dropzone-area">
 		<div class="dropzone-area-top"></div>
 		<div class="dropzone-body dropzone-click-zone">
@@ -39,19 +39,19 @@
 	<div class="condition-area">
 	<form id="FORM_order">
 	<input type="hidden" id="soldToNo" name="soldToNo"/><!-- KUNNR -->
-	
+
 	<!-- Ship to Party. -->
 	<input type="hidden" id="shipToNo" name="shipToNo"/><!-- KUNAG -->
 	<input type="hidden" id="shipToName" name="shipToName"/><!-- KUNAG_NAME -->
 	<input type="hidden" id="shipToStreet" name="shipToStreet"/><!-- KUNAG_STREET -->
 	<input type="hidden" id="transferZone" name="transferZone"/><!-- TZONE -->
 	<input type="hidden" id="priceGroup" name="priceGroup"/><!-- KONDA -->
-	
+
 	<!-- Shipping Info. -->
 	<input type="hidden" id="shippingCondition" name="shippingCondition"/>
 	<input type="hidden" id="shippingConditionName" name="shippingConditionName"/>
 	<input type="hidden" id="route" name="route"/>
-	<input type="hidden" id="routeName" name="routeName"/>	
+	<input type="hidden" id="routeName" name="routeName"/>
 	<input type="hidden" id="paymentTerms" name="paymentTerms"/>
 	<input type="hidden" id="paymentTermsName" name="paymentTermsName"/>
 	<input type="hidden" id="incoterms1" name="incoterms1"/>
@@ -68,9 +68,11 @@
 	<input type="hidden" id="blockReason" name="blockReason"/>
 	<input type="hidden" id="message" name="message"/>
 	<input type="hidden" id="pricingInfo" name="pricingInfo"/>
-	<input type="hidden" id="simulationFrom" name="simulationFrom"/>
-	
-	<input type="hidden" id="ohhSeq" name="ohhSeq" th:value="${ohhSeq}"/>
+
+	<input type="hidden" id="ohhSeq" name="ohhSeq" th:value="${orderHistoryHeader?.ohhSeq}"/>
+	<input type="hidden" id="refSeq" name="refSeq" th:value="${orderHistoryHeader?.refSeq}"/>
+	<input type="hidden" id="refSystem" name="refSystem" th:value="${orderHistoryHeader?.refSystem}"/>
+	<input type="hidden" id="simulationFrom" name="simulationFrom" th:value="${simulationFrom}"/>
 
 	<table class="condition">
 		<tbody>
@@ -118,13 +120,13 @@
 						<tbody>
 							<tr>
 								<td class="shipping-condition"></td>
-								<td class="route"></td>								
+								<td class="route"></td>
 								<td class="payment-terms"></td>
 								<td class="incoterms1"></td>
 								<td class="incoterms2"></td>
 							</tr>
 						</tbody>
-					</table>					
+					</table>
 				</td>
 			</tr>
 			<tr>
@@ -155,7 +157,7 @@
 			<button id="BTN_upload" type="button">[[#{HQP_B_UPLOAD}]]</button>
 			<button id="BTN_download" type="button">[[#{HQP_B_DOWNLOAD}]]</button>
 			<button id="BTN_priceInfo" type="button">[[#{HQP_B_PRICE_INFO}]]</button>
-			<button id="BTN_errorReport" type="button">[[#{HQP_B_ERROR_REPORT}]]</button>			
+			<button id="BTN_errorReport" type="button">[[#{HQP_B_ERROR_REPORT}]]</button>
 		</div>
 		<div class="grid-total">
 			<span th:text="#{HQP_T_TOTAL_AMOUNT}"></span>
@@ -176,11 +178,11 @@
 		<table id="TBL_grid" class="order-column stripe compact"></table>
 	</div>
 <script>
-$("input:radio[name=docType][value='[[${docType}]]']").prop("checked", true);
+$("input:radio[name=docType][value='[[${orderHistoryHeader?.docType}]]']").prop("checked", true);
 
 var errorOrderItems;//시뮬레이션 후 에러 보고를 담아 둠
 var initialMaterialNos = [];
-var initialOrderQties = [];	
+var initialOrderQties = [];
 
 let UploadModal = {};
 UploadModal.show = function() {
@@ -195,14 +197,14 @@ UploadModal.show = function() {
 		"left": left,
 		"top": top
 	});
-	
+
 	$(".dropzone-dimmer").css({
 		"width": "100%",
 		"height": "100%"
 	});
 
 	$(".dropzone-dimmer, .dropzone-area").show();
-	
+
 	$(document).on("paste", function(event) {
 		triggerPasteFromClipload(event);
 	});
@@ -211,7 +213,7 @@ UploadModal.show = function() {
 UploadModal.hide = function()
 {
 	$(".dropzone-dimmer, .dropzone-area").hide();
-	
+
 	$(document).off("paste");
 };
 
@@ -262,28 +264,28 @@ $(".dropzone-click-zone").dropzone({
 function resetInitialItems()
 {
 	initialMaterialNos = [];
-	initialOrderQties = [];		
-};	
+	initialOrderQties = [];
+};
 
 function triggerPasteFromClipload(event)
 {
 	resetInitialItems();
-	
+
 	let rows = event.originalEvent.clipboardData.getData("Text").split(String.fromCharCode(13));//13:CR
 	let items = [];
 	let isValid = true;
-	
+
 	$.each(rows, function(index, element) {
 		let item = element.split(String.fromCharCode(9));//9:tab
-		
+
 		if (item[0].trim() != null && item[0].trim() != "")
 		{
 			initialMaterialNos.push(JpUtilsString.replaceAll(item[0], String.fromCharCode(13), ""));
 			initialOrderQties.push(JpUtilsString.replaceAll(JpUtilsString.defaultString(item[1], "1"), String.fromCharCode(13), ""));
 		};
 	});
-	
-	doSimulation();	
+
+	doSimulation();
 };
 
 //주문유형 가져오기
@@ -292,7 +294,7 @@ orderComponent.isAsync = false;
 orderComponent.success = function(response, textStatus, jqXHR)
 {
 	setDefaultHeaderInfo();
-	
+
 	$("#orderType").on("change", function() {
 		changeOrderType();
 	});
@@ -312,9 +314,9 @@ function setDefaultHeaderInfo()
 	    	$("#incoterms2").val(result.INCO2);
 	    	$("#currency").val(result.WAERS);
 	    	$("#paymentTerms").val(result.ZTERM);
-	    	
+
 	    	let shipToNo = (JpUtilsString.isEmpty(result.KUNAG)) ? result.KUNNR : result.KUNAG;
-	    	
+
 	    	setShipToParty({
 	    		shipToNo: shipToNo,
 	    		shipToName: result.KUNAG_NAME,
@@ -324,7 +326,7 @@ function setDefaultHeaderInfo()
 	    	changeOrderType();
 	    }
 	});
-};	
+};
 
 function changeOrderType()
 {
@@ -348,7 +350,7 @@ function changeOrderType()
 	    	});
 
 	    	$("#priceGroup").val(orderComponent.getSelectedPriceGroup());
-	    	
+
 	    	resetDoneSimulation();
 	    }
 	});
@@ -367,28 +369,28 @@ function setShipToParty(result)
 	$("#transferZone").val(result.transferZone);
 
 	let shipToAddress = [];
-	
+
 	shipToAddress.push(result.shipToName);
-	
+
 	if (JpUtilsString.isNotEmpty(result.shipToStreet))
 	{
 		shipToAddress.push(result.shipToStreet);
 	};
-	
+
 	if (JpUtilsString.isNotEmpty(result.transferZone))
 	{
 		shipToAddress.push(result.transferZone);
 	};
-	
+
 	$("#AREA_shipToAddress").html(shipToAddress.join(", "));
-	
+
 	resetDoneSimulation();
-};	
+};
 
 function _callbackShippingInfo(result)
 {
 	setShippingInfo(result);
-	
+
 	doSimulation();
 };
 
@@ -407,7 +409,7 @@ function setShippingInfo(result)
 	$(".route").html(result.routeName);
 	$(".payment-terms").html(result.paymentTermsName);
 	$(".incoterms1").html(result.incoterms1);
-	$(".incoterms2").html(result.incoterms2);		
+	$(".incoterms2").html(result.incoterms2);
 };
 
 function makeItemParameter()
@@ -418,7 +420,7 @@ function makeItemParameter()
 		orderQties: [],
 		lotQties: [],
 		uoms: [],
-		availabilities: []		
+		availabilities: []
 	};
 
 	try
@@ -438,7 +440,7 @@ function makeItemParameter()
 			let node = $(row.node());
 			let materialNo = node.find("input[name=materialNo]").val();
 			let orderQty = node.find("input[name=orderQty]").val();
-			
+
 			items.lineNos.push(data.lineNo);
 			items.materialNos.push(materialNo);
 			items.orderQties.push(orderQty);
@@ -458,8 +460,8 @@ function doValidation()
 	resetDoneSimulation();
 
 	$tableObj.ajax.reload();
-	
-	ProgressBar.show();	
+
+	ProgressBar.show();
 };
 
 function doSimulation()
@@ -470,10 +472,10 @@ function doSimulation()
 		if (initialMaterialNos.length == 0)
 		{
 			let itemParameter = makeItemParameter();
-			
+
 			let materialNos = itemParameter.materialNos;
 			let orderQties = itemParameter.orderQties;
-			
+
 			if (materialNo.length == 0 || orderQties.length == 0 || materialNos.length != orderQties.length)
 			{
 				alert("[[#{HQP_M_EMPTY_PART_QTY}]]");
@@ -481,19 +483,19 @@ function doSimulation()
 				return;
 			};
 		};
-		
+
 		if (JpUtilsString.isEmpty($("#shippingCondition").val()))
 		{
 			alert("[[#{HQP_L_EMPTY_SHIPPING_INFO}]]");
 			return;
-		};			
+		};
 	};
-	
+
 	//시뮬레이션 실행 내역 초기화
 	resetDoneSimulation();
 
 	$tableObj.ajax.reload();
-	
+
 	UploadModal.hide();
 	ProgressBar.show();
 };
@@ -510,7 +512,7 @@ function isDoneSimulation()
 	{
 		return false;
 	}
-	
+
 	return true;
 };
 
@@ -529,7 +531,7 @@ $("#BTN_shipToParty").on("click", function(event) {
 
 $("#BTN_onetimeAddress").on("click", function() {
 	Popup.open("[[${BASE_PATH}]]/order/create/onetime_address_list", 1200, 600);
-});	
+});
 
 $("#BTN_shippingInfo").on("click", function(event) {
 	let param = "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&customerNo=" + $("#soldToNo").val();
@@ -586,6 +588,8 @@ $("#BTN_deleteRow").on("click", function() {
 	{
 		$tableObj.ajax.reload();
 	};
+
+	resetDoneSimulation();
 });
 
 $("#BTN_simulation").on("click", function() {
@@ -597,8 +601,8 @@ $("#BTN_upload").on("click", function() {
 	{
 		alert("[[#{HQP_M_EMPTY_SHIPPING_INFO}]]");
 		return;
-	};		
-	
+	};
+
 	UploadModal.show();
 });
 
@@ -622,21 +626,21 @@ $("#BTN_errorReport").on("click", function() {
 	Popup.open("[[${BASE_PATH}]]/order/create/popup/error_report", 1200, 400);
 });
 
-$("#BTN_create").on("click", function() {	
+$("#BTN_create").on("click", function() {
 	if (JpUtilsString.isEmpty($("#poNo").val()))
 	{
 		alert("[[#{HQP_M_EMPTY_PONO}]]");
 		$("#poNo").focus();
 		return;
-	};	
-	
+	};
+
 	if ($("#TBL_grid input[name=orderQty]").hasClass("warn"))
 	{
 		alert("[[#{HQP_M_INVALID_SALES_LOT}]]");
 		$("#TBL_grid input[name=orderQty].warn:first-child").select();
 		return;
 	};
-	
+
 	if (!isDoneSimulation())
 	{
 		alert("[[#{HQP_M_DO_SIMULATION}]]");
@@ -647,9 +651,9 @@ $("#BTN_create").on("click", function() {
 	{
 		alert($("#blockMessage").val());
 	};
-	
+
 	let confirmMsg = "[[#{HQP_M_CONFIRM_SAVE_ORDER}]]";
-	
+
 	if ($("#docType1").is(":checked"))
 	{
 		confirmMsg = JpUtilsString.replaceAll(confirmMsg, "{0}", "[[#{HQP_T_ORDER}]]");
@@ -658,14 +662,14 @@ $("#BTN_create").on("click", function() {
 	{
 		confirmMsg = JpUtilsString.replaceAll(confirmMsg, "{0}", "[[#{HQP_T_INQUIRY}]]");
 	};
-	
+
 	if (!confirm(confirmMsg))
 	{
 		return;
 	};
-	
+
 	let itemParameter = makeItemParameter();
-	
+
 	$("#lineNo").val(itemParameter.lineNos.join("^"));
 	$("#materialNo").val(itemParameter.materialNos.join("^"));
 	$("#orderQty").val(itemParameter.orderQties.join("^"));
@@ -680,13 +684,13 @@ $("#BTN_create").on("click", function() {
 		beforeSend: function(jqXHR, settings)
 		{
 			ProgressBar.show();
-		},		
+		},
 	    success: function(response, textStatus, jqXHR)
 	    {
 	    	let result = response.RESULT;
-	    	
+
 	    	let orderNo = $.trim(result.orderNo);
-	    	
+
 	    	if (orderNo != "")
 	    	{
 	    		let path = "order";
@@ -701,7 +705,7 @@ $("#BTN_create").on("click", function() {
 	    		{
 	    			message = JpUtilsString.replaceAll(message, "{0}", "[[#{HQP_T_ORDER}]]");
 	    		};
-	    		
+
 	    		alert(message);
 
 	    		document.location.href = "[[${BASE_PATH}]]/order/display/" + path + "/view?orderNo=" + orderNo;
@@ -709,7 +713,7 @@ $("#BTN_create").on("click", function() {
 	    	else
 	    	{
 	    		let errorMsg = $.trim(result.errorMsg);
-	    		
+
 	    		if (errorMsg == "DUPLICATED_ORDER")
 	    		{
 	    			errorMsg = "[[#{HQP_M_EXIST_SAME_ORDER}]]";
@@ -727,9 +731,9 @@ $("#BTN_create").on("click", function() {
 	});
 });
 
-$("#BTN_shoppingCart").on("click", function() {	
+$("#BTN_shoppingCart").on("click", function() {
 	$("#simulationFrom").val("GPES");
-	
+
 	doSimulation();
 });
 
@@ -756,7 +760,7 @@ $(function(){
 			{
 				name: "materialNo",
 				data: "materialNo",
-				title: "[[#{HQP_L_ORDER_PART_NO}]]",				
+				title: "[[#{HQP_L_ORDER_PART_NO}]]",
 				render: function(data, type, row)
 				{
 					return "<input type='text' name='materialNo' class='custom-ui' style='width: 150px;' value='" + row.materialNo + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
@@ -770,7 +774,7 @@ $(function(){
 				title: "[[#{HQP_L_REQ_QTY}]]",
 				render: function(data, type, row)
 				{
-					let clazz =  (JpUtilsString.equals(row.fgInvalidSalesLot, GLOBAL_CONST.YES)) ? "custom-ui warn center": "custom-ui center"; 
+					let clazz =  (JpUtilsString.equals(row.fgInvalidSalesLot, GLOBAL_CONST.YES)) ? "custom-ui warn center": "custom-ui center";
 
 					return "<input type='number' class='" + clazz + "' name='orderQty' style='width:70px;' value='" + row.orderQty + "' tabindex='" + tabIndex++ + "' " + row.disabled + " onchange='syncInput(this)'>";// FixedColumns 사용시엔 syncInput 호출 필요함.
 				}
@@ -787,15 +791,15 @@ $(function(){
 			{targets: [0], className: "skip-download dt-body-center"},
 			{targets: [1, 2, 5, 6, 7, 8, 12], className: "dt-body-center"},
 			{targets: [10, 11], className: "dt-body-right"}
-		],				
+		],
 		ajax: {
 			url: "[[${BASE_PATH}]]/order/create/simulation",
 			type: "POST",
 			beforeSend: function(request)
 			{
 				tabIndex = 1;
-				
-				//POST 일 경우 CSRF 토큰 추가 
+
+				//POST 일 경우 CSRF 토큰 추가
 				request.setRequestHeader(JpUtilsSecurity.CSRF.NAME, JpUtilsSecurity.CSRF.TOKEN);
 			},
 			data: function(p)
@@ -822,13 +826,13 @@ $(function(){
 					{
 						p.materialNo = initialMaterialNos.join("^");
 						p.orderQty = initialOrderQties.join("^");
-						
+
 						resetInitialItems();
 					}
 					else
 					{
 						let itemParameter = makeItemParameter();
-						
+
 						p.materialNo = itemParameter.materialNos.join("^");
 						p.orderQty = itemParameter.orderQties.join("^");
 					};
@@ -837,7 +841,7 @@ $(function(){
 				{
 					p.fileName = $("#fileName").val();
 				};
-				
+
 				//History 테이블에 저장된 주문 내역을 가져와 셋업해 줌. 최초 한번만 불러오고 이후부터는 입력받은 품번으로 시뮬레이션을 실행하기 위해 값을 없앰
 				$("#ohhSeq").val("");
 			},
@@ -846,19 +850,19 @@ $(function(){
 				let result = response.RESULT;
 
 				$("#rdd").val(result.rdd);
-				
+
 				$("#credit").html(result.credit + result.creditCurrency);
 				$("#totalWeight").html(result.totalWeight + result.weightUnit);
 				$("#totalAmount").html(result.totalAmount + result.currency);
 				$("#blockReason").val(result.blockReason);
 				$("#blockMessage").val(result.blockMessage);
-				
+
 				/* Set price info */
 				let pricingResults = result.pricingResults;
-				
-				let content = "<table class='condition'>";				
+
+				let content = "<table class='condition'>";
 				content += "	<tbody>";
-				
+
 				for (let i=0, length=pricingResults.length; i<length; i++)
 				{
 					content += "		<tr>";
@@ -868,21 +872,21 @@ $(function(){
 					content += "			</td>";
 					content += "		</tr>";
 				};
-				
+
 				content += "	</tbody>";
 				content += "</table>";
-				
+
 				$("#pricingInfo").val(content);
-				
+
 				/* Set item info */
 				let normalOrderItems = result.normalOrderItems;
 
 				for (let i=0, length=normalOrderItems.length; i<length; i++)
 				{
 					let item = normalOrderItems[i];
-					
+
 					item.disabled = "";
-					item.materialNo = (item.materialNo == null) ? "" : item.materialNo;					
+					item.materialNo = (item.materialNo == null) ? "" : item.materialNo;
 					item.orderQty = (item.orderQty == null) ? "" : item.orderQty;
 
 					//대체품일 경우
@@ -891,10 +895,10 @@ $(function(){
 						item.disabled = "disabled";
 					};
 				};
-				
+
 				errorOrderItems = result.errorOrderItems;
 				let errorCnt = errorOrderItems.length;
-				
+
 				if (errorCnt > 0)
 				{
 					alert("[[#{HQP_M_SIMULATION_ERROR}]]".replace("{0}", errorCnt));
@@ -908,8 +912,8 @@ $(function(){
 					alert("[[#{HQP_M_ORDER_INVALID_EXCEL_FORMAT}]]");
 					reload();
 				};
-			}				
-		}			
+			}
+		}
 	});
 
 	function reload()
@@ -917,12 +921,12 @@ $(function(){
 		$("#fileName").val("");
 		$tableObj.ajax.reload();
 	};
-	
+
 	// Datatable onload event
 	$("#TBL_grid").on("draw.dt", function () {
 		$("#fileName").val("");
 		$("#simulationFrom").val("");
-		
+
 		$.each($("#TBL_grid input[name=materialNo]"), function(index, item) {
 			_setPartAutocomplete(item, {
 				select: function(label, value, event)
@@ -931,23 +935,21 @@ $(function(){
 				}
 			});
 		});
-		
+
 		initGridTable($tableObj);
 
-		let itemParameter = makeItemParameter();
-		
 		let inputtedMaterialCount = $("#TBL_grid input[name=materialNo][value!='']").length;
 		let inputtedOrderQtyCount = $("#TBL_grid input[name=orderQty][value!='']").length;
-		
+
 		if (inputtedMaterialCount == inputtedOrderQtyCount)
 		{
-			JpUiForm.input.on.focus($("#TBL_grid input[name=materialNo][value='']:first"));			
+			JpUiForm.input.on.focus($("#TBL_grid input[name=materialNo][value='']:first"));
 		}
 		else
 		{
-			JpUiForm.input.on.focus($("#TBL_grid input[name=orderQty][value='']:first"));	
+			JpUiForm.input.on.focus($("#TBL_grid input[name=orderQty][value='']:first"));
 		};
-		
+
 		JpUiForm.input.on.select($("#TBL_grid input[name=orderQty]"), $("#TBL_grid input[name=materialNo]"));
 
 		JpUiForm.input.on.enter($("#TBL_grid input[name=materialNo]"), function(item) {
@@ -958,14 +960,14 @@ $(function(){
 			if (JpUtilsString.isEmpty($(item).val()))
 			{
 				$(item).val("");
-				return false;				
+				return false;
 			};
-			
+
 			doSimulation();
 		});
-		
+
 		JpUiForm.input.validation.number($("#TBL_grid input[name=orderQty]"), 1, 9999);
-		
+
 		ProgressBar.hide();
 	});
 });
@@ -984,9 +986,9 @@ $(document).ajaxStop(function() {
 			{
 				doValidation();
 			};
-			
-			//시뮬레이션이 무한 반복되는 것을 방지하기 위해 상태를 변경해 줌		
-			fgDoneSimulation = GLOBAL_CONST.YES;			
+
+			//시뮬레이션이 무한 반복되는 것을 방지하기 위해 상태를 변경해 줌
+			fgDoneSimulation = GLOBAL_CONST.YES;
 		};
 	};
 });

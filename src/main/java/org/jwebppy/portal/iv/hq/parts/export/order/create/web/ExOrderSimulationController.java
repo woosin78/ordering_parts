@@ -14,6 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -32,11 +33,14 @@ import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.hq.parts.domestic.common.web.PartsDomesticGeneralController;
-import org.jwebppy.portal.iv.hq.parts.domestic.order.create.service.OrderCreateService;
+import org.jwebppy.portal.iv.hq.parts.domestic.order.create.util.OrderCreationUtils;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderHistoryHeaderDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderHistoryItemDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExSimulationResultDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.service.ExOrderCreateService;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.service.ExOrderSimulationService;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.util.ExOrderCreationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +69,7 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
     private String uploadPath;
 
     @Autowired
-    private OrderCreateService orderCreateService;
+    private ExOrderCreateService orderCreateService;
 
     @PostConstruct
     public void init()
@@ -204,6 +208,29 @@ public class ExOrderSimulationController extends PartsDomesticGeneralController
 		}
 		else
 		{
+			if (ObjectUtils.isNotEmpty(order.getOhhSeq()))
+			{
+				ExOrderHistoryHeaderDto orderHistoryHeader = orderCreateService.getOrderHistory(order.getOhhSeq());
+
+				if (ObjectUtils.isNotEmpty(orderHistoryHeader))
+				{
+					List<ExOrderItemDto> orderItems = new LinkedList<>();
+					int index = 0;
+
+					for (ExOrderHistoryItemDto orderHistoryItem: ListUtils.emptyIfNull(orderHistoryHeader.getOrderHistoryItems()))
+					{
+						ExOrderItemDto orderItem = new ExOrderItemDto();
+						orderItem.setLineNo(OrderCreationUtils.lineNo(index+1));
+						orderItem.setMaterialNo(orderHistoryItem.getMaterialNo());
+						orderItem.setOrderQty(orderHistoryItem.getOrderQty());
+
+						orderItems.add(orderItem);
+					}
+
+					simulationResult.setNormalOrderItems(orderItems);
+				}
+			}
+
 			//시뮬레이션 결과 정상 건이 없을 경우 사용자 정보에서 Credit 을 가져와 넣어준다.
 			ErpDataMap paramMap = getErpUserInfo()
 					.add(new Object[][] {

@@ -11,6 +11,16 @@
 		values (#{ciSeq}, #{uSeq}, #{materialNo}, #{orderQty}, 'N', #{regUsername}, #{regDate})
 	</insert>
 	
+	<update id="updateOrderQty" parameterType="CartEntity">
+		update EP_CART_ITEM set
+			order_qty=#{orderQty},
+			mod_username=#{modUsername},
+			mod_date=#{modDate}
+		where
+			ci_seq=#{ciSeq}
+			and fg_delete='N'
+	</update>	
+	
 	<update id="updateFgDelete" parameterType="CartEntity">
 		update EP_CART_ITEM set
 			fg_delete='Y',
@@ -21,16 +31,6 @@
 			and fg_delete='N'
 	</update>
 	
-	<select id="existCart" parameterType="CartEntity" resultType="int">
-		select count(*) 
-		from 
-			EP_CART_ITEM
-	    where
-	        fg_delete='N'
-	        and u_seq=#{uSeq}
-	        and material_no=#{materialNo}
-	</select>
-	
 	<select id="findCarts" parameterType="CartEntity" resultType="CartEntity">
 		select
 			*
@@ -39,17 +39,35 @@
     	where
         	fg_delete='N'
         	and u_seq=#{uSeq}
+        	and ohh_seq is null      
     	order by ci_seq desc
 	</select>
 	
-	<update id="updateQty" parameterType="CartEntity">
+	<update id="doneOrder" parameterType="CartEntity">
 		update EP_CART_ITEM set
-			order_qty=#{orderQty},
+			ohh_seq=#{ohhSeq},
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			ci_seq=#{ciSeq}
-			and fg_delete='N'
+			u_seq=#{uSeq}
+			
+			<trim prefix="and">
+				<foreach collection="materialNos" item="materialNo" open="(" close=")" separator="or">
+					material_no=#{materialNo}
+				</foreach>
+			</trim>
 	</update>
 	
+	<select id="exists" parameterType="CartEntity" resultType="int">
+		select
+			count(*) 
+		from 
+			EP_CART_ITEM
+	    where	        
+	        u_seq=#{uSeq}
+	        and material_no=#{materialNo}
+	        and ohh_seq is null
+	        and fg_delete='N'
+	        and rownum=1
+	</select>	
 </mapper>

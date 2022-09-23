@@ -16,4 +16,5 @@ public class ExOrderHistoryItemDto extends PartsExportGeneralDto
 	private Integer ohhSeq;
 	private String materialNo;
 	private String orderQty;
+	private int sort;
 }

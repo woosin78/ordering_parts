@@ -35,6 +35,8 @@ public class ExOrderHistoryHeaderDto extends PartsExportGeneralDto
 	private String errorMsg;
 	private LocalDateTime orderedDate;
 	private Integer duplOhhSeq;
+	private String refSeq;
+	private String refSystem;
 	private List<ExOrderHistoryItemDto> orderHistoryItems;
 
 	public void setHeader(ExOrderDto order)
@@ -50,6 +52,8 @@ public class ExOrderHistoryHeaderDto extends PartsExportGeneralDto
 		this.division = order.getDivision();
 		this.shippingCondition = order.getShippingCondition();
 		this.poNo = order.getPoNo();
+		this.refSeq = order.getRefSeq();
+		this.refSystem = order.getRefSystem();
 	}
 
 	public void setItems(Integer ohhSeq, ExOrderDto order)

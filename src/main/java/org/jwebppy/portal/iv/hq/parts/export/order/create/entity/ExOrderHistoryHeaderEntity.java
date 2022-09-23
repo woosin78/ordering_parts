@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.jwebppy.portal.iv.hq.parts.export.common.entity.PartsExportGeneralEntity;
-import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderHistoryItemDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,5 +32,7 @@ public class ExOrderHistoryHeaderEntity extends PartsExportGeneralEntity
 	private String errorMsg;
 	private LocalDateTime orderedDate;
 	private Integer duplOhhSeq;
-	private List<ExOrderHistoryItemDto> orderHistoryItems;
+	private String refSeq;
+	private String refSystem;
+	private List<ExOrderHistoryItemEntity> orderHistoryItems;
 }

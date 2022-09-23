@@ -33,15 +33,18 @@ public class CartService extends PartsGeneralService
 	 * @param cart
 	 * @return
 	 */
-	public int add(CartDto cart) {
-		if(CollectionUtils.isEmpty(cart.getMaterialNos()) || cart.getMaterialNos().size() == 0)
+	public int add(CartDto cart)
+	{
+		/*
+		if (CollectionUtils.isEmpty(cart.getMaterialNos()))
 		{
 			return insert(cart);
 		}
+		*/
 
-		for(int i=0; i<cart.getMaterialNos().size(); i++)
+		for (String materialNo: cart.getMaterialNos())
 		{
-			cart.setMaterialNo(cart.getMaterialNos().get(i));
+			cart.setMaterialNo(materialNo);
 			insert(cart);
 		}
 
@@ -53,24 +56,18 @@ public class CartService extends PartsGeneralService
 	 * @param cart
 	 * @return
 	 */
-	public int insert(CartDto cart) {
-		if(CmStringUtils.isEmpty(cart.getMaterialNo()))
+	public int insert(CartDto cart)
+	{
+		if (CmStringUtils.isEmpty(cart.getMaterialNo()))
 		{
 			return 0;
 		}
 
 		// 이미 있는지 체크
-		if( 0 < cartMapper.existCart(CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart)))
+		if (isExists(cart))
 		{
 			return 1;
 		}
-
-		/*
-		if(CmStringUtils.isEmpty(cart.getOrderQty()))
-		{
-			cart.setOrderQty("1");
-		}
-		*/
 
 		CartEntity cartEntity = CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart);
 		cartMapper.insert(cartEntity);
@@ -78,25 +75,52 @@ public class CartService extends PartsGeneralService
 		return cartEntity.getCiSeq();
 	}
 
+	public int updateOrderQty(CartDto cart)
+	{
+		if (ObjectUtils.isEmpty(cart.getCiSeq()))
+		{
+			return 0;
+		}
+
+		return cartMapper.updateOrderQty(CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart));
+	}
+
 	/**
 	 * 장바구니 삭제
 	 * @param cart
 	 * @return
 	 */
-	public int delete(CartDto cart) {
+	public int delete(CartDto cart)
+	{
+		List<Integer> ciSeqs = cart.getCiSeqs();
 
-		if(CollectionUtils.isEmpty(cart.getCiSeqs()))
+		if (CollectionUtils.isEmpty(ciSeqs))
 		{
 			return 0;
 		}
 
-		for(int i=0; i<cart.getCiSeqs().size(); i++)
+		for (int i=0, size=ciSeqs.size(); i<size; i++)
 		{
-			cart.setCiSeq(cart.getCiSeqs().get(i));
+			cart.setCiSeq(ciSeqs.get(i));
 			cartMapper.updateFgDelete(CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart));
 		}
 
 		return 1;
+	}
+
+	/**
+	 * 장바구니 삭제
+	 * @param cart
+	 * @return
+	 */
+	public int doneOrder(CartDto cart)
+	{
+		if (CollectionUtils.isEmpty(cart.getMaterialNos()) || ObjectUtils.isEmpty(cart.getUSeq()))
+		{
+			return 0;
+		}
+
+		return cartMapper.doneOrder(CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart));
 	}
 
 	/**
@@ -105,7 +129,8 @@ public class CartService extends PartsGeneralService
 	 * @param rfcParamMap
 	 * @return
 	 */
-	public List<CartDto> getCarts(CartDto cart, PartsErpDataMap rfcParamMap) {
+	public List<CartDto> getCarts(CartDto cart, PartsErpDataMap rfcParamMap)
+	{
 
 		List<CartDto> carts = CmModelMapperUtils.mapToDto(CartObjectMapper.INSTANCE, cartMapper.findCarts(CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart)));
 
@@ -113,7 +138,8 @@ public class CartService extends PartsGeneralService
 		{
 			//부품명 가져와서 데이터 세팅
 			String[] materialNos = new String[carts.size()];
-			for (int i=0; i<carts.size(); i++)
+
+			for (int i=0, size=carts.size(); i<size; i++)
 			{
 				materialNos[i] = carts.get(i).getMaterialNo();
 			}
@@ -135,20 +161,14 @@ public class CartService extends PartsGeneralService
 				lotQty = (lotQty == 0) ? 1 : lotQty;
 
 				c.setLotQty(Integer.toString(lotQty));
-
-				//carts.set(i, c);
 			}
 		}
 
 		return carts;
 	}
 
-	public int updateQty(CartDto cart) {
-		if(ObjectUtils.isEmpty(cart.getCiSeq()))
-		{
-			return 0;
-		}
-
-		return cartMapper.updateQty(CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart));
+	public boolean isExists(CartDto cart)
+	{
+		return (cartMapper.exists(CmModelMapperUtils.mapToEntity(CartObjectMapper.INSTANCE, cart)) > 0) ? true : false;
 	}
 }

@@ -58,6 +58,9 @@ public class ExOrderDto extends PartsExportGeneralDto
 	private String fgShowAvailability;
 	private String fgShowCredit;
 	private String fgShowListPrice;
+	private Integer ohhSeq;
+	private String refSeq;
+	private String refSystem;
 	private List<ExOrderItemDto> orderItems;
 	private List<ExOrderItemDto> duplicateOrderItems;
 	private List<ExOrderItemDto> invalidSalesLotOrderItems;

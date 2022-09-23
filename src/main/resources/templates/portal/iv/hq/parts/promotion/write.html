@@ -292,12 +292,16 @@ function triggerPasteFromClipload(event)
 	});
 	
 	getTargetItems(items);
+	
+	UploadModal.hide();
 };
 
 function getTargetItems(items)
 {
 	if (items.length > 0)
 	{
+		ProgressBar.show();
+		
 		JpUtilsAjax.get({
 			url: "/portal/iv/parts/search/data",
 			data: {"pPartNo": items.join(GLOBAL_CONST.DELIMITER)},
@@ -311,7 +315,7 @@ function getTargetItems(items)
 			},
 			complete: function(jqXHR, textStatus)
 			{
-				ProgressBar.hide();				
+				ProgressBar.hide();
 			}
 		});		
 	};
@@ -319,7 +323,7 @@ function getTargetItems(items)
 
 function addTargetItem(label, value)
 {
-	if ($("#FORM_write label:contains('" + label + "')").length == 0)
+	if ($("#addedItems label:contains('" + value + "')").length == 0)
 	{
 		let str = label.split("|");
 		

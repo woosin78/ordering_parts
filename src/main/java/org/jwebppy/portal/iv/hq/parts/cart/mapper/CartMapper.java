@@ -8,9 +8,10 @@ import org.jwebppy.portal.iv.hq.parts.cart.entity.CartEntity;
 @Mapper
 public interface CartMapper
 {
-	public int insert(CartEntity cartEntity);
-	public int updateFgDelete(CartEntity cartEntity);
-	public int existCart(CartEntity cartEntity);
-	public List<CartEntity> findCarts(CartEntity cartEntity);
-	public int updateQty(CartEntity mapToEntity);
+	public int insert(CartEntity cart);
+	public int updateFgDelete(CartEntity cart);
+	public int updateOrderQty(CartEntity cart);
+	public List<CartEntity> findCarts(CartEntity cart);
+	public int exists(CartEntity cart);
+	public int doneOrder(CartEntity cart);
 }

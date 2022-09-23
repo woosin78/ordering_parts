@@ -21,6 +21,7 @@ public class CartDto extends PartsGeneralDto
 	private String description;
 	private String lotQty;
 	private String orderQty;
+	private Integer ohhSeq;
 
 	private List<Integer> ciSeqs;
 	private List<String> materialNos;

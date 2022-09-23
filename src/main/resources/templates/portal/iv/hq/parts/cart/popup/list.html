@@ -32,7 +32,7 @@
 		</form>
 	</div>
 
-	<form id="FORM_order" method="post" th:action="@{/portal/iv/hq/parts/domestic/order/create/gate/cart}" target="order"></form>
+	<form id="FORM_order" method="post" th:action="${orderUrl}" target="order"></form>
 <script>
 let $tableObj;
 $(function(){
@@ -105,50 +105,45 @@ $(function(){
 	// Datatable grid 초기 설정 셋업
 	initGridTable($tableObj);
 	
-	$("#TBL_grid").on("draw.dt", function () {
+	$("#TBL_grid").on("draw.dt", function() {
+		
 		//숫자체크 JpUiForm.input.validation.number(대상객체, 허용 최소 값, 허용 최대 값)
 		JpUiForm.input.validation.number($("#TBL_grid input[name=orderQty]"), 1, 9999);
 		
 		JpUiForm.input.on.select($("#TBL_grid input[name=orderQty]"));
 		
-		$("#TBL_grid input[name=orderQty]").on("keyup", function(event) {			
-			let reqQty = parseInt($(this).val());
+		$("#TBL_grid input[name=orderQty]").on("keyup", $.debounce(500, function(e) {
+			let orderQty = parseInt($(this).val());
 			let lotQty = parseInt($(this).closest("tr").find("td span[name=lotQty]").text());
 			
 			if (JpUtilsString.isNotEmpty($(this).val()))
 			{
-				let value = parseInt(reqQty / lotQty);
+				let value = parseInt(orderQty / lotQty);
 				
 				if (value == 0)
 				{
-					reqQty = lotQty;
+					orderQty = lotQty;
 				}
 				else
 				{
 					//입력한 값과 가장 인접한 lotQty 에 맞는 값을 계산한다
-					reqQty = value * lotQty
+					orderQty = value * lotQty
 				};
 				
-				$(this).val(reqQty);
-			};
-		});
+				$(this).val(orderQty);
+			};				
+		}));
 		
-		
-		$("#TBL_grid input[name=orderQty]").focusout(function() {
+		$("#TBL_grid input[name=orderQty]").on("blur", function() {
 			// 수량 업데이트
 		   	JpUtilsAjax.post({
-				url: "/portal/iv/hq/parts/cart/updateQty",
-				data: {"ciSeq" : $(this).closest("tr").find("input[name=ciSeq]").val()
-						, "orderQty" : $(this).val()
-					},
+				url: "/portal/iv/hq/parts/cart/update/order_qty",
+				data: {"ciSeq" : $(this).closest("tr").find("input[name=ciSeq]").val(), "orderQty" : $(this).val()},
 			    success: function(response, textStatus, jqXHR)
 			    {
-					//console.log("완료!");
-			    	//$tableObj.ajax.reload();
 			    }
 			});
 		});
-		
 	});
 	
 	// 체크된값 겟
@@ -172,7 +167,7 @@ $(function(){
 	};
 	
 	$("#BTN_order").on("click", function() {
-		if( 0 == getCheckedCiSeqs().length)
+		if (0 == getCheckedCiSeqs().length)
 		{
 			alert("[[#{HQP_M_SELECT_TARGETS}]]");
 			return;
@@ -189,9 +184,19 @@ $(function(){
 				let row = $tableObj.row($td);
 				let node = $(row.node());
 				
+				let orderQtyObj = node.find("input[name=orderQty]");
+				let orderQty = orderQtyObj.val();
+				
+				if (JpUtilsString.isEmpty(orderQty))
+				{
+					alert("[[#{HQP_M_EMPTY_REQ_QTY}]]");
+					$(orderQtyObj).focus();
+					return;
+				};
+				
 				$("#FORM_order")
 					.append("<input type='hidden' name='materialNo' value='" + row.data().materialNo + "' />")
-					.append("<input type='hidden' name='orderQty' value='" + node.find("input[name=orderQty]").val() + "' />");
+					.append("<input type='hidden' name='orderQty' value='" + orderQty + "' />");
 			};
 		};
 		
@@ -213,7 +218,7 @@ $(function(){
 	
 	$("#BTN_delete").on("click", function() {
 		let ciSeqs = getCheckedCiSeqs();
-		if( 0 == ciSeqs.length)
+		if (0 == ciSeqs.length)
 		{
 			return;
 		};
