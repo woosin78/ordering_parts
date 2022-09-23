@@ -242,6 +242,7 @@ public class PromotionService extends PartsGeneralService
 	public int delete(PromotionDto promotion)
 	{
 		Integer pSeq = promotion.getPSeq();
+
 		if (ObjectUtils.isEmpty(pSeq))
 		{
 			return 0;

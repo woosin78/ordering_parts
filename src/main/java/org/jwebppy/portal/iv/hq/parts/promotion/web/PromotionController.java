@@ -172,6 +172,8 @@ public class PromotionController extends PartsGeneralController
 	@ResponseBody
 	public Object delete(PromotionDto promotion)
 	{
+		promotion.setTarget(getTarget());
+
 		return promotionService.delete(promotion);
 	}
 
