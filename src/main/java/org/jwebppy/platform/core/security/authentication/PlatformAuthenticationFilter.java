@@ -1,5 +1,6 @@
 package org.jwebppy.platform.core.security.authentication;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmArrayUtils;
@@ -85,6 +87,23 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 			if (isAdUser(CmStringUtils.trimToEmpty(request.getParameter("token"))))
 			{
 				password = AuthenticationType.A.getUniqueName();
+			}
+
+			LocalDateTime pwdPenaltyTime = (LocalDateTime)request.getSession().getAttribute("PWD_PENALTY_TIME");
+
+			System.err.println("pwdPenaltyTime:" + pwdPenaltyTime);
+
+			if (ObjectUtils.isNotEmpty(pwdPenaltyTime))
+			{
+				Duration duration = Duration.between(LocalDateTime.now(), pwdPenaltyTime);
+
+				int sleepTime = (int)Math.ceil(duration.getSeconds() / 60);
+
+				if (sleepTime > 0)
+				{
+					System.err.println("sleepTime:" + sleepTime);
+					throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED") + ":" + sleepTime);
+				}
 			}
 		}
 

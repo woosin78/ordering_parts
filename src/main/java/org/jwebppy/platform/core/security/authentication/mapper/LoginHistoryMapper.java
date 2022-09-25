@@ -13,5 +13,5 @@ public interface LoginHistoryMapper
 {
 	public int insertLoginHistory(LoginHistoryEntity loginHistoryEntity);
 	public List<LoginHistoryEntity> findPageableLoginHistories(LoginHistorySearchDto loginHistorySearch);
-	public int findLoginFailureCount(LoginHistorySearchDto loginHistorySearch);
+	//public int findLoginFailureCount(LoginHistorySearchDto loginHistorySearch);
 }

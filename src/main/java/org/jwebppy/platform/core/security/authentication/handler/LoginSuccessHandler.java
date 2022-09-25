@@ -87,6 +87,9 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
 		loginHistoryService.success(request, response);
 
+		//비밀번호 입력 실패 허용  횟수 초과로 인한 인증 불가 기간 초기화
+		request.getSession().removeAttribute("PWD_PENALTY_TIME");
+
 		//Login 시 Save Username 체크 했을 경우 처리
         if (CmStringUtils.equals(request.getParameter("saveUsername"), PlatformCommonVo.YES))
         {

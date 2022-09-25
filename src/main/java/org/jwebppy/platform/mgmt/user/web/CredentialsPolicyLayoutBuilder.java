@@ -2,10 +2,7 @@ package org.jwebppy.platform.mgmt.user.web;
 
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
-import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.table.Table;
 import org.jwebppy.platform.core.web.ui.dom.table.Tbody;
@@ -36,16 +33,7 @@ public class CredentialsPolicyLayoutBuilder
 			String fgDefault = credentialsPolicy.getFgDefault();
 
 			Tr tbTr = new Tr();
-
-			if (CmStringUtils.equals(fgDefault, PlatformCommonVo.YES) || CollectionUtils.isNotEmpty(credentialsPolicy.getUserGroups()))
-			{
-				tbTr.addEmptyTd();
-			}
-			else
-			{
-				tbTr.addDataKeyCheckboxTd("cpSeq", credentialsPolicy.getCpSeq());
-			}
-
+			tbTr.addDataKeyCheckboxTd("cpSeq", credentialsPolicy.getCpSeq());
 			tbTr.addDataKeyLinkTd(credentialsPolicy.getName(), credentialsPolicy.getCpSeq());
 			tbTr.addTextTd(credentialsPolicy.getDescription());
 			tbTr.addTextTd(credentialsPolicy.getFgUse());

@@ -42,7 +42,10 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private String pMaxNumber;
 	private String pMinSpecial;
 	private String pMaxSpecial;
-	private int pwdValidPeriod;
+	private String pValidPeriod;
+	private String fgUsePwdFailPenalty = PlatformCommonVo.NO;
+	private String pFailCheckDuration;
+	private String pAllowableFailCount;
 	private String fgUse = PlatformCommonVo.NO;
 	private String fgDefault = PlatformCommonVo.NO;
 	private List<UserGroupDto> userGroups;

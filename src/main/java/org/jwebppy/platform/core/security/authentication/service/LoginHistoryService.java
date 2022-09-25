@@ -84,10 +84,12 @@ public class LoginHistoryService extends GeneralService
 		return CmModelMapperUtils.mapToDto(LoginHistoryObjectMapper.INSTANCE, loginHistoryMapper.findPageableLoginHistories(loginHistorySearch));
 	}
 
+	/*
 	public int getLoginFailureCount(LoginHistorySearchDto loginHistorySearch)
 	{
 		return loginHistoryMapper.findLoginFailureCount(loginHistorySearch);
 	}
+	*/
 
 	private String getIp(HttpServletRequest request)
 	{

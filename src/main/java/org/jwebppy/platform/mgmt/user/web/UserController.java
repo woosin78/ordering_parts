@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
@@ -378,7 +379,7 @@ public class UserController extends UserGeneralController
 		}
 		else
 		{
-			int pwdValidPeriod = user.getUserAccount().getCredentialsPolicy().getPwdValidPeriod();
+			int pwdValidPeriod = NumberUtils.toInt(user.getUserAccount().getCredentialsPolicy().getPValidPeriod(), 0);
 
 			if (pwdValidPeriod > 0)
 			{

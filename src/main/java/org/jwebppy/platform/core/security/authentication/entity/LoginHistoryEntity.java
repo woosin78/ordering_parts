@@ -1,7 +1,5 @@
 package org.jwebppy.platform.core.security.authentication.entity;
 
-import java.time.LocalDateTime;
-
 import org.jwebppy.platform.core.entity.GeneralEntity;
 import org.jwebppy.platform.core.security.authentication.AuthenticationType;
 
@@ -22,7 +20,7 @@ public class LoginHistoryEntity extends GeneralEntity
 	private String ip;
 	private String referer;
 	private String userAgent;
-	private LocalDateTime accountLockedDate;
+	//private LocalDateTime accountLockedDate;
 	private Integer uSeq;
 	private String fgResult;
 	private String timezone;

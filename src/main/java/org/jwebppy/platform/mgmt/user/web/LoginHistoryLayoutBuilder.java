@@ -20,10 +20,11 @@ public class LoginHistoryLayoutBuilder
 	{
 		Tr thTr = new Tr();
 		thTr.addTextTh("Login Time(Local Time)", "two wide");
+		thTr.addTextTh("Username", "one wide");
 		thTr.addTextTh("IP", "two wide");
 		thTr.addTextTh("Referer", "three wide");
 		thTr.addTextTh("User Agent", "five wide");
-		thTr.addTextTh("Authentication Type", "two wide");
+		thTr.addTextTh("Auth. Type", "one wide");
 
 		Thead thead = new Thead();
 		thead.addTr(thTr);
@@ -43,6 +44,7 @@ public class LoginHistoryLayoutBuilder
 
 				Tr tbTr = new Tr();
 				tbTr.addTextTd(regDate);
+				tbTr.addTextTd(loginHistory.getUsername());
 				tbTr.addTextTd(loginHistory.getIp());
 				tbTr.addTextTd(loginHistory.getReferer());
 				tbTr.addTextTd(loginHistory.getUserAgent());

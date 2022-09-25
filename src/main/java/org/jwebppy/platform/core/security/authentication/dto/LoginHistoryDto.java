@@ -1,7 +1,5 @@
 package org.jwebppy.platform.core.security.authentication.dto;
 
-import java.time.LocalDateTime;
-
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.security.authentication.AuthenticationType;
@@ -26,7 +24,7 @@ public class LoginHistoryDto extends GeneralDto implements IPagination
 	private String ip;
 	private String referer;
 	private String userAgent;
-	private LocalDateTime accountLockedDate;
+	//private LocalDateTime accountLockedDate;
 	private Integer uSeq;
 	private String fgResult;
 	private String timezone;

@@ -55,7 +55,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
         logger.debug("1. Username:" + username + ", Password:" + password);
 
-        if (CmStringUtils.isEmpty(username) || CmStringUtils.isEmpty(password))
+        if (CmStringUtils.isAnyEmpty(username, password))
         {
         	throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
         }
