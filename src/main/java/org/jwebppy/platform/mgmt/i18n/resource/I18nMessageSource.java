@@ -35,13 +35,13 @@ public class I18nMessageSource extends AbstractMessageSource
 		return getMessage(key, new Locale(UserAuthenticationUtils.getLanguage()));
 	}
 
-	public String getMessage(String key, String[] replaceTexts)
+	public String getMessage(String key, Object[] replaceTexts)
 	{
 		String text = getMessage(key);
 
 		for (int i=0, length=CmArrayUtils.nullToEmpty(replaceTexts).length; i<length; i++)
 		{
-			text = RegExUtils.replaceAll(text, "\\{" + i + "\\}", replaceTexts[i]);
+			text = RegExUtils.replaceAll(text, "\\{" + i + "\\}", replaceTexts[i].toString());
 		}
 
 		return text;

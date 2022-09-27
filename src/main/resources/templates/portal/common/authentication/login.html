@@ -36,6 +36,7 @@ $(window).on("load", function() {
 	resizeView();
 	
 	let loginFailType = JpUtilsString.trimToEmpty("[[${#request.getAttribute(T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGIN_FAIL_TYPE)}]]");
+	let loginFailMessage = JpUtilsString.trimToEmpty("[[${#request.getAttribute(T(org.jwebppy.portal.common.PortalConfigVo).FORM_LOGIN_FAIL_MESSAGE)}]]");
 	
 	if (JpUtilsString.isEmpty(loginFailType))
 	{
@@ -43,16 +44,16 @@ $(window).on("load", function() {
 	}
 	else
 	{
-		if (loginFailType == "CredentialsExpired")
+		if (JpUtilsString.equals(loginFailType, "CredentialsExpired"))
 		{
 			//비밀번호 초기화 or 만료 시 초기 비밀번호 변경 화면으로 이동
-			JpUiDimmer.alert("[[#{PLTF_M_PASSWORD_EXPIRED}]]", function() {
+			JpUiDimmer.alert(loginFailMessage, function() {
 				document.location.href = "[[${T(org.jwebppy.portal.common.PortalConfigVo).FORM_PASSWORD_CHANGE_PAGE_URL}]]";	
 			});
 		}
-		else if (loginFailType == "Locked")
+		else if (JpUtilsString.equalsAny(loginFailType, "Locked", "AllowableCredentialsFailure"))
 		{
-			JpUiDimmer.alert("[[#{PLTF_M_LOGIN_ACCOUNT_LOCKED}]]", function() {
+			JpUiDimmer.alert(loginFailMessage, function() {
 				setFocus();
 			});
 		}

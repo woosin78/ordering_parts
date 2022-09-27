@@ -23,6 +23,7 @@ import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class PlatformAuthenticationManager implements AuthenticationManager
@@ -47,13 +48,23 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 	@Autowired
 	private UserAuthenticationService userAuthenticationService;
 
+	/*
+	 * 계정 관련 Exception 종류
+	 * - UsernameNotFoundException: 계정 없음
+	 * - BadCredentialsException: 비밀번호 불일치
+	 * - AccountStatusException
+	 *   ├ AccountExpiredException: 계정만료
+	 *   ├ CredentialsExpiredException: 비밀번호 만료
+	 *   ├ DisabledException: 계정 비활성화
+	 *   └ LockedException: 계정 잠김
+	 */
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException
 	{
         String username = authentication.getName();
         String password = (String)authentication.getCredentials();
 
-        logger.debug("1. Username:" + username + ", Password:" + password);
+        logger.info("1. Username:" + username + ", Password:" + password);
 
         if (CmStringUtils.isAnyEmpty(username, password))
         {
@@ -71,24 +82,30 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         }
 
         UserDto user = userService.getUserByUsername(username);
+
+        if (ObjectUtils.isEmpty(user))
+        {
+        	throw new UsernameNotFoundException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
+        }
+
         AuthenticationType authenticationType = checkAuthentication(user, username, password);
 
         if (ObjectUtils.isNotEmpty(authenticationType))
         {
-        	logger.debug("13. Username: " + username);
-        	logger.debug("14. Username2: " + username2);
+        	logger.info("13. Username: " + username);
+        	logger.info("14. Username2: " + username2);
 
             if (CmStringUtils.isNotEmpty(username2) && hasSuperLoginAuthority(username))
             {
             	UserDto user2 = userService.getUserByUsername(username2);
 
-            	logger.debug("15. user2: " + user2);
+            	logger.info("15. user2: " + user2);
 
             	if (ObjectUtils.isNotEmpty(user2))
             	{
                 	if (user2.getUserAccount().isValid())
                 	{
-                		logger.debug("16. Login Success");
+                		logger.info("16. Login Success");
 
                 		return userAuthenticationService.getAuthentication(user2, AuthenticationType.F, username);
                 	}
@@ -108,7 +125,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         AuthenticationType authenticationType = AuthenticationType.N;
         boolean isValidCredentials = false;
 
-        logger.debug("2. User:" + user);
+        logger.info("2. User:" + user);
 
         //계정이 시스템에 존재하는지 체크
         if (ObjectUtils.isNotEmpty(user))
@@ -117,14 +134,14 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 
         	if (CmStringUtils.equalsAny(password, AuthenticationType.A.getUniqueName(), AuthenticationType.S.getUniqueName()))
         	{
-        		logger.debug("4. Login by AD, SSO: " + password);
+        		logger.info("4. Login by AD, SSO: " + password);
 
         		authenticationType = (password.equals(AuthenticationType.A.getUniqueName())) ? AuthenticationType.A: AuthenticationType.S;
         		isValidCredentials = true;
         	}
         	else
         	{
-        		logger.debug("5. Where login by the DoobizPlus's credentials. FgUsePassword:" + userAccount.getFgNoUsePassword());
+        		logger.info("5. Where login by the DoobizPlus's credentials. FgUsePassword:" + userAccount.getFgNoUsePassword());
 
             	/*
             	 * DoobizPlus 자체 계정 인증 허용 여부
@@ -136,7 +153,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
             		//AD 인증에 성공했거나 비밀번호가 동일할 경우
             		if (passwordEncoder.matches(password, userAccount.getPassword()))
             		{
-            			logger.debug("6. Login Success");
+            			logger.info("6. Login Success");
 
             			isValidCredentials = true;
             		}
@@ -144,7 +161,7 @@ public class PlatformAuthenticationManager implements AuthenticationManager
             		{
                 		if (authenticationHelper.isDoobizUser(username, password))
                 		{
-                			logger.debug("7. Doobiz Login Success by Doobiz Authentication");
+                			logger.info("7. Doobiz Login Success by Doobiz Authentication");
 
                 			authenticationType = AuthenticationType.D;
                 			isValidCredentials = true;
@@ -157,13 +174,13 @@ public class PlatformAuthenticationManager implements AuthenticationManager
         	{
                 if (!userAccount.isValidPeriod())
                 {
-                	logger.debug("9. Account Expired");
+                	logger.info("9. Account Expired");
 
                 	throw new AccountExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_EXPIRED"));
                 }
                 else if (CmStringUtils.equals(PlatformCommonVo.YES, user.getUserAccount().getFgAccountLocked()))
                 {
-                	logger.debug("10. Account Locked");
+                	logger.info("10. Account Locked");
 
                 	throw new LockedException(i18nMessageSource.getMessage("PLTF_M_LOGIN_ACCOUNT_LOCKED"));
                 }
@@ -171,13 +188,13 @@ public class PlatformAuthenticationManager implements AuthenticationManager
                 {
                 	if (CmStringUtils.notEquals(PlatformCommonVo.YES, userAccount.getFgNoUsePassword()))
                 	{
-                		logger.debug("11. Password Locked");
+                		logger.info("11. Password Locked");
 
                 		throw new CredentialsExpiredException(i18nMessageSource.getMessage("PLTF_M_LOGIN_PASSWORD_EXPIRED"));
                 	}
                 }
 
-                logger.debug("12. Login Success");
+                logger.info("12. Login Success");
 
                 return authenticationType;
         	}

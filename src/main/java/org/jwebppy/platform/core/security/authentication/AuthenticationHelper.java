@@ -10,12 +10,16 @@ import java.net.URLEncoder;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.sso.uitils.StringEncrypter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AuthenticationHelper
 {
+	private Logger logger = LoggerFactory.getLogger(AuthenticationHelper.class);
+
 	@Value("${platform.service}")
 	private String PLATFORM_SERVICE;
 
@@ -25,13 +29,13 @@ public class AuthenticationHelper
 		String IV = "Doosan";
 
 		String protocol = "http";
-		String host = "10.249.27.18";//EPQ AP
+		String host = "10.249.27.18";//Doobiz EPQ AP
 		int port = 50000;
 		String path = "/irj/servlet/prt/portal/prtroot/doobiz.portal.auth.DoobizAuthenticationComponent";
 
 		if (CmStringUtils.equals(PLATFORM_SERVICE, "PRD"))
 		{
-			host = "10.249.16.182";//EPP AP2
+			host = "10.249.16.182";//Doobiz EPP AP2
 		}
 
 		BufferedReader bufferedReader = null;
@@ -40,18 +44,18 @@ public class AuthenticationHelper
 		{
         	path += "?token=" + URLEncoder.encode(new StringEncrypter(KEY, IV).encrypt(CmStringUtils.upperCase(username) + ":" + password + ":" + System.currentTimeMillis()), "UTF-8");
 
-        	System.err.println("Doobiz Login - protocol: " + protocol + ", host:" + host + ", port:" + port + ", path:" + path);
+        	logger.debug("Doobiz Login - protocol: " + protocol + ", host:" + host + ", port:" + port + ", path:" + path);
 
         	URL url = new URL(protocol, host, port, path);
         	HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 
         	conn.setRequestMethod("GET");
 
-        	System.err.println("Doobiz Login - try to connect");
+        	logger.debug("Doobiz Login - try to connect");
 
         	conn.connect();
 
-        	System.err.println("Doobiz Login - connection success");
+        	logger.debug("Doobiz Login - connection success");
 
 			bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 			StringBuffer response = new StringBuffer();
@@ -65,7 +69,7 @@ public class AuthenticationHelper
 			bufferedReader.close();
 			bufferedReader = null;
 
-			System.err.println("Doobiz Login Result:" + response.toString());
+			logger.debug("Doobiz Login Result:" + response.toString());
 
 			if (CmStringUtils.equals(response.toString(), PlatformCommonVo.SUCCESS))
 			{

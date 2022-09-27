@@ -63,8 +63,8 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 			UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
 			UserAccountDto userAccount = user.getUserAccount();
 
-			logger.debug("99. User Account Update");
-			logger.debug("99.1. Before:" + userAccount);
+			logger.info("99. User Account Update");
+			logger.info("99.1. Before:" + userAccount);
 
 			userAccount.setFgAccountLocked(PlatformCommonVo.NO);
 			userAccount.setFgPasswordLocked(PlatformCommonVo.NO);
@@ -76,7 +76,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
     			userAccount.setToValid(null);
 			}
 
-			logger.debug("99.2. After:" + userAccount);
+			logger.info("99.2. After:" + userAccount);
 
 			userService.saveUserAccount(userAccount);
 		}
@@ -88,7 +88,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		loginHistoryService.success(request, response);
 
 		//비밀번호 입력 실패 허용  횟수 초과로 인한 인증 불가 기간 초기화
-		request.getSession().removeAttribute("PWD_PENALTY_TIME");
+		request.getSession().removeAttribute("ACCOUNT_LOCKED_REASON");
 
 		//Login 시 Save Username 체크 했을 경우 처리
         if (CmStringUtils.equals(request.getParameter("saveUsername"), PlatformCommonVo.YES))

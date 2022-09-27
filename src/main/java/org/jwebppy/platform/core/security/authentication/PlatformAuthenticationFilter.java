@@ -17,6 +17,7 @@ import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.sso.uitils.StringEncrypter;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -89,20 +90,26 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 				password = AuthenticationType.A.getUniqueName();
 			}
 
-			LocalDateTime pwdPenaltyTime = (LocalDateTime)request.getSession().getAttribute("PWD_PENALTY_TIME");
+			AccountLockedReason accountLockedReason = (AccountLockedReason)request.getSession().getAttribute("ACCOUNT_LOCKED_REASON");
 
-			System.err.println("pwdPenaltyTime:" + pwdPenaltyTime);
-
-			if (ObjectUtils.isNotEmpty(pwdPenaltyTime))
+			if (ObjectUtils.isNotEmpty(accountLockedReason))
 			{
-				Duration duration = Duration.between(LocalDateTime.now(), pwdPenaltyTime);
+				CredentialsPolicyDto credentialsPolicy = accountLockedReason.getCredentialsPolicy();
 
-				int sleepTime = (int)Math.ceil(duration.getSeconds() / 60);
-
-				if (sleepTime > 0)
+				if (CmStringUtils.equals(PlatformCommonVo.YES, credentialsPolicy.getFgUsePwdFailPenalty()))
 				{
-					System.err.println("sleepTime:" + sleepTime);
-					throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED") + ":" + sleepTime);
+					Duration duration = Duration.between(LocalDateTime.now(), accountLockedReason.getLoginFreezingBy());
+
+					long freezingTime = (long)Math.ceil(duration.getSeconds() / 60);
+
+					if (freezingTime > 0)
+					{
+						throw new AllowableCredentialsFailureException(i18nMessageSource.getMessage("PLTF_M_EXCEEDED_ALLOWABLE_FAILURE_COUNT", new Object[] { credentialsPolicy.getPAllowableFailCount(), freezingTime}));
+					}
+					else
+					{
+						request.getSession().removeAttribute("ACCOUNT_LOCKED_REASON");
+					}
 				}
 			}
 		}
@@ -127,10 +134,6 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
             JWTVerifier verifier = JWT.require(algorithm).withIssuer("DOOSAN").build();
 
             DecodedJWT jwt = verifier.verify(token);
-
-            System.err.println("token:" + token);
-            System.err.println("jwt:" + jwt.toString());
-            System.err.println("result:" + ("DOOSAN-SSO-AUTH".equals(jwt.getSubject())));
 
             if("DOOSAN-SSO-AUTH".equals(jwt.getSubject()))
             {

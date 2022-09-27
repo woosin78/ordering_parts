@@ -216,6 +216,14 @@ a.link:hover {text-decoration: underline; color: #00a779; cursor: pointer;}
 	margin: 0;
 	padding: 0;
 }
+.split4 {
+	display: inline-block;
+	height: 10px;
+	/* background: #eee; */
+	width: 3px;
+	margin: 0;
+	padding: 0;
+}
 .split-row {
 	display: block;
 	height: 12px;
