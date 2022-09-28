@@ -29,11 +29,11 @@ public class GpesSsoOutController extends SsoController
 	{
         try
 		{
-        	String url = isProduction() ? PRD_URL : DEV_URL;
+        	String domain = isProduction() ? PRD_URL : DEV_URL;
 
         	String[] secret = TARGET.get(target);
 
-        	model.addAttribute("url", url + secret[2] + encrypt(secret[0], secret[1], "|@"));
+        	model.addAttribute("url", domain + secret[2] + encrypt(secret[0], secret[1], "|@"));
 		}
         catch (Exception e)
         {

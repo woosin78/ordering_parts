@@ -41,9 +41,10 @@
 		<button id="BTN_go" class="gomain-button"><span th:text="#{PTL_B_MOVE_TO_SYSTEM}"></span> <img src="/portal/img/common/arrow_right.png" /></button>
 	</div>
 </div>
+<input type="hidden" id="ssoUrl" th:value="${url}"></input>
 <script>
 $("#BTN_go").on("click", function() {
-	let popup = window.open("[[${url}]]");
+	let popup = window.open($("#ssoUrl").val());
 	
 	try
 	{
