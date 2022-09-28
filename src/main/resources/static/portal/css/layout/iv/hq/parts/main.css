@@ -712,7 +712,7 @@ a.link:hover {text-decoration: underline; color: #4183C4; cursor: pointer;}
 
 .slick-img {
 	width: 420px;
-	height: 400px;
+	/*height: 400px;*/
 	margin-top: 10px;
 	border-radius: 15px;
 	opacity: 0.8;
