@@ -21,6 +21,7 @@ import org.jwebppy.portal.iv.hq.parts.domestic.order.create.dto.OrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.export.common.PartsExportCommonVo;
 import org.jwebppy.portal.iv.hq.parts.export.common.web.PartsExportGeneralController;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderDto;
+import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderHistoryHeaderDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.dto.ExOrderItemDto;
 import org.jwebppy.portal.iv.hq.parts.export.order.create.service.ExOrderCreateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,13 +45,19 @@ public class ExOrderCreateController extends PartsExportGeneralController
 	public String write(Model model, WebRequest webRequest)
 	{
 		String ohhSeq = webRequest.getParameter("ohhSeq");
+		String docType = CmStringUtils.defaultIfEmpty(webRequest.getParameter("docType"), "C");
+		ExOrderHistoryHeaderDto orderHistoryHeader = null;
 
 		if (ObjectUtils.isNotEmpty(ohhSeq))
 		{
-			model.addAttribute("orderHistoryHeader", orderCreateService.getOrderHistory(Integer.valueOf(ohhSeq)));
+			orderHistoryHeader = orderCreateService.getOrderHistory(Integer.valueOf(ohhSeq));
+
+			docType = orderHistoryHeader.getDocType();
 		}
 
+		model.addAttribute("docType", docType);
 		model.addAttribute("simulationFrom", webRequest.getParameter("simulationFrom"));
+		model.addAttribute("orderHistoryHeader", orderHistoryHeader);
 
 		addAllAttributeFromRequest(model, webRequest);
 
