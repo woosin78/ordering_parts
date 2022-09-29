@@ -3,6 +3,7 @@ package org.jwebppy.platform.mgmt.user.web;
 import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -47,6 +48,18 @@ public class CredentialsPolicyController extends UserGeneralController
 	public Object listLayout(@ModelAttribute CredentialsPolicySearchDto credentialPolicySearch)
 	{
 		return CredentialsPolicyLayoutBuilder.pageableList(new PageableList<>(credentialsPolicyService.getPageableCredentialsPolicies(credentialPolicySearch)));
+	}
+
+	@RequestMapping("/view")
+	public String view(Model model, WebRequest webRequest)
+	{
+		Integer cpSeq = NumberUtils.toInt(webRequest.getParameter("cpSeq"));
+
+		model.addAttribute("credentialsPolicy", credentialsPolicyService.getCredentialPolicy(cpSeq));
+
+		addAllAttributeFromRequest(model, webRequest);
+
+		return DEFAULT_VIEW_URL;
 	}
 
 	@GetMapping("/write")

@@ -52,7 +52,7 @@ JpUiRender = function()
 		    	}
 		    	else
 		    	{
-			    	result.push("<div class=\"column\" style=\"padding-top: 0.5rem; padding-bottom: 0.5rem\">");
+			    	result.push("<div class=\"column column-padding\">");
 			    	result.push(content);
 			    	result.push("</div>");		    		
 		    	};
