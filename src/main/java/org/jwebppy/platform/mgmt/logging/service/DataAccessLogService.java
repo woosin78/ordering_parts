@@ -176,6 +176,6 @@ public class DataAccessLogService extends GeneralService
 
 	public List<DataAccessLogDto> getUsedSapRfcsOnPage(DataAccessLogSearchDto dataAccessLogSearch)
 	{
-		return CmModelMapperUtils.mapToDto(DataAccessLogObjectMapper.INSTANCE, dataAccessLogMapper.findUsedSapRfcsOnPage(dataAccessLogSearch));
+		return CmModelMapperUtils.mapToDto(DataAccessLogObjectMapper.INSTANCE, dataAccessLogMapper.findExecutedSapRfcOnPage(dataAccessLogSearch));
 	}
 }

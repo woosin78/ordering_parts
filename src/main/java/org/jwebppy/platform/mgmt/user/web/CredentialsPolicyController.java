@@ -97,6 +97,13 @@ public class CredentialsPolicyController extends UserGeneralController
 	{
 		credentialsPolicy.setName(CmStringUtils.upperCase(credentialsPolicy.getName()));
 
+		if (CmStringUtils.equals(PlatformCommonVo.NO, credentialsPolicy.getFgUsePwdFailPenalty()))
+		{
+			credentialsPolicy.setPAllowableFailCount(null);
+			credentialsPolicy.setPFailCheckDuration(null);
+			credentialsPolicy.setPFreezingDuration(null);
+		}
+
 		return credentialsPolicyService.save(credentialsPolicy);
 	}
 

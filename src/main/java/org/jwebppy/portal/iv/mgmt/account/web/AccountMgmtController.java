@@ -11,10 +11,10 @@ import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
+import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.mgmt.account.dto.AccountDto;
-import org.jwebppy.portal.iv.mgmt.account.dto.UserType;
 import org.jwebppy.portal.iv.mgmt.account.service.AccountMgmtService;
 import org.jwebppy.portal.iv.mgmt.account.utils.AccountMgmtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +124,7 @@ public class AccountMgmtController extends IvGeneralController
 			account.setUSeq(user.getUSeq());
 			account.setUsername(user.getUserAccount().getUsername());
 
-			if (UserType.D.equals(account.getUserType()))
+			if (CmStringUtils.equals(PortalCommonVo.NO, user.getUserAccount().getFgNoUsePassword()))
 			{
 				account.setPassword(IvCommonVo.INITIAL_PASSWORD);
 			}

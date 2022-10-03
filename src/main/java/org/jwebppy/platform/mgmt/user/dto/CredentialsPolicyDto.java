@@ -46,6 +46,7 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private String fgUsePwdFailPenalty = PlatformCommonVo.NO;
 	private String pFailCheckDuration;
 	private String pAllowableFailCount;
+	private String pFreezingDuration;
 	private String fgUse = PlatformCommonVo.NO;
 	private String fgDefault = PlatformCommonVo.NO;
 	private List<UserGroupDto> userGroups;

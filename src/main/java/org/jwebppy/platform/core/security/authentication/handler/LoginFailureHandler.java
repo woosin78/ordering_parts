@@ -118,7 +118,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 							failCount++;
 						}
 
-						return new long[] {failCount, allowablePwdFailCount, 300};
+						return new long[] {failCount, allowablePwdFailCount, NumberUtils.toInt(credentialsPolicy.getPFreezingDuration(), 300)};
 					}
 				}
 			}

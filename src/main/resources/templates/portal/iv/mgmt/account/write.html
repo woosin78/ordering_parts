@@ -18,12 +18,10 @@
 	<table class="condition">
 		<tbody>
 			<tr>
-				<th><div th:text="#{HQP_L_USER_TYPE}"></div><img src="/portal/img/icon/required.png" class="required" /></th>
-				<td class="wp13">
+				<th style="width:30%"><div th:text="#{HQP_L_USER_TYPE}"></div><img src="/portal/img/icon/required.png" class="required" /></th>
+				<td>
 					<div class="input-area">
-						<input type="radio" class="custom-ui" name="userType" value="D" checked /><label th:text="#{HQP_L_DEALER}"></label>
-						&nbsp;&nbsp;
-						<input type="radio" class="custom-ui" name="userType" value="I" /><label th:text="#{HQP_L_INTERNAL_USER}"></label>
+						<select class="custom-ui" name="userType"></select>
 					</div>
 				</td>
 			</tr>
@@ -55,15 +53,35 @@
 	</div>
 	
 <script>
+const USER_TYPE = {
+	DEALER: {CODE: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).D.name}]]", NAME: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).D.type}]]"},
+	SUB_DEALER: {CODE: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).S.name}]]", NAME: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).S.type}]]"},
+	READONLY_DEALER: {CODE: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).R.name}]]", NAME: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).R.type}]]"},
+	INTERNAL_USER: {CODE: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).I.name}]]", NAME: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).I.type}]]"}
+};
+
 $(function(){
-	ProgressBar.hide();
+	function initUserType()
+	{
+		let bizType = $("#bizType").val();
+		
+		$.each(USER_TYPE, function(key, value) {
+			if (!JpUtilsString.equalsAny(bizType, "EUDOP", "UKDOP"))
+			{
+				if (JpUtilsString.equalsAny(value.CODE, USER_TYPE.SUB_DEALER.CODE, USER_TYPE.READONLY_DEALER.CODE))
+				{
+					return true;								
+				};
+			};
+			
+			$("select[name=userType]").append("<option value='" + value.CODE + "'>" + value.NAME + "</option>");
+		});		
+	};
 	
-	$("#FORM_write input:text").on("focus", function() {
-		this.select();
-	});
+	initUserType();
 	
-	$("input:radio[name=userType]").on("click", function() {
-		if (JpUtilsString.equals($(this).val(), "I"))
+	$("select[name=userType]").on("change", function() {
+		if (JpUtilsString.equals($(this).val(), USER_TYPE.INTERNAL_USER.CODE))
 		{
 			$("#dealerCode").prop("readonly", true).val("");
 		}
@@ -77,11 +95,11 @@ $(function(){
 	
 	function showUsernameGenerationRule()
 	{
-		let userType = $("input:radio[name=userType]:checked").val();
+		let userType = $("select[name=userType]").val();
 		let readOnlyDealerCode = false;
 		let readOnlyUsername = false;
 				
-		if (JpUtilsString.equals(userType, "I"))
+		if (JpUtilsString.equals(userType, USER_TYPE.INTERNAL_USER.CODE))
 		{
 			//Show username generation rule
 			$(".internalUserUsernameRule").show();
@@ -132,7 +150,7 @@ $(function(){
 	};
 		
 	$("#BTN_save").on("click", function() {
-		if ($("input:radio[name=userType]:checked").val() == "D")
+		if ($("select[name=userType]").val() == USER_TYPE.INTERNAL_USER.CODE)
 		{
 			if (JpUtilsString.isEmpty($("#dealerCode").val()))
 			{
@@ -209,7 +227,7 @@ $(function(){
 		};
 		
 		//내부사용자는 자신의 AD 계정 입력
-		if (JpUtilsString.equals($("input:radio[name=userType]:checked").val(), "I"))
+		if (JpUtilsString.equals($("select[name=userType]").val(), USER_TYPE.INTERNAL_USER.CODE))
 		{
 			return true;			
 		};
@@ -256,7 +274,7 @@ $(function(){
 			    		let message1 = "[[#{HQP_M_CREATED_NEW_ACCOUNT}]]";
 			    		let message2 = "[[#{HQP_M_INITIAL_PASSWORD}]]";
 			    		
-			    		if (result.userType == "I")
+			    		if (result.userType == USER_TYPE.INTERNAL_USER.CODE)
 			    		{
 			    			alert(message1);
 			    		}
@@ -280,7 +298,9 @@ $(function(){
 		JpUtilsAjax.post(options);
 	};
 	
-	$("input:radio[name=userType][value=D]").trigger("click");
+	$("select[name=userType]").val(USER_TYPE.DEALER.CODE).trigger("change");
+	
+	ProgressBar.hide();
 });
 </script>	
 </th:block>

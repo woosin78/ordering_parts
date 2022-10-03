@@ -137,28 +137,53 @@
 		order by line_no		
 	</select>
 	
-	<select id="findUsedSapRfcsOnPage" parameterType="DataAccessLogSearchDto" resultType="DataAccessLogEntity">
+	<select id="findExecutedSapRfc">
 		select
-		x.command,
-		y.dl_seq,
-		y.reg_date
+		command,
+		dl_seq,
+		reg_date
+		from
+		pltf_dacs_log
+		where
+		command=#{command}
+		and reg_username=#{regUsername}
+		and start_time=1664658117264
+		and referer='/portal/iv/hq/parts/domestic/order/status/list'	
+	</select>
+	
+	<select id="findExecutedSapRfcOnPage" parameterType="DataAccessLogSearchDto" resultType="DataAccessLogEntity">
+		select
+		x.*,
+		(
+			select
+			dl_seq
+			from
+			pltf_dacs_log
+			where
+			command=x.command
+			and referer=x.referer
+			and reg_username=x.reg_username
+			and start_time=x.start_time
+			and reg_date=x.reg_date
+		) dl_seq
 		from
 		(
 		    select
 		    a.command,
-		    max(b.reg_username) reg_username,
-		    max(b.start_time) start_time,        
+			max(b.referer) referer,
+		    max(b.start_time) start_time,
+			max(b.reg_username) reg_username,
 		    max(b.reg_date) reg_date
 		    from
 		    pltf_sap_rfc_info1 a,
 		    (
 		        select
-		        dl_seq,		    
+				command,
 		        class_name,
 		        method_name,
-		        command,
 		        start_time,
-		        reg_username,
+				referer,
+				reg_username,
 		        reg_date
 		        from
 		        pltf_dacs_log
@@ -172,13 +197,8 @@
 		    and a.class_name=b.class_name(+)
 		    and a.method_name=b.method_name(+)
 		    group by a.command
-		) x,
-		pltf_dacs_log y
-		where
-		x.command=y.command(+)
-		and x.reg_username=y.reg_username(+)
-		and x.start_time=y.start_time(+)
-		order by nvl(y.start_time, -1) desc, x.command	
+		) x
+		order by nvl(x.start_time, -1) desc, x.command
 	</select>
 
 </mapper>

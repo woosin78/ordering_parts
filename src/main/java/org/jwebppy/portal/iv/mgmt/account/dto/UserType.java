@@ -2,7 +2,7 @@ package org.jwebppy.portal.iv.mgmt.account.dto;
 
 public enum UserType
 {
-	D("Dealer"), I("Internal User");
+	D("Dealer"), S("Sub Dealer"), R("Read-Only Dealer"), I("Internal User");
 
 	private String type;
 

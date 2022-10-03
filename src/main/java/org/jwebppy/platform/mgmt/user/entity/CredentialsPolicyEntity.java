@@ -45,6 +45,7 @@ public class CredentialsPolicyEntity extends GeneralEntity implements IPaginatio
 	private String fgUsePwdFailPenalty;
 	private String pFailCheckDuration;
 	private String pAllowableFailCount;
+	private String pFreezingDuration;
 	private String fgUse;
 	private String fgDefault;
 	private List<UserGroupEntity> userGroups;
