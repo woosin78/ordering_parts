@@ -21,7 +21,8 @@ public class PlatformConfigVo
 	public final static String FORM_LOGIN_FAIL_TYPE = "Login-Fail-Type";//폼 로그인 - 로그인 실패 후 request 에 setAttribute 시 사용되는 name
 	public final static String FORM_LOGIN_FAIL_MESSAGE = "Login-Fail-Message";//폼 로그인 - 로그인 실패 후 request 에 setAttribute 시 사용되는 name
 
-	public final static String FORM_LOGOUT_PROCESSING_URL = FORM_AUTHENTICATION_PATH + "/logout"; //폼 로그인 - 로그아웃 url
+	//public final static String FORM_LOGOUT_PROCESSING_URL = FORM_AUTHENTICATION_PATH + "/logout"; //폼 로그인 - 로그아웃 url
+	public final static String FORM_LOGOUT_PROCESSING_URL = "/portal/common/authentication/logout"; //폼 로그인 - 로그아웃 url
 	public final static String FORM_LOGOUT_SUCCESS_URL = INDEX_URL; //폼 로그인 - 인증 성공 시 default 이동 url
 
 	public final static String FORM_PASSWORD_CHANGE_PAGE_PATH = "/change_password";
