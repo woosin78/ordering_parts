@@ -137,7 +137,7 @@
 		</div>
 		<div class="bottom-area">
 			<div class="copy-right">
-				<span th:text="#{PTL_T_COPY_RIGHT}"></span>
+				<a class="link opensource-license" th:text="#{PTL_T_OPENSOURCE_LICENSE}"></a><br/><span th:text="#{PTL_T_COPY_RIGHT}"></span>
 			</div>
 		</div>
 	</div>
@@ -181,6 +181,10 @@ $(function(){
 	$("#BTN_goOrder").on("click", function() {
 		document.location.href = "[[${BASE_PATH}]]/order/create/order_form";
 	});
+	
+	$(".opensource-license").on("click", function() {
+		document.location.href = "/portal/download/opensource_license.docx";
+	});	
 	
 	//Get last login information
 	JpUtilsAjax.get({
