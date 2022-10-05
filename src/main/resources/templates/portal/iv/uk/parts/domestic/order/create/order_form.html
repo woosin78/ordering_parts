@@ -18,7 +18,8 @@
 				<span class="bold">*[[#{EUP_T_GUIDE_ORDER_UPLOAD_FORM1}]]</span><br/>
 				- A: [[#{EUP_T_GUIDE_ORDER_UPLOAD_FORM2}]]<br/>
 				- B: [[#{EUP_T_GUIDE_ORDER_UPLOAD_FORM3}]]
-				<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/iv/hq/parts/common/upload_form.png"/>
+				<img class="dropzone-body-img dropzone-click-zone" src="/portal/img/iv/hq/parts/common/upload_form.png"/><br/>
+				<div style="margin-left:15px;"><input type="checkbox" id="fgShowListPrice" name="fgShowListPrice" class="custom-ui" value="Y" checked><label>Show List Price</label></div>
 			</div>
 		</div>
 		<div class="dropzone-bottom dropzone-click-zone">
@@ -176,7 +177,7 @@
 	let UploadModal = {};
 	UploadModal.show = function() {
 		let width = 480;
-		let height = 430;
+		let height = 450;
 		let left = ($(window).innerWidth() - width) * 0.5;
 		let top = ($(window).innerHeight() - height) * 0.5;
 	
@@ -189,7 +190,7 @@
 	
 		$(".dropzone-dimmer, .dropzone-area").show();
 		
-		$("#fgShowListPrice").prop("checked", true);
+		//$("#fgShowListPrice").prop("checked", true);
 	};
 	
 	UploadModal.hide = function()
@@ -708,7 +709,7 @@
 					className:"center noselect",
 					render: function(data, type, row)
 					{
-						return '<input type="text" class="custom-ui" name="orderQty" style="width:70px" value="' + row.orderQty + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onkeyup="doSimulationByEnter(this)" onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
+						return '<input type="text" class="custom-ui center" name="orderQty" style="width:70px" value="' + row.orderQty + '" tabindex="' + tabIndex++ + '" ' + row.disabled + ' onkeyup="doSimulationByEnter(this)" onchange="syncInput(this)">';// FixedColumns 사용시엔 syncInput 호출 필요함.
 					}
 				},//Req Qty
 				{name: "lotQty", data: "lotQty", title: "[[#{EUP_L_0050}]]"},//Sales Lot 6
