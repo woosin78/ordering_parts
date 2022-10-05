@@ -45,8 +45,10 @@ public class SapConnResourceController extends MgmtGeneralController
 	}
 
 	@GetMapping("/view")
-	public Object view(Model model, WebRequest webRequest)
+	public Object view(Model model, WebRequest webRequest, @RequestParam("scrSeq") Integer scrSeq)
 	{
+		model.addAttribute("sapConnResource", sapConnResourceService.getSapConnResource(scrSeq));
+
 		addAllAttributeFromRequest(model, webRequest);
 
 		return DEFAULT_VIEW_URL;

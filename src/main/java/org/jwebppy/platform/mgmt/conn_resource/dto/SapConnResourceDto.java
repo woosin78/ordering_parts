@@ -1,10 +1,13 @@
 package org.jwebppy.platform.mgmt.conn_resource.dto;
 
+import java.util.List;
+
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -37,6 +40,7 @@ public class SapConnResourceDto extends GeneralDto implements IPagination
 	private String language;
 	private String fgUseUserLang;
 	private String fgUse;
+	private List<UserGroupDto> userGroups;
 
 	public SapConnResourceDto() {}
 

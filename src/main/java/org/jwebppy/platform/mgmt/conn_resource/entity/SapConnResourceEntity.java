@@ -1,8 +1,11 @@
 package org.jwebppy.platform.mgmt.conn_resource.entity;
 
+import java.util.List;
+
 import org.jwebppy.platform.core.entity.GeneralEntity;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnType;
+import org.jwebppy.platform.mgmt.user.entity.UserGroupEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +38,7 @@ public class SapConnResourceEntity extends GeneralEntity implements IPagination
 	private String language;
 	private String fgUseUserLang;
 	private String fgUse;
+	private List<UserGroupEntity> userGroups;
 
 	public SapConnResourceEntity() {}
 

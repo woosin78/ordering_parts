@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
@@ -49,7 +50,16 @@ public class SapConnResourceLayoutBuilder
 		for (SapConnResourceDto sapConnResource : sapConnResources)
 		{
 			Tr tbTr = new Tr();
-			tbTr.addDataKeyCheckboxTd("scrSeq", sapConnResource.getScrSeq());
+
+			if (CollectionUtils.isEmpty(sapConnResource.getUserGroups()))
+			{
+				tbTr.addDataKeyCheckboxTd("scrSeq", sapConnResource.getScrSeq());
+			}
+			else
+			{
+				tbTr.addEmptyTd();
+			}
+
 			tbTr.addDataKeyLinkTd(sapConnResource.getName(), sapConnResource.getScrSeq());
 			tbTr.addTextTd(sapConnResource.getDescription());
 			tbTr.addTextTd(sapConnResource.getType().getType());

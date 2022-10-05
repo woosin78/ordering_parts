@@ -2,6 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.platform.mgmt.conn_resource.mapper.SapConnResourceMapper">
+	<resultMap type="SapConnResourceEntity" id="sapConnResourceMap">
+		<id property="scrSeq" column="scr_seq" />
+		<result property="type" column="type" />
+		<result property="name" column="name" />
+		<result property="description" column="description" />
+		<result property="appServer" column="app_server" />
+		<result property="instanceNo" column="instance_no" />
+		<result property="systemId" column="system_id" />
+		<result property="routerString" column="router_string" />
+		<result property="msgServer" column="msg_server" />
+		<result property="router" column="router" />
+		<result property="grpServer" column="grp_server" />
+		<result property="client" column="client" />
+		<result property="r3name" column="r3name" />
+		<result property="username" column="username" />
+		<result property="password" column="password" />
+		<result property="poolCapacity" column="pool_capacity" />
+		<result property="peakLimit" column="peak_limit" />
+		<result property="language" column="language" />
+		<result property="fgUseUserLang" column="fg_use_user_lang" />
+		<result property="fgUse" column="fg_use" />
+		<result property="fgDelete" column="fg_delete" />
+		<result property="regUsername" column="reg_username" />
+		<result property="regDate" column="reg_date" />
+		<collection property="userGroups" foreignColumn="scr_seq" column="scr_seq" javaType="java.util.ArrayList" ofType="UserGroupEntity" select="org.jwebppy.platform.mgmt.user.mapper.UserGroupMapper.findUserGroupsByScrSeq" />
+	</resultMap>
+
 	<insert id="insert" parameterType="SapConnResourceEntity" useGeneratedKeys="true" keyProperty="scrSeq">
 		<selectKey keyProperty="scrSeq" resultType="Integer" order="BEFORE">
 			select pltf_scr_seq.nextval from dual
@@ -57,7 +84,7 @@
 			scr_seq=#{scrSeq}			
 	</update>	
 	
-	<select id="findSapConnResource" resultType="SapConnResourceEntity">
+	<select id="findSapConnResource" resultMap="sapConnResourceMap">
 		select
 		a.*
 		from
@@ -67,7 +94,7 @@
 		and scr_seq=#{scrSeq}
 	</select>
 	
-	<select id="findSapConnResourceByName" resultType="SapConnResourceEntity">
+	<select id="findSapConnResourceByName" resultMap="sapConnResourceMap">
 		select 
 		*
 		from
@@ -77,7 +104,7 @@
 		and name=#{name}
 	</select>		
 	
-	<select id="findPageSapConnResources" parameterType="SapConnResourceSearchDto" resultType="SapConnResourceEntity">
+	<select id="findPageSapConnResources" parameterType="SapConnResourceSearchDto" resultMap="sapConnResourceMap">
 		<include refid="PaginationMapper.header"/>
 
 		select
@@ -99,7 +126,7 @@
 		<include refid="PaginationMapper.footer"/>
 	</select>		
 	
-	<select id="findAvailableSapConnResources" resultType="SapConnResourceEntity">
+	<select id="findAvailableSapConnResources" resultMap="sapConnResourceMap">
 		select
 		a.*
 		from
