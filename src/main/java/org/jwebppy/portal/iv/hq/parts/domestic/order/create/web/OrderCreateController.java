@@ -224,7 +224,6 @@ public class OrderCreateController extends PartsDomesticGeneralController
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
 		rfcParamMap.putAll(paramMap);
-		rfcParamMap.put("customerNo", rfcParamMap.getCustomerNo());
 
 		return orderCreateService.getShippingInfo(rfcParamMap);
 	}

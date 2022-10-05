@@ -156,10 +156,12 @@ public class OrderCreateService extends PartsDomesticGeneralService
 		RfcRequest rfcRequest = new RfcRequest("Z_EP_SHIPPINGINFO");
 
 		rfcRequest
-			.field("I_LANG", paramMap.getLangForSap())
-			.and()
-    		.structure("I_INPUT")
-				.add(SimpleRfcMakeParameterUtils.me(paramMap));
+			.field(new Object[][] {
+					{"I_BGTYP", "P"},
+					{"I_LANG", paramMap.getLangForSap()},
+					{"I_KUNNR", paramMap.getString("customerNo")},
+					{"I_USERID", paramMap.getUsername()}
+				});
 
 		return simpleRfcTemplate.response(rfcRequest).getTable("ZSST9100");
 	}

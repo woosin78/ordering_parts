@@ -534,7 +534,7 @@ $("#BTN_onetimeAddress").on("click", function() {
 });
 
 $("#BTN_shippingInfo").on("click", function(event) {
-	let param = "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&customerNo=" + $("#soldToNo").val();
+	let param = "orderType=" + orderComponent.getSelectedOrderType() + "&priceGroup=" + orderComponent.getSelectedPriceGroup() + "&customerNo=" + $("#shipToNo").val();
 
 	Popup.open("[[${BASE_PATH}]]/order/create/popup/shipping_info?" + param, 1000, 500);
 });

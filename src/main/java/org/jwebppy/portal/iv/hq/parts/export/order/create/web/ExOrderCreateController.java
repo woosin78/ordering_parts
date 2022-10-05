@@ -221,7 +221,6 @@ public class ExOrderCreateController extends PartsExportGeneralController
 		PartsErpDataMap rfcParamMap = getErpUserInfo();
 
 		rfcParamMap.putAll(paramMap);
-		rfcParamMap.put("customerNo", rfcParamMap.getCustomerNo());
 
 		return orderCreateService.getShippingInfo(rfcParamMap);
 	}
