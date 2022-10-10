@@ -5,21 +5,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.ObjectUtils;
+import org.jwebppy.platform.core.dao.sap.RfcResponse;
 import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
+import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
+import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
+import org.jwebppy.platform.mgmt.user.service.UserGroupService;
 import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.jwebppy.portal.common.PortalCommonVo;
 import org.jwebppy.portal.iv.common.IvCommonVo;
 import org.jwebppy.portal.iv.common.web.IvGeneralController;
 import org.jwebppy.portal.iv.mgmt.account.dto.AccountDto;
+import org.jwebppy.portal.iv.mgmt.account.dto.UserType;
 import org.jwebppy.portal.iv.mgmt.account.service.AccountMgmtService;
 import org.jwebppy.portal.iv.mgmt.account.utils.AccountMgmtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +43,15 @@ public class AccountMgmtController extends IvGeneralController
 {
 	@Autowired
 	private AccountMgmtService accountMgmtService;
+
+	@Autowired
+	private CredentialsPolicyService credentialsPolicyService;
+
+	@Autowired
+	private I18nMessageSource i18nMessageSource;
+
+	@Autowired
+	private UserGroupService userGroupService;
 
 	@Autowired
 	private UserService userService;
@@ -137,7 +156,7 @@ public class AccountMgmtController extends IvGeneralController
 
 	@PostMapping("/delete")
 	@ResponseBody
-	public Object delete(@RequestParam(value="uSeqs") List<Integer> uSeqs)
+	public Object delete(@RequestParam(value = "uSeqs") List<Integer> uSeqs)
 	{
 		userService.deleteUser(uSeqs);
 
@@ -146,10 +165,80 @@ public class AccountMgmtController extends IvGeneralController
 
 	@PostMapping("/reset/password")
 	@ResponseBody
-	public Object resetPassword(@RequestParam(value="uSeqs") List<Integer> uSeqs)
+	public Object resetPassword(@RequestParam(value = "uSeqs") List<Integer> uSeqs)
 	{
 		userService.resetPassword(uSeqs);
 
 		return IvCommonVo.INITIAL_PASSWORD;
+	}
+
+	@GetMapping("/check/valid_credentials")
+	@ResponseBody
+	public Object checkValidCredentials(@ModelAttribute AccountDto account)
+	{
+		String username = CmStringUtils.upperCase(account.getUsername());
+
+		if (CmStringUtils.isEmpty(username))
+		{
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("MESSAGE", i18nMessageSource.getMessage("HQP_M_EMPTY_USERNAME"));
+
+			return resultMap;
+		}
+
+		if (userService.isExistByUsername(username))
+		{
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("MESSAGE", i18nMessageSource.getMessage("HQP_M_EXIST_USERNAME", new Object[] { username }));
+
+			return resultMap;
+		}
+
+		String bizType = AccountMgmtUtils.getBizTypeBySalesArea(getErpUserInfoByUsername());
+		UserType userType = account.getUserType();
+
+		//DoobizPlus 시스템은 딜러전용 시스템으로 내부사용자는 딜러가 아니기 때문에 임의의 딜러코들 맵핑시켜 준다.
+		if (userType.equals(UserType.I))
+		{
+			account.setDealerCode(AccountMgmtUtils.getDefaultMappingCode(bizType, userType));
+		}
+
+		RfcResponse rfcRespose = accountMgmtService.getDealerGeneralInfo(account.getDealerCode());
+		DataMap userInfoMap = (DataMap)rfcRespose.getTable("O_KNA").get(0);
+
+		if (MapUtils.isEmpty(userInfoMap))
+		{
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("MESSAGE", i18nMessageSource.getMessage("HQP_M_NOT_EXIST_DEALER", new Object[] { account.getDealerCode() }));
+
+			return resultMap;
+		}
+
+		String tzone = CmStringUtils.removeEnd(rfcRespose.getString("O_TZONE"), "00");
+
+		if (CmStringUtils.equals(tzone, "P00"))
+		{
+			tzone = "PGM";
+		}
+
+		UserGroupDto userGroup = userGroupService.getUserGroupByName(AccountMgmtUtils.getUserGroupName(bizType, tzone));
+
+		if (ObjectUtils.isEmpty(userGroup))
+		{
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("MESSAGE", i18nMessageSource.getMessage("HQP_M_NOT_FOUND_USER_GROUP"));
+
+			return resultMap;
+		}
+
+		if (ObjectUtils.isEmpty(userGroup.getCredentialsPolicy().getCpSeq()))
+		{
+			Map<String, Object> resultMap = new HashMap<>();
+			resultMap.put("MESSAGE", i18nMessageSource.getMessage("HQP_M_NOT_FOUND_CREDENTIALS_POLICY"));
+
+			return resultMap;
+		}
+
+		return credentialsPolicyService.checkValid(userGroup.getCredentialsPolicy(), CredentialsPolicyType.U, username);
 	}
 }

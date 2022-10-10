@@ -60,13 +60,15 @@ const USER_TYPE = {
 	INTERNAL_USER: {CODE: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).I.name}]]", NAME: "[[${T(org.jwebppy.portal.iv.mgmt.account.dto.UserType).I.type}]]"}
 };
 
+const EUUK_USERNAME_PREFIX = "[[${T(org.jwebppy.portal.iv.eu.common.EuCommonVo).EUUK_USERNAME_PREFIX}]]";
+
 $(function(){
 	function initUserType()
 	{
 		let bizType = $("#bizType").val();
 		
 		$.each(USER_TYPE, function(key, value) {
-			if (!JpUtilsString.equalsAny(bizType, "EUDOP", "UKDOP"))
+			if (!JpUtilsString.equals(bizType, "EUDOP"))
 			{
 				if (JpUtilsString.equalsAny(value.CODE, USER_TYPE.SUB_DEALER.CODE, USER_TYPE.READONLY_DEALER.CODE))
 				{
@@ -149,73 +151,6 @@ $(function(){
 		};		
 	};
 		
-	$("#BTN_save").on("click", function() {
-		if ($("select[name=userType]").val() == USER_TYPE.INTERNAL_USER.CODE)
-		{
-			if (JpUtilsString.isEmpty($("#dealerCode").val()))
-			{
-				alert("[[#{HQP_M_EMPTY_DEALER_CODE}]]");
-				$("#dealerCode").focus();
-				return false;
-			};			
-		};
-		
-		let form = new JpUiForm($("#FORM_write"));
-		
-		if (isTargetToInputUsernameInPerson())
-		{
-			if (JpUtilsString.isEmpty($("#username").val()))
-			{
-				alert("[[#{HQP_M_EMPTY_USERNAME}]]");
-				$("#username").focus();
-				return false;			
-			};
-			
-			let username = form.val("username").toUpperCase();
-			const EUUK_USERNAME_PREFIX = "[[${T(org.jwebppy.portal.iv.eu.common.EuCommonVo).EUUK_USERNAME_PREFIX}]]"; 
-			
-			if (username.startsWith(EUUK_USERNAME_PREFIX))
-			{
-				username = JpUtilsString.replaceAll(username, EUUK_USERNAME_PREFIX, "");
-			};
-			
-			JpUtilsAjax.get({
-				url: "/platform/mgmt/user/check/valid_credentials",
-				data: {type: "U", value: username},
-			    success: function(response, textStatus, jqXHR)
-			    {
-			    	let result = response.RESULT;
-			    	
-					let message = "";
-					
-					if (Array.isArray(result.MESSAGE))
-					{
-						$.each(result.MESSAGE, function (index, value) {
-							message += value + "\n";
-						});						
-					}
-					else
-					{
-						message = result.MESSAGE;				
-					};
-					
-					if (JpUtilsString.isEmpty(message))
-					{
-						submit();
-					}
-					else
-					{
-						alert(message);	
-					};
-			    }
-			});				
-		}
-		else
-		{
-			submit();
-		};
-	});
-	
 	function isTargetToInputUsernameInPerson()
 	{
 		let bizType = $("#bizType").val();
@@ -234,6 +169,87 @@ $(function(){
 		
 		return false;
 	};
+		
+	$("#BTN_save").on("click", function() {
+		if (JpUtilsString.notEquals($("select[name=userType]").val(), USER_TYPE.INTERNAL_USER.CODE))
+		{
+			if (JpUtilsString.isEmpty($("#dealerCode").val()))
+			{
+				alert("[[#{HQP_M_EMPTY_DEALER_CODE}]]");
+				$("#dealerCode").focus();
+				return false;
+			};
+		};
+		
+		let form = new JpUiForm($("#FORM_write"));
+		
+		if (isTargetToInputUsernameInPerson())
+		{
+			if (JpUtilsString.isEmpty($("#username").val()))
+			{
+				alert("[[#{HQP_M_EMPTY_USERNAME}]]");
+				$("#username").focus();
+				return false;			
+			};
+			
+			let username = form.val("username").toUpperCase();
+			
+			if (JpUtilsString.equalsAny($("#bizType").val(), "EUDOP", "UKDOP"))
+			{
+				if (!JpUtilsString.equals($("select[name=userType]").val(), USER_TYPE.INTERNAL_USER.CODE))
+				{
+					//유럽, 영국법인 일반사용자 계정은 AD 와 중복되는 것을 방지하기 위해 계정앞에 prefix D_ 를 붙여 준다.
+					if (!username.startsWith(EUUK_USERNAME_PREFIX))
+					{
+						username = EUUK_USERNAME_PREFIX + username; 
+					};					
+				};
+			};
+			
+			
+			
+			JpUtilsAjax.get({
+				url: "/portal/iv/mgmt/account/check/valid_credentials",
+				data: {userType: $("select[name=userType]").val(), dealerCode: $("#dealerCode").val(), username: username},
+				beforeSend: function(jqXHR, settings)
+				{
+					ProgressBar.show();
+				},				
+			    success: function(response, textStatus, jqXHR)
+			    {
+			    	let result = response.RESULT;
+			    	
+					let message = "";
+					
+					if (Array.isArray(result.MESSAGE))
+					{
+						$.each(result.MESSAGE, function (index, value) {
+							message += value + "\n";
+						});						
+					}
+					else
+					{
+						message = result.MESSAGE;				
+					};
+
+					ProgressBar.hide();
+					
+					if (JpUtilsString.isEmpty(message))
+					{
+						submit();
+					}
+					else
+					{
+						alert(message);
+					};
+			    }
+			});				
+		}
+		else
+		{
+			submit();
+		};
+	});
 	
 	function submit()
 	{
@@ -244,7 +260,7 @@ $(function(){
 				{
 					$("#username").val($("#username").val().toUpperCase());
 					ProgressBar.show();
-				},			
+				},
 			    success: function(response, textStatus, jqXHR)
 			    {
 			    	let result = response.RESULT;
@@ -253,21 +269,25 @@ $(function(){
 			    	{
 			    		alert("[[#{HQP_M_EMPTY_USERNAME}]]");
 			    		$("#username").select();
+			    		return;
 			    	}
 			    	else if (result == -3)
 			    	{
 			    		alert("[[#{HQP_M_VALID_USERNAME_POLICY}]]");
 			    		$("#username").select();
+			    		return;
 			    	}
 			    	else if (result == -2)
 			    	{
 			    		alert("[[#{HQP_M_EXIST_USERNAME}]]".replace("{0}", $("#username").val()));
 			    		$("#username").select();
+			    		return;
 			    	}
 			    	else if (result == -1)
 			    	{
 			    		alert("[[#{HQP_M_NOT_EXIST_DEALER}]]".replace("{0}", $("#dealerCode").val()));
 			    		$("#dealerCode").select();
+			    		return;
 			    	}
 			    	else
 			    	{

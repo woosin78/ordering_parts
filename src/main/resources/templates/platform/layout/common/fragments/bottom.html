@@ -1,5 +1,5 @@
 <!-- bottom start -->
-<div class="ui bottom_blank" style="width:100%; margin-top:90px;">&nbsp;</div>
+<div class="ui bottom-blank" style="width:100%; height:100px"></div>
 <div class="ui bottom inverted vertical footer segment" style="position: fixed; width:100%; bottom: 0px;">
 	<div class="ui center aligned container">
 		<img class="ui centered image" th:src="@{/platform/img/logo/logo.png}" alt="jWebppy"/>
@@ -15,7 +15,6 @@
 
 <script>
 $(document).ready(function() {
-	$(".ui.bottom_blank").height($(".ui.bottom").height());
 	makeGnb();
 	_checkExpiredPassword();
 });

@@ -41,7 +41,7 @@ public class I18nMessageSource extends AbstractMessageSource
 
 		for (int i=0, length=CmArrayUtils.nullToEmpty(replaceTexts).length; i<length; i++)
 		{
-			text = RegExUtils.replaceAll(text, "\\{" + i + "\\}", replaceTexts[i].toString());
+			text = RegExUtils.replaceAll(text, "\\{" + i + "\\}", CmStringUtils.trimToEmpty(replaceTexts[i]));
 		}
 
 		return text;

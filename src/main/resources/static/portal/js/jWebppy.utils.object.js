@@ -20,6 +20,17 @@ JpUtilsObject.isNull = function(obj)
 	return false;
 };
 
+JpUtilsObject.isAnyNull = function()
+{
+	for (let i=0; i<length; i++)
+	{
+		if (JpUtilsObject.isNull(arguments[i]))
+		{
+			return true;
+		}
+	};
+};
+
 JpUtilsObject.isNotNull = function(obj)
 {
 	return !JpUtilsObject.isNull(obj);

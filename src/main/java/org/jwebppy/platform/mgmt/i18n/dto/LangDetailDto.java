@@ -19,4 +19,5 @@ public class LangDetailDto extends GeneralDto
 	private Integer lkSeq;
 	private String text;
 	private String fgDelete = PlatformCommonVo.NO;
+	private LangKindDto langKind;
 }

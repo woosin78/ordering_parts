@@ -110,7 +110,7 @@ public class LangService extends MgmtGeneralService
 
 	public List<LangDto> getPageableLangs(LangSearchDto langSearchDto)
 	{
-		return CmModelMapperUtils.mapToDto(LangObjectMapper.INSTANCE, langMapper.findLangs(langSearchDto));
+		return CmModelMapperUtils.mapToDto(LangObjectMapper.INSTANCE, langMapper.findPageableLangs(langSearchDto));
 	}
 
 	public String getText(String key)
@@ -265,5 +265,10 @@ public class LangService extends MgmtGeneralService
 		}
 
 		return true;
+	}
+
+	public List<LangDto> exportData(LangSearchDto langSearch)
+	{
+		return CmModelMapperUtils.mapToDto(LangObjectMapper.INSTANCE, langMapper.findLangs(langSearch));
 	}
 }

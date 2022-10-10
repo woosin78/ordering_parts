@@ -25,7 +25,8 @@
 		border-top: 6px solid #003081;
 	}
 	</style>
-	<script src="/editor_html5/js/xfe_main.js"></script>
+	<script th:src="@{/editor_html5/js/xfe_main.js}"></script>
+	<script th:src="@{/portal/js/portal.utils.xfree.js}"></script>
 	
 	<div class="condition-area">
 		<form id="FORM_search" th:action="|${BASE_PATH}/promotion/list|" >
@@ -67,36 +68,15 @@
 		</table>
 		</form>
 	</div>
+	<div class="split"></div >
 	<div id="bottom" class="pop-bottom">	
 		<div style="float: right;"><button id="BTN_close" type="button" th:text="#{HQP_B_CLOSE}"></button></div>	
 	</div>
 	<textarea id="htmlContent" th:text="${promotion?.htmlContent}" style="display:none;"></textarea>
 <script>
 $(window).on("load", function() {
-	$("#xfe").height($(".xfeViewFrame ").contents().height() + $(".split-row.topbd").outerHeight(true));
-	
 	ProgressBar.hide();
 });
-/*
- * 에디터 생성.
- * 
- * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
- * width : 에디터의 너비
- * height : 에디터의 높이
- * onLoad : 에디터 초기 로드 이벤트				 
- */	
-let xfe = new XFE({
-	basePath: "[[@{/editor_html5}]]",
-	viewMode: true,
-    viewModeOptions: {
-    	borderWidth: "0px"
-    },
-	onLoad: function() {
-		xfe.setBodyValue($("#htmlContent").val());
-	}
-});
-
-xfe.render("xfe");
 
 $("#BTN_close").on("click", function() {
 	window.close();
@@ -149,6 +129,9 @@ $("#BTN_addCart").on("click", function() {
 
 $("a[downloadKey]").on("click", function() {					
 	PortalFileDownload.download($(this).attr("downloadKey"));
-});	
+});
+
+let xfe = new XfreeViewr("xfe", $("#htmlContent").val());
+xfe.render();
 </script>
 </th:block>

@@ -241,7 +241,7 @@ $(document).ready(function() {
 			};
 			
 			JpUtilsAjax.get({
-				url: "/platform/mgmt/user/check/valid_credentials",
+				url: "/platform/mgmt/user/credentials/policy/check/valid_credentials",
 				data: { value: value, type: type, cpSeq: JpUtilsString.trimToEmpty($("#FORM_modify select[name=cpSeq]").val()), uSeq: uSeq },
 				global: false,
 				async: false,

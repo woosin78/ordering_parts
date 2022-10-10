@@ -25,7 +25,7 @@ $(function() {
     //$.datepicker.setDefaults($.datepicker.regional["ko"]);
 });
 
-var Calendar = {};
+let Calendar = {};
 
 Calendar.makeCalendar = function(target, defaultDate, options)
 {
