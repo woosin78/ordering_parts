@@ -40,7 +40,8 @@
 <div class="ui one column grid">
 	<div class="column">
 		<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
-		<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>				
+		<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
+		<div id="BTN_export" class="ui teal button"><i class="minus icon"></i> Export</div>
 	</div>
 </div>
 <div id="TBL_list"></div>
@@ -147,6 +148,26 @@ function doAfterDeletingLang()
 {
 	doSearch();
 };
+
+$("#BTN_export").on("click", function() {
+	JpUtilsAjax.get({
+		url: "/platform/mgmt/i18n/export",
+		data: $("#FORM_search").serialize(),
+		success: function(data, textStatus, jqXHR)
+		{
+			console.log(data);
+
+			JpUtilsAjax.post({
+				url: "/platform/mgmt/i18n/import",
+				data: JSON.stringify(data.RESULT),
+				headers: {'Content-Type': 'application/json'},
+				success: function(data, textStatus, jqXHR)
+				{
+				}
+			});				
+		}
+	});	
+});
 </script>
 </th:block>
 </html>

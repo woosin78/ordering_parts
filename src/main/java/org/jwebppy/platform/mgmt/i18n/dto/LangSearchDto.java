@@ -1,5 +1,7 @@
 package org.jwebppy.platform.mgmt.i18n.dto;
 
+import java.util.List;
+
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
@@ -23,4 +25,5 @@ public class LangSearchDto extends GeneralDto implements IPagination
 	private String messageCode;
 	private String from;
 	private Integer lkSeq;
+	private List<Integer> lSeqs;
 }

@@ -1,6 +1,8 @@
 package org.jwebppy.platform.mgmt.user.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -8,11 +10,14 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
+import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
+import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
 import org.jwebppy.platform.mgmt.user.service.CredentialsPolicyService;
 import org.jwebppy.platform.mgmt.user.service.UserGroupService;
+import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +38,13 @@ public class CredentialsPolicyController extends UserGeneralController
 	private CredentialsPolicyService credentialsPolicyService;
 
 	@Autowired
+	private I18nMessageSource i18nMessageSource;
+
+	@Autowired
 	private UserGroupService userGroupService;
+
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
@@ -134,5 +145,29 @@ public class CredentialsPolicyController extends UserGeneralController
 		}
 
 		return PlatformCommonVo.FAIL;
+	}
+
+	@GetMapping("/check/valid_credentials")
+	@ResponseBody
+	public Object checkValidCredentials(@ModelAttribute CredentialsPolicySearchDto credentialsPolicySearch)
+	{
+		String value = CmStringUtils.trimToEmpty(credentialsPolicySearch.getValue());
+
+		if (CredentialsPolicyType.U.equals(credentialsPolicySearch.getType()))
+		{
+			if (userService.isExistByUsername(value.toUpperCase()))
+			{
+				Map<String, Object> resultMap = new HashMap<>();
+				resultMap.put("TYPE", credentialsPolicySearch.getType());
+				resultMap.put("RESULT", 999);
+				resultMap.put("MESSAGE", i18nMessageSource.getMessage("PLTF_M_EXISTS_USERNAME", new Object[] { value }));
+
+				return resultMap;
+			}
+		}
+
+		CredentialsPolicyDto credentialPolicy = credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch);
+
+		return credentialsPolicyService.checkValid(credentialPolicy, credentialsPolicySearch.getType(), value);
 	}
 }

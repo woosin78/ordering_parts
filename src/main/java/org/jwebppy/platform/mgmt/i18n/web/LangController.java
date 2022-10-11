@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -150,5 +151,29 @@ public class LangController extends MgmtGeneralController
 	public Object basenames(@ModelAttribute LangSearchDto langSearch)
 	{
 		return langService.getBasenames();
+	}
+
+	@GetMapping("/export")
+	@ResponseBody
+	public Object exporting(@RequestParam(value = "lSeq") List<Integer> lSeqs)
+	{
+		if (CollectionUtils.isEmpty(lSeqs))
+		{
+			return EMPTY_RETURN_VALUE;
+		}
+
+		LangSearchDto langSearch = new LangSearchDto();
+		langSearch.setLSeqs(lSeqs);
+
+		return langService.exportData(langSearch);
+	}
+
+	@PostMapping("/import")
+	@ResponseBody
+	public Object importing(@RequestBody List<LangDto> langs)
+	{
+		System.err.println(langs);
+
+		return EMPTY_RETURN_VALUE;
 	}
 }

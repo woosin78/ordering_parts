@@ -137,6 +137,17 @@ public class AccountMgmtService extends IvGeneralService
 
 	public int save(AccountDto account)
 	{
+		UserType userType = account.getUserType();
+
+		//Dealer Code 유효성 체크
+		if (!userType.equals(UserType.I))
+		{
+			if (!isValidDealer(account))
+			{
+				return -1;
+			}
+		}
+
 		//아이디는 대문자로만 생성.
 		String username = getUsername(account).toUpperCase();
 
@@ -153,17 +164,11 @@ public class AccountMgmtService extends IvGeneralService
 		}
 
 		String bizType = account.getBizType();
-		UserType userType = account.getUserType();
 
 		//내부사용자는 임의의 Dealer Code 를 지정함.
 		if (userType.equals(UserType.I))
 		{
 			account.setDealerCode(AccountMgmtUtils.getDefaultMappingCode(bizType, userType));
-		}
-
-		if (!isValidDealer(account))
-		{
-			return -1;
 		}
 
 		String dealerCode = account.getDealerCode();
@@ -259,9 +264,9 @@ public class AccountMgmtService extends IvGeneralService
 
 	protected String getUsername(AccountDto account)
 	{
-		String username = account.getUsername();
+		String username = CmStringUtils.trimToEmpty(account.getUsername());
 
-		if (UserType.D.equals(account.getUserType()))
+		if (!UserType.I.equals(account.getUserType()))
 		{
 			String bizType = account.getBizType();
 

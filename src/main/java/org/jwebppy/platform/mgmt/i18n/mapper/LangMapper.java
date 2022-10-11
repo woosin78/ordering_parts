@@ -25,6 +25,7 @@ public interface LangMapper
 	public int updateLangDetailFgDelete(LangDto lang);
 	public LangEntity findLang(LangDto lang);
 	public List<LangEntity> findLangs(LangSearchDto langSearch);
+	public List<LangEntity> findPageableLangs(LangSearchDto langSearch);
 	public LangDetailEntity findLangDetail(LangDetailDto langDetail);
 	public List<LangDetailEntity> findLangDetails(LangSearchDto langSearch);
 	public List<LangKindEntity> findLangKinds(LangKindDto langKind);

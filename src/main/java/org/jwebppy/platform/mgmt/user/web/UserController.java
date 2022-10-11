@@ -70,6 +70,9 @@ public class UserController extends UserGeneralController
 	@Autowired
 	private CredentialsPolicyService credentialsPolicyService;
 
+	//@Autowired
+	//private I18nMessageSource i18nMessageSource;
+
 	@Autowired
 	private LoginHistoryService loginHistoryService;
 
@@ -329,30 +332,6 @@ public class UserController extends UserGeneralController
 		}
 
 		return timezones;
-	}
-
-	@GetMapping("/check/valid_credentials")
-	@ResponseBody
-	public Object checkValidCredentials(@ModelAttribute CredentialsPolicySearchDto credentialsPolicySearch)
-	{
-		String value = CmStringUtils.trimToEmpty(credentialsPolicySearch.getValue());
-
-		if (CredentialsPolicyType.U.equals(credentialsPolicySearch.getType()))
-		{
-			if (userService.isExistByUsername(value.toUpperCase()))
-			{
-				Map<String, Object> resultMap = new HashMap<>();
-				resultMap.put("TYPE", credentialsPolicySearch.getType());
-				resultMap.put("RESULT", 999);
-				resultMap.put("MESSAGE", "The username is not available. Please enter another one.");
-
-				return resultMap;
-			}
-		}
-
-		CredentialsPolicyDto credentialPolicy = credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch);
-
-		return credentialsPolicyService.checkValid(credentialPolicy, credentialsPolicySearch.getType(), value);
 	}
 
 	@PostMapping("/copy")

@@ -8015,3 +8015,59 @@ COUNTER     4
     return code: RFC_SYS_EXCEPTION (3)
     error group: 102
     key: RFC_ERROR_COMMUNICATION
+
+**** Error file opened at 20221010 091103 Korean Standard Time Rel. 3.0.14 (2015-12-16) [721.800]
+Error:  >Mon Oct 10 09:11:03,394<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:11:04,995<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:11:05,237<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:11:08,048<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:11:08,108<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:11:08,168<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:11:08,228<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:11:08,695<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:11:09,242<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:13:22,145<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:13:23,250<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:13:23,490<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:13:30,552<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:13:30,612<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:13:30,672<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:13:30,733<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:13:31,066<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+
+Error:  >Mon Oct 10 09:13:31,535<    >RfcGetException rc (7) message: User is locked; notify the person responsible
+<RfcGetException
+

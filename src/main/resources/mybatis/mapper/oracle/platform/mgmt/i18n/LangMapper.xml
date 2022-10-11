@@ -15,6 +15,14 @@
 		<result property="totalCount" column="total_count" />
 		<collection property="langDetails" foreignColumn="l_seq" column="l_seq" javaType="java.util.ArrayList" ofType="LangDetailEntity" select="findLangDetailsByLseq" />
 	</resultMap>
+	
+	<resultMap type="LangDetailEntity" id="langDetailEntityMap">
+		<id property="ldSeq" column="ld_seq" />
+		<result property="lSeq" column="l_seq" />
+		<result property="lkSeq" column="lk_seq" />
+		<result property="text" column="text" />
+		<collection property="langKind" foreignColumn="lk_seq" column="lk_seq" ofType="LangKindEntity" select="findLangKindByLkSeq" />
+	</resultMap>	
 
 	<insert id="insertLang" parameterType="LangEntity" useGeneratedKeys="true" keyProperty="lSeq">
 		<selectKey keyProperty="lSeq" resultType="Integer" order="BEFORE">
@@ -57,7 +65,7 @@
 			<if test="text != null">
 				,text=#{text}
 			</if>
-		where
+		<where>
 			<trim prefixOverrides="and">
 				<if test="ldSeq != null">
 					ld_seq=#{ldSeq}
@@ -69,26 +77,29 @@
 					and lk_seq=#{lkSeq} 
 				</if>			
 			</trim>
+		</where>
 	</update>
 	
 	<update id="updateLangFgDelete" parameterType="LangDto">
 		update pltf_lang set fg_delete='Y', mod_username=#{modUsername}, mod_date=#{modDate}
-		where		
-		<foreach collection="lSeqs" item="lSeq" separator="or">
-			<if test="lSeq != null">
-				l_seq=#{lSeq}
-			</if>
-		</foreach>
+		<where>
+			<foreach collection="lSeqs" item="lSeq" separator="or">
+				<if test="lSeq != null">
+					l_seq=#{lSeq}
+				</if>
+			</foreach>
+		</where>
 	</update>	
 	
 	<update id="updateLangDetailFgDelete" parameterType="LangDto">
 		update pltf_lang_detail set fg_delete='Y', mod_username=#{modUsername}, mod_date=#{modDate}
-		where		
-		<foreach collection="lSeqs" item="lSeq" separator="or">
-			<if test="lSeq != null">
-				l_seq=#{lSeq}
-			</if>
-		</foreach>
+		<where>
+			<foreach collection="lSeqs" item="lSeq" separator="or">
+				<if test="lSeq != null">
+					l_seq=#{lSeq}
+				</if>
+			</foreach>
+		</where>
 	</update>		
 
 	<select id="findLang" parameterType="LangDto" resultMap="langEntityMap">
@@ -114,10 +125,30 @@
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(seq)">
 			and a.seq=upper(#{seq2})
 		</if>
-
 	</select>
 	
 	<select id="findLangs" parameterType="LangSearchDto" resultMap="langEntityMap">
+		select
+		*
+		from
+		pltf_lang
+		where
+		fg_delete='N' 
+		
+		<if test="lSeqs != null">
+			<trim prefix="and (" suffix=")">
+				<foreach collection="lSeqs" item="lSeq" separator="or">
+					<if test="lSeq != null">
+						l_seq=#{lSeq}
+					</if>
+				</foreach>		
+			</trim>		
+		</if>
+		
+		order by l_seq desc
+	</select>	
+	
+	<select id="findPageableLangs" parameterType="LangSearchDto" resultMap="langEntityMap">
 		<include refid="PaginationMapper.header"/>
 
 		select
@@ -152,6 +183,16 @@
 				or a.basename||'_'||a.type||'_'||a.seq like '%'||upper(#{query})||'%'
 				or a.seq like '%'||upper(#{query})||'%'
 			)
+		</if>
+		
+		<if test="lSeqs != null">
+			<trim prefix="and (" suffix=")">
+				<foreach collection="lSeqs" item="lSeq" separator="or">
+					<if test="lSeq != null">
+						l_seq=#{lSeq}
+					</if>
+				</foreach>		
+			</trim>		
 		</if>
 		
 		order by a.l_seq desc
@@ -202,7 +243,7 @@
 		</where>
 	</select>
 
-	<select id="findLangDetailsByLseq" parameterType="Integer" resultType="LangDetailEntity">
+	<select id="findLangDetailsByLseq" parameterType="Integer" resultMap="langDetailEntityMap">
 		select
 		a.lk_seq,
 		b.ld_seq,
@@ -229,6 +270,16 @@
 		and a.lk_seq=b.lk_seq
 		and a.fg_delete='N'
 		order by a.sort
+	</select>
+	
+	<select id="findLangKindByLkSeq" parameterType="Integer" resultType="LangKindEntity">
+		select
+		*
+		from
+		pltf_lang_kind
+		where
+		lk_seq=#{lk_seq}
+		and fg_delete='N'
 	</select>
 
 	<select id="findLangDetails" parameterType="LangSearchDto" resultType="LangDetailEntity">

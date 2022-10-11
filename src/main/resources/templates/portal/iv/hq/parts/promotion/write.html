@@ -10,7 +10,8 @@ body {
 	overflow-y: scroll;
 }
 </style>
-	<script src="/editor_html5/js/xfe_main.js"></script>
+	<script th:src="@{/editor_html5/js/xfe_main.js}"></script>
+	<script th:src="@{/portal/js/portal.utils.xfree.js}"></script>
 	
 	<!-- Modal for upload simulation -->	
 	<div class="dropzone-dimmer dimmer"></div>		
@@ -58,7 +59,7 @@ body {
 			</tr>
 			<tr>
 				<th>[[#{HQP_L_CONTENT}]]<img src="/portal/img/icon/required.png" class="required" /></th>
-				<td><div id="xfe"></div></td>
+				<td><div id="xfe" style="height:400px"></div></td>
 			</tr>
 			<tr >
 				<th th:text="#{HQP_L_VISIBLE_TARGET}"/> 
@@ -147,7 +148,7 @@ body {
 					<div class="split-row-more-compact"></div>
 					<div class="input-area"><input type="text" id="searchVisibleItem" name="searchVisibleItem" class="custom-ui autocomplete" th:placeholder="#{HQP_L_MATERIAL_NO}"/></div>
 					<div class="split-row-more-compact"></div>
-					<button id="BTN_uploadVisibleItem" type="button" th:text="#{HQP_B_UPLOAD}" class="small_button"></button><div class="split"></div><button id="BTN_checkAllVisibleItem" type="button" th:text="#{HQP_B_SELECT_ALL}" class="small_button"></button><div class="split"></div><button id="BTN_deleteVisibleItem" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
+					<button id="BTN_checkAllVisibleItem" type="button" th:text="#{HQP_B_SELECT_ALL}" class="small_button"></button><div class="split"></div><button id="BTN_uploadVisibleItem" type="button" th:text="#{HQP_B_UPLOAD}" class="small_button"></button><div class="split"></div><button id="BTN_deleteVisibleItem" type="button" th:text="#{HQP_B_DELETE}" class="small_button"></button>
 					<div class="split-row-more-compact"></div>
 					<div style="display: block; height: 1px; background-color: #cccccc; margin-top:2px; margin-bottom:2px;"></div>
 					<div class="split-row-more-compact"></div>
@@ -478,25 +479,10 @@ $("#BTN_save").on("click", function() {
 	JpUtilsAjax.post(options);
 });
 
-/*
- * 에디터 생성.
- * 
- * basePath : 에디터 모듈이 있는 폴더의 Url 경로를 적어줍니다. (필수)
- * width : 에디터의 너비
- * height : 에디터의 높이
- * onLoad : 에디터 초기 로드 이벤트				 
- */
-let xfe = new XFE({
-	basePath: "[[@{/editor_html5}]]",
-	width: "100%",
-	height: "100%",
-	onLoad: function() {
-		xfe.setBodyValue($("#htmlContent").val());	
-	},
-	language: ((JpUtilsString.equals(GLOBAL_CONST.LANG, "KO")) ? "korean" : "english"),
-	initFontFamily: (JpUtilsString.equals(GLOBAL_CONST.LANG, "KO")) ? "맑은 고딕" : "Arial",
+let xfe = new XfreeEditor({
+	target: "xfe",
+	htmlContent: $("#htmlContent").val()
 });
-	
-xfe.render("xfe");
+xfe.render();
 </script>
-</th:block>								
+</th:block>
