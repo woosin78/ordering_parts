@@ -245,7 +245,8 @@ $("#pPartsNo, #pReqQty").on("keydown", function(event) {
 	{
 		if ($.trim(this.value) != "")
 		{
-			doSearch();	
+			doSearch();
+			$("#pPartsNo").autocomplete("close");
 		};
 	};
 });

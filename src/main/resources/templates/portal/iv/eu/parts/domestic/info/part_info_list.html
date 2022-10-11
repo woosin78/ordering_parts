@@ -283,8 +283,6 @@ $("#CertifiedProgram").on("click", function(){
 	doSearch(); 
 });
 
-
-
 $("#pPartsNo, #pReqQty").on("keydown", function(event) {	
 	$("#pPartsNo").val($("#pPartsNo").val().toUpperCase());
 	
@@ -293,6 +291,7 @@ $("#pPartsNo, #pReqQty").on("keydown", function(event) {
 		if ($.trim($("#pPartsNo").val()) != "")
 		{
 			doSearch();
+			$("#pPartsNo").autocomplete("close");
 		};
 	};
 });
@@ -319,7 +318,7 @@ $("#pPartsNo").autocomplete({
 						);
 			}
 		});
-	},
+	},	
 	delay: 500,
 	minLength: 4
 });

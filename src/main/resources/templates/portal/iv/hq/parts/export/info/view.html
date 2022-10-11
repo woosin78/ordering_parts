@@ -144,6 +144,11 @@ $(document).ready(function() {
 			doSearch();
 		}
 	});
+	
+	JpUiForm.input.on.enter($("#pPartNo"), function(item) {
+		doSearch();
+		$(item).autocomplete("close");
+	});
 });
 
 function doSearch()

@@ -263,7 +263,8 @@ $("#pPartsNo, #pReqQty").on("keydown", function(event) {
 	{
 		if ($.trim($("#pPartsNo").val()) != "")
 		{
-			doSearch();	
+			doSearch();
+			$("#pPartsNo").autocomplete("close");
 		};
 	};
 });
