@@ -968,6 +968,11 @@ $(function(){
 
 		JpUiForm.input.validation.number($("#TBL_grid input[name=orderQty]"), 1, 9999);
 
+		//품번, 수령을 변경할 경우 시뮬레이션 재실행 필수
+		$("#TBL_grid input[name=materialNo], #TBL_grid input[name=orderQty]").on("change", function() {
+			resetDoneSimulation();		
+		});
+
 		ProgressBar.hide();
 	});
 });
