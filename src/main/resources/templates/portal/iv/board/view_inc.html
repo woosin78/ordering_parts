@@ -82,38 +82,7 @@
 <script>
 $(window).on("load", function() {
 	ProgressBar.hide();
-	
-	//initBoardViwer($("#boardViwer"), $("#xfe"));
 });
-
-function initBoardViwer($area, $content)
-{
-	installBoardViewResizer($area, $content);
-	
-	$(window).on("resize", $.debounce(100, function(e){
-		installBoardViewResizer($area, $content);
-	}));
-};
-
-function installBoardViewResizer($area, $content)
-{
-	let height = 0;
-	
-	$.each($("body").children(":not(script)").not($area), function(index, element) {
-		if (!$(element).is(":visible"))
-		{
-			return true;
-		};
-		
-		height += $(element).outerHeight(true);
-	});
-	
-	let bodyHeight = $("body").height();
-	let h1 = $area.outerHeight(true) - $content.outerHeight(true);//게시글 영역 외 height
-	
-	$content.height(bodyHeight - height - h1);
-	xfe.setHeight($content.height() + "px");
-};
 
 $("#BTN_reply").on("click", function() {
 	$("#FORM_search input[name=pSeq]").val("[[${boardContent.bcSeq}]]");

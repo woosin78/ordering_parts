@@ -87,8 +87,15 @@ public class EpBoardContentController extends IvGeneralController
 	@ResponseBody
 	public Object popupListData(@ModelAttribute EpBoardContentSearchDto boardContentSearch, WebRequest webRequest)
 	{
+		/*
+		 *
+		 * 본사내수:0-e9267a6b-69ce-445d-a683-42f6cf916787
+		 * 본사수출:1-1f1e20cc-4738-4fbb-93f3-5d7b2b8967eb
+		 * 유럽내수:1-7d4a2eab-4b06-42a9-b66c-2322da63cad8
+		 * 영국내수:0-d999c226-7a3f-4172-9204-5ec795580621
+		*/
+
 		boardContentSearch.setCorp(getCorp());
-		boardContentSearch.setBSeq("0-e9267a6b-69ce-445d-a683-42f6cf916787");
 		boardContentSearch.setCustCode(getErpUserContext().getCustCode());
 		boardContentSearch.setFgPopup(PortalCommonVo.YES);
 
