@@ -12,9 +12,9 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.jwebppy.platform.core.dao.sap.RfcResponse;
-import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.common.service.MgmtGeneralService;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessResultLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
 import org.jwebppy.platform.mgmt.logging.entity.DataAccessResultLogEntity;
@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class DataAccessResultLogService extends GeneralService
+public class DataAccessResultLogService extends MgmtGeneralService
 {
 	@Autowired
 	private DataAccessResultLogMapper dataAccessResultLogMapper;

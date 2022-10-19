@@ -7,9 +7,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.dao.MapParameterSource;
 import org.jwebppy.platform.core.dao.ParameterValue;
 import org.jwebppy.platform.core.dao.sap.AbapType;
@@ -27,8 +30,10 @@ import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
 import org.jwebppy.platform.mgmt.logging.dto.IfType;
 import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
+import org.jwebppy.platform.mgmt.logging.dto.SapRfcDto;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessLogService;
 import org.jwebppy.platform.mgmt.logging.service.DataAccessResultLogService;
+import org.jwebppy.platform.mgmt.logging.service.SapRfcService;
 import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.dto.UserGroupDto;
 import org.jwebppy.platform.mgmt.user.service.UserService;
@@ -56,6 +61,9 @@ public class RfcExecutionAspect
 	private DataAccessResultLogService dataAccessResultLogService;
 
 	@Autowired
+	private SapRfcService sapRfcService;
+
+	@Autowired
 	private UserService userService;
 
     @Around("execution(* org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate.response(..))")
@@ -63,6 +71,7 @@ public class RfcExecutionAspect
     {
 		Object result = null;
 		String dlSeq = UidGenerateUtils.generate();
+		SapRfcDto sapRfc = null;
 
 		try
 		{
@@ -72,7 +81,23 @@ public class RfcExecutionAspect
 
 			if (IF_LOGGING_SAP_REQUEST)
 			{
-				dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
+		    	Object[] args = proceedingJoinPoint.getArgs();
+
+		    	if (ArrayUtils.isNotEmpty(args))
+		    	{
+		    		RfcRequest rfcRequest = (RfcRequest)args[0];
+
+		    		sapRfc = sapRfcService.getRfcByName(rfcRequest.getFunctionName());
+
+		    		/*
+		    		 * Oracle job 에서 배치가 돌려 RFC 정보를 insert 해 줌.
+		    		 * 배치가 실행되는 시간차로 인해 데이터가 없을 수 있으므로 조회결과가 없을 때에도 로그를 저장해 준다.
+		    		 */
+		    		if (ObjectUtils.isEmpty(sapRfc) || CmStringUtils.equals(sapRfc.getFgLoggingRequest(), PlatformCommonVo.YES))
+		    		{
+		    			dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
+		    		}
+		    	}
 			}
 		}
 		catch (Exception e)
@@ -83,7 +108,10 @@ public class RfcExecutionAspect
 		{
 			if (IF_LOGGING_SAP_RESULT)
 			{
-				dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
+				if (ObjectUtils.isNotEmpty(sapRfc) && CmStringUtils.equals(sapRfc.getFgLoggingResult(), PlatformCommonVo.YES))
+				{
+					dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
+				}
 			}
 		}
 

@@ -125,7 +125,7 @@ public class UserGroupLayoutBuilder
 		document.addDefaultLabelText("Date Format (Front-End)", userGroup.getDateFormat2());
 		document.addDefaultLabelText("Time Format (Front-End)", userGroup.getTimeFormat2());
 		document.addDefaultLabelText("Default Country", userGroup.getDisplayCountry());
-		document.addDefaultLabelText("Timezone", userGroup.getDisplayTimezone());
+		document.addDefaultLabelText("Default Timezone", userGroup.getDisplayTimezone());
 		document.addDefaultLabelText("Currency Format", userGroup.getCurrencyFormat());
 		document.addDefaultLabelText("Weight Format", userGroup.getWeightFormat());
 		document.addDefaultLabelText("Quantity Format", userGroup.getQtyFormat());
