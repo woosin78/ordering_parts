@@ -10,6 +10,7 @@
 		pltf_sap_rfc
 		where
 		name=#{name}
+		and fg_delete='N'
 	</select>
 
 </mapper>
