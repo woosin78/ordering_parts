@@ -214,13 +214,13 @@ JpUiForm.input = {
 		{
 			if (JpUtilsObject.isNotNull(element))
 			{
-				if (Array.isArray(element))
+				if (element.length > 1)
 				{
 					$(element).each(function(index, item) {
 						$(item).on("keydown", function(event) {
 							if (event.keyCode == 13)
 							{
-								func(item);
+								func(this, index);
 							};
 						});
 					});
@@ -230,7 +230,7 @@ JpUiForm.input = {
 					$(element).on("keydown", function(event) {
 						if (event.keyCode == 13)
 						{
-							func(element);
+							func(this);
 						};
 					});
 				};			

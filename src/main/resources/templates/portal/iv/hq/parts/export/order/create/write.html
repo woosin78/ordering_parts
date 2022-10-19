@@ -495,13 +495,13 @@ function doSimulation()
 	
 			if (materialNo.length == 0 || orderQties.length == 0)
 			{
-				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
+				alert("[[#{HQP_M_EMPTY_PART_QTY}]]");
 				return;
 			};
 	
 			if (materialNos.length != orderQties.length)
 			{
-				alert("[[#{HQP_L_EMPTY_PART_WHEN_ORDERING}]]");
+				alert("[[#{HQP_M_EMPTY_PART_QTY}]]");
 				return;
 			};				
 		};
@@ -949,12 +949,7 @@ $(function(){
 		$("#simulationFrom").val("");
 		
 		$.each($("#TBL_grid input[name=materialNo]"), function(index, item) {
-			_setPartAutocomplete(item, {
-				select: function(label, value, event)
-				{
-					doSimulation();
-				}
-			});
+			_setPartAutocomplete(item);
 		});
 		
 		initGridTable($tableObj);
@@ -965,9 +960,16 @@ $(function(){
 		JpUiForm.input.on.enter($("#TBL_grid input[name=materialNo]"), function(item) {
 			if (JpUtilsString.isNotEmpty($(item).val()))
 			{
-				let orderQtyObj = $(item).closest("tr").find("input[name=orderQty]");
-				
-				orderQtyObj.val(JpUtilsString.defaultString(orderQtyObj.val(), "1"));
+				//주문 수량을 입력하지 않았을 경우 default 1로 넣어준다.
+				$.each($("#TBL_grid tr"), function(index, item) {
+					if (JpUtilsString.isNotEmpty($(this).find("input[name=materialNo]").val()))
+					{
+						let orderQtyObj = $(this).find("input[name=orderQty]");
+						
+						orderQtyObj.val(JpUtilsString.defaultString(orderQtyObj.val(), "1"));
+					};
+				});
+
 				doSimulation();				
 			};
 		});
