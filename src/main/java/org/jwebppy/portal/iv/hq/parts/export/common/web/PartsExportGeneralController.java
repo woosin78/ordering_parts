@@ -7,6 +7,8 @@ import org.springframework.web.context.request.WebRequest;
 
 public class PartsExportGeneralController extends PartsGeneralController
 {
+	protected final static String[] MANAGER_AUTHORITES = {"DP_IVEX_PARTS_MANAGER"};
+
 	@Override
 	protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
 	{

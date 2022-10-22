@@ -1000,8 +1000,7 @@ a.gotop {
 }
 .bt-gotop {
 	position: fixed;
-	width: 100%;
-	/*min-width:1300px;*/
+	width: 80px;
 	right: 60px;
 	bottom: 50px;
 	display: none;

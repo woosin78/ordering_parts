@@ -75,7 +75,7 @@ public class AccountMgmtController extends IvGeneralController
 
 		ErpDataMap userInfoMap = getErpUserInfoByUsername();
 
-		String[] saleaArea = AccountMgmtUtils.getSalesArea(AccountMgmtUtils.getBizTypeBySalesArea(userInfoMap));
+		String[] saleaArea = AccountMgmtUtils.getSalesArea(AccountMgmtUtils.getBizTypeByMyAuthority());
 
 		Map<String, Object> salesAreaMap = new HashMap<>();
 		salesAreaMap.put("VKORG", saleaArea[0]);

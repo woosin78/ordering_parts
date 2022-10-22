@@ -79,14 +79,6 @@ public class EuOrderCreationController extends EuOrderGeneralController
 	@ResponseBody
 	public Object save(@ModelAttribute EuOrderDto order) throws Exception
 	{
-//		if ("CF".equals(order.getShippingCondition()) && !("YUSO".equals(order.getOrderType()) || "YUEO".equals(order.getOrderType())))
-//		{
-//			Map<String, Object> resultMap = new HashMap<>();
-//			resultMap.put("errorMsg", "");
-//
-//			return resultMap;
-//		}
-
 		if (CmStringUtils.isNotEmpty(order.getMaterialNo()))
 		{
 			ErpDataMap userInfoMap = getErpUserInfo();

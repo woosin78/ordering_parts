@@ -3,8 +3,10 @@ package org.jwebppy.portal.iv.mgmt.account.utils;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.portal.iv.mgmt.account.dto.UserType;
 
 public class AccountMgmtUtils
@@ -58,6 +60,35 @@ public class AccountMgmtUtils
 	public static String getBizTypeBySalesArea(ErpDataMap userInfoMap)
 	{
 		return BIZ_TYPE.get(userInfoMap.getSalesOrg() + userInfoMap.getDistChannel());
+	}
+
+	public static String getBizTypeByMyAuthority()
+	{
+		String[] salesArea = null;
+
+		if (UserAuthenticationUtils.hasRole("DP_IVDO_PARTS_MANAGER"))
+		{
+			salesArea = SALES_AREA.get("HQDOP");
+		}
+		else if (UserAuthenticationUtils.hasRole("DP_IVEX_PARTS_MANAGER"))
+		{
+			salesArea = SALES_AREA.get("HQEXP");
+		}
+		else if (UserAuthenticationUtils.hasRole("DP_EUDO_PARTS_MANAGER"))
+		{
+			salesArea = SALES_AREA.get("EUDOP");
+		}
+		else if (UserAuthenticationUtils.hasRole("DP_UKDO_PARTS_MANAGER"))
+		{
+			salesArea = SALES_AREA.get("UKDOP");
+		}
+
+		if (ObjectUtils.isEmpty(salesArea))
+		{
+			return null;
+		}
+
+		return BIZ_TYPE.get(salesArea[0] + salesArea[1]);
 	}
 
 	public static String[] getSalesArea(String bizType)

@@ -71,6 +71,7 @@ public class RfcExecutionAspect
     {
 		Object result = null;
 		String dlSeq = UidGenerateUtils.generate();
+		DataAccessLogDto dataAccessLog = null;
 		SapRfcDto sapRfc = null;
 
 		try
@@ -95,7 +96,9 @@ public class RfcExecutionAspect
 		    		 */
 		    		if (ObjectUtils.isEmpty(sapRfc) || CmStringUtils.equals(sapRfc.getFgLoggingRequest(), PlatformCommonVo.YES))
 		    		{
-		    			dataAccessLogService.writeLogOnAsync(makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq));
+		    			dataAccessLog = makeDataAccessLog(proceedingJoinPoint, (RfcResponse)result, dlSeq);
+
+		    			dataAccessLogService.writeLogOnAsync(dataAccessLog);
 		    		}
 		    	}
 			}
@@ -106,12 +109,12 @@ public class RfcExecutionAspect
 		}
 		finally
 		{
-			if (IF_LOGGING_SAP_RESULT)
+			if (
+					(CmStringUtils.endsWith(dataAccessLog.getClassName(), "DataAccessLogService") && CmStringUtils.equals(dataAccessLog.getMethodName(), "execute"))//Platform Interface Log 에서 실행한 경우
+					|| (IF_LOGGING_SAP_RESULT && ObjectUtils.isNotEmpty(sapRfc) && CmStringUtils.equals(sapRfc.getFgLoggingResult(), PlatformCommonVo.YES))
+					)
 			{
-				if (ObjectUtils.isNotEmpty(sapRfc) && CmStringUtils.equals(sapRfc.getFgLoggingResult(), PlatformCommonVo.YES))
-				{
-					dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
-				}
+				dataAccessResultLogService.writeLog(dlSeq, (RfcResponse)result);
 			}
 		}
 
