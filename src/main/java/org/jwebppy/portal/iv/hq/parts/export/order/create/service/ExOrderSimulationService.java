@@ -243,8 +243,6 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 		/* Make Header Info */
 		DataMap mainHeadResult = rfcResponse.getStructure("LS_MAIN_HEAD_RESULT");
 
-		//PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(mainHeadResult, new String[] {"CREDIT", "NETWR"}, "WAERK", new String[] {"KRW", "JPY"}, 100);
-
 		FormatBuilder.with(mainHeadResult).decimalFormat(new String[] {"CREDIT", "NETWR"});
 		FormatBuilder.with(mainHeadResult).weightFormat("TOTAL_WEIGHT");
 
@@ -282,10 +280,9 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 
 		if (CollectionUtils.isNotEmpty(items))
 		{
-			//PriceAdjustmentByCurrencyUtils.calcPriceByCurrency(items, new String[] {"NET_PRICE", "NET_VALUE", "NETPR"}, "CURRENCY", new String[] {"KRW", "JPY"}, 100);
-
 			FormatBuilder.with(items)
-				.qtyFormat(new String[] {"REQ_QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY", "DIV"})
+				.integerFormat("REQ_QTY")
+				.qtyFormat(new String[] {"LOT_QTY", "MIN_QTY", "ZBOQTY", "DIV"})
 				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"})
 				.weightFormat("BRGEW");
 
@@ -336,7 +333,6 @@ public class ExOrderSimulationService extends PartsExportGeneralService
 			}
 
 			simulationResult.setNormalOrderItems(simulationResult.makeCompactNormalOrderItems(normalOrderItems));
-			//simulationResult.setNormalOrderItems(normalOrderItems);
 		}
 	}
 }

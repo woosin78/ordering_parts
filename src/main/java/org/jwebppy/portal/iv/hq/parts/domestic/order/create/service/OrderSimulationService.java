@@ -280,7 +280,8 @@ public class OrderSimulationService extends PartsDomesticGeneralService
 		if (CollectionUtils.isNotEmpty(items))
 		{
 			FormatBuilder.with(items)
-				.qtyFormat(new String[] {"REQ_QTY", "LOT_QTY", "MIN_QTY", "ZBOQTY", "DIV"})
+				.integerFormat("REQ_QTY")
+				.qtyFormat(new String[] {"LOT_QTY", "MIN_QTY", "ZBOQTY", "DIV"})
 				.decimalFormat(new String[] {"NET_PRICE", "NET_VALUE", "NETPR"});
 
 			List<OrderItemDto> normalOrderItems = new LinkedList<>();
