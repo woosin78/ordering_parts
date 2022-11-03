@@ -21,7 +21,7 @@
 				<td>
 					<div class="input-area">
 						<select id="pYear" name="pYear" class="custom_ui">
-							<option th:each="year: ${#numbers.sequence(pYear, pYear)}" th:value="${year}" th:text="${year}"></option>
+							<option th:each="year: ${#numbers.sequence(2010, pYear)}" th:value="${year}" th:text="${year}"></option>
 						</select>
 						<select id="pMonth" name="pMonth" class="custom_ui">
 							<option th:each="month: ${#numbers.sequence(1, 12)}" th:value="${#numbers.formatInteger(month, 2)}" th:text="${#numbers.formatInteger(month, 2)}"></option>
