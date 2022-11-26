@@ -1,8 +1,5 @@
 package org.jwebppy.portal.iv.eu.parts.domestic.order.create.service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -17,7 +14,6 @@ import org.jwebppy.platform.core.dao.support.DataList;
 import org.jwebppy.platform.core.dao.support.DataMap;
 import org.jwebppy.platform.core.dao.support.ErpDataMap;
 import org.jwebppy.platform.core.security.authentication.dto.ErpUserContext;
-import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
@@ -457,13 +453,5 @@ public class EuOrderCreationService extends EuPartsDomesticGeneralService
 		orderHistoryHeader.setErrorMsg(errorMsg);
 
 		return orderCreationMapper.updateFailOrderHistoryHeader(orderHistoryHeader);
-	}
-
-	public static void main(String[] args)
-	{
-		long startTime = 1597054475358L;
-		LocalDateTime localDateTime = Instant.ofEpochMilli(startTime).atZone(ZoneId.systemDefault()).toLocalDateTime();
-
-		System.out.println(CmDateFormatUtils.format(localDateTime));
 	}
 }

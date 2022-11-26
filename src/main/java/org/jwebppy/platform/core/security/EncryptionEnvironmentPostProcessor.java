@@ -31,7 +31,7 @@ public class EncryptionEnvironmentPostProcessor implements EnvironmentPostProces
 
 	public static void main(String[] args)
 	{
-		System.out.println(AES256Cipher.getInstance().encode("divdp_01"));
-		System.out.println(AES256Cipher.getInstance().encode("divdp_2205"));
+		System.out.println(AES256Cipher.getInstance().encode("divdp"));
+		System.out.println(AES256Cipher.getInstance().encode("1111"));
 	}
 }
