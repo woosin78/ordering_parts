@@ -3,7 +3,7 @@ package org.jwebppy.platform.mgmt.user.dto;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
@@ -23,9 +23,9 @@ public class UserAccountDto extends GeneralDto
 	private Integer uSeq;
 	private String username;
 	private String password;
-	private String fgNoUsePassword = PlatformCommonVo.NO;
-	private String fgAccountLocked = PlatformCommonVo.NO;
-	private String fgPasswordLocked = PlatformCommonVo.NO;
+	private String fgNoUsePassword = MgmtCommonVo.NO;
+	private String fgAccountLocked = MgmtCommonVo.NO;
+	private String fgPasswordLocked = MgmtCommonVo.NO;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
 	private CredentialsPolicyDto credentialsPolicy;
@@ -43,7 +43,7 @@ public class UserAccountDto extends GeneralDto
 
 	public boolean isPasswordLocked()
 	{
-		if (CmStringUtils.equals(getFgAccountLocked(), PlatformCommonVo.YES))
+		if (CmStringUtils.equals(getFgAccountLocked(), MgmtCommonVo.YES))
 		{
 			return true;
 		}
@@ -53,7 +53,7 @@ public class UserAccountDto extends GeneralDto
 
 	public boolean isAccountLocked()
 	{
-		if (CmStringUtils.equals(getFgAccountLocked(), PlatformCommonVo.YES))
+		if (CmStringUtils.equals(getFgAccountLocked(), MgmtCommonVo.YES))
 		{
 			return true;
 		}

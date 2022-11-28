@@ -8,7 +8,7 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
@@ -192,10 +192,10 @@ public class SapConnResourceLayoutBuilder
 		loLanguage.addOption("en", new Locale("en").getDisplayLanguage());
 		loLanguage.addOption("ko", new Locale("ko").getDisplayLanguage());
 
-		//Element loFgUseUserLang = new Checkbox("fgUseUserLang", PlatformCommonVo.YES, sapConnResource.getFgUseUserLang());
+		//Element loFgUseUserLang = new Checkbox("fgUseUserLang", MgmtCommonVo.YES, sapConnResource.getFgUseUserLang());
 		//loFgUseUserLang.setLabel("Use User Language");
 
-		Element loFgUse = new Checkbox("fgUse", PlatformCommonVo.YES, sapConnResource.getFgUse());
+		Element loFgUse = new Checkbox("fgUse", MgmtCommonVo.YES, sapConnResource.getFgUse());
 		loFgUse.setLabel("Use");
 
 		document.addElement(loSystemId);

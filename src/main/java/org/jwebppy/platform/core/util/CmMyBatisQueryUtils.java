@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.apache.commons.lang3.ObjectUtils;
+import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.portal.common.PortalCommonVo;
-import org.jwebppy.portal.iv.common.IvCommonVo;
 
 import com.github.vertical_blank.sqlformatter.SqlFormatter;
 import com.github.vertical_blank.sqlformatter.core.FormatConfig;
@@ -16,18 +16,6 @@ public class CmMyBatisQueryUtils
 {
 	public static boolean isEmpty(Object obj)
 	{
-		/*
-		if (obj instanceof Map)
-		{
-			return MapUtils.isEmpty((Map<?, ?>)obj);
-		}
-		else if (obj instanceof List)
-		{
-			return CollectionUtils.isEmpty((List<?>)obj);
-		}
-
-		return CmStringUtils.isEmpty(obj);
-		*/
 		return ObjectUtils.isEmpty(obj);
 	}
 
@@ -68,7 +56,7 @@ public class CmMyBatisQueryUtils
 			localDate = localDate.plusDays(1);
 		}
 
-		return localDate.format(DateTimeFormatter.ofPattern(IvCommonVo.DEFAULT_DATE_FORMAT_YYYYMMDD));
+		return localDate.format(DateTimeFormatter.ofPattern(PlatformCommonVo.DEFAULT_DATE_FORMAT_YYYYMMDD));
 	}
 
 	public static LocalDateTime toDate(String date, String type)

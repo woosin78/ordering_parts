@@ -5,19 +5,18 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
 import org.jwebppy.platform.mgmt.authority.dto.CItemAuthRlDto;
 import org.jwebppy.platform.mgmt.authority.service.AuthorityService;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
 import org.jwebppy.platform.mgmt.content.service.ContentService;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
 import org.jwebppy.platform.mgmt.user.dto.UserSearchDto;
-import org.jwebppy.platform.mgmt.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,9 +38,6 @@ public class AuthorityController extends UserGeneralController
 
 	@Autowired
 	private ContentService contentService;
-
-	@Autowired
-	private UserService userService;
 
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
@@ -176,7 +172,7 @@ public class AuthorityController extends UserGeneralController
 		if (CollectionUtils.isNotEmpty(cSeqs))
 		{
 			cItemSearch.setCSeqs(cSeqs);
-			cItemSearch.setFgVisible(PlatformCommonVo.YES);
+			cItemSearch.setFgVisible(MgmtCommonVo.YES);
 
 			cItems = contentService.getCItems(cItemSearch);
 		}

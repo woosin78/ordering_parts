@@ -7,7 +7,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -100,7 +100,7 @@ public class UserGroupController extends MgmtGeneralController
 		}
 
 		CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
-		credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
+		credentialsPolicySearch.setFgUse(MgmtCommonVo.YES);
 
 		return UserGroupLayoutBuilder.write(userGroup, sapConnResourceService.getAvailableSapConnResources(), credentialsPolicyService.getCredentialsPolicies(credentialsPolicySearch), mode);
 	}
@@ -155,17 +155,17 @@ public class UserGroupController extends MgmtGeneralController
 
 		if (ObjectUtils.isEmpty(userGroup))
 		{
-			return PlatformCommonVo.SUCCESS;
+			return MgmtCommonVo.SUCCESS;
 		}
 
 		if (ObjectUtils.isNotEmpty(ugSeq))
 		{
 			if (ugSeq.equals(userGroup.getUgSeq()))
 			{
-				return PlatformCommonVo.SUCCESS;
+				return MgmtCommonVo.SUCCESS;
 			}
 		}
 
-		return PlatformCommonVo.FAIL;
+		return MgmtCommonVo.FAIL;
 	}
 }

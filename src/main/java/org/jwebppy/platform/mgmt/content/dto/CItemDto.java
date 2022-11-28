@@ -3,7 +3,7 @@ package org.jwebppy.platform.mgmt.content.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -30,8 +30,8 @@ public class CItemDto extends GeneralDto implements IPagination
 	private String entryPoint;
 	private String parameter;
 	private int sort = 100;
-	private String fgVisible = PlatformCommonVo.NO;
-	private String fgDelete = PlatformCommonVo.NO;
+	private String fgVisible = MgmtCommonVo.NO;
+	private String fgDelete = MgmtCommonVo.NO;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
 	private String launchType;

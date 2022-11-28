@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
@@ -89,7 +89,7 @@ public class UserController extends UserGeneralController
 	public String list(Model model, WebRequest webRequest)
 	{
 		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setFgVisible(PlatformCommonVo.YES);
+		cItemSearch.setFgVisible(MgmtCommonVo.YES);
 		cItemSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
 
 		model.addAttribute("cItems", contentService.getCItems(cItemSearch));
@@ -200,7 +200,7 @@ public class UserController extends UserGeneralController
 				}
 
 				CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
-				credentialsPolicySearch.setFgUse(PlatformCommonVo.YES);
+				credentialsPolicySearch.setFgUse(MgmtCommonVo.YES);
 
 				return UserLayoutBuilder.writeAccountInfo(user, credentialsPolicyService.getCredentialsPolicies(credentialsPolicySearch));
 			}
@@ -222,7 +222,7 @@ public class UserController extends UserGeneralController
 		{
 			if (CmStringUtils.isNotEmpty(userAccount.getPassword()))
 			{
-				userAccount.setFgPasswordLocked(PlatformCommonVo.YES);
+				userAccount.setFgPasswordLocked(MgmtCommonVo.YES);
 			}
 
 			userAccount.setCredentialsPolicy(credentialsPolicy);
@@ -272,11 +272,11 @@ public class UserController extends UserGeneralController
 	{
 		if ("lock".equals(command))
 		{
-			return userService.lockUserAccount(uSeqs, PlatformCommonVo.YES);
+			return userService.lockUserAccount(uSeqs, MgmtCommonVo.YES);
 		}
 		else if ("unlock".equals(command))
 		{
-			return userService.lockUserAccount(uSeqs, PlatformCommonVo.NO);
+			return userService.lockUserAccount(uSeqs, MgmtCommonVo.NO);
 		}
 
 		return EMPTY_RETURN_VALUE;
@@ -286,7 +286,7 @@ public class UserController extends UserGeneralController
 	@ResponseBody
 	public Object authorityLayout(@ModelAttribute CItemSearchDto cItemSearch)
 	{
-		cItemSearch.setFgShowGroup(PlatformCommonVo.YES);
+		cItemSearch.setFgShowGroup(MgmtCommonVo.YES);
 
 		return UserLayoutBuilder.viewAuthority(contentAuthorityService.getMyCItemHierarchy(cItemSearch));
 	}
@@ -300,7 +300,7 @@ public class UserController extends UserGeneralController
 		if (CollectionUtils.isNotEmpty(cSeqs))
 		{
 			cItemSearch.setCSeqs(cSeqs);
-			cItemSearch.setFgVisible(PlatformCommonVo.YES);
+			cItemSearch.setFgVisible(MgmtCommonVo.YES);
 
 			cItems = contentService.getCItems(cItemSearch);
 		}
@@ -352,7 +352,7 @@ public class UserController extends UserGeneralController
 
 		UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
 
-		if (CmStringUtils.equals(user.getUserAccount().getFgNoUsePassword(), PlatformCommonVo.YES))
+		if (CmStringUtils.equals(user.getUserAccount().getFgNoUsePassword(), MgmtCommonVo.YES))
 		{
 			resultMap.put("difference", "999");
 		}

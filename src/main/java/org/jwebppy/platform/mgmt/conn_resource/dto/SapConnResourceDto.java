@@ -2,7 +2,7 @@ package org.jwebppy.platform.mgmt.conn_resource.dto;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -56,12 +56,12 @@ public class SapConnResourceDto extends GeneralDto implements IPagination
 
 	public String getFgUse()
 	{
-		return CmStringUtils.defaultIfEmpty(fgUse, PlatformCommonVo.NO);
+		return CmStringUtils.defaultIfEmpty(fgUse, MgmtCommonVo.NO);
 	}
 
 	public String getFgUseUserLang()
 	{
-		return CmStringUtils.defaultIfEmpty(fgUseUserLang, PlatformCommonVo.NO);
+		return CmStringUtils.defaultIfEmpty(fgUseUserLang, MgmtCommonVo.NO);
 	}
 
 	public String getDecodedPassword()

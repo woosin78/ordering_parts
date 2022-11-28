@@ -2,7 +2,7 @@ package org.jwebppy.platform.mgmt.content.dto;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 
 import lombok.Getter;
@@ -20,7 +20,7 @@ public class CItemUserRlDto extends GeneralDto
 	private Integer cSeq;
 	private Integer uSeq;
 	private int sort = 100;
-	private String fgDelete = PlatformCommonVo.NO;
+	private String fgDelete = MgmtCommonVo.NO;
 	private List<Integer> cSeqs;
 	private String name;
 }

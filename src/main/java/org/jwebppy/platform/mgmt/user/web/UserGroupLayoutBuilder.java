@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
@@ -188,7 +188,7 @@ public class UserGroupLayoutBuilder
 		Select loCountry = new Select("country");
 		loCountry.setLabel("Default Country");
 		loCountry.setRequired(true);
-		loCountry.setValue(CmStringUtils.defaultIfEmpty(userGroup.getCountry(), PlatformCommonVo.DEFAULT_COUNTRY));
+		loCountry.setValue(CmStringUtils.defaultIfEmpty(userGroup.getCountry(), MgmtCommonVo.DEFAULT_COUNTRY));
 
 		String[] locales = Locale.getISOCountries();
 
@@ -203,7 +203,7 @@ public class UserGroupLayoutBuilder
 		Select loTimezone = new Select("timezone");
 		loTimezone.setLabel("Timezone");
 		loTimezone.setRequired(true);
-		loTimezone.setValue(CmStringUtils.defaultIfEmpty(userGroup.getTimezone(), PlatformCommonVo.DEFAULT_TIMEZONE));
+		loTimezone.setValue(CmStringUtils.defaultIfEmpty(userGroup.getTimezone(), MgmtCommonVo.DEFAULT_TIMEZONE));
 
 		String[] ids = TimeZone.getAvailableIDs(userGroup.getCountry());
 
@@ -251,7 +251,7 @@ public class UserGroupLayoutBuilder
 		loLangKindFields.addAttribute("multiple", "");
 
 		String langKind = userGroup.getLangKind();
-		langKind = (CmStringUtils.isEmpty(langKind)) ? PlatformCommonVo.DEFAULT_LANGUAGE: langKind;
+		langKind = (CmStringUtils.isEmpty(langKind)) ? MgmtCommonVo.DEFAULT_LANGUAGE: langKind;
 
 		for (LangKindType langKindType: LangKindType.values())
 		{

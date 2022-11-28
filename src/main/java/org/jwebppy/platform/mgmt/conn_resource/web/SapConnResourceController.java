@@ -3,7 +3,7 @@ package org.jwebppy.platform.mgmt.conn_resource.web;
 import java.util.List;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
@@ -107,24 +107,24 @@ public class SapConnResourceController extends MgmtGeneralController
 	@ResponseBody
 	public Object use(@RequestParam("scrSeq") List<Integer> scrSeqs)
 	{
-		if (sapConnResourceService.modifyFgUse(scrSeqs, PlatformCommonVo.YES) > 0)
+		if (sapConnResourceService.modifyFgUse(scrSeqs, MgmtCommonVo.YES) > 0)
 		{
-			return PlatformCommonVo.SUCCESS;
+			return MgmtCommonVo.SUCCESS;
 		}
 
-		return PlatformCommonVo.FAIL;
+		return MgmtCommonVo.FAIL;
 	}
 
 	@PostMapping("/disuse")
 	@ResponseBody
 	public Object disuse(@RequestParam("scrSeq") List<Integer> scrSeqs)
 	{
-		if (sapConnResourceService.modifyFgUse(scrSeqs, PlatformCommonVo.NO) > 0)
+		if (sapConnResourceService.modifyFgUse(scrSeqs, MgmtCommonVo.NO) > 0)
 		{
-			return PlatformCommonVo.SUCCESS;
+			return MgmtCommonVo.SUCCESS;
 		}
 
-		return PlatformCommonVo.FAIL;
+		return MgmtCommonVo.FAIL;
 	}
 
 	@GetMapping("/check/valid_name")
@@ -135,17 +135,17 @@ public class SapConnResourceController extends MgmtGeneralController
 
 		if (ObjectUtils.isEmpty(sapConnResource))
 		{
-			return PlatformCommonVo.SUCCESS;
+			return MgmtCommonVo.SUCCESS;
 		}
 
 		if (ObjectUtils.isNotEmpty(scrSeq))
 		{
 			if (scrSeq.equals(sapConnResource.getScrSeq()))
 			{
-				return PlatformCommonVo.SUCCESS;
+				return MgmtCommonVo.SUCCESS;
 			}
 		}
 
-		return PlatformCommonVo.FAIL;
+		return MgmtCommonVo.FAIL;
 	}
 }

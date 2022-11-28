@@ -8,7 +8,7 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -224,13 +224,13 @@ public class UserLayoutBuilder
 		InputPassword loConfirmPassword = new InputPassword("confirmPassword");
 		loConfirmPassword.setLabel("Confirm Password");
 
-		Checkbox loFgAccountLocked = new Checkbox("fgAccountLocked", PlatformCommonVo.YES, userAccount.getFgAccountLocked());
+		Checkbox loFgAccountLocked = new Checkbox("fgAccountLocked", MgmtCommonVo.YES, userAccount.getFgAccountLocked());
 		loFgAccountLocked.setLabel("Account Locked");
 
-		Element loFgPasswordLocked = new Checkbox("fgPasswordLocked", PlatformCommonVo.YES, userAccount.getFgPasswordLocked());
+		Element loFgPasswordLocked = new Checkbox("fgPasswordLocked", MgmtCommonVo.YES, userAccount.getFgPasswordLocked());
 		loFgPasswordLocked.setLabel("Password Locked");
 
-		Element loFgNoUsePassword = new Checkbox("fgNoUsePassword", PlatformCommonVo.YES, userAccount.getFgNoUsePassword());
+		Element loFgNoUsePassword = new Checkbox("fgNoUsePassword", MgmtCommonVo.YES, userAccount.getFgNoUsePassword());
 		loFgNoUsePassword.setLabel("No Use Password");
 
 		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(userAccount.getDisplayFromValid(), CmDateFormatUtils.now()));

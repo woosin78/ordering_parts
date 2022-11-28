@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.jwebppy.config.CacheConfig;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.mgmt.authority.dto.CItemAuthRlDto;
 import org.jwebppy.platform.mgmt.authority.entity.CItemAuthRlEntity;
@@ -46,7 +46,7 @@ public class AuthorityService
 		{
 			CItemAuthRlEntity cItemUserRlEntity = new CItemAuthRlEntity();
 			cItemUserRlEntity.setPSeq(pSeq);
-			cItemUserRlEntity.setFgDelete(PlatformCommonVo.YES);
+			cItemUserRlEntity.setFgDelete(MgmtCommonVo.YES);
 
 			authorityMapper.updateFgDeleteOfCItemAuthRl(cItemUserRlEntity);
 
@@ -62,7 +62,7 @@ public class AuthorityService
 					}
 
 					cItemUserRlEntity.setCSeq(cSeq);
-					cItemUserRlEntity.setFgDelete(PlatformCommonVo.NO);
+					cItemUserRlEntity.setFgDelete(MgmtCommonVo.NO);
 					cItemUserRlEntity.setSort(100);
 
 					authorityMapper.insertCItemAuthRl(cItemUserRlEntity);

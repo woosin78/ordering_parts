@@ -7,7 +7,7 @@ import java.util.Locale;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.RegExUtils;
 import org.jwebppy.config.CacheConfig;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.PlatformUserDetails;
 import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -87,7 +87,7 @@ public class I18nMessageSource extends AbstractMessageSource
 				{
 					for (LangKindDto langKind : langKinds)
 					{
-						if (CmStringUtils.equals(langKind.getFgDefault(), PlatformCommonVo.YES))
+						if (CmStringUtils.equals(langKind.getFgDefault(), MgmtCommonVo.YES))
 						{
 							defaultLocale = langKind.getCode();
 							break;

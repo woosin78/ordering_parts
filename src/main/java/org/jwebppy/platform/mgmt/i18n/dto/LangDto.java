@@ -3,7 +3,7 @@ package org.jwebppy.platform.mgmt.i18n.dto;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
@@ -23,7 +23,7 @@ public class LangDto extends GeneralDto implements IPagination
 	private String basename;
 	private LangType type;
 	private String seq;
-	private String fgDelete = PlatformCommonVo.NO;
+	private String fgDelete = MgmtCommonVo.NO;
 	private List<LangDetailDto> langDetails;
 	private List<Integer> lSeqs;
 

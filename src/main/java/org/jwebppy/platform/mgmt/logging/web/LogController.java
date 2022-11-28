@@ -9,7 +9,7 @@ import java.util.List;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
@@ -90,7 +90,7 @@ public class LogController extends LoggingGeneralController
 
 		if (CollectionUtils.isNotEmpty(dataAccessResultLogService.getSimpleResultLogs(dataAccessLog.getDlSeq())))
 		{
-			model.addAttribute("fgHasResultLog", PlatformCommonVo.YES);
+			model.addAttribute("fgHasResultLog", MgmtCommonVo.YES);
 		}
 
 		model.addAttribute("dataAccessLog", dataAccessLog);
@@ -168,7 +168,7 @@ public class LogController extends LoggingGeneralController
 			UploadFileDto uploadFile = uploadFileService.getUploadFile(UF_SEQ);
 
 			String path = ROOT_PATH + File.separator + uploadFile.getPath();
-			String now = CmDateFormatUtils.defaultZonedFormat(LocalDateTime.now(), PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
+			String now = CmDateFormatUtils.defaultZonedFormat(LocalDateTime.now(), MgmtCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
 			String originName = "[" + type.toUpperCase() + "] " + command + "_" + UserAuthenticationUtils.getUsername() + "_" + now + ".html";
 			String savedName = System.nanoTime() + ".html";
 

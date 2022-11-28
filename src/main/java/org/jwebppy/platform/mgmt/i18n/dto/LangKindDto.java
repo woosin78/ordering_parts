@@ -1,6 +1,6 @@
 package org.jwebppy.platform.mgmt.i18n.dto;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class LangKindDto extends GeneralDto
 	private String name;
 	private String code;
 	private int sort;
-	private String fgDefault = PlatformCommonVo.NO;
+	private String fgDefault = MgmtCommonVo.NO;
 
 	public LangKindDto() {}
 

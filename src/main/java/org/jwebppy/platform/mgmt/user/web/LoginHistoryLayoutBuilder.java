@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
@@ -50,7 +50,7 @@ public class LoginHistoryLayoutBuilder
 				tbTr.addTextTd(loginHistory.getUserAgent());
 				tbTr.addTextTd(loginHistory.getAuthenticationType().getType());
 
-				if (CmStringUtils.equals(loginHistory.getFgResult(), PlatformCommonVo.NO))
+				if (CmStringUtils.equals(loginHistory.getFgResult(), MgmtCommonVo.NO))
 				{
 					tbTr.setClass("error");
 				}
@@ -97,7 +97,7 @@ public class LoginHistoryLayoutBuilder
 			tbTr.addTextTd(loginHistory.getReferer());
 			tbTr.addTextTd(loginHistory.getUserAgent());
 
-			if (CmStringUtils.equals(loginHistory.getFgResult(), PlatformCommonVo.NO))
+			if (CmStringUtils.equals(loginHistory.getFgResult(), MgmtCommonVo.NO))
 			{
 				tbTr.setClass("error");
 			}

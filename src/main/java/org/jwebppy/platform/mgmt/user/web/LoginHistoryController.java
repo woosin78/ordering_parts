@@ -3,7 +3,7 @@ package org.jwebppy.platform.mgmt.user.web;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistoryDto;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
@@ -48,7 +48,7 @@ public class LoginHistoryController extends UserGeneralController
 	{
 		loginHistorySearch.setRowPerPage(2);
 		loginHistorySearch.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
-		loginHistorySearch.setFgResult(PlatformCommonVo.YES);
+		loginHistorySearch.setFgResult(MgmtCommonVo.YES);
 
 		List<LoginHistoryDto> loginHistories = loginHistoryService.getPageableLoginHistories(loginHistorySearch);
 

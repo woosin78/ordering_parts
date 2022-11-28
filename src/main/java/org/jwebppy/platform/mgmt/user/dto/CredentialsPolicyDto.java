@@ -2,7 +2,7 @@ package org.jwebppy.platform.mgmt.user.dto;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
@@ -26,8 +26,8 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private String uMaxUppercase;
 	private String uMinLowercase;
 	private String uMaxLowercase;
-	private String uFgOnlyUppercase = PlatformCommonVo.NO;
-	private String uFgOnlyLowercase = PlatformCommonVo.NO;
+	private String uFgOnlyUppercase = MgmtCommonVo.NO;
+	private String uFgOnlyLowercase = MgmtCommonVo.NO;
 	private String uMinNumber;
 	private String uMaxNumber;
 	private String uMinSpecial;
@@ -43,12 +43,12 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private String pMinSpecial;
 	private String pMaxSpecial;
 	private String pValidPeriod;
-	private String fgUsePwdFailPenalty = PlatformCommonVo.NO;
+	private String fgUsePwdFailPenalty = MgmtCommonVo.NO;
 	private String pFailCheckDuration;
 	private String pAllowableFailCount;
 	private String pFreezingDuration;
-	private String fgUse = PlatformCommonVo.NO;
-	private String fgDefault = PlatformCommonVo.NO;
+	private String fgUse = MgmtCommonVo.NO;
+	private String fgDefault = MgmtCommonVo.NO;
 	private List<UserGroupDto> userGroups;
 
 	public CredentialsPolicyDto() {}

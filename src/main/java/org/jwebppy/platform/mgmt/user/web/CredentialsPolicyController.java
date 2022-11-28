@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
@@ -77,7 +77,7 @@ public class CredentialsPolicyController extends UserGeneralController
 	public String write(Model model, WebRequest webRequest, @RequestParam(value = "cpSeq", required = false) Integer cpSeq)
 	{
 		CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
-		credentialsPolicySearch.setFgDefault(PlatformCommonVo.YES);
+		credentialsPolicySearch.setFgDefault(MgmtCommonVo.YES);
 
 		Boolean isShowFgDefault = (ListUtils.isEmpty(credentialsPolicyService.getCredentialsPolicies(credentialsPolicySearch))) ? true : false;
 
@@ -87,7 +87,7 @@ public class CredentialsPolicyController extends UserGeneralController
 		{
 			credentialsPolicy = credentialsPolicyService.getCredentialPolicy(cpSeq);
 
-			if (CmStringUtils.equals(credentialsPolicy.getFgDefault(), PlatformCommonVo.YES))
+			if (CmStringUtils.equals(credentialsPolicy.getFgDefault(), MgmtCommonVo.YES))
 			{
 				isShowFgDefault = true;
 			}
@@ -108,7 +108,7 @@ public class CredentialsPolicyController extends UserGeneralController
 	{
 		credentialsPolicy.setName(CmStringUtils.upperCase(credentialsPolicy.getName()));
 
-		if (CmStringUtils.equals(PlatformCommonVo.NO, credentialsPolicy.getFgUsePwdFailPenalty()))
+		if (CmStringUtils.equals(MgmtCommonVo.NO, credentialsPolicy.getFgUsePwdFailPenalty()))
 		{
 			credentialsPolicy.setPAllowableFailCount(null);
 			credentialsPolicy.setPFailCheckDuration(null);
@@ -133,18 +133,18 @@ public class CredentialsPolicyController extends UserGeneralController
 
 		if (ObjectUtils.isEmpty(credentialsPolicy))
 		{
-			return PlatformCommonVo.SUCCESS;
+			return MgmtCommonVo.SUCCESS;
 		}
 
 		if (ObjectUtils.isNotEmpty(cpSeq))
 		{
 			if (cpSeq.equals(credentialsPolicy.getCpSeq()))
 			{
-				return PlatformCommonVo.SUCCESS;
+				return MgmtCommonVo.SUCCESS;
 			}
 		}
 
-		return PlatformCommonVo.FAIL;
+		return MgmtCommonVo.FAIL;
 	}
 
 	@GetMapping("/check/valid_credentials")

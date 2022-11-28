@@ -2,9 +2,6 @@ package org.jwebppy.platform.core.security.authentication;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,11 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
-import org.jwebppy.platform.core.util.CmArrayUtils;
-import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
-import org.jwebppy.platform.mgmt.sso.uitils.StringEncrypter;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,14 +36,6 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 	@Autowired
 	private I18nMessageSource i18nMessageSource;
 
-    private final static Map<String, String[]> SSO_ALLOWED_SYSTEMS = new HashMap<>();
-
-    static
-    {
-    	SSO_ALLOWED_SYSTEMS.put("DIV_DOOBIZ", new String[] {"Infracore", "Doosan"});
-    	SSO_ALLOWED_SYSTEMS.put("GPES", new String[] {"GPES", "everythingisok"});
-    }
-
     public PlatformAuthenticationFilter() {}
 
 	public PlatformAuthenticationFilter(AuthenticationManager authenticationManager)
@@ -60,56 +46,43 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException
 	{
-		String username = null;
-		String password = null;
+		String username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
+		String password = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_PASSWORD));
 
-		String[] credentials = checkSsoUser(request);
-
-		if (CmArrayUtils.isNotEmpty(credentials))
+		if (CmStringUtils.isEmpty(username))
 		{
-			username = credentials[0];
-			password = credentials[1];
+			throw new UsernameNotFoundException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
 		}
-		else
+
+		if (CmStringUtils.isEmpty(password))
 		{
-			username = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_USERNAME));
-			password = CmStringUtils.trimToEmpty(request.getParameter(PlatformConfigVo.FORM_LOGIN_PASSWORD));
+			throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
+		}
 
-			if (CmStringUtils.isEmpty(username))
+		if (isAdUser(CmStringUtils.trimToEmpty(request.getParameter("token"))))
+		{
+			password = AuthenticationType.A.getUniqueName();
+		}
+
+		AccountLockedReason accountLockedReason = (AccountLockedReason)request.getSession().getAttribute("ACCOUNT_LOCKED_REASON");
+
+		if (ObjectUtils.isNotEmpty(accountLockedReason))
+		{
+			CredentialsPolicyDto credentialsPolicy = accountLockedReason.getCredentialsPolicy();
+
+			if (CmStringUtils.equals(PlatformCommonVo.YES, credentialsPolicy.getFgUsePwdFailPenalty()))
 			{
-				throw new UsernameNotFoundException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
-			}
+				Duration duration = Duration.between(LocalDateTime.now(), accountLockedReason.getLoginFreezingBy());
 
-			if (CmStringUtils.isEmpty(password))
-			{
-				throw new BadCredentialsException(i18nMessageSource.getMessage("PLTF_M_LOGIN_AUTHENTICATION_FAILED"));
-			}
+				long freezingTime = (long)Math.ceil(duration.getSeconds() / 60);
 
-			if (isAdUser(CmStringUtils.trimToEmpty(request.getParameter("token"))))
-			{
-				password = AuthenticationType.A.getUniqueName();
-			}
-
-			AccountLockedReason accountLockedReason = (AccountLockedReason)request.getSession().getAttribute("ACCOUNT_LOCKED_REASON");
-
-			if (ObjectUtils.isNotEmpty(accountLockedReason))
-			{
-				CredentialsPolicyDto credentialsPolicy = accountLockedReason.getCredentialsPolicy();
-
-				if (CmStringUtils.equals(PlatformCommonVo.YES, credentialsPolicy.getFgUsePwdFailPenalty()))
+				if (freezingTime > 0)
 				{
-					Duration duration = Duration.between(LocalDateTime.now(), accountLockedReason.getLoginFreezingBy());
-
-					long freezingTime = (long)Math.ceil(duration.getSeconds() / 60);
-
-					if (freezingTime > 0)
-					{
-						throw new AllowableCredentialsFailureException(i18nMessageSource.getMessage("PLTF_M_EXCEEDED_ALLOWABLE_FAILURE_COUNT", new Object[] { credentialsPolicy.getPAllowableFailCount(), freezingTime}));
-					}
-					else
-					{
-						request.getSession().removeAttribute("ACCOUNT_LOCKED_REASON");
-					}
+					throw new AllowableCredentialsFailureException(i18nMessageSource.getMessage("PLTF_M_EXCEEDED_ALLOWABLE_FAILURE_COUNT", new Object[] { credentialsPolicy.getPAllowableFailCount(), freezingTime}));
+				}
+				else
+				{
+					request.getSession().removeAttribute("ACCOUNT_LOCKED_REASON");
 				}
 			}
 		}
@@ -147,49 +120,4 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
         return false;
     }
-
-    private String[] checkSsoUser(HttpServletRequest request)
-    {
-    	String system = CmStringUtils.trimToEmpty(request.getParameter("system"));
-    	String key = CmStringUtils.trimToEmpty(request.getParameter("key"));
-
-    	if (CmStringUtils.isAnyEmpty(system, key))
-    	{
-    		return null;
-    	}
-
-		try
-		{
-			String[] secretInfo = SSO_ALLOWED_SYSTEMS.get(system);
-
-			String[] message = CmStringUtils.split(new StringEncrypter(secretInfo[0], secretInfo[1]).decrypt(key), ":");
-
-	    	if (CmArrayUtils.isNotEmpty(message) && message.length == 2 && isValidPeriod(message[1]))
-	    	{
-	    		return new String[] {message[0], AuthenticationType.S.getUniqueName()};
-	    	}
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-    	return null;
-    }
-
-	public boolean isValidPeriod(String time)
-	{
-		try
-		{
-			LocalDateTime ssoTime = CmDateTimeUtils.toLocalDateTime(time, PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS);
-
-			if (ssoTime.plusHours(12).compareTo(LocalDateTime.now()) > 0)
-			{
-				return true;
-			}
-		}
-		catch (DateTimeParseException e) {}
-
-		return false;
-	}
 }

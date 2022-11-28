@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
@@ -112,7 +112,7 @@ public class ContentLayoutBuilder
 		loFromValid.setLabel("Valid From");
 		loFromValid.setRequired(true);
 
-		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(cItem.getDisplayToValid(), PlatformCommonVo.UNLIMITED_DATE_TIME));
+		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(cItem.getDisplayToValid(), MgmtCommonVo.UNLIMITED_DATE_TIME));
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
 		loToValid.setRequired(true);
@@ -121,7 +121,7 @@ public class ContentLayoutBuilder
 		loSort.setLabel("Sort");
 		loSort.setRequired(true);
 
-		Element loVisible = new Checkbox("fgVisible", PlatformCommonVo.YES, cItem.getFgVisible());
+		Element loVisible = new Checkbox("fgVisible", MgmtCommonVo.YES, cItem.getFgVisible());
 		loVisible.setLabel("Visible");
 
 		Document document = new Document();

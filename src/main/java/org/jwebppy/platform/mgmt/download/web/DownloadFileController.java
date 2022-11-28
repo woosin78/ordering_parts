@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletResponse;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -59,7 +59,7 @@ public class DownloadFileController extends MgmtGeneralController
 			throw new Exception("Invalid download information.");
 		}
 
-		if (Duration.between(LocalDateTime.parse(decodedKey[0], DateTimeFormatter.ofPattern(PlatformCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)), LocalDateTime.now()).toMinutes() > 30)
+		if (Duration.between(LocalDateTime.parse(decodedKey[0], DateTimeFormatter.ofPattern(MgmtCommonVo.DEFAULT_DATE_TIME_FORMAT_YYYYMMDDHHMMSS)), LocalDateTime.now()).toMinutes() > 30)
 		{
 			throw new Exception("Exceeded the download available time. Please refresh this page and try to download again.");
 		}

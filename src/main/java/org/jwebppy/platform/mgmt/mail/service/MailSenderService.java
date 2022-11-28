@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -92,7 +92,7 @@ public class MailSenderService extends MgmtGeneralService
 
 					try
 					{
-						if (CmStringUtils.equals(mailSender.getFgHtmlText(), PlatformCommonVo.YES))
+						if (CmStringUtils.equals(mailSender.getFgHtmlText(), MgmtCommonVo.YES))
 						{
 							mimeMessageHelper.setText(text, true);
 						}

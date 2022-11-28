@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
@@ -51,7 +51,7 @@ public class ContentAuthorityService extends GeneralService
 		{
 			CItemUserRlEntity cItemUserRlEntity = new CItemUserRlEntity();
 			cItemUserRlEntity.setUSeq(uSeq);
-			cItemUserRlEntity.setFgDelete(PlatformCommonVo.YES);
+			cItemUserRlEntity.setFgDelete(MgmtCommonVo.YES);
 
 			contentMapper.deleteCItemUserRl(cItemUserRlEntity);
 
@@ -62,7 +62,7 @@ public class ContentAuthorityService extends GeneralService
 				for (Integer cSeq : cSeqs)
 				{
 					cItemUserRlEntity.setCSeq(cSeq);
-					cItemUserRlEntity.setFgDelete(PlatformCommonVo.NO);
+					cItemUserRlEntity.setFgDelete(MgmtCommonVo.NO);
 
 					contentMapper.insertCItemUserRl(cItemUserRlEntity);
 				}
@@ -93,7 +93,7 @@ public class ContentAuthorityService extends GeneralService
 				cItemUserRlEntity.setUSeq(uSeq);
 				cItemUserRlEntity.setCSeq(cItems.get(0).getCSeq());
 				cItemUserRlEntity.setName(cItemUserRl.getName());
-				cItemUserRlEntity.setFgDelete(PlatformCommonVo.NO);
+				cItemUserRlEntity.setFgDelete(MgmtCommonVo.NO);
 
 				return contentMapper.insertCItemUserRl(cItemUserRlEntity);
 			}
@@ -164,7 +164,7 @@ public class ContentAuthorityService extends GeneralService
 
 			cItemSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
 			cItemSearch.setLang(lang);
-			cItemSearch.setFgVisible(PlatformCommonVo.YES);
+			cItemSearch.setFgVisible(MgmtCommonVo.YES);
 
 			List<CItemDto> cItems = ListUtils.emptyIfNull(contentService.getCItemsFormTree(cItemSearch));
 
@@ -209,7 +209,7 @@ public class ContentAuthorityService extends GeneralService
 
 		CItemSearchDto cItemSearch = new CItemSearchDto();
 		cItemSearch.setPSeq(cSeq);
-		cItemSearch.setFgVisible(PlatformCommonVo.YES);
+		cItemSearch.setFgVisible(MgmtCommonVo.YES);
 
 		List<CItemDto> subCItems = contentService.getCItemHierarchy(cItemSearch);
 

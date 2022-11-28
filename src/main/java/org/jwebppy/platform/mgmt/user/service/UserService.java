@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
@@ -98,8 +98,8 @@ public class UserService extends GeneralService
 		userAccount.setUSeq(uSeq);
 		userAccount.setUsername(CmStringUtils.trimToEmpty(paramMap.get("username")));
 		userAccount.setPassword(CmStringUtils.trimToEmpty(paramMap.get("password")));
-		userAccount.setFgAccountLocked(PlatformCommonVo.NO);
-		userAccount.setFgPasswordLocked(PlatformCommonVo.YES);
+		userAccount.setFgAccountLocked(MgmtCommonVo.NO);
+		userAccount.setFgPasswordLocked(MgmtCommonVo.YES);
 		userAccount.setFromValid(LocalDateTime.now());
 		userAccount.setToValid(LocalDateTime.now().plusYears(100));
 		userAccount.setModDate(null);
@@ -109,8 +109,8 @@ public class UserService extends GeneralService
 
 		UserContactInfoDto userContactInfo = user.getUserContactInfo();
 		userContactInfo.setUSeq(uSeq);
-		userContactInfo.setCountry(CmStringUtils.defaultString(userContactInfo.getCountry(), PlatformCommonVo.DEFAULT_COUNTRY));
-		userContactInfo.setTimezone(CmStringUtils.defaultString(userContactInfo.getTimezone(), PlatformCommonVo.DEFAULT_TIMEZONE));
+		userContactInfo.setCountry(CmStringUtils.defaultString(userContactInfo.getCountry(), MgmtCommonVo.DEFAULT_COUNTRY));
+		userContactInfo.setTimezone(CmStringUtils.defaultString(userContactInfo.getTimezone(), MgmtCommonVo.DEFAULT_TIMEZONE));
 		userContactInfo.setModDate(null);
 		userContactInfo.setModUsername(null);
 
@@ -207,7 +207,7 @@ public class UserService extends GeneralService
 
 				UserAccountEntity userAccount = new UserAccountEntity();
 				userAccount.setUSeq(uSeq);
-				userAccount.setFgAccountLocked(CmStringUtils.defaultString(fgAccountLocked, PlatformCommonVo.NO));
+				userAccount.setFgAccountLocked(CmStringUtils.defaultString(fgAccountLocked, MgmtCommonVo.NO));
 
 				result += userMapper.updateFgAccountLocked(userAccount);
 			}
@@ -296,7 +296,7 @@ public class UserService extends GeneralService
 
 				UserAccountDto userAccount = user.getUserAccount();
 				userAccount.setPassword(PlatformConfigVo.INITIAL_PASSWORD);
-				userAccount.setFgPasswordLocked(PlatformCommonVo.YES);
+				userAccount.setFgPasswordLocked(MgmtCommonVo.YES);
 
 				modifyUserAccount(userAccount);
 			}

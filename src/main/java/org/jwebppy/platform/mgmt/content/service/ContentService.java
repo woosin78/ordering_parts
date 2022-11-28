@@ -13,7 +13,7 @@ import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.config.CacheConfig;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
@@ -102,7 +102,7 @@ public class ContentService extends GeneralService
 			{
 				CItemEntity cItemEntity = new CItemEntity();
 				cItemEntity.setCSeq(cSeq);
-				cItemEntity.setFgDelete(PlatformCommonVo.YES);
+				cItemEntity.setFgDelete(MgmtCommonVo.YES);
 
 				return contentMapper.delete(cItemEntity);
 			}
@@ -132,7 +132,7 @@ public class ContentService extends GeneralService
 	{
 		CItemEntity cItem = new CItemEntity();
 		cItem.setCSeq((Integer)cItemMap.get("KEY"));
-		cItem.setFgDelete(PlatformCommonVo.YES);
+		cItem.setFgDelete(MgmtCommonVo.YES);
 
 		contentMapper.delete(cItem);
 
@@ -161,7 +161,7 @@ public class ContentService extends GeneralService
 
 		if (CollectionUtils.isNotEmpty(cItems))
 		{
-			if (CmStringUtils.equals(fgCopyWithSubItems, PlatformCommonVo.YES))
+			if (CmStringUtils.equals(fgCopyWithSubItems, MgmtCommonVo.YES))
 			{
 				copy(cSeq, pSeq, cItems.get(0));
 			}
@@ -238,7 +238,7 @@ public class ContentService extends GeneralService
 
 				nLangDetail.setLkSeq(sLangDetail.getLkSeq());
 				nLangDetail.setText(sLangDetail.getText());
-				nLangDetail.setFgDelete(PlatformCommonVo.NO);
+				nLangDetail.setFgDelete(MgmtCommonVo.NO);
 
 				nLangDetails.add(nLangDetail);
 			}
@@ -246,7 +246,7 @@ public class ContentService extends GeneralService
 			LangDto nLang = new LangDto();
 			nLang.setBasename(sLang.getBasename());
 			nLang.setType(sLang.getType());
-			nLang.setFgDelete(PlatformCommonVo.NO);
+			nLang.setFgDelete(MgmtCommonVo.NO);
 			nLang.setLangDetails(nLangDetails);
 
 			Integer nLseq = langService.save(nLang);
@@ -326,7 +326,7 @@ public class ContentService extends GeneralService
 
 				CItemSearchDto subCItemSearch = new CItemSearchDto();
 				subCItemSearch.setPSeq(subCItem.getCSeq());
-				subCItemSearch.setFgVisible(PlatformCommonVo.YES);
+				subCItemSearch.setFgVisible(MgmtCommonVo.YES);
 
 				makeHierarchy(cItems, subCItemSearch);
 			}

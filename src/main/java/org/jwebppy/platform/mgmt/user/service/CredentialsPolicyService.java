@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
@@ -110,8 +110,8 @@ public class CredentialsPolicyService extends GeneralService
 		if (ObjectUtils.isEmpty(cpSeq))
 		{
 			CredentialsPolicySearchDto credentialsPolicySearch2 = new CredentialsPolicySearchDto();
-			credentialsPolicySearch2.setFgUse(PlatformCommonVo.YES);
-			credentialsPolicySearch2.setFgDefault(PlatformCommonVo.YES);
+			credentialsPolicySearch2.setFgUse(MgmtCommonVo.YES);
+			credentialsPolicySearch2.setFgDefault(MgmtCommonVo.YES);
 
 			List<CredentialsPolicyDto> credentialsPolicies = getCredentialsPolicies(credentialsPolicySearch2);
 
@@ -167,8 +167,8 @@ public class CredentialsPolicyService extends GeneralService
 		String maxNumber;
 		String minSpecial;
 		String maxSpecial;
-		String fgOnlyLowercase = PlatformCommonVo.NO;
-		String fgOnlyUppercase = PlatformCommonVo.NO;
+		String fgOnlyLowercase = MgmtCommonVo.NO;
+		String fgOnlyUppercase = MgmtCommonVo.NO;
 
 		if (type == CredentialsPolicyType.U)
 		{
@@ -224,11 +224,11 @@ public class CredentialsPolicyService extends GeneralService
 			resultMap.put("MIN", minLength);
 			resultMap.put("MAX", maxLength);
 		}
-		else if (CmStringUtils.equals(fgOnlyLowercase, PlatformCommonVo.YES) && uppercaseCount > 0)
+		else if (CmStringUtils.equals(fgOnlyLowercase, MgmtCommonVo.YES) && uppercaseCount > 0)
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_ONLY_LOWERCASE);
 		}
-		else if (CmStringUtils.equals(fgOnlyUppercase, PlatformCommonVo.YES) && lowercaseCount > 0)
+		else if (CmStringUtils.equals(fgOnlyUppercase, MgmtCommonVo.YES) && lowercaseCount > 0)
 		{
 			resultMap.put("RESULT", CredentialsPolicyVo.WRONG_ONLY_UPPERCASE);
 		}
@@ -279,8 +279,8 @@ public class CredentialsPolicyService extends GeneralService
 		String maxNumber;
 		String minSpecial;
 		String maxSpecial;
-		String fgOnlyUppercase = PlatformCommonVo.NO;
-		String fgOnlyLowercase = PlatformCommonVo.NO;
+		String fgOnlyUppercase = MgmtCommonVo.NO;
+		String fgOnlyLowercase = MgmtCommonVo.NO;
 		String target = type.getType();
 
 		if (type == CredentialsPolicyType.U)
@@ -381,13 +381,13 @@ public class CredentialsPolicyService extends GeneralService
 			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_53", new String[] {target, maxSpecial}));
 		}
 
-		if (CmStringUtils.equals(fgOnlyLowercase, PlatformCommonVo.YES))
+		if (CmStringUtils.equals(fgOnlyLowercase, MgmtCommonVo.YES))
 		{
 			//messages.add(target + " should be only lower case.");
 			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_61", new String[] {target}));
 		}
 
-		if (CmStringUtils.equals(fgOnlyUppercase, PlatformCommonVo.YES))
+		if (CmStringUtils.equals(fgOnlyUppercase, MgmtCommonVo.YES))
 		{
 			//messages.add(target + " should be only upper case.");
 			messages.add(i18nMessageSource.getMessage("PLTF_M_VALID_CREDENTIALS_RULE_62", new String[] {target}));

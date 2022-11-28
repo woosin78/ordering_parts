@@ -14,7 +14,6 @@ import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmMyBatisQueryUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
-import org.jwebppy.platform.core.util.Formatter;
 import org.jwebppy.platform.core.web.ui.dom.Div;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
@@ -28,6 +27,7 @@ import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDetailDto;
 import org.jwebppy.platform.mgmt.logging.dto.DataAccessLogParameterDto;
 import org.jwebppy.platform.mgmt.logging.dto.ParameterType;
+import org.jwebppy.portal.common.util.Formatter;
 
 public class LogLayoutBuilder
 {

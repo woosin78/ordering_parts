@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
@@ -66,7 +66,7 @@ public class ChangePasswordService extends MgmtGeneralService
 								if (result == CredentialsPolicyVo.VALID)
 								{
 									userAccount.setPassword(newPassword);
-									userAccount.setFgPasswordLocked(PlatformCommonVo.NO);
+									userAccount.setFgPasswordLocked(MgmtCommonVo.NO);
 
 									userService.saveUserAccount(userAccount);
 

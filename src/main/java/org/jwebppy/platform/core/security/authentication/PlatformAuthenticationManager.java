@@ -31,9 +31,6 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 	private Logger logger = LoggerFactory.getLogger(PlatformAuthenticationManager.class);
 
 	@Autowired
-	private AuthenticationHelper authenticationHelper;
-
-	@Autowired
 	private ContentAuthorityService contentAuthorityService;
 
 	@Autowired
@@ -156,16 +153,6 @@ public class PlatformAuthenticationManager implements AuthenticationManager
             			logger.info("6. Login Success");
 
             			isValidCredentials = true;
-            		}
-            		else
-            		{
-                		if (authenticationHelper.isDoobizUser(username, password))
-                		{
-                			logger.info("7. Doobiz Login Success by Doobiz Authentication");
-
-                			authenticationType = AuthenticationType.D;
-                			isValidCredentials = true;
-                		}
             		}
             	}
         	}

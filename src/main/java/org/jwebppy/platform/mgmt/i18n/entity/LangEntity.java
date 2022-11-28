@@ -2,7 +2,7 @@ package org.jwebppy.platform.mgmt.i18n.entity;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.entity.GeneralEntity;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
@@ -22,7 +22,7 @@ public class LangEntity extends GeneralEntity implements IPagination
 	private String basename;
 	private LangType type;
 	private String seq;
-	private String fgDelete = PlatformCommonVo.NO;
+	private String fgDelete = MgmtCommonVo.NO;
 	private List<LangDetailEntity> langDetails;
 
 	public String getSeq2()

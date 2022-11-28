@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
@@ -110,7 +110,7 @@ public class AuthorityLayoutBuilder
 		loToValid.setLabel("Valid To");
 		loToValid.setRequired(true);
 
-		Checkbox loFgVisible = new Checkbox("fgVisible", PlatformCommonVo.YES, cItem.getFgVisible());
+		Checkbox loFgVisible = new Checkbox("fgVisible", MgmtCommonVo.YES, cItem.getFgVisible());
 		loFgVisible.setLabel("Visible");
 
 		Input loSort = new Input("sort", CmStringUtils.defaultString(cItem.getSort(), 100));

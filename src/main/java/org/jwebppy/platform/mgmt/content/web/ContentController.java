@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.core.PlatformCommonVo;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.util.CmAnnotationUtils;
@@ -141,7 +141,7 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object copy(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
 	{
-		return contentService.copy(cSeq, pSeq, PlatformCommonVo.NO);
+		return contentService.copy(cSeq, pSeq, MgmtCommonVo.NO);
 	}
 
 	@PostMapping("/copy_with_sub_items")
@@ -149,7 +149,7 @@ public class ContentController extends ContentGeneralController
 	@ResponseBody
 	public Object copyWithSubItems(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
 	{
-		return contentService.copy(cSeq, pSeq, PlatformCommonVo.YES);
+		return contentService.copy(cSeq, pSeq, MgmtCommonVo.YES);
 	}
 
 	@PostMapping("/move")
