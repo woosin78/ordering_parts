@@ -1,17 +1,22 @@
 package org.jwebppy.platform.mgmt.user.entity;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class UserContactInfoEntity extends GeneralEntity
+@SuperBuilder
+@NoArgsConstructor
+public class UserContactInfoEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = -2702559448170301038L;
+
 	private Integer uSeq;
 	private String email;
 	private String tel1;

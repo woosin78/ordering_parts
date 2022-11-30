@@ -2,16 +2,20 @@ package org.jwebppy.platform.mgmt.authority.entity;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class CItemAuthRlEntity extends GeneralEntity
+@SuperBuilder
+@NoArgsConstructor
+public class CItemAuthRlEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = -7692406554907504005L;
 

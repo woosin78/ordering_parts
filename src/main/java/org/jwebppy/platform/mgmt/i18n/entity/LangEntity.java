@@ -2,27 +2,29 @@ package org.jwebppy.platform.mgmt.i18n.entity;
 
 import java.util.List;
 
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
-import org.jwebppy.platform.core.entity.GeneralEntity;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 import org.jwebppy.platform.mgmt.i18n.dto.LangType;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-public class LangEntity extends GeneralEntity implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class LangEntity extends MgmtGeneralEntity implements IPagination
 {
 	private static final long serialVersionUID = -4634138279238831478L;
 	private Integer lSeq;
 	private String basename;
 	private LangType type;
 	private String seq;
-	private String fgDelete = MgmtCommonVo.NO;
 	private List<LangDetailEntity> langDetails;
 
 	public String getSeq2()

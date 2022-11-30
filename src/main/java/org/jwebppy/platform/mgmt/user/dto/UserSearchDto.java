@@ -2,17 +2,21 @@ package org.jwebppy.platform.mgmt.user.dto;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class UserSearchDto extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class UserSearchDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -6452889800109776370L;
 
@@ -27,8 +31,6 @@ public class UserSearchDto extends GeneralDto implements IPagination
 	private Integer cSeq;
 	private Integer ugSeq;
 	private List<String> usernames;
-
-	public UserSearchDto() {}
 
 	public UserSearchDto(Integer uSeq)
 	{

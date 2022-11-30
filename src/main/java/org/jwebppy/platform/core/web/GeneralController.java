@@ -93,11 +93,6 @@ public abstract class GeneralController
 		return false;
 	}
 
-	protected String getDoobizDomain()
-	{
-		return (isProduction()) ? "https://doobiz.doosan-iv.com": "https://doobiz-edu.doosan-iv.com";
-	}
-
     protected void addAllAttributeFromRequest(Model model, WebRequest webRequest)
     {
         Iterator<?> it = webRequest.getParameterNames();
@@ -125,12 +120,4 @@ public abstract class GeneralController
             }
         }
     }
-
-//	protected void setDefaultAttribute(Model model, WebRequest webRequest)
-//	{
-//		model.addAttribute("pageNumber", CmStringUtils.defaultString(webRequest.getParameter("pageNumber"), "1"));
-//		model.addAttribute("rowPerPage", CmStringUtils.defaultString(webRequest.getParameter("rowPerPage"), PlatformCommonVo.DEFAULT_ROW_PER_PAGE));
-//
-//		addAllAttributeFromRequest(model, webRequest);
-//	}
 }

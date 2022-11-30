@@ -2,17 +2,21 @@ package org.jwebppy.platform.mgmt.user.entity;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class CredentialsPolicyEntity extends GeneralEntity implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class CredentialsPolicyEntity extends MgmtGeneralEntity implements IPagination
 {
 	private static final long serialVersionUID = -5712552286897710540L;
 

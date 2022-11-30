@@ -8,12 +8,16 @@ import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
+@SuperBuilder
+@NoArgsConstructor
 public class LoginHistoryDto extends GeneralDto implements IPagination
 {
 	private static final long serialVersionUID = 1329218112737899890L;

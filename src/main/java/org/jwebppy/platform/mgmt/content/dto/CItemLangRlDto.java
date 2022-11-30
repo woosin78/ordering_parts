@@ -1,15 +1,19 @@
 package org.jwebppy.platform.mgmt.content.dto;
 
-import org.jwebppy.platform.core.dto.GeneralDto;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class CItemLangRlDto extends GeneralDto
+@SuperBuilder
+@NoArgsConstructor
+public class CItemLangRlDto extends MgmtGeneralDto
 {
 	private static final long serialVersionUID = 8851437491168803824L;
 

@@ -3,18 +3,22 @@ package org.jwebppy.platform.mgmt.mail.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 import org.springframework.util.CollectionUtils;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class MailSenderDto extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class MailSenderDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -8377749717720382235L;
 

@@ -1,9 +1,9 @@
-package org.jwebppy.portal.corp.common.service;
+package org.jwebppy.portal.eu.parts.common.service;
 
 import org.jwebppy.portal.common.service.PortalGeneralService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CorpGeneralService extends PortalGeneralService
+public class EuPartsGeneralService extends PortalGeneralService
 {
 }

@@ -1,15 +1,19 @@
 package org.jwebppy.platform.mgmt.upload.entity;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-public class UploadFileEntity extends GeneralEntity
+@SuperBuilder
+@NoArgsConstructor
+public class UploadFileEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = -770355399257314505L;
 

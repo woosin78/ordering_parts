@@ -3,20 +3,25 @@ package org.jwebppy.platform.mgmt.content.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class CItemDto extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class CItemDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -7199501796641936242L;
 
@@ -29,9 +34,10 @@ public class CItemDto extends GeneralDto implements IPagination
 	private String component;
 	private String entryPoint;
 	private String parameter;
+	@Builder.Default
 	private int sort = 100;
+	@Builder.Default
 	private String fgVisible = MgmtCommonVo.NO;
-	private String fgDelete = MgmtCommonVo.NO;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;
 	private String launchType;

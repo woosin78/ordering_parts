@@ -2,20 +2,24 @@ package org.jwebppy.platform.mgmt.upload.dto;
 
 import java.time.LocalDateTime;
 
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.security.AES256Cipher;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-public class UploadFileListDto extends GeneralDto
+@SuperBuilder
+@NoArgsConstructor
+public class UploadFileListDto extends MgmtGeneralDto
 {
 	private static final long serialVersionUID = 7896823726474538055L;
 

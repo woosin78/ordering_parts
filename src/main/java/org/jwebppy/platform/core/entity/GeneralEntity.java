@@ -7,13 +7,18 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
+@SuperBuilder
+@NoArgsConstructor
 public class GeneralEntity implements Serializable
 {
 	private static final long serialVersionUID = 8736258968068994440L;
@@ -24,10 +29,12 @@ public class GeneralEntity implements Serializable
 	protected String modUsername;
 	protected LocalDateTime modDate;
 
-	protected int rnum = 0;
+	protected int rnum;
+	@Builder.Default
 	protected int pageNumber = 1;
+	@Builder.Default
 	protected int rowPerPage = 20;
-	protected int totalCount = 0;
+	protected int totalCount;
 
 	public String getFgDelete()
 	{

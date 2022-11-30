@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(PlatformConfigVo.FORM_AUTHENTICATION_PATH)
-public class AuthenticationController extends PlatformGeneralController
+public class LoginController extends PlatformGeneralController
 {
 	@Autowired
 	private Environment environment;

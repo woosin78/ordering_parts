@@ -6,23 +6,27 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmArrayUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangKindType;
 
 import com.ibm.icu.util.TimeZone;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class UserGroupDto extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class UserGroupDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -532421241477305133L;
 
@@ -43,8 +47,6 @@ public class UserGroupDto extends GeneralDto implements IPagination
 	private String defLang;
 	private CredentialsPolicyDto credentialsPolicy;
 	private int userCount;
-
-	public UserGroupDto() {}
 
 	public UserGroupDto(Integer ugSeq)
 	{

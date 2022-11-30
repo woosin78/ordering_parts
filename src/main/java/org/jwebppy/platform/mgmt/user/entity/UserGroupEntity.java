@@ -1,17 +1,21 @@
 package org.jwebppy.platform.mgmt.user.entity;
 
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 import org.jwebppy.platform.mgmt.conn_resource.entity.SapConnResourceEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class UserGroupEntity extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class UserGroupEntity extends MgmtGeneralEntity implements IPagination
 {
 	private static final long serialVersionUID = -2864103624808776308L;
 
@@ -32,8 +36,6 @@ public class UserGroupEntity extends GeneralDto implements IPagination
 	private String defLang;
 	private CredentialsPolicyEntity credentialsPolicy;
 	private int userCount;
-
-	public UserGroupEntity() {}
 
 	public UserGroupEntity(Integer ugSeq)
 	{

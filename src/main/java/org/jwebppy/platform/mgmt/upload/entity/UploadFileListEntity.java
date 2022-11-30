@@ -2,17 +2,21 @@ package org.jwebppy.platform.mgmt.upload.entity;
 
 import java.util.List;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-public class UploadFileListEntity extends GeneralEntity
+@SuperBuilder
+@NoArgsConstructor
+public class UploadFileListEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = 2929207940446247708L;
 

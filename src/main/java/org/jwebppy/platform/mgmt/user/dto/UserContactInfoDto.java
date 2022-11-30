@@ -2,19 +2,23 @@ package org.jwebppy.platform.mgmt.user.dto;
 
 import java.util.Locale;
 
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
 import com.ibm.icu.util.TimeZone;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-public class UserContactInfoDto extends GeneralDto
+@SuperBuilder
+@NoArgsConstructor
+public class UserContactInfoDto extends MgmtGeneralDto
 {
 	private static final long serialVersionUID = -294539770292481386L;
 

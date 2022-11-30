@@ -3,17 +3,21 @@ package org.jwebppy.platform.mgmt.logging.dto;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class DataAccessLogSearchDto extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class DataAccessLogSearchDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -725671527598308026L;
 

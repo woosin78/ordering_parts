@@ -2,16 +2,20 @@ package org.jwebppy.platform.mgmt.mail.entity;
 
 import java.time.LocalDateTime;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class MailSendHistoryEntity extends GeneralEntity
+@SuperBuilder
+@NoArgsConstructor
+public class MailSendHistoryEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = 6846433129570491719L;
 

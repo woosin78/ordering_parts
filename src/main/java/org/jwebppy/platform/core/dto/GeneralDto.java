@@ -7,19 +7,24 @@ import org.jwebppy.platform.core.PlatformCommonVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
+@SuperBuilder
+@NoArgsConstructor
 public abstract class GeneralDto implements Serializable
 {
 	private static final long serialVersionUID = -2141681838401701675L;
 
-	protected String fgDelete;
+	protected String fgDelete = MgmtCommonVo.NO;
 	protected String regUsername;
 	protected LocalDateTime regDate;
 	protected String modUsername;

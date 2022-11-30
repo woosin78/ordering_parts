@@ -4,18 +4,22 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class UserDto extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class UserDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -3480128973325366274L;
 

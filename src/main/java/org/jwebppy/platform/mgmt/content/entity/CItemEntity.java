@@ -3,19 +3,24 @@ package org.jwebppy.platform.mgmt.content.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class CItemEntity extends GeneralEntity
+@SuperBuilder
+@NoArgsConstructor
+public class CItemEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = -7996090456386384649L;
+
 	private Integer cSeq;
 	private Integer pSeq;
 	private CItemType type;

@@ -1,16 +1,20 @@
 package org.jwebppy.platform.mgmt.conn_resource.dto;
 
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class SapConnResourceSearchDto extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class SapConnResourceSearchDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -4241642481783873351L;
 

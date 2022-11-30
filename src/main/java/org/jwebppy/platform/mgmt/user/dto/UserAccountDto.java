@@ -3,28 +3,36 @@ package org.jwebppy.platform.mgmt.user.dto;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-public class UserAccountDto extends GeneralDto
+@SuperBuilder
+@NoArgsConstructor
+public class UserAccountDto extends MgmtGeneralDto
 {
 	private static final long serialVersionUID = 3024758174943861755L;
 
 	private Integer uSeq;
 	private String username;
 	private String password;
+	@Builder.Default
 	private String fgNoUsePassword = MgmtCommonVo.NO;
+	@Builder.Default
 	private String fgAccountLocked = MgmtCommonVo.NO;
+	@Builder.Default
 	private String fgPasswordLocked = MgmtCommonVo.NO;
 	private LocalDateTime fromValid;
 	private LocalDateTime toValid;

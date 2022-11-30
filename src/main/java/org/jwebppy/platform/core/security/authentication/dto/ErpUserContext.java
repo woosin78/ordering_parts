@@ -2,6 +2,7 @@ package org.jwebppy.platform.core.security.authentication.dto;
 
 import java.io.Serializable;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,6 +10,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
+@Builder
 public class ErpUserContext implements Serializable
 {
 	private static final long serialVersionUID = 3856836169522676329L;
@@ -34,13 +36,13 @@ public class ErpUserContext implements Serializable
 	{
 		if (corp != null)
 		{
-			if ("7800".equals(corp))
+			if ("8706".equals(corp))
 			{
-				return "DIVEU";
+				return "DIEU";
 			}
-			else if ("7200".equals(corp))
+			else if ("8716".equals(corp))
 			{
-				return "DIVUK";
+				return "DIUK";
 			}
 		}
 

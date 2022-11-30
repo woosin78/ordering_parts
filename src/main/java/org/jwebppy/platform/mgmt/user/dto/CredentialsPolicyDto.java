@@ -2,18 +2,23 @@ package org.jwebppy.platform.mgmt.user.dto;
 
 import java.util.List;
 
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
-import org.jwebppy.platform.core.dto.GeneralDto;
 import org.jwebppy.platform.core.web.ui.pagination.IPagination;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
+import org.jwebppy.platform.mgmt.common.dto.MgmtGeneralDto;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
 @ToString
-public class CredentialsPolicyDto extends GeneralDto implements IPagination
+@SuperBuilder
+@NoArgsConstructor
+public class CredentialsPolicyDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = 2897067694360373935L;
 
@@ -26,7 +31,9 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private String uMaxUppercase;
 	private String uMinLowercase;
 	private String uMaxLowercase;
+	@Builder.Default
 	private String uFgOnlyUppercase = MgmtCommonVo.NO;
+	@Builder.Default
 	private String uFgOnlyLowercase = MgmtCommonVo.NO;
 	private String uMinNumber;
 	private String uMaxNumber;
@@ -43,15 +50,16 @@ public class CredentialsPolicyDto extends GeneralDto implements IPagination
 	private String pMinSpecial;
 	private String pMaxSpecial;
 	private String pValidPeriod;
+	@Builder.Default
 	private String fgUsePwdFailPenalty = MgmtCommonVo.NO;
 	private String pFailCheckDuration;
 	private String pAllowableFailCount;
 	private String pFreezingDuration;
+	@Builder.Default
 	private String fgUse = MgmtCommonVo.NO;
+	@Builder.Default
 	private String fgDefault = MgmtCommonVo.NO;
 	private List<UserGroupDto> userGroups;
-
-	public CredentialsPolicyDto() {}
 
 	public CredentialsPolicyDto(Integer cpSeq)
 	{

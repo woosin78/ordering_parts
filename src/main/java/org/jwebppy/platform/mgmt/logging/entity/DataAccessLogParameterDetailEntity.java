@@ -1,17 +1,22 @@
 package org.jwebppy.platform.mgmt.logging.entity;
 
-import org.jwebppy.platform.core.entity.GeneralEntity;
+import org.jwebppy.platform.mgmt.common.entity.MgmtGeneralEntity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
 @ToString
-public class DataAccessLogParameterDetailEntity extends GeneralEntity
+@SuperBuilder
+@NoArgsConstructor
+public class DataAccessLogParameterDetailEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = 8145782812462445407L;
+
 	private Long dlpSeq;
 	private int lineNo;
 	private String name;
