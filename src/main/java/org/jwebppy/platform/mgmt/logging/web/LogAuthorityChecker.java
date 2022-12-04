@@ -25,10 +25,10 @@ public class LogAuthorityChecker
 
 	public boolean hasAuthority(String[] authorities)
 	{
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setUsername(UserAuthenticationUtils.getUserDetails().getRealUsername());
-		cItemSearch.setNames(authorities);
+		CItemSearchDto citemSearch = new CItemSearchDto();
+		citemSearch.setUsername(UserAuthenticationUtils.getUserDetails().getRealUsername());
+		citemSearch.setNames(authorities);
 
-		return CollectionUtils.isNotEmpty(contentAuthorityService.getMyCItems(cItemSearch));
+		return CollectionUtils.isNotEmpty(contentAuthorityService.getMyCitems(citemSearch));
 	}
 }

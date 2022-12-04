@@ -20,8 +20,8 @@ public class CItemAuthRlEntity extends MgmtGeneralEntity
 	private static final long serialVersionUID = -7692406554907504005L;
 
 	private Integer carSeq;
-	private Integer pSeq;
-	private Integer cSeq;
+	private Integer pseq;
+	private Integer cseq;
 	private int sort;
-	private List<Integer> cSeqs;
+	private List<Integer> cseqs;
 }

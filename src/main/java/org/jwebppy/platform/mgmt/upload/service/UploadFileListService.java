@@ -40,7 +40,7 @@ public class UploadFileListService extends GeneralService
     @Autowired
     private UploadFileListMapper uploadFileListMapper;
 
-	public String[] save(String ufSeq, String tSeq, List<MultipartFile> multipartFiles) throws IOException
+	public String[] save(String ufSeq, String tseq, List<MultipartFile> multipartFiles) throws IOException
 	{
 		UploadFileDto uploadFile = uploadFileService.getUploadFile(ufSeq);
 
@@ -77,7 +77,7 @@ public class UploadFileListService extends GeneralService
 
 				multipartFile.transferTo(new File(FILE_UPLOAD_ROOT_PATH + File.separator + path + File.separator + savedName));
 
-				uflSeqs[index++] = save(ufSeq, tSeq, originNname, savedName, multipartFile.getResource().getFile().getAbsolutePath());
+				uflSeqs[index++] = save(ufSeq, tseq, originNname, savedName, multipartFile.getResource().getFile().getAbsolutePath());
 			}
 
 			return uflSeqs;
@@ -86,7 +86,7 @@ public class UploadFileListService extends GeneralService
 		return null;
 	}
 
-	public String save(String ufSeq, String tSeq, String originName, String savedName, String path) throws IOException
+	public String save(String ufSeq, String tseq, String originName, String savedName, String path) throws IOException
 	{
 		File file = new File(path + File.separator + savedName);
 		String uflSeq = UidGenerateUtils.generate();
@@ -94,7 +94,7 @@ public class UploadFileListService extends GeneralService
 		UploadFileListDto uploadFileList = new UploadFileListDto();
 		uploadFileList.setUflSeq(uflSeq);
 		uploadFileList.setUfSeq(ufSeq);
-		uploadFileList.setTSeq(tSeq);
+		uploadFileList.setTseq(tseq);
 		uploadFileList.setOriginName(FilenameUtils.getBaseName(originName));
 		uploadFileList.setSavedName(FilenameUtils.getBaseName(savedName));
 		uploadFileList.setExtension(FilenameUtils.getExtension(originName).toLowerCase());
@@ -206,11 +206,11 @@ public class UploadFileListService extends GeneralService
 		return CmModelMapperUtils.mapToDto(UploadFileListObjectMapper.INSTANCE, uploadFileListMapper.findUploadFileList(uflSeq));
 	}
 
-	public List<UploadFileListDto> getUploadFileLists(String ufSeq, String tSeq)
+	public List<UploadFileListDto> getUploadFileLists(String ufSeq, String tseq)
 	{
 		UploadFileListDto uploadFileList = new UploadFileListDto();
 		uploadFileList.setUfSeq(ufSeq);
-		uploadFileList.setTSeq(tSeq);
+		uploadFileList.setTseq(tseq);
 
 		return CmModelMapperUtils.mapToDto(UploadFileListObjectMapper.INSTANCE, uploadFileListMapper.findUploadFileLists(uploadFileList));
 	}

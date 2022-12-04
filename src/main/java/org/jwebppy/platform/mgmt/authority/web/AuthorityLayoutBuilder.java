@@ -39,22 +39,22 @@ public class AuthorityLayoutBuilder
 		thead.addTr(thTr);
 
 		Tbody tbody = new Tbody();
-		List<CItemDto> cItems = ListUtils.emptyIfNull(pageableList.getList());
+		List<CItemDto> citems = ListUtils.emptyIfNull(pageableList.getList());
 
-		for (CItemDto cItem : cItems)
+		for (CItemDto citem : citems)
 		{
 			Tr tbTr = new Tr();
 
-			Integer cSeq = cItem.getCSeq();
+			Integer cseq = citem.getCseq();
 
-			tbTr.addDataKeyCheckboxTd("cSeq", cSeq);
-			tbTr.addTextTd(cItem.getType().getType());
-			tbTr.addDataKeyLinkTd(cItem.getName(), cSeq);
-			tbTr.addTextTd(cItem.getDescription());
-			//tbTr.addTextTd(cItem.getUserCount());
-			tbTr.addDataKeyLinkTd(cItem.getUserCount(), cSeq);
-			tbTr.addTextTd(cItem.getRegUsername());
-			tbTr.addTextTd(cItem.getDisplayRegDate());
+			tbTr.addDataKeyCheckboxTd("cseq", cseq);
+			tbTr.addTextTd(citem.getType().getType());
+			tbTr.addDataKeyLinkTd(citem.getName(), cseq);
+			tbTr.addTextTd(citem.getDescription());
+			//tbTr.addTextTd(citem.getUserCount());
+			tbTr.addDataKeyLinkTd(citem.getUserCount(), cseq);
+			tbTr.addTextTd(citem.getRegUsername());
+			tbTr.addTextTd(citem.getDisplayRegDate());
 
 			tbody.addTr(tbTr);
 		}
@@ -65,23 +65,23 @@ public class AuthorityLayoutBuilder
 		return document;
 	}
 
-	public static Document viewGeneralInfo(CItemDto cItem)
+	public static Document viewGeneralInfo(CItemDto citem)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 
-		elementMap.put("Name", cItem.getName());
-		elementMap.put("Description", cItem.getDescription());
-		elementMap.put("Valid From", cItem.getDisplayFromValid());
-		elementMap.put("Valid To", cItem.getDisplayToValid());
-		elementMap.put("Visible", cItem.getFgVisible());
-		elementMap.put("Sort", cItem.getSort());
-		elementMap.put("Reg.Date", cItem.getDisplayRegDate());
-		elementMap.put("Reg.Username", cItem.getRegUsername());
+		elementMap.put("Name", citem.getName());
+		elementMap.put("Description", citem.getDescription());
+		elementMap.put("Valid From", citem.getDisplayFromValid());
+		elementMap.put("Valid To", citem.getDisplayToValid());
+		elementMap.put("Visible", citem.getFgVisible());
+		elementMap.put("Sort", citem.getSort());
+		elementMap.put("Reg.Date", citem.getDisplayRegDate());
+		elementMap.put("Reg.Username", citem.getRegUsername());
 
-		if (cItem.getCSeq() != null)
+		if (citem.getCseq() != null)
 		{
-			elementMap.put("Mod.Date", cItem.getDisplayModDate());
-			elementMap.put("Mod.Username", cItem.getModUsername());
+			elementMap.put("Mod.Date", citem.getDisplayModDate());
+			elementMap.put("Mod.Username", citem.getModUsername());
 		}
 
 		Document document = new Document();
@@ -90,30 +90,30 @@ public class AuthorityLayoutBuilder
 		return document;
 	}
 
-	public static Document writeGeneralInfo(CItemDto cItem)
+	public static Document writeGeneralInfo(CItemDto citem)
 	{
-		Input loName = new Input("name", cItem.getName());
+		Input loName = new Input("name", citem.getName());
 		loName.setLabel("Name");
 		loName.setStyle("text-transform: uppercase");
 		loName.setRequired(true);
 
-		Input loDescription = new Input("description", cItem.getDescription());
+		Input loDescription = new Input("description", citem.getDescription());
 		loDescription.setLabel("Description");
 
-		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(cItem.getDisplayFromValid(), CmDateFormatUtils.now()));
+		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(citem.getDisplayFromValid(), CmDateFormatUtils.now()));
 		loFromValid.setId("fromValid");
 		loFromValid.setLabel("Valid From");
 		loFromValid.setRequired(true);
 
-		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(cItem.getDisplayToValid(), CmDateFormatUtils.unlimitDate()));
+		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(citem.getDisplayToValid(), CmDateFormatUtils.unlimitDate()));
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
 		loToValid.setRequired(true);
 
-		Checkbox loFgVisible = new Checkbox("fgVisible", MgmtCommonVo.YES, cItem.getFgVisible());
+		Checkbox loFgVisible = new Checkbox("fgVisible", MgmtCommonVo.YES, citem.getFgVisible());
 		loFgVisible.setLabel("Visible");
 
-		Input loSort = new Input("sort", CmStringUtils.defaultString(cItem.getSort(), 100));
+		Input loSort = new Input("sort", CmStringUtils.defaultString(citem.getSort(), 100));
 		loSort.setLabel("Sort");
 		loSort.setRequired(true);
 
@@ -128,19 +128,19 @@ public class AuthorityLayoutBuilder
 		return document;
 	}
 
-	public static Document viewAuthority(List<CItemDto> cItems)
+	public static Document viewAuthority(List<CItemDto> citems)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 
-		for (CItemDto cItem : ListUtils.emptyIfNull(cItems))
+		for (CItemDto citem : ListUtils.emptyIfNull(citems))
 		{
-			Link loAuthority = new Link(cItem.getName());
+			Link loAuthority = new Link(citem.getName());
 			loAuthority.setClass("authority");
-			loAuthority.setKey(cItem.getCSeq());
-			loAuthority.addAttribute("data-type", cItem.getType());
+			loAuthority.setKey(citem.getCseq());
+			loAuthority.addAttribute("data-type", citem.getType());
 
 			StringBuilder name = new StringBuilder();
-			name.append("[").append(cItem.getType().getType()).append( "] ").append(cItem.getDescription());
+			name.append("[").append(citem.getType().getType()).append( "] ").append(citem.getDescription());
 
 			elementMap.put(name.toString(), loAuthority);
 		}
@@ -151,7 +151,7 @@ public class AuthorityLayoutBuilder
 		return document;
 	}
 
-	public static Document writeAuthority(List<CItemDto> cItems)
+	public static Document writeAuthority(List<CItemDto> citems)
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
@@ -163,14 +163,14 @@ public class AuthorityLayoutBuilder
 
 		Tbody tbody = new Tbody();
 
-		if (CollectionUtils.isNotEmpty(cItems))
+		if (CollectionUtils.isNotEmpty(citems))
 		{
-			for (CItemDto cItemDto : cItems)
+			for (CItemDto citemDto : citems)
 			{
 				Tr tbTr = new Tr();
-				tbTr.addDataKeyCheckboxTd("cSeq", cItemDto.getCSeq());
-				tbTr.addTextTd(cItemDto.getName());
-				tbTr.addTextTd(cItemDto.getDescription());
+				tbTr.addDataKeyCheckboxTd("cseq", citemDto.getCseq());
+				tbTr.addTextTd(citemDto.getName());
+				tbTr.addTextTd(citemDto.getDescription());
 
 				tbody.addTr(tbTr);
 			}

@@ -26,35 +26,35 @@ public enum CItemType
 
 	public static List<CItemType> values2()
 	{
-		List<CItemType> cItemTypes = new ArrayList<>();
+		List<CItemType> citemTypes = new ArrayList<>();
 
-		for (CItemType cItemType: CItemType.values())
+		for (CItemType citemType: CItemType.values())
 		{
-			if (cItemType.equals(CItemType.G))
+			if (citemType.equals(CItemType.G))
 			{
 				continue;
 			}
 
-			cItemTypes.add(cItemType);
+			citemTypes.add(citemType);
 		}
 
-		return cItemTypes;
+		return citemTypes;
 	}
 
-	public static List<CItemType> availableTypes(CItemType cItemType)
+	public static List<CItemType> availableTypes(CItemType citemType)
 	{
-		List<CItemType> cItemTypes = new ArrayList<>();
+		List<CItemType> citemTypes = new ArrayList<>();
 
-		if (CItemType.F.equals(cItemType))
+		if (CItemType.F.equals(citemType))
 		{
 			return values2();
 		}
-		else if (CItemType.R.equals(cItemType) || CItemType.M.equals(cItemType))
+		else if (CItemType.R.equals(citemType) || CItemType.M.equals(citemType))
 		{
-			cItemTypes.add(CItemType.P);
-			cItemTypes.add(CItemType.M);
+			citemTypes.add(CItemType.P);
+			citemTypes.add(CItemType.M);
 		}
 
-		return cItemTypes;
+		return citemTypes;
 	}
 }

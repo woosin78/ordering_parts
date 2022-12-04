@@ -46,21 +46,21 @@ public class PlatformIndexController extends PlatformGeneralController
 	@RequestMapping("/forward/entry_point")
 	public Object forwardToEntryPoint(HttpServletRequest request)
 	{
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setUSeq(getUSeq());
+		CItemSearchDto citemSearch = new CItemSearchDto();
+		citemSearch.setUseq(getUseq());
 
-		CItemDto cItem = contentAuthorityService.getMyEntryPoint(cItemSearch);
+		CItemDto citem = contentAuthorityService.getMyEntryPoint(citemSearch);
 
-		if (cItem == null)
+		if (citem == null)
 		{
 			return new ResponseEntity<>("<script>alert('You don′t have an authority.'); document.location.href = '" + PlatformConfigVo.FORM_LOGOUT_PROCESSING_URL + "';</script>", HttpStatus.UNAUTHORIZED);
 		}
 
 		UserDto user = userService.getUserByUsername(getUsername());
 
-		String url = cItem.getUrl();
+		String url = citem.getUrl();
 
-		if (CmStringUtils.isEmpty(cItem.getParameter()))
+		if (CmStringUtils.isEmpty(citem.getParameter()))
 		{
 			url += "?";
 		}

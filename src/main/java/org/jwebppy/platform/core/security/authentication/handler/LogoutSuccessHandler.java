@@ -33,10 +33,10 @@ public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler
 
     		if (platformUserDetails != null)
     		{
-    			UserDto user = userService.getUser(platformUserDetails.getUSeq());
+    			UserDto user = userService.getUser(platformUserDetails.getUseq());
 
                 LogoutHistoryDto logoutHistory = new LogoutHistoryDto();
-                logoutHistory.setUSeq(user.getUSeq());
+                logoutHistory.setUseq(user.getUseq());
                 logoutHistory.setSessionId(request.getSession().getId());
                 logoutHistory.setReferer(request.getHeader("referer"));
                 logoutHistory.setTimezone(user.getTimezone());

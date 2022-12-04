@@ -17,7 +17,7 @@ public class LogoutHistoryEntity extends GeneralEntity
 {
 	private static final long serialVersionUID = 3410212927810508635L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String sessionId;
 	private String referer;
 	private String timezone;

@@ -19,7 +19,7 @@ public class UserAccountEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = -4600399541265520059L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String username;
 	private String password;
 	private String fgNoUsePassword;

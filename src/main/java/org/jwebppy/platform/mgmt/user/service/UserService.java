@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemUserRlDto;
@@ -56,19 +57,19 @@ public class UserService extends GeneralService
 
 		userMapper.insertUser(userEntity);
 
-		return userEntity.getUSeq();
+		return userEntity.getUseq();
 	}
 
 	protected int createUserAccount(UserAccountDto userAccount)
 	{
 		userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
 
-		if (userAccount.getFromValid() == null)
+		if (ObjectUtils.isEmpty(userAccount.getFromValid()))
 		{
 			userAccount.setFromValid(CmDateTimeUtils.now().toLocalDateTime());
 		}
 
-		if (userAccount.getToValid() == null)
+		if (ObjectUtils.isEmpty(userAccount.getToValid()))
 		{
 			userAccount.setToValid(CmDateTimeUtils.now().plusYears(1000).toLocalDateTime());
 		}
@@ -83,19 +84,19 @@ public class UserService extends GeneralService
 
 	public int createUserByCopy(Map<String, String> paramMap)
 	{
-		Integer sourceUSeq = Integer.valueOf(paramMap.get("uSeq"));
+		Integer sourceUSeq = Integer.valueOf(paramMap.get("useq"));
 
 		UserDto user = getUser(sourceUSeq);
 		user.setFirstName(CmStringUtils.trimToEmpty(paramMap.get("firstName")));
 		user.setLastName(CmStringUtils.trimToEmpty(paramMap.get("lastName")));
-		user.setUSeq(null);
+		user.setUseq(null);
 		user.setModDate(null);
 		user.setModUsername(null);
 
-		Integer uSeq = saveUser(user);
+		Integer useq = saveUser(user);
 
 		UserAccountDto userAccount = user.getUserAccount();
-		userAccount.setUSeq(uSeq);
+		userAccount.setUseq(useq);
 		userAccount.setUsername(CmStringUtils.trimToEmpty(paramMap.get("username")));
 		userAccount.setPassword(CmStringUtils.trimToEmpty(paramMap.get("password")));
 		userAccount.setFgAccountLocked(MgmtCommonVo.NO);
@@ -108,7 +109,7 @@ public class UserService extends GeneralService
 		saveUserAccount(userAccount);
 
 		UserContactInfoDto userContactInfo = user.getUserContactInfo();
-		userContactInfo.setUSeq(uSeq);
+		userContactInfo.setUseq(useq);
 		userContactInfo.setCountry(CmStringUtils.defaultString(userContactInfo.getCountry(), MgmtCommonVo.DEFAULT_COUNTRY));
 		userContactInfo.setTimezone(CmStringUtils.defaultString(userContactInfo.getTimezone(), MgmtCommonVo.DEFAULT_TIMEZONE));
 		userContactInfo.setModDate(null);
@@ -116,28 +117,27 @@ public class UserService extends GeneralService
 
 		saveUserContactInfo(userContactInfo);
 
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setUSeq(sourceUSeq);
+		CItemSearchDto citemSearch = new CItemSearchDto();
+		citemSearch.setUseq(sourceUSeq);
 
-		List<CItemDto> cItems = contentAuthorityService.getMyCItems(cItemSearch);
+		List<CItemDto> citems = contentAuthorityService.getMyCitems(citemSearch);
 
-		if (CollectionUtils.isNotEmpty(cItems))
+		if (CollectionUtils.isNotEmpty(citems))
 		{
-			List<Integer> cSeqs = new ArrayList<>();
+			List<Integer> cseqs = new ArrayList<>();
 
-			for (CItemDto cItem : cItems)
+			for (CItemDto citem : citems)
 			{
-				cSeqs.add(cItem.getCSeq());
+				cseqs.add(citem.getCseq());
 			}
 
-			CItemUserRlDto cItemUserRl = new CItemUserRlDto();
-			cItemUserRl.setUSeq(uSeq);
-			cItemUserRl.setCSeqs(cSeqs);
-
-			contentAuthorityService.save(cItemUserRl);
+			contentAuthorityService.save(CItemUserRlDto.builder()
+					.useq(useq)
+					.cseqs(cseqs)
+					.build());
 		}
 
-		return uSeq;
+		return useq;
 	}
 
 	private int modifyUser(UserDto user)
@@ -150,23 +150,22 @@ public class UserService extends GeneralService
 		//비밀번호 변경 이력 남기기
 		if (CmStringUtils.isNotEmpty(userAccount.getPassword()))
 		{
-			UserDto user = getUser(userAccount.getUSeq());
+			UserDto user = getUser(userAccount.getUseq());
 
-			UserPasswordChangeHistoryDto userPasswordChangeHistory = new UserPasswordChangeHistoryDto();
-			userPasswordChangeHistory.setUSeq(userAccount.getUSeq());
-			userPasswordChangeHistory.setTimezone(user.getTimezone());
-
-			userPasswordChangeHistoryService.create(userPasswordChangeHistory);
+			userPasswordChangeHistoryService.create(UserPasswordChangeHistoryDto.builder()
+					.useq(userAccount.getUseq())
+					.timezone(user.getTimezone())
+					.build());
 
 			userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
 		}
 
-		if (userAccount.getFromValid() == null)
+		if (ObjectUtils.isEmpty(userAccount.getFromValid()))
 		{
 			userAccount.setFromValid(LocalDateTime.now());
 		}
 
-		if (userAccount.getToValid() == null)
+		if (ObjectUtils.isEmpty(userAccount.getToValid()))
 		{
 			userAccount.setToValid(LocalDateTime.now().plusYears(1000));
 		}
@@ -179,37 +178,36 @@ public class UserService extends GeneralService
 		return userMapper.updateUserContactInfo(CmModelMapperUtils.mapToEntity(UserContactInfoObjectMapper.INSTANCE, userContactInfo));
 	}
 
-	public int lockUserAccount(Integer uSeq, String fgAccountLocked)
+	public int lockUserAccount(Integer useq, String fgAccountLocked)
 	{
-		if (uSeq != null && CmStringUtils.isNotEmpty(fgAccountLocked))
+		if (useq != null && CmStringUtils.isNotEmpty(fgAccountLocked))
 		{
-			List<Integer> uSeqs = new ArrayList<>();
-			uSeqs.add(uSeq);
+			List<Integer> useqs = new ArrayList<>();
+			useqs.add(useq);
 
-			return lockUserAccount(uSeqs, fgAccountLocked);
+			return lockUserAccount(useqs, fgAccountLocked);
 		}
 
 		return 0;
 	}
 
-	public int lockUserAccount(List<Integer> uSeqs, String fgAccountLocked)
+	public int lockUserAccount(List<Integer> useqs, String fgAccountLocked)
 	{
-		if (CollectionUtils.isNotEmpty(uSeqs))
+		if (CollectionUtils.isNotEmpty(useqs))
 		{
 			int result = 0;
 
-			for (Integer uSeq : uSeqs)
+			for (Integer useq : useqs)
 			{
-				if (uSeq == null)
+				if (ObjectUtils.isEmpty(useq))
 				{
 					continue;
 				}
 
-				UserAccountEntity userAccount = new UserAccountEntity();
-				userAccount.setUSeq(uSeq);
-				userAccount.setFgAccountLocked(CmStringUtils.defaultString(fgAccountLocked, MgmtCommonVo.NO));
-
-				result += userMapper.updateFgAccountLocked(userAccount);
+				result += userMapper.updateFgAccountLocked(UserAccountEntity.builder()
+						.useq(useq)
+						.fgAccountLocked(CmStringUtils.defaultString(fgAccountLocked, MgmtCommonVo.NO))
+						.build());
 			}
 
 			return result;
@@ -218,21 +216,22 @@ public class UserService extends GeneralService
 		return 0;
 	}
 
-	public int deleteUser(List<Integer> uSeqs)
+	public int deleteUser(List<Integer> useqs)
 	{
-		if (CollectionUtils.isNotEmpty(uSeqs))
+		if (CollectionUtils.isNotEmpty(useqs))
 		{
 			int result = 0;
 
-			for (Integer uSeq : uSeqs)
+			for (Integer useq : useqs)
 			{
-				if (uSeq == null)
+				if (ObjectUtils.isEmpty(useq))
 				{
 					continue;
 				}
 
-				UserEntity user = new UserEntity();
-				user.setUSeq(uSeq);
+				UserEntity user = UserEntity.builder()
+						.useq(useq)
+						.build();
 
 				if (userMapper.delete(user) > 0)
 				{
@@ -248,7 +247,7 @@ public class UserService extends GeneralService
 
 	public int saveUser(UserDto user)
 	{
-		if (user.getUSeq() != null)
+		if (ObjectUtils.isEmpty(user.getUseq()))
 		{
 			return modifyUser(user);
 		}
@@ -260,9 +259,7 @@ public class UserService extends GeneralService
 
 	public int saveUserAccount(UserAccountDto userAccount)
 	{
-		UserAccountEntity userAccountEntity = userMapper.findUserAccount(userAccount.getUSeq());
-
-		if (userAccountEntity == null)
+		if (ObjectUtils.isEmpty(userMapper.findUserAccount(userAccount.getUseq())))
 		{
 			return createUserAccount(userAccount);
 		}
@@ -274,9 +271,9 @@ public class UserService extends GeneralService
 
 	public int saveUserContactInfo(UserContactInfoDto userContactInfo)
 	{
-		UserContactInfoEntity userContactInfoEntity = userMapper.findUserContactInfo(userContactInfo.getUSeq());
+		UserContactInfoEntity userContactInfoEntity = userMapper.findUserContactInfo(userContactInfo.getUseq());
 
-		if (userContactInfoEntity == null)
+		if (ObjectUtils.isEmpty(userContactInfoEntity))
 		{
 			return createUserContactInfo(userContactInfo);
 		}
@@ -286,13 +283,13 @@ public class UserService extends GeneralService
 		}
 	}
 
-	public int resetPassword(List<Integer> uSeqs)
+	public int resetPassword(List<Integer> useqs)
 	{
-		if (CollectionUtils.isNotEmpty(uSeqs))
+		if (CollectionUtils.isNotEmpty(useqs))
 		{
-			for (Integer uSeq: uSeqs)
+			for (Integer useq: useqs)
 			{
-				UserDto user = getUser(uSeq);
+				UserDto user = getUser(useq);
 
 				UserAccountDto userAccount = user.getUserAccount();
 				userAccount.setPassword(PlatformConfigVo.INITIAL_PASSWORD);
@@ -312,9 +309,9 @@ public class UserService extends GeneralService
 		return getUser(new UserSearchDto(username));
 	}
 
-	public UserDto getUser(Integer uSeq)
+	public UserDto getUser(Integer useq)
 	{
-		return getUser(new UserSearchDto(uSeq));
+		return getUser(new UserSearchDto(useq));
 	}
 
 	public UserDto getUser(UserSearchDto userSearch)
@@ -324,11 +321,10 @@ public class UserService extends GeneralService
 
 	public List<UserDto> getUsersByUsernames(String[] usernames)
 	{
-		UserSearchDto userSearch = new UserSearchDto();
-		userSearch.setUsernames(Arrays.asList(usernames));
-		userSearch.setRowPerPage(99999);
-
-		return getPageableUsers(userSearch);
+		return getPageableUsers(UserSearchDto.builder()
+				.usernames(Arrays.asList(usernames))
+				.rowPerPage(99999)
+				.build());
 	}
 
 	public List<UserDto> getPageableUsers(UserSearchDto userSearch)
@@ -343,13 +339,6 @@ public class UserService extends GeneralService
 
 	public boolean isExistByUsername(String username)
 	{
-		UserDto user = getUserByUsername(username);
-
-		if (user == null)
-		{
-			return false;
-		}
-
-		return true;
+		return (ObjectUtils.isNotEmpty(getUserByUsername(username))) ? true : false;
 	}
 }

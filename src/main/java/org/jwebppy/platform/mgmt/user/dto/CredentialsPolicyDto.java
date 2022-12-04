@@ -25,36 +25,36 @@ public class CredentialsPolicyDto extends MgmtGeneralDto implements IPagination
 	private Integer cpSeq;
 	private String name;
 	private String description;
-	private String uMinLength;
-	private String uMaxLength;
-	private String uMinUppercase;
-	private String uMaxUppercase;
-	private String uMinLowercase;
-	private String uMaxLowercase;
+	private String uminLength;
+	private String umaxLength;
+	private String uminUppercase;
+	private String umaxUppercase;
+	private String uminLowercase;
+	private String umaxLowercase;
 	@Builder.Default
-	private String uFgOnlyUppercase = MgmtCommonVo.NO;
+	private String ufgOnlyUppercase = MgmtCommonVo.NO;
 	@Builder.Default
-	private String uFgOnlyLowercase = MgmtCommonVo.NO;
-	private String uMinNumber;
-	private String uMaxNumber;
-	private String uMinSpecial;
-	private String uMaxSpecial;
-	private String pMinLength;
-	private String pMaxLength;
-	private String pMinUppercase;
-	private String pMaxUppercase;
-	private String pMinLowercase;
-	private String pMaxLowercase;
-	private String pMinNumber;
-	private String pMaxNumber;
-	private String pMinSpecial;
-	private String pMaxSpecial;
-	private String pValidPeriod;
+	private String ufgOnlyLowercase = MgmtCommonVo.NO;
+	private String uminNumber;
+	private String umaxNumber;
+	private String uminSpecial;
+	private String umaxSpecial;
+	private String pminLength;
+	private String pmaxLength;
+	private String pminUppercase;
+	private String pmaxUppercase;
+	private String pminLowercase;
+	private String pmaxLowercase;
+	private String pminNumber;
+	private String pmaxNumber;
+	private String pminSpecial;
+	private String pmaxSpecial;
+	private String pvalidPeriod;
 	@Builder.Default
 	private String fgUsePwdFailPenalty = MgmtCommonVo.NO;
-	private String pFailCheckDuration;
-	private String pAllowableFailCount;
-	private String pFreezingDuration;
+	private String pfailCheckDuration;
+	private String pallowableFailCount;
+	private String pfreezingDuration;
 	@Builder.Default
 	private String fgUse = MgmtCommonVo.NO;
 	@Builder.Default

@@ -18,7 +18,7 @@ public class UserPasswordChangeHistoryDto extends MgmtGeneralDto implements IPag
 {
 	private static final long serialVersionUID = 4033181503111344831L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String oldPassword;
 	private String reason;
 	private String timezone;

@@ -60,7 +60,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
 		if (AuthenticationType.D.equals(authenticationType))
 		{
-			UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
+			UserDto user = userService.getUser(UserAuthenticationUtils.getUseq());
 			UserAccountDto userAccount = user.getUserAccount();
 
 			logger.info("99. User Account Update");

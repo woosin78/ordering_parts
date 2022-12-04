@@ -4,7 +4,7 @@
 <mapper namespace="org.jwebppy.platform.mgmt.upload.mapper.UploadFileListMapper">
 	<insert id="insert" parameterType="UploadFileListEntity">
 		insert into pltf_upload_file_list (ufl_seq, uf_seq, t_seq, origin_name, saved_name, extension, file_size, fg_delete, reg_username, reg_date) values (
-			#{uflSeq}, #{ufSeq}, #{tSeq}, #{originName}, #{savedName}, #{extension}, #{fileSize}, 'N', #{regUsername}, #{regDate}
+			#{uflSeq}, #{ufSeq}, #{tseq}, #{originName}, #{savedName}, #{extension}, #{fileSize}, 'N', #{regUsername}, #{regDate}
 		)
 	</insert>
 	
@@ -34,7 +34,7 @@
 		pltf_upload_file_list a
 		where
 		a.uf_seq=#{ufSeq}
-		and a.t_seq=#{tSeq}
+		and a.t_seq=#{tseq}
 		and a.fg_delete='N'
 	</select>	
 </mapper>

@@ -19,7 +19,7 @@ public class DownloadFileHistoryEntity extends MgmtGeneralEntity
 
 	private Integer dfhSeq;
 	private String uflSeq;
-	private Integer uSeq;
+	private Integer useq;
 	private String originName;
 	private String savedName;
 	private String path;

@@ -25,5 +25,5 @@ public class CredentialsPolicySearchDto extends MgmtGeneralDto implements IPagin
 	private String fgDefault;
 	private String value;//username or password
 	private String query;
-	private Integer uSeq;
+	private Integer useq;
 }

@@ -3,7 +3,7 @@
 
 <mapper namespace="org.jwebppy.platform.mgmt.i18n.mapper.LangMapper">
 	<resultMap type="LangEntity" id="langEntityMap">
-		<id property="lSeq" column="l_seq" />
+		<id property="lseq" column="l_seq" />
 		<result property="basename" column="basename" />
 		<result property="type" column="type" />
 		<result property="regUsername" column="reg_username" />
@@ -18,19 +18,19 @@
 	
 	<resultMap type="LangDetailEntity" id="langDetailEntityMap">
 		<id property="ldSeq" column="ld_seq" />
-		<result property="lSeq" column="l_seq" />
+		<result property="lseq" column="l_seq" />
 		<result property="lkSeq" column="lk_seq" />
 		<result property="text" column="text" />
 		<collection property="langKind" foreignColumn="lk_seq" column="lk_seq" ofType="LangKindEntity" select="findLangKindByLkSeq" />
 	</resultMap>	
 
-	<insert id="insertLang" parameterType="LangEntity" useGeneratedKeys="true" keyProperty="lSeq">
-		<selectKey keyProperty="lSeq" resultType="Integer" order="BEFORE">
+	<insert id="insertLang" parameterType="LangEntity" useGeneratedKeys="true" keyProperty="lseq">
+		<selectKey keyProperty="lseq" resultType="Integer" order="BEFORE">
 			select pltf_l_seq.nextval from dual
 		</selectKey>
 
 		insert into pltf_lang(l_seq, basename, type, seq, fg_delete, reg_username, reg_date) values (
-			#{lSeq}, #{basename}, #{type}, upper(#{seq2}), #{fgDelete}, #{regUsername}, #{regDate}
+			#{lseq}, #{basename}, #{type}, upper(#{seq2}), 'N', #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -40,7 +40,7 @@
 		</selectKey>
 		
 		insert into pltf_lang_detail(ld_seq, l_seq, lk_seq, text, fg_delete, reg_username, reg_date) values (
-			#{ldSeq}, #{lSeq}, #{lkSeq}, #{text}, #{fgDelete}, #{regUsername}, #{regDate}
+			#{ldSeq}, #{lseq}, #{lkSeq}, #{text}, 'N', #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -48,7 +48,7 @@
 		update pltf_lang set 
 			basename=#{basename}, type=#{type}, mod_username=#{modUsername}, mod_date=#{modDate}
 		where
-			l_seq=#{lSeq}
+			l_seq=#{lseq}
 	</update>
 
 	<update id="updateLangDetail" parameterType="LangDetailEntity">
@@ -56,8 +56,8 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 					
-			<if test="lSeq != null">
-				,l_seq=#{lSeq}
+			<if test="lseq != null">
+				,l_seq=#{lseq}
 			</if>
 			<if test="lkSeq != null">
 				,lk_seq=#{lkSeq}
@@ -70,8 +70,8 @@
 				<if test="ldSeq != null">
 					ld_seq=#{ldSeq}
 				</if>			
-				<if test="lSeq != null">
-					and l_seq=#{lSeq} 
+				<if test="lseq != null">
+					and l_seq=#{lseq} 
 				</if>
 				<if test="lkSeq != null">
 					and lk_seq=#{lkSeq} 
@@ -83,9 +83,9 @@
 	<update id="updateLangFgDelete" parameterType="LangDto">
 		update pltf_lang set fg_delete='Y', mod_username=#{modUsername}, mod_date=#{modDate}
 		<where>
-			<foreach collection="lSeqs" item="lSeq" separator="or">
-				<if test="lSeq != null">
-					l_seq=#{lSeq}
+			<foreach collection="lseqs" item="lseq" separator="or">
+				<if test="lseq != null">
+					l_seq=#{lseq}
 				</if>
 			</foreach>
 		</where>
@@ -94,9 +94,9 @@
 	<update id="updateLangDetailFgDelete" parameterType="LangDto">
 		update pltf_lang_detail set fg_delete='Y', mod_username=#{modUsername}, mod_date=#{modDate}
 		<where>
-			<foreach collection="lSeqs" item="lSeq" separator="or">
-				<if test="lSeq != null">
-					l_seq=#{lSeq}
+			<foreach collection="lseqs" item="lseq" separator="or">
+				<if test="lseq != null">
+					l_seq=#{lseq}
 				</if>
 			</foreach>
 		</where>
@@ -110,8 +110,8 @@
 		where
 		fg_delete='N'
 
-		<if test="lSeq != null">
-			and a.l_seq=#{lSeq}
+		<if test="lseq != null">
+			and a.l_seq=#{lseq}
 		</if>
 		
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(basename)">
@@ -135,11 +135,11 @@
 		where
 		fg_delete='N' 
 		
-		<if test="lSeqs != null">
+		<if test="lseqs != null">
 			<trim prefix="and (" suffix=")">
-				<foreach collection="lSeqs" item="lSeq" separator="or">
-					<if test="lSeq != null">
-						l_seq=#{lSeq}
+				<foreach collection="lseqs" item="lseq" separator="or">
+					<if test="lseq != null">
+						l_seq=#{lseq}
 					</if>
 				</foreach>		
 			</trim>		
@@ -185,11 +185,11 @@
 			)
 		</if>
 		
-		<if test="lSeqs != null">
+		<if test="lseqs != null">
 			<trim prefix="and (" suffix=")">
-				<foreach collection="lSeqs" item="lSeq" separator="or">
-					<if test="lSeq != null">
-						l_seq=#{lSeq}
+				<foreach collection="lseqs" item="lseq" separator="or">
+					<if test="lseq != null">
+						l_seq=#{lseq}
 					</if>
 				</foreach>		
 			</trim>		
@@ -233,8 +233,8 @@
 		
 		<where>
 			<trim prefixOverrides="and">
-				<if test="lSeq != null">
-					l_seq=#{lSeq}
+				<if test="lseq != null">
+					l_seq=#{lseq}
 				</if>
 				<if test="lkSeq != null">
 					and lk_seq=#{lkSeq}
@@ -259,7 +259,7 @@
             pltf_lang a,
 		    pltf_lang_detail b
 		    where
-		    a.l_seq=#{lSeq}
+		    a.l_seq=#{lseq}
             and a.fg_delete='N'
             and a.l_seq=b.l_seq		    
             and b.fg_delete='N'		    
@@ -314,7 +314,7 @@
 		pltf_lang_detail d,
 		pltf_lang_kind e
 		where
-		a.c_seq=#{cSeq}
+		a.c_seq=#{cseq}
 		and a.fg_delete='N'
 		and a.c_seq=b.c_seq
 		and b.l_seq=c.l_seq

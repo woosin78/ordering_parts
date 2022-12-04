@@ -22,12 +22,12 @@ public class LangDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = 7599951691132553964L;
 
-	private Integer lSeq;
+	private Integer lseq;
 	private String basename;
 	private LangType type;
 	private String seq;
 	private List<LangDetailDto> langDetails;
-	private List<Integer> lSeqs;
+	private List<Integer> lseqs;
 
 	public String getPrefix()
 	{

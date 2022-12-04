@@ -18,7 +18,7 @@ public class LangDetailDto extends MgmtGeneralDto
 	private static final long serialVersionUID = 2760099488348400393L;
 
 	private Integer ldSeq;
-	private Integer lSeq;
+	private Integer lseq;
 	private Integer lkSeq;
 	private String text;
 	private LangKindDto langKind;

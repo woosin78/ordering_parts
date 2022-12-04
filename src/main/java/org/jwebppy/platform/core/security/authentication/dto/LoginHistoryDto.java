@@ -29,7 +29,7 @@ public class LoginHistoryDto extends GeneralDto implements IPagination
 	private String referer;
 	private String userAgent;
 	//private LocalDateTime accountLockedDate;
-	private Integer uSeq;
+	private Integer useq;
 	private String fgResult;
 	private String timezone;
 	private AuthenticationType authenticationType;

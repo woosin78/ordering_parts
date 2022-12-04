@@ -25,8 +25,8 @@ public class CItemDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -7199501796641936242L;
 
-	private Integer cSeq;
-	private Integer pSeq;
+	private Integer cseq;
+	private Integer pseq;
 	private CItemType type;
 	private String name;
 	private String name2;
@@ -43,12 +43,12 @@ public class CItemDto extends MgmtGeneralDto implements IPagination
 	private String launchType;
 	private String scrWidth;
 	private String scrHeight;
-	private Integer lSeq;
+	private Integer lseq;
 	private List<Integer> seqs;
 	private int depth;
 	private int userCount;
 	private int subItemCount;
-	private List<CItemDto> subCItems;
+	private List<CItemDto> subCitems;
 
 	public String getDisplayFromValid()
 	{

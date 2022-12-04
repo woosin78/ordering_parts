@@ -197,13 +197,13 @@ public class PlatformAuthenticationManager implements AuthenticationManager
 			return false;
 		}
 
-    	CItemSearchDto cItemSearch = new CItemSearchDto();
-    	cItemSearch.setUsername(username);
-    	cItemSearch.setType(CItemType.G);
+    	CItemSearchDto citemSearch = new CItemSearchDto();
+    	citemSearch.setUsername(username);
+    	citemSearch.setType(CItemType.G);
 
-    	for (CItemDto cItem: ListUtils.emptyIfNull(contentAuthorityService.getMyCItems(cItemSearch)))
+    	for (CItemDto citem: ListUtils.emptyIfNull(contentAuthorityService.getMyCitems(citemSearch)))
     	{
-    		if (CmStringUtils.equals(cItem.getName(), "DP_SUPER_LOGIN"))
+    		if (CmStringUtils.equals(citem.getName(), "DP_SUPER_LOGIN"))
     		{
     			return true;
     		}

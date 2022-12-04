@@ -18,7 +18,7 @@ public class LangDetailEntity extends MgmtGeneralEntity
 	private static final long serialVersionUID = 3608980239034591531L;
 
 	private Integer ldSeq;
-	private Integer lSeq;
+	private Integer lseq;
 	private Integer lkSeq;
 	private String text;
 	private LangKindEntity langKind;

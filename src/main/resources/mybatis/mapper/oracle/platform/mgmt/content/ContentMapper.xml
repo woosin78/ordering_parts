@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.jwebppy.platform.mgmt.content.mapper.ContentMapper">
-	<resultMap type="CItemEntity" id="cItemEntityMap">
-		<id property="cSeq" column="c_seq" />
+	<resultMap type="CItemEntity" id="citemEntityMap">
+		<id property="cseq" column="c_seq" />
 		<result property="pSea" column="p_sea" />
 		<result property="type" column="type" />
 		<result property="name" column="name" />
@@ -25,39 +25,39 @@
 		<association property="userCount" foreignColumn="c_seq" column="c_seq" select="findCountUser" />
 	</resultMap>
 
-	<insert id="insert" parameterType="CItemEntity" useGeneratedKeys="true" keyProperty="cSeq">
-		<selectKey keyProperty="cSeq" resultType="Integer" order="BEFORE">
+	<insert id="insert" parameterType="CItemEntity" useGeneratedKeys="true" keyProperty="cseq">
+		<selectKey keyProperty="cseq" resultType="Integer" order="BEFORE">
 			select pltf_c_seq.nextval from dual
 		</selectKey>	
 	
 		insert into pltf_citem (c_seq, p_seq, type, name, description, component, entry_point, parameter, sort, fg_visible, launch_type, scr_width, scr_height, fg_delete, from_valid, to_valid, reg_username, reg_date) values (
-			#{cSeq}, #{pSeq}, #{type}, #{name}, #{description}, #{component}, #{entryPoint}, #{parameter}, #{sort}, #{fgVisible}, #{launchType}, #{scrWidth}, #{scrHeight}, #{fgDelete}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
+			#{cseq}, #{pseq}, #{type}, #{name}, #{description}, #{component}, #{entryPoint}, #{parameter}, #{sort}, #{fgVisible}, #{launchType}, #{scrWidth}, #{scrHeight}, #{fgDelete}, #{fromValid}, #{toValid}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
-	<insert id="insertCItemUserRl" parameterType="CItemUserRlEntity" useGeneratedKeys="true" keyProperty="curSeq">
+	<insert id="insertCitemUserRl" parameterType="CItemUserRlEntity" useGeneratedKeys="true" keyProperty="curSeq">
 		<selectKey keyProperty="curSeq" resultType="Integer" order="BEFORE">
 			select pltf_cur_seq.nextval from dual
 		</selectKey>	
 	
 		insert into pltf_citem_user_rl (cur_seq, c_seq, u_seq, fg_delete, reg_username, reg_date) values (
-			#{curSeq}, #{cSeq}, #{uSeq}, #{fgDelete}, #{regUsername}, #{regDate}
+			#{curSeq}, #{cseq}, #{useq}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 	
-	<insert id="insertCItemLangRl" parameterType="CItemLangRlEntity" useGeneratedKeys="true" keyProperty="clrSeq">
+	<insert id="insertCitemLangRl" parameterType="CItemLangRlEntity" useGeneratedKeys="true" keyProperty="clrSeq">
 		<selectKey keyProperty="clrSeq" resultType="Integer" order="BEFORE">
 			select pltf_clr_seq.nextval from dual
 		</selectKey>	
 	
 		insert into pltf_citem_lang_rl (clr_seq, c_seq, l_seq, reg_username, reg_date) values (
-			#{clrSeq}, #{cSeq}, #{lSeq}, #{regUsername}, #{regDate}
+			#{clrSeq}, #{cseq}, #{lseq}, #{regUsername}, #{regDate}
 		)
 	</insert>	
 	
 	<update id="update" parameterType="CItemEntity">
 		update pltf_citem set
-			p_seq=#{pSeq},
+			p_seq=#{pseq},
 			type=#{type},
 			name=#{name},
 			description=#{description},
@@ -75,7 +75,7 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			c_seq=#{cSeq}
+			c_seq=#{cseq}
 	</update>
 	
 	<update id="delete" parameterType="CItemEntity">
@@ -84,27 +84,27 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			c_seq=#{cSeq}
+			c_seq=#{cseq}
 	</update>
 	
-	<update id="deleteCItemUserRl" parameterType="CItemUserRlEntity">
+	<update id="deleteCitemUserRl" parameterType="CItemUserRlEntity">
 		update pltf_citem_user_rl set
 			fg_delete='Y',
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			u_seq=#{uSeq}
+			u_seq=#{useq}
 	</update>
 
-	<select id="findCItem" parameterType="CItemSearchDto" resultType="CItemEntity">
+	<select id="findCitem" parameterType="CItemSearchDto" resultType="CItemEntity">
 		select
 		*
 		from
 		pltf_citem
 
 		<where>
-			<if test="cSeq != null">
-				c_seq=#{cSeq}
+			<if test="cseq != null">
+				c_seq=#{cseq}
 			</if>
 			<trim prefix="and">
 				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
@@ -124,7 +124,7 @@
 		</where>
 	</select>
 
-	<select id="findMyCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+	<select id="findMyCitems" parameterType="CItemSearchDto" resultType="CItemEntity">
 		select
 		a.*
 		from
@@ -136,8 +136,8 @@
 		and a.from_valid <![CDATA[<]]> sysdate and a.to_valid <![CDATA[>=]]> sysdate
 		and b.fg_delete='N'
 		
-		<if test="pSeq != null">
-			and a.p_seq=#{pSeq}
+		<if test="pseq != null">
+			and a.p_seq=#{pseq}
 		</if>			
 		
 		<!-- OGNL(Object Graph Navigation Language) 의 문제로 toString() 추가 -->
@@ -145,8 +145,8 @@
 			and a.fg_visible='Y'
 		</if>		
 		
-		<if test="uSeq != null">
-			and b.u_seq=#{uSeq}
+		<if test="useq != null">
+			and b.u_seq=#{useq}
 		</if>
 		
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
@@ -184,7 +184,7 @@
 		order by a.sort, a.c_seq
 	</select>
 	
-	<select id="findCItems" parameterType="CItemSearchDto" resultType="CItemEntity">
+	<select id="findCitems" parameterType="CItemSearchDto" resultType="CItemEntity">
 		select
 		a.*
 		from
@@ -192,22 +192,22 @@
 		where
 		a.fg_delete='N'
 
-		<if test="cSeqs != null">
+		<if test="cseqs != null">
 			<trim prefix="and">
-				<foreach collection="cSeqs" item="cSeq" open="(" close=")" separator="or">
-					<if test="cSeq != null">
-						a.c_seq=#{cSeq}
+				<foreach collection="cseqs" item="cseq" open="(" close=")" separator="or">
+					<if test="cseq != null">
+						a.c_seq=#{cseq}
 					</if>				
 				</foreach>				
 			</trim>
 		</if>
 
-		<if test="cSeq != null">
-			and a.c_seq=#{cSeq}
+		<if test="cseq != null">
+			and a.c_seq=#{cseq}
 		</if>
 		
-		<if test="pSeq != null">
-			and a.p_seq=#{pSeq}
+		<if test="pseq != null">
+			and a.p_seq=#{pseq}
 		</if>
 
 		<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(name)">
@@ -239,18 +239,20 @@
 
 	<select id="findCountUser" resultType="Integer">
 		select
-		count(x.cur_seq)
+		count(x.c_seq)
 		from
-		pltf_citem_user_rl x,
-		pltf_user y
+		pltf_citem x,
+		pltf_citem_user_rl y,
+		vw_pltf_user z
 		where
-		x.u_seq=y.u_seq
-		and y.fg_delete='N'
-		and x.c_seq=#{cSeq}
-		and x.fg_delete='N'	
+		x.c_seq=#{cseq}
+		and x.fg_delete='N'
+		and x.c_seq=y.c_seq
+		and y.u_seq=z.u_seq
+		and y.fg_delete='N'		
 	</select>
 
-	<select id="findPageCItems" parameterType="CItemSearchDto" resultMap="cItemEntityMap">
+	<select id="findPageCitems" parameterType="CItemSearchDto" resultMap="citemEntityMap">
 		<include refid="PaginationMapper.header"/>
 	
 		select
@@ -266,8 +268,8 @@
 				or upper(a.description) like '%'||upper(trim(#{query}))||'%'
 			</if>
 			
-			<if test="cSeq != null">
-				or a.c_seq=#{cSeq}
+			<if test="cseq != null">
+				or a.c_seq=#{cseq}
 			</if>
 		</trim>
 		
@@ -296,11 +298,11 @@
 		from
 		pltf_citem_lang_rl
 		where
-		c_seq=#{cSeq}
-		and l_seq=#{lSeq}
+		c_seq=#{cseq}
+		and l_seq=#{lseq}
 	</select>
 	
-	<select id="findCItemLangRls" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
+	<select id="findCitemLangRls" parameterType="CItemLangRlDto" resultType="CItemLangRlEntity">
 		select
 		b.*
 		from
@@ -310,10 +312,10 @@
 		pltf_lang_detail d,
 		pltf_lang_kind e
 		where
-		a.c_seq=#{cSeq}
+		a.c_seq=#{cseq}
 		
-		<if test="lSeq != null">
-			and b.l_seq=#{lSeq}
+		<if test="lseq != null">
+			and b.l_seq=#{lseq}
 		</if>
 		
 		and a.fg_delete='N'
@@ -332,7 +334,7 @@
 		order by e.fg_default desc
 	</select>	
 
-	<select id="findCItemsForTree" parameterType="CItemSearchDto" resultType="CItemEntity">
+	<select id="findCitemsForTree" parameterType="CItemSearchDto" resultType="CItemEntity">
 		select
 		x.*,
 		(
@@ -366,8 +368,8 @@
 	    </if>
 
 		<choose>
-			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(cSeq)">
-				start with x.c_seq=#{cSeq}
+			<when test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(cseq)">
+				start with x.c_seq=#{cseq}
 			</when>
 			<otherwise>
 				start with x.name='ROOT'

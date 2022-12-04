@@ -49,7 +49,7 @@
 		</div>	
 	</div>
 	<input type="hidden" id="bcSeq" name="bcSeq" th:value="${bcSeq}"/>
-	<input type="hidden" id="pSeq" name="pSeq" th:value="${pSeq}"/>	
+	<input type="hidden" id="pseq" name="pseq" th:value="${pseq}"/>	
 	<input type="hidden" name="type" th:value="${type}"/>
 	<input type="hidden" name="query" th:value="${query}"/>
 	<input type="hidden" name="fromDate" th:value="${fromDate}"/>
@@ -69,7 +69,7 @@
 $(document).ready(function() {	
 	JpUtilsAjax.get({
 		url: "/platform/mgmt/upload/list/data",
-		data: { ufSeq: [[${board.ufSeq}]], tSeq: $("#bcSeq").val() },
+		data: { ufSeq: [[${board.ufSeq}]], tseq: $("#bcSeq").val() },
 		success: function(data, textStatus, jqXHR) {
 			let result = data.RESULT;
 			
@@ -93,7 +93,7 @@ $(document).ready(function() {
 	});	
 
 	$(".BTN_reply").on("click", function() {
-		$("#pSeq").val($("#bcSeq").val());
+		$("#pseq").val($("#bcSeq").val());
 		$("#bcSeq").val("");
 		$("#FORM_view").attr("action", "/platform/mgmt/board/content/write");
 		$("#FORM_view")[0].submit();

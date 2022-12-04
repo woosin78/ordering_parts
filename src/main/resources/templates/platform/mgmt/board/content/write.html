@@ -19,7 +19,7 @@
 	<form id="FORM_write" class="ui form" method="post" enctype="multipart/form-data" autocomplete="off" onsubmit="return false;">
 	<input type="hidden" id="bSeq" name="bSeq" th:value="${board.bSeq}"/>
 	<input type="hidden" id="bcSeq" name="bcSeq" th:value="${bcSeq}"/>
-	<input type="hidden" id="pSeq" name="pSeq" th:value="${pSeq}"/>
+	<input type="hidden" id="pseq" name="pseq" th:value="${pseq}"/>
 	<input type="hidden" name="type" th:value="${type}"/>
 	<input type="hidden" name="query" th:value="${query}"/>
 	<input type="hidden" name="fromDate" th:value="${fromDate}"/>
@@ -120,7 +120,7 @@ $(document).ready(function() {
 			{
 				JpUtilsAjax.get({
 					url: "/platform/mgmt/upload/list/data",
-					data: { ufSeq: ufSeq, tSeq: $("#bcSeq").val() },
+					data: { ufSeq: ufSeq, tseq: $("#bcSeq").val() },
 					success: function(data, textStatus, jqXHR) {
 						let result = data.RESULT;
 						

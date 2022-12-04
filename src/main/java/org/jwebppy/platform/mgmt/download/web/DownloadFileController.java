@@ -69,7 +69,7 @@ public class DownloadFileController extends MgmtGeneralController
 
 		DownloadFileHistoryDto downloadFileHistory = new DownloadFileHistoryDto();
 		downloadFileHistory.setUflSeq(uploadFileList.getUflSeq());
-		downloadFileHistory.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
+		downloadFileHistory.setUseq(UserAuthenticationUtils.getUserDetails().getUseq());
 		downloadFileHistory.setOriginName(uploadFileList.getOriginName() + "." + uploadFileList.getExtension());
 		downloadFileHistory.setSavedName(uploadFileList.getSavedName() + "." + uploadFileList.getExtension());
 		downloadFileHistory.setPath(uploadFile.getPath());

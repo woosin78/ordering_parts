@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.security.authentication.dto.LoginHistorySearchDto;
@@ -23,6 +22,7 @@ import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
@@ -70,9 +70,6 @@ public class UserController extends UserGeneralController
 	@Autowired
 	private CredentialsPolicyService credentialsPolicyService;
 
-	//@Autowired
-	//private I18nMessageSource i18nMessageSource;
-
 	@Autowired
 	private LoginHistoryService loginHistoryService;
 
@@ -88,11 +85,12 @@ public class UserController extends UserGeneralController
 	@RequestMapping("/list")
 	public String list(Model model, WebRequest webRequest)
 	{
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setFgVisible(MgmtCommonVo.YES);
-		cItemSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
+		CItemSearchDto citemSearch = CItemSearchDto.builder()
+				.fgVisible(MgmtCommonVo.YES)
+				.types(new CItemType[] {CItemType.R, CItemType.G})
+				.build();
 
-		model.addAttribute("cItems", contentService.getCItems(cItemSearch));
+		model.addAttribute("citems", contentService.getCitems(citemSearch));
 		model.addAttribute("userGroups", userGroupService.getUserGroups(null));
 
 		addAllAttributeFromRequest(model, webRequest);
@@ -113,11 +111,11 @@ public class UserController extends UserGeneralController
 	{
 		if ("authority".equals(tabPath))
 		{
-			return UserLayoutBuilder.viewAuthority(contentAuthorityService.getMyCItems(userSearch.getUSeq()));
+			return UserLayoutBuilder.viewAuthority(contentAuthorityService.getMyCitems(userSearch.getUseq()));
 		}
 		else
 		{
-			if (CmStringUtils.isNotEmpty(userSearch.getUsername()) || userSearch.getUSeq() != null)
+			if (CmStringUtils.isNotEmpty(userSearch.getUsername()) || ObjectUtils.isNotEmpty(userSearch.getUseq()))
 			{
 				UserDto user = userService.getUser(userSearch);
 
@@ -131,25 +129,23 @@ public class UserController extends UserGeneralController
 
 					CredentialsPolicyDto credentialPolicy = userAccount.getCredentialsPolicy();
 
-					if (credentialPolicy != null)
+					if (ObjectUtils.isNotEmpty(credentialPolicy))
 					{
-						CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
-						credentialsPolicySearch.setCpSeq(credentialPolicy.getCpSeq());
-						credentialsPolicySearch.setType(CredentialsPolicyType.U);
-
-						credentialPolicy = credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(credentialsPolicySearch);
+						credentialPolicy = credentialsPolicyService.getDefaultCredentialPolicyIfEmpty(CredentialsPolicySearchDto.builder()
+								.cpSeq(credentialPolicy.getCpSeq())
+								.type(CredentialsPolicyType.U)
+								.build());
 					}
 
 					return UserLayoutBuilder.viewAccountInfo(userAccount, credentialPolicy);
 				}
 				else if ("login_history".equals(tabPath))
 				{
-					LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
-					loginHistorySearch.setUsername(user.getUserAccount().getUsername());
-					loginHistorySearch.setPageNumber(1);
-					loginHistorySearch.setRowPerPage(20);
-
-					return LoginHistoryLayoutBuilder.listLoginHistory(loginHistoryService.getPageableLoginHistories(loginHistorySearch));
+					return LoginHistoryLayoutBuilder.listLoginHistory(loginHistoryService.getPageableLoginHistories(LoginHistorySearchDto.builder()
+							.username(user.getUserAccount().getUsername())
+							.pageNumber(1)
+							.rowPerPage(20)
+							.build()));
 				}
 				else
 				{
@@ -167,23 +163,22 @@ public class UserController extends UserGeneralController
 	{
 		if ("authority".equals(tabPath))
 		{
-			List<CItemDto> cItems = null;
+			List<CItemDto> citems = null;
 
-			if (userSearch.getUSeq() != null)
+			if (ObjectUtils.isNotEmpty(userSearch.getUseq()))
 			{
-				CItemSearchDto cItemSearch = new CItemSearchDto();
-				cItemSearch.setUSeq(userSearch.getUSeq());
-
-				cItems = contentAuthorityService.getMyCItemHierarchy(cItemSearch);
+				citems = contentAuthorityService.getMyCitemHierarchy(CItemSearchDto.builder()
+						.useq(userSearch.getUseq())
+						.build());
 			}
 
-			return UserLayoutBuilder.writeAuthority(cItems);
+			return UserLayoutBuilder.writeAuthority(citems);
 		}
 		else
 		{
 			UserDto user = new UserDto();
 
-			if (ObjectUtils.isNotEmpty(userSearch.getUSeq()))
+			if (ObjectUtils.isNotEmpty(userSearch.getUseq()))
 			{
 				user = userService.getUser(userSearch);
 			}
@@ -199,10 +194,9 @@ public class UserController extends UserGeneralController
 					user.setUserGroup(userGroupService.getUserGroup(user.getUserGroup().getUgSeq()));
 				}
 
-				CredentialsPolicySearchDto credentialsPolicySearch = new CredentialsPolicySearchDto();
-				credentialsPolicySearch.setFgUse(MgmtCommonVo.YES);
-
-				return UserLayoutBuilder.writeAccountInfo(user, credentialsPolicyService.getCredentialsPolicies(credentialsPolicySearch));
+				return UserLayoutBuilder.writeAccountInfo(user, credentialsPolicyService.getCredentialsPolicies(CredentialsPolicySearchDto.builder()
+						.fgUse(MgmtCommonVo.YES)
+						.build()));
 			}
 			else
 			{
@@ -216,7 +210,7 @@ public class UserController extends UserGeneralController
 	@ResponseBody
 	public Object save(@PathVariable("tabPath") String tabPath,
 			@ModelAttribute UserDto user, @ModelAttribute UserAccountDto userAccount, @ModelAttribute UserContactInfoDto userContactInfo,
-			@ModelAttribute CItemUserRlDto cItemUserRl, @ModelAttribute UserGroupDto userGroup,  @ModelAttribute CredentialsPolicyDto credentialsPolicy, WebRequest webRequest)
+			@ModelAttribute CItemUserRlDto citemUserRl, @ModelAttribute UserGroupDto userGroup,  @ModelAttribute CredentialsPolicyDto credentialsPolicy, WebRequest webRequest)
 	{
 		if ("account".equals(tabPath))
 		{
@@ -235,19 +229,17 @@ public class UserController extends UserGeneralController
 		}
 		else if ("authority".equals(tabPath))
 		{
-			String[] cSeqs = webRequest.getParameterValues("cSeq");
+			String[] cseqs = webRequest.getParameterValues("cseq");
 
-			if (cSeqs != null && cSeqs.length > 0)
+			if (cseqs != null && cseqs.length > 0)
 			{
-				List<Integer> cSeqs2 =  Arrays.asList(cSeqs)
+				citemUserRl.setCseqs(Arrays.asList(cseqs)
 						.stream()
 						.map(s -> Integer.parseInt(s))
-						.collect(Collectors.toList());
-
-				cItemUserRl.setCSeqs(cSeqs2);
+						.collect(Collectors.toList()));
 			}
 
-			return contentAuthorityService.save(cItemUserRl);
+			return contentAuthorityService.save(citemUserRl);
 		}
 		else
 		{
@@ -260,23 +252,23 @@ public class UserController extends UserGeneralController
 	@PostMapping("/delete")
 	@CacheClear(name = "A")
 	@ResponseBody
-	public Object delete(@RequestParam("uSeq") List<Integer> uSeqs)
+	public Object delete(@RequestParam("useq") List<Integer> useqs)
 	{
-		return userService.deleteUser(uSeqs);
+		return userService.deleteUser(useqs);
 	}
 
 	@PostMapping("/{command}")
 	@CacheClear(name = "A")
 	@ResponseBody
-	public Object lock(@PathVariable("command") String command, @RequestParam("uSeq") List<Integer> uSeqs)
+	public Object lock(@PathVariable("command") String command, @RequestParam("useq") List<Integer> useqs)
 	{
 		if ("lock".equals(command))
 		{
-			return userService.lockUserAccount(uSeqs, MgmtCommonVo.YES);
+			return userService.lockUserAccount(useqs, MgmtCommonVo.YES);
 		}
 		else if ("unlock".equals(command))
 		{
-			return userService.lockUserAccount(uSeqs, MgmtCommonVo.NO);
+			return userService.lockUserAccount(useqs, MgmtCommonVo.NO);
 		}
 
 		return EMPTY_RETURN_VALUE;
@@ -284,32 +276,32 @@ public class UserController extends UserGeneralController
 
 	@GetMapping("/layout/authority")
 	@ResponseBody
-	public Object authorityLayout(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object authorityLayout(@ModelAttribute CItemSearchDto citemSearch)
 	{
-		cItemSearch.setFgShowGroup(MgmtCommonVo.YES);
+		citemSearch.setFgShowGroup(MgmtCommonVo.YES);
 
-		return UserLayoutBuilder.viewAuthority(contentAuthorityService.getMyCItemHierarchy(cItemSearch));
+		return UserLayoutBuilder.viewAuthority(contentAuthorityService.getMyCitemHierarchy(citemSearch));
 	}
 
 	@GetMapping("/my_authority")
 	@ResponseBody
-	public Object myAuthority(@ModelAttribute CItemSearchDto cItemSearch, @RequestParam(value = "cSeqs", required = false) List<Integer> cSeqs)
+	public Object myAuthority(@ModelAttribute CItemSearchDto citemSearch, @RequestParam(value = "cseqs", required = false) List<Integer> cseqs)
 	{
-		List<CItemDto> cItems = null;
+		List<CItemDto> citems = null;
 
-		if (CollectionUtils.isNotEmpty(cSeqs))
+		if (CollectionUtils.isNotEmpty(cseqs))
 		{
-			cItemSearch.setCSeqs(cSeqs);
-			cItemSearch.setFgVisible(MgmtCommonVo.YES);
+			citemSearch.setCseqs(cseqs);
+			citemSearch.setFgVisible(MgmtCommonVo.YES);
 
-			cItems = contentService.getCItems(cItemSearch);
+			citems = contentService.getCitems(citemSearch);
 		}
 		else
 		{
-			cItems = contentAuthorityService.getMyCItems(cItemSearch);
+			citems = contentAuthorityService.getMyCitems(citemSearch);
 		}
 
-		return UserLayoutBuilder.writeAuthority(cItems);
+		return UserLayoutBuilder.writeAuthority(citems);
 	}
 
 	@GetMapping("/timezone")
@@ -350,24 +342,24 @@ public class UserController extends UserGeneralController
 		resultMap.put("expiredDate", "");
 		resultMap.put("difference", "-1");
 
-		UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
+		UserDto user = userService.getUser(UserAuthenticationUtils.getUseq());
+		UserAccountDto userAccount = user.getUserAccount();
 
-		if (CmStringUtils.equals(user.getUserAccount().getFgNoUsePassword(), MgmtCommonVo.YES))
+		if (CmStringUtils.equals(userAccount.getFgNoUsePassword(), MgmtCommonVo.YES))
 		{
 			resultMap.put("difference", "999");
 		}
 		else
 		{
-			int pwdValidPeriod = NumberUtils.toInt(user.getUserAccount().getCredentialsPolicy().getPValidPeriod(), 0);
+			int pwdValidPeriod = NumberUtils.toInt(userAccount.getCredentialsPolicy().getPvalidPeriod(), 0);
 
 			if (pwdValidPeriod > 0)
 			{
-				UserPasswordChangeHistoryDto inUserPasswordChangeHistory = new UserPasswordChangeHistoryDto();
-				inUserPasswordChangeHistory.setUSeq(UserAuthenticationUtils.getUSeq());
-				inUserPasswordChangeHistory.setPageNumber(1);
-				inUserPasswordChangeHistory.setRowPerPage(1);
-
-				List<UserPasswordChangeHistoryDto> userPasswordChangeHistories = userPasswordChangeHistoryService.getPageableUserPasswordChangeHistories(inUserPasswordChangeHistory);
+				List<UserPasswordChangeHistoryDto> userPasswordChangeHistories = userPasswordChangeHistoryService.getPageableUserPasswordChangeHistories(UserPasswordChangeHistoryDto.builder()
+						.useq(getUseq())
+						.pageNumber(1)
+						.rowPerPage(1)
+						.build());
 
 				LocalDateTime regDate = null;
 

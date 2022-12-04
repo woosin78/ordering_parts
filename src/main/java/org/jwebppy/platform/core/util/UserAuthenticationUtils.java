@@ -35,13 +35,13 @@ public class UserAuthenticationUtils
 		return new PlatformUserDetails();
 	}
 
-	public static Integer getUSeq()
+	public static Integer getUseq()
 	{
 		PlatformUserDetails platformUserDetails = getUserDetails();
 
 		if (platformUserDetails != null)
 		{
-			return platformUserDetails.getUSeq();
+			return platformUserDetails.getUseq();
 		}
 
 		return null;
@@ -66,7 +66,7 @@ public class UserAuthenticationUtils
 
 	public static boolean isAuthenticated()
 	{
-		if (getUSeq() == null)
+		if (getUseq() == null)
 		{
 			return false;
 		}

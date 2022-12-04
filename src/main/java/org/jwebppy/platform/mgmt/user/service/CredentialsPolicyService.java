@@ -8,18 +8,17 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmNumberUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicySearchDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyType;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyVo;
-import org.jwebppy.platform.mgmt.user.dto.UserDto;
 import org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyMapper;
 import org.jwebppy.platform.mgmt.user.mapper.CredentialsPolicyObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,26 +93,23 @@ public class CredentialsPolicyService extends GeneralService
 	public CredentialsPolicyDto getDefaultCredentialPolicyIfEmpty(CredentialsPolicySearchDto credentialsPolicySearch)
 	{
 		Integer cpSeq = credentialsPolicySearch.getCpSeq();
-		Integer uSeq = credentialsPolicySearch.getUSeq();
+		Integer useq = credentialsPolicySearch.getUseq();
 
 		if (ObjectUtils.isEmpty(cpSeq))
 		{
-			if (ObjectUtils.isNotEmpty(uSeq))
+			if (ObjectUtils.isNotEmpty(useq))
 			{
-				UserDto user = userService.getUser(uSeq);
-
-				cpSeq = user.getUserGroup().getCredentialsPolicy().getCpSeq();
+				cpSeq = userService.getUser(useq).getUserGroup().getCredentialsPolicy().getCpSeq();
 			}
 		}
 
 		//Get default credentials policy
 		if (ObjectUtils.isEmpty(cpSeq))
 		{
-			CredentialsPolicySearchDto credentialsPolicySearch2 = new CredentialsPolicySearchDto();
-			credentialsPolicySearch2.setFgUse(MgmtCommonVo.YES);
-			credentialsPolicySearch2.setFgDefault(MgmtCommonVo.YES);
-
-			List<CredentialsPolicyDto> credentialsPolicies = getCredentialsPolicies(credentialsPolicySearch2);
+			List<CredentialsPolicyDto> credentialsPolicies = getCredentialsPolicies(CredentialsPolicySearchDto.builder()
+					.fgUse(MgmtCommonVo.YES)
+					.fgDefault(MgmtCommonVo.YES)
+					.build());
 
 			if (CollectionUtils.isNotEmpty(credentialsPolicies))
 			{
@@ -172,31 +168,31 @@ public class CredentialsPolicyService extends GeneralService
 
 		if (type == CredentialsPolicyType.U)
 		{
-			minLength = credentialsPolicy.getUMinLength();
-			maxLength = credentialsPolicy.getUMaxLength();
-			minLowercase = credentialsPolicy.getUMinLowercase();
-			maxLowercase = credentialsPolicy.getUMaxLowercase();
-			minUppercase = credentialsPolicy.getUMinUppercase();
-			maxUppercase = credentialsPolicy.getUMaxUppercase();
-			minNumber = credentialsPolicy.getUMinNumber();
-			maxNumber = credentialsPolicy.getUMaxNumber();
-			minSpecial = credentialsPolicy.getUMinSpecial();
-			maxSpecial = credentialsPolicy.getUMaxSpecial();
-			fgOnlyLowercase = credentialsPolicy.getUFgOnlyLowercase();
-			fgOnlyUppercase = credentialsPolicy.getUFgOnlyUppercase();
+			minLength = credentialsPolicy.getUminLength();
+			maxLength = credentialsPolicy.getUmaxLength();
+			minLowercase = credentialsPolicy.getUminLowercase();
+			maxLowercase = credentialsPolicy.getUmaxLowercase();
+			minUppercase = credentialsPolicy.getUminUppercase();
+			maxUppercase = credentialsPolicy.getUmaxUppercase();
+			minNumber = credentialsPolicy.getUminNumber();
+			maxNumber = credentialsPolicy.getUmaxNumber();
+			minSpecial = credentialsPolicy.getUminSpecial();
+			maxSpecial = credentialsPolicy.getUmaxSpecial();
+			fgOnlyLowercase = credentialsPolicy.getUfgOnlyLowercase();
+			fgOnlyUppercase = credentialsPolicy.getUfgOnlyUppercase();
 		}
 		else
 		{
-			minLength = credentialsPolicy.getPMinLength();
-			maxLength = credentialsPolicy.getPMaxLength();
-			minLowercase = credentialsPolicy.getPMinLowercase();
-			maxLowercase = credentialsPolicy.getPMaxLowercase();
-			minUppercase = credentialsPolicy.getPMinUppercase();
-			maxUppercase = credentialsPolicy.getPMaxUppercase();
-			minNumber = credentialsPolicy.getPMinNumber();
-			maxNumber = credentialsPolicy.getPMaxNumber();
-			minSpecial = credentialsPolicy.getPMinSpecial();
-			maxSpecial = credentialsPolicy.getPMaxSpecial();
+			minLength = credentialsPolicy.getPminLength();
+			maxLength = credentialsPolicy.getPmaxLength();
+			minLowercase = credentialsPolicy.getPminLowercase();
+			maxLowercase = credentialsPolicy.getPmaxLowercase();
+			minUppercase = credentialsPolicy.getPminUppercase();
+			maxUppercase = credentialsPolicy.getPmaxUppercase();
+			minNumber = credentialsPolicy.getPminNumber();
+			maxNumber = credentialsPolicy.getPmaxNumber();
+			minSpecial = credentialsPolicy.getPminSpecial();
+			maxSpecial = credentialsPolicy.getPmaxSpecial();
 		}
 
 		int iMinLength = CmNumberUtils.toInt(minLength);
@@ -285,31 +281,31 @@ public class CredentialsPolicyService extends GeneralService
 
 		if (type == CredentialsPolicyType.U)
 		{
-			minLength = credentialsPolicy.getUMinLength();
-			maxLength = credentialsPolicy.getUMaxLength();
-			minLowercase = credentialsPolicy.getUMinLowercase();
-			maxLowercase = credentialsPolicy.getUMaxLowercase();
-			minUppercase = credentialsPolicy.getUMinUppercase();
-			maxUppercase = credentialsPolicy.getUMaxUppercase();
-			minNumber = credentialsPolicy.getUMinNumber();
-			maxNumber = credentialsPolicy.getUMaxNumber();
-			minSpecial = credentialsPolicy.getUMinSpecial();
-			maxSpecial = credentialsPolicy.getUMaxSpecial();
-			fgOnlyLowercase = credentialsPolicy.getUFgOnlyLowercase();
-			fgOnlyUppercase = credentialsPolicy.getUFgOnlyUppercase();
+			minLength = credentialsPolicy.getUminLength();
+			maxLength = credentialsPolicy.getUmaxLength();
+			minLowercase = credentialsPolicy.getUminLowercase();
+			maxLowercase = credentialsPolicy.getUmaxLowercase();
+			minUppercase = credentialsPolicy.getUminUppercase();
+			maxUppercase = credentialsPolicy.getUmaxUppercase();
+			minNumber = credentialsPolicy.getUminNumber();
+			maxNumber = credentialsPolicy.getUmaxNumber();
+			minSpecial = credentialsPolicy.getUminSpecial();
+			maxSpecial = credentialsPolicy.getUmaxSpecial();
+			fgOnlyLowercase = credentialsPolicy.getUfgOnlyLowercase();
+			fgOnlyUppercase = credentialsPolicy.getUfgOnlyUppercase();
 		}
 		else
 		{
-			minLength = credentialsPolicy.getPMinLength();
-			maxLength = credentialsPolicy.getPMaxLength();
-			minLowercase = credentialsPolicy.getPMinLowercase();
-			maxLowercase = credentialsPolicy.getPMaxLowercase();
-			minUppercase = credentialsPolicy.getPMinUppercase();
-			maxUppercase = credentialsPolicy.getPMaxUppercase();
-			minNumber = credentialsPolicy.getPMinNumber();
-			maxNumber = credentialsPolicy.getPMaxNumber();
-			minSpecial = credentialsPolicy.getPMinSpecial();
-			maxSpecial = credentialsPolicy.getPMaxSpecial();
+			minLength = credentialsPolicy.getPminLength();
+			maxLength = credentialsPolicy.getPmaxLength();
+			minLowercase = credentialsPolicy.getPminLowercase();
+			maxLowercase = credentialsPolicy.getPmaxLowercase();
+			minUppercase = credentialsPolicy.getPminUppercase();
+			maxUppercase = credentialsPolicy.getPmaxUppercase();
+			minNumber = credentialsPolicy.getPminNumber();
+			maxNumber = credentialsPolicy.getPmaxNumber();
+			minSpecial = credentialsPolicy.getPminSpecial();
+			maxSpecial = credentialsPolicy.getPmaxSpecial();
 		}
 
 		List<String> messages = new ArrayList<>();

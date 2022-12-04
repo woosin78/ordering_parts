@@ -19,10 +19,10 @@ public class CItemSearchDto extends MgmtGeneralDto
 {
 	private static final long serialVersionUID = 8595296313056450072L;
 
-	private Integer cSeq;
-	private Integer pSeq;
-	private Integer uSeq;
-	private Integer lSeq;
+	private Integer cseq;
+	private Integer pseq;
+	private Integer useq;
+	private Integer lseq;
 	private String component;
 	private String basename;
 	private String fgVisible;
@@ -31,7 +31,7 @@ public class CItemSearchDto extends MgmtGeneralDto
 	private String[] names;
 	private CItemType type;
 	private CItemType[] types;
-	private List<Integer> cSeqs;
+	private List<Integer> cseqs;
 	private String entryPoint;
 	private String lang;
 	private String query;

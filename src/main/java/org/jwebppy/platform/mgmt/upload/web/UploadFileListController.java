@@ -18,8 +18,8 @@ public class UploadFileListController extends MgmtGeneralController
 
 	@RequestMapping("/list/data")
 	@ResponseBody
-	public Object listData(@RequestParam("ufSeq") String ufSeq, @RequestParam("tSeq") String tSeq)
+	public Object listData(@RequestParam("ufSeq") String ufSeq, @RequestParam("tseq") String tseq)
 	{
-		return uploadFileListService.getUploadFileLists(ufSeq, tSeq);
+		return uploadFileListService.getUploadFileLists(ufSeq, tseq);
 	}
 }

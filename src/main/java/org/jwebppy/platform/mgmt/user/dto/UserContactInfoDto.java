@@ -22,7 +22,7 @@ public class UserContactInfoDto extends MgmtGeneralDto
 {
 	private static final long serialVersionUID = -294539770292481386L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String email;
 	private String tel1;
 	private String tel2;

@@ -23,7 +23,7 @@ public class UserDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -3480128973325366274L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String firstName;
 	private String lastName;
 	private String enFirstName;
@@ -33,7 +33,7 @@ public class UserDto extends MgmtGeneralDto implements IPagination
 	private String department;
 	private String position;
 	private String language;
-	private List<Integer> uSeqs;
+	private List<Integer> useqs;
 	private UserAccountDto userAccount;
 	private UserContactInfoDto userContactInfo;
 	private UserGroupDto userGroup;
@@ -87,7 +87,7 @@ public class UserDto extends MgmtGeneralDto implements IPagination
 
 	public boolean isEmpty()
 	{
-		return (uSeq == null);
+		return (useq == null);
 	}
 
 	public boolean isNotEmpty()

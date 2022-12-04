@@ -51,21 +51,21 @@ public class PortalIndexController extends PlatformGeneralController
 	@RequestMapping("/forward/entry_point")
 	public Object forwardToEntryPoint(HttpServletRequest request)
 	{
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setUSeq(getUSeq());
+		CItemDto citem = contentAuthorityService.getMyEntryPoint(CItemSearchDto
+				.builder()
+				.useq(getUseq())
+				.build());
 
-		CItemDto cItem = contentAuthorityService.getMyEntryPoint(cItemSearch);
-
-		if (cItem == null)
+		if (citem == null)
 		{
 			return new ResponseEntity<>("<script>alert('" + i18nMessageSource.getMessage("PLTF_M_NOT_AUTHORIZED") + "'); document.location.href = '" + PortalConfigVo .FORM_LOGOUT_PROCESSING_URL + "';</script>", HttpStatus.UNAUTHORIZED);
 		}
 
 		UserDto user = userService.getUserByUsername(getUsername());
 
-		String url = cItem.getUrl();
+		String url = citem.getUrl();
 
-		if (CmStringUtils.isEmpty(cItem.getParameter()))
+		if (CmStringUtils.isEmpty(citem.getParameter()))
 		{
 			url += "?";
 		}

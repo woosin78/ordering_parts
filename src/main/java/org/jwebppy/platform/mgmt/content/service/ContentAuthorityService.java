@@ -7,13 +7,14 @@ import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.service.GeneralService;
 import org.jwebppy.platform.core.util.CmModelMapperUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.util.UserAuthenticationUtils;
 import org.jwebppy.platform.mgmt.authority.service.AuthorityService;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemSearchDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemType;
@@ -43,28 +44,28 @@ public class ContentAuthorityService extends GeneralService
 	@Autowired
 	private LangService langService;
 
-	public int save(CItemUserRlDto cItemUserRl)
+	public int save(CItemUserRlDto citemUserRl)
 	{
-		Integer uSeq = cItemUserRl.getUSeq();
+		Integer useq = citemUserRl.getUseq();
 
-		if (uSeq != null)
+		if (useq != null)
 		{
-			CItemUserRlEntity cItemUserRlEntity = new CItemUserRlEntity();
-			cItemUserRlEntity.setUSeq(uSeq);
-			cItemUserRlEntity.setFgDelete(MgmtCommonVo.YES);
+			contentMapper.deleteCitemUserRl(CItemUserRlEntity.builder()
+					.useq(useq)
+					.fgDelete(MgmtCommonVo.YES)
+					.build());
 
-			contentMapper.deleteCItemUserRl(cItemUserRlEntity);
+			List<Integer> cseqs = citemUserRl.getCseqs();
 
-			List<Integer> cSeqs = cItemUserRl.getCSeqs();
-
-			if (CollectionUtils.isNotEmpty(cSeqs))
+			if (CollectionUtils.isNotEmpty(cseqs))
 			{
-				for (Integer cSeq : cSeqs)
+				for (Integer cseq : cseqs)
 				{
-					cItemUserRlEntity.setCSeq(cSeq);
-					cItemUserRlEntity.setFgDelete(MgmtCommonVo.NO);
-
-					contentMapper.insertCItemUserRl(cItemUserRlEntity);
+					contentMapper.insertCitemUserRl(CItemUserRlEntity.builder()
+							.useq(useq)
+							.cseq(cseq)
+							.fgDelete(MgmtCommonVo.NO)
+							.build());
 				}
 
 				return 1;
@@ -74,28 +75,27 @@ public class ContentAuthorityService extends GeneralService
 		return 0;
 	}
 
-	public int saveByCItemName(CItemUserRlDto cItemUserRl)
+	public int saveByCItemName(CItemUserRlDto citemUserRl)
 	{
-		Integer uSeq = cItemUserRl.getUSeq();
+		Integer useq = citemUserRl.getUseq();
 
-		if (uSeq != null)
+		if (useq != null)
 		{
-			CItemSearchDto cItemSearch = new CItemSearchDto();
-			cItemSearch.setName(cItemUserRl.getName());
-			cItemSearch.setTypes(new CItemType[] { CItemType.R, CItemType.G  } );
+			List<CItemEntity> citems = contentMapper.findCitems(CItemSearchDto.builder()
+					.name(citemUserRl.getName())
+					.types(new CItemType[] { CItemType.R, CItemType.G  })
+					.build());
 
-			List<CItemEntity> cItems = contentMapper.findCItems(cItemSearch);
-
-			if (CollectionUtils.isNotEmpty(cItems))
+			if (CollectionUtils.isNotEmpty(citems))
 			{
-				CItemUserRlEntity cItemUserRlEntity = new CItemUserRlEntity();
+				CItemUserRlEntity citemUserRlEntity = CItemUserRlEntity.builder()
+						.useq(useq)
+						.cseq(citems.get(0).getCseq())
+						.name(citemUserRl.getName())
+						.fgDelete(MgmtCommonVo.NO)
+						.build();
 
-				cItemUserRlEntity.setUSeq(uSeq);
-				cItemUserRlEntity.setCSeq(cItems.get(0).getCSeq());
-				cItemUserRlEntity.setName(cItemUserRl.getName());
-				cItemUserRlEntity.setFgDelete(MgmtCommonVo.NO);
-
-				return contentMapper.insertCItemUserRl(cItemUserRlEntity);
+				return contentMapper.insertCitemUserRl(citemUserRlEntity);
 			}
 
 			return 0;
@@ -104,38 +104,36 @@ public class ContentAuthorityService extends GeneralService
 		return 0;
 	}
 
-	public List<CItemDto> getMyCItems(Integer uSeq)
+	public List<CItemDto> getMyCitems(Integer useq)
 	{
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setUSeq(uSeq);
-
-		return getMyCItems(cItemSearch);
+		return getMyCitems(CItemSearchDto.builder()
+				.useq(useq)
+				.build());
 	}
 
-	public List<CItemDto> getMyCItems(CItemSearchDto cItemSearch)
+	public List<CItemDto> getMyCitems(CItemSearchDto citemSearch)
 	{
-		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findMyCItems(cItemSearch));
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findMyCitems(citemSearch));
 	}
 
-	public List<CItemDto> getMyCItemHierarchy(CItemSearchDto cItemSearch)
+	public List<CItemDto> getMyCitemHierarchy(CItemSearchDto citemSearch)
 	{
-		List<CItemDto> myCItems = getMyCItems(cItemSearch);
+		List<CItemDto> myCitems = getMyCitems(citemSearch);
 
-		if (CollectionUtils.isNotEmpty(myCItems))
+		if (CollectionUtils.isNotEmpty(myCitems))
 		{
 			List<CItemDto> hierarchy = new LinkedList<>();
 
 			List<CItemDto> roles = new ArrayList<>();
 
-			for (CItemDto cItem : myCItems)
+			for (CItemDto citem : myCitems)
 			{
-				if (CItemType.G.equals(cItem.getType()))
+				if (CItemType.G.equals(citem.getType()))
 				{
-					CItemSearchDto cItemSearch2 = new CItemSearchDto();
-					cItemSearch2.setUSeq(cItemSearch.getUSeq());
-					cItemSearch2.setPSeq(cItem.getCSeq());
-
-					List<CItemDto> subRoles = authorityService.getSubRoles(cItemSearch2);
+					List<CItemDto> subRoles = authorityService.getSubRoles(CItemSearchDto.builder()
+							.useq(citemSearch.getUseq())
+							.pseq(citem.getCseq())
+							.build());
 
 					if (CollectionUtils.isNotEmpty(subRoles))
 					{
@@ -144,11 +142,11 @@ public class ContentAuthorityService extends GeneralService
 				}
 				else
 				{
-					roles.add(cItem);
+					roles.add(citem);
 				}
 			}
 
-			String lang = cItemSearch.getLang();
+			String lang = citemSearch.getLang();
 
 			if (CmStringUtils.isEmpty(lang))
 			{
@@ -162,16 +160,16 @@ public class ContentAuthorityService extends GeneralService
 				}
 			}
 
-			cItemSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
-			cItemSearch.setLang(lang);
-			cItemSearch.setFgVisible(MgmtCommonVo.YES);
+			citemSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
+			citemSearch.setLang(lang);
+			citemSearch.setFgVisible(MgmtCommonVo.YES);
 
-			List<CItemDto> cItems = ListUtils.emptyIfNull(contentService.getCItemsFormTree(cItemSearch));
+			List<CItemDto> citems = ListUtils.emptyIfNull(contentService.getCitemsFormTree(citemSearch));
 
 			for (CItemDto role : roles)
 			{
-				role.setName2(langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, role.getCSeq(), lang));
-				role.setSubCItems(getSubCItems2(role.getCSeq(), cItems));
+				role.setName2(langService.getCitemText(PlatformConfigVo.DEFAULT_BASENAME, role.getCseq(), lang));
+				role.setSubCitems(getSubCItems2(role.getCseq(), citems));
 
 				hierarchy.add(role);
 			}
@@ -182,17 +180,17 @@ public class ContentAuthorityService extends GeneralService
 		return Collections.emptyList();
 	}
 
-	public List<CItemDto> getSubCItems2(Integer cSeq, List<CItemDto> cItems)
+	public List<CItemDto> getSubCItems2(Integer cseq, List<CItemDto> citems)
 	{
 		List<CItemDto> subItems = new LinkedList<>();
 
-		for (int i=0, size=cItems.size(); i<size; i++)
+		for (int i=0, size=citems.size(); i<size; i++)
 		{
-			CItemDto subCItem = cItems.get(i);
+			CItemDto subCItem = citems.get(i);
 
-			if (cSeq.equals(subCItem.getPSeq()))
+			if (cseq.equals(subCItem.getPseq()))
 			{
-				subCItem.setSubCItems(getSubCItems2(subCItem.getCSeq(), cItems));
+				subCItem.setSubCitems(getSubCItems2(subCItem.getCseq(), citems));
 
 				subItems.add(subCItem);
 			}
@@ -201,55 +199,23 @@ public class ContentAuthorityService extends GeneralService
 		return subItems;
 	}
 
-	/*
-	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
-	public List<CItemDto> getSubCItems(Integer cSeq, String lang)
+	public CItemDto getMyEntryPoint(CItemSearchDto citemSearch)
 	{
-		List<CItemDto> cItems = new LinkedList<>();
+		List<CItemDto> citems = getMyCitemHierarchy(citemSearch);
 
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setPSeq(cSeq);
-		cItemSearch.setFgVisible(MgmtCommonVo.YES);
-
-		List<CItemDto> subCItems = contentService.getCItemHierarchy(cItemSearch);
-
-		if (CollectionUtils.isNotEmpty(subCItems))
+		if (CollectionUtils.isNotEmpty(citems))
 		{
-			for (CItemDto subCItem: subCItems)
+			for (CItemDto citem : citems)
 			{
-				Integer subCSeq = subCItem.getCSeq();
-
-				if (cSeq.equals(subCItem.getPSeq()))
+				if (CmStringUtils.isNotEmpty(citem.getEntryPoint()))
 				{
-					subCItem.setName2(langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCSeq, lang));
-					subCItem.setSubCItems(getSubCItems(subCSeq, lang));
-
-					cItems.add(subCItem);
-				}
-			}
-		}
-
-		return cItems;
-	}
-	*/
-
-	public CItemDto getMyEntryPoint(CItemSearchDto cItemSearch)
-	{
-		List<CItemDto> cItems = getMyCItemHierarchy(cItemSearch);
-
-		if (CollectionUtils.isNotEmpty(cItems))
-		{
-			for (CItemDto cItem : cItems)
-			{
-				if (CmStringUtils.isNotEmpty(cItem.getEntryPoint()))
-				{
-					return cItem;
+					return citem;
 				}
 
-				cItemSearch.setPSeq(cItem.getCSeq());
-				CItemDto subItem = getEntryPoint(cItemSearch);
+				citemSearch.setPseq(citem.getCseq());
+				CItemDto subItem = getEntryPoint(citemSearch);
 
-				if (subItem != null)
+				if (ObjectUtils.isNotEmpty(subItem))
 				{
 					return subItem;
 				}
@@ -259,15 +225,13 @@ public class ContentAuthorityService extends GeneralService
 		return null;
 	}
 
-	protected CItemDto getEntryPoint(CItemSearchDto cItemSearch)
+	protected CItemDto getEntryPoint(CItemSearchDto citemSearch)
 	{
-		List<CItemDto> cItems = contentService.getCItemHierarchy(cItemSearch);
-
-		for (CItemDto cItem: cItems)
+		for (CItemDto citem: contentService.getCitemHierarchy(citemSearch))
 		{
-			if (CmStringUtils.isNotEmpty(cItem.getEntryPoint()))
+			if (CmStringUtils.isNotEmpty(citem.getEntryPoint()))
 			{
-				return cItem;
+				return citem;
 			}
 		}
 

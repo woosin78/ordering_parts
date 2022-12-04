@@ -18,7 +18,7 @@ public class UserEntity extends MgmtGeneralEntity implements IPagination
 {
 	private static final long serialVersionUID = -6209378005125200210L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String firstName;
 	private String lastName;
 	private String enFirstName;

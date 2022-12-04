@@ -21,7 +21,7 @@ import lombok.experimental.SuperBuilder;
 public class LangEntity extends MgmtGeneralEntity implements IPagination
 {
 	private static final long serialVersionUID = -4634138279238831478L;
-	private Integer lSeq;
+	private Integer lseq;
 	private String basename;
 	private LangType type;
 	private String seq;

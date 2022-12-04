@@ -25,7 +25,7 @@ public class LoginHistoryEntity extends GeneralEntity
 	private String referer;
 	private String userAgent;
 	//private LocalDateTime accountLockedDate;
-	private Integer uSeq;
+	private Integer useq;
 	private String fgResult;
 	private String timezone;
 	private AuthenticationType authenticationType;

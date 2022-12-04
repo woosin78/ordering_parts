@@ -29,7 +29,7 @@ public class PlatformUserDetails implements UserDetails
 {
 	private static final long serialVersionUID = 5119166105899539942L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String name;
 	private String username;
 	private String password;
@@ -49,20 +49,20 @@ public class PlatformUserDetails implements UserDetails
 	private AuthenticationType authenticationType;
 	private String realUsername;
 
-	private List<CItemDto> cItems;
+	private List<CItemDto> citems;
 
 	private ErpUserContext erpUserContext;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities()
 	{
-		if (CollectionUtils.isNotEmpty(cItems))
+		if (CollectionUtils.isNotEmpty(citems))
 		{
 			List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
-	        for (CItemDto cItem : cItems)
+	        for (CItemDto citem : citems)
 	        {
-	        	authorities.add(new SimpleGrantedAuthority("ROLE_" + cItem.getName()));
+	        	authorities.add(new SimpleGrantedAuthority("ROLE_" + citem.getName()));
 	        }
 
 	        return authorities;

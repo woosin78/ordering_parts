@@ -21,10 +21,10 @@ public class CItemUserRlDto extends MgmtGeneralDto
 	private static final long serialVersionUID = 7178684901907973459L;
 
 	private Integer curSeq;
-	private Integer cSeq;
-	private Integer uSeq;
+	private Integer cseq;
+	private Integer useq;
 	@Builder.Default
 	private int sort = 100;
-	private List<Integer> cSeqs;
+	private List<Integer> cseqs;
 	private String name;
 }

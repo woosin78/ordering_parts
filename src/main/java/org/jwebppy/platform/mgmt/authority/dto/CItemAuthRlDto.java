@@ -21,11 +21,11 @@ public class CItemAuthRlDto extends MgmtGeneralDto
 	private static final long serialVersionUID = 2791017870334138849L;
 
 	private Integer carSeq;
-	private Integer pSeq;
-	private Integer cSeq;
+	private Integer pseq;
+	private Integer cseq;
 	@Builder.Default
 	private int sort = -1;
-	private List<Integer> cSeqs;
+	private List<Integer> cseqs;
 
 	public int getSort()
 	{

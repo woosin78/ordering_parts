@@ -68,10 +68,10 @@ public class LangController extends MgmtGeneralController
 
 		LangDto lang = null;
 
-		if (langSearch.getLSeq() != null)
+		if (langSearch.getLseq() != null)
 		{
 			LangDto pLang = new LangDto();
-			pLang.setLSeq(langSearch.getLSeq());
+			pLang.setLseq(langSearch.getLseq());
 
 			lang = langService.getLang(pLang);
 		}
@@ -83,7 +83,7 @@ public class LangController extends MgmtGeneralController
 
 				if (CollectionUtils.isNotEmpty(langDetails))
 				{
-					lang = langService.getLangByLSeq(langDetails.get(0).getLSeq());
+					lang = langService.getLangByLSeq(langDetails.get(0).getLseq());
 				}
 			}
 		}
@@ -126,10 +126,10 @@ public class LangController extends MgmtGeneralController
 
 	@PostMapping("/delete")
 	@ResponseBody
-	public Object delete(@RequestParam(value = "lSeq") List<Integer> lSeqs)
+	public Object delete(@RequestParam(value = "lseq") List<Integer> lseqs)
 	{
 		LangDto lang = new LangDto();
-		lang.setLSeqs(lSeqs);
+		lang.setLseqs(lseqs);
 
 		return langService.delete(lang);
 	}
@@ -155,15 +155,15 @@ public class LangController extends MgmtGeneralController
 
 	@GetMapping("/export")
 	@ResponseBody
-	public Object exporting(@RequestParam(value = "lSeq") List<Integer> lSeqs)
+	public Object exporting(@RequestParam(value = "lseq") List<Integer> lseqs)
 	{
-		if (CollectionUtils.isEmpty(lSeqs))
+		if (CollectionUtils.isEmpty(lseqs))
 		{
 			return EMPTY_RETURN_VALUE;
 		}
 
 		LangSearchDto langSearch = new LangSearchDto();
-		langSearch.setLSeqs(lSeqs);
+		langSearch.setLseqs(lseqs);
 
 		return langService.exportData(langSearch);
 	}
@@ -172,8 +172,6 @@ public class LangController extends MgmtGeneralController
 	@ResponseBody
 	public Object importing(@RequestBody List<LangDto> langs)
 	{
-		System.err.println(langs);
-
 		return EMPTY_RETURN_VALUE;
 	}
 }

@@ -41,7 +41,6 @@
 	<div class="column">
 		<div id="BTN_create" class="ui teal button"><i class="plus icon"></i> Create</div>
 		<div id="BTN_delete" class="ui teal button"><i class="minus icon"></i> Delete</div>
-		<div id="BTN_export" class="ui teal button"><i class="minus icon"></i> Export</div>
 	</div>
 </div>
 <div id="TBL_list"></div>
@@ -126,7 +125,7 @@ function doSearch(pageNumber)
 	langTable.load();
 };	
 
-function doAfterSavingLang(isNew, lSeq, basename)
+function doAfterSavingLang(isNew, lseq, basename)
 {
 	let pageNumber = $("#FORM_search input[name=pageNumber]:hidden").val(); 
 	

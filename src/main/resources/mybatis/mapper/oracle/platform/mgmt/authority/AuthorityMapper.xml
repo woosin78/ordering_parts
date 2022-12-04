@@ -9,14 +9,14 @@
 		</selectKey>	
 	
 		insert into pltf_citem_auth_rl (car_seq, p_seq, c_seq, sort, fg_delete, reg_username, reg_date) values (
-			#{carSeq}, #{pSeq}, #{cSeq}, #{sort}, #{fgDelete}, #{regUsername}, #{regDate}
+			#{carSeq}, #{pseq}, #{cseq}, #{sort}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
 	<update id="updateFgDeleteOfCItemAuthRl" parameterType="CItemAuthRlEntity">
 		update pltf_citem_auth_rl set fg_delete=#{fgDelete}, mod_username=#{modUsername}, mod_date=#{modDate}
 		where
-		p_seq=#{pSeq}
+		p_seq=#{pseq}
 	</update>
 
 	<select id="findCItemAuthorities" parameterType="CItemSearchDto" resultType="CItemEntity">
@@ -26,7 +26,7 @@
 		pltf_citem_auth_rl a,
 		pltf_citem b
 		where
-		a.p_seq=#{cSeq}
+		a.p_seq=#{cseq}
 		and a.fg_delete='N'
 		and a.c_seq=b.c_seq
 		and b.fg_delete='N'
@@ -42,7 +42,7 @@
 		a.fg_delete='N'
 		and b.fg_visible='Y'
 		and b.fg_delete='N'
-		and a.p_seq=#{pSeq}
+		and a.p_seq=#{pseq}
 		and a.c_seq=b.c_seq
 		order by b.sort, a.car_seq
 	</select>

@@ -28,55 +28,55 @@ public class GnbController extends MgmtGeneralController
 
 	@GetMapping("/menu")
 	@ResponseBody
-	public Object myMenu(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object menu(@ModelAttribute CItemSearchDto citemSearch)
 	{
-		List<Map<String, Object>> cItemsHierarchy = new LinkedList<>();
+		List<Map<String, Object>> citemsHierarchy = new LinkedList<>();
 
-		cItemSearch.setUSeq(getUSeq());
+		citemSearch.setUseq(getUseq());
 
-		List<CItemDto> cItems = contentAuthorityService.getMyCItemHierarchy(cItemSearch);
+		List<CItemDto> citems = contentAuthorityService.getMyCitemHierarchy(citemSearch);
 
-		for (CItemDto cItem : cItems)
+		for (CItemDto citem : citems)
 		{
 			Map<String, Object> itemMap = new LinkedHashMap<>();
-			itemMap.put("KEY", cItem.getCSeq());
-			itemMap.put("NAME", CmStringUtils.defaultIfEmpty(cItem.getName2(), cItem.getName()));
-			itemMap.put("TYPE", cItem.getType().toString());
-			itemMap.put("URL", CmStringUtils.trimToEmpty(cItem.getUrl()));
-			itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(cItem.getLaunchType()));
-			itemMap.put("WIDTH", CmStringUtils.trimToEmpty(cItem.getScrWidth()));
-			itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(cItem.getScrHeight()));
+			itemMap.put("KEY", citem.getCseq());
+			itemMap.put("NAME", CmStringUtils.defaultIfEmpty(citem.getName2(), citem.getName()));
+			itemMap.put("TYPE", citem.getType().toString());
+			itemMap.put("URL", CmStringUtils.trimToEmpty(citem.getUrl()));
+			itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(citem.getLaunchType()));
+			itemMap.put("WIDTH", CmStringUtils.trimToEmpty(citem.getScrWidth()));
+			itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(citem.getScrHeight()));
 
-			itemMap.put("SUB_ITEMS", getSubItems(cItem.getSubCItems()));
+			itemMap.put("SUB_ITEMS", getSubItems(citem.getSubCitems()));
 
-			cItemsHierarchy.add(itemMap);
+			citemsHierarchy.add(itemMap);
 		}
 
-		return cItemsHierarchy;
+		return citemsHierarchy;
 	}
 
-	protected List<Map<String, Object>> getSubItems(List<CItemDto> subCItems)
+	protected List<Map<String, Object>> getSubItems(List<CItemDto> subCitems)
 	{
-		List<Map<String, Object>> cItems = new LinkedList<>();
+		List<Map<String, Object>> citems = new LinkedList<>();
 
-		if (CollectionUtils.isNotEmpty(subCItems))
+		if (CollectionUtils.isNotEmpty(subCitems))
 		{
-			for (CItemDto subCItem: subCItems)
+			for (CItemDto subCItem: subCitems)
 			{
 				Map<String, Object> itemMap = new LinkedHashMap<>();
-				itemMap.put("KEY", subCItem.getCSeq());
+				itemMap.put("KEY", subCItem.getCseq());
 				itemMap.put("NAME", CmStringUtils.defaultIfEmpty(subCItem.getName2(), subCItem.getName()));
 				itemMap.put("TYPE", subCItem.getType().toString());
 				itemMap.put("URL", subCItem.getUrl());
 				itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(subCItem.getLaunchType()));
 				itemMap.put("WIDTH", CmStringUtils.trimToEmpty(subCItem.getScrWidth()));
 				itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(subCItem.getScrHeight()));
-				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getSubCItems()));
+				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getSubCitems()));
 
-				cItems.add(itemMap);
+				citems.add(itemMap);
 			}
 		}
 
-		return cItems;
+		return citems;
 	}
 }

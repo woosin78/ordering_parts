@@ -317,9 +317,10 @@ public class MyLocalLogger {
 					,"org.jwebppy.platform.core.security.authentication.service.LoginHistoryService"//로그인 이력
 					,"org.jwebppy.config.AsyncConfig$HandlingExecutor$2"//비동기 제외. (현재 로그출력에만 사용됨.)
 					)
-					|| (className.equals("org.jwebppy.platform.mgmt.user.service.UserService") && methodName.equals(".getUser("))//사용자 정보 조회
-					|| (className.equals("org.jwebppy.platform.mgmt.content.service.ContentAuthorityService") && methodName.equals(".getMyCItems("))//권한 조회
-					|| (className.equals("org.jwebppy.platform.mgmt.content.service.ContentService") && methodName.equals(".getCItemsFormTree("))//권한 조회
+					|| (className.equals("org.jwebppy.platform.mgmt.user.service.UserGroupService") && (methodName.equals(".getUserGroups(")))
+					|| (className.equals("org.jwebppy.platform.mgmt.user.service.UserService") && (methodName.equals(".getUser(") || methodName.equals(".getPageableUsers(")))//사용자 정보 조회
+					|| (className.equals("org.jwebppy.platform.mgmt.content.service.ContentAuthorityService") && methodName.equals(".getMyCitems("))//권한 조회
+					|| (className.equals("org.jwebppy.platform.mgmt.content.service.ContentService") && methodName.equals(".getCitemsFormTree("))//권한 조회
 					|| (className.equals("org.jwebppy.platform.mgmt.authority.service.AuthorityService") && methodName.equals(".getSubRoles("))//권한 조회
 					)
 			{
@@ -332,11 +333,10 @@ public class MyLocalLogger {
 					&& !className.equals("org.jwebppy.platform.core.util.MyJDBCFormater")
 					&& !className.equals("org.jwebppy.platform.core.dao.sap.SimpleRfcTemplate")
 					&& !className.equals("org.jwebppy.platform.core.dao.sap.RfcTemplate")
-					&& !className.startsWith("org.jwebppy.platform.core.interceptor.")
+					&& !className.startsWith("org.jwebppy.platform.core.interceptor")
 					&& !className.startsWith("org.jwebppy.platform.core.filter.PlatformRequestFilter")
 					&& className.indexOf("$$FastClassBySpringCGLIB$$") == -1
 					&& className.indexOf("$$EnhancerBySpringCGLIB$$") == -1
-					//&& (className.indexOf("$$EnhancerBySpringCGLIB$$") == -1 || callstack.indexOf(methodName) == -1)
 					)
 			{
 				callstack.append("   ").append(ti.toString()).append("\n");

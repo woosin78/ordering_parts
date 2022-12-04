@@ -25,7 +25,7 @@ public class UploadFileListDto extends MgmtGeneralDto
 
 	private String uflSeq;
 	private String ufSeq;
-	private String tSeq;
+	private String tseq;
 	private String originName;
 	private String savedName;
 	private String extension;

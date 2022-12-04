@@ -68,7 +68,7 @@ public class LoginHistoryService extends GeneralService
 			{
 				PlatformUserDetails platformUserDetails = UserAuthenticationUtils.getUserDetails();
 
-				loginHistory.setUSeq(platformUserDetails.getUSeq());
+				loginHistory.setUseq(platformUserDetails.getUseq());
 				loginHistory.setTimezone(platformUserDetails.getTimezone());
 				loginHistory.setAuthenticationType(platformUserDetails.getAuthenticationType());
 			}

@@ -48,77 +48,74 @@ public class ContentService extends GeneralService
 	@Autowired
 	private LangService langService;
 
-	public int create(CItemDto cItem)
+	public int create(CItemDto citem)
 	{
-		CItemEntity cItemEntity = CmModelMapperUtils.mapToEntity(CItemObjectMapper.INSTANCE, cItem);
+		CItemEntity citemEntity = CmModelMapperUtils.mapToEntity(CItemObjectMapper.INSTANCE, citem);
 
-		contentMapper.insert(cItemEntity);
+		contentMapper.insert(citemEntity);
 
-		return cItemEntity.getCSeq();
+		return citemEntity.getCseq();
 	}
 
-	public int modify(CItemDto cItem)
+	public int modify(CItemDto citem)
 	{
-		return contentMapper.update(CmModelMapperUtils.mapToEntity(CItemObjectMapper.INSTANCE, cItem));
+		return contentMapper.update(CmModelMapperUtils.mapToEntity(CItemObjectMapper.INSTANCE, citem));
 	}
 
-	public int save(CItemDto cItem)
+	public int save(CItemDto citem)
 	{
-		if (cItem.getCSeq() == null)
+		if (citem.getCseq() == null)
 		{
-			return create(cItem);
+			return create(citem);
 		}
 		else
 		{
-			return modify(cItem);
+			return modify(citem);
 		}
 	}
 
-	public int delete(List<Integer> cSeqs)
+	public int delete(List<Integer> cseqs)
 	{
-		if (CollectionUtils.isNotEmpty(cSeqs))
+		if (CollectionUtils.isNotEmpty(cseqs))
 		{
-			for (Integer cSeq: cSeqs)
+			for (Integer cseq: cseqs)
 			{
-				if (cSeq == null)
+				if (cseq == null)
 				{
 					continue;
 				}
 
-				delete(cSeq);
+				delete(cseq);
 			}
 		}
 
 		return 1;
 	}
 
-	public int delete(Integer cSeq)
+	public int delete(Integer cseq)
 	{
-		CItemDto cItem = getCItem(cSeq);
+		CItemDto citem = getCitem(cseq);
 
-		if (ObjectUtils.isNotEmpty(cItem))
+		if (ObjectUtils.isNotEmpty(citem))
 		{
-			if (cItem.getType().equals(CItemType.G))
+			if (citem.getType().equals(CItemType.G))
 			{
-				CItemEntity cItemEntity = new CItemEntity();
-				cItemEntity.setCSeq(cSeq);
-				cItemEntity.setFgDelete(MgmtCommonVo.YES);
-
-				return contentMapper.delete(cItemEntity);
+				return contentMapper.delete(CItemEntity.builder()
+						.cseq(cseq)
+						.build());
 			}
 
-			CItemSearchDto cItemSearch = new CItemSearchDto();
-			cItemSearch.setCSeq(cSeq);
+			List<Map<String, Object>> citems = getCitemHierarchy2(CItemSearchDto.builder()
+					.cseq(cseq)
+					.build());
 
-			List<Map<String, Object>> cItems = getCItemHierarchy2(cItemSearch);
-
-			if (CollectionUtils.isNotEmpty(cItems))
+			if (CollectionUtils.isNotEmpty(citems))
 			{
-				Map<String, Object> cItemMap = cItems.get(0);
+				Map<String, Object> citemMap = citems.get(0);
 
-				if (MapUtils.isNotEmpty(cItemMap))
+				if (MapUtils.isNotEmpty(citemMap))
 				{
-					delete(cItemMap);
+					delete(citemMap);
 				}
 			}
 
@@ -128,89 +125,90 @@ public class ContentService extends GeneralService
 		return 0;
 	}
 
-	private void delete(Map<String, Object> cItemMap)
+	private void delete(Map<String, Object> citemMap)
 	{
-		CItemEntity cItem = new CItemEntity();
-		cItem.setCSeq((Integer)cItemMap.get("KEY"));
-		cItem.setFgDelete(MgmtCommonVo.YES);
+		CItemEntity citem = new CItemEntity();
+		citem.setCseq((Integer)citemMap.get("KEY"));
+		citem.setFgDelete(MgmtCommonVo.YES);
 
-		contentMapper.delete(cItem);
+		contentMapper.delete(CItemEntity.builder()
+				.cseq((Integer)citemMap.get("KEY"))
+				.build());
 
-		List<Map<String, Object>> subCItems = (List<Map<String, Object>>)cItemMap.get("SUB_ITEMS");
+		List<Map<String, Object>> subCitems = (List<Map<String, Object>>)citemMap.get("SUB_ITEMS");
 
-		if (CollectionUtils.isNotEmpty(subCItems))
+		if (CollectionUtils.isNotEmpty(subCitems))
 		{
-			for (Map<String, Object> subItemMap: subCItems)
+			for (Map<String, Object> subItemMap: subCitems)
 			{
 				delete(subItemMap);
 			}
 		}
 	}
 
-	public int copy(Integer cSeq, Integer pSeq, String fgCopyWithSubItems)
+	public int copy(Integer cseq, Integer pseq, String fgCopyWithSubItems)
 	{
-		if (ObjectUtils.isEmpty(cSeq)|| ObjectUtils.isEmpty(pSeq))
+		if (ObjectUtils.isEmpty(cseq)|| ObjectUtils.isEmpty(pseq))
 		{
 			return -1;
 		}
 
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setCSeq(cSeq);
+		List<Map<String, Object>> citems = getCitemHierarchy2(CItemSearchDto.builder()
+				.cseq(cseq)
+				.build());
 
-		List<Map<String, Object>> cItems = getCItemHierarchy2(cItemSearch);
-
-		if (CollectionUtils.isNotEmpty(cItems))
+		if (CollectionUtils.isNotEmpty(citems))
 		{
 			if (CmStringUtils.equals(fgCopyWithSubItems, MgmtCommonVo.YES))
 			{
-				copy(cSeq, pSeq, cItems.get(0));
+				copy(cseq, pseq, citems.get(0));
 			}
 			else
 			{
-				copyCItem(cSeq, pSeq);
+				copyCItem(cseq, pseq);
 			}
 		}
 
 		return 1;
 	}
 
-	private void copy(Integer cSeq, Integer pSeq, Map<String, Object> cItemMap)
+	private void copy(Integer cseq, Integer pseq, Map<String, Object> citemMap)
 	{
-		pSeq = copyCItem(cSeq, pSeq);
+		pseq = copyCItem(cseq, pseq);
 
-		List<Map<String, Object>> subCItems = (List<Map<String, Object>>)cItemMap.get("SUB_ITEMS");
+		List<Map<String, Object>> subCitems = (List<Map<String, Object>>)citemMap.get("SUB_ITEMS");
 
-		if (CollectionUtils.isNotEmpty(subCItems))
+		if (CollectionUtils.isNotEmpty(subCitems))
 		{
-			for (Map<String, Object> subItemMap: subCItems)
+			for (Map<String, Object> subItemMap: subCitems)
 			{
-				copy((Integer)subItemMap.get("KEY"), pSeq, subItemMap);
+				copy((Integer)subItemMap.get("KEY"), pseq, subItemMap);
 			}
 		}
 	}
 
-	private Integer copyCItem(Integer cSeq, Integer pSeq)
+	private Integer copyCItem(Integer cseq, Integer pseq)
 	{
-		CItemDto cItem = getCItem(cSeq);
+		CItemDto citem = getCitem(cseq);
 
-		cItem.setCSeq(null);
-		cItem.setPSeq(pSeq);
-		cItem.setFromValid(LocalDateTime.now());
-		cItem.setToValid(LocalDateTime.now().plusYears(100));
-		cItem.setModDate(null);
-		cItem.setModUsername(null);
+		citem.setCseq(null);
+		citem.setPseq(pseq);
+		citem.setFromValid(LocalDateTime.now());
+		citem.setToValid(LocalDateTime.now().plusYears(100));
+		citem.setModDate(null);
+		citem.setModUsername(null);
 
-		if (cItem.getType().equals(CItemType.R))
+		if (citem.getType().equals(CItemType.R))
 		{
-			cItem.setName(cItem.getName() + "_" + CmDateFormatUtils.now());
+			citem.setName(citem.getName() + "_" + CmDateFormatUtils.now());
 		}
 
-		Integer nCseq = create(cItem);
+		Integer nCseq = create(citem);
 
 		if (ObjectUtils.isNotEmpty(nCseq))
 		{
 			//다국어 copy
-			copyCItemLang(cSeq, nCseq);
+			copyCItemLang(cseq, nCseq);
 		}
 
 		return nCseq;
@@ -218,211 +216,138 @@ public class ContentService extends GeneralService
 
 	public Integer copyCItemLang(Integer sCseq, Integer nCseq)
 	{
-		CItemLangRlDto cItemLangRlSearch = new CItemLangRlDto();
-		cItemLangRlSearch.setCSeq(sCseq);
-		cItemLangRlSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
+		List<CItemLangRlDto> citemLangRls = contentLangService.getCitemLangRls(CItemLangRlDto.builder()
+				.cseq(sCseq)
+				.basename(PlatformConfigVo.DEFAULT_BASENAME)
+				.build());
 
-		List<CItemLangRlDto> cItemLangRls = contentLangService.getCItemLangRls(cItemLangRlSearch);
-
-		if (CollectionUtils.isNotEmpty(cItemLangRls))
+		if (CollectionUtils.isNotEmpty(citemLangRls))
 		{
-			CItemLangRlDto cItemLangRl = cItemLangRls.get(0);
+			CItemLangRlDto citemLangRl = citemLangRls.get(0);
 
-			LangDto sLang = langService.getLangByLSeq(cItemLangRl.getLSeq());
+			LangDto slang = langService.getLangByLSeq(citemLangRl.getLseq());
 
-			List<LangDetailDto> nLangDetails = new ArrayList<LangDetailDto>();
+			List<LangDetailDto> nlangDetails = new ArrayList<LangDetailDto>();
 
-			for (LangDetailDto sLangDetail: ListUtils.emptyIfNull(sLang.getLangDetails()))
+			for (LangDetailDto slangDetail: ListUtils.emptyIfNull(slang.getLangDetails()))
 			{
-				LangDetailDto nLangDetail = new LangDetailDto();
-
-				nLangDetail.setLkSeq(sLangDetail.getLkSeq());
-				nLangDetail.setText(sLangDetail.getText());
-				nLangDetail.setFgDelete(MgmtCommonVo.NO);
-
-				nLangDetails.add(nLangDetail);
+				nlangDetails.add(LangDetailDto.builder()
+						.lkSeq(slangDetail.getLkSeq())
+						.text(slangDetail.getText())
+						.build());
 			}
 
-			LangDto nLang = new LangDto();
-			nLang.setBasename(sLang.getBasename());
-			nLang.setType(sLang.getType());
-			nLang.setFgDelete(MgmtCommonVo.NO);
-			nLang.setLangDetails(nLangDetails);
-
-			Integer nLseq = langService.save(nLang);
+			Integer nLseq = langService.save(LangDto.builder()
+					.basename(slang.getBasename())
+					.type(slang.getType())
+					.langDetails(nlangDetails)
+					.build());
 
 			if (ObjectUtils.isNotEmpty(nLseq))
 			{
-				CItemLangRlDto nCItemLangRl = new CItemLangRlDto();
-
-				nCItemLangRl.setCSeq(nCseq);
-				nCItemLangRl.setLSeq(nLseq);
-
-				return contentLangService.save(nCItemLangRl);
+				return contentLangService.save(CItemLangRlDto.builder()
+						.cseq(nCseq)
+						.lseq(nLseq)
+						.build());
 			}
 		}
 
 		return null;
 	}
 
-	public int move(Integer cSeq, Integer pSeq)
+	public int move(Integer cseq, Integer pseq)
 	{
-		CItemDto cItem = getCItem(cSeq);
-		cItem.setPSeq(pSeq);
+		CItemDto citem = getCitem(cseq);
+		citem.setPseq(pseq);
 
-		return contentMapper.update(CmModelMapperUtils.mapToEntity(CItemObjectMapper.INSTANCE, cItem));
+		return contentMapper.update(CmModelMapperUtils.mapToEntity(CItemObjectMapper.INSTANCE, citem));
 	}
 
 	public CItemDto getRoot()
 	{
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setName(PlatformConfigVo.CITEM_ROOT);
-
-		return getCItem(cItemSearch);
+		return getCitem(CItemSearchDto.builder()
+				.name(PlatformConfigVo.CITEM_ROOT)
+				.build());
 	}
 
-	public CItemDto getCItem(Integer cSeq)
+	public CItemDto getCitem(Integer cseq)
 	{
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setCSeq(cSeq);
-
-		return getCItem(cItemSearch);
+		return getCitem(CItemSearchDto.builder()
+				.cseq(cseq)
+				.build());
 	}
 
-	public CItemDto getCItem(CItemSearchDto cItemSearch)
+	public CItemDto getCitem(CItemSearchDto citemSearch)
 	{
-		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCItem(cItemSearch));
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCitem(citemSearch));
 	}
 
-	public List<CItemDto> getCItems(CItemSearchDto cItemSearch)
+	public List<CItemDto> getCitems(CItemSearchDto citemSearch)
 	{
-		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCItems(cItemSearch));
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCitems(citemSearch));
 	}
 
-	public List<CItemDto> getPageableCItems(CItemSearchDto cItemSearch)
+	public List<CItemDto> getPageableCitems(CItemSearchDto citemSearch)
 	{
-		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findPageCItems(cItemSearch));
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findPageCitems(citemSearch));
 	}
 
 	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
-	public List<CItemDto> getCItemHierarchy(CItemSearchDto cItemSearch)
+	public List<CItemDto> getCitemHierarchy(CItemSearchDto citemSearch)
 	{
-		List<CItemDto> cItems = new ArrayList<>();
+		List<CItemDto> citems = new ArrayList<>();
 
-		makeHierarchy(cItems, cItemSearch);
+		makeHierarchy(citems, citemSearch);
 
-		return cItems;
+		return citems;
 	}
 
-	private void makeHierarchy(List<CItemDto> cItems, CItemSearchDto cItemSearch)
+	private void makeHierarchy(List<CItemDto> citems, CItemSearchDto citemSearch)
 	{
-		List<CItemDto> subCItems = getCItems(cItemSearch);
+		List<CItemDto> subCitems = getCitems(citemSearch);
 
-		if (CollectionUtils.isNotEmpty(subCItems))
+		if (CollectionUtils.isNotEmpty(subCitems))
 		{
-			for (CItemDto subCItem: subCItems)
+			for (CItemDto subCItem: subCitems)
 			{
-				cItems.add(subCItem);
+				citems.add(subCItem);
 
-				CItemSearchDto subCItemSearch = new CItemSearchDto();
-				subCItemSearch.setPSeq(subCItem.getCSeq());
-				subCItemSearch.setFgVisible(MgmtCommonVo.YES);
-
-				makeHierarchy(cItems, subCItemSearch);
+				makeHierarchy(citems, CItemSearchDto.builder()
+						.pseq(subCItem.getCseq())
+						.fgVisible(MgmtCommonVo.YES)
+						.build());
 			}
 		}
 	}
 
-	/*
-	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
-	public List<Map<String, Object>> getCItemHierarchy2(CItemSearchDto cItemSearch)
+	public List<CItemDto> getCitemsFormTree(CItemSearchDto citemSearch)
 	{
-		cItemSearch.setTypes(new CItemType[] {CItemType.F, CItemType.R, CItemType.M, CItemType.P});
-
-		List<CItemDto> cItems = getCItems(cItemSearch);
-
-		if (CollectionUtils.isNotEmpty(cItems))
-		{
-			List<Map<String, Object>> hierarchy = new LinkedList<>();
-
-			CItemDto cItem = cItems.get(0);
-
-			Map<String, Object> itemMap = new HashMap<>();
-
-			itemMap.put("KEY", cItem.getCSeq());
-			itemMap.put("P_KEY", cItem.getPSeq());
-			itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, cItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
-			itemMap.put("TYPE", cItem.getType().getType());
-			itemMap.put("SUB_ITEMS", getSubItems(cItem.getCSeq()));
-
-			hierarchy.add(itemMap);
-
-			return hierarchy;
-		}
-
-		return Collections.emptyList();
-	}
-
-	private List<Map<String, Object>> getSubItems(Integer pSeq)
-	{
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setPSeq(pSeq);
-		cItemSearch.setTypes(new CItemType[] {CItemType.F, CItemType.R, CItemType.M, CItemType.P});
-
-		List<CItemDto> subCItems = getCItems(cItemSearch);
-
-		if (CollectionUtils.isNotEmpty(subCItems))
-		{
-			List<Map<String, Object>> hierarchy = new LinkedList<>();
-
-			for (CItemDto subCItem: subCItems)
-			{
-				Map<String, Object> itemMap = new HashMap<>();
-
-				itemMap.put("KEY", subCItem.getCSeq());
-				itemMap.put("P_KEY", subCItem.getPSeq());
-				itemMap.put("NAME", langService.getCItemText(PlatformConfigVo.DEFAULT_BASENAME, subCItem.getCSeq(), UserAuthenticationUtils.getUserDetails().getLanguage()));
-				itemMap.put("TYPE", subCItem.getType().getType());
-				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getCSeq()));
-
-				hierarchy.add(itemMap);
-			}
-
-			return hierarchy;
-		}
-
-		return Collections.emptyList();
-	}
-	*/
-
-	public List<CItemDto> getCItemsFormTree(CItemSearchDto cItemSearch)
-	{
-		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCItemsForTree(cItemSearch));
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, contentMapper.findCitemsForTree(citemSearch));
 	}
 
 	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
-	public List<Map<String, Object>> getCItemHierarchy2(CItemSearchDto cItemSearch)
+	public List<Map<String, Object>> getCitemHierarchy2(CItemSearchDto citemSearch)
 	{
-		cItemSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
-		cItemSearch.setLang(UserAuthenticationUtils.getUserDetails().getLanguage());
+		citemSearch.setBasename(PlatformConfigVo.DEFAULT_BASENAME);
+		citemSearch.setLang(UserAuthenticationUtils.getUserDetails().getLanguage());
 
-		List<CItemDto> cItems = getCItemsFormTree(cItemSearch);
+		List<CItemDto> citems = getCitemsFormTree(citemSearch);
 
-		if (CollectionUtils.isNotEmpty(cItems))
+		if (CollectionUtils.isNotEmpty(citems))
 		{
 			List<Map<String, Object>> hierarchy = new LinkedList<>();
 
-			CItemDto cItem = cItems.get(0);
+			CItemDto citem = citems.get(0);
 
 			Map<String, Object> itemMap = new HashMap<String, Object>();
-			itemMap.put("KEY", cItem.getCSeq());
-			itemMap.put("P_KEY", CmStringUtils.trimToEmpty(cItem.getPSeq()));
-			itemMap.put("NAME", CmStringUtils.defaultIfEmpty(cItem.getName2(), cItem.getName()));
-			itemMap.put("TYPE", cItem.getType().getType());
-			itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(cItem.getLaunchType()));
-			itemMap.put("WIDTH", CmStringUtils.trimToEmpty(cItem.getScrWidth()));
-			itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(cItem.getScrHeight()));
-			itemMap.put("SUB_ITEMS", getSubItems(cItem.getCSeq(), cItems));
+			itemMap.put("KEY", citem.getCseq());
+			itemMap.put("P_KEY", CmStringUtils.trimToEmpty(citem.getPseq()));
+			itemMap.put("NAME", CmStringUtils.defaultIfEmpty(citem.getName2(), citem.getName()));
+			itemMap.put("TYPE", citem.getType().getType());
+			itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(citem.getLaunchType()));
+			itemMap.put("WIDTH", CmStringUtils.trimToEmpty(citem.getScrWidth()));
+			itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(citem.getScrHeight()));
+			itemMap.put("SUB_ITEMS", getSubItems(citem.getCseq(), citems));
 
 			hierarchy.add(itemMap);
 
@@ -432,25 +357,25 @@ public class ContentService extends GeneralService
 		return Collections.emptyList();
 	}
 
-	public List<Map<String, Object>> getSubItems(Integer cSeq, List<CItemDto> cItems)
+	public List<Map<String, Object>> getSubItems(Integer cseq, List<CItemDto> citems)
 	{
 		List<Map<String, Object>> subItems = new LinkedList<>();
 
-		for (int i=0, size=cItems.size(); i<size; i++)
+		for (int i=0, size=citems.size(); i<size; i++)
 		{
-			CItemDto subCItem = cItems.get(i);
+			CItemDto subCItem = citems.get(i);
 
-			if (cSeq.equals(subCItem.getPSeq()))
+			if (cseq.equals(subCItem.getPseq()))
 			{
 				Map<String, Object> itemMap = new HashMap<String, Object>();
-				itemMap.put("KEY", subCItem.getCSeq());
-				itemMap.put("P_KEY", CmStringUtils.trimToEmpty(subCItem.getPSeq()));
+				itemMap.put("KEY", subCItem.getCseq());
+				itemMap.put("P_KEY", CmStringUtils.trimToEmpty(subCItem.getPseq()));
 				itemMap.put("NAME", CmStringUtils.defaultIfEmpty(subCItem.getName2(), subCItem.getName()));
 				itemMap.put("TYPE", subCItem.getType().getType());
 				itemMap.put("LAUNCH_TYPE", CmStringUtils.trimToEmpty(subCItem.getLaunchType()));
 				itemMap.put("WIDTH", CmStringUtils.trimToEmpty(subCItem.getScrWidth()));
 				itemMap.put("HEIGHT", CmStringUtils.trimToEmpty(subCItem.getScrHeight()));
-				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getCSeq(), cItems));
+				itemMap.put("SUB_ITEMS", getSubItems(subCItem.getCseq(), citems));
 
 				subItems.add(itemMap);
 			}

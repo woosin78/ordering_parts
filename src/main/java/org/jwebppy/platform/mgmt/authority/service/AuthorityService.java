@@ -25,47 +25,47 @@ public class AuthorityService
 	@Autowired
 	private AuthorityMapper authorityMapper;
 
-	public List<CItemDto> getCItemAuthorities(CItemSearchDto cItemSearch)
+	public List<CItemDto> getCitemAuthorities(CItemSearchDto citemSearch)
 	{
-		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, authorityMapper.findCItemAuthorities(cItemSearch));
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, authorityMapper.findCItemAuthorities(citemSearch));
 	}
 
 	@Cacheable(value = CacheConfig.CITEM, unless="#result == null")
-	public List<CItemDto> getSubRoles(CItemSearchDto cItemSearch)
+	public List<CItemDto> getSubRoles(CItemSearchDto citemSearch)
 	{
-		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, authorityMapper.findSubRoles(cItemSearch));
+		return CmModelMapperUtils.mapToDto(CItemObjectMapper.INSTANCE, authorityMapper.findSubRoles(citemSearch));
 	}
 
 	//현재 가지고 있는 권한을 모두 삭제 한 후 부여
 	@CacheEvict (value = CacheConfig.CITEM, allEntries = true)
-	public int save(CItemAuthRlDto cItemAuthRl)
+	public int save(CItemAuthRlDto citemAuthRl)
 	{
-		Integer pSeq = cItemAuthRl.getPSeq();
+		Integer pseq = citemAuthRl.getPseq();
 
-		if (pSeq != null)
+		if (pseq != null)
 		{
-			CItemAuthRlEntity cItemUserRlEntity = new CItemAuthRlEntity();
-			cItemUserRlEntity.setPSeq(pSeq);
-			cItemUserRlEntity.setFgDelete(MgmtCommonVo.YES);
+			CItemAuthRlEntity citemUserRlEntity = new CItemAuthRlEntity();
+			citemUserRlEntity.setPseq(pseq);
+			citemUserRlEntity.setFgDelete(MgmtCommonVo.YES);
 
-			authorityMapper.updateFgDeleteOfCItemAuthRl(cItemUserRlEntity);
+			authorityMapper.updateFgDeleteOfCItemAuthRl(citemUserRlEntity);
 
-			List<Integer> cSeqs = cItemAuthRl.getCSeqs();
+			List<Integer> cseqs = citemAuthRl.getCseqs();
 
-			if (CollectionUtils.isNotEmpty(cSeqs))
+			if (CollectionUtils.isNotEmpty(cseqs))
 			{
-				for (Integer cSeq : cSeqs)
+				for (Integer cseq : cseqs)
 				{
-					if (cSeq == null || cSeq.equals(pSeq))
+					if (cseq == null || cseq.equals(pseq))
 					{
 						continue;
 					}
 
-					cItemUserRlEntity.setCSeq(cSeq);
-					cItemUserRlEntity.setFgDelete(MgmtCommonVo.NO);
-					cItemUserRlEntity.setSort(100);
+					citemUserRlEntity.setCseq(cseq);
+					citemUserRlEntity.setFgDelete(MgmtCommonVo.NO);
+					citemUserRlEntity.setSort(100);
 
-					authorityMapper.insertCItemAuthRl(cItemUserRlEntity);
+					authorityMapper.insertCItemAuthRl(citemUserRlEntity);
 				}
 
 				return 1;

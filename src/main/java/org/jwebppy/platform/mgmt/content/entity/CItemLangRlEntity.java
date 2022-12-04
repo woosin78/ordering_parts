@@ -18,6 +18,6 @@ public class CItemLangRlEntity extends MgmtGeneralEntity
 	private static final long serialVersionUID = -8895372975976962612L;
 
 	private Integer clrSeq;
-	private Integer cSeq;
-	private Integer lSeq;
+	private Integer cseq;
+	private Integer lseq;
 }

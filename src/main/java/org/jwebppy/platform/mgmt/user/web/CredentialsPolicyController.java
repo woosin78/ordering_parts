@@ -6,10 +6,10 @@ import java.util.Map;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.i18n.resource.I18nMessageSource;
 import org.jwebppy.platform.mgmt.user.UserGeneralController;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
@@ -110,9 +110,9 @@ public class CredentialsPolicyController extends UserGeneralController
 
 		if (CmStringUtils.equals(MgmtCommonVo.NO, credentialsPolicy.getFgUsePwdFailPenalty()))
 		{
-			credentialsPolicy.setPAllowableFailCount(null);
-			credentialsPolicy.setPFailCheckDuration(null);
-			credentialsPolicy.setPFreezingDuration(null);
+			credentialsPolicy.setPallowableFailCount(null);
+			credentialsPolicy.setPfailCheckDuration(null);
+			credentialsPolicy.setPfreezingDuration(null);
 		}
 
 		return credentialsPolicyService.save(credentialsPolicy);

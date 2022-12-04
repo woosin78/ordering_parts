@@ -20,22 +20,22 @@ public class ContentLangService extends GeneralService
 	@Autowired
 	private ContentMapper contentMapper;
 
-	public int save(CItemLangRlDto cItemLangRl)
+	public int save(CItemLangRlDto citemLangRl)
 	{
-		if (CollectionUtils.isEmpty(getCItemLangRls(cItemLangRl)))
+		if (CollectionUtils.isEmpty(getCitemLangRls(citemLangRl)))
 		{
-			CItemLangRlEntity cItemLangRlEntity = CmModelMapperUtils.mapToEntity(CItemLangRlObjectMapper.INSTANCE, cItemLangRl);
+			CItemLangRlEntity citemLangRlEntity = CmModelMapperUtils.mapToEntity(CItemLangRlObjectMapper.INSTANCE, citemLangRl);
 
-			contentMapper.insertCItemLangRl(cItemLangRlEntity);
+			contentMapper.insertCitemLangRl(citemLangRlEntity);
 
-			return cItemLangRlEntity.getClrSeq();
+			return citemLangRlEntity.getClrSeq();
 		}
 
 		return 0;
 	}
 
-	public List<CItemLangRlDto> getCItemLangRls(CItemLangRlDto cItemLangRl)
+	public List<CItemLangRlDto> getCitemLangRls(CItemLangRlDto citemLangRl)
 	{
-		return CmModelMapperUtils.mapToDto(CItemLangRlObjectMapper.INSTANCE, contentMapper.findCItemLangRls(cItemLangRl));
+		return CmModelMapperUtils.mapToDto(CItemLangRlObjectMapper.INSTANCE, contentMapper.findCitemLangRls(citemLangRl));
 	}
 }

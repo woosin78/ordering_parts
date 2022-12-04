@@ -78,7 +78,7 @@ public class PlatformAuthenticationFilter extends UsernamePasswordAuthentication
 
 				if (freezingTime > 0)
 				{
-					throw new AllowableCredentialsFailureException(i18nMessageSource.getMessage("PLTF_M_EXCEEDED_ALLOWABLE_FAILURE_COUNT", new Object[] { credentialsPolicy.getPAllowableFailCount(), freezingTime}));
+					throw new AllowableCredentialsFailureException(i18nMessageSource.getMessage("PLTF_M_EXCEEDED_ALLOWABLE_FAILURE_COUNT", new Object[] { credentialsPolicy.getPallowableFailCount(), freezingTime}));
 				}
 				else
 				{

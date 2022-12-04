@@ -174,7 +174,7 @@ public class RequestMonitorAspect
 	{
 		if (UserAuthenticationUtils.isAuthenticated())
 		{
-			SecurityContextHolder.getContext().setAuthentication(userAuthenticationService.getAuthentication(UserAuthenticationUtils.getUSeq()));
+			SecurityContextHolder.getContext().setAuthentication(userAuthenticationService.getAuthentication(UserAuthenticationUtils.getUseq()));
 		}
 	}
 }

@@ -8,7 +8,6 @@ import java.util.Map;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -26,6 +25,7 @@ import org.jwebppy.platform.core.web.ui.dom.table.Thead;
 import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
 import org.jwebppy.platform.mgmt.user.dto.UserAccountDto;
@@ -65,16 +65,16 @@ public class UserLayoutBuilder
 
 				String fgAccountLocked = "";
 
-				if (ObjectUtils.isNotEmpty(userAccount.getUSeq()))
+				if (ObjectUtils.isNotEmpty(userAccount.getUseq()))
 				{
 					fgAccountLocked = userAccount.getFgAccountLocked();
 				}
 
 				Tr tbTr = new Tr();
-				tbTr.addDataKeyCheckboxTd("uSeq", user.getUSeq());
+				tbTr.addDataKeyCheckboxTd("useq", user.getUseq());
 				tbTr.addTextTd(fgAccountLocked);
 				tbTr.addTextTd(userAccount.getUsername());
-				tbTr.addDataKeyLinkTd(user.getName(), user.getUSeq());
+				tbTr.addDataKeyLinkTd(user.getName(), user.getUseq());
 				tbTr.addTextTd(userContactInfo.getEmail());
 				tbTr.addDataKeyLinkTd(user.getUserGroup().getName(), user.getUserGroup().getUgSeq());
 				tbTr.addTextTd(user.getRegUsername());
@@ -97,8 +97,8 @@ public class UserLayoutBuilder
 		loUserGroup.setKey(user.getUserGroup().getUgSeq());
 
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Last Name", user.getLastName());
 		elementMap.put("First Name", user.getFirstName());
+		elementMap.put("Last Name", user.getLastName());
 		elementMap.put("Company", user.getCompany());
 		elementMap.put("Organization", user.getOrganization());
 		elementMap.put("Position", user.getPosition());
@@ -118,12 +118,12 @@ public class UserLayoutBuilder
 
 	public static Document writeGeneralInfo(UserDto user, List<UserGroupDto> userGroups)
 	{
+		Input loFirstName = new Input("firstName", user.getFirstName());
+		loFirstName.setLabel("First Name");
+
 		Input loLastName = new Input("lastName", user.getLastName());
 		loLastName.setLabel("Last Name");
 		loLastName.setRequired(true);
-
-		Input loFirstName = new Input("firstName", user.getFirstName());
-		loFirstName.setLabel("First Name");
 
 		Input loCompany = new Input("company", user.getCompany());
 		loCompany.setLabel("Company");
@@ -165,8 +165,8 @@ public class UserLayoutBuilder
 		}
 
 		Document document = new Document();
-		document.addElement(loLastName);
 		document.addElement(loFirstName);
+		document.addElement(loLastName);
 		document.addElement(loCompany);
 		document.addElement(loOrganization);
 		document.addElement(loPosition);
@@ -253,6 +253,7 @@ public class UserLayoutBuilder
 
 		Document document = new Document();
 		document.addElement(loCredentialPolicy);
+		document.addElement(PlatformLayoutBuildUtils.defaultLabelText("Username", userAccount.getUsername()));
 
 		if (CmStringUtils.isEmpty(userAccount.getUsername()))
 		{
@@ -381,19 +382,19 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document viewAuthority(List<CItemDto> cItems)
+	public static Document viewAuthority(List<CItemDto> citems)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
 
-		for (CItemDto cItem : ListUtils.emptyIfNull(cItems))
+		for (CItemDto citem : ListUtils.emptyIfNull(citems))
 		{
-			Link loAuthority = new Link(cItem.getName());
+			Link loAuthority = new Link(citem.getName());
 			loAuthority.setClass("authority");
-			loAuthority.setKey(cItem.getCSeq());
-			loAuthority.addAttribute("data-type", cItem.getType());
+			loAuthority.setKey(citem.getCseq());
+			loAuthority.addAttribute("data-type", citem.getType());
 
 			StringBuilder name = new StringBuilder();
-			name.append("[").append(cItem.getType().getType()).append( "] ").append(cItem.getDescription());
+			name.append("[").append(citem.getType().getType()).append( "] ").append(citem.getDescription());
 
 			elementMap.put(name.toString(), loAuthority);
 		}
@@ -404,7 +405,7 @@ public class UserLayoutBuilder
 		return document;
 	}
 
-	public static Document writeAuthority(List<CItemDto> cItems)
+	public static Document writeAuthority(List<CItemDto> citems)
 	{
 		Tr thTr = new Tr();
 		thTr.addCheckAllTh();
@@ -417,15 +418,15 @@ public class UserLayoutBuilder
 
 		Tbody tbody = new Tbody();
 
-		if (CollectionUtils.isNotEmpty(cItems))
+		if (CollectionUtils.isNotEmpty(citems))
 		{
-			for (CItemDto cItemDto : cItems)
+			for (CItemDto citemDto : citems)
 			{
 				Tr tbTr = new Tr();
-				tbTr.addDataKeyCheckboxTd("cSeq", cItemDto.getCSeq());
-				tbTr.addTextTd(cItemDto.getType().getType());
-				tbTr.addTextTd(cItemDto.getName());
-				tbTr.addTextTd(cItemDto.getDescription());
+				tbTr.addDataKeyCheckboxTd("cseq", citemDto.getCseq());
+				tbTr.addTextTd(citemDto.getType().getType());
+				tbTr.addTextTd(citemDto.getName());
+				tbTr.addTextTd(citemDto.getDescription());
 
 				tbody.addTr(tbTr);
 			}

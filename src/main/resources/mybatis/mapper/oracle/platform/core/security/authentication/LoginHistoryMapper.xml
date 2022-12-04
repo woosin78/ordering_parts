@@ -11,7 +11,7 @@
 		<result property="referer" column="referer" />
 		<result property="userAgent" column="user_agent" />
 		<!-- result property="accountLockedDate" column="account_locked_date" / -->
-		<result property="uSeq" column="u_seq" />
+		<result property="useq" column="u_seq" />
 		<result property="fgResult" column="fg_result" />
 		<result property="timezone" column="timezone" />
 		<result property="regDate" column="reg_date" />
@@ -21,7 +21,7 @@
 	<insert id="insertLoginHistory" parameterType="LoginHistoryEntity">
 		insert into pltf_login_history (lh_seq, username, session_id, ip, referer, user_agent, <!--account_locked_date,--> u_seq, fg_result, timezone, reg_date, auth_type) values
 		(
-			pltf_lh_seq.nextval, #{username}, #{sessionId}, #{ip}, #{referer}, #{userAgent}, <!--#{accountLockedDate},--> #{uSeq}, #{fgResult}, #{timezone}, #{regDate}, #{authenticationType}
+			pltf_lh_seq.nextval, #{username}, #{sessionId}, #{ip}, #{referer}, #{userAgent}, <!--#{accountLockedDate},--> #{useq}, #{fgResult}, #{timezone}, #{regDate}, #{authenticationType}
 		)
 	</insert>
 	
@@ -35,8 +35,8 @@
 
 		<where>
 			<trim prefixOverrides="and">
-				<if test="uSeq != null">					
-					and a.u_seq=#{uSeq}
+				<if test="useq != null">					
+					and a.u_seq=#{useq}
 				</if>
 						
 				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">

@@ -133,7 +133,7 @@ public class RfcExecutionAspect
 
 				if (CmStringUtils.isEmpty(rfcRequest.getConnectorName()))
 				{
-					UserDto user = userService.getUser(UserAuthenticationUtils.getUSeq());
+					UserDto user = userService.getUser(UserAuthenticationUtils.getUseq());
 
 					if (user != null)
 					{

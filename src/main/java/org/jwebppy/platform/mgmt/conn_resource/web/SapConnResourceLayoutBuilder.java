@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
 import org.jwebppy.platform.core.web.ui.dom.Element;
@@ -21,6 +19,7 @@ import org.jwebppy.platform.core.web.ui.dom.table.Thead;
 import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnType;
 
@@ -51,15 +50,7 @@ public class SapConnResourceLayoutBuilder
 		{
 			Tr tbTr = new Tr();
 
-			if (CollectionUtils.isEmpty(sapConnResource.getUserGroups()))
-			{
-				tbTr.addDataKeyCheckboxTd("scrSeq", sapConnResource.getScrSeq());
-			}
-			else
-			{
-				tbTr.addEmptyTd();
-			}
-
+			tbTr.addDataKeyCheckboxTd("scrSeq", sapConnResource.getScrSeq());
 			tbTr.addDataKeyLinkTd(sapConnResource.getName(), sapConnResource.getScrSeq());
 			tbTr.addTextTd(sapConnResource.getDescription());
 			tbTr.addTextTd(sapConnResource.getType().getType());

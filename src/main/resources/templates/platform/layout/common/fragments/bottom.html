@@ -153,18 +153,18 @@ function makeGnb()
 		}
 	});
 	
-	let makeItems = function (cItem)
+	let makeItems = function (citem)
 	{
-		let length = (cItem.SUB_ITEMS != null) ? cItem.SUB_ITEMS.length : 0;
+		let length = (citem.SUB_ITEMS != null) ? citem.SUB_ITEMS.length : 0;
 		
 		menu.push("<span class='text'");
 		
 		if (length == 0)
 		{
-			menu.push(" url='" + JpUtilsPath.url(cItem.URL) + "'");	
+			menu.push(" url='" + JpUtilsPath.url(citem.URL) + "'");	
 		};
 		
-		menu.push(">" + cItem.NAME + "</span>");
+		menu.push(">" + citem.NAME + "</span>");
 		
 		if (length > 0)
 		{
@@ -174,7 +174,7 @@ function makeGnb()
 			for (let i=0; i<length; i++)
 			{
 				menu.push("<div class='item'>");
-				makeItems(cItem.SUB_ITEMS[i]);
+				makeItems(citem.SUB_ITEMS[i]);
 				menu.push("</div>");
 			};
 			

@@ -20,7 +20,7 @@ public class UserSearchDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = -6452889800109776370L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -28,13 +28,13 @@ public class UserSearchDto extends MgmtGeneralDto implements IPagination
 	private String country;
 	private String timezone;
 	private String query;
-	private Integer cSeq;
+	private Integer cseq;
 	private Integer ugSeq;
 	private List<String> usernames;
 
-	public UserSearchDto(Integer uSeq)
+	public UserSearchDto(Integer useq)
 	{
-		this.uSeq = uSeq;
+		this.useq = useq;
 	}
 
 	public UserSearchDto(String username)

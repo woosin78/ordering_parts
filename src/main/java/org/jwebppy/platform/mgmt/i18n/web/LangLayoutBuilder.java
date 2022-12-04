@@ -46,8 +46,8 @@ public class LangLayoutBuilder
 		for (LangDto lang : langs)
 		{
 			Tr tbTr = new Tr();
-			tbTr.addDataKeyCheckboxTd("lSeq", lang.getLSeq());
-			tbTr.addDataKeyLinkTd(lang.getCode(), lang.getLSeq());
+			tbTr.addDataKeyCheckboxTd("lseq", lang.getLseq());
+			tbTr.addDataKeyLinkTd(lang.getCode(), lang.getLseq());
 
 			Collection<LangDetailDto> LangDetails = CollectionUtils.emptyIfNull(lang.getLangDetails());
 

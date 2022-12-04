@@ -9,7 +9,7 @@
 		</selectKey>
 
 		insert into pltf_download_file_history (dfh_seq, ufl_seq, u_seq, origin_name, saved_name, reg_username, reg_date, path) values (
-			#{dfhSeq}, #{uflSeq}, ${uSeq}, #{originName}, #{savedName}, #{regUsername}, #{regDate}, #{path}
+			#{dfhSeq}, #{uflSeq}, ${useq}, #{originName}, #{savedName}, #{regUsername}, #{regDate}, #{path}
 		)
 	</insert>
 	

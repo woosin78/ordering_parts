@@ -59,11 +59,10 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 		{
 			UserAccountDto userAccount = userService.getUserByUsername(username).getUserAccount();
 
-			AccountLockedReason accountLockedReason = new AccountLockedReason();
-			accountLockedReason.setLoginFreezingBy(LocalDateTime.now().plusSeconds(checkResult[2]));
-			accountLockedReason.setCredentialsPolicy(userAccount.getCredentialsPolicy());
-
-			request.getSession().setAttribute("ACCOUNT_LOCKED_REASON", accountLockedReason);
+			request.getSession().setAttribute("ACCOUNT_LOCKED_REASON", AccountLockedReason.builder()
+					.loginFreezingBy(LocalDateTime.now().plusSeconds(checkResult[2]))
+					.credentialsPolicy(userAccount.getCredentialsPolicy())
+					.build());
 		}
 
 		response.setHeader("Login-Error-Type", CmClassUtils.getShortClassName(exception.getClass()).replaceAll("Exception", "") + ":" + exception.getMessage());
@@ -78,7 +77,6 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 			request.getSession().setAttribute(PlatformConfigVo.FORM_LOGIN_USERNAME, username);
 		}
 
-		//request.getRequestDispatcher(PlatformConfigVo.FORM_LOGIN_PAGE_URL).forward(request, response);
 		request.getRequestDispatcher(loginPageUrl).forward(request, response);
 	}
 
@@ -92,19 +90,18 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 
 			if (CmStringUtils.equals(PlatformCommonVo.YES, credentialsPolicy.getFgUsePwdFailPenalty()))
 			{
-				long pwdFailCheckDuration = NumberUtils.toInt(credentialsPolicy.getPFailCheckDuration(), 0);
+				long pwdFailCheckDuration = NumberUtils.toInt(credentialsPolicy.getPfailCheckDuration(), 0);
 
 				if (pwdFailCheckDuration > 0)
 				{
-					int allowablePwdFailCount = NumberUtils.toInt(credentialsPolicy.getPAllowableFailCount(), 0);
+					int allowablePwdFailCount = NumberUtils.toInt(credentialsPolicy.getPallowableFailCount(), 0);
 
 					if (allowablePwdFailCount > 0)
 					{
-						LoginHistorySearchDto loginHistorySearch = new LoginHistorySearchDto();
-						loginHistorySearch.setUsername(username);
-						loginHistorySearch.setFromDate(LocalDateTime.now().minusSeconds(pwdFailCheckDuration));
-
-						List<LoginHistoryDto> loginHistories = ListUtils.emptyIfNull(loginHistoryService.getPageableLoginHistories(loginHistorySearch));
+						List<LoginHistoryDto> loginHistories = ListUtils.emptyIfNull(loginHistoryService.getPageableLoginHistories(LoginHistorySearchDto.builder()
+								.username(username)
+								.fromDate(LocalDateTime.now().minusSeconds(pwdFailCheckDuration))
+								.build()));
 
 						int failCount = 0;
 
@@ -118,7 +115,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler
 							failCount++;
 						}
 
-						return new long[] {failCount, allowablePwdFailCount, NumberUtils.toInt(credentialsPolicy.getPFreezingDuration(), 300)};
+						return new long[] {failCount, allowablePwdFailCount, NumberUtils.toInt(credentialsPolicy.getPfreezingDuration(), 300)};
 					}
 				}
 			}

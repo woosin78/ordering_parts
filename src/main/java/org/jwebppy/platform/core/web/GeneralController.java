@@ -73,9 +73,9 @@ public abstract class GeneralController
 		webDataBinder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 	}
 
-	protected Integer getUSeq()
+	protected Integer getUseq()
 	{
-		return UserAuthenticationUtils.getUserDetails().getUSeq();
+		return UserAuthenticationUtils.getUseq();
 	}
 
 	protected String getUsername()

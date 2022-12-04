@@ -43,9 +43,9 @@ public class LangService extends MgmtGeneralService
 	public int save(LangDto lang)
 	{
 		LangEntity langEntity = null;
-		Integer lSeq = null;
+		Integer lseq = null;
 
-		if (lang.getLSeq() != null)
+		if (lang.getLseq() != null)
 		{
 			langEntity = langMapper.findLang(lang);
 		}
@@ -61,17 +61,17 @@ public class LangService extends MgmtGeneralService
 
 			langMapper.insertLang(langEntity);
 
-			lSeq = langEntity.getLSeq();
+			lseq = langEntity.getLseq();
 		}
 		else
 		{
 			langMapper.updateLang(LangObjectMapper.INSTANCE.toEntity(lang));
-			lSeq = langEntity.getLSeq();
+			lseq = langEntity.getLseq();
 		}
 
 		for (LangDetailDto langDetail : lang.getLangDetails())
 		{
-			langDetail.setLSeq(lSeq);
+			langDetail.setLseq(lseq);
 
 			LangDetailEntity langDetailEntity = LangDetailObjectMapper.INSTANCE.toEntity(langDetail);
 
@@ -85,7 +85,7 @@ public class LangService extends MgmtGeneralService
 			}
 		}
 
-		return lSeq;
+		return lseq;
 	}
 
 	public int delete(LangDto lang)
@@ -95,10 +95,10 @@ public class LangService extends MgmtGeneralService
 		return langMapper.updateLangFgDelete(lang);
 	}
 
-	public LangDto getLangByLSeq(Integer lSeq)
+	public LangDto getLangByLSeq(Integer lseq)
 	{
 		LangDto lang = new LangDto();
-		lang.setLSeq(lSeq);
+		lang.setLseq(lseq);
 
 		return CmModelMapperUtils.mapToDto(LangObjectMapper.INSTANCE, langMapper.findLang(lang));
 	}
@@ -172,31 +172,30 @@ public class LangService extends MgmtGeneralService
 		return LangKindObjectMapper.INSTANCE.toDtoList(langMapper.findLangKinds(langKind));
 	}
 
-	@Cacheable(value = CacheConfig.LANG, key = "{#basename, #cSeq, #lang}", unless="#result == null")
-	public String getCItemText(String basename, Integer cSeq, String lang)
+	@Cacheable(value = CacheConfig.LANG, key = "{#basename, #cseq, #lang}", unless="#result == null")
+	public String getCitemText(String basename, Integer cseq, String lang)
 	{
-		if (basename == null || cSeq == null)
+		if (basename == null || cseq == null)
 		{
 			return null;
 		}
 
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setCSeq(cSeq);
-		cItemSearch.setBasename(basename);
-		cItemSearch.setLang(lang);
-
-		List<LangDetailDto> langDetails = CmModelMapperUtils.mapToDto(LangDetailObjectMapper.INSTANCE, langMapper.findLangDetailsCItems(cItemSearch));
+		List<LangDetailDto> langDetails = CmModelMapperUtils.mapToDto(LangDetailObjectMapper.INSTANCE, langMapper.findLangDetailsCItems(CItemSearchDto.builder()
+				.cseq(cseq)
+				.basename(basename)
+				.lang(lang)
+				.build()));
 
 		if (CollectionUtils.isNotEmpty(langDetails))
 		{
 			return langDetails.get(0).getText();
 		}
 
-		CItemDto cItem = contentService.getCItem(cSeq);
+		CItemDto citem = contentService.getCitem(cseq);
 
-		if (cItem != null)
+		if (citem != null)
 		{
-			return cItem.getName();
+			return citem.getName();
 		}
 
 		return null;
@@ -259,7 +258,7 @@ public class LangService extends MgmtGeneralService
 			return false;
 		}
 
-		if (lang.getLSeq() != null)
+		if (lang.getLseq() != null)
 		{
 			return false;
 		}

@@ -22,7 +22,7 @@ public class UploadFileListEntity extends MgmtGeneralEntity
 
 	private String uflSeq;
 	private String ufSeq;
-	private String tSeq;
+	private String tseq;
 	private String originName;
 	private String savedName;
 	private String extension;

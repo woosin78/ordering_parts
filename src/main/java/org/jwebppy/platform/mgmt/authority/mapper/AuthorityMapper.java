@@ -12,9 +12,9 @@ import org.jwebppy.platform.mgmt.content.entity.CItemEntity;
 @Mapper
 public interface AuthorityMapper
 {
-	public int insertCItemAuthRl(CItemAuthRlEntity cItemAuthRl);
-	public int updateFgDeleteOfCItemAuthRl(CItemAuthRlEntity cItemAuthRl);
-	public List<CItemEntity> findCItemAuthorities(CItemSearchDto cItemSearch);
-	public List<CItemEntity> findSubRoles(CItemSearchDto cItemSearch);
+	public int insertCItemAuthRl(CItemAuthRlEntity citemAuthRl);
+	public int updateFgDeleteOfCItemAuthRl(CItemAuthRlEntity citemAuthRl);
+	public List<CItemEntity> findCItemAuthorities(CItemSearchDto citemSearch);
+	public List<CItemEntity> findSubRoles(CItemSearchDto citemSearch);
 
 }

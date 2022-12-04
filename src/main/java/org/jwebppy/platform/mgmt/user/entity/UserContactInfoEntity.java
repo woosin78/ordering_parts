@@ -17,7 +17,7 @@ public class UserContactInfoEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = -2702559448170301038L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String email;
 	private String tel1;
 	private String tel2;

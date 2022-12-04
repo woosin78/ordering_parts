@@ -18,7 +18,7 @@ public class CItemLangRlDto extends MgmtGeneralDto
 	private static final long serialVersionUID = 8851437491168803824L;
 
 	private Integer clrSeq;
-	private Integer cSeq;
-	private Integer lSeq;
+	private Integer cseq;
+	private Integer lseq;
 	private String basename;
 }

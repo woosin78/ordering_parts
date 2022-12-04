@@ -18,7 +18,7 @@ public class UserPasswordChangeHistoryEntity extends MgmtGeneralEntity implement
 {
 	private static final long serialVersionUID = -1127244512720830947L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String oldPassword;
 	private String reason;
 	private String timezone;

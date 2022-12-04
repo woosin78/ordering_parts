@@ -10,7 +10,7 @@
   <div class="sub header">You can create new accounts and modify users' information and give them the authorities.</div>
 </div>
 <form id="FORM_search" class="ui form" autocomplete="off" onsubmit="return false;">
-<input type="checkbox" name="uSeq" style="display:none" checked />
+<input type="checkbox" name="useq" style="display:none" checked />
 <input type="hidden" id="pageNumber" name="pageNumber"/>
 <input type="hidden" id="rowPerPage" name="rowPerPage"/>
 <div class="ui grey attached segment">
@@ -27,11 +27,11 @@
 		</div>
 		<div class="six wide field">
 			<div class="ui fluid normal search selection dropdown authority">
-				<input type="hidden" name="cSeq"/>
+				<input type="hidden" name="cseq"/>
 				<i class="dropdown icon"></i>
 				<div class="default text">Authority</div>
 				<div class="menu">
-					<div class="item" th:each="cItem : ${cItems}" th:data-value="${cItem.cSeq}" th:text="|[${cItem.type.type}] ${cItem.name} - ${cItem.description}|"></div>
+					<div class="item" th:each="citem : ${citems}" th:data-value="${citem.cseq}" th:text="|[${citem.type.type}] ${citem.name} - ${citem.description}|"></div>
 				</div>
 			</div>
 		</div>
@@ -82,7 +82,7 @@
 			<div class="ui clearing divider"></div>
 		</div>
 		<form id="FORM_modify" class="ui form" autocomplete="off" onsubmit="return false;">
-			<input type="hidden" name="uSeq" />
+			<input type="hidden" name="useq" />
 			<div class="ui tab attached segment teal" data-tab="general"></div>
 			<div class="ui tab attached segment teal" data-tab="account"></div>
 			<div class="ui tab attached segment teal" data-tab="contact"></div>
@@ -104,7 +104,7 @@
     <h3 class="ui header">Create User</h3>
     <div class="content">
     	<form id="FORM_copyToCreate" method="POST" class="ui form" autocomplete="off" onsubmit="return false;">
-    	<input type="hidden" name="uSeq"/>
+    	<input type="hidden" name="useq"/>
     	<div class="ui one column grid">
     		<div class="column">
     			<div class="field required">
@@ -154,7 +154,7 @@ $(document).ready(function() {
 	});
 	
 	$(".user-group").dropdown("set selected", "[[${ugSeq}]]");
-	$(".authority").dropdown("set selected", "[[${cSeq}]]");
+	$(".authority").dropdown("set selected", "[[${cseq}]]");
 
 	userTable = new JpUiTable($("#TBL_users"));
 	userTable.settings = {
@@ -233,16 +233,9 @@ $(document).ready(function() {
 
 		if (JpUtilsString.isNotEmpty(value))
 		{
-			let uSeq = "";
-			
-			if (getCheckedUserCount() > 0)
-			{
-				uSeq = userTable.getCheckedValues().pop();
-			};
-			
 			JpUtilsAjax.get({
 				url: "/platform/mgmt/user/credentials/policy/check/valid_credentials",
-				data: { value: value, type: type, cpSeq: JpUtilsString.trimToEmpty($("#FORM_modify select[name=cpSeq]").val()), uSeq: uSeq },
+				data: { value: value, type: type, cpSeq: JpUtilsString.trimToEmpty($("#FORM_modify select[name=cpSeq]").val()) },
 				global: false,
 				async: false,
 				success: function(data, textStatus, jqXHR)
@@ -270,185 +263,188 @@ $(document).ready(function() {
 
 		return isValid;
 	};
-
-	let formValidCheck = {
-		inline: true,
-		fields: {
-			"Last Name": {
-				identifier: "lastName",
-				rules: [
-					{
-						type: "empty",
-						prompt: "Please enter {name}."
-					}
-				]
-			},
-			Language: {
-				identifier: "language",
-				rules: [
-					{
-						type: "empty",
-						prompt: "Please select {name}."
-					}
-				]
-			},
-			"User Group": {
-				identifier: "ugSeq",
-				rules: [
-					{
-						type: "empty",
-						prompt: "Please select {name}."
-					}
-				]
-			},
-			Username: {
-				identifier: "username",
-				rules: [
-					{
-						type: "empty",
-						prompt: "Please enter {name}."
+	
+	function formValidCheck()
+	{
+		let rule;
+		let tabPath = viewUserTab.tabPath;
+		
+		if (JpUtilsString.equals(tabPath, "account"))
+		{
+			rule = {
+				inline: true,
+				fields: {
+					Username: {
+						identifier: "username",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please enter {name}."
+							},
+							{
+								type: "checkCredentialPolicy[U]",
+								prompt: function (value)
+								{
+									return checkUsernameResultMsg;
+								}
+							}
+						]
 					},
-					{
-						type: "checkCredentialPolicy[U]",
-						prompt: function (value)
-						{
-							return checkUsernameResultMsg;
-						}
+					Password: {
+						identifier: "password",
+						optional: JpUtilsObject.isNull($("#FORM_modify input[name=username]")),//Username 필드가 있으면 신규 생성이므로 Password 필수 체크 
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please enter {name}."
+							},				
+							{
+								type: "checkCredentialPolicy[P]",
+								prompt: function (value)
+								{
+									return checkPasswordResultMsg;
+								}
+							}
+						]
+					},
+					"Confirm Password": {
+						identifier: "confirmPassword",
+						rules: [
+							{
+								type: "match[password]",
+								prompt: "Please check {name}. They doesn't match."
+							}
+						]
 					}
-				]
-			},
-			Password: {
-				identifier: "password",
-				optional: true,
-				rules: [
-					{
-						type: "checkCredentialPolicy[P]",
-						prompt: function (value)
-						{
-							return checkPasswordResultMsg;
-						}
+				},
+				keyboardShortcuts: false//Adds keyboard shortcuts for enter and escape keys to submit form and blur fields respectively
+			};
+		}
+		else if (JpUtilsString.equals(tabPath, "contact"))
+		{
+			rule = {
+				inline: true,
+				fields: {
+					tel2: {
+						identifier: "tel2",
+						optional: true,
+						rules: [
+							{
+								type: "number",
+								prompt: "Please enter a valid number."
+							}
+						]
+					},
+					tel3: {
+						identifier: "tel3",
+						optional: true,
+						rules: [
+							{
+								type: "number",
+								prompt: "Please enter a valid number."
+							}
+						]
+					},
+					mobile2: {
+						identifier: "mobile2",
+						optional: true,
+						rules: [
+							{
+								type: "number",
+								prompt: "Please enter a valid number."
+							}
+						]
+					},
+					mobile3: {
+						identifier: "mobile3",
+						optional: true,
+						rules: [
+							{
+								type: "number",
+								prompt: "Please enter a valid number."
+							}
+						]
+					},
+					fax2: {
+						identifier: "fax2",
+						optional: true,
+						rules: [
+							{
+								type: "number",
+								prompt: "Please enter a valid number."
+							}
+						]
+					},
+					fax3: {
+						identifier: "fax3",
+						optional: true,
+						rules: [
+							{
+								type: "number",
+								prompt: "Please enter a valid number."
+							}
+						]
+					},
+					Country: {
+						identifier: "country",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please enter {name}."
+							}
+						]
+					},
+					Timezone: {
+						identifier: "timezone",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please enter {name}."
+							}
+						]
 					}
-				]
-			},
-			"Confirm Password": {
-				identifier: "confirmPassword",
-				rules: [
-					{
-						type: "match[password]",
-						prompt: "Please check {name}. They doesn't match."
+				},
+				keyboardShortcuts: false//Adds keyboard shortcuts for enter and escape keys to submit form and blur fields respectively
+			};
+		}
+		else
+		{
+			rule = {
+				inline: true,
+				fields: {
+					"Last Name": {
+						identifier: "lastName",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please enter {name}."
+							}
+						]
+					},
+					Language: {
+						identifier: "language",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please select {name}."
+							}
+						]
+					},
+					"User Group": {
+						identifier: "ugSeq",
+						rules: [
+							{
+								type: "empty",
+								prompt: "Please select {name}."
+							}
+						]
 					}
-				]
-			},
-			tel1: {
-				identifier: "tel1",
-				optional: true,
-				rules: [
-					{
-						type: "number",
-						prompt: "Please enter a valid number."
-					}
-				]
-			},
-			tel2: {
-				identifier: "tel2",
-				optional: true,
-				rules: [
-					{
-						type: "number",
-						prompt: "Please enter a valid number."
-					}
-				]
-			},
-			tel3: {
-				identifier: "tel3",
-				optional: true,
-				rules: [
-					{
-						type: "number",
-						prompt: "Please enter a valid number."
-					}
-				]
-			},
-			mobile1: {
-				identifier: "mobile1",
-				optional: true,
-				rules: [
-					{
-						type: "number",
-						prompt: "Please enter a valid number."
-					}
-				]
-			},
-			mobile2: {
-				identifier: "mobile2",
-				optional: true,
-				rules: [
-					{
-						type: "number",
-						prompt: "Please enter a valid number."
-					}
-				]
-			},
-			mobile3: {
-				identifier: "mobile3",
-				optional: true,
-				rules: [
-					{
-						type: "number",
-						prompt: "Please enter a valid number."
-					}
-				]
-			},
-			fax1: {
-				identifier: "fax1",
-				optional: true,
-				rules: [
-					{
-						type: "number",
-						prompt: "Please enter a valid number."
-					}
-				]
-			},
-			fax2: {
-				identifier: "fax2",
-				optional: true,
-				rules: [
-					{
-						type: "number",
-						prompt: "Please enter a valid number."
-					}
-				]
-			},
-			fax3: {
-				identifier: "fax3",
-				optional: true,
-				rules: [
-					{
-						type: "number",
-						prompt: "Please enter a valid number."
-					}
-				]
-			},
-			Country: {
-				identifier: "country",
-				rules: [
-					{
-						type: "empty",
-						prompt: "Please enter {name}."
-					}
-				]
-			},
-			Timezone: {
-				identifier: "timezone",
-				rules: [
-					{
-						type: "empty",
-						prompt: "Please enter {name}."
-					}
-				]
-			}
-		},
-		keyboardShortcuts: false
+				},
+				keyboardShortcuts: false//Adds keyboard shortcuts for enter and escape keys to submit form and blur fields respectively
+			};
+		};
+		
+		$("#FORM_modify").form(rule);
 	};
 
 	let viewUserTab = new JpUiTab($("#TAB_viewDetail"));
@@ -477,7 +473,7 @@ $(document).ready(function() {
 				{
 					if (isOnForm())
 					{
-						$("#FORM_modify").form(formValidCheck);
+						formValidCheck();
 
 						if (tabPath == "account")
 						{
@@ -571,11 +567,11 @@ $(document).ready(function() {
 									values = [];
 								};
 
-								$.each($("#TBL_myAuthorityList").find("input:checkbox[name=cSeq]"), function(i, item) {
+								$.each($("#TBL_myAuthorityList").find("input:checkbox[name=cseq]"), function(i, item) {
 									values.push($(this).val());
 								});
 								
-								myAuthorityTable.settings.ajax.data = { cSeqs: values };
+								myAuthorityTable.settings.ajax.data = { cseqs: values };
 								myAuthorityTable.render();
 
 								$("#availableAutority").dropdown("clear");
@@ -631,11 +627,11 @@ $(document).ready(function() {
 						
 						if (type == "G")
 						{
-							_showAuthority({type: $(this).attr("data-type"), cSeq: $(this).attr("data-key")});	
+							_showAuthority({type: $(this).attr("data-type"), cseq: $(this).attr("data-key")});	
 						}
 						else if (type == "R")
 						{
-							_showContent({cSeq: $(this).attr("data-key")});
+							_showContent({cseq: $(this).attr("data-key")});
 						};
 					});
 				}
@@ -723,20 +719,20 @@ $(document).ready(function() {
 	$("#BTN_saveByCopy").on("click", function() {
 		if ($("#FORM_copyToCreate").form("validate form"))
 		{
-			$("#FORM_copyToCreate input[name=uSeq]").val(userTable.getCheckedValues().join(""));
+			$("#FORM_copyToCreate input[name=useq]").val(userTable.getCheckedValues().join(""));
 
 			JpUtilsAjax.post({
 				url: "/platform/mgmt/user/copy",
 				data: $("#FORM_copyToCreate").serialize(),
 				success: function(data, textStatus, jqXHR)
 				{
-					let uSeq = data.RESULT;
+					let useq = data.RESULT;
 
-					if (JpUtilsObject.isNotNull(uSeq))
+					if (JpUtilsObject.isNotNull(useq))
 					{
 						//신규 생성한 계정이 조회되도록 함
 						resetSearchForm();
-						setSeq(uSeq);
+						setSeq(useq);
 
 						doSearch();
 					};
@@ -820,17 +816,17 @@ $(document).ready(function() {
 
 	function setSeq(seq)
 	{
-		$("#FORM_search input:checkbox[name=uSeq]:first, #FORM_modify input[name=uSeq]").val(seq);
+		$("#FORM_search input:checkbox[name=useq]:first, #FORM_modify input[name=useq]").val(seq);
 	};
 
 	function getSeq()
 	{
-		return JpUtilsString.trimToEmpty($("#FORM_modify input[name=uSeq]").val());
+		return JpUtilsString.trimToEmpty($("#FORM_modify input[name=useq]").val());
 	};
 
 	function initSeq()
 	{
-		$("#FORM_search input:checkbox[name=uSeq]:first, #FORM_modify input[name=uSeq]").val("");
+		$("#FORM_search input:checkbox[name=useq]:first, #FORM_modify input[name=useq]").val("");
 	};
 
 	function getCheckedUserCount()
@@ -904,11 +900,11 @@ $(document).ready(function() {
 				{
 					if (JpUtilsString.isEmpty(getSeq()))
 					{
-						let uSeq = data.RESULT;
+						let useq = data.RESULT;
 
-						if (JpUtilsObject.isNotNull(uSeq))
+						if (JpUtilsObject.isNotNull(useq))
 						{
-							setSeq(uSeq);
+							setSeq(useq);
 						};
 						
 						doSearch();
@@ -986,7 +982,7 @@ $(document).ready(function() {
 		return (viewUserTab.getPath().indexOf("write") > -1) ? true : false;
 	};
 	
-	setSeq("[[${uSeq}]]");
+	setSeq("[[${useq}]]");
 
 	doSearch();
 });

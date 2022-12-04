@@ -20,7 +20,7 @@ public class LoginHistorySearchDto extends GeneralDto implements IPagination
 {
 	private static final long serialVersionUID = 1939202716125055543L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String username;
 	private String fgResult;
 	private LocalDateTime fromDate;

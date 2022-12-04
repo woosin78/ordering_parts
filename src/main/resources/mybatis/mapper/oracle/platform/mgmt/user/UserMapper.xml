@@ -4,7 +4,7 @@
 <mapper namespace="org.jwebppy.platform.mgmt.user.mapper.UserMapper">
 
 	<resultMap type="UserEntity" id="userEntityMap">
-		<id property="uSeq" column="u_seq" />
+		<id property="useq" column="u_seq" />
 		<result property="firstName" column="first_name" />
 		<result property="lastName" column="last_name" />
 		<result property="enFirstName" column="en_first_name" />
@@ -24,7 +24,7 @@
 	</resultMap>
 	
 	<resultMap type="UserAccountEntity" id="userAccountEntityMap">
-		<id property="uSeq" column="u_seq" />
+		<id property="useq" column="u_seq" />
 		<result property="username" column="username" />
 		<result property="password" column="password" />
 		<result property="fgNoUsePassword" column="fg_no_use_password" />
@@ -39,32 +39,32 @@
 		<association property="userPasswordChangeHistory" foreignColumn="u_seq" column="u_seq" javaType="UserPasswordChangeHistoryEntity" select="org.jwebppy.platform.mgmt.user.mapper.UserPasswordChangeHistoryMapper.findLastUserPasswordChangeHistory" />
 	</resultMap>
 	
-	<insert id="insertUser" parameterType="UserEntity" useGeneratedKeys="true" keyProperty="uSeq">
-		<selectKey keyProperty="uSeq" resultType="Integer" order="BEFORE">
+	<insert id="insertUser" parameterType="UserEntity" useGeneratedKeys="true" keyProperty="useq">
+		<selectKey keyProperty="useq" resultType="Integer" order="BEFORE">
 			select pltf_u_seq.nextval from dual
 		</selectKey>
 
 		insert into pltf_user (u_seq, first_name, last_name, en_first_name, en_last_name, company, organization, department, position, language, ug_seq, fg_delete, reg_username, reg_date) values
 		(
-			#{uSeq}, #{firstName}, #{lastName}, #{enFirstName}, #{enLastName}, #{company}, #{organization}, #{department}, #{position}, #{language}, #{userGroup.ugSeq}, #{fgDelete}, #{regUsername}, #{regDate}
+			#{useq}, #{firstName}, #{lastName}, #{enFirstName}, #{enLastName}, #{company}, #{organization}, #{department}, #{position}, #{language}, #{userGroup.ugSeq}, #{fgDelete}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
 	<insert id="insertUserAccount" parameterType="UserAccountEntity">
 		insert into pltf_user_account (u_seq, username, password, fg_account_locked, fg_password_locked, fg_no_use_password, from_valid, to_valid, cp_seq, reg_username, reg_date) values (
-			#{uSeq}, upper(#{username}), #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{credentialsPolicy.cpSeq}, #{regUsername}, #{regDate}
+			#{useq}, upper(#{username}), #{password}, #{fgAccountLocked}, #{fgPasswordLocked}, #{fgNoUsePassword}, #{fromValid}, #{toValid}, #{credentialsPolicy.cpSeq}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
 	<insert id="insertUserContactInfo" parameterType="UserContactInfoEntity">
 		insert into pltf_user_contact_info (u_seq, email, tel1, tel2, tel3, mobile1, mobile2, mobile3, fax1, fax2, fax3, zipcode, city, state, country, timezone, reg_username, reg_date) values (
-			#{uSeq}, #{email}, #{tel1}, #{tel2}, #{tel3}, #{mobile1}, #{mobile2}, #{mobile3}, #{fax1}, #{fax2}, #{fax3}, #{zipcode}, #{city}, #{state}, #{country}, #{timezone}, #{regUsername}, #{regDate}
+			#{useq}, #{email}, #{tel1}, #{tel2}, #{tel3}, #{mobile1}, #{mobile2}, #{mobile3}, #{fax1}, #{fax2}, #{fax3}, #{zipcode}, #{city}, #{state}, #{country}, #{timezone}, #{regUsername}, #{regDate}
 		)
 	</insert>
 	
 	<insert id="insertUserPasswordChangeHistory" parameterType="UserPasswordChangeHistoryEntity">
 		insert into pltf_user_pwd_change_history (u_seq, old_password, timezone, reg_username, reg_date) values (
-			#{uSeq}, (select password from pltf_user_account where u_seq=#{uSeq}), #{timezone}, #{regUsername}, #{regDate}
+			#{useq}, (select password from pltf_user_account where u_seq=#{useq}), #{timezone}, #{regUsername}, #{regDate}
 		)
 	</insert>
 
@@ -83,7 +83,7 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			u_seq=#{uSeq}
+			u_seq=#{useq}
 	</update>
 	
 	<update id="updateUserAccount" parameterType="UserAccountEntity">
@@ -98,7 +98,7 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			u_seq=#{uSeq}
+			u_seq=#{useq}
 	</update>	
 	
 	<update id="updateUserContactInfo" parameterType="UserContactInfoEntity">
@@ -122,7 +122,7 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			u_seq=#{uSeq}
+			u_seq=#{useq}
 	</update>
 
 	<update id="updateFgAccountLocked" parameterType="UserAccountEntity">
@@ -131,7 +131,7 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			u_seq=#{uSeq}
+			u_seq=#{useq}
 	</update>
 	
 	<update id="delete" parameterType="UserEntity">
@@ -140,7 +140,7 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			u_seq=#{uSeq}
+			u_seq=#{useq}
 	</update>
 
 	<update id="updateUsernameToDelete" parameterType="UserEntity">
@@ -149,7 +149,7 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			u_seq=#{uSeq}
+			u_seq=#{useq}
 	</update>
 	
 	<update id="updateFgPasswordLocked" parameterType="UserAccountEntity">
@@ -158,7 +158,7 @@
 			mod_username=#{modUsername},
 			mod_date=#{modDate}
 		where
-			u_seq=#{uSeq}
+			u_seq=#{useq}
 	</update>
 
 	<select id="findUser" parameterType="UserSearchDto" resultMap="userEntityMap">
@@ -168,8 +168,8 @@
 		vw_pltf_user
 
 		<where>
-			<if test="uSeq != null">
-				and u_seq=#{uSeq}
+			<if test="useq != null">
+				and u_seq=#{useq}
 			</if>
 			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(username)">
 				and username=upper(#{username})
@@ -183,7 +183,7 @@
 		from
 		pltf_user_account
 		where
-		u_seq=#{uSeq}
+		u_seq=#{useq}
 	</select>
 	
 	<select id="findUserContactInfo" parameterType="Integer" resultType="UserContactInfoEntity">
@@ -192,7 +192,7 @@
 		from
 		pltf_user_contact_info
 		where
-		u_seq=#{uSeq}
+		u_seq=#{useq}
 	</select>		
 	
 	<select id="findPageableUsers" parameterType="UserSearchDto" resultMap="userEntityMap">
@@ -229,8 +229,8 @@
 					or upper(b.email) like '%'||upper(trim(#{query}))||'%'
 				</if>
 				
-				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(uSeq)">
-					or a.u_seq=#{uSeq}
+				<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(useq)">
+					or a.u_seq=#{useq}
 				</if>
 			</trim>
 			
@@ -248,7 +248,7 @@
 				 a.ug_seq=#{ugSeq}
 			</if>
 			
-			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(cSeq)">
+			<if test="@org.jwebppy.platform.core.util.CmMyBatisQueryUtils@isNotEmpty(cseq)">
 				exists (
 				    select
 				    1
@@ -256,12 +256,12 @@
 				    pltf_citem x,
 				    pltf_citem_user_rl y
 				    where
-				    x.c_seq=#{cSeq}    
+				    x.c_seq=#{cseq}    
 				    and x.c_seq=y.c_seq
 				    and x.fg_delete='N'
 				    and x.c_seq=y.c_seq
 				    and y.u_seq=a.u_seq
-				    and y.fg_delete='N'				    
+				    and y.fg_delete='N'
 				)
 			</if>
 		</where>
@@ -279,7 +279,7 @@
 		pltf_citem_user_rl b,
 		pltf_user c
 		where
-		a.c_seq=#{cSeq}
+		a.c_seq=#{cseq}
 		and a.fg_delete='N'
 		and a.c_seq=b.c_seq
 		and b.fg_delete='N'

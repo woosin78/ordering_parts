@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.commons.collections4.ListUtils;
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
@@ -19,6 +18,7 @@ import org.jwebppy.platform.core.web.ui.dom.table.Thead;
 import org.jwebppy.platform.core.web.ui.dom.table.Tr;
 import org.jwebppy.platform.core.web.ui.layout.PlatformLayoutBuildUtils;
 import org.jwebppy.platform.core.web.ui.pagination.PageableList;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.conn_resource.dto.SapConnResourceDto;
 import org.jwebppy.platform.mgmt.i18n.dto.LangKindType;
 import org.jwebppy.platform.mgmt.user.dto.CredentialsPolicyDto;
@@ -48,20 +48,12 @@ public class UserGroupLayoutBuilder
 		{
 			int userCount = userGroup.getUserCount();
 
-			Tr tbTr = new Tr();
-
-			if (userCount == 0)
-			{
-				tbTr.addDataKeyCheckboxTd("ugSeq", userGroup.getUgSeq());
-			}
-			else
-			{
-				tbTr.addEmptyTd();
-			}
-
 			CredentialsPolicyDto credentialsPolicy = userGroup.getCredentialsPolicy();
 			SapConnResourceDto sapConnecConnResource = userGroup.getSapConnResource();
 
+			Tr tbTr = new Tr();
+
+			tbTr.addDataKeyCheckboxTd("ugSeq", userGroup.getUgSeq());
 			tbTr.addDataKeyLinkTd(userGroup.getName(), userGroup.getUgSeq());
 			tbTr.addTextTd(userGroup.getDescription());
 			tbTr.addTextTd(userGroup.getDisplayLangKind() + " / " + userGroup.getDisplayDefLang());

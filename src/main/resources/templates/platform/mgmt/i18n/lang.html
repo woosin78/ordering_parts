@@ -9,7 +9,7 @@
 			    <h3 class="ui header">Translation</h3>
 			    <div class="content">
 			    	<form id="FORM_lang" method="POST" class="ui form" autocomplete="off" onsubmit="return false;">
-			    	<input type="hidden" name="lSeq"/>
+			    	<input type="hidden" name="lseq"/>
 			    	<input type="hidden" name="messageCode"/>
 			    	<input type="hidden" name="from"/>
 			    	<div id="AREA_langContent"></div>
@@ -41,13 +41,13 @@ langModal.onShow = function()
 	//Set focus to Suffix
 	$("#FORM_lang input[name=seq]").focus();
 	
-	if (JpUtilsString.isNotEmpty($("#FORM_lang input[name=lSeq]").val()))
+	if (JpUtilsString.isNotEmpty($("#FORM_lang input[name=lseq]").val()))
 	{
 		$("#BTN_deleteLang").show();
 	};
 	
 	$("#FORM_lang select[name=basename]").on("change", function() {
-		$("#FORM_lang input[name=lSeq]").val("");
+		$("#FORM_lang input[name=lseq]").val("");
 		langModal.reload();
 	});
 	
@@ -132,7 +132,7 @@ $("#BTN_saveLang").on("click", function() {
 			{
 				try
 				{
-					let isNew = (JpUtilsString.isEmpty($("#FORM_lang input[name=lSeq]").val())) ? true : false;
+					let isNew = (JpUtilsString.isEmpty($("#FORM_lang input[name=lseq]").val())) ? true : false;
 					
 					//include 한 페이지에 구현되어 있음
 					doAfterSavingLang(isNew, data.RESULT, $("#FORM_lang select[name=basename]").val());
@@ -171,16 +171,16 @@ $("#BTN_cancelWriteLang").on("click", function() {
 
 function writeLang(from, basename)
 {
-	$("#FORM_lang input[name=lSeq], #FORM_lang input[name=messageCode]").val("");
+	$("#FORM_lang input[name=lseq], #FORM_lang input[name=messageCode]").val("");
 	$("#FORM_lang input[name=from]").val(from);
 	$("#AREA_langContent").html("<input type='hidden' name='basename' value='" + basename + "'/>");//신규 다국어 등록시 modal 창의 basename 값이  default 선택되도록 하기 위해 필요
 
 	langModal.show();
 };
 
-function viewLang(from, lSeq, messageCode, basename)
+function viewLang(from, lseq, messageCode, basename)
 {
-	$("#FORM_lang input[name=lSeq]").val(lSeq);
+	$("#FORM_lang input[name=lseq]").val(lseq);
 	$("#FORM_lang input[name=messageCode]").val(messageCode);
 	$("#FORM_lang input[name=basename]").val(basename);
 	$("#FORM_lang input[name=from]").val(from);

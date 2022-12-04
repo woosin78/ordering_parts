@@ -25,23 +25,23 @@ import org.jwebppy.platform.mgmt.i18n.dto.LangKindDto;
 
 public class ContentLayoutBuilder
 {
-	public static Document viewGeneralInfo(CItemDto cItem)
+	public static Document viewGeneralInfo(CItemDto citem)
 	{
 		Map<String, Object> elementMap = new LinkedHashMap<>();
-		elementMap.put("Item Type", cItem.getType().getType());
-		elementMap.put("Name", cItem.getName());
-		elementMap.put("Description", cItem.getDescription());
-		elementMap.put("Component", cItem.getComponent());
-		elementMap.put("Entry Point", cItem.getEntryPoint());
-		elementMap.put("Parameter", cItem.getParameter());
-		elementMap.put("Valid From", cItem.getDisplayFromValid());
-		elementMap.put("Valid To", cItem.getDisplayToValid());
-		elementMap.put("Sort", cItem.getSort());
-		elementMap.put("Visible", cItem.getFgVisible());
-		elementMap.put("Reg. Date", cItem.getDisplayRegDate());
-		elementMap.put("Reg. Username", cItem.getRegUsername());
-		elementMap.put("Mod. Date", cItem.getDisplayModDate());
-		elementMap.put("Mod. Username", cItem.getModUsername());
+		elementMap.put("Item Type", citem.getType().getType());
+		elementMap.put("Name", citem.getName());
+		elementMap.put("Description", citem.getDescription());
+		elementMap.put("Component", citem.getComponent());
+		elementMap.put("Entry Point", citem.getEntryPoint());
+		elementMap.put("Parameter", citem.getParameter());
+		elementMap.put("Valid From", citem.getDisplayFromValid());
+		elementMap.put("Valid To", citem.getDisplayToValid());
+		elementMap.put("Sort", citem.getSort());
+		elementMap.put("Visible", citem.getFgVisible());
+		elementMap.put("Reg. Date", citem.getDisplayRegDate());
+		elementMap.put("Reg. Username", citem.getRegUsername());
+		elementMap.put("Mod. Date", citem.getDisplayModDate());
+		elementMap.put("Mod. Username", citem.getModUsername());
 
 		Document document = new Document();
 		document.addElements(PlatformLayoutBuildUtils.simpleLabelTexts(elementMap));
@@ -49,79 +49,79 @@ public class ContentLayoutBuilder
 		return document;
 	}
 
-	public static Document writeGeneralInfo(CItemDto cItem, CItemDto parentCItem, List<CItemComponentDto> cItemComponents, List<CItemComponentDto> cItemEntryPoints)
+	public static Document writeGeneralInfo(CItemDto citem, CItemDto parentCItem, List<CItemComponentDto> citemComponents, List<CItemComponentDto> citemEntryPoints)
 	{
 		Select loType = new Select("type");
 		loType.setLabel("Item Type");
 		loType.setRequired(true);
 
-		if (cItem.getCSeq() != null)
+		if (citem.getCseq() != null)
 		{
-			loType.addOption(cItem.getType(), cItem.getType().getType());
+			loType.addOption(citem.getType(), citem.getType().getType());
 		}
 		else
 		{
-			for (CItemType cItemType: CItemType.availableTypes(parentCItem.getType()))
+			for (CItemType citemType: CItemType.availableTypes(parentCItem.getType()))
 			{
-				loType.addOption(cItemType.name(), cItemType.getType());
+				loType.addOption(citemType.name(), citemType.getType());
 			}
 		}
 
-		Input loId = new Input("name", cItem.getName());
+		Input loId = new Input("name", citem.getName());
 		loId.setLabel("Name");
 		loId.setStyle("text-transform: uppercase");
 		loId.setRequired(true);
 
 		Textarea loDescription = new Textarea("description");
-		loDescription.setText(cItem.getDescription());
+		loDescription.setText(citem.getDescription());
 		loDescription.setLabel("Description");
 		loDescription.setStyle("height: 3em");
 
 		Select loComponent = new Select("component");
 		loComponent.setLabel("Component");
-		loComponent.setValue(cItem.getComponent());
+		loComponent.setValue(citem.getComponent());
 		loComponent.addOption("", "");
 
-		if (CollectionUtils.isNotEmpty(cItemComponents))
+		if (CollectionUtils.isNotEmpty(citemComponents))
 		{
-			for (CItemComponentDto cItemComponent : cItemComponents)
+			for (CItemComponentDto citemComponent : citemComponents)
 			{
-				loComponent.addOption(cItemComponent.getClassName(), cItemComponent.getClassName());
+				loComponent.addOption(citemComponent.getClassName(), citemComponent.getClassName());
 			}
 		}
 
 		Select loEntryPoint = new Select("entryPoint");
 		loEntryPoint.setLabel("Entry Point");
-		loEntryPoint.setValue(cItem.getEntryPoint());
+		loEntryPoint.setValue(citem.getEntryPoint());
 		loEntryPoint.addOption("", "");
 
-		if (CollectionUtils.isNotEmpty(cItemEntryPoints))
+		if (CollectionUtils.isNotEmpty(citemEntryPoints))
 		{
-			for (CItemComponentDto cItemloEntryPoint : cItemEntryPoints)
+			for (CItemComponentDto citemloEntryPoint : citemEntryPoints)
 			{
-				loEntryPoint.addOption(cItemloEntryPoint.getUrl(), cItemloEntryPoint.getUrl());
+				loEntryPoint.addOption(citemloEntryPoint.getUrl(), citemloEntryPoint.getUrl());
 			}
 		}
 
 		Input loParameter = new Input("parameter");
 		loParameter.setLabel("Parameter");
-		loParameter.setValue(cItem.getParameter());
+		loParameter.setValue(citem.getParameter());
 
-		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(cItem.getDisplayFromValid(), CmDateFormatUtils.now()));
+		Input loFromValid = new Input("date", "fromValid", CmStringUtils.defaultString(citem.getDisplayFromValid(), CmDateFormatUtils.now()));
 		loFromValid.setId("fromValid");
 		loFromValid.setLabel("Valid From");
 		loFromValid.setRequired(true);
 
-		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(cItem.getDisplayToValid(), MgmtCommonVo.UNLIMITED_DATE_TIME));
+		Input loToValid = new Input("date", "toValid", CmStringUtils.defaultString(citem.getDisplayToValid(), MgmtCommonVo.UNLIMITED_DATE_TIME));
 		loToValid.setId("toValid");
 		loToValid.setLabel("Valid To");
 		loToValid.setRequired(true);
 
-		Element loSort = new Input("sort", cItem.getSort());
+		Element loSort = new Input("sort", citem.getSort());
 		loSort.setLabel("Sort");
 		loSort.setRequired(true);
 
-		Element loVisible = new Checkbox("fgVisible", MgmtCommonVo.YES, cItem.getFgVisible());
+		Element loVisible = new Checkbox("fgVisible", MgmtCommonVo.YES, citem.getFgVisible());
 		loVisible.setLabel("Visible");
 
 		Document document = new Document();

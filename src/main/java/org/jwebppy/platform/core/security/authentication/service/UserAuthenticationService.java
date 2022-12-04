@@ -62,18 +62,18 @@ public class UserAuthenticationService extends PlatformGeneralService
 		UserAccountDto userAccount = user.getUserAccount();
 		UserGroupDto userGroup = user.getUserGroup();
 
-		Integer uSeq = user.getUSeq();
+		Integer useq = user.getUseq();
 		String language = user.getLanguage();
 
         CItemSearchDto userSearch = new CItemSearchDto();
-        userSearch.setUSeq(uSeq);
+        userSearch.setUseq(useq);
         userSearch.setLang(language);
         userSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
 
-        List<CItemDto> cItems = contentAuthorityService.getMyCItems(userSearch);
+        List<CItemDto> citems = contentAuthorityService.getMyCitems(userSearch);
 
         PlatformUserDetails platformUserDetails = new PlatformUserDetails();
-        platformUserDetails.setUSeq(uSeq);
+        platformUserDetails.setUseq(useq);
         platformUserDetails.setName(user.getName());
         platformUserDetails.setUsername(userAccount.getUsername());
         platformUserDetails.setPassword(userAccount.getPassword());
@@ -90,7 +90,7 @@ public class UserAuthenticationService extends PlatformGeneralService
         platformUserDetails.setCurrencyFormat(userGroup.getCurrencyFormat());
         platformUserDetails.setWeightFormat(userGroup.getWeightFormat());
         platformUserDetails.setQtyFormat(userGroup.getQtyFormat());
-        platformUserDetails.setCItems(cItems);
+        platformUserDetails.setCitems(citems);
         platformUserDetails.setAuthenticationType(authenticationType);
         platformUserDetails.setRealUsername(CmStringUtils.defaultIfEmpty(realUsername, userAccount.getUsername()));
 
@@ -100,11 +100,11 @@ public class UserAuthenticationService extends PlatformGeneralService
         return usernamePasswordAuthenticationToken;
 	}
 
-	public Authentication getAuthentication(Integer uSeq)
+	public Authentication getAuthentication(Integer useq)
 	{
-		if (CmStringUtils.isNotEmpty(uSeq))
+		if (CmStringUtils.isNotEmpty(useq))
 		{
-			UserDto user = userService.getUser(uSeq);
+			UserDto user = userService.getUser(useq);
 
 			if (ObjectUtils.isNotEmpty(user))
 			{

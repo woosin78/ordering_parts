@@ -29,5 +29,5 @@ public interface LangMapper
 	public LangDetailEntity findLangDetail(LangDetailDto langDetail);
 	public List<LangDetailEntity> findLangDetails(LangSearchDto langSearch);
 	public List<LangKindEntity> findLangKinds(LangKindDto langKind);
-	public List<LangDetailEntity> findLangDetailsCItems(CItemSearchDto cItemSearch);
+	public List<LangDetailEntity> findLangDetailsCItems(CItemSearchDto citemSearch);
 }

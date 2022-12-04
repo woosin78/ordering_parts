@@ -1,13 +1,11 @@
 package org.jwebppy.platform.mgmt.content.web;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
-import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.core.PlatformConfigVo;
 import org.jwebppy.platform.core.cache.CacheClear;
 import org.jwebppy.platform.core.util.CmAnnotationUtils;
@@ -15,6 +13,7 @@ import org.jwebppy.platform.core.util.CmClassUtils;
 import org.jwebppy.platform.core.util.CmReflectionUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
 import org.jwebppy.platform.core.web.ui.dom.Document;
+import org.jwebppy.platform.mgmt.common.MgmtCommonVo;
 import org.jwebppy.platform.mgmt.content.ContentGeneralController;
 import org.jwebppy.platform.mgmt.content.dto.CItemComponentDto;
 import org.jwebppy.platform.mgmt.content.dto.CItemDto;
@@ -71,37 +70,35 @@ public class ContentController extends ContentGeneralController
 
 	@GetMapping("/list/layout")
 	@ResponseBody
-	public Object listLayout(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object listLayout(@ModelAttribute CItemSearchDto citemSearch)
 	{
-		return contentService.getCItems(cItemSearch);
+		return contentService.getCitems(citemSearch);
 	}
 
 	@GetMapping("/layout/{tabPath}")
 	@ResponseBody
-	public Object viewLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto cItemSearch)
+	public Object viewLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto citemSearch)
 	{
 		if ("general".equals(tabPath))
 		{
-			CItemDto cItem = (cItemSearch.getCSeq() == null) ? contentService.getRoot() : contentService.getCItem(cItemSearch.getCSeq());
+			CItemDto citem = (citemSearch.getCseq() == null) ? contentService.getRoot() : contentService.getCitem(citemSearch.getCseq());
 
-			return ContentLayoutBuilder.viewGeneralInfo(cItem);
+			return ContentLayoutBuilder.viewGeneralInfo(citem);
 		}
 		else
 		{
-			CItemLangRlDto cItemLangRl = new CItemLangRlDto();
-			cItemLangRl.setCSeq(cItemSearch.getCSeq());
-			cItemLangRl.setBasename(cItemSearch.getBasename());
+			List<CItemLangRlDto> citemLangRls = contentLangService.getCitemLangRls(CItemLangRlDto.builder()
+					.cseq(citemSearch.getCseq())
+					.basename(citemSearch.getBasename())
+					.build());
 
-			List<CItemLangRlDto> cItemLangRls = contentLangService.getCItemLangRls(cItemLangRl);
-
-			if (CollectionUtils.isNotEmpty(cItemLangRls))
+			if (CollectionUtils.isNotEmpty(citemLangRls))
 			{
-				LangDto lang = langService.getLangByLSeq(cItemLangRls.get(0).getLSeq());
+				LangDto lang = langService.getLangByLSeq(citemLangRls.get(0).getLseq());
 
-				LangKindDto langKind = new LangKindDto();
-				langKind.setBasename(lang.getBasename());
-
-				return ContentLayoutBuilder.viewLang(langService.getBasenames(), langService.getLangKinds(langKind), lang);
+				return ContentLayoutBuilder.viewLang(langService.getBasenames(), langService.getLangKinds(LangKindDto.builder()
+						.basename(lang.getBasename())
+						.build()), lang);
 			}
 		}
 
@@ -110,73 +107,73 @@ public class ContentController extends ContentGeneralController
 
 	@GetMapping("/write/layout/{tabPath}")
 	@ResponseBody
-	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto cItemSearch)
+	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemSearchDto citemSearch)
 	{
-		CItemDto cItem = (cItemSearch.getCSeq() != null) ? contentService.getCItem(cItemSearch.getCSeq()) : new CItemDto();
-		CItemDto parentCItem = (cItemSearch.getPSeq() != null) ? contentService.getCItem(cItemSearch.getPSeq()) : new CItemDto();
+		CItemDto citem = (citemSearch.getCseq() != null) ? contentService.getCitem(citemSearch.getCseq()) : new CItemDto();
+		CItemDto parentCItem = (citemSearch.getPseq() != null) ? contentService.getCitem(citemSearch.getPseq()) : new CItemDto();
 
-		return ContentLayoutBuilder.writeGeneralInfo(cItem, parentCItem,  getComponents(), getEntryPoints(cItem.getComponent()));
+		return ContentLayoutBuilder.writeGeneralInfo(citem, parentCItem,  getComponents(), getEntryPoints(citem.getComponent()));
 	}
 
 	@PostMapping("/save")
 	@CacheClear(name = "A")
 	@ResponseBody
-	public Object save(@ModelAttribute CItemDto cItem)
+	public Object save(@ModelAttribute CItemDto citem)
 	{
-		cItem.setName(cItem.getName().toUpperCase());
+		citem.setName(citem.getName().toUpperCase());
 
-		return contentService.save(cItem);
+		return contentService.save(citem);
 	}
 
 	@PostMapping("/delete")
 	@CacheClear(name = "A")
 	@ResponseBody
-	public Object delete(@RequestParam("cSeq") Integer cSeq)
+	public Object delete(@RequestParam("cseq") Integer cseq)
 	{
-		return contentService.delete(cSeq);
+		return contentService.delete(cseq);
 	}
 
 	@PostMapping("/copy")
 	@CacheClear(name = "A")
 	@ResponseBody
-	public Object copy(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
+	public Object copy(@RequestParam("cseq") Integer cseq, @RequestParam("pseq") Integer pseq)
 	{
-		return contentService.copy(cSeq, pSeq, MgmtCommonVo.NO);
+		return contentService.copy(cseq, pseq, MgmtCommonVo.NO);
 	}
 
 	@PostMapping("/copy_with_sub_items")
 	@CacheClear(name = "A")
 	@ResponseBody
-	public Object copyWithSubItems(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
+	public Object copyWithSubItems(@RequestParam("cseq") Integer cseq, @RequestParam("pseq") Integer pseq)
 	{
-		return contentService.copy(cSeq, pSeq, MgmtCommonVo.YES);
+		return contentService.copy(cseq, pseq, MgmtCommonVo.YES);
 	}
 
 	@PostMapping("/move")
 	@CacheClear(name = "A")
 	@ResponseBody
-	public Object move(@RequestParam("cSeq") Integer cSeq, @RequestParam("pSeq") Integer pSeq)
+	public Object move(@RequestParam("cseq") Integer cseq, @RequestParam("pseq") Integer pseq)
 	{
-		return contentService.move(cSeq, pSeq);
+		return contentService.move(cseq, pseq);
 	}
 
 	@PostMapping("/lang/save")
 	@CacheClear(name = "A")
 	@ResponseBody
-	public Object saveLang(@ModelAttribute CItemLangRlDto cItemLangRl)
+	public Object saveLang(@ModelAttribute CItemLangRlDto citemLangRl)
 	{
-		return contentLangService.save(cItemLangRl);
+		return contentLangService.save(citemLangRl);
 	}
 
 	@GetMapping("/lang")
 	@ResponseBody
 	public Object lang(@ModelAttribute CItemLangRlDto pCItemLangRl)
 	{
-		List<CItemLangRlDto> cItemLangRls = contentLangService.getCItemLangRls(pCItemLangRl);
+		List<CItemLangRlDto> citemLangRls = contentLangService.getCitemLangRls(pCItemLangRl);
 
-		if (CollectionUtils.isNotEmpty(cItemLangRls))
+		if (CollectionUtils.isNotEmpty(citemLangRls))
 		{
-			return langService.getLangByLSeq(cItemLangRls.get(0).getLSeq());
+			return langService.getLangByLSeq(citemLangRls.get(0).getLseq());
 		}
 
 		return null;
@@ -184,42 +181,42 @@ public class ContentController extends ContentGeneralController
 
 	@GetMapping("/tree")
 	@ResponseBody
-	public Object itemsHierarchy(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object itemsHierarchy(@ModelAttribute CItemSearchDto citemSearch)
 	{
-		if (ObjectUtils.isEmpty(cItemSearch.getCSeq()))
+		if (ObjectUtils.isEmpty(citemSearch.getCseq()))
 		{
-			cItemSearch.setCSeq(contentService.getRoot().getCSeq());
+			citemSearch.setCseq(contentService.getRoot().getCseq());
 		}
 
-		return contentService.getCItemHierarchy2(cItemSearch);
+		return contentService.getCitemHierarchy2(citemSearch);
 	}
 
 	@GetMapping("/component/entry_points")
 	@ResponseBody
-	public Object entryPoints(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object entryPoints(@ModelAttribute CItemSearchDto citemSearch)
 	{
-		return getEntryPoints(cItemSearch.getComponent());
+		return getEntryPoints(citemSearch.getComponent());
 	}
 
 	@GetMapping("/valid_check/{field}")
 	@ResponseBody
-	public Object validCheck(@PathVariable("field") String field, @RequestParam("value") String value, @RequestParam(required = false, value = "cSeq") Integer cSeq)
+	public Object validCheck(@PathVariable("field") String field, @RequestParam("value") String value, @RequestParam(required = false, value = "cseq") Integer cseq)
 	{
-		CItemSearchDto cItemSearch = new CItemSearchDto();
-		cItemSearch.setName(value.toUpperCase());
+		CItemSearchDto citemSearch = new CItemSearchDto();
+		citemSearch.setName(value.toUpperCase());
 
-		List<CItemDto> cItems = contentService.getCItems(cItemSearch);
+		List<CItemDto> citems = contentService.getCitems(citemSearch);
 
-		if (CollectionUtils.isEmpty(cItems))
+		if (CollectionUtils.isEmpty(citems))
 		{
 			return EMPTY_RETURN_VALUE;
 		}
 
-		if (cSeq != null)
+		if (cseq != null)
 		{
-			for (CItemDto cItem: cItems)
+			for (CItemDto citem: citems)
 			{
-				if (cSeq.equals(cItem.getCSeq()))
+				if (cseq.equals(citem.getCseq()))
 				{
 					return EMPTY_RETURN_VALUE;
 				}
@@ -242,10 +239,9 @@ public class ContentController extends ContentGeneralController
 		    {
 		    	Class<?> clazz = CmClassUtils.getClass(beanDefinition.getBeanClassName());
 
-				CItemComponentDto cItemComponent = new CItemComponentDto();
-				cItemComponent.setClassName(clazz.getName());
-
-				itemComponents.add(cItemComponent);
+				itemComponents.add(CItemComponentDto.builder()
+						.className(clazz.getName())
+						.build());
 			}
 		    catch (ClassNotFoundException e)
 		    {
@@ -273,18 +269,16 @@ public class ContentController extends ContentGeneralController
 
 			Method[] methods = CmReflectionUtils.getAllDeclaredMethods(clazz);
 
-			if (methods == null)
+			if (ObjectUtils.isEmpty(methods))
 			{
 				return null;
 			}
 
-			List<CItemComponentDto> cItemComponents = new LinkedList<>();
+			List<CItemComponentDto> citemComponents = new LinkedList<>();
 
     		for (Method method : methods)
     		{
-    			Annotation[] annotations = method.getAnnotations();
-
-    			if (annotations == null)
+    			if (ObjectUtils.isEmpty(method.getAnnotations()))
     			{
     				continue;
     			}
@@ -295,17 +289,16 @@ public class ContentController extends ContentGeneralController
 
 					if (CmStringUtils.isNotEmpty(url))
 					{
-						CItemComponentDto cItemComponent = new CItemComponentDto();
-						cItemComponent.setClassName(clazz.getName());
-						cItemComponent.setMethodName(method.getName());
-						cItemComponent.setUrl(url);
-
-						cItemComponents.add(cItemComponent);
+						citemComponents.add(CItemComponentDto.builder()
+								.className(clazz.getName())
+								.methodName(method.getName())
+								.url(url)
+								.build());
 					}
     			}
 	    	}
 
-    		return cItemComponents;
+    		return citemComponents;
 		}
 
 		return null;

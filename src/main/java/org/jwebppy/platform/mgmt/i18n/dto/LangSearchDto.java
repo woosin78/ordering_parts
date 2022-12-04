@@ -20,7 +20,7 @@ public class LangSearchDto extends MgmtGeneralDto implements IPagination
 {
 	private static final long serialVersionUID = 6172725324377871037L;
 
-	private Integer lSeq;
+	private Integer lseq;
 	private String basename;
 	private LangType type;
 	private String query;
@@ -29,5 +29,5 @@ public class LangSearchDto extends MgmtGeneralDto implements IPagination
 	private String messageCode;
 	private String from;
 	private Integer lkSeq;
-	private List<Integer> lSeqs;
+	private List<Integer> lseqs;
 }

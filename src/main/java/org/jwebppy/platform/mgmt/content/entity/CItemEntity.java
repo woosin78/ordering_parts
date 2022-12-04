@@ -21,8 +21,8 @@ public class CItemEntity extends MgmtGeneralEntity
 {
 	private static final long serialVersionUID = -7996090456386384649L;
 
-	private Integer cSeq;
-	private Integer pSeq;
+	private Integer cseq;
+	private Integer pseq;
 	private CItemType type;
 	private String name;
 	private String name2;
@@ -37,7 +37,7 @@ public class CItemEntity extends MgmtGeneralEntity
 	private String launchType;
 	private String scrWidth;
 	private String scrHeight;
-	private Integer lSeq;
+	private Integer lseq;
 	private List<Integer> seqs;
 	private String depth;
 	private int userCount;

@@ -47,7 +47,7 @@ public class LoginHistoryController extends UserGeneralController
 	public Object lastLoginInfo(@ModelAttribute("loginHistorySearchDto") LoginHistorySearchDto loginHistorySearch)
 	{
 		loginHistorySearch.setRowPerPage(2);
-		loginHistorySearch.setUSeq(UserAuthenticationUtils.getUserDetails().getUSeq());
+		loginHistorySearch.setUseq(UserAuthenticationUtils.getUserDetails().getUseq());
 		loginHistorySearch.setFgResult(MgmtCommonVo.YES);
 
 		List<LoginHistoryDto> loginHistories = loginHistoryService.getPageableLoginHistories(loginHistorySearch);

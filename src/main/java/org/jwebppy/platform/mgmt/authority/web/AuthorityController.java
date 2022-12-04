@@ -51,19 +51,19 @@ public class AuthorityController extends UserGeneralController
 
 	@GetMapping("/list/layout")
 	@ResponseBody
-	public Object listLayout(@ModelAttribute CItemSearchDto cItemSearch)
+	public Object listLayout(@ModelAttribute CItemSearchDto citemSearch)
 	{
 		PageableList<CItemDto> pageableList = null;
 
-		if (ObjectUtils.allNull(cItemSearch.getType(), cItemSearch.getCSeq()) && CmStringUtils.isEmpty(cItemSearch.getQuery()))
+		if (ObjectUtils.allNull(citemSearch.getType(), citemSearch.getCseq()) && CmStringUtils.isEmpty(citemSearch.getQuery()))
 		{
 			pageableList = new PageableList<>();
 		}
 		else
 		{
-			cItemSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
+			citemSearch.setTypes(new CItemType[] {CItemType.R, CItemType.G});
 
-			pageableList = new PageableList<>(contentService.getPageableCItems(cItemSearch));
+			pageableList = new PageableList<>(contentService.getPageableCitems(citemSearch));
 		}
 
 		return AuthorityLayoutBuilder.pageableList(pageableList);
@@ -71,119 +71,119 @@ public class AuthorityController extends UserGeneralController
 
 	@GetMapping("/view/layout/{tabPath}")
 	@ResponseBody
-	public Object viewLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("cItemSearch") CItemSearchDto cItemSearch, @ModelAttribute("userSearch") UserSearchDto userSearch)
+	public Object viewLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("citemSearch") CItemSearchDto citemSearch, @ModelAttribute("userSearch") UserSearchDto userSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
-			CItemDto cItem = contentService.getCItem(cItemSearch.getCSeq());
+			CItemDto citem = contentService.getCitem(citemSearch.getCseq());
 
-			if (cItem.getType().equals(CItemType.G))
+			if (citem.getType().equals(CItemType.G))
 			{
-				 return AuthorityLayoutBuilder.viewAuthority(authorityService.getCItemAuthorities(cItemSearch));
+				 return AuthorityLayoutBuilder.viewAuthority(authorityService.getCitemAuthorities(citemSearch));
 			}
 
 			return Collections.emptyList();
 		}
 
-		return AuthorityLayoutBuilder.viewGeneralInfo(contentService.getCItem(cItemSearch.getCSeq()));
+		return AuthorityLayoutBuilder.viewGeneralInfo(contentService.getCitem(citemSearch.getCseq()));
 	}
 
 	@GetMapping("/write/layout/{tabPath}")
 	@ResponseBody
-	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("cItemSearch") CItemSearchDto cItemSearch)
+	public Object writeLayout(@PathVariable("tabPath") String tabPath, @ModelAttribute("citemSearch") CItemSearchDto citemSearch)
 	{
 		if ("authority".equals(tabPath))
 		{
-			List<CItemDto> cItems = null;
+			List<CItemDto> citems = null;
 
-			if (cItemSearch.getCSeq() != null)
+			if (citemSearch.getCseq() != null)
 			{
-				CItemSearchDto cItemSearch2 = new CItemSearchDto();
-				cItemSearch2.setPSeq(cItemSearch.getCSeq());
-
-				cItems = authorityService.getSubRoles(cItemSearch2);
+				citems = authorityService.getSubRoles(CItemSearchDto.builder()
+						.pseq(citemSearch.getCseq())
+						.build());
 			}
 
-			return AuthorityLayoutBuilder.writeAuthority(cItems);
+			return AuthorityLayoutBuilder.writeAuthority(citems);
 		}
 		else
 		{
-			CItemDto cItem = new CItemDto();
+			CItemDto citem = new CItemDto();
 
-			if (cItemSearch.getCSeq() != null)
+			if (citemSearch.getCseq() != null)
 			{
-				cItem = contentService.getCItem(cItemSearch.getCSeq());
+				citem = contentService.getCitem(citemSearch.getCseq());
 			}
 
-			return AuthorityLayoutBuilder.writeGeneralInfo(cItem);
+			return AuthorityLayoutBuilder.writeGeneralInfo(citem);
 		}
 	}
 
 	@PostMapping("/save/{tabPath}")
 	@ResponseBody
-	public Object save(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemDto cItem, @RequestParam(value = "cSeq", required = false) List<Integer> cSeqs)
+	public Object save(@PathVariable("tabPath") String tabPath, @ModelAttribute CItemDto citem, @RequestParam(value = "cseq", required = false) List<Integer> cseqs)
 	{
 		if ("authority".equals(tabPath))
 		{
-			CItemAuthRlDto cItemAuthRl = new CItemAuthRlDto();
-			cItemAuthRl.setPSeq(cItem.getCSeq());
-			cItemAuthRl.setCSeqs(cSeqs);
+			CItemAuthRlDto citemAuthRl = new CItemAuthRlDto();
+			citemAuthRl.setPseq(citem.getCseq());
+			citemAuthRl.setCseqs(cseqs);
 
-			return authorityService.save(cItemAuthRl);
+			return authorityService.save(citemAuthRl);
 		}
 		else
 		{
-			cItem.setName(CmStringUtils.upperCase(cItem.getName()));
+			citem.setName(CmStringUtils.upperCase(citem.getName()));
 
-			if (cItem.getCSeq() != null)
+			if (citem.getCseq() != null)
 			{
-				CItemDto cItem2 = contentService.getCItem(cItem.getCSeq());
-				cItem2.setName(cItem.getName());
-				cItem2.setDescription(cItem.getDescription());
-				cItem2.setFromValid(cItem.getFromValid());
-				cItem2.setToValid(cItem.getToValid());
-				cItem2.setFgVisible(cItem.getFgVisible());
-				cItem2.setSort(cItem.getSort());
+				CItemDto citem2 = contentService.getCitem(citem.getCseq());
 
-				return contentService.modify(cItem2);
+				citem2.setName(citem.getName());
+				citem2.setDescription(citem.getDescription());
+				citem2.setFromValid(citem.getFromValid());
+				citem2.setToValid(citem.getToValid());
+				citem2.setFgVisible(citem.getFgVisible());
+				citem2.setSort(citem.getSort());
+
+				return contentService.modify(citem2);
 			}
 			else
 			{
-				cItem.setType(CItemType.G);
+				citem.setType(CItemType.G);
 
-				return contentService.create(cItem);
+				return contentService.create(citem);
 			}
 		}
 	}
 
 	@PostMapping("/delete")
 	@ResponseBody
-	public Object delete(@RequestParam("cSeq") List<Integer> cSeqs)
+	public Object delete(@RequestParam("cseq") List<Integer> cseqs)
 	{
-		return contentService.delete(cSeqs);
+		return contentService.delete(cseqs);
 	}
 
 	@GetMapping("/sub_role/layout")
 	@ResponseBody
-	public Object subRoleLayout(@ModelAttribute CItemSearchDto cItemSearch, @RequestParam(value = "cSeqs", required = false) List<Integer> cSeqs)
+	public Object subRoleLayout(@ModelAttribute CItemSearchDto citemSearch, @RequestParam(value = "cseqs", required = false) List<Integer> cseqs)
 	{
-		List<CItemDto> cItems = null;
+		List<CItemDto> citems = null;
 
-		if (CollectionUtils.isNotEmpty(cSeqs))
+		if (CollectionUtils.isNotEmpty(cseqs))
 		{
-			cItemSearch.setCSeqs(cSeqs);
-			cItemSearch.setFgVisible(MgmtCommonVo.YES);
+			citemSearch.setCseqs(cseqs);
+			citemSearch.setFgVisible(MgmtCommonVo.YES);
 
-			cItems = contentService.getCItems(cItemSearch);
+			citems = contentService.getCitems(citemSearch);
 		}
 		else
 		{
-			cItemSearch.setPSeq(cItemSearch.getCSeq());
+			citemSearch.setPseq(citemSearch.getCseq());
 
-			cItems = authorityService.getSubRoles(cItemSearch);
+			citems = authorityService.getSubRoles(citemSearch);
 
 		}
 
-		return AuthorityLayoutBuilder.writeAuthority(cItems);
+		return AuthorityLayoutBuilder.writeAuthority(citems);
 	}
 }

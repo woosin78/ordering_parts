@@ -3,6 +3,7 @@ package org.jwebppy.platform.mgmt.user.dto;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.jwebppy.platform.core.util.CmDateFormatUtils;
 import org.jwebppy.platform.core.util.CmDateTimeUtils;
 import org.jwebppy.platform.core.util.CmStringUtils;
@@ -25,7 +26,7 @@ public class UserAccountDto extends MgmtGeneralDto
 {
 	private static final long serialVersionUID = 3024758174943861755L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String username;
 	private String password;
 	@Builder.Default
@@ -75,21 +76,21 @@ public class UserAccountDto extends MgmtGeneralDto
 		ZonedDateTime localFromValid = CmDateTimeUtils.toZonedDateTime(fromValid);
 		ZonedDateTime localToValid = CmDateTimeUtils.toZonedDateTime(toValid);
 
-        if (localFromValid != null && localToValid != null)
-        {
+		if (ObjectUtils.isNotEmpty(localFromValid) && ObjectUtils.isNotEmpty(localToValid))
+		{
             if (now.isAfter(localFromValid) && now.isBefore(localToValid))
             {
             	return true;
             }
         }
-        else if (localFromValid != null && localToValid == null)
+        else if (ObjectUtils.isNotEmpty(localFromValid) && ObjectUtils.isEmpty(localToValid))
         {
         	if (now.isAfter(localFromValid))
         	{
         		return true;
         	}
         }
-        else if (localFromValid == null && localToValid != null)
+        else if (ObjectUtils.isEmpty(localFromValid) && ObjectUtils.isNotEmpty(localToValid))
         {
         	if (now.isBefore(localToValid))
         	{
@@ -107,7 +108,7 @@ public class UserAccountDto extends MgmtGeneralDto
 
 	public boolean isEmpty()
 	{
-		return (uSeq == null);
+		return (useq == null);
 	}
 
 	public boolean isNotEmpty()

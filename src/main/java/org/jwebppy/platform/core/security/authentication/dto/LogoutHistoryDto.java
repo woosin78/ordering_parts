@@ -17,7 +17,7 @@ public class LogoutHistoryDto extends GeneralDto
 {
 	private static final long serialVersionUID = -2670652458161535402L;
 
-	private Integer uSeq;
+	private Integer useq;
 	private String sessionId;
 	private String referer;
 	private String timezone;

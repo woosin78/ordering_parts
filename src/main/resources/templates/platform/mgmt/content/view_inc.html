@@ -29,8 +29,8 @@
 					<a class="item wrap" data-tab="language">Language</a>
 				</div>
 				<form id="FORM_modify" class="ui form">
-				<input type="hidden" name="cSeq"/>
-				<input type="hidden" name="pSeq"/>
+				<input type="hidden" name="cseq"/>
+				<input type="hidden" name="pseq"/>
 					<div class="AREA_modify" style="display: none;">
 						<div class="ui teal button BTN_save"><i class="check icon"></i> Save</div>
 						<div class="ui button modify BTN_cancel"><i class="times icon"></i> Cancel</div>
@@ -65,8 +65,8 @@
 	</div>
 </div>
 <form id="FORM_updateLang" method="post">
-<input type="hidden" name="cSeq"/>
-<input type="hidden" name="lSeq"/>
+<input type="hidden" name="cseq"/>
+<input type="hidden" name="lseq"/>
 </form>
 <!-- Start add language -->
 <th:block th:replace="/platform/mgmt/i18n/lang :: addLang"></th:block>
@@ -143,7 +143,7 @@ viewItemTab.settings = {
 								
 								JpUtilsAjax.get({
 									url: "/platform/mgmt/content/valid_check/name",
-									data: { cSeq: getSeq(), value: value },
+									data: { cseq: getSeq(), value: value },
 									global: false,
 									async: false,
 									success: function(data, textStatus, jqXHR)
@@ -266,7 +266,7 @@ tree.createItem = function(key, pKey)
 {
 	initSeq();
 
-	$("#FORM_modify input[name='pSeq']").val(key);
+	$("#FORM_modify input[name='pseq']").val(key);
 
 	viewItemTab.changePath("/platform/mgmt/content/write/layout");
 	changeTab();
@@ -340,10 +340,10 @@ tree.pasteItem = function(key, pKey)
 tree.newWindow = function(key, pKey)
 {
 	_showContent({
-		cSeq: key
+		cseq: key
 	});
 };
-tree.setUrl("/platform/mgmt/content/tree?cSeq=[[${cSeq}]]");
+tree.setUrl("/platform/mgmt/content/tree?cseq=[[${cseq}]]");
 tree.render();
 
 $(".BTN_modify").on("click", function() {
@@ -363,7 +363,7 @@ $(".BTN_save").on("click", function() {
 				{
 					if (JpUtilsObject.isNotNull(data.RESULT))
 					{
-						setSeq(data.RESULT, getPSeq());
+						setSeq(data.RESULT, getPseq());
 					};
 				}					
 				
@@ -374,25 +374,25 @@ $(".BTN_save").on("click", function() {
 	};
 });
 
-function setSeq(seq, pSeq)
+function setSeq(seq, pseq)
 {
-	$("#FORM_modify input[name=cSeq]").val(JpUtilsString.trimToEmpty(seq));
-	$("#FORM_modify input[name=pSeq]").val(JpUtilsString.trimToEmpty(pSeq));
+	$("#FORM_modify input[name=cseq]").val(JpUtilsString.trimToEmpty(seq));
+	$("#FORM_modify input[name=pseq]").val(JpUtilsString.trimToEmpty(pseq));
 };
 
 function getSeq()
 {
-	return $("#FORM_modify input[name=cSeq]").val(); 
+	return $("#FORM_modify input[name=cseq]").val(); 
 };
 
-function getPSeq()
+function getPseq()
 {
-	return $("#FORM_modify input[name=pSeq]").val(); 
+	return $("#FORM_modify input[name=pseq]").val(); 
 };
 
 function initSeq()
 {
-	$("#FORM_modify input[name=cSeq], [name=pSeq]").val("");
+	$("#FORM_modify input[name=cseq], [name=pseq]").val("");
 };	
 
 $(".BTN_cancel").on("click", function() {
@@ -437,7 +437,7 @@ function isOnForm()
 
 function isRoot()
 {
-	if (getPSeq() == "")
+	if (getPseq() == "")
 	{
 		return true;
 	};
@@ -448,7 +448,7 @@ function isRoot()
 $(".BTN_translation").on("click", function() {
 	JpUtilsAjax.get({
 		url: "/platform/mgmt/content/lang",
-		data: {cSeq: $("#FORM_modify input[name=cSeq]").val() , pSeq: $("#FORM_modify input[name=pSeq]").val(), basename: "[[${T(org.jwebppy.platform.core.PlatformConfigVo).DEFAULT_BASENAME}]]"},
+		data: {cseq: $("#FORM_modify input[name=cseq]").val() , pseq: $("#FORM_modify input[name=pseq]").val(), basename: "[[${T(org.jwebppy.platform.core.PlatformConfigVo).DEFAULT_BASENAME}]]"},
 		global: false,
 		success: function(data, textStatus, jqXHR)
 		{
@@ -464,10 +464,10 @@ $(".BTN_translation").on("click", function() {
 	});
 });
 
-function doAfterSavingLang(isNew, lSeq)
+function doAfterSavingLang(isNew, lseq)
 {
-	$("#FORM_updateLang input[name=cSeq]").val(getSeq());
-	$("#FORM_updateLang input[name=lSeq]").val(lSeq);
+	$("#FORM_updateLang input[name=cseq]").val(getSeq());
+	$("#FORM_updateLang input[name=lseq]").val(lseq);
 	
 	JpUtilsAjax.post({
 		url: "/platform/mgmt/content/lang/save",

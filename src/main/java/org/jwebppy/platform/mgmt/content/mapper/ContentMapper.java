@@ -14,17 +14,17 @@ import org.jwebppy.platform.mgmt.content.entity.CItemUserRlEntity;
 @Mapper
 public interface ContentMapper
 {
-	public int insert(CItemEntity cItem);
-	public int insertCItemUserRl(CItemUserRlEntity cItemUserRl);
-	public int insertCItemLangRl(CItemLangRlEntity cItemLangRl);
-	public int update(CItemEntity cItem);
-	public int updateCItemLangRl(CItemLangRlEntity cItemLangRl);
-	public int delete(CItemEntity cItem);
-	public int deleteCItemUserRl(CItemUserRlEntity cItemUserRl);
-	public CItemEntity findCItem(CItemSearchDto cItemSearch);
-	public List<CItemEntity> findMyCItems(CItemSearchDto cItemSearch);
-	public List<CItemEntity> findCItems(CItemSearchDto cItemSearch);
-	public List<CItemEntity> findPageCItems(CItemSearchDto cItemSearch);
-	public List<CItemLangRlEntity> findCItemLangRls(CItemLangRlDto cItemLangRl);
-	public List<CItemEntity> findCItemsForTree(CItemSearchDto cItemSearch);
+	public int insert(CItemEntity citem);
+	public int insertCitemUserRl(CItemUserRlEntity citemUserRl);
+	public int insertCitemLangRl(CItemLangRlEntity citemLangRl);
+	public int update(CItemEntity citem);
+	public int updateCItemLangRl(CItemLangRlEntity citemLangRl);
+	public int delete(CItemEntity citem);
+	public int deleteCitemUserRl(CItemUserRlEntity citemUserRl);
+	public CItemEntity findCitem(CItemSearchDto citemSearch);
+	public List<CItemEntity> findMyCitems(CItemSearchDto citemSearch);
+	public List<CItemEntity> findCitems(CItemSearchDto citemSearch);
+	public List<CItemEntity> findPageCitems(CItemSearchDto citemSearch);
+	public List<CItemLangRlEntity> findCitemLangRls(CItemLangRlDto citemLangRl);
+	public List<CItemEntity> findCitemsForTree(CItemSearchDto citemSearch);
 }

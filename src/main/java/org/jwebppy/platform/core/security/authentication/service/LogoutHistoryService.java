@@ -23,6 +23,6 @@ public class LogoutHistoryService extends PlatformGeneralService
 
 		logoutHistoryMapper.insertLogoutHistory(logoutHistoryEntity);
 
-		return logoutHistoryEntity.getUSeq();
+		return logoutHistoryEntity.getUseq();
 	}
 }
